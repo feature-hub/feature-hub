@@ -16,5 +16,8 @@
     "**/package-lock.json": true,
     "**/yarn-error.log": true,
     "**/yarn.lock": true
-  }
+  },
+  "tslint.enable": true,
+  "tslint.ignoreDefinitionFiles": false,
+  "typescript.tsdk": "node_modules/typescript/lib"
 }
