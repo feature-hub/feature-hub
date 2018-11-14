@@ -1,0 +1,9 @@
+{
+  "recommendations": [
+    "EditorConfig.EditorConfig",
+    "esbenp.prettier-vscode",
+    "eg2.tslint",
+    "unional.vscode-sort-package-json",
+    "wallabyjs.wallaby-vscode"
+  ]
+}
