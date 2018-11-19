@@ -1,17 +1,12 @@
 {
   "editor.formatOnSave": true,
-  "files.exclude": {
-    "**/lerna-debug.log": true,
-    "**/lib/**": true,
-    "**/node_modules/**": true,
-    "**/npm-debug.log": true,
-    "**/package-lock.json": true,
-    "**/yarn-error.log": true
-  },
   "search.exclude": {
+    "**/.cache": true,
+    "**/coverage": true,
+    "**/docs": true,
     "**/lerna-debug.log": true,
-    "**/lib/**": true,
-    "**/node_modules/**": true,
+    "**/lib": true,
+    "**/node_modules": true,
     "**/npm-debug.log": true,
     "**/package-lock.json": true,
     "**/yarn-error.log": true,

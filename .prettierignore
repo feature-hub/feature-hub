@@ -1,4 +1,7 @@
+.cache
 CHANGELOG.md
-lib/
-node_modules/
+coverage
+docs
+lib
+node_modules
 package.json
