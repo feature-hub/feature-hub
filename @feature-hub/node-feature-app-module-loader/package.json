@@ -1,0 +1,32 @@
+{
+  "name": "@feature-hub/node-feature-app-module-loader",
+  "version": "0.0.0",
+  "description": "TODO",
+  "bugs": {
+    "url": "https://github.com/sinnerschrader/feature-hub/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sinnerschrader/feature-hub.git"
+  },
+  "license": "MIT",
+  "author": "SinnerSchrader Deutschland GmbH",
+  "files": [
+    "lib",
+    "!__tests__"
+  ],
+  "main": "lib/cjs/index.js",
+  "module": "lib/es/index.js",
+  "typings": "lib/cjs/index.d.ts",
+  "dependencies": {
+    "fs-extra": "^7.0.1",
+    "node-fetch": "^2.3.0"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^5.0.4",
+    "@types/node-fetch": "^2.1.4"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
