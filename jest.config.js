@@ -15,7 +15,7 @@ module.exports = {
     '^(@feature-hub/.+)$': '<rootDir>/$1/src'
   },
   modulePathIgnorePatterns: ['/lib'],
-  setupTestFrameworkScriptFile: '<rootDir>/setup-test-framework.js',
+  setupTestFrameworkScriptFile: '<rootDir>/scripts/setup-test-framework.js',
   snapshotSerializers: ['enzyme-to-json/serializer'],
   testMatch: ['<rootDir>/@feature-hub/*/src/**/*.test.{ts,tsx}'],
   testURL: 'http://localhost',

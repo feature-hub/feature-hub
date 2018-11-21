@@ -2,7 +2,7 @@
 
 module.exports = () => ({
   files: [
-    'setup-test-framework.js',
+    'scripts/setup-test-framework.js',
     '@feature-hub/*/src/**/*.{ts,tsx}',
     '!@feature-hub/*/src/**/*.test.{ts,tsx}'
   ],
