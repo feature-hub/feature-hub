@@ -90,18 +90,18 @@ The Feature Hub was designed with the following specific requirements in mind:
   achieved by using Feature Services:
   - Share state across consumers.
   - Safe access to browser APIs and resources (e.g. URL).
-  - Automatically scope API usage by consumer (e.g. logs).
+  - Automatically scope API usage by consumer (e.g. logging).
   - Share configuration across consumers, but only maintain it once.
 - **FeatureServiceRegistry:** The Feature Service registry provides feature
   services for depending consumers.
 - **FeatureAppManager:** The Feature App manager manages the lifecycles of
   feature apps.
-- **ReactFeatureAppLoader:** A Feature App loader for a React environment. It
-  uses the Feature App manager to load and create a single Feature App for a
-  given URL, and renders it into the DOM.
-- **ReactFeatureAppContainer:** A Feature App container for a React environment.
-  It uses the Feature App manager to create a single Feature App for a given
-  Feature App definition, and renders it into the DOM.
+- **ReactFeatureAppLoader:** A React component for integrating remote Feature
+  Apps. It uses the Feature App manager to load and create a single Feature App
+  for a given URL, and renders it into the DOM.
+- **ReactFeatureAppContainer:** A React component for integrating bundled
+  Feature Apps. It uses the Feature App manager to create a single Feature App
+  for a given Feature App definition, and renders it into the DOM.
 
 ## Monorepo Packages
 
