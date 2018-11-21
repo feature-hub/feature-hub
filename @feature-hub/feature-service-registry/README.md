@@ -2,7 +2,7 @@
 
 [![Package Version](https://img.shields.io/npm/v/@feature-hub/feature-service-registry.svg)](https://yarnpkg.com/en/package/@feature-hub/feature-service-registry)
 
-> TODO
+Provides Feature Services for depending consumers.
 
 **This package is part of the
 [Feature Hub](https://github.com/sinnerschrader/feature-hub) monorepo.**

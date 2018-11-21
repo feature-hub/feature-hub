@@ -2,7 +2,7 @@
 
 [![Package Version](https://img.shields.io/npm/v/@feature-hub/react-feature-app-container.svg)](https://yarnpkg.com/en/package/@feature-hub/react-feature-app-container)
 
-> TODO
+Integrates bundled Feature Apps as a React component.
 
 **This package is part of the
 [Feature Hub](https://github.com/sinnerschrader/feature-hub) monorepo.**

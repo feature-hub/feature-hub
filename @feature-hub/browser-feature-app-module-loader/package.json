@@ -1,7 +1,7 @@
 {
   "name": "@feature-hub/browser-feature-app-module-loader",
   "version": "0.0.0",
-  "description": "TODO",
+  "description": "Loads Feature Apps in a browser environment.",
   "bugs": {
     "url": "https://github.com/sinnerschrader/feature-hub/issues"
   },
