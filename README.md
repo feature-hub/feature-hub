@@ -148,7 +148,7 @@ the feature app manager singleton instance to create their feature app.
 With the `ReactFeatureAppLoader` a feature app can be loaded and rendered by
 defining the URL to its JavaScript UMD bundle, e.g.:
 
-```html
+```jsx
 <ReactFeatureAppLoader
   manager={manager}
   src="https://example.com/my-feature-app.js"
@@ -157,7 +157,7 @@ defining the URL to its JavaScript UMD bundle, e.g.:
 
 You can also define a `css` prop to add stylesheets to the document.
 
-```html
+```jsx
 <ReactFeatureAppLoader
   manager={manager}
   src="https://example.com/my-feature-app.js"
@@ -172,7 +172,7 @@ If multiple instances of the same feature app must be placed onto a single page,
 a `featureAppKey` that is unique for the feature app `id` must be defined by the
 integrator, e.g.:
 
-```html
+```jsx
 <section>
   <div>
     <ReactFeatureAppLoader
@@ -200,7 +200,7 @@ providing its feature app definition:
 import {myFeatureAppDefinition} from './my-feature-app';
 ```
 
-```html
+```jsx
 <ReactFeatureAppContainer
   manager={manager}
   featureAppDefinition={myFeatureAppDefinition}
@@ -214,7 +214,7 @@ If multiple instances of the same feature app must be placed onto a single page,
 a `featureAppKey` that is unique for the feature app `id` must be defined by the
 integrator, e.g.:
 
-```html
+```jsx
 <section>
   <div>
     <ReactFeatureAppContainer
