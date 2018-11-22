@@ -1,7 +1,7 @@
 {
   "name": "@feature-hub/feature-service-registry",
   "version": "0.0.0",
-  "description": "Provides Feature Services for depending consumers.",
+  "description": "A class for providing Feature Services to dependent consumers.",
   "bugs": {
     "url": "https://github.com/sinnerschrader/feature-hub/issues"
   },

@@ -10,15 +10,9 @@ apps with multiple teams using different technologies.
   - [Table of Contents](#table-of-contents)
   - [Motivation](#motivation)
     - [Micro Frontends Instead of Monoliths](#micro-frontends-instead-of-monoliths)
+    - [Feature Apps & Feature Services](#feature-apps--feature-services)
     - [Requirements](#requirements)
-  - [Architecture Components](#architecture-components)
   - [Monorepo Packages](#monorepo-packages)
-    - [Package `feature-service-registry`](#package-feature-service-registry)
-    - [Package `feature-app-manager`](#package-feature-app-manager)
-    - [Package `browser-feature-app-module-loader`](#package-browser-feature-app-module-loader)
-    - [Package `node-feature-app-module-loader`](#package-node-feature-app-module-loader)
-    - [Package `react-feature-app-loader`](#package-react-feature-app-loader)
-    - [Package `react-feature-app-container`](#package-react-feature-app-container)
   - [Usage Guides](#usage-guides)
     - [Integrating the Feature Hub](#integrating-the-feature-hub)
       - [React Feature App Loader](#react-feature-app-loader)
@@ -51,7 +45,22 @@ our Micro Frontend solution as open source.
 > is cross functional and develops its features end-to-end, from database to
 > user interface. — [micro-frontends.org](https://micro-frontends.org/)
 
-**In this software, a Micro Frontend is referred to as a Feature App.**
+In this software, a Micro Frontend is referred to as a **Feature App**.
+
+### Feature Apps & Feature Services
+
+A Feature App encapsulates a composable and reusable UI feature. It may have the
+need to share state with other Feature Apps.
+
+A Feature Service provides shared state and functionality to consumers on the
+Feature Hub. While simple code sharing could also be achieved by using
+libraries, there are features that can only, or easier, be achieved by using
+Feature Services:
+
+- Share state across consumers.
+- Safe access to browser APIs and resources (e.g. URL).
+- Automatically scope API usage by consumer (e.g. logging).
+- Share configuration across consumers, but only maintain it once.
 
 ### Requirements
 
@@ -80,88 +89,16 @@ The Feature Hub was designed with the following specific requirements in mind:
   preprogrammed templates in a Node.js app, but also integrations from CMS
   environments where authors compose pages should be possible.
 
-## Architecture Components
-
-- **FeatureApp:** A Feature App encapsulates a composable and reusable UI
-  feature. It may have the need to share state with other Feature Apps.
-- **FeatureService:** A Feature Service provides shared functionality and state
-  to consumers on the Feature Hub. While simple code sharing could also be
-  achieved by using libraries, there are features that can only, or easier, be
-  achieved by using Feature Services:
-  - Share state across consumers.
-  - Safe access to browser APIs and resources (e.g. URL).
-  - Automatically scope API usage by consumer (e.g. logging).
-  - Share configuration across consumers, but only maintain it once.
-- **FeatureServiceRegistry:** The Feature Service registry provides feature
-  services for depending consumers.
-- **FeatureAppManager:** The Feature App manager manages the lifecycles of
-  feature apps.
-- **ReactFeatureAppLoader:** A React component for integrating remote Feature
-  Apps. It uses the Feature App manager to load and create a single Feature App
-  for a given URL, and renders it into the DOM.
-- **ReactFeatureAppContainer:** A React component for integrating bundled
-  Feature Apps. It uses the Feature App manager to create a single Feature App
-  for a given Feature App definition, and renders it into the DOM.
-
 ## Monorepo Packages
 
-### Package `feature-service-registry`
-
-[Repo][feature-service-registry-repo] | [API][feature-service-registry-api] |
-Provides Feature Services for depending consumers.
-
-### Package `feature-app-manager`
-
-[Repo][feature-app-manager-repo] | [API][feature-app-manager-api] | Manages the
-lifecycles of Feature Apps.
-
-### Package `browser-feature-app-module-loader`
-
-[Repo][browser-feature-app-module-loader-repo] |
-[API][browser-feature-app-module-loader-api] | Loads Feature Apps in a browser
-environment.
-
-### Package `node-feature-app-module-loader`
-
-[Repo][node-feature-app-module-loader-repo] |
-[API][node-feature-app-module-loader-api] | Loads Feature Apps in a Node.js
-environment.
-
-### Package `react-feature-app-loader`
-
-[Repo][react-feature-app-loader-repo] | [API][react-feature-app-loader-api] |
-Integrates remote Feature Apps as a React component.
-
-### Package `react-feature-app-container`
-
-[Repo][react-feature-app-container-repo] |
-[API][react-feature-app-container-api] | Integrates bundled Feature Apps as a
-React component.
-
-[feature-service-registry-api]:
-  https://sinnerschrader.github.io/feature-hub/api/@feature-hub/feature-service-registry/
-[feature-service-registry-repo]:
-  https://github.com/sinnerschrader/feature-hub/tree/master/@feature-hub/feature-service-registry
-[feature-app-manager-api]:
-  https://sinnerschrader.github.io/feature-hub/api/@feature-hub/feature-app-manager/
-[feature-app-manager-repo]:
-  https://github.com/sinnerschrader/feature-hub/tree/master/@feature-hub/feature-app-manager
-[browser-feature-app-module-loader-api]:
-  https://sinnerschrader.github.io/feature-hub/api/@feature-hub/browser-feature-app-module-loader/
-[browser-feature-app-module-loader-repo]:
-  https://github.com/sinnerschrader/feature-hub/tree/master/@feature-hub/browser-feature-app-module-loader
-[node-feature-app-module-loader-api]:
-  https://sinnerschrader.github.io/feature-hub/api/@feature-hub/node-feature-app-module-loader/
-[node-feature-app-module-loader-repo]:
-  https://github.com/sinnerschrader/feature-hub/tree/master/@feature-hub/node-feature-app-module-loader
-[react-feature-app-loader-api]:
-  https://sinnerschrader.github.io/feature-hub/api/@feature-hub/react-feature-app-loader/
-[react-feature-app-loader-repo]:
-  https://github.com/sinnerschrader/feature-hub/tree/master/@feature-hub/react-feature-app-loader
-[react-feature-app-container-api]:
-  https://sinnerschrader.github.io/feature-hub/api/@feature-hub/react-feature-app-container/
-[react-feature-app-container-repo]:
-  https://github.com/sinnerschrader/feature-hub/tree/master/@feature-hub/react-feature-app-container
+| Package                                                                    | Description                                                          | API                                         |
+| -------------------------------------------------------------------------- | -------------------------------------------------------------------- | ------------------------------------------- |
+| [feature-service-registry][feature-service-registry-pkg]                   | A class for providing Feature Services to dependent consumers.       | [📖][feature-service-registry-api]          |
+| [feature-app-manager][feature-app-manager-pkg]                             | A class for managing the lifecycles of Feature Apps.                 | [📖][feature-app-manager-api]               |
+| [browser-feature-app-module-loader][browser-feature-app-module-loader-pkg] | A function for loading Feature App modules in a browser environment. | [📖][browser-feature-app-module-loader-api] |
+| [node-feature-app-module-loader][node-feature-app-module-loader-pkg]       | A function for loading Feature App modules in a Node.js environment. | [📖][node-feature-app-module-loader-api]    |
+| [react-feature-app-loader][react-feature-app-loader-pkg]                   | A React component for integrating remote Feature Apps.               | [📖][react-feature-app-loader-api]          |
+| [react-feature-app-container][react-feature-app-container-pkg]             | A React component for integrating bundled Feature Apps.              | [📖][react-feature-app-container-api]       |
 
 ## Usage Guides
 
@@ -658,3 +595,28 @@ should define these externals in their build config. For example, defining
   }
 }
 ```
+
+[feature-service-registry-api]:
+  https://sinnerschrader.github.io/feature-hub/api/@feature-hub/feature-service-registry/
+[feature-service-registry-pkg]:
+  https://github.com/sinnerschrader/feature-hub/tree/master/@feature-hub/feature-service-registry
+[feature-app-manager-api]:
+  https://sinnerschrader.github.io/feature-hub/api/@feature-hub/feature-app-manager/
+[feature-app-manager-pkg]:
+  https://github.com/sinnerschrader/feature-hub/tree/master/@feature-hub/feature-app-manager
+[browser-feature-app-module-loader-api]:
+  https://sinnerschrader.github.io/feature-hub/api/@feature-hub/browser-feature-app-module-loader/
+[browser-feature-app-module-loader-pkg]:
+  https://github.com/sinnerschrader/feature-hub/tree/master/@feature-hub/browser-feature-app-module-loader
+[node-feature-app-module-loader-api]:
+  https://sinnerschrader.github.io/feature-hub/api/@feature-hub/node-feature-app-module-loader/
+[node-feature-app-module-loader-pkg]:
+  https://github.com/sinnerschrader/feature-hub/tree/master/@feature-hub/node-feature-app-module-loader
+[react-feature-app-loader-api]:
+  https://sinnerschrader.github.io/feature-hub/api/@feature-hub/react-feature-app-loader/
+[react-feature-app-loader-pkg]:
+  https://github.com/sinnerschrader/feature-hub/tree/master/@feature-hub/react-feature-app-loader
+[react-feature-app-container-api]:
+  https://sinnerschrader.github.io/feature-hub/api/@feature-hub/react-feature-app-container/
+[react-feature-app-container-pkg]:
+  https://github.com/sinnerschrader/feature-hub/tree/master/@feature-hub/react-feature-app-container

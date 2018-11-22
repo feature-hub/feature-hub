@@ -2,7 +2,7 @@
 
 [![Package Version](https://img.shields.io/npm/v/@feature-hub/browser-feature-app-module-loader.svg)](https://yarnpkg.com/en/package/@feature-hub/browser-feature-app-module-loader)
 
-Loads Feature Apps in a browser environment.
+A function for loading Feature App modules in a browser environment.
 
 **This package is part of the
 [Feature Hub](https://github.com/sinnerschrader/feature-hub) monorepo.**

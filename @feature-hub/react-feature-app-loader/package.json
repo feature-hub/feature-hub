@@ -1,7 +1,7 @@
 {
   "name": "@feature-hub/react-feature-app-loader",
   "version": "0.0.0",
-  "description": "Integrates remote Feature Apps as a React component.",
+  "description": "A React component for integrating remote Feature Apps.",
   "bugs": {
     "url": "https://github.com/sinnerschrader/feature-hub/issues"
   },
