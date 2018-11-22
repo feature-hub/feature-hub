@@ -52,10 +52,10 @@ In this software, a Micro Frontend is referred to as a **Feature App**.
 A Feature App encapsulates a composable and reusable UI feature. It may have the
 need to share state with other Feature Apps.
 
-A Feature Service provides shared state and functionality to consumers on the
-Feature Hub. While simple code sharing could also be achieved by using
-libraries, there are features that can only, or easier, be achieved by using
-Feature Services:
+A Feature Service provides shared state and functionality to consumers, e.g.
+Feature Apps, on the Feature Hub. While simple code sharing could also be
+achieved by using libraries, there are features that can only, or easier, be
+achieved by using Feature Services:
 
 - Share state across consumers.
 - Safe access to browser APIs and resources (e.g. URL).

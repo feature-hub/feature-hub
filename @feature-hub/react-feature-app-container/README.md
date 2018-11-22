@@ -2,7 +2,9 @@
 
 [![Package Version](https://img.shields.io/npm/v/@feature-hub/react-feature-app-container.svg)](https://yarnpkg.com/en/package/@feature-hub/react-feature-app-container)
 
-A React component for integrating bundled Feature Apps.
+A React component for integrating bundled Feature Apps. It uses the Feature App
+manager to create a single Feature App for a given Feature App definition, and
+renders it into the DOM.
 
 **This package is part of the
 [Feature Hub](https://github.com/sinnerschrader/feature-hub) monorepo.**
