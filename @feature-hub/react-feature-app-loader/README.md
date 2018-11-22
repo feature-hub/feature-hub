@@ -2,7 +2,9 @@
 
 [![Package Version](https://img.shields.io/npm/v/@feature-hub/react-feature-app-loader.svg)](https://yarnpkg.com/en/package/@feature-hub/react-feature-app-loader)
 
-> TODO
+A React component for integrating remote Feature Apps. It uses the Feature App
+manager to load and create a single Feature App for a given URL, and renders it
+into the DOM.
 
 **This package is part of the
 [Feature Hub](https://github.com/sinnerschrader/feature-hub) monorepo.**

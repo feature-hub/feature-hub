@@ -1,6 +1,6 @@
 # Feature Hub
 
-An opinionated JavaScript library that implements the
+The Feature Hub is an opinionated JavaScript library that implements the
 [Micro Frontends](https://micro-frontends.org) approach for building modern web
 apps with multiple teams using different technologies.
 
@@ -10,20 +10,21 @@ apps with multiple teams using different technologies.
   - [Table of Contents](#table-of-contents)
   - [Motivation](#motivation)
     - [Micro Frontends Instead of Monoliths](#micro-frontends-instead-of-monoliths)
+    - [Feature Apps & Feature Services](#feature-apps--feature-services)
     - [Requirements](#requirements)
-  - [Feature Hub Architecture Components](#feature-hub-architecture-components)
+  - [Monorepo Packages](#monorepo-packages)
   - [Usage Guides](#usage-guides)
     - [Integrating the Feature Hub](#integrating-the-feature-hub)
       - [React Feature App Loader](#react-feature-app-loader)
       - [React Feature App Container](#react-feature-app-container)
       - [Providing Externals](#providing-externals)
     - [Writing a Feature Service](#writing-a-feature-service)
-      - [Feature Service Id & Dependencies](#feature-service-id--dependencies)
+      - [Feature Service ID & Dependencies](#feature-service-id--dependencies)
       - [Feature Service Instantiation & Programmatic Versioning](#feature-service-instantiation--programmatic-versioning)
-      - [Putting It All Together](#putting-it-all-together)
+      - [Feature Service Provider Definition](#feature-service-provider-definition)
       - [Feature Service Binding](#feature-service-binding)
     - [Writing a Feature App](#writing-a-feature-app)
-      - [Feature App Id](#feature-app-id)
+      - [Feature App ID](#feature-app-id)
       - [Feature App Dependencies](#feature-app-dependencies)
       - [Feature App Instantiation](#feature-app-instantiation)
       - [Registering Feature Services](#registering-feature-services)
@@ -32,9 +33,9 @@ apps with multiple teams using different technologies.
 ## Motivation
 
 The Feature Hub has been created by [SinnerSchrader](https://sinnerschrader.com)
-as part of a project for a client. To ease collaboration and reusability,
-together with the client we decided to open-source the core engine of our Micro
-Frontend solution with this library.
+as part of a project for a client. In order to facilitate collaboration and
+reusability, we decided together with the client to publish the core engine of
+our Micro Frontend solution as open source.
 
 ### Micro Frontends Instead of Monoliths
 
@@ -44,20 +45,35 @@ Frontend solution with this library.
 > is cross functional and develops its features end-to-end, from database to
 > user interface. — [micro-frontends.org](https://micro-frontends.org/)
 
+In this software, a Micro Frontend is referred to as a **Feature App**.
+
+### Feature Apps & Feature Services
+
+A Feature App encapsulates a composable and reusable UI feature. It may have the
+need to share state with other Feature Apps.
+
+A Feature Service provides shared state and functionality to consumers, e.g.
+Feature Apps, on the Feature Hub. While simple code sharing could also be
+achieved by using libraries, there are features that can only, or easier, be
+achieved by using Feature Services:
+
+- Share state across consumers.
+- Safe access to browser APIs and resources (e.g. URL).
+- Automatically scope API usage by consumer (e.g. logging).
+- Share configuration across consumers, but only maintain it once.
+
 ### Requirements
 
 The Feature Hub was designed with the following specific requirements in mind:
 
 - Multiple teams with different technologies and knowledge should be able to
   own, develop, and deploy composable features independently.
-- Multiple micro frontends need a way to safely interact with singleton browser
-  resources like the URL/history or localStorage.
-- Micro frontends must be able to share state to facilitate a consistent UX.
-  - To enable efficient and timely UI updates, shared state must be accessible
-    through reactive APIs.
+- Multiple Feature Apps need a way to safely interact with singleton browser
+  APIs like the URL/history or localStorage.
+- Feature Apps must be able to share state to facilitate a consistent UX.
   - Examples for features needing shared state are: a manager for ensuring only
-    one modal is open at a time, or multiple micro frontends all displaying
-    information about the same product selected in one of the micro frontends.
+    one modal is open at a time, or multiple Feature Apps display information
+    about the same product selected in one of the Feature Apps.
 - For SEO purposes, and to operate existing fat client frontend apps which need
   to fetch loads of data on boot, server-side rendering must be supported.
   - Because of asynchronous data fetching and shared state changes, the server
@@ -66,58 +82,46 @@ The Feature Hub was designed with the following specific requirements in mind:
     client.
   - The server-side rendered UI and its corresponding state must be hydrated on
     the client without visual impact.
-- Micro frontends that are incompatible with the integration environment should
+- Feature Apps that are incompatible with the integration environment should
   fail early, and not just when the user interacts with the specific
   incompatible feature.
-- The composition environment for micro frontends should be flexible. Not only
-  preprogrammed templates in a nodejs app, but also integrations from CMS
+- The composition environment for Feature Apps should be flexible. Not only
+  preprogrammed templates in a Node.js app, but also integrations from CMS
   environments where authors compose pages should be possible.
 
-## Feature Hub Architecture Components
+## Monorepo Packages
 
-- **FeatureApp:** A feature app encapsulates a composable and reusable UI
-  feature. It may have the need to share state with other feature apps.
-- **FeatureService:** A feature service provides shared functionality and state
-  to consumers on the feature hub. While simple code sharing could also be
-  achieved by using libraries, there are features that can only, or easier, be
-  achieved by using feature services:
-  - Share state across consumers
-  - Safe access to browser APIs and resources (e.g. URL)
-  - Automatically scope API usage by consumer (e.g. logs)
-  - Share configuration across consumers, but only maintain it once
-- **FeatureServiceRegistry:** The feature service registry provides feature
-  services to depending feature apps and/or other feature services.
-- **FeatureAppManager:** The feature app manager loads feature apps and manages
-  their lifecycle.
-- **ReactFeatureAppLoader:** A feature app loader for a React environment. It
-  uses the feature app manager to load and create a single feature app for a
-  given JS url, and renders it into the DOM.
-- **ReactFeatureAppContainer:** A feature app container for a React environment.
-  It uses the feature app manager to create a single feature app for a given
-  feature app definition, and renders it into the DOM.
+| Package                                                                    | Description                                                          | API                                         |
+| -------------------------------------------------------------------------- | -------------------------------------------------------------------- | ------------------------------------------- |
+| [feature-service-registry][feature-service-registry-pkg]                   | A class for providing Feature Services to dependent consumers.       | [📖][feature-service-registry-api]          |
+| [feature-app-manager][feature-app-manager-pkg]                             | A class for managing the lifecycles of Feature Apps.                 | [📖][feature-app-manager-api]               |
+| [browser-feature-app-module-loader][browser-feature-app-module-loader-pkg] | A function for loading Feature App modules in a browser environment. | [📖][browser-feature-app-module-loader-api] |
+| [node-feature-app-module-loader][node-feature-app-module-loader-pkg]       | A function for loading Feature App modules in a Node.js environment. | [📖][node-feature-app-module-loader-api]    |
+| [react-feature-app-loader][react-feature-app-loader-pkg]                   | A React component for integrating remote Feature Apps.               | [📖][react-feature-app-loader-api]          |
+| [react-feature-app-container][react-feature-app-container-pkg]             | A React component for integrating bundled Feature Apps.              | [📖][react-feature-app-container-api]       |
 
 ## Usage Guides
 
-There are three different roles in a feature hub environment:
+There are three different roles in a Feature Hub environment:
 
-1.  The **integrator** is the app that instantiates the feature hub components
-    and provides the feature app compositions.
-2.  A **provider** provides feature services to consumers through the feature
+1.  The **integrator** is the app that instantiates the Feature Hub components
+    and provides the Feature App compositions.
+2.  A **provider** provides Feature Services to consumers through the feature
     service registry. Most providers are registered by the integrator but they
-    can also be registered by feature apps.
-3.  A **consumer** is everyone who consumes feature services. This can be a
-    feature app, other feature services, or even the integrator.
+    can also be registered by Feature Apps.
+3.  A **consumer** is everyone who consumes Feature Services. This can be a
+    Feature App, other Feature Services, or even the integrator.
 
 ### Integrating the Feature Hub
 
 There are a few steps an integrator needs to follow to compose a web page of
-multiple feature apps that share state through feature services:
+multiple Feature Apps that share state through Feature Services:
 
-1.  Gather consumer configs (for feature apps and feature services)
-1.  Instantiate a `FeatureServiceRegistry` (with consumer configs)
-1.  Register a set of feature services at the registry
+1.  Gather consumer configs (for Feature Apps and Feature Services).
+1.  Instantiate a `FeatureServiceRegistry` (with consumer configs).
+1.  Register a set of Feature Services at the registry.
 1.  Create a `FeatureAppManager` singleton instance with the registry and a
-    feature app module loader
+    Feature App module loader.
 
 A typical integrator bootstrap code would look like this:
 
@@ -126,11 +130,11 @@ import {FeatureAppManager} from '@feature-hub/feature-app-manager';
 import {FeatureServiceRegistry} from '@feature-hub/feature-service-registry';
 import {loadFeatureAppModule} from '@feature-hub/node-feature-app-module-loader';
 
-const configs = {}; // load configs from somewhere
+const configs = {}; // import configs from somewhere
 const registry = new FeatureServiceRegistry(configs);
 
 const featureServiceDefinitions = [
-  sampleFeatureServiceDefinition1, // load definitions from somewhere
+  sampleFeatureServiceDefinition1, // import definitions from somewhere
   sampleFeatureServiceDefinition2
 ];
 
@@ -140,12 +144,12 @@ const manager = new FeatureAppManager(registry, loadFeatureAppModule);
 ```
 
 A React integrator can then use the `ReactFeatureAppLoader` or the
-`ReactFeatureAppContainer` to place feature apps onto the web page. Both need
-the feature app manager singleton instance to create their feature app.
+`ReactFeatureAppContainer` to place Feature Apps onto the web page. Both need
+the Feature App manager singleton instance to create their Feature App.
 
 #### React Feature App Loader
 
-With the `ReactFeatureAppLoader` a feature app can be loaded and rendered by
+With the `ReactFeatureAppLoader` a Feature App can be loaded and rendered by
 defining the URL to its JavaScript UMD bundle, e.g.:
 
 ```jsx
@@ -168,8 +172,8 @@ You can also define a `css` prop to add stylesheets to the document.
 />
 ```
 
-If multiple instances of the same feature app must be placed onto a single page,
-a `featureAppKey` that is unique for the feature app `id` must be defined by the
+If multiple instances of the same Feature App must be placed onto a single page,
+a `featureAppKey` that is unique for the Feature App `id` must be defined by the
 integrator, e.g.:
 
 ```jsx
@@ -193,8 +197,8 @@ integrator, e.g.:
 
 #### React Feature App Container
 
-With the `ReactFeatureAppContainer` a feature app can be rendered by directly
-providing its feature app definition:
+With the `ReactFeatureAppContainer` a Feature App can be rendered by directly
+providing its Feature App definition:
 
 ```js
 import {myFeatureAppDefinition} from './my-feature-app';
@@ -207,11 +211,11 @@ import {myFeatureAppDefinition} from './my-feature-app';
 />
 ```
 
-This allows the integrator to bundle feature apps, instead of loading them from
+This allows the integrator to bundle Feature Apps, instead of loading them from
 a remote location.
 
-If multiple instances of the same feature app must be placed onto a single page,
-a `featureAppKey` that is unique for the feature app `id` must be defined by the
+If multiple instances of the same Feature App must be placed onto a single page,
+a `featureAppKey` that is unique for the Feature App `id` must be defined by the
 integrator, e.g.:
 
 ```jsx
@@ -235,8 +239,8 @@ integrator, e.g.:
 
 #### Providing Externals
 
-When using the client-side feature app module loader, the integrator can provide
-shared dependencies to feature apps using the `defineExternals` function:
+When using the client-side Feature App module loader, the integrator can provide
+shared npm dependencies to Feature Apps using the `defineExternals` function:
 
 ```js
 import {
@@ -253,20 +257,20 @@ const manager = new FeatureAppManager(registry, loadFeatureAppModule);
 
 ### Writing a Feature Service
 
-A feature service is defined by a feature service provider definition. It
+A Feature Service is defined by a Feature Service provider definition. It
 consists of an `id`, a `dependencies` object, a `create` method.
 
-#### Feature Service Id & Dependencies
+#### Feature Service ID & Dependencies
 
-A feature service provider must declare a unique consumer `id`. It is
-recommended to use namespaces in the feature service id to avoid naming
+A Feature Service provider must declare a unique consumer `id`. It is
+recommended to use namespaces in the Feature Service ID to avoid naming
 conflicts, e.g.:
 
 ```js
 const id = 'acme:my-feature-service';
 ```
 
-The feature service id is referenced by other consumers in their `dependencies`
+The Feature Service ID is referenced by other consumers in their `dependencies`
 declaration along with a [semver](https://semver.org) version string, e.g.:
 
 ```js
@@ -277,24 +281,24 @@ const dependencies = {
 
 #### Feature Service Instantiation & Programmatic Versioning
 
-The feature service provider definition's `create` method is called exactly once
-by the feature service registry. It should store, and possibly initialize, any
+The Feature Service provider definition's `create` method is called exactly once
+by the Feature Service registry. It should store, and possibly initialize, any
 shared state. The method takes the single argument `env`, which has the
 following properties:
 
-1.  `featureServices` — an object with feature services that are
-    [semver-compatible](https://semver.org) with the declared dependencies
-1.  `config` — a consumer config object that is provided by the integrator
+1.  `featureServices` — an object with Feature Services that are
+    [semver-compatible](https://semver.org) with the declared dependencies.
+1.  `config` — a consumer config object that is provided by the integrator.
 
-A feature service provider can support multiple major versions at the same time.
-The `create` method must return an object with a so-called feature service
-binder for each supported major version. The feature service binder is a
-function that is called for each consumer. It returns a feature service binding
+A Feature Service provider can support multiple major versions at the same time.
+The `create` method must return an object with a so-called Feature Service
+binder for each supported major version. The Feature Service binder is a
+function that is called for each consumer. It returns a Feature Service binding
 with a consumer-bound `featureService` and an optional `unbind` method. The
-feature service registry passes the bound feature service to the consumer's
+Feature Service registry passes the bound Feature Service to the consumer's
 `create` method.
 
-With this in mind, a simple counter feature service could look like this:
+With this in mind, a simple counter Feature Service could look like this:
 
 ```js
 function create(env) {
@@ -316,7 +320,7 @@ function create(env) {
 }
 ```
 
-Let's say after the first release of this feature service, the feature service
+Let's say after the first release of this Feature Service, the Feature Service
 provider noticed that there is no way to retrieve the current count. Therefore,
 they introduce the method `getCount` in version `1.1`:
 
@@ -344,21 +348,21 @@ function create(env) {
 }
 ```
 
-The version of a feature service needs to be incremented
+The version of a Feature Service needs to be incremented
 [semver-compatible](https://semver.org) (without the need for a patch version).
 In this case, a method is added, leading to a minor version bump.
 
-In general, breaking changes should be avoided. If a feature service provider
-still needs to make breaking changes, a new feature service implementation for
+In general, breaking changes should be avoided. If a Feature Service provider
+still needs to make breaking changes, a new Feature Service implementation for
 the next major version should be added. Old major versions should still be
 supported.
 
 Furthermore, it is possible to add deprecation warnings, and later remove
 deprecated APIs.
 
-In our example the feature service provider decides to rename the `plus`/`minus`
+In our example the Feature Service provider decides to rename the `plus`/`minus`
 methods to `increment`/`decrement` and adds deprecation warnings (using a
-fictive logger feature service that is declared as a dependency):
+fictive logger Feature Service that is declared as a dependency):
 
 ```js
 function create(env) {
@@ -394,10 +398,10 @@ function create(env) {
 }
 ```
 
-#### Putting It All Together
+#### Feature Service Provider Definition
 
 Finally, the `id`, the `dependencies` object, and the `create` method constitute
-the feature service provider definition that needs to be exported:
+the Feature Service provider definition that needs to be exported:
 
 ```js
 export const counterDefinition = {
@@ -409,14 +413,14 @@ export const counterDefinition = {
 
 #### Feature Service Binding
 
-Declaring a feature service binder (for each major version) allows feature
-service providers to create and destroy consumer-specific state.
+Declaring a Feature Service binder (for each major version) allows Feature
+Service providers to create and destroy consumer-specific state.
 
-Let's assume our counter feature service, instead of handling a global count, is
+Let's assume our counter Feature Service, instead of handling a global count, is
 supposed to handle consumer-specific counts, as well as expose a total of all
 consumer-specific counts.
 
-With our feature service binding creators, this could be implemented like this:
+With our Feature Service binders, this could be implemented like this:
 
 ```js
 function create(env) {
@@ -461,32 +465,32 @@ function create(env) {
 
 ### Writing a Feature App
 
-A feature app must be bundled as a [UMD](https://github.com/umdjs/umd) module.
+A Feature App must be bundled as a [UMD](https://github.com/umdjs/umd) module.
 This JavaScript bundle file must be deployed to a publicly available endpoint.
-The integrator uses this URL to place the feature app onto a page using a
-feature app loader, e.g. `ReactFeatureAppLoader`.
+The integrator uses this URL to place the Feature App onto a page using a
+Feature App loader, e.g. `ReactFeatureAppLoader`.
 
 The default export of this module must be a `FeatureAppDefinition`. It consists
 of an `id`, a `dependencies` object, and the method `create`.
 
-#### Feature App Id
+#### Feature App ID
 
-A feature app definition must declare a unique consumer `id`. It is recommended
-to use namespaces for the feature app id to avoid naming conflicts, e.g.:
+A Feature App definition must declare a unique consumer `id`. It is recommended
+to use namespaces for the Feature App ID to avoid naming conflicts, e.g.:
 
 ```js
 const id = 'acme:my-feature-app';
 ```
 
-This id is used to look up the config for a feature app. Furthermore, it is used
-as a consumer id for feature services. If there is more than one instance of a
-feature app on a single page, the integrator must set a unique `featureAppKey`
-for each feature app with the same id. The `FeatureServiceRegistry` then uses
-the id together with the key to create a unique consumer id.
+This ID is used to look up the config for a Feature App. Furthermore, it is used
+as a consumer ID for Feature Services. If there is more than one instance of a
+Feature App on a single page, the integrator must set a unique `featureAppKey`
+for each Feature App with the same ID. The `FeatureServiceRegistry` then uses
+the ID together with the key to create a unique consumer ID.
 
 #### Feature App Dependencies
 
-In `dependencies`, required feature services are declared with their service id
+In `dependencies`, required Feature Services are declared with their service ID
 and a [semver](https://semver.org) version string:
 
 ```js
@@ -500,13 +504,13 @@ const dependencies = {
 The method `create` takes the single argument `env`, which has the following
 properties:
 
-1.  `featureServices` — an object of feature services that are
-    [semver-compatible](https://semver.org) with the declared dependencies
-1.  `config` — a consumer config object that is provided by the integrator
+1.  `featureServices` — an object of Feature Services that are
+    [semver-compatible](https://semver.org) with the declared dependencies.
+1.  `config` — a consumer config object that is provided by the integrator.
 
-A feature app can either be a "React feature app" or a "DOM feature app".
+A Feature App can either be a "React Feature App" or a "DOM Feature App".
 
-1.  A React feature app definition's `create` method returns a feature app
+1.  A React Feature App definition's `create` method returns a Feature App
     object with a `render` method that itself returns a `ReactNode`.
 
     ```js
@@ -526,7 +530,7 @@ A feature app can either be a "React feature app" or a "DOM feature app".
     React lifecyle methods can be used (if `render` returns an instance of a
     React component class).
 
-1.  A DOM feature app definition's `create` method returns a feature app object
+1.  A DOM Feature App definition's `create` method returns a Feature App object
     with an `attachTo` method that accepts a DOM container element.
 
     ```js
@@ -546,7 +550,7 @@ A feature app can either be a "React feature app" or a "DOM feature app".
 
 #### Registering Feature Services
 
-A feature app can also register its own feature service providers by declaring
+A Feature App can also register its own Feature Service providers by declaring
 `ownFeatureServiceProviderDefinitions`, e.g.:
 
 ```js
@@ -573,14 +577,14 @@ export default {
 };
 ```
 
-This allows teams to quickly get feature apps off the ground, without being
+This allows teams to quickly get Feature Apps off the ground, without being
 dependent on the integrator. However, as soon as other teams need to use this
-feature service, it should be published and included in the global set of
-feature services by the integrator.
+Feature Service, it should be published and included in the global set of
+Feature Services by the integrator.
 
 #### Using Externals
 
-If the integrator has provided externals (see above) to feature apps, they
+If the integrator has provided externals (see above) to Feature Apps, they
 should define these externals in their build config. For example, defining
 `react` as external in a webpack config would look like this:
 
@@ -591,3 +595,28 @@ should define these externals in their build config. For example, defining
   }
 }
 ```
+
+[feature-service-registry-api]:
+  https://sinnerschrader.github.io/feature-hub/api/@feature-hub/feature-service-registry/
+[feature-service-registry-pkg]:
+  https://github.com/sinnerschrader/feature-hub/tree/master/@feature-hub/feature-service-registry
+[feature-app-manager-api]:
+  https://sinnerschrader.github.io/feature-hub/api/@feature-hub/feature-app-manager/
+[feature-app-manager-pkg]:
+  https://github.com/sinnerschrader/feature-hub/tree/master/@feature-hub/feature-app-manager
+[browser-feature-app-module-loader-api]:
+  https://sinnerschrader.github.io/feature-hub/api/@feature-hub/browser-feature-app-module-loader/
+[browser-feature-app-module-loader-pkg]:
+  https://github.com/sinnerschrader/feature-hub/tree/master/@feature-hub/browser-feature-app-module-loader
+[node-feature-app-module-loader-api]:
+  https://sinnerschrader.github.io/feature-hub/api/@feature-hub/node-feature-app-module-loader/
+[node-feature-app-module-loader-pkg]:
+  https://github.com/sinnerschrader/feature-hub/tree/master/@feature-hub/node-feature-app-module-loader
+[react-feature-app-loader-api]:
+  https://sinnerschrader.github.io/feature-hub/api/@feature-hub/react-feature-app-loader/
+[react-feature-app-loader-pkg]:
+  https://github.com/sinnerschrader/feature-hub/tree/master/@feature-hub/react-feature-app-loader
+[react-feature-app-container-api]:
+  https://sinnerschrader.github.io/feature-hub/api/@feature-hub/react-feature-app-container/
+[react-feature-app-container-pkg]:
+  https://github.com/sinnerschrader/feature-hub/tree/master/@feature-hub/react-feature-app-container

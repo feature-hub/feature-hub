@@ -2,7 +2,7 @@
 
 [![Package Version](https://img.shields.io/npm/v/@feature-hub/feature-app-manager.svg)](https://yarnpkg.com/en/package/@feature-hub/feature-app-manager)
 
-> TODO
+A class for managing the lifecycles of Feature Apps.
 
 **This package is part of the
 [Feature Hub](https://github.com/sinnerschrader/feature-hub) monorepo.**
