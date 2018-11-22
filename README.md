@@ -29,6 +29,7 @@ apps with multiple teams using different technologies.
       - [Feature App Instantiation](#feature-app-instantiation)
       - [Registering Feature Services](#registering-feature-services)
       - [Using Externals](#using-externals)
+  - [Roadmap](#roadmap)
 
 ## Motivation
 
@@ -595,6 +596,12 @@ should define these externals in their build config. For example, defining
   }
 }
 ```
+
+## Roadmap
+
+- **Dec. '18:** Node.js Integrator
+- **Dec. '18:** History Feature Service
+- **Dec. '18:** Server Renderer Feature Service
 
 [feature-service-registry-api]:
   https://sinnerschrader.github.io/feature-hub/api/@feature-hub/feature-service-registry/
