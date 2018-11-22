@@ -16,7 +16,7 @@ export interface ReactFeatureApp {
 
 export type FeatureApp = DomFeatureApp | ReactFeatureApp;
 
-export interface ReactFeatureAppContainerProps {
+export interface FeatureAppContainerProps {
   manager: FeatureAppManagerLike;
   featureAppDefinition: FeatureAppDefinition<unknown>;
   featureAppKey?: string;
@@ -29,14 +29,14 @@ const inBrowser =
   document.nodeType === 9;
 // tslint:enable:strict-type-predicates
 
-export class ReactFeatureAppContainer extends React.PureComponent<
-  ReactFeatureAppContainerProps
+export class FeatureAppContainer extends React.PureComponent<
+  FeatureAppContainerProps
 > {
   private readonly featureAppScope?: FeatureAppScope<unknown>;
   private readonly featureApp?: FeatureApp;
   private readonly containerRef = React.createRef<HTMLDivElement>();
 
-  public constructor(props: ReactFeatureAppContainerProps) {
+  public constructor(props: FeatureAppContainerProps) {
     super(props);
 
     const {manager, featureAppDefinition, featureAppKey} = props;

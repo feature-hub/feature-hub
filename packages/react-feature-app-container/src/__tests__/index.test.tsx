@@ -5,9 +5,9 @@ import {
 } from '@feature-hub/feature-app-manager';
 import {mount, shallow} from 'enzyme';
 import * as React from 'react';
-import {ReactFeatureAppContainer} from '..';
+import {FeatureAppContainer} from '..';
 
-describe('ReactFeatureAppContainer', () => {
+describe('FeatureAppContainer', () => {
   let mockManager: FeatureAppManagerLike;
   let mockGetFeatureAppScope: jest.Mock;
   let mockFeatureAppDefinition: FeatureAppDefinition<unknown>;
@@ -46,7 +46,7 @@ describe('ReactFeatureAppContainer', () => {
 
     it('renders the react element', () => {
       const wrapper = shallow(
-        <ReactFeatureAppContainer
+        <FeatureAppContainer
           manager={mockManager}
           featureAppDefinition={mockFeatureAppDefinition}
           featureAppKey="testKey"
@@ -63,7 +63,7 @@ describe('ReactFeatureAppContainer', () => {
     describe('when unmounted', () => {
       it('calls destroy() on the feature app scope', () => {
         const wrapper = shallow(
-          <ReactFeatureAppContainer
+          <FeatureAppContainer
             manager={mockManager}
             featureAppDefinition={mockFeatureAppDefinition}
             featureAppKey="testKey"
@@ -92,7 +92,7 @@ describe('ReactFeatureAppContainer', () => {
 
         it('logs the error', () => {
           const wrapper = shallow(
-            <ReactFeatureAppContainer
+            <FeatureAppContainer
               manager={mockManager}
               featureAppDefinition={mockFeatureAppDefinition}
               featureAppKey="testKey"
@@ -121,7 +121,7 @@ describe('ReactFeatureAppContainer', () => {
 
     it("renders a container and passes it to the feature app's render method", () => {
       const wrapper = mount(
-        <ReactFeatureAppContainer
+        <FeatureAppContainer
           manager={mockManager}
           featureAppDefinition={mockFeatureAppDefinition}
           featureAppKey="testKey"
@@ -136,7 +136,7 @@ describe('ReactFeatureAppContainer', () => {
     describe('when unmounted', () => {
       it('calls destroy() on the feature app scope', () => {
         const wrapper = shallow(
-          <ReactFeatureAppContainer
+          <FeatureAppContainer
             manager={mockManager}
             featureAppDefinition={mockFeatureAppDefinition}
             featureAppKey="testKey"
@@ -165,7 +165,7 @@ describe('ReactFeatureAppContainer', () => {
 
         it('logs the error', () => {
           const wrapper = shallow(
-            <ReactFeatureAppContainer
+            <FeatureAppContainer
               manager={mockManager}
               featureAppDefinition={mockFeatureAppDefinition}
               featureAppKey="testKey"
@@ -199,7 +199,7 @@ describe('ReactFeatureAppContainer', () => {
 
       it('renders nothing and logs an error', () => {
         const wrapper = shallow(
-          <ReactFeatureAppContainer
+          <FeatureAppContainer
             manager={mockManager}
             featureAppDefinition={mockFeatureAppDefinition}
             featureAppKey="testKey"
@@ -230,7 +230,7 @@ describe('ReactFeatureAppContainer', () => {
 
     it('renders nothing and logs an error', () => {
       const wrapper = shallow(
-        <ReactFeatureAppContainer
+        <FeatureAppContainer
           manager={mockManager}
           featureAppDefinition={mockFeatureAppDefinition}
           featureAppKey="testKey"
@@ -245,7 +245,7 @@ describe('ReactFeatureAppContainer', () => {
     describe('when unmounted', () => {
       it('does nothing', () => {
         const wrapper = shallow(
-          <ReactFeatureAppContainer
+          <FeatureAppContainer
             manager={mockManager}
             featureAppDefinition={mockFeatureAppDefinition}
             featureAppKey="testKey"

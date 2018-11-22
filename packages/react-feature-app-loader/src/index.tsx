@@ -3,7 +3,7 @@ import {
   FeatureAppDefinition,
   FeatureAppManagerLike
 } from '@feature-hub/feature-app-manager';
-import {ReactFeatureAppContainer} from '@feature-hub/react-feature-app-container';
+import {FeatureAppContainer} from '@feature-hub/react-feature-app-container';
 import * as React from 'react';
 
 export interface Css {
@@ -11,14 +11,14 @@ export interface Css {
   media?: string;
 }
 
-export interface ReactFeatureAppLoaderProps {
+export interface FeatureAppLoaderProps {
   manager: FeatureAppManagerLike;
   src: string;
   css?: Css[];
   featureAppKey?: string;
 }
 
-interface ReactFeatureAppLoaderState {
+interface FeatureAppLoaderState {
   featureAppDefinition?: FeatureAppDefinition<unknown>;
   loadingError?: boolean;
 }
@@ -30,11 +30,11 @@ const inBrowser =
   document.nodeType === 9;
 // tslint:enable:strict-type-predicates
 
-export class ReactFeatureAppLoader extends React.PureComponent<
-  ReactFeatureAppLoaderProps,
-  ReactFeatureAppLoaderState
+export class FeatureAppLoader extends React.PureComponent<
+  FeatureAppLoaderProps,
+  FeatureAppLoaderState
 > {
-  public readonly state: ReactFeatureAppLoaderState;
+  public readonly state: FeatureAppLoaderState;
 
   private mounted = false;
   private loggedLoadingError = false;
@@ -43,7 +43,7 @@ export class ReactFeatureAppLoader extends React.PureComponent<
     FeatureAppDefinition<unknown>
   >;
 
-  public constructor(props: ReactFeatureAppLoaderProps) {
+  public constructor(props: FeatureAppLoaderProps) {
     super(props);
 
     const {manager, src} = props;
@@ -106,7 +106,7 @@ export class ReactFeatureAppLoader extends React.PureComponent<
     }
 
     return (
-      <ReactFeatureAppContainer
+      <FeatureAppContainer
         manager={manager}
         featureAppDefinition={featureAppDefinition}
         featureAppKey={featureAppKey}
