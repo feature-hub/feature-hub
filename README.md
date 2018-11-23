@@ -15,7 +15,7 @@ could be used to build an end-to-end solution with any other frontend
 technology.
 
 **This software is in active development and is subject to potentially breaking
-changes. We are not yet using this software in production. Our planned
+changes. We are not yet using this software in production. Our currently planned
 milestones can be viewed
 [here](https://github.com/sinnerschrader/feature-hub/milestones).**
 
