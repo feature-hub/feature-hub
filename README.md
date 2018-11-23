@@ -623,20 +623,20 @@ should define these externals in their build config. For example, defining
 
 [core-api]: https://sinnerschrader.github.io/feature-hub/api/@feature-hub/core/
 [core-pkg]:
-  https://github.com/sinnerschrader/feature-hub/tree/master/@feature-hub/core
+  https://github.com/sinnerschrader/feature-hub/tree/master/packages/core
 [browser-feature-app-module-loader-api]:
   https://sinnerschrader.github.io/feature-hub/api/@feature-hub/browser-feature-app-module-loader/
 [browser-feature-app-module-loader-pkg]:
-  https://github.com/sinnerschrader/feature-hub/tree/master/@feature-hub/browser-feature-app-module-loader
+  https://github.com/sinnerschrader/feature-hub/tree/master/packages/browser-feature-app-module-loader
 [node-feature-app-module-loader-api]:
   https://sinnerschrader.github.io/feature-hub/api/@feature-hub/node-feature-app-module-loader/
 [node-feature-app-module-loader-pkg]:
-  https://github.com/sinnerschrader/feature-hub/tree/master/@feature-hub/node-feature-app-module-loader
+  https://github.com/sinnerschrader/feature-hub/tree/master/packages/node-feature-app-module-loader
 [react-feature-app-loader-api]:
   https://sinnerschrader.github.io/feature-hub/api/@feature-hub/react-feature-app-loader/
 [react-feature-app-loader-pkg]:
-  https://github.com/sinnerschrader/feature-hub/tree/master/@feature-hub/react-feature-app-loader
+  https://github.com/sinnerschrader/feature-hub/tree/master/packages/react-feature-app-loader
 [react-feature-app-container-api]:
   https://sinnerschrader.github.io/feature-hub/api/@feature-hub/react-feature-app-container/
 [react-feature-app-container-pkg]:
-  https://github.com/sinnerschrader/feature-hub/tree/master/@feature-hub/react-feature-app-container
+  https://github.com/sinnerschrader/feature-hub/tree/master/packages/react-feature-app-container
