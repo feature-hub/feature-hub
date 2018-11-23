@@ -4,14 +4,15 @@ The Feature Hub is an opinionated JavaScript library that implements the
 [Micro Frontends](https://micro-frontends.org) approach for building modern web
 apps with multiple teams using different technologies.
 
-This repository constitutes a full-fledged solution for composing Micro
-Frontends. React is used as the frontend composition engine that supports React
-Micro Frontends as first-class citizens, but also allows the integration of
-Micro Frontends that are built with other frontend libraries (e.g. Vue.js,
-Angular, Web Components).
+This monorepo contains a [collection of packages](#monorepo-packages) that can
+be used together as a full-fledged solution for composing Micro Frontends. It
+supports React Micro Frontends as first-class citizens, but also allows the
+integration of Micro Frontends that are built with any other frontend technology
+(e.g. Vue.js, Angular, Web Components).
 
 In contrast, the Feature Hub core package is totally independent of React. It
-could be used to build an end-to-end solution with any other frontend library.
+could be used to build an end-to-end solution with any other frontend
+technology.
 
 ## Table of Contents
 
@@ -24,8 +25,8 @@ could be used to build an end-to-end solution with any other frontend library.
   - [Monorepo Packages](#monorepo-packages)
   - [Usage Guides](#usage-guides)
     - [Integrating the Feature Hub](#integrating-the-feature-hub)
-      - [React Feature App Loader](#react-feature-app-loader)
-      - [React Feature App Container](#react-feature-app-container)
+      - [The React Feature App Loader](#the-react-feature-app-loader)
+      - [The React Feature App Container](#the-react-feature-app-container)
       - [Providing Externals](#providing-externals)
     - [Writing a Feature Service](#writing-a-feature-service)
       - [Feature Service ID & Dependencies](#feature-service-id--dependencies)
@@ -44,8 +45,8 @@ could be used to build an end-to-end solution with any other frontend library.
 
 The Feature Hub has been created by [SinnerSchrader](https://sinnerschrader.com)
 as part of a project for a client. In order to facilitate collaboration and
-reusability, we decided together with the client to publish the core engine of
-our Micro Frontend solution as open source.
+reusability, we decided together with the client to publish the core
+functionality of our Micro Frontend solution as open source.
 
 ### Micro Frontends Instead of Monoliths
 
@@ -164,10 +165,10 @@ A React integrator can then use the `FeatureAppLoader` (from
 page. Both need the `FeatureAppManager` singleton instance to create their
 Feature App.
 
-#### React Feature App Loader
+#### The React Feature App Loader
 
-With the `FeatureAppLoader` a Feature App can be loaded and rendered by defining
-the URL to its JavaScript UMD bundle, e.g.:
+With the React `FeatureAppLoader` a Feature App can be loaded and rendered by
+defining the URL to its JavaScript UMD bundle, e.g.:
 
 ```jsx
 <FeatureAppLoader
@@ -212,9 +213,9 @@ integrator, e.g.:
 </section>
 ```
 
-#### React Feature App Container
+#### The React Feature App Container
 
-With the `FeatureAppContainer` a Feature App can be rendered by directly
+With the React `FeatureAppContainer` a Feature App can be rendered by directly
 providing its Feature App definition:
 
 ```js
@@ -256,7 +257,7 @@ integrator, e.g.:
 
 #### Providing Externals
 
-When using the client-side Feature App module loader, the integrator can provide
+When using the browser Feature App module loader, the integrator can provide
 shared npm dependencies to Feature Apps using the `defineExternals` function:
 
 ```js
@@ -623,20 +624,20 @@ should define these externals in their build config. For example, defining
 
 [core-api]: https://sinnerschrader.github.io/feature-hub/api/@feature-hub/core/
 [core-pkg]:
-  https://github.com/sinnerschrader/feature-hub/tree/master/@feature-hub/core
+  https://github.com/sinnerschrader/feature-hub/tree/master/packages/core
 [browser-feature-app-module-loader-api]:
   https://sinnerschrader.github.io/feature-hub/api/@feature-hub/browser-feature-app-module-loader/
 [browser-feature-app-module-loader-pkg]:
-  https://github.com/sinnerschrader/feature-hub/tree/master/@feature-hub/browser-feature-app-module-loader
+  https://github.com/sinnerschrader/feature-hub/tree/master/packages/browser-feature-app-module-loader
 [node-feature-app-module-loader-api]:
   https://sinnerschrader.github.io/feature-hub/api/@feature-hub/node-feature-app-module-loader/
 [node-feature-app-module-loader-pkg]:
-  https://github.com/sinnerschrader/feature-hub/tree/master/@feature-hub/node-feature-app-module-loader
+  https://github.com/sinnerschrader/feature-hub/tree/master/packages/node-feature-app-module-loader
 [react-feature-app-loader-api]:
   https://sinnerschrader.github.io/feature-hub/api/@feature-hub/react-feature-app-loader/
 [react-feature-app-loader-pkg]:
-  https://github.com/sinnerschrader/feature-hub/tree/master/@feature-hub/react-feature-app-loader
+  https://github.com/sinnerschrader/feature-hub/tree/master/packages/react-feature-app-loader
 [react-feature-app-container-api]:
   https://sinnerschrader.github.io/feature-hub/api/@feature-hub/react-feature-app-container/
 [react-feature-app-container-pkg]:
-  https://github.com/sinnerschrader/feature-hub/tree/master/@feature-hub/react-feature-app-container
+  https://github.com/sinnerschrader/feature-hub/tree/master/packages/react-feature-app-container
