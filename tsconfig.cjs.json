@@ -1,0 +1,9 @@
+{
+  "files": [],
+  "include": [],
+  "references": [
+    {"path": "packages/browser-feature-app-module-loader/tsconfig.cjs.json"},
+    {"path": "packages/node-feature-app-module-loader/tsconfig.cjs.json"},
+    {"path": "packages/react-feature-app-loader/tsconfig.cjs.json"}
+  ]
+}

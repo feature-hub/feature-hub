@@ -3,19 +3,17 @@
   "private": true,
   "license": "MIT",
   "workspaces": [
-    "@feature-hub/*"
+    "packages/*"
   ],
   "scripts": {
     "prebuild": "lerna exec --parallel -- rm -rf lib",
-    "build": "run-p build:cjs build:es build:typedoc",
-    "build:cjs": "lerna exec -- tsc --project tsconfig.cjs.json",
-    "build:es": "lerna exec -- tsc --project tsconfig.es.json",
+    "build": "yarn build:cjs && run-p build:es build:typedoc",
+    "build:cjs": "tsc --build tsconfig.cjs.json --verbose",
+    "build:es": "tsc --build tsconfig.es.json --verbose",
     "prebuild:typedoc": "rm -rf docs",
     "build:typedoc": "lerna exec --parallel -- typedoc --options ../../typedoc.js --out ../../docs/api/\\$LERNA_PACKAGE_NAME --readme README.md .",
     "postbuild:typedoc": "node scripts/process-api-docs.js",
-    "build:watch": "run-p build:watch:*",
-    "build:watch:cjs": "yarn build:cjs --watch --preserveWatchOutput",
-    "build:watch:es": "yarn build:es --watch --preserveWatchOutput",
+    "build:watch": "yarn build:cjs --watch --preserveWatchOutput",
     "format": "prettier --write '**/*.{js,json,md,ts,tsx,yml}'",
     "format:verify": "prettier --list-different '**/*.{js,json,md,ts,tsx,yml}'",
     "lint": "lerna exec --parallel -- tslint --config tslint.json --project tsconfig.json --format verbose",

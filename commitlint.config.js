@@ -3,7 +3,7 @@
 const {readdirSync} = require('fs');
 const {join} = require('path');
 
-const pkgScopes = readdirSync(join(__dirname, '@feature-hub')).filter(
+const pkgScopes = readdirSync(join(__dirname, 'packages')).filter(
   scope => !/^\./.test(scope)
 );
 

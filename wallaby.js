@@ -3,10 +3,10 @@
 module.exports = () => ({
   files: [
     'scripts/setup-test-framework.js',
-    '@feature-hub/*/src/**/*.{ts,tsx}',
-    '!@feature-hub/*/src/**/*.test.{ts,tsx}'
+    'packages/*/src/**/*.{ts,tsx}',
+    '!packages/*/src/**/*.test.{ts,tsx}'
   ],
-  tests: ['@feature-hub/*/src/**/*.test.{ts,tsx}'],
+  tests: ['packages/*/src/**/*.test.{ts,tsx}'],
   env: {type: 'node', runner: 'node'},
   testFramework: 'jest'
 });
