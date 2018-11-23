@@ -1,9 +1,0 @@
-{
-  "extends": "./tsconfig.json",
-  "compilerOptions": {
-    "composite": true,
-    "declarationMap": true,
-    "outDir": "lib/cjs"
-  },
-  "references": [{"path": "../feature-service-registry/tsconfig.cjs.json"}]
-}

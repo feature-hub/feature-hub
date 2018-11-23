@@ -1,9 +1,0 @@
-{
-  "files": [],
-  "include": [],
-  "references": [
-    {"path": "packages/browser-feature-app-module-loader/tsconfig.es.json"},
-    {"path": "packages/node-feature-app-module-loader/tsconfig.es.json"},
-    {"path": "packages/react-feature-app-loader/tsconfig.es.json"}
-  ]
-}

@@ -1,7 +1,12 @@
 {
   "extends": "../../tsconfig.json",
   "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "references": [
+    {"path": "../feature-app-manager"},
+    {"path": "../react-feature-app-container"}
+  ],
   "compilerOptions": {
+    "outDir": "lib",
     "rootDir": "src"
   }
 }
