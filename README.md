@@ -25,8 +25,8 @@ technology.
   - [Monorepo Packages](#monorepo-packages)
   - [Usage Guides](#usage-guides)
     - [Integrating the Feature Hub](#integrating-the-feature-hub)
-      - [React Feature App Loader](#react-feature-app-loader)
-      - [React Feature App Container](#react-feature-app-container)
+      - [The React Feature App Loader](#the-react-feature-app-loader)
+      - [The React Feature App Container](#the-react-feature-app-container)
       - [Providing Externals](#providing-externals)
     - [Writing a Feature Service](#writing-a-feature-service)
       - [Feature Service ID & Dependencies](#feature-service-id--dependencies)
@@ -165,10 +165,10 @@ A React integrator can then use the `FeatureAppLoader` (from
 page. Both need the `FeatureAppManager` singleton instance to create their
 Feature App.
 
-#### React Feature App Loader
+#### The React Feature App Loader
 
-With the `FeatureAppLoader` a Feature App can be loaded and rendered by defining
-the URL to its JavaScript UMD bundle, e.g.:
+With the React `FeatureAppLoader` a Feature App can be loaded and rendered by
+defining the URL to its JavaScript UMD bundle, e.g.:
 
 ```jsx
 <FeatureAppLoader
@@ -213,9 +213,9 @@ integrator, e.g.:
 </section>
 ```
 
-#### React Feature App Container
+#### The React Feature App Container
 
-With the `FeatureAppContainer` a Feature App can be rendered by directly
+With the React `FeatureAppContainer` a Feature App can be rendered by directly
 providing its Feature App definition:
 
 ```js
