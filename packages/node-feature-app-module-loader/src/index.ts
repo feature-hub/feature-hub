@@ -1,4 +1,4 @@
-import {FeatureAppModuleLoader} from '@feature-hub/feature-app-manager';
+import {FeatureAppModuleLoader} from '@feature-hub/core';
 import crypto from 'crypto';
 import fs from 'fs-extra';
 import fetch from 'node-fetch';

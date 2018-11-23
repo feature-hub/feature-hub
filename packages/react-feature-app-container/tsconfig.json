@@ -1,7 +1,7 @@
 {
   "extends": "../../tsconfig.json",
   "include": ["src/**/*.ts", "src/**/*.tsx"],
-  "references": [{"path": "../feature-app-manager"}],
+  "references": [{"path": "../core"}],
   "compilerOptions": {
     "outDir": "lib",
     "rootDir": "src"

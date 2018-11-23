@@ -1,7 +1,7 @@
 {
   "name": "@feature-hub/browser-feature-app-module-loader",
   "version": "0.0.0",
-  "description": "A function for loading Feature App modules in a browser environment.",
+  "description": "A Feature App module loader for browsers.",
   "bugs": {
     "url": "https://github.com/sinnerschrader/feature-hub/issues"
   },
@@ -21,7 +21,7 @@
     "systemjs": "^0.21.5"
   },
   "devDependencies": {
-    "@feature-hub/feature-app-manager": "^0.0.0",
+    "@feature-hub/core": "^0.0.0",
     "@types/systemjs": "^0.20.6"
   },
   "publishConfig": {

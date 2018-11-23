@@ -18,7 +18,7 @@
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "devDependencies": {
-    "@feature-hub/feature-app-manager": "^0.0.0",
+    "@feature-hub/core": "^0.0.0",
     "@types/react": "^16.7.6",
     "react": "^16.6.3",
     "react-dom": "^16.6.3"

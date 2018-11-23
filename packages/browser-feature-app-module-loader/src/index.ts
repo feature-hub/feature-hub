@@ -1,7 +1,7 @@
 // tslint:disable-next-line:no-import-side-effect
 import 'systemjs/dist/system-production';
 
-import {FeatureAppModuleLoader} from '@feature-hub/feature-app-manager';
+import {FeatureAppModuleLoader} from '@feature-hub/core';
 
 export interface Externals {
   [moduleName: string]: unknown;

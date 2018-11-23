@@ -1,9 +1,0 @@
-{
-  "extends": "../../tsconfig.json",
-  "include": ["src/**/*.ts", "src/**/*.tsx"],
-  "references": [{"path": "../feature-service-registry"}],
-  "compilerOptions": {
-    "outDir": "lib",
-    "rootDir": "src"
-  }
-}
