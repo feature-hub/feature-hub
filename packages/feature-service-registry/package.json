@@ -1,0 +1,31 @@
+{
+  "name": "@feature-hub/feature-service-registry",
+  "version": "0.0.0",
+  "description": "A class for providing Feature Services to dependent consumers.",
+  "bugs": {
+    "url": "https://github.com/sinnerschrader/feature-hub/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sinnerschrader/feature-hub.git"
+  },
+  "license": "MIT",
+  "author": "SinnerSchrader Deutschland GmbH",
+  "files": [
+    "lib",
+    "!__tests__"
+  ],
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
+  "dependencies": {
+    "semver": "^5.6.0",
+    "toposort": "^2.0.2"
+  },
+  "devDependencies": {
+    "@types/semver": "^5.5.0",
+    "@types/toposort": "^2.0.1"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

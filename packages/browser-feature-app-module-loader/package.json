@@ -1,0 +1,30 @@
+{
+  "name": "@feature-hub/browser-feature-app-module-loader",
+  "version": "0.0.0",
+  "description": "A function for loading Feature App modules in a browser environment.",
+  "bugs": {
+    "url": "https://github.com/sinnerschrader/feature-hub/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sinnerschrader/feature-hub.git"
+  },
+  "license": "MIT",
+  "author": "SinnerSchrader Deutschland GmbH",
+  "files": [
+    "lib",
+    "!__tests__"
+  ],
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
+  "dependencies": {
+    "systemjs": "^0.21.5"
+  },
+  "devDependencies": {
+    "@feature-hub/feature-app-manager": "^0.0.0",
+    "@types/systemjs": "^0.20.6"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "name": "@feature-hub/node-feature-app-module-loader",
+  "version": "0.0.0",
+  "description": "A function for loading Feature App modules in a Node.js environment.",
+  "bugs": {
+    "url": "https://github.com/sinnerschrader/feature-hub/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sinnerschrader/feature-hub.git"
+  },
+  "license": "MIT",
+  "author": "SinnerSchrader Deutschland GmbH",
+  "files": [
+    "lib",
+    "!__tests__"
+  ],
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
+  "dependencies": {
+    "fs-extra": "^7.0.1",
+    "node-fetch": "^2.3.0"
+  },
+  "devDependencies": {
+    "@feature-hub/feature-app-manager": "^0.0.0",
+    "@types/fs-extra": "^5.0.4",
+    "@types/node-fetch": "^2.1.4"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
