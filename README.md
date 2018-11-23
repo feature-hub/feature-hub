@@ -11,7 +11,7 @@ Micro Frontends that are built with other frontend libraries (e.g. Vue.js,
 Angular, Web Components).
 
 In contrast, the Feature Hub core package is totally independent of React. It
-could be used to build a end-to-end solution with any other frontend library.
+could be used to build an end-to-end solution with any other frontend library.
 
 ## Table of Contents
 
