@@ -248,6 +248,8 @@ import {
   defineExternals,
   loadFeatureAppModule
 } from '@feature-hub/browser-feature-app-module-loader';
+import * as React from 'react';
+import Loadable from 'react-loadable';
 ```
 
 ```js
