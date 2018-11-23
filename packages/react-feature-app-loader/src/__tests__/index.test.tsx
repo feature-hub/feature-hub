@@ -3,12 +3,12 @@ import {
   FeatureAppDefinition,
   FeatureAppManagerLike
 } from '@feature-hub/feature-app-manager';
-import {ReactFeatureAppContainer} from '@feature-hub/react-feature-app-container';
+import {FeatureAppContainer} from '@feature-hub/react-feature-app-container';
 import {shallow} from 'enzyme';
 import * as React from 'react';
-import {ReactFeatureAppLoader} from '..';
+import {FeatureAppLoader} from '..';
 
-describe('ReactFeatureAppLoader', () => {
+describe('FeatureAppLoader', () => {
   let mockManager: FeatureAppManagerLike;
   let mockGetAsyncFeatureAppDefinition: jest.Mock;
   let mockAsyncFeatureAppDefinition: AsyncValue<FeatureAppDefinition<unknown>>;
@@ -41,16 +41,14 @@ describe('ReactFeatureAppLoader', () => {
   });
 
   it('initially renders nothing', () => {
-    const wrapper = shallow(
-      <ReactFeatureAppLoader manager={mockManager} src="" />
-    );
+    const wrapper = shallow(<FeatureAppLoader manager={mockManager} src="" />);
 
     expect(wrapper.isEmptyRender()).toBe(true);
   });
 
   describe('without a css prop', () => {
     it('does not change the document head', () => {
-      shallow(<ReactFeatureAppLoader manager={mockManager} src="/test.js" />);
+      shallow(<FeatureAppLoader manager={mockManager} src="/test.js" />);
 
       expect(document.head).toMatchSnapshot();
     });
@@ -59,7 +57,7 @@ describe('ReactFeatureAppLoader', () => {
   describe('with a css prop', () => {
     it('appends link elements to the document head', () => {
       shallow(
-        <ReactFeatureAppLoader
+        <FeatureAppLoader
           manager={mockManager}
           src="/test.js"
           css={[{href: 'foo.css'}, {href: 'bar.css', media: 'print'}]}
@@ -72,7 +70,7 @@ describe('ReactFeatureAppLoader', () => {
     describe('when the css has already been appended', () => {
       it('does not append the css a second time', () => {
         shallow(
-          <ReactFeatureAppLoader
+          <FeatureAppLoader
             manager={mockManager}
             src="/test.js"
             css={[{href: 'foo.css'}]}
@@ -80,7 +78,7 @@ describe('ReactFeatureAppLoader', () => {
         );
 
         shallow(
-          <ReactFeatureAppLoader
+          <FeatureAppLoader
             manager={mockManager}
             src="/test.js"
             css={[{href: 'foo.css'}]}
@@ -109,7 +107,7 @@ describe('ReactFeatureAppLoader', () => {
 
     it('renders a FeatureAppContainer', () => {
       const wrapper = shallow(
-        <ReactFeatureAppLoader
+        <FeatureAppLoader
           manager={mockManager}
           src="/test.js"
           featureAppKey="testKey"
@@ -117,7 +115,7 @@ describe('ReactFeatureAppLoader', () => {
       );
 
       expect(wrapper.getElement()).toEqual(
-        <ReactFeatureAppContainer
+        <FeatureAppContainer
           manager={mockManager}
           featureAppDefinition={mockFeatureAppDefinition}
           featureAppKey="testKey"
@@ -141,7 +139,7 @@ describe('ReactFeatureAppLoader', () => {
 
     it('renders nothing and logs an error', () => {
       const wrapper = shallow(
-        <ReactFeatureAppLoader
+        <FeatureAppLoader
           manager={mockManager}
           src="/test.js"
           featureAppKey="testKey"
@@ -178,7 +176,7 @@ describe('ReactFeatureAppLoader', () => {
 
     it('initially renders nothing', () => {
       const wrapper = shallow(
-        <ReactFeatureAppLoader manager={mockManager} src="/test.js" />
+        <FeatureAppLoader manager={mockManager} src="/test.js" />
       );
 
       expect(wrapper.isEmptyRender()).toBe(true);
@@ -186,7 +184,7 @@ describe('ReactFeatureAppLoader', () => {
 
     it('renders a FeatureAppContainer when loaded', async () => {
       const wrapper = shallow(
-        <ReactFeatureAppLoader
+        <FeatureAppLoader
           manager={mockManager}
           src="/test.js"
           featureAppKey="testKey"
@@ -196,7 +194,7 @@ describe('ReactFeatureAppLoader', () => {
       await mockAsyncFeatureAppDefinition.promise;
 
       expect(wrapper.getElement()).toEqual(
-        <ReactFeatureAppContainer
+        <FeatureAppContainer
           manager={mockManager}
           featureAppDefinition={mockFeatureAppDefinition}
           featureAppKey="testKey"
@@ -207,7 +205,7 @@ describe('ReactFeatureAppLoader', () => {
     describe('when unmounted before loading has finished', () => {
       it('renders nothing', async () => {
         const wrapper = shallow(
-          <ReactFeatureAppLoader
+          <FeatureAppLoader
             manager={mockManager}
             src="/test.js"
             featureAppKey="testKey"
@@ -239,7 +237,7 @@ describe('ReactFeatureAppLoader', () => {
 
     it('renders nothing and logs an error', async () => {
       const wrapper = shallow(
-        <ReactFeatureAppLoader
+        <FeatureAppLoader
           manager={mockManager}
           src="/test.js"
           featureAppKey="testKey"
@@ -267,7 +265,7 @@ describe('ReactFeatureAppLoader', () => {
     describe('when unmounted before loading has finished', () => {
       it('logs an error', async () => {
         const wrapper = shallow(
-          <ReactFeatureAppLoader
+          <FeatureAppLoader
             manager={mockManager}
             src="/test.js"
             featureAppKey="testKey"

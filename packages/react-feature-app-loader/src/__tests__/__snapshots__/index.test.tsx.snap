@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ReactFeatureAppLoader with a css prop appends link elements to the document head 1`] = `
+exports[`FeatureAppLoader with a css prop appends link elements to the document head 1`] = `
 <head>
   <link
     href="foo.css"
@@ -15,7 +15,7 @@ exports[`ReactFeatureAppLoader with a css prop appends link elements to the docu
 </head>
 `;
 
-exports[`ReactFeatureAppLoader with a css prop when the css has already been appended does not append the css a second time 1`] = `
+exports[`FeatureAppLoader with a css prop when the css has already been appended does not append the css a second time 1`] = `
 <head>
   <link
     href="foo.css"
@@ -25,4 +25,4 @@ exports[`ReactFeatureAppLoader with a css prop when the css has already been app
 </head>
 `;
 
-exports[`ReactFeatureAppLoader without a css prop does not change the document head 1`] = `<head />`;
+exports[`FeatureAppLoader without a css prop does not change the document head 1`] = `<head />`;

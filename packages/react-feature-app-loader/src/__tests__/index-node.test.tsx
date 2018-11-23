@@ -9,9 +9,9 @@ import {
 } from '@feature-hub/feature-app-manager';
 import {shallow} from 'enzyme';
 import * as React from 'react';
-import {ReactFeatureAppLoader} from '..';
+import {FeatureAppLoader} from '..';
 
-describe('ReactFeatureAppLoader (on the server)', () => {
+describe('FeatureAppLoader (on the server)', () => {
   let mockManager: FeatureAppManagerLike;
   let mockGetAsyncFeatureAppDefinition: jest.Mock;
   let mockAsyncFeatureAppDefinition: AsyncValue<FeatureAppDefinition<unknown>>;
@@ -50,7 +50,7 @@ describe('ReactFeatureAppLoader (on the server)', () => {
     it('logs and re-throws the error', () => {
       expect(() =>
         shallow(
-          <ReactFeatureAppLoader
+          <FeatureAppLoader
             manager={mockManager}
             src="example.js"
             featureAppKey="testKey"

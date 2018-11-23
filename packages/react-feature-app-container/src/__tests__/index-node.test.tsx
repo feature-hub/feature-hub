@@ -9,9 +9,9 @@ import {
 } from '@feature-hub/feature-app-manager';
 import {shallow} from 'enzyme';
 import * as React from 'react';
-import {ReactFeatureAppContainer} from '..';
+import {FeatureAppContainer} from '..';
 
-describe('ReactFeatureAppContainer (on the server)', () => {
+describe('FeatureAppContainer (on the server)', () => {
   let mockManager: FeatureAppManagerLike;
   let mockGetFeatureAppScope: jest.Mock;
   let mockFeatureAppDefinition: FeatureAppDefinition<unknown>;
@@ -62,7 +62,7 @@ describe('ReactFeatureAppContainer (on the server)', () => {
 
         expect(() =>
           shallow(
-            <ReactFeatureAppContainer
+            <FeatureAppContainer
               manager={mockManager}
               featureAppDefinition={mockFeatureAppDefinition}
               featureAppKey="testKey"
@@ -89,7 +89,7 @@ describe('ReactFeatureAppContainer (on the server)', () => {
     it('logs and throws an error', () => {
       expect(() =>
         shallow(
-          <ReactFeatureAppContainer
+          <FeatureAppContainer
             manager={mockManager}
             featureAppDefinition={mockFeatureAppDefinition}
             featureAppKey="testKey"

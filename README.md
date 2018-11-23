@@ -144,17 +144,19 @@ registry.registerProviders(featureServiceDefinitions, 'integrator');
 const manager = new FeatureAppManager(registry, loadFeatureAppModule);
 ```
 
-A React integrator can then use the `ReactFeatureAppLoader` or the
-`ReactFeatureAppContainer` to place Feature Apps onto the web page. Both need
-the Feature App manager singleton instance to create their Feature App.
+A React integrator can then use the `FeatureAppLoader` (from
+`@feature-hub/react-feature-app-loader`) or the `FeatureAppContainer` (from
+`@feature-hub/react-feature-app-container`) to place Feature Apps onto the web
+page. Both need the Feature App manager singleton instance to create their
+Feature App.
 
 #### React Feature App Loader
 
-With the `ReactFeatureAppLoader` a Feature App can be loaded and rendered by
-defining the URL to its JavaScript UMD bundle, e.g.:
+With the `FeatureAppLoader` a Feature App can be loaded and rendered by defining
+the URL to its JavaScript UMD bundle, e.g.:
 
 ```jsx
-<ReactFeatureAppLoader
+<FeatureAppLoader
   manager={manager}
   src="https://example.com/my-feature-app.js"
 />
@@ -163,7 +165,7 @@ defining the URL to its JavaScript UMD bundle, e.g.:
 You can also define a `css` prop to add stylesheets to the document.
 
 ```jsx
-<ReactFeatureAppLoader
+<FeatureAppLoader
   manager={manager}
   src="https://example.com/my-feature-app.js"
   css={[
@@ -180,14 +182,14 @@ integrator, e.g.:
 ```jsx
 <section>
   <div>
-    <ReactFeatureAppLoader
+    <FeatureAppLoader
       manager={manager}
       src="https://example.com/my-feature-app.js"
       featureAppKey="main"
     />
   </div>
   <aside>
-    <ReactFeatureAppLoader
+    <FeatureAppLoader
       manager={manager}
       src="https://example.com/my-feature-app.js"
       featureAppKey="aside"
@@ -198,7 +200,7 @@ integrator, e.g.:
 
 #### React Feature App Container
 
-With the `ReactFeatureAppContainer` a Feature App can be rendered by directly
+With the `FeatureAppContainer` a Feature App can be rendered by directly
 providing its Feature App definition:
 
 ```js
@@ -206,7 +208,7 @@ import {myFeatureAppDefinition} from './my-feature-app';
 ```
 
 ```jsx
-<ReactFeatureAppContainer
+<FeatureAppContainer
   manager={manager}
   featureAppDefinition={myFeatureAppDefinition}
 />
@@ -222,14 +224,14 @@ integrator, e.g.:
 ```jsx
 <section>
   <div>
-    <ReactFeatureAppContainer
+    <FeatureAppContainer
       manager={manager}
       featureAppDefinition={myFeatureAppDefinition}
       featureAppKey="main"
     />
   </div>
   <aside>
-    <ReactFeatureAppContainer
+    <FeatureAppContainer
       manager={manager}
       featureAppDefinition={myFeatureAppDefinition}
       featureAppKey="aside"
@@ -471,7 +473,7 @@ function create(env) {
 A Feature App must be bundled as a [UMD](https://github.com/umdjs/umd) module.
 This JavaScript bundle file must be deployed to a publicly available endpoint.
 The integrator uses this URL to place the Feature App onto a page using a
-Feature App loader, e.g. `ReactFeatureAppLoader`.
+Feature App loader, e.g. `FeatureAppLoader`.
 
 The default export of this module must be a `FeatureAppDefinition`. It consists
 of an `id`, a `dependencies` object, and the method `create`.
