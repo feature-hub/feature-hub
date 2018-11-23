@@ -6,7 +6,7 @@ import {
   FeatureAppDefinition,
   FeatureAppManagerLike,
   FeatureAppScope
-} from '@feature-hub/feature-app-manager';
+} from '@feature-hub/core';
 import {shallow} from 'enzyme';
 import * as React from 'react';
 import {FeatureAppContainer} from '..';

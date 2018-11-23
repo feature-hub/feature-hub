@@ -2,7 +2,7 @@ import {
   FeatureAppDefinition,
   FeatureAppManagerLike,
   FeatureAppScope
-} from '@feature-hub/feature-app-manager';
+} from '@feature-hub/core';
 import * as React from 'react';
 import {isDomFeatureApp, isFeatureApp} from './internal/type-guards';
 

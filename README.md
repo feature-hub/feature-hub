@@ -92,14 +92,13 @@ The Feature Hub was designed with the following specific requirements in mind:
 
 ## Monorepo Packages
 
-| Package                                                                    | Description                                                          | API                                         |
-| -------------------------------------------------------------------------- | -------------------------------------------------------------------- | ------------------------------------------- |
-| [feature-service-registry][feature-service-registry-pkg]                   | A class for providing Feature Services to dependent consumers.       | [📖][feature-service-registry-api]          |
-| [feature-app-manager][feature-app-manager-pkg]                             | A class for managing the lifecycles of Feature Apps.                 | [📖][feature-app-manager-api]               |
-| [browser-feature-app-module-loader][browser-feature-app-module-loader-pkg] | A function for loading Feature App modules in a browser environment. | [📖][browser-feature-app-module-loader-api] |
-| [node-feature-app-module-loader][node-feature-app-module-loader-pkg]       | A function for loading Feature App modules in a Node.js environment. | [📖][node-feature-app-module-loader-api]    |
-| [react-feature-app-loader][react-feature-app-loader-pkg]                   | A React component for integrating remote Feature Apps.               | [📖][react-feature-app-loader-api]          |
-| [react-feature-app-container][react-feature-app-container-pkg]             | A React component for integrating bundled Feature Apps.              | [📖][react-feature-app-container-api]       |
+| Package                                                                                 | Description                                             | API                                         |
+| --------------------------------------------------------------------------------------- | ------------------------------------------------------- | ------------------------------------------- |
+| [@feature-hub/core][core-pkg]                                                           | The core functionality of the Feature Hub.              | [📖][core-api]                              |
+| [@feature-hub/browser-feature-app-module-loader][browser-feature-app-module-loader-pkg] | A Feature App module loader for browsers.               | [📖][browser-feature-app-module-loader-api] |
+| [@feature-hub/node-feature-app-module-loader][node-feature-app-module-loader-pkg]       | A Feature App module loader for Node.js.                | [📖][node-feature-app-module-loader-api]    |
+| [@feature-hub/react-feature-app-loader][react-feature-app-loader-pkg]                   | A React component for integrating remote Feature Apps.  | [📖][react-feature-app-loader-api]          |
+| [@feature-hub/react-feature-app-container][react-feature-app-container-pkg]             | A React component for integrating bundled Feature Apps. | [📖][react-feature-app-container-api]       |
 
 ## Usage Guides
 
@@ -115,6 +114,13 @@ There are three different roles in a Feature Hub environment:
 
 ### Integrating the Feature Hub
 
+The core package of the Feature Hub provides the following two major building
+blocks:
+
+- The `FeatureServiceRegistry`: A class for providing Feature Services to
+  dependent consumers.
+- The `FeatureAppManager`: A class for managing the lifecycle of Feature Apps.
+
 There are a few steps an integrator needs to follow to compose a web page of
 multiple Feature Apps that share state through Feature Services:
 
@@ -127,8 +133,7 @@ multiple Feature Apps that share state through Feature Services:
 A typical integrator bootstrap code would look like this:
 
 ```js
-import {FeatureAppManager} from '@feature-hub/feature-app-manager';
-import {FeatureServiceRegistry} from '@feature-hub/feature-service-registry';
+import {FeatureAppManager, FeatureServiceRegistry} from '@feature-hub/core';
 import {loadFeatureAppModule} from '@feature-hub/node-feature-app-module-loader';
 
 const configs = {}; // import configs from somewhere
@@ -147,7 +152,7 @@ const manager = new FeatureAppManager(registry, loadFeatureAppModule);
 A React integrator can then use the `FeatureAppLoader` (from
 `@feature-hub/react-feature-app-loader`) or the `FeatureAppContainer` (from
 `@feature-hub/react-feature-app-container`) to place Feature Apps onto the web
-page. Both need the Feature App manager singleton instance to create their
+page. Both need the `FeatureAppManager` singleton instance to create their
 Feature App.
 
 #### React Feature App Loader
@@ -607,14 +612,9 @@ should define these externals in their build config. For example, defining
 - **Dec. '18:** History Feature Service
 - **Dec. '18:** Server Renderer Feature Service
 
-[feature-service-registry-api]:
-  https://sinnerschrader.github.io/feature-hub/api/@feature-hub/feature-service-registry/
-[feature-service-registry-pkg]:
-  https://github.com/sinnerschrader/feature-hub/tree/master/@feature-hub/feature-service-registry
-[feature-app-manager-api]:
-  https://sinnerschrader.github.io/feature-hub/api/@feature-hub/feature-app-manager/
-[feature-app-manager-pkg]:
-  https://github.com/sinnerschrader/feature-hub/tree/master/@feature-hub/feature-app-manager
+[core-api]: https://sinnerschrader.github.io/feature-hub/api/@feature-hub/core/
+[core-pkg]:
+  https://github.com/sinnerschrader/feature-hub/tree/master/@feature-hub/core
 [browser-feature-app-module-loader-api]:
   https://sinnerschrader.github.io/feature-hub/api/@feature-hub/browser-feature-app-module-loader/
 [browser-feature-app-module-loader-pkg]:

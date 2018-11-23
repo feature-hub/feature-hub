@@ -1,7 +1,7 @@
 {
-  "name": "@feature-hub/node-feature-app-module-loader",
+  "name": "@feature-hub/core",
   "version": "0.0.0",
-  "description": "A Feature App module loader for Node.js.",
+  "description": "The core functionality of the Feature Hub.",
   "bugs": {
     "url": "https://github.com/sinnerschrader/feature-hub/issues"
   },
@@ -18,13 +18,12 @@
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "dependencies": {
-    "fs-extra": "^7.0.1",
-    "node-fetch": "^2.3.0"
+    "semver": "^5.6.0",
+    "toposort": "^2.0.2"
   },
   "devDependencies": {
-    "@feature-hub/core": "^0.0.0",
-    "@types/fs-extra": "^5.0.4",
-    "@types/node-fetch": "^2.1.4"
+    "@types/semver": "^5.5.0",
+    "@types/toposort": "^2.0.1"
   },
   "publishConfig": {
     "access": "public"

@@ -2,7 +2,7 @@
   "extends": "../../tsconfig.json",
   "include": ["src/**/*.ts", "src/**/*.tsx"],
   "references": [
-    {"path": "../feature-app-manager"},
+    {"path": "../core"},
     {"path": "../react-feature-app-container"}
   ],
   "compilerOptions": {

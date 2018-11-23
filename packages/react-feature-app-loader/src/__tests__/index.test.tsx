@@ -2,7 +2,7 @@ import {
   AsyncValue,
   FeatureAppDefinition,
   FeatureAppManagerLike
-} from '@feature-hub/feature-app-manager';
+} from '@feature-hub/core';
 import {FeatureAppContainer} from '@feature-hub/react-feature-app-container';
 import {shallow} from 'enzyme';
 import * as React from 'react';
