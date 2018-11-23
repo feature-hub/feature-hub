@@ -4,6 +4,15 @@ The Feature Hub is an opinionated JavaScript library that implements the
 [Micro Frontends](https://micro-frontends.org) approach for building modern web
 apps with multiple teams using different technologies.
 
+This repository constitutes a full-fledged solution for composing Micro
+Frontends. React is used as the frontend composition engine that supports React
+Micro Frontends as first-class citizens, but also allows the integration of
+Micro Frontends that are built with other frontend libraries (e.g. Vue.js,
+Angular, Web Components).
+
+In contrast, the Feature Hub core package is totally independent of React. It
+could be used to build an end-to-end solution with any other frontend library.
+
 ## Table of Contents
 
 - [Feature Hub](#feature-hub)
