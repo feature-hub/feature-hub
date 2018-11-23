@@ -44,8 +44,8 @@ could be used to build an end-to-end solution with any other frontend library.
 
 The Feature Hub has been created by [SinnerSchrader](https://sinnerschrader.com)
 as part of a project for a client. In order to facilitate collaboration and
-reusability, we decided together with the client to publish the core engine of
-our Micro Frontend solution as open source.
+reusability, we decided together with the client to publish the core
+functionality of our Micro Frontend solution as open source.
 
 ### Micro Frontends Instead of Monoliths
 
@@ -256,7 +256,7 @@ integrator, e.g.:
 
 #### Providing Externals
 
-When using the client-side Feature App module loader, the integrator can provide
+When using the browser Feature App module loader, the integrator can provide
 shared npm dependencies to Feature Apps using the `defineExternals` function:
 
 ```js
