@@ -14,6 +14,11 @@ In contrast, the Feature Hub core package is totally independent of React. It
 could be used to build an end-to-end solution with any other frontend
 technology.
 
+**This software is in active development and is subject to potentially breaking
+changes. We are not yet using this software in production. Our currently planned
+milestones can be viewed
+[here](https://github.com/sinnerschrader/feature-hub/milestones).**
+
 ## Table of Contents
 
 - [Feature Hub](#feature-hub)
@@ -39,7 +44,6 @@ technology.
       - [Feature App Instantiation](#feature-app-instantiation)
       - [Registering Feature Services](#registering-feature-services)
       - [Using Externals](#using-externals)
-  - [Roadmap](#roadmap)
 
 ## Motivation
 
@@ -615,12 +619,6 @@ should define these externals in their build config. For example, defining
   }
 }
 ```
-
-## Roadmap
-
-- **Dec. '18:** Node.js Integrator
-- **Dec. '18:** History Feature Service
-- **Dec. '18:** Server Renderer Feature Service
 
 [core-api]: https://sinnerschrader.github.io/feature-hub/api/@feature-hub/core/
 [core-pkg]:
