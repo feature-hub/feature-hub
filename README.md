@@ -1,5 +1,7 @@
 # Feature Hub
 
+[![Build Status](https://travis-ci.org/sinnerschrader/feature-hub.svg?branch=master)](https://travis-ci.org/sinnerschrader/feature-hub)
+
 The Feature Hub is an opinionated JavaScript library that implements the
 [Micro Frontends](https://micro-frontends.org) approach for building modern web
 apps with multiple teams using different technologies.
