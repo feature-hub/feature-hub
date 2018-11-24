@@ -636,13 +636,15 @@ yarn && yarn build && yarn test
 
 ### Development Scripts
 
-- `yarn build`: Compiles all sources and creates the API documentation.
-- `yarn build:watch`: Compiles and then watches all sources.
-- `yarn format`: Formats all files using
-  [Prettier](https://github.com/prettier/prettier).
+- `yarn build`: Compiles all sources and generates the API documentation.
+- `yarn build:sources`: Compiles all sources.
+- `yarn format`: Formats all files.
 - `yarn lint`: Lints all sources.
 - `yarn test`: Executes all unit tests.
-- `yarn test --watch`: Executes and then watches all unit tests.
+- `yarn verify`: Verifies non-functional requirements (used on CI).
+- `yarn watch`: Watches all sources and all unit tests.
+- `yarn watch:build:sources`: Watches all sources.
+- `yarn watch:test`: Watches all unit tests.
 
 [core-api]: https://sinnerschrader.github.io/feature-hub/api/@feature-hub/core/
 [core-pkg]:
