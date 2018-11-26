@@ -1,6 +1,5 @@
 {
   "extends": ["config:base"],
   "semanticPrefix": "build(all):",
-  "lockFileMaintenance": {"enabled": true},
-  "packageRules": [{"packagePatterns": ["^@types/"], "automerge": true}]
+  "lockFileMaintenance": {"enabled": true}
 }
