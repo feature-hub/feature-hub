@@ -651,7 +651,7 @@ yarn && yarn build && yarn test
 [core-badge]: https://img.shields.io/npm/v/@feature-hub/core.svg
 [core-pkg]:
   https://github.com/sinnerschrader/feature-hub/tree/master/packages/core
-[core-yarnpkg]: https://yarnpkg.com/en/package/@feature-hub/core
+[core-yarnpkg]: https://www.npmjs.com/package/@feature-hub/core
 [module-loader-api]:
   https://sinnerschrader.github.io/feature-hub/api/@feature-hub/module-loader/
 [module-loader-badge]:
@@ -659,10 +659,10 @@ yarn && yarn build && yarn test
 [module-loader-pkg]:
   https://github.com/sinnerschrader/feature-hub/tree/master/packages/module-loader
 [module-loader-yarnpkg]:
-  https://yarnpkg.com/en/package/@feature-hub/module-loader
+  https://www.npmjs.com/package/@feature-hub/module-loader
 [react-api]:
   https://sinnerschrader.github.io/feature-hub/api/@feature-hub/react/
 [react-badge]: https://img.shields.io/npm/v/@feature-hub/react.svg
 [react-pkg]:
   https://github.com/sinnerschrader/feature-hub/tree/master/packages/react
-[react-yarnpkg]: https://yarnpkg.com/en/package/@feature-hub/react
+[react-yarnpkg]: https://www.npmjs.com/package/@feature-hub/react
