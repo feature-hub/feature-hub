@@ -110,13 +110,12 @@ The Feature Hub was designed with the following specific requirements in mind:
 
 ## Monorepo Packages
 
-| Package                                                                                 | Description                                             | API                                         |
-| --------------------------------------------------------------------------------------- | ------------------------------------------------------- | ------------------------------------------- |
-| [@feature-hub/core][core-pkg]                                                           | The core functionality of the Feature Hub.              | [📖][core-api]                              |
-| [@feature-hub/browser-feature-app-module-loader][browser-feature-app-module-loader-pkg] | A Feature App module loader for browsers.               | [📖][browser-feature-app-module-loader-api] |
-| [@feature-hub/node-feature-app-module-loader][node-feature-app-module-loader-pkg]       | A Feature App module loader for Node.js.                | [📖][node-feature-app-module-loader-api]    |
-| [@feature-hub/react-feature-app-loader][react-feature-app-loader-pkg]                   | A React component for integrating remote Feature Apps.  | [📖][react-feature-app-loader-api]          |
-| [@feature-hub/react-feature-app-container][react-feature-app-container-pkg]             | A React component for integrating bundled Feature Apps. | [📖][react-feature-app-container-api]       |
+| Package                                                                     | Description                                             | API                                   |
+| --------------------------------------------------------------------------- | ------------------------------------------------------- | ------------------------------------- |
+| [@feature-hub/core][core-pkg]                                               | The core functionality of the Feature Hub.              | [📖][core-api]                        |
+| [@feature-hub/module-loader][module-loader-pkg]                             | A universal module loader.                              | [📖][module-loader-api]               |
+| [@feature-hub/react-feature-app-loader][react-feature-app-loader-pkg]       | A React component for integrating remote Feature Apps.  | [📖][react-feature-app-loader-api]    |
+| [@feature-hub/react-feature-app-container][react-feature-app-container-pkg] | A React component for integrating bundled Feature Apps. | [📖][react-feature-app-container-api] |
 
 ## Usage Guides
 
@@ -146,13 +145,13 @@ multiple Feature Apps that share state through Feature Services:
 1.  Instantiate a `FeatureServiceRegistry` (with consumer configs).
 1.  Register a set of Feature Services at the registry.
 1.  Create a `FeatureAppManager` singleton instance with the registry and a
-    Feature App module loader.
+    browser or Node.js module loader.
 
 A typical integrator bootstrap code would look like this:
 
 ```js
 import {FeatureAppManager, FeatureServiceRegistry} from '@feature-hub/core';
-import {loadFeatureAppModule} from '@feature-hub/node-feature-app-module-loader';
+import {loadModule} from '@feature-hub/module-loader/node';
 
 const configs = {}; // import configs from somewhere
 const registry = new FeatureServiceRegistry(configs);
@@ -164,7 +163,7 @@ const featureServiceDefinitions = [
 
 registry.registerProviders(featureServiceDefinitions, 'integrator');
 
-const manager = new FeatureAppManager(registry, loadFeatureAppModule);
+const manager = new FeatureAppManager(registry, loadModule);
 ```
 
 A React integrator can then use the `FeatureAppLoader` (from
@@ -265,14 +264,11 @@ integrator, e.g.:
 
 #### Providing Externals
 
-When using the browser Feature App module loader, the integrator can provide
-shared npm dependencies to Feature Apps using the `defineExternals` function:
+When using the browser module loader, the integrator can provide shared npm
+dependencies to Feature Apps using the `defineExternals` function:
 
 ```js
-import {
-  defineExternals,
-  loadFeatureAppModule
-} from '@feature-hub/browser-feature-app-module-loader';
+import {defineExternals, loadModule} from '@feature-hub/module-loader';
 import * as React from 'react';
 import Loadable from 'react-loadable';
 ```
@@ -280,7 +276,7 @@ import Loadable from 'react-loadable';
 ```js
 defineExternals({react: React, 'react-loadable': Loadable});
 
-const manager = new FeatureAppManager(registry, loadFeatureAppModule);
+const manager = new FeatureAppManager(registry, loadModule);
 ```
 
 ### Writing a Feature Service
@@ -651,14 +647,10 @@ yarn && yarn build && yarn test
 [core-api]: https://sinnerschrader.github.io/feature-hub/api/@feature-hub/core/
 [core-pkg]:
   https://github.com/sinnerschrader/feature-hub/tree/master/packages/core
-[browser-feature-app-module-loader-api]:
-  https://sinnerschrader.github.io/feature-hub/api/@feature-hub/browser-feature-app-module-loader/
-[browser-feature-app-module-loader-pkg]:
-  https://github.com/sinnerschrader/feature-hub/tree/master/packages/browser-feature-app-module-loader
-[node-feature-app-module-loader-api]:
-  https://sinnerschrader.github.io/feature-hub/api/@feature-hub/node-feature-app-module-loader/
-[node-feature-app-module-loader-pkg]:
-  https://github.com/sinnerschrader/feature-hub/tree/master/packages/node-feature-app-module-loader
+[module-loader-api]:
+  https://sinnerschrader.github.io/feature-hub/api/@feature-hub/module-loader/
+[module-loader-pkg]:
+  https://github.com/sinnerschrader/feature-hub/tree/master/packages/module-loader
 [react-feature-app-loader-api]:
   https://sinnerschrader.github.io/feature-hub/api/@feature-hub/react-feature-app-loader/
 [react-feature-app-loader-pkg]:

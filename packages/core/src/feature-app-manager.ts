@@ -18,12 +18,7 @@ export interface FeatureAppModule<TFeatureApp> {
   default: FeatureAppDefinition<TFeatureApp>;
 }
 
-/**
- * @return It should resolve with a {@link FeatureAppModule}.
- */
-export type FeatureAppModuleLoader = (
-  featureAppUrl: string
-) => Promise<unknown>;
+export type ModuleLoader = (url: string) => Promise<unknown>;
 
 export interface FeatureAppScope<TFeatureApp> {
   featureApp: TFeatureApp;
@@ -65,7 +60,7 @@ export class FeatureAppManager implements FeatureAppManagerLike {
 
   public constructor(
     private readonly featureServiceRegistry: FeatureServiceRegistryLike,
-    private readonly loadFeatureAppModule: FeatureAppModuleLoader
+    private readonly loadModule: ModuleLoader
   ) {}
 
   public getAsyncFeatureAppDefinition(
@@ -130,7 +125,7 @@ export class FeatureAppManager implements FeatureAppManagerLike {
     featureAppUrl: string
   ): AsyncValue<FeatureAppDefinition<unknown>> {
     return new AsyncValue(
-      this.loadFeatureAppModule(featureAppUrl).then(featureAppModule => {
+      this.loadModule(featureAppUrl).then(featureAppModule => {
         if (!isFeatureAppModule(featureAppModule)) {
           throw new Error(
             `The feature app module at url ${JSON.stringify(
