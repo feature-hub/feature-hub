@@ -4,9 +4,5 @@ node_js:
   - '8'
 cache: yarn
 script:
-  - yarn commitlint-travis
-  - yarn build
-  - yarn format
-  - yarn lint
-  - yarn test --no-cache --runInBand
-  - yarn verify
+  - yarn commitlint-travis && yarn build && yarn format && yarn lint && yarn
+    test --no-cache --runInBand && yarn verify
