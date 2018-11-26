@@ -3,10 +3,10 @@ import {
   FeatureAppManager,
   FeatureAppManagerLike,
   FeatureAppModule,
-  FeatureAppModuleLoader,
   FeatureServiceBindings,
   FeatureServiceConsumerEnvironment,
-  FeatureServiceRegistryLike
+  FeatureServiceRegistryLike,
+  ModuleLoader
 } from '..';
 
 interface MockFeatureServiceRegistry extends FeatureServiceRegistryLike {
@@ -20,7 +20,7 @@ describe('FeatureAppManager', () => {
   let mockFeatureServiceBindings: FeatureServiceBindings;
   let mockFeatureServiceBindingsUnbind: () => void;
   let mockFeatureServiceConsumerEnvironment: FeatureServiceConsumerEnvironment;
-  let mockLoader: FeatureAppModuleLoader;
+  let mockModuleLoader: ModuleLoader;
   let mockFeatureAppDefinition: FeatureAppDefinition<unknown>;
   let mockFeatureAppModule: FeatureAppModule<unknown> | undefined;
   let mockFeatureAppCreate: jest.Mock;
@@ -45,9 +45,12 @@ describe('FeatureAppManager', () => {
     mockFeatureAppCreate = jest.fn(() => mockFeatureApp);
     mockFeatureAppDefinition = {create: mockFeatureAppCreate, id: 'id'};
     mockFeatureAppModule = {default: mockFeatureAppDefinition};
-    mockLoader = jest.fn(async () => mockFeatureAppModule);
+    mockModuleLoader = jest.fn(async () => mockFeatureAppModule);
 
-    manager = new FeatureAppManager(mockFeatureServiceRegistry, mockLoader);
+    manager = new FeatureAppManager(
+      mockFeatureServiceRegistry,
+      mockModuleLoader
+    );
 
     spyConsoleInfo = jest.spyOn(console, 'info');
     spyConsoleInfo.mockImplementation(jest.fn());

@@ -2,8 +2,7 @@
   "files": [],
   "include": [],
   "references": [
-    {"path": "browser-feature-app-module-loader"},
-    {"path": "node-feature-app-module-loader"},
+    {"path": "module-loader"},
     {"path": "react-feature-app-loader"}
   ]
 }

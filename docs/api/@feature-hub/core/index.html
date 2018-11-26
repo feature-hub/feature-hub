@@ -956,11 +956,11 @@ img { max-width: 100%; }
 		<li class=" tsd-kind-interface">
 			<a href="interfaces/sharedfeatureservice.html" class="tsd-kind-icon">Shared<wbr>Feature<wbr>Service</a>
 		</li>
-		<li class=" tsd-kind-type-alias">
-			<a href="globals.html#featureappmoduleloader" class="tsd-kind-icon">Feature<wbr>App<wbr>Module<wbr>Loader</a>
-		</li>
 		<li class=" tsd-kind-type-alias tsd-has-type-parameter">
 			<a href="globals.html#featureservicebinder" class="tsd-kind-icon">Feature<wbr>Service<wbr>Binder</a>
+		</li>
+		<li class=" tsd-kind-type-alias">
+			<a href="globals.html#moduleloader" class="tsd-kind-icon">Module<wbr>Loader</a>
 		</li>
 	</ul>
 </nav>
@@ -1018,8 +1018,8 @@ npm install @feature-hub/core</code></pre>
 					<section class="tsd-index-section ">
 						<h3>Type aliases</h3>
 						<ul class="tsd-index-list">
-							<li class="tsd-kind-type-alias"><a href="globals.html#featureappmoduleloader" class="tsd-kind-icon">Feature<wbr>App<wbr>Module<wbr>Loader</a></li>
 							<li class="tsd-kind-type-alias tsd-has-type-parameter"><a href="globals.html#featureservicebinder" class="tsd-kind-icon">Feature<wbr>Service<wbr>Binder</a></li>
+							<li class="tsd-kind-type-alias"><a href="globals.html#moduleloader" class="tsd-kind-icon">Module<wbr>Loader</a></li>
 						</ul>
 					</section>
 				</div>
@@ -1027,40 +1027,6 @@ npm install @feature-hub/core</code></pre>
 		</section>
 		<section class="tsd-panel-group tsd-member-group ">
 			<h2>Type aliases</h2>
-			<section class="tsd-panel tsd-member tsd-kind-type-alias">
-				<a name="featureappmoduleloader" class="tsd-anchor"></a>
-				<h3>Feature<wbr>App<wbr>Module<wbr>Loader</h3>
-				<div class="tsd-signature tsd-kind-icon">Feature<wbr>App<wbr>Module<wbr>Loader<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
-				
-				<div class="tsd-comment tsd-typography">
-					<dl class="tsd-comment-tags">
-						<dt>returns</dt>
-						<dd><p>It should resolve with a <a href="interfaces/featureappmodule.html">FeatureAppModule</a>.</p>
-						</dd>
-					</dl>
-				</div>
-				<div class="tsd-type-declaration">
-					<h4>Type declaration</h4>
-					<ul class="tsd-parameters">
-						<li class="tsd-parameter-siganture">
-							<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-type-alias tsd-is-not-exported">
-								<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>featureAppUrl<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span></li>
-							</ul>
-							<ul class="tsd-descriptions">
-								<li class="tsd-description">
-									<h4 class="tsd-parameters-title">Parameters</h4>
-									<ul class="tsd-parameters">
-										<li>
-											<h5>featureAppUrl: <span class="tsd-signature-type">string</span></h5>
-										</li>
-									</ul>
-									<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span></h4>
-								</li>
-							</ul>
-						</li>
-					</ul>
-				</div>
-			</section>
 			<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-has-type-parameter">
 				<a name="featureservicebinder" class="tsd-anchor"></a>
 				<h3>Feature<wbr>Service<wbr>Binder</h3>
@@ -1082,6 +1048,33 @@ npm install @feature-hub/core</code></pre>
 										</li>
 									</ul>
 									<h4 class="tsd-returns-title">Returns <a href="interfaces/featureservicebinding.html" class="tsd-signature-type">FeatureServiceBinding</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TFeatureService</span><span class="tsd-signature-symbol">&gt;</span></h4>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-type-alias">
+				<a name="moduleloader" class="tsd-anchor"></a>
+				<h3>Module<wbr>Loader</h3>
+				<div class="tsd-signature tsd-kind-icon">Module<wbr>Loader<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
+				
+				<div class="tsd-type-declaration">
+					<h4>Type declaration</h4>
+					<ul class="tsd-parameters">
+						<li class="tsd-parameter-siganture">
+							<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-type-alias tsd-is-not-exported">
+								<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span></li>
+							</ul>
+							<ul class="tsd-descriptions">
+								<li class="tsd-description">
+									<h4 class="tsd-parameters-title">Parameters</h4>
+									<ul class="tsd-parameters">
+										<li>
+											<h5>url: <span class="tsd-signature-type">string</span></h5>
+										</li>
+									</ul>
+									<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span></h4>
 								</li>
 							</ul>
 						</li>

@@ -5,7 +5,7 @@ module.exports = {
   collectCoverage: true,
   collectCoverageFrom: [
     '**/packages/*/src/**/*.{ts,tsx}',
-    '!**/packages/browser-feature-app-module-loader/**'
+    '!**/packages/module-loader/src/browser.ts'
   ],
   coverageThreshold: {
     global: {branches: 100, functions: 100, lines: 100, statements: 100}

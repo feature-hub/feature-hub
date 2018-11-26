@@ -1,4 +1,4 @@
-import {FeatureAppModuleLoader} from '@feature-hub/core';
+import {ModuleLoader} from '@feature-hub/core';
 import crypto from 'crypto';
 import fs from 'fs-extra';
 import fetch from 'node-fetch';
@@ -35,6 +35,5 @@ async function requireAsync(url: string): Promise<unknown> {
   return require(filename);
 }
 
-export const loadFeatureAppModule: FeatureAppModuleLoader = async (
-  featureAppUrl: string
-) => requireAsync(featureAppUrl);
+export const loadModule: ModuleLoader = async (url: string) =>
+  requireAsync(url);
