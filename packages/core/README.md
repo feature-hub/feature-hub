@@ -1,6 +1,6 @@
 # @feature-hub/core
 
-[![Package Version](https://img.shields.io/npm/v/@feature-hub/core.svg)](https://yarnpkg.com/en/package/@feature-hub/core)
+[![Package Version](https://img.shields.io/npm/v/@feature-hub/core.svg)](https://www.npmjs.com/package/@feature-hub/core)
 
 The core functionality of the Feature Hub.
 

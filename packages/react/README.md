@@ -1,6 +1,6 @@
 # @feature-hub/react
 
-[![Package Version](https://img.shields.io/npm/v/@feature-hub/react.svg)](https://yarnpkg.com/en/package/@feature-hub/react)
+[![Package Version](https://img.shields.io/npm/v/@feature-hub/react.svg)](https://www.npmjs.com/package/@feature-hub/react)
 
 A Feature Hub integrator for React.
 

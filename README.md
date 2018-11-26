@@ -30,22 +30,22 @@ milestones can be viewed
     - [Feature Apps & Feature Services](#feature-apps--feature-services)
     - [Requirements](#requirements)
   - [Monorepo Packages](#monorepo-packages)
-  - [Usage Guides](#usage-guides)
+  - [Using the Feature Hub](#using-the-feature-hub)
     - [Integrating the Feature Hub](#integrating-the-feature-hub)
       - [The React Feature App Loader](#the-react-feature-app-loader)
       - [The React Feature App Container](#the-react-feature-app-container)
       - [Providing Externals](#providing-externals)
-    - [Writing a Feature Service](#writing-a-feature-service)
-      - [Feature Service ID & Dependencies](#feature-service-id--dependencies)
-      - [Feature Service Instantiation & Programmatic Versioning](#feature-service-instantiation--programmatic-versioning)
-      - [Feature Service Provider Definition](#feature-service-provider-definition)
-      - [Feature Service Binding](#feature-service-binding)
     - [Writing a Feature App](#writing-a-feature-app)
       - [Feature App ID](#feature-app-id)
       - [Feature App Dependencies](#feature-app-dependencies)
       - [Feature App Instantiation](#feature-app-instantiation)
       - [Registering Feature Services](#registering-feature-services)
       - [Using Externals](#using-externals)
+    - [Writing a Feature Service](#writing-a-feature-service)
+      - [Feature Service ID & Dependencies](#feature-service-id--dependencies)
+      - [Feature Service Instantiation & Programmatic Versioning](#feature-service-instantiation--programmatic-versioning)
+      - [Feature Service Provider Definition](#feature-service-provider-definition)
+      - [Feature Service Binding](#feature-service-binding)
   - [Contributing to the Feature Hub](#contributing-to-the-feature-hub)
     - [Development Scripts](#development-scripts)
 
@@ -110,13 +110,13 @@ The Feature Hub was designed with the following specific requirements in mind:
 
 ## Monorepo Packages
 
-| Package                                         | Description                                | API                     |
-| ----------------------------------------------- | ------------------------------------------ | ----------------------- |
-| [@feature-hub/core][core-pkg]                   | The core functionality of the Feature Hub. | [📖][core-api]          |
-| [@feature-hub/react][react-pkg]                 | A Feature Hub integrator for React.        | [📖][react-api]         |
-| [@feature-hub/module-loader][module-loader-pkg] | A universal module loader.                 | [📖][module-loader-api] |
+| Package                                         | Version                                                      | Description                                | API                     |
+| ----------------------------------------------- | ------------------------------------------------------------ | ------------------------------------------ | ----------------------- |
+| [@feature-hub/core][core-pkg]                   | [![Package Version][core-badge]][core-npm]                   | The core functionality of the Feature Hub. | [📖][core-api]          |
+| [@feature-hub/react][react-pkg]                 | [![Package Version][react-badge]][react-npm]                 | A Feature Hub integrator for React.        | [📖][react-api]         |
+| [@feature-hub/module-loader][module-loader-pkg] | [![Package Version][module-loader-badge]][module-loader-npm] | A universal module loader.                 | [📖][module-loader-api] |
 
-## Usage Guides
+## Using the Feature Hub
 
 There are three different roles in a Feature Hub environment:
 
@@ -280,6 +280,139 @@ import Loadable from 'react-loadable';
 defineExternals({react: React, 'react-loadable': Loadable});
 
 const manager = new FeatureAppManager(registry, loadModule);
+```
+
+### Writing a Feature App
+
+A Feature App must be bundled as a [UMD](https://github.com/umdjs/umd) module.
+This JavaScript bundle file must be deployed to a publicly available endpoint.
+The integrator uses this URL to place the Feature App onto a page using a
+Feature App loader, e.g. `FeatureAppLoader`.
+
+The default export of this module must be a `FeatureAppDefinition`. It consists
+of an `id`, a `dependencies` object, and the method `create`.
+
+#### Feature App ID
+
+A Feature App definition must declare a unique consumer `id`. It is recommended
+to use namespaces for the Feature App ID to avoid naming conflicts, e.g.:
+
+```js
+const id = 'acme:my-feature-app';
+```
+
+This ID is used to look up the config for a Feature App. Furthermore, it is used
+as a consumer ID for Feature Services. If there is more than one instance of a
+Feature App on a single page, the integrator must set a unique `featureAppKey`
+for each Feature App with the same ID. The `FeatureServiceRegistry` then uses
+the ID together with the key to create a unique consumer ID.
+
+#### Feature App Dependencies
+
+In `dependencies`, required Feature Services are declared with their service ID
+and a [semver](https://semver.org) version string:
+
+```js
+const dependencies = {
+  'acme:counter': '^2.0'
+};
+```
+
+#### Feature App Instantiation
+
+The method `create` takes the single argument `env`, which has the following
+properties:
+
+1.  `featureServices` — an object of Feature Services that are
+    [semver-compatible](https://semver.org) with the declared dependencies.
+1.  `config` — a consumer config object that is provided by the integrator.
+
+A Feature App can either be a "React Feature App" or a "DOM Feature App".
+
+1.  A React Feature App definition's `create` method returns a Feature App
+    object with a `render` method that itself returns a `ReactNode`.
+
+    ```js
+    export default {
+      id,
+      dependencies,
+
+      create(env) {
+        return {
+          render: () => <div>Foo</div>
+        };
+      }
+    };
+    ```
+
+    **Note:** Since this element is directly rendered by React, the standard
+    React lifecyle methods can be used (if `render` returns an instance of a
+    React component class).
+
+1.  A DOM Feature App definition's `create` method returns a Feature App object
+    with an `attachTo` method that accepts a DOM container element.
+
+    ```js
+    export default {
+      id,
+      dependencies,
+
+      create(env) {
+        return {
+          attachTo(container) {
+            container.innerText = 'Foo';
+          }
+        };
+      }
+    };
+    ```
+
+#### Registering Feature Services
+
+A Feature App can also register its own Feature Service providers by declaring
+`ownFeatureServiceProviderDefinitions`, e.g.:
+
+```js
+import {myService} from './my-service';
+
+export default {
+  id: 'acme:my-feature-app',
+
+  dependencies: {
+    'acme:my-service': '^1.0'
+  },
+
+  ownFeatureServiceProviderDefinitions: [myService],
+
+  create(env) {
+    const myService = env.featureService['acme:my-service'];
+
+    myService.init(42);
+
+    return {
+      render: () => <div>{myService.getSomeSharedState()}</div>
+    };
+  }
+};
+```
+
+This allows teams to quickly get Feature Apps off the ground, without being
+dependent on the integrator. However, as soon as other teams need to use this
+Feature Service, it should be published and included in the global set of
+Feature Services by the integrator.
+
+#### Using Externals
+
+If the integrator has provided externals (see above) to Feature Apps, they
+should define these externals in their build config. For example, defining
+`react` as external in a webpack config would look like this:
+
+```json
+{
+  "externals": {
+    "react": "react"
+  }
+}
 ```
 
 ### Writing a Feature Service
@@ -490,139 +623,6 @@ function create(env) {
 }
 ```
 
-### Writing a Feature App
-
-A Feature App must be bundled as a [UMD](https://github.com/umdjs/umd) module.
-This JavaScript bundle file must be deployed to a publicly available endpoint.
-The integrator uses this URL to place the Feature App onto a page using a
-Feature App loader, e.g. `FeatureAppLoader`.
-
-The default export of this module must be a `FeatureAppDefinition`. It consists
-of an `id`, a `dependencies` object, and the method `create`.
-
-#### Feature App ID
-
-A Feature App definition must declare a unique consumer `id`. It is recommended
-to use namespaces for the Feature App ID to avoid naming conflicts, e.g.:
-
-```js
-const id = 'acme:my-feature-app';
-```
-
-This ID is used to look up the config for a Feature App. Furthermore, it is used
-as a consumer ID for Feature Services. If there is more than one instance of a
-Feature App on a single page, the integrator must set a unique `featureAppKey`
-for each Feature App with the same ID. The `FeatureServiceRegistry` then uses
-the ID together with the key to create a unique consumer ID.
-
-#### Feature App Dependencies
-
-In `dependencies`, required Feature Services are declared with their service ID
-and a [semver](https://semver.org) version string:
-
-```js
-const dependencies = {
-  'acme:counter': '^2.0'
-};
-```
-
-#### Feature App Instantiation
-
-The method `create` takes the single argument `env`, which has the following
-properties:
-
-1.  `featureServices` — an object of Feature Services that are
-    [semver-compatible](https://semver.org) with the declared dependencies.
-1.  `config` — a consumer config object that is provided by the integrator.
-
-A Feature App can either be a "React Feature App" or a "DOM Feature App".
-
-1.  A React Feature App definition's `create` method returns a Feature App
-    object with a `render` method that itself returns a `ReactNode`.
-
-    ```js
-    export default {
-      id,
-      dependencies,
-
-      create(env) {
-        return {
-          render: () => <div>Foo</div>
-        };
-      }
-    };
-    ```
-
-    **Note:** Since this element is directly rendered by React, the standard
-    React lifecyle methods can be used (if `render` returns an instance of a
-    React component class).
-
-1.  A DOM Feature App definition's `create` method returns a Feature App object
-    with an `attachTo` method that accepts a DOM container element.
-
-    ```js
-    export default {
-      id,
-      dependencies,
-
-      create(env) {
-        return {
-          attachTo(container) {
-            container.innerText = 'Foo';
-          }
-        };
-      }
-    };
-    ```
-
-#### Registering Feature Services
-
-A Feature App can also register its own Feature Service providers by declaring
-`ownFeatureServiceProviderDefinitions`, e.g.:
-
-```js
-import {myService} from './my-service';
-
-export default {
-  id: 'acme:my-feature-app',
-
-  dependencies: {
-    'acme:my-service': '^1.0'
-  },
-
-  ownFeatureServiceProviderDefinitions: [myService],
-
-  create(env) {
-    const myService = env.featureService['acme:my-service'];
-
-    myService.init(42);
-
-    return {
-      render: () => <div>{myService.getSomeSharedState()}</div>
-    };
-  }
-};
-```
-
-This allows teams to quickly get Feature Apps off the ground, without being
-dependent on the integrator. However, as soon as other teams need to use this
-Feature Service, it should be published and included in the global set of
-Feature Services by the integrator.
-
-#### Using Externals
-
-If the integrator has provided externals (see above) to Feature Apps, they
-should define these externals in their build config. For example, defining
-`react` as external in a webpack config would look like this:
-
-```json
-{
-  "externals": {
-    "react": "react"
-  }
-}
-```
-
 ## Contributing to the Feature Hub
 
 The main purpose of this monorepo is to further develop the Feature Hub. It is
@@ -648,13 +648,20 @@ yarn && yarn build && yarn test
 - `yarn watch:test`: Watches all unit tests.
 
 [core-api]: https://sinnerschrader.github.io/feature-hub/api/@feature-hub/core/
+[core-badge]: https://img.shields.io/npm/v/@feature-hub/core.svg
 [core-pkg]:
   https://github.com/sinnerschrader/feature-hub/tree/master/packages/core
+[core-npm]: https://www.npmjs.com/package/@feature-hub/core
 [module-loader-api]:
   https://sinnerschrader.github.io/feature-hub/api/@feature-hub/module-loader/
+[module-loader-badge]:
+  https://img.shields.io/npm/v/@feature-hub/module-loader.svg
 [module-loader-pkg]:
   https://github.com/sinnerschrader/feature-hub/tree/master/packages/module-loader
+[module-loader-npm]: https://www.npmjs.com/package/@feature-hub/module-loader
 [react-api]:
   https://sinnerschrader.github.io/feature-hub/api/@feature-hub/react/
+[react-badge]: https://img.shields.io/npm/v/@feature-hub/react.svg
 [react-pkg]:
   https://github.com/sinnerschrader/feature-hub/tree/master/packages/react
+[react-npm]: https://www.npmjs.com/package/@feature-hub/react

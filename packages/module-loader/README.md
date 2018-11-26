@@ -1,6 +1,6 @@
 # @feature-hub/module-loader
 
-[![Package Version](https://img.shields.io/npm/v/@feature-hub/module-loader.svg)](https://yarnpkg.com/en/package/@feature-hub/module-loader)
+[![Package Version](https://img.shields.io/npm/v/@feature-hub/module-loader.svg)](https://www.npmjs.com/package/@feature-hub/module-loader)
 
 A universal module loader.
 
