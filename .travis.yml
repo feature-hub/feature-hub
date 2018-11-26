@@ -1,0 +1,12 @@
+language: node_js
+node_js:
+  - '10'
+  - '8'
+cache: yarn
+script:
+  - yarn commitlint-travis
+  - yarn build
+  - yarn format
+  - yarn lint
+  - yarn test --no-cache --runInBand
+  - yarn verify
