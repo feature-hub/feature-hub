@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/sinnerschrader/feature-hub.svg?branch=master)](https://travis-ci.org/sinnerschrader/feature-hub)
 
-The Feature Hub is an opinionated JavaScript library that implements the
+The Feature Hub is an opinionated JavaScript library that implements a
 [Micro Frontends](https://micro-frontends.org) approach for building modern web
 apps with multiple teams using different technologies.
 
@@ -12,7 +12,7 @@ supports React Micro Frontends as first-class citizens, but also allows the
 integration of Micro Frontends that are built with any other frontend technology
 (e.g. Vue.js, Angular, Web Components).
 
-In contrast, the `@feature-hub/core` package is totally independent of React. It
+In fact, the [`@feature-hub/core`][core-pkg] package is totally independent of React. It
 could be used to build an end-to-end solution with any other frontend
 technology.
 
@@ -53,7 +53,7 @@ milestones can be viewed
 
 The Feature Hub has been created by [SinnerSchrader](https://sinnerschrader.com)
 as part of a project for a client. In order to facilitate collaboration and
-reusability, we decided together with the client to publish the core
+reusability, we decided with our client to publish the core
 functionality of our Micro Frontend solution as open source.
 
 ### Micro Frontends Instead of Monoliths
@@ -72,9 +72,9 @@ A Feature App encapsulates a composable and reusable UI feature. It may have the
 need to share state with other Feature Apps.
 
 A Feature Service provides shared state and functionality to consumers, e.g.
-Feature Apps, on the Feature Hub. While simple code sharing could also be
+Feature Apps, on the Feature Hub. While simple code sharing should be
 achieved by using libraries, there are features that can only, or easier, be
-achieved by using Feature Services:
+created by using Feature Services:
 
 - Share state across consumers.
 - Safe access to browser APIs and resources (e.g. URL).
@@ -120,7 +120,7 @@ The Feature Hub was designed with the following specific requirements in mind:
 
 There are three different roles in a Feature Hub environment:
 
-1.  The **integrator** is the app that instantiates the Feature Hub components
+1.  The **integrator** is an app that instantiates the Feature Hub components
     and provides the Feature App compositions.
 2.  A **provider** provides Feature Services to consumers through the feature
     service registry. Most providers are registered by the integrator but they
@@ -130,7 +130,7 @@ There are three different roles in a Feature Hub environment:
 
 ### Integrating the Feature Hub
 
-The `@feature-hub/core` package provides the following two major building
+The [`@feature-hub/core`][core-pkg] package provides the following two major building
 blocks:
 
 - The `FeatureServiceRegistry`: A class for providing Feature Services to
