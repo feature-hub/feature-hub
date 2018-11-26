@@ -12,7 +12,7 @@ supports React Micro Frontends as first-class citizens, but also allows the
 integration of Micro Frontends that are built with any other frontend technology
 (e.g. Vue.js, Angular, Web Components).
 
-This means the [`@feature-hub/core`][core-pkg] package is totally independent of React. It
+In fact, the [`@feature-hub/core`][core-pkg] package is totally independent of React. It
 could be used to build an end-to-end solution with any other frontend
 technology.
 
