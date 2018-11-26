@@ -13,10 +13,10 @@
   "author": "SinnerSchrader Deutschland GmbH",
   "files": [
     "lib",
-    "!__tests__",
-    "index.d.ts",
-    "index.js"
+    "!__tests__"
   ],
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
   "devDependencies": {
     "@feature-hub/core": "^0.0.0",
     "@types/react": "^16.7.6",
