@@ -20,15 +20,15 @@
     "node.js"
   ],
   "dependencies": {
-    "fs-extra": "^7.0.1",
-    "node-fetch": "^2.3.0",
-    "systemjs": "^0.21.5"
+    "fs-extra": "7.0.1",
+    "node-fetch": "2.3.0",
+    "systemjs": "0.21.5"
   },
   "devDependencies": {
     "@feature-hub/core": "^0.0.0",
-    "@types/fs-extra": "^5.0.4",
-    "@types/node-fetch": "^2.1.4",
-    "@types/systemjs": "^0.20.6"
+    "@types/fs-extra": "5.0.4",
+    "@types/node-fetch": "2.1.4",
+    "@types/systemjs": "0.20.6"
   },
   "publishConfig": {
     "access": "public"
