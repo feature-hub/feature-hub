@@ -12,7 +12,7 @@ supports React Micro Frontends as first-class citizens, but also allows the
 integration of Micro Frontends that are built with any other frontend technology
 (e.g. Vue.js, Angular, Web Components).
 
-In contrast, the Feature Hub core package is totally independent of React. It
+In contrast, the `@feature-hub/core` package is totally independent of React. It
 could be used to build an end-to-end solution with any other frontend
 technology.
 
@@ -110,12 +110,11 @@ The Feature Hub was designed with the following specific requirements in mind:
 
 ## Monorepo Packages
 
-| Package                                                                     | Description                                             | API                                   |
-| --------------------------------------------------------------------------- | ------------------------------------------------------- | ------------------------------------- |
-| [@feature-hub/core][core-pkg]                                               | The core functionality of the Feature Hub.              | [📖][core-api]                        |
-| [@feature-hub/module-loader][module-loader-pkg]                             | A universal module loader.                              | [📖][module-loader-api]               |
-| [@feature-hub/react-feature-app-loader][react-feature-app-loader-pkg]       | A React component for integrating remote Feature Apps.  | [📖][react-feature-app-loader-api]    |
-| [@feature-hub/react-feature-app-container][react-feature-app-container-pkg] | A React component for integrating bundled Feature Apps. | [📖][react-feature-app-container-api] |
+| Package                                         | Description                                | API                     |
+| ----------------------------------------------- | ------------------------------------------ | ----------------------- |
+| [@feature-hub/core][core-pkg]                   | The core functionality of the Feature Hub. | [📖][core-api]          |
+| [@feature-hub/react][react-pkg]                 | A Feature Hub integrator for React.        | [📖][react-api]         |
+| [@feature-hub/module-loader][module-loader-pkg] | A universal module loader.                 | [📖][module-loader-api] |
 
 ## Usage Guides
 
@@ -131,7 +130,7 @@ There are three different roles in a Feature Hub environment:
 
 ### Integrating the Feature Hub
 
-The core package of the Feature Hub provides the following two major building
+The `@feature-hub/core` package provides the following two major building
 blocks:
 
 - The `FeatureServiceRegistry`: A class for providing Feature Services to
@@ -166,16 +165,19 @@ registry.registerProviders(featureServiceDefinitions, 'integrator');
 const manager = new FeatureAppManager(registry, loadModule);
 ```
 
-A React integrator can then use the `FeatureAppLoader` (from
-`@feature-hub/react-feature-app-loader`) or the `FeatureAppContainer` (from
-`@feature-hub/react-feature-app-container`) to place Feature Apps onto the web
-page. Both need the `FeatureAppManager` singleton instance to create their
-Feature App.
+A React integrator can then use the `FeatureAppLoader` or the
+`FeatureAppContainer` (both from the `@feature-hub/react` package) to place
+Feature Apps onto the web page. Each of them need the `FeatureAppManager`
+singleton instance to render their Feature App.
 
 #### The React Feature App Loader
 
 With the React `FeatureAppLoader` a Feature App can be loaded and rendered by
 defining the URL to its JavaScript UMD bundle, e.g.:
+
+```js
+import {FeatureAppLoader} from '@feature-hub/react';
+```
 
 ```jsx
 <FeatureAppLoader
@@ -226,6 +228,7 @@ With the React `FeatureAppContainer` a Feature App can be rendered by directly
 providing its Feature App definition:
 
 ```js
+import {FeatureAppContainer} from '@feature-hub/react';
 import {myFeatureAppDefinition} from './my-feature-app';
 ```
 
@@ -651,11 +654,7 @@ yarn && yarn build && yarn test
   https://sinnerschrader.github.io/feature-hub/api/@feature-hub/module-loader/
 [module-loader-pkg]:
   https://github.com/sinnerschrader/feature-hub/tree/master/packages/module-loader
-[react-feature-app-loader-api]:
-  https://sinnerschrader.github.io/feature-hub/api/@feature-hub/react-feature-app-loader/
-[react-feature-app-loader-pkg]:
-  https://github.com/sinnerschrader/feature-hub/tree/master/packages/react-feature-app-loader
-[react-feature-app-container-api]:
-  https://sinnerschrader.github.io/feature-hub/api/@feature-hub/react-feature-app-container/
-[react-feature-app-container-pkg]:
-  https://github.com/sinnerschrader/feature-hub/tree/master/packages/react-feature-app-container
+[react-api]:
+  https://sinnerschrader.github.io/feature-hub/api/@feature-hub/react/
+[react-pkg]:
+  https://github.com/sinnerschrader/feature-hub/tree/master/packages/react
