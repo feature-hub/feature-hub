@@ -110,11 +110,11 @@ The Feature Hub was designed with the following specific requirements in mind:
 
 ## Monorepo Packages
 
-| Package                                         | Version                                                          | Description                                | API                     |
-| ----------------------------------------------- | ---------------------------------------------------------------- | ------------------------------------------ | ----------------------- |
-| [@feature-hub/core][core-pkg]                   | [![Package Version][core-badge]][core-yarnpkg]                   | The core functionality of the Feature Hub. | [📖][core-api]          |
-| [@feature-hub/react][react-pkg]                 | [![Package Version][react-badge]][react-yarnpkg]                 | A Feature Hub integrator for React.        | [📖][react-api]         |
-| [@feature-hub/module-loader][module-loader-pkg] | [![Package Version][module-loader-badge]][module-loader-yarnpkg] | A universal module loader.                 | [📖][module-loader-api] |
+| Package                                         | Version                                                      | Description                                | API                     |
+| ----------------------------------------------- | ------------------------------------------------------------ | ------------------------------------------ | ----------------------- |
+| [@feature-hub/core][core-pkg]                   | [![Package Version][core-badge]][core-npm]                   | The core functionality of the Feature Hub. | [📖][core-api]          |
+| [@feature-hub/react][react-pkg]                 | [![Package Version][react-badge]][react-npm]                 | A Feature Hub integrator for React.        | [📖][react-api]         |
+| [@feature-hub/module-loader][module-loader-pkg] | [![Package Version][module-loader-badge]][module-loader-npm] | A universal module loader.                 | [📖][module-loader-api] |
 
 ## Using the Feature Hub
 
@@ -651,18 +651,17 @@ yarn && yarn build && yarn test
 [core-badge]: https://img.shields.io/npm/v/@feature-hub/core.svg
 [core-pkg]:
   https://github.com/sinnerschrader/feature-hub/tree/master/packages/core
-[core-yarnpkg]: https://www.npmjs.com/package/@feature-hub/core
+[core-npm]: https://www.npmjs.com/package/@feature-hub/core
 [module-loader-api]:
   https://sinnerschrader.github.io/feature-hub/api/@feature-hub/module-loader/
 [module-loader-badge]:
   https://img.shields.io/npm/v/@feature-hub/module-loader.svg
 [module-loader-pkg]:
   https://github.com/sinnerschrader/feature-hub/tree/master/packages/module-loader
-[module-loader-yarnpkg]:
-  https://www.npmjs.com/package/@feature-hub/module-loader
+[module-loader-npm]: https://www.npmjs.com/package/@feature-hub/module-loader
 [react-api]:
   https://sinnerschrader.github.io/feature-hub/api/@feature-hub/react/
 [react-badge]: https://img.shields.io/npm/v/@feature-hub/react.svg
 [react-pkg]:
   https://github.com/sinnerschrader/feature-hub/tree/master/packages/react
-[react-yarnpkg]: https://www.npmjs.com/package/@feature-hub/react
+[react-npm]: https://www.npmjs.com/package/@feature-hub/react
