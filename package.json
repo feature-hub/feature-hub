@@ -17,7 +17,7 @@
     "pretest": "rimraf coverage",
     "test": "jest --verbose",
     "verify": "run-p verify:**",
-    "verify:build:docs": "git diff --exit-code docs",
+    "verify:build:docs": "git diff --exit-code docs/",
     "verify:format:files": "prettier --list-different '**/*.{js,json,md,ts,tsx,yml}'",
     "verify:format:package-json": "git diff --exit-code package.json packages/*/package.json",
     "verify:install": "git diff --exit-code yarn.lock",
