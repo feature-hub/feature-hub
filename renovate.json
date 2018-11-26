@@ -1,5 +1,6 @@
 {
   "extends": ["config:base", ":preserveSemverRanges"],
-  "semanticPrefix": "build(all):",
+  "semanticCommitScope": "all",
+  "semanticCommitType": "build",
   "lockFileMaintenance": {"enabled": true}
 }
