@@ -121,8 +121,8 @@ The Feature Hub was designed with the following specific requirements in mind:
 
 There are three different roles in a Feature Hub environment:
 
-1.  The **integrator** is an app that instantiates the Feature Hub components
-    and provides the Feature App compositions.
+1.  An **integrator** instantiates the Feature Hub components and provides the
+    Feature App compositions.
 2.  A **provider** provides Feature Services to consumers through the feature
     service registry. Most providers are registered by the integrator but they
     can also be registered by Feature Apps.
