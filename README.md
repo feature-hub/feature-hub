@@ -46,6 +46,8 @@ milestones can be viewed
       - [Feature App Instantiation](#feature-app-instantiation)
       - [Registering Feature Services](#registering-feature-services)
       - [Using Externals](#using-externals)
+  - [Contributing to the Feature Hub](#contributing-to-the-feature-hub)
+    - [Development Scripts](#development-scripts)
 
 ## Motivation
 
@@ -621,6 +623,30 @@ should define these externals in their build config. For example, defining
   }
 }
 ```
+
+## Contributing to the Feature Hub
+
+The main purpose of this monorepo is to further develop the Feature Hub. It is
+developed in the open on GitHub, and we are grateful to the community for
+contributing bugfixes and improvements.
+
+To get started, install the dependencies, build the sources, and run the tests:
+
+```sh
+yarn && yarn build && yarn test
+```
+
+### Development Scripts
+
+- `yarn build`: Compiles all sources and generates the API documentation.
+- `yarn build:sources`: Compiles all sources.
+- `yarn format`: Formats all files.
+- `yarn lint`: Lints all sources.
+- `yarn test`: Executes all unit tests.
+- `yarn verify`: Verifies non-functional requirements (used on CI).
+- `yarn watch`: Watches all sources and all unit tests.
+- `yarn watch:build:sources`: Watches all sources.
+- `yarn watch:test`: Watches all unit tests.
 
 [core-api]: https://sinnerschrader.github.io/feature-hub/api/@feature-hub/core/
 [core-pkg]:
