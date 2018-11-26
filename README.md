@@ -46,6 +46,7 @@ be viewed [here](https://github.com/sinnerschrader/feature-hub/milestones).**
       - [Feature Service Provider Definition](#feature-service-provider-definition)
       - [Feature Service Binding](#feature-service-binding)
   - [Contributing to the Feature Hub](#contributing-to-the-feature-hub)
+    - [Code of Conduct](#code-of-conduct)
     - [Development Scripts](#development-scripts)
 
 ## Motivation
@@ -634,6 +635,13 @@ To get started, install the dependencies, build the sources, and run the tests:
 ```sh
 yarn && yarn build && yarn test
 ```
+
+### Code of Conduct
+
+We (the Feature Hub core team) have adopted a Code of Conduct that we expect
+project participants to adhere to. Please read
+[the full text](./CODE_OF_CONDUCT.md) so that you can understand what actions
+will and will not be tolerated.
 
 ### Development Scripts
 
