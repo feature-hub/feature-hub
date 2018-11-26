@@ -1,0 +1,5 @@
+{
+  "extends": ["config:base"],
+  "semanticPrefix": "build(all):",
+  "lockFileMaintenance": {"enabled": true}
+}
