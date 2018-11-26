@@ -8,5 +8,5 @@ script:
   - yarn build
   - yarn format
   - yarn lint
-  - yarn test
+  - yarn test --no-cache --runInBand
   - yarn verify
