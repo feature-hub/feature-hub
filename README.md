@@ -17,7 +17,7 @@ React. It could be used to build an end-to-end solution with any other frontend
 technology.
 
 **This software is in active development and is subject to potentially breaking
-changes. It is not yet used in production. Our currently planned milestones can
+changes. It is not yet used in production. The currently planned milestones can
 be viewed [here](https://github.com/sinnerschrader/feature-hub/milestones).**
 
 ## Table of Contents
