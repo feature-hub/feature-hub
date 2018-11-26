@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/sinnerschrader/feature-hub.svg?branch=master)](https://travis-ci.org/sinnerschrader/feature-hub)
 
-The Feature Hub is an opinionated JavaScript library that implements a
+The Feature Hub is an opinionated JavaScript library that implements an adapted
 [Micro Frontends](https://micro-frontends.org) approach for building modern web
 apps with multiple teams using different technologies.
 
@@ -12,14 +12,13 @@ supports React Micro Frontends as first-class citizens, but also allows the
 integration of Micro Frontends that are built with any other frontend technology
 (e.g. Vue.js, Angular, Web Components).
 
-In fact, the [`@feature-hub/core`][core-pkg] package is totally independent of React. It
-could be used to build an end-to-end solution with any other frontend
+In fact, the [`@feature-hub/core`][core-pkg] package is totally independent of
+React. It could be used to build an end-to-end solution with any other frontend
 technology.
 
 **This software is in active development and is subject to potentially breaking
-changes. We are not yet using this software in production. Our currently planned
-milestones can be viewed
-[here](https://github.com/sinnerschrader/feature-hub/milestones).**
+changes. It is not yet used in production. Our currently planned milestones can
+be viewed [here](https://github.com/sinnerschrader/feature-hub/milestones).**
 
 ## Table of Contents
 
@@ -52,9 +51,9 @@ milestones can be viewed
 ## Motivation
 
 The Feature Hub has been created by [SinnerSchrader](https://sinnerschrader.com)
-as part of a project for a client. In order to facilitate collaboration and
-reusability, we decided with our client to publish the core
-functionality of our Micro Frontend solution as open source.
+as part of our client work. In order to facilitate collaboration and
+reusability, we decided to publish the core functionality of our Micro Frontend
+solution as open source.
 
 ### Micro Frontends Instead of Monoliths
 
@@ -72,9 +71,9 @@ A Feature App encapsulates a composable and reusable UI feature. It may have the
 need to share state with other Feature Apps.
 
 A Feature Service provides shared state and functionality to consumers, e.g.
-Feature Apps, on the Feature Hub. While simple code sharing should be
-achieved by using libraries, there are features that can only, or easier, be
-created by using Feature Services:
+Feature Apps, on the Feature Hub. While simple code sharing should be achieved
+by creating libraries, there are features that can only, or more easily, be
+achieved by creating Feature Services:
 
 - Share state across consumers.
 - Safe access to browser APIs and resources (e.g. URL).
@@ -91,14 +90,15 @@ The Feature Hub was designed with the following specific requirements in mind:
   APIs like the URL/history or localStorage.
 - Feature Apps must be able to share state to facilitate a consistent UX.
   - Examples for features needing shared state are: a manager for ensuring only
-    one modal is open at a time, or multiple Feature Apps display information
-    about the same product selected in one of the Feature Apps.
+    one modal is open at a time, or multiple Feature Apps that display
+    information about the same product selected in one of the Feature Apps.
 - For SEO purposes, and to operate existing fat client frontend apps which need
-  to fetch loads of data on boot, server-side rendering must be supported.
-  - Because of asynchronous data fetching and shared state changes, the server
-    side rendering engine needs to be able to determine the point in time where
-    it can send the finally rendered UI and its corresponding state to the
-    client.
+  to fetch great amounts of data on boot, server-side rendering must be
+  supported.
+  - Because of asynchronous data fetching and shared state changes, the
+    server-side rendering engine needs to be able to determine the point in time
+    at which it can send the fully rendered UI and its corresponding state to
+    the client.
   - The server-side rendered UI and its corresponding state must be hydrated on
     the client without visual impact.
 - Feature Apps that are incompatible with the integration environment should
@@ -130,8 +130,8 @@ There are three different roles in a Feature Hub environment:
 
 ### Integrating the Feature Hub
 
-The [`@feature-hub/core`][core-pkg] package provides the following two major building
-blocks:
+The [`@feature-hub/core`][core-pkg] package provides the following two major
+building blocks:
 
 - The `FeatureServiceRegistry`: A class for providing Feature Services to
   dependent consumers.
@@ -418,7 +418,7 @@ should define these externals in their build config. For example, defining
 ### Writing a Feature Service
 
 A Feature Service is defined by a Feature Service provider definition. It
-consists of an `id`, a `dependencies` object, a `create` method.
+consists of an `id`, a `dependencies` object, and a `create` method.
 
 #### Feature Service ID & Dependencies
 
@@ -450,13 +450,13 @@ following properties:
     [semver-compatible](https://semver.org) with the declared dependencies.
 1.  `config` — a consumer config object that is provided by the integrator.
 
-A Feature Service provider can support multiple major versions at the same time.
-The `create` method must return an object with a so-called Feature Service
-binder for each supported major version. The Feature Service binder is a
-function that is called for each consumer. It returns a Feature Service binding
-with a consumer-bound `featureService` and an optional `unbind` method. The
-Feature Service registry passes the bound Feature Service to the consumer's
-`create` method.
+A Feature Service provider can support multiple major versions at the same time
+which have access to the same underlying shared state. The `create` method must
+return an object with a so-called Feature Service binder for each supported
+major version. The Feature Service binder is a function that is called for each
+consumer. It returns a Feature Service binding with a consumer-bound
+`featureService` and an optional `unbind` method. The Feature Service registry
+passes the bound Feature Service to the consumer's `create` method.
 
 With this in mind, a simple counter Feature Service could look like this:
 
@@ -508,9 +508,9 @@ function create(env) {
 }
 ```
 
-The version of a Feature Service needs to be incremented
-[semver-compatible](https://semver.org) (without the need for a patch version).
-In this case, a method is added, leading to a minor version bump.
+The version of a Feature Service needs to be incremented in a
+[semver-compatible](https://semver.org) manner (without the need for a patch
+version). In this case, a method is added, leading to a minor version bump.
 
 In general, breaking changes should be avoided. If a Feature Service provider
 still needs to make breaking changes, a new Feature Service implementation for
