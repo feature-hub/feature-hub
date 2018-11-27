@@ -48,6 +48,7 @@ be viewed [here](https://github.com/sinnerschrader/feature-hub/milestones).**
   - [Contributing to the Feature Hub](#contributing-to-the-feature-hub)
     - [Code of Conduct](#code-of-conduct)
     - [Development Scripts](#development-scripts)
+    - [Publishing to npm](#publishing-to-npm)
 
 ## Motivation
 
@@ -653,6 +654,16 @@ project you agree to abide by its terms.
 - `yarn watch`: Watches all sources and all unit tests.
 - `yarn watch:build:sources`: Watches all sources.
 - `yarn watch:test`: Watches all unit tests.
+
+### Publishing to npm
+
+Instead of letting the CI automatically publish on every master merge, the
+Feature Hub package releases are triggered manually.
+
+To create a new semantic npm release for all Feature Hub packages, core team
+members must trigger a custom [Travis CI](https://travis-ci.com) build on the
+`master` branch. You should leave the custom config and commit message fields
+empty.
 
 [core-api]: https://sinnerschrader.github.io/feature-hub/api/@feature-hub/core/
 [core-badge]: https://img.shields.io/npm/v/@feature-hub/core.svg
