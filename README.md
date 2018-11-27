@@ -151,7 +151,7 @@ A typical integrator bootstrap code would look like this:
 
 ```js
 import {FeatureAppManager, FeatureServiceRegistry} from '@feature-hub/core';
-import {loadModule} from '@feature-hub/module-loader/node';
+import {loadCommonJsModule} from '@feature-hub/module-loader/node';
 
 const configs = {}; // import configs from somewhere
 const registry = new FeatureServiceRegistry(configs);
@@ -163,7 +163,7 @@ const featureServiceDefinitions = [
 
 registry.registerProviders(featureServiceDefinitions, 'integrator');
 
-const manager = new FeatureAppManager(registry, loadModule);
+const manager = new FeatureAppManager(registry, loadCommonJsModule);
 ```
 
 A React integrator can then use the `FeatureAppLoader` or the
@@ -272,7 +272,7 @@ When using the browser module loader, the integrator can provide shared npm
 dependencies to Feature Apps using the `defineExternals` function:
 
 ```js
-import {defineExternals, loadModule} from '@feature-hub/module-loader';
+import {defineExternals, loadAmdModule} from '@feature-hub/module-loader';
 import * as React from 'react';
 import Loadable from 'react-loadable';
 ```
@@ -280,7 +280,7 @@ import Loadable from 'react-loadable';
 ```js
 defineExternals({react: React, 'react-loadable': Loadable});
 
-const manager = new FeatureAppManager(registry, loadModule);
+const manager = new FeatureAppManager(registry, loadAmdModule);
 ```
 
 ### Writing a Feature App
