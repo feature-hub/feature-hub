@@ -12,7 +12,7 @@ deploy:
   skip_cleanup: true
   on:
     branch: master
-    condition: "$TRAVIS_COMMIT_MESSAGE =~ '^ci\\(all\\): trigger npm release$'"
+    condition: $NPM_PUBLISH = true
 env:
   global:
     - secure: Du6VDYruYjGf6gCSXXfUSapueu3vC1y01lqxGZZs6NNge1d/2QRC0Rf4gMY+zjGbUdXslExefLiO4g50/W3Oz869JjaWw4L1zcH2vYESqq4uLNYbk4mN911NLtjvg96vqStDEmlBTH1UOa1CbKdPnr01fAFhZTNtNNcxQr8eJ3zUEIv1kgx9pGjmJUM98vjI1QgT12l39OxsYE464g//ObdlskQsgjFoBGQeSoeNXXWLMEEOuvp8QMiX3n+Eq3DYo/lZUFj7419T49vaZkt03kj4vIkqxwjtiN5BRDlW6jiKxvV15OzZiV+23yFEuqLqo8UDX3xu9aXRlAiYXVbxvQsOqT8Df4Pl+vRoUaAwCx4CKcPjGnKLzM1EJLo1iaPrjwC9QCf25jIN611IkycV+T+XGZd4iKkFTDyaVOQ8enkulHDNMMrJqzAv4GNMGpQEacXLKHci2e/RpxKyPqfLGs7wT/CcV7fDdMJ3+rfc2TfYJ2swi2AVHP4LiX+0KnJ+OmZceqXYOYtoE8Ome04RDKTNA11g4m5PG5Q98UOqYO7K3DUqMzY2FoVjGDR33esgr7zsdUCBuWqxf03nVXg9MwYn1chBFoJTFSiEsTVVH5RzrANGuUPLXmG18eemm8Al/lI5d6ZVkH6ocWBnnoqf2ioB4DdQH4JAjzWPmS/oroo=
