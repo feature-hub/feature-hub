@@ -12,7 +12,7 @@ deploy:
   skip_cleanup: true
   on:
     branch: master
-    condition: $NPM_PUBLISH = true
+    condition: $TRAVIS_EVENT_TYPE = api
     node: '10'
 env:
   global:

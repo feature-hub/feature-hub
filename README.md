@@ -661,17 +661,9 @@ Instead of letting the CI automatically publish on every master merge, the
 Feature Hub package releases are triggered manually.
 
 To create a new semantic npm release for all Feature Hub packages, core team
-members must trigger a custom build on [Travis CI](https://travis-ci.com) with
-the following options:
-
-- Branch: `master`
-- Custom Config:
-  ```
-  env:
-  - NPM_PUBLISH=true
-  ```
-
-**Note:** You can leave the Commit Message field empty.
+members must trigger a custom [Travis CI](https://travis-ci.com) build on the
+`master` branch. You should leave the custom config and commit message fields
+empty.
 
 [core-api]: https://sinnerschrader.github.io/feature-hub/api/@feature-hub/core/
 [core-badge]: https://img.shields.io/npm/v/@feature-hub/core.svg
