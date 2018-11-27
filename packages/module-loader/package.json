@@ -1,6 +1,6 @@
 {
   "name": "@feature-hub/module-loader",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "A universal module loader.",
   "bugs": {
     "url": "https://github.com/sinnerschrader/feature-hub/issues"
@@ -25,7 +25,7 @@
     "systemjs": "^0.21.5"
   },
   "devDependencies": {
-    "@feature-hub/core": "^0.0.0",
+    "@feature-hub/core": "^0.1.0",
     "@types/fs-extra": "^5.0.4",
     "@types/node-fetch": "^2.1.4",
     "@types/systemjs": "^0.20.6"
