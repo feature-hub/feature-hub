@@ -8,9 +8,9 @@ jest.mock('node-fetch', () => () =>
 );
 // tslint:enable promise-function-async
 
-import {loadModule} from '../node';
+import {loadCommonJsModule} from '../node';
 
-describe('loadModule (on Node.js)', () => {
+describe('loadCommonJsModule', () => {
   it('when a module is fetched successfully', async () => {
     const url = 'http://example.com/test.js';
 
@@ -21,7 +21,7 @@ describe('loadModule (on Node.js)', () => {
 			};
 		`;
 
-    const loadedModule = await loadModule(url);
+    const loadedModule = await loadCommonJsModule(url);
     const expectedModule = {default: {test: '1.0.0'}};
 
     expect(loadedModule).toEqual(expectedModule);
