@@ -22,7 +22,7 @@
   "dependencies": {
     "fs-extra": "^7.0.1",
     "node-fetch": "^2.3.0",
-    "systemjs": "^0.21.5"
+    "systemjs": "^2.0.0"
   },
   "devDependencies": {
     "@feature-hub/core": "^0.1.0",
