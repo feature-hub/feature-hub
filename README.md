@@ -658,7 +658,7 @@ project you agree to abide by its terms.
 ### Publishing to npm
 
 Instead of letting the CI automatically publish on every master merge, the
-Feature Hub packages are published manually.
+Feature Hub package releases are triggered manually.
 
 To create a new semantic npm release for all Feature Hub packages, core team
 members must trigger a custom build on [Travis CI](https://travis-ci.com) with
