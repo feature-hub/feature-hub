@@ -665,9 +665,13 @@ members must trigger a custom build on [Travis CI](https://travis-ci.com) with
 the following options:
 
 - Branch: `master`
-- Commit Message: `ci(all): trigger npm release`
+- Custom Config:
+  ```
+  env:
+  - NPM_PUBLISH=true
+  ```
 
-**Note:** Please leave the Custom Config text area empty.
+**Note:** You can leave the Commit Message field empty.
 
 [core-api]: https://sinnerschrader.github.io/feature-hub/api/@feature-hub/core/
 [core-badge]: https://img.shields.io/npm/v/@feature-hub/core.svg
