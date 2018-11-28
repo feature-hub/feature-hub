@@ -116,19 +116,19 @@ describe('FeatureServiceRegistry', () => {
 
     expect(spyConsoleInfo.mock.calls).toEqual([
       [
-        'All required feature services has been successfully bound to the consumer "a".'
+        'All required feature services have been successfully bound to the consumer "a".'
       ],
       [
         'The feature service provider "a" has been successfully registered by the consumer "test".'
       ],
       [
-        'All required feature services has been successfully bound to the consumer "b".'
+        'All required feature services have been successfully bound to the consumer "b".'
       ],
       [
         'The feature service provider "b" has been successfully registered by the consumer "test".'
       ],
       [
-        'All required feature services has been successfully bound to the consumer "c".'
+        'All required feature services have been successfully bound to the consumer "c".'
       ],
       [
         'The feature service provider "c" has been successfully registered by the consumer "test".'
@@ -166,7 +166,7 @@ describe('FeatureServiceRegistry', () => {
 
       expect(spyConsoleInfo.mock.calls).toEqual([
         [
-          'All required feature services has been successfully bound to the consumer "a".'
+          'All required feature services have been successfully bound to the consumer "a".'
         ],
         [
           'The feature service provider "a" has been successfully registered by the consumer "test".'
@@ -332,25 +332,25 @@ describe('FeatureServiceRegistry', () => {
 
         expect(spyConsoleInfo.mock.calls).toEqual([
           [
-            'All required feature services has been successfully bound to the consumer "a".'
+            'All required feature services have been successfully bound to the consumer "a".'
           ],
           [
             'The feature service provider "a" has been successfully registered by the consumer "test".'
           ],
           [
-            'All required feature services has been successfully bound to the consumer "b".'
+            'All required feature services have been successfully bound to the consumer "b".'
           ],
           [
             'The feature service provider "b" has been successfully registered by the consumer "test".'
           ],
           [
-            'All required feature services has been successfully bound to the consumer "c".'
+            'All required feature services have been successfully bound to the consumer "c".'
           ],
           [
             'The feature service provider "c" has been successfully registered by the consumer "test".'
           ],
           [
-            'All required feature services has been successfully bound to the consumer "foo".'
+            'All required feature services have been successfully bound to the consumer "foo".'
           ],
           [
             'The required feature service of the provider "b" has been successfully unbound from the consumer "foo".'
