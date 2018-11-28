@@ -6,9 +6,10 @@
     "packages/*"
   ],
   "scripts": {
-    "prebuild": "rimraf docs && lerna exec --parallel -- rimraf lib",
+    "prebuild": "rimraf docs",
     "build": "yarn build:sources && lerna exec --parallel -- typedoc --options ../../typedoc.js --out ../../docs/api/\\$LERNA_PACKAGE_NAME --readme README.md --tsconfig tsconfig.build.json .",
     "postbuild": "node scripts/process-api-docs.js",
+    "prebuild:sources": "lerna exec --parallel -- rimraf lib",
     "build:sources": "lerna exec -- tsc --project tsconfig.build.json",
     "format": "run-p format:**",
     "format:files": "prettier --write '**/*.{js,json,md,ts,tsx,yml}'",
