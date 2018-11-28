@@ -1,6 +1,6 @@
 {
   "name": "@feature-hub/core",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "The core functionality of the Feature Hub.",
   "bugs": {
     "url": "https://github.com/sinnerschrader/feature-hub/issues"
