@@ -1,8 +1,6 @@
 #!/bin/sh
 
-set -e
-
-if [ "x$BLACKLIST" = "x" ] ; then
+if [ -z "$BLACKLIST" ] ; then
   echo "Empty word blacklist; aborting"
   exit 0
 fi
@@ -25,4 +23,3 @@ if [ $RESULT -eq 0 ] ; then
 else
   exit 0
 fi
-
