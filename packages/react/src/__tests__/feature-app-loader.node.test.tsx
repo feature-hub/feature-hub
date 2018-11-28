@@ -18,7 +18,9 @@ describe('FeatureAppLoader (on Node.js)', () => {
   let spyConsoleError: jest.SpyInstance;
 
   beforeEach(() => {
-    mockAsyncFeatureAppDefinition = new AsyncValue(new Promise(jest.fn()));
+    mockAsyncFeatureAppDefinition = new AsyncValue(
+      new Promise<FeatureAppDefinition<unknown>>(jest.fn())
+    );
 
     mockGetAsyncFeatureAppDefinition = jest.fn(
       () => mockAsyncFeatureAppDefinition

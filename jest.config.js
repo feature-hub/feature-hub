@@ -12,7 +12,7 @@ module.exports = {
   },
   moduleFileExtensions: ['js', 'json', 'ts', 'tsx'],
   moduleNameMapper: {
-    '^(packages/.+)$': '<rootDir>/$1/src'
+    '@feature-hub/core': '<rootDir>/packages/core/src/index.ts'
   },
   modulePathIgnorePatterns: ['/lib'],
   setupTestFrameworkScriptFile: '<rootDir>/scripts/setup-test-framework.js',
