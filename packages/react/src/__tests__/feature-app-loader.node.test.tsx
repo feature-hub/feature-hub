@@ -41,31 +41,64 @@ describe('FeatureAppLoader (on Node.js)', () => {
     spyConsoleError.mockRestore();
   });
 
-  describe('when the async feature app definition synchronously has an error', () => {
-    let mockError: Error;
+  describe('without a nodeSrc', () => {
+    it('does not try to load a feature app definition', () => {
+      shallow(<FeatureAppLoader manager={mockManager} src="example.js" />, {
+        disableLifecycleMethods: true
+      });
 
-    beforeEach(() => {
-      mockError = new Error('Failed to load feature app module.');
-      mockAsyncFeatureAppDefinition.error = mockError;
+      expect(mockGetAsyncFeatureAppDefinition).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('with a nodeSrc', () => {
+    it('loads a feature app definition for the nodeSrc', () => {
+      shallow(
+        <FeatureAppLoader
+          manager={mockManager}
+          src="example.js"
+          nodeSrc="example-node.js"
+        />,
+        {
+          disableLifecycleMethods: true
+        }
+      );
+
+      expect(mockGetAsyncFeatureAppDefinition.mock.calls).toEqual([
+        ['example-node.js']
+      ]);
     });
 
-    it('logs and re-throws the error', () => {
-      expect(() =>
-        shallow(
-          <FeatureAppLoader
-            manager={mockManager}
-            src="example.js"
-            featureAppKey="testKey"
-          />
-        )
-      ).toThrowError(mockError);
+    describe('when the async feature app definition synchronously has an error', () => {
+      let mockError: Error;
 
-      expect(spyConsoleError.mock.calls).toEqual([
-        [
-          'The feature app for the url "example.js" and the key "testKey" could not be loaded.',
-          mockError
-        ]
-      ]);
+      beforeEach(() => {
+        mockError = new Error('Failed to load feature app module.');
+        mockAsyncFeatureAppDefinition.error = mockError;
+      });
+
+      it('logs and re-throws the error', () => {
+        expect(() =>
+          shallow(
+            <FeatureAppLoader
+              manager={mockManager}
+              src="example.js"
+              nodeSrc="example-node.js"
+              featureAppKey="testKey"
+            />,
+            {
+              disableLifecycleMethods: true
+            }
+          )
+        ).toThrowError(mockError);
+
+        expect(spyConsoleError.mock.calls).toEqual([
+          [
+            'The feature app for the url "example-node.js" and the key "testKey" could not be loaded.',
+            mockError
+          ]
+        ]);
+      });
     });
   });
 });
