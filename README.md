@@ -2,14 +2,15 @@
 
 [![Build Status](https://travis-ci.com/sinnerschrader/feature-hub.svg?branch=master)](https://travis-ci.com/sinnerschrader/feature-hub)
 
-The Feature Hub is an opinionated JavaScript library that implements an adapted
-[Micro Frontends](https://micro-frontends.org) approach for building modern web
-apps with multiple teams using different technologies.
+The Feature Hub is an [opinionated](#our-requirements-for-micro-frontends)
+JavaScript implementation of the ["micro frontends"][micro-frontends] approach
+to building modern web applications with multiple teams and different
+technologies.
 
 This monorepo contains a [collection of packages](#monorepo-packages) that can
-be used together as a full-fledged solution for composing Micro Frontends. It
-supports React Micro Frontends as first-class citizens, but also allows the
-integration of Micro Frontends that are built with any other frontend technology
+be used together as a full-fledged solution for composing micro frontends. It
+supports React micro frontends as first-class citizens, but also allows the
+integration of micro frontends that are built with any other frontend technology
 (e.g. Vue.js, Angular, Web Components).
 
 In fact, the [`@feature-hub/core`][core-pkg] package is totally independent of
@@ -26,8 +27,8 @@ be viewed [here](https://github.com/sinnerschrader/feature-hub/milestones).**
   - [Table of Contents](#table-of-contents)
   - [Motivation](#motivation)
     - [Micro Frontends Instead of Monoliths](#micro-frontends-instead-of-monoliths)
+    - [Our Requirements for Micro Frontends](#our-requirements-for-micro-frontends)
     - [Feature Apps & Feature Services](#feature-apps--feature-services)
-    - [Requirements](#requirements)
   - [Monorepo Packages](#monorepo-packages)
   - [Using the Feature Hub](#using-the-feature-hub)
     - [Integrating the Feature Hub](#integrating-the-feature-hub)
@@ -48,7 +49,7 @@ be viewed [here](https://github.com/sinnerschrader/feature-hub/milestones).**
   - [Contributing to the Feature Hub](#contributing-to-the-feature-hub)
     - [Code of Conduct](#code-of-conduct)
     - [Development Scripts](#development-scripts)
-    - [Publishing to npm](#publishing-to-npm)
+    - [Publishing a New Release](#publishing-a-new-release)
 
 ## Motivation
 
@@ -59,13 +60,43 @@ solution as open source.
 
 ### Micro Frontends Instead of Monoliths
 
-> The idea behind Micro Frontends is to think about a website or web app as a
-> composition of features which are owned by independent teams. Each team has a
-> distinct area of business or mission it cares about and specialises in. A team
-> is cross functional and develops its features end-to-end, from database to
-> user interface. — [micro-frontends.org](https://micro-frontends.org/)
+> We've seen many teams create front-end **monoliths** — a single, large and
+> sprawling browser application — on top of their back-end services. Our
+> preferred (and proven) approach is to split the browser-based code into
+> **micro frontends**. In this approach, the web application is broken down into
+> its features, and each feature is owned, frontend to backend, by a different
+> team. This ensures that every feature is developed, tested and deployed
+> independently from other features. — [thoughtworks.com][micro-frontends]
 
-In this software, a Micro Frontend is referred to as a **Feature App**.
+### Our Requirements for Micro Frontends
+
+The Feature Hub was designed with the following specific requirements in mind:
+
+- Multiple teams with different technologies and knowledge should be able to
+  own, develop, and deploy composable features independently.
+- Multiple micro frontends need a way to safely interact with singleton browser
+  APIs like the URL/history or localStorage.
+- Micro frontends must be able to share state to facilitate a consistent UX.
+  - Examples for features needing shared state are: a manager for ensuring only
+    one modal is open at a time, or multiple micro frontends that display
+    information about the same product selected in one of the micro frontends.
+- For SEO purposes, and to operate existing fat client frontend apps which need
+  to fetch great amounts of data on boot, server-side rendering must be
+  supported.
+  - Because of asynchronous data fetching and shared state changes, the
+    server-side rendering engine needs to be able to determine the point in time
+    at which it can send the fully rendered UI and its corresponding state to
+    the client.
+  - The server-side rendered UI and its corresponding state must be hydrated on
+    the client without visual impact.
+- Micro frontends that are incompatible with the integration environment should
+  fail early, and not just when the user interacts with the specific
+  incompatible feature.
+- The composition environment for micro frontends should be flexible. Not only
+  preprogrammed templates in a Node.js app, but also integrations from CMS
+  environments where authors compose pages should be possible.
+
+In this implementation, a Micro Frontend is referred to as a **Feature App**.
 
 ### Feature Apps & Feature Services
 
@@ -81,34 +112,6 @@ achieved by creating Feature Services:
 - Safe access to browser APIs and resources (e.g. URL).
 - Automatically scope API usage by consumer (e.g. logging).
 - Share configuration across consumers, but only maintain it once.
-
-### Requirements
-
-The Feature Hub was designed with the following specific requirements in mind:
-
-- Multiple teams with different technologies and knowledge should be able to
-  own, develop, and deploy composable features independently.
-- Multiple Feature Apps need a way to safely interact with singleton browser
-  APIs like the URL/history or localStorage.
-- Feature Apps must be able to share state to facilitate a consistent UX.
-  - Examples for features needing shared state are: a manager for ensuring only
-    one modal is open at a time, or multiple Feature Apps that display
-    information about the same product selected in one of the Feature Apps.
-- For SEO purposes, and to operate existing fat client frontend apps which need
-  to fetch great amounts of data on boot, server-side rendering must be
-  supported.
-  - Because of asynchronous data fetching and shared state changes, the
-    server-side rendering engine needs to be able to determine the point in time
-    at which it can send the fully rendered UI and its corresponding state to
-    the client.
-  - The server-side rendered UI and its corresponding state must be hydrated on
-    the client without visual impact.
-- Feature Apps that are incompatible with the integration environment should
-  fail early, and not just when the user interacts with the specific
-  incompatible feature.
-- The composition environment for Feature Apps should be flexible. Not only
-  preprogrammed templates in a Node.js app, but also integrations from CMS
-  environments where authors compose pages should be possible.
 
 ## Monorepo Packages
 
@@ -655,7 +658,7 @@ project you agree to abide by its terms.
 - `yarn watch:build:sources`: Watches all sources.
 - `yarn watch:test`: Watches all unit tests.
 
-### Publishing to npm
+### Publishing a New Release
 
 Instead of letting the CI automatically publish on every master merge, the
 Feature Hub package releases are triggered manually.
@@ -665,6 +668,8 @@ members must trigger a custom [Travis CI](https://travis-ci.com) build on the
 `master` branch. You should leave the custom config and commit message fields
 empty.
 
+[micro-frontends]:
+  https://www.thoughtworks.com/de/radar/techniques/micro-frontends
 [core-api]: https://sinnerschrader.github.io/feature-hub/api/@feature-hub/core/
 [core-badge]: https://img.shields.io/npm/v/@feature-hub/core.svg
 [core-pkg]:
