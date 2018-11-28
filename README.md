@@ -55,7 +55,7 @@ be viewed [here](https://github.com/sinnerschrader/feature-hub/milestones).**
 
 The Feature Hub has been created by [SinnerSchrader](https://sinnerschrader.com)
 as part of our client work. In order to facilitate collaboration and
-reusability, we decided to publish the core functionality of our Micro Frontend
+reusability, we decided to publish the core functionality of our micro frontend
 solution as open source.
 
 ### Micro Frontends Instead of Monoliths
@@ -96,7 +96,7 @@ The Feature Hub was designed with the following specific requirements in mind:
   preprogrammed templates in a Node.js app, but also integrations from CMS
   environments where authors compose pages should be possible.
 
-In this implementation, a Micro Frontend is referred to as a **Feature App**.
+In this implementation, a micro frontend is referred to as a **Feature App**.
 
 ### Feature Apps & Feature Services
 
