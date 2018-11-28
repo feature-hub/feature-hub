@@ -1,8 +1,4 @@
-import {
-  AsyncValue,
-  FeatureAppDefinition,
-  FeatureAppManagerLike
-} from '@feature-hub/core';
+import {FeatureAppDefinition, FeatureAppManagerLike} from '@feature-hub/core';
 import * as React from 'react';
 import {FeatureAppContainer} from './feature-app-container';
 
@@ -14,6 +10,7 @@ export interface Css {
 export interface FeatureAppLoaderProps {
   manager: FeatureAppManagerLike;
   src: string;
+  nodeSrc?: string;
   css?: Css[];
   featureAppKey?: string;
 }
@@ -34,33 +31,34 @@ export class FeatureAppLoader extends React.PureComponent<
   FeatureAppLoaderProps,
   FeatureAppLoaderState
 > {
-  public readonly state: FeatureAppLoaderState;
+  public readonly state: FeatureAppLoaderState = {};
 
   private mounted = false;
   private loggedLoadingError = false;
 
-  private readonly asyncFeatureAppDefinition: AsyncValue<
-    FeatureAppDefinition<unknown>
-  >;
-
   public constructor(props: FeatureAppLoaderProps) {
     super(props);
 
-    const {manager, src} = props;
+    const {manager, src: browserSrc, nodeSrc} = props;
+    const src = inBrowser ? browserSrc : nodeSrc;
 
-    this.asyncFeatureAppDefinition = manager.getAsyncFeatureAppDefinition(src);
+    if (!src) {
+      return;
+    }
 
-    if (this.asyncFeatureAppDefinition.error) {
-      this.logLoadingError(this.asyncFeatureAppDefinition.error);
+    const asyncFeatureAppDefinition = manager.getAsyncFeatureAppDefinition(src);
+
+    if (asyncFeatureAppDefinition.error) {
+      this.logLoadingError(asyncFeatureAppDefinition.error);
 
       if (!inBrowser) {
         // TODO: we should only throw for "mission critical" feature apps ...
-        throw this.asyncFeatureAppDefinition.error;
+        throw asyncFeatureAppDefinition.error;
       }
 
       this.state = {loadingError: true};
     } else {
-      this.state = {featureAppDefinition: this.asyncFeatureAppDefinition.value};
+      this.state = {featureAppDefinition: asyncFeatureAppDefinition.value};
     }
   }
 
@@ -69,20 +67,24 @@ export class FeatureAppLoader extends React.PureComponent<
 
     this.appendCss();
 
-    if (!this.state.featureAppDefinition) {
-      try {
-        const featureAppDefinition = await this.asyncFeatureAppDefinition
-          .promise;
+    if (this.state.featureAppDefinition) {
+      return;
+    }
 
-        if (this.mounted) {
-          this.setState({featureAppDefinition});
-        }
-      } catch (error) {
-        this.logLoadingError(error);
+    const {manager, src} = this.props;
+    const asyncFeatureAppDefinition = manager.getAsyncFeatureAppDefinition(src);
 
-        if (this.mounted) {
-          this.setState({loadingError: true});
-        }
+    try {
+      const featureAppDefinition = await asyncFeatureAppDefinition.promise;
+
+      if (this.mounted) {
+        this.setState({featureAppDefinition});
+      }
+    } catch (error) {
+      this.logLoadingError(error);
+
+      if (this.mounted) {
+        this.setState({loadingError: true});
       }
     }
   }
@@ -139,7 +141,8 @@ export class FeatureAppLoader extends React.PureComponent<
 
     this.loggedLoadingError = true;
 
-    const {featureAppKey, src} = this.props;
+    const {featureAppKey, src: browserSrc, nodeSrc} = this.props;
+    const src = inBrowser ? browserSrc : nodeSrc;
 
     console.error(
       `The feature app for the url ${JSON.stringify(

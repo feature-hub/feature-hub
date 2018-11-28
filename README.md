@@ -177,7 +177,7 @@ singleton instance to render their Feature App.
 #### The React Feature App Loader
 
 With the React `FeatureAppLoader` a Feature App can be loaded and rendered by
-defining the URL to its JavaScript UMD bundle, e.g.:
+defining a `src` which is the URL to its JavaScript UMD bundle, e.g.:
 
 ```js
 import {FeatureAppLoader} from '@feature-hub/react';
@@ -189,6 +189,22 @@ import {FeatureAppLoader} from '@feature-hub/react';
   src="https://example.com/my-feature-app.js"
 />
 ```
+
+Additionally, when a Feature App wants to be rendered on the server, its
+`nodeSrc` must be specified, which is the URL to its CommonJS bundle (targeted
+at Node.js):
+
+```jsx
+<FeatureAppLoader
+  manager={manager}
+  src="https://example.com/my-feature-app.js"
+  nodeSrc="https://example.com/my-feature-app-node.js"
+/>
+```
+
+**Note:** Server-side rendering of Feature Apps is not fully supported yet. See
+our [roadmap](https://github.com/sinnerschrader/feature-hub/milestone/3) for
+details.
 
 You can also define a `css` prop to add stylesheets to the document.
 
