@@ -10,8 +10,8 @@ before_script:
   - git config --global user.name "Feature Hub CI"
   - npm config set "//registry.npmjs.org/:_authToken=${NPM_TOKEN}"
 script:
-  - yarn commitlint-travis && yarn build && yarn format && yarn lint && yarn
-    test --no-cache --runInBand && yarn verify
+  - ./scripts/word-blacklist.sh && yarn commitlint-travis && yarn build && yarn
+    format && yarn lint && yarn test --no-cache --runInBand && yarn verify
 deploy:
   provider: script
   script: scripts/release.sh
