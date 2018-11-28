@@ -5,14 +5,15 @@ module.exports = {
   collectCoverage: true,
   collectCoverageFrom: [
     '**/packages/*/src/**/*.{ts,tsx}',
-    '!**/packages/module-loader/src/browser.ts'
+    '!**/packages/module-loader/src/index.ts'
   ],
   coverageThreshold: {
     global: {branches: 100, functions: 100, lines: 100, statements: 100}
   },
   moduleFileExtensions: ['js', 'json', 'ts', 'tsx'],
   moduleNameMapper: {
-    '^(packages/.+)$': '<rootDir>/$1/src'
+    '^@feature-hub/([^/]+)$': '<rootDir>/packages/$1/src/index.ts',
+    '^@feature-hub/([^/]+)/node$': '<rootDir>/packages/$1/src/node.ts'
   },
   modulePathIgnorePatterns: ['/lib'],
   setupTestFrameworkScriptFile: '<rootDir>/scripts/setup-test-framework.js',

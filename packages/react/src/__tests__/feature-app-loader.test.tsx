@@ -18,7 +18,9 @@ describe('FeatureAppLoader', () => {
       document.head.innerHTML = '';
     }
 
-    mockAsyncFeatureAppDefinition = new AsyncValue(new Promise(jest.fn()));
+    mockAsyncFeatureAppDefinition = new AsyncValue(
+      new Promise<FeatureAppDefinition<unknown>>(jest.fn())
+    );
 
     mockGetAsyncFeatureAppDefinition = jest.fn(
       () => mockAsyncFeatureAppDefinition
@@ -166,7 +168,7 @@ describe('FeatureAppLoader', () => {
       };
 
       mockAsyncFeatureAppDefinition = new AsyncValue(
-        new Promise(resolve =>
+        new Promise<FeatureAppDefinition<unknown>>(resolve =>
           // defer to next event loop turn to guarantee asynchronism
           setImmediate(() => resolve(mockFeatureAppDefinition))
         )
@@ -227,7 +229,7 @@ describe('FeatureAppLoader', () => {
       mockError = new Error('Failed to load feature app module.');
 
       mockAsyncFeatureAppDefinition = new AsyncValue(
-        new Promise((_, reject) =>
+        new Promise<FeatureAppDefinition<unknown>>((_, reject) =>
           // defer to next event loop turn to guarantee asynchronism
           setImmediate(() => reject(mockError))
         )

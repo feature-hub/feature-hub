@@ -14,6 +14,11 @@
     "esModuleInterop": true,
     "lib": ["dom", "es2017"],
     "jsx": "react",
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "baseUrl": ".",
+    "paths": {
+      "@feature-hub/*": ["packages/*/src/index.ts"],
+      "@feature-hub/*/node": ["packages/*/src/node.ts"]
+    }
   }
 }
