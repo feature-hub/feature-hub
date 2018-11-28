@@ -201,7 +201,7 @@ export class FeatureServiceRegistry implements FeatureServiceRegistryLike {
     };
 
     console.info(
-      `All required feature services has been successfully bound to the consumer ${JSON.stringify(
+      `All required feature services have been successfully bound to the consumer ${JSON.stringify(
         uniqueConsumerId
       )}.`
     );
