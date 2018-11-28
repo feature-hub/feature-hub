@@ -3,6 +3,8 @@
   "include": ["src/**/*.ts", "src/**/*.tsx"],
   "references": [{"path": "../core"}],
   "compilerOptions": {
+    "composite": true,
+    "declarationMap": true,
     "outDir": "lib",
     "rootDir": "src"
   }
