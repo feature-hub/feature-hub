@@ -14,8 +14,6 @@
     "esModuleInterop": true,
     "lib": ["dom", "es2017"],
     "jsx": "react",
-    "experimentalDecorators": true,
-    "composite": true,
-    "declarationMap": true
+    "experimentalDecorators": true
   }
 }
