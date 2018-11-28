@@ -3,9 +3,8 @@
 [![Build Status](https://travis-ci.com/sinnerschrader/feature-hub.svg?branch=master)](https://travis-ci.com/sinnerschrader/feature-hub)
 
 The Feature Hub is an [opinionated](#our-requirements-for-micro-frontends)
-JavaScript implementation of the ["micro frontends"][micro-frontends] approach
-to building modern web applications with multiple teams and different
-technologies.
+JavaScript implementation of the [micro frontends][micro-frontends] approach to
+building modern web applications with multiple teams and different technologies.
 
 This monorepo contains a [collection of packages](#monorepo-packages) that can
 be used together as a full-fledged solution for composing micro frontends. It
