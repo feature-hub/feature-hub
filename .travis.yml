@@ -6,6 +6,9 @@ cache: yarn
 before_script:
   - git remote set-url origin
     https://${GITHUB_TOKEN}@github.com/sinnerschrader/feature-hub.git
+  - git config --global user.email "feature-hub@sinnerschrader.com"
+  - git config --global user.name "Feature Hub CI"
+  - npm config set "//registry.npmjs.org/:_authToken=${NPM_TOKEN}"
 script:
   - yarn commitlint-travis && yarn build && yarn format && yarn lint && yarn
     test --no-cache --runInBand && yarn verify
