@@ -3,9 +3,11 @@
   "private": true,
   "license": "MIT",
   "workspaces": [
-    "packages/*"
+    "todomvc/*"
   ],
-  "scripts": {},
+  "scripts": {
+    "build": "lerna run build"
+  },
   "devDependencies": {
     "lerna": "^3.4.3",
     "ts-config": "^20.7.0",
