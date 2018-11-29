@@ -17,8 +17,10 @@
   ],
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
+  "dependencies": {
+    "@feature-hub/core": "^0.2.0"
+  },
   "devDependencies": {
-    "@feature-hub/core": "^0.2.0",
     "@types/react": "^16.7.6",
     "react": "^16.6.3"
   },
