@@ -3,8 +3,9 @@
 [![Build Status](https://travis-ci.com/sinnerschrader/feature-hub.svg?branch=master)](https://travis-ci.com/sinnerschrader/feature-hub)
 
 The Feature Hub is an [opinionated](#our-requirements-for-micro-frontends)
-JavaScript implementation of the [micro frontends][micro-frontends] approach to
-building modern web applications with multiple teams and different technologies.
+JavaScript implementation of the
+[micro frontends](#micro-frontends-instead-of-monoliths) approach to building
+modern web applications with multiple teams and different technologies.
 
 This monorepo contains a [collection of packages](#monorepo-packages) that can
 be used together as a full-fledged solution for composing micro frontends. It
@@ -65,7 +66,8 @@ solution as open source.
 > **micro frontends**. In this approach, the web application is broken down into
 > its features, and each feature is owned, frontend to backend, by a different
 > team. This ensures that every feature is developed, tested and deployed
-> independently from other features. — [thoughtworks.com][micro-frontends]
+> independently from other features. —
+> [thoughtworks.com](https://www.thoughtworks.com/de/radar/techniques/micro-frontends)
 
 ### Our Requirements for Micro Frontends
 
@@ -683,8 +685,6 @@ members must trigger a custom [Travis CI](https://travis-ci.com) build on the
 `master` branch. You should leave the custom config and commit message fields
 empty.
 
-[micro-frontends]:
-  https://www.thoughtworks.com/de/radar/techniques/micro-frontends
 [core-api]: https://sinnerschrader.github.io/feature-hub/api/@feature-hub/core/
 [core-badge]: https://img.shields.io/npm/v/@feature-hub/core.svg
 [core-pkg]:
