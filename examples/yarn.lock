@@ -2,6 +2,19 @@
 # yarn lockfile v1
 
 
+"@feature-hub/core@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@feature-hub/core/-/core-0.2.0.tgz#db782dba81f24ee502d10d76d6c901a30a0a337d"
+  integrity sha512-IEYLJzlB/zQxspbKCZl2JyC0oDHRydbdwIt6QOXsPpkX9k8ViY0x534flr4BwaBSI5G8oiJa1RgyajoGPMJXTA==
+  dependencies:
+    semver "^5.6.0"
+    toposort "^2.0.2"
+
+"@feature-hub/react@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@feature-hub/react/-/react-0.2.0.tgz#d9d651a3d23446617d13aecbe31e11033374a956"
+  integrity sha512-/2Myue/sk0/AZqNr6bBkgZj+awvctGcI4SThAzwM2UIo0JjwrKLCmlCtGHualU2AQO2/JeUWjLAEYqlmfaqtAw==
+
 "@lerna/add@^3.5.0":
   version "3.5.0"
   resolved "https://registry.yarnpkg.com/@lerna/add/-/add-3.5.0.tgz#3518b3d4afc3743b7227b1ee3534114eb9575888"
@@ -4156,6 +4169,11 @@ to-regex@^3.0.1, to-regex@^3.0.2:
     extend-shallow "^3.0.2"
     regex-not "^1.0.2"
     safe-regex "^1.1.0"
+
+toposort@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/toposort/-/toposort-2.0.2.tgz#ae21768175d1559d48bef35420b2f4962f09c330"
+  integrity sha1-riF2gXXRVZ1IvvNUILL0li8JwzA=
 
 tough-cookie@~2.4.3:
   version "2.4.3"
