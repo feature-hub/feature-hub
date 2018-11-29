@@ -4,7 +4,7 @@ import 'systemjs/dist/system-production';
 import {ModuleLoader} from '@feature-hub/core';
 
 export interface Externals {
-  [moduleName: string]: unknown;
+  readonly [moduleName: string]: unknown;
 }
 
 /**
