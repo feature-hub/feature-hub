@@ -1,0 +1,4 @@
+{
+  "extends": "ts-config",
+  "linterOptions": {"exclude": ["**/dist/**", "**/node_modules/**"]}
+}

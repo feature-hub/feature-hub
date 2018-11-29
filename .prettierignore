@@ -1,6 +1,7 @@
 .cache
 CHANGELOG.md
 coverage
+dist
 docs
 lib
 node_modules
