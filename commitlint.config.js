@@ -7,7 +7,7 @@ const pkgScopes = readdirSync(join(__dirname, 'packages')).filter(
   scope => !/^\./.test(scope)
 );
 
-const scopes = ['all', ...pkgScopes];
+const scopes = ['all', 'examples', ...pkgScopes];
 
 module.exports = {
   extends: ['@commitlint/config-angular'],
