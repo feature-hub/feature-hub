@@ -1,0 +1,26 @@
+{
+  "name": "@feature-hub/server-renderer-feature-service",
+  "version": "0.0.0",
+  "description": "A feature service to manage server-side rendering.",
+  "bugs": {
+    "url": "https://github.com/sinnerschrader/feature-hub/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sinnerschrader/feature-hub.git"
+  },
+  "license": "MIT",
+  "author": "SinnerSchrader Deutschland GmbH",
+  "files": [
+    "lib",
+    "!__tests__"
+  ],
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
+  "dependencies": {
+    "@feature-hub/core": "^0.2.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
