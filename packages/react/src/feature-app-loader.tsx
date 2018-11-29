@@ -3,21 +3,21 @@ import * as React from 'react';
 import {FeatureAppContainer} from './feature-app-container';
 
 export interface Css {
-  href: string;
-  media?: string;
+  readonly href: string;
+  readonly media?: string;
 }
 
 export interface FeatureAppLoaderProps {
-  manager: FeatureAppManagerLike;
-  src: string;
-  nodeSrc?: string;
-  css?: Css[];
-  featureAppKey?: string;
+  readonly manager: FeatureAppManagerLike;
+  readonly src: string;
+  readonly nodeSrc?: string;
+  readonly css?: Css[];
+  readonly featureAppKey?: string;
 }
 
 interface FeatureAppLoaderState {
-  featureAppDefinition?: FeatureAppDefinition<unknown>;
-  loadingError?: boolean;
+  readonly featureAppDefinition?: FeatureAppDefinition<unknown>;
+  readonly loadingError?: boolean;
 }
 
 // tslint:disable:strict-type-predicates

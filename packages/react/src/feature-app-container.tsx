@@ -17,9 +17,9 @@ export interface ReactFeatureApp {
 export type FeatureApp = DomFeatureApp | ReactFeatureApp;
 
 export interface FeatureAppContainerProps {
-  manager: FeatureAppManagerLike;
-  featureAppDefinition: FeatureAppDefinition<unknown>;
-  featureAppKey?: string;
+  readonly manager: FeatureAppManagerLike;
+  readonly featureAppDefinition: FeatureAppDefinition<unknown>;
+  readonly featureAppKey?: string;
 }
 
 // tslint:disable:strict-type-predicates
