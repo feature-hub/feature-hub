@@ -2,12 +2,12 @@ import {coerce, satisfies} from 'semver';
 import {toposortDependencies} from './internal/toposort-dependencies';
 
 export interface FeatureServiceConsumerDependencies {
-  [providerId: string]: string | undefined;
+  readonly [providerId: string]: string | undefined;
 }
 
 export interface FeatureServiceConsumerDefinition {
-  id: string;
-  dependencies?: FeatureServiceConsumerDependencies;
+  readonly id: string;
+  readonly dependencies?: FeatureServiceConsumerDependencies;
 }
 
 export interface FeatureServices {
@@ -15,17 +15,17 @@ export interface FeatureServices {
 }
 
 export interface FeatureServiceBinding<TFeatureService> {
-  featureService: TFeatureService;
+  readonly featureService: TFeatureService;
   unbind?(): void;
 }
 
 export interface FeatureServiceConsumerEnvironment {
-  featureServices: FeatureServices;
-  config: unknown;
+  readonly featureServices: FeatureServices;
+  readonly config: unknown;
 }
 
 export interface FeatureServiceBindings {
-  consumerEnvironment: FeatureServiceConsumerEnvironment;
+  readonly consumerEnvironment: FeatureServiceConsumerEnvironment;
   unbind(): void;
 }
 
@@ -34,7 +34,7 @@ export type FeatureServiceBinder<TFeatureService> = (
 ) => FeatureServiceBinding<TFeatureService>;
 
 export interface SharedFeatureService {
-  [version: string]: FeatureServiceBinder<unknown> | undefined;
+  readonly [version: string]: FeatureServiceBinder<unknown> | undefined;
 }
 
 export interface FeatureServiceProviderDefinition
@@ -43,7 +43,7 @@ export interface FeatureServiceProviderDefinition
 }
 
 export interface FeatureServiceConsumerConfigs {
-  [consumerId: string]: unknown;
+  readonly [consumerId: string]: unknown;
 }
 
 export interface FeatureServiceRegistryLike {

@@ -9,19 +9,19 @@ import {isFeatureAppModule} from './internal/is-feature-app-module';
 
 export interface FeatureAppDefinition<TFeatureApp>
   extends FeatureServiceConsumerDefinition {
-  ownFeatureServiceProviderDefinitions?: FeatureServiceProviderDefinition[];
+  readonly ownFeatureServiceProviderDefinitions?: FeatureServiceProviderDefinition[];
 
   create(env: FeatureServiceConsumerEnvironment): TFeatureApp;
 }
 
 export interface FeatureAppModule<TFeatureApp> {
-  default: FeatureAppDefinition<TFeatureApp>;
+  readonly default: FeatureAppDefinition<TFeatureApp>;
 }
 
 export type ModuleLoader = (url: string) => Promise<unknown>;
 
 export interface FeatureAppScope<TFeatureApp> {
-  featureApp: TFeatureApp;
+  readonly featureApp: TFeatureApp;
 
   destroy(): void;
 }

@@ -177,9 +177,12 @@ describe('FeatureAppManager', () => {
           }
         );
 
-        mockFeatureAppDefinition.ownFeatureServiceProviderDefinitions = [
-          {id: 'ownId', create: jest.fn()}
-        ];
+        mockFeatureAppDefinition = {
+          ...mockFeatureAppDefinition,
+          ownFeatureServiceProviderDefinitions: [
+            {id: 'ownId', create: jest.fn()}
+          ]
+        };
       });
 
       it("registers the feature app's own service definitions before binding the feature services", () => {
