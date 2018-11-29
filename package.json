@@ -12,7 +12,7 @@
     "compile": "lerna exec -- tsc --project tsconfig.build.json",
     "format": "prettier --write '**/*.{js,json,md,ts,tsx,yml}'",
     "pregenerate-docs": "rimraf docs",
-    "generate-docs": "lerna exec --scope 'packages/*' --parallel -- typedoc --options ../../typedoc.js --out ../../docs/api/\\$LERNA_PACKAGE_NAME --readme README.md --tsconfig tsconfig.build.json .",
+    "generate-docs": "lerna exec --no-private --parallel -- typedoc --options ../../typedoc.js --out ../../docs/api/\\$LERNA_PACKAGE_NAME --readme README.md --tsconfig tsconfig.build.json .",
     "postgenerate-docs": "node scripts/process-api-docs.js",
     "lint": "lerna exec --parallel -- tslint --config tslint.json --project tsconfig.build.json --format verbose",
     "sort-package-jsons": "sort-package-json package.json packages/*/package.json examples/*/package.json",
