@@ -258,7 +258,11 @@ describe('FeatureServiceRegistry', () => {
 
     describe('for a feature service consumer with key and dependencies', () => {
       it('creates a bindings object with feature services', () => {
-        consumerConfigs.foo = {kind: 'consumerConfigFoo'};
+        consumerConfigs = {
+          foo: {kind: 'consumerConfigFoo'}
+        };
+
+        registry = new FeatureServiceRegistry(consumerConfigs);
 
         registry.registerProviders([providerDefinitionA], 'test');
 

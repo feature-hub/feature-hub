@@ -1,11 +1,11 @@
 import toposort from 'toposort';
 
 export interface Dependencies {
-  [dependencyName: string]: string | undefined;
+  readonly [dependencyName: string]: string | undefined;
 }
 
 export interface Dependant {
-  dependencies?: Dependencies;
+  readonly dependencies?: Dependencies;
 }
 
 export type DependencyGraph<TDependant extends Dependant = Dependant> = Map<
