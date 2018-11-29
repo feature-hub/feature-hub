@@ -1,0 +1,21 @@
+{
+  "name": "@feature-hub/todomvc-header",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "main": "dist/index.js",
+  "scripts": {
+    "prebundle": "rimraf dist",
+    "bundle": "parcel build src/index.ts src/index.css"
+  },
+  "dependencies": {
+    "@feature-hub/core": "^0.2.0",
+    "@feature-hub/react": "^0.2.0",
+    "@feature-hub/todomvc-todo-manager": "^0.0.0",
+    "lit-html": "^0.13.0"
+  },
+  "devDependencies": {
+    "parcel-bundler": "^1.10.3",
+    "rimraf": "^2.6.2"
+  }
+}
