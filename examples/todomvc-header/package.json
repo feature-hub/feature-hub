@@ -8,13 +8,11 @@
     "prebundle": "rimraf dist",
     "bundle": "parcel build src/index.ts src/index.css"
   },
-  "dependencies": {
+  "devDependencies": {
     "@feature-hub/core": "^0.2.0",
     "@feature-hub/react": "^0.2.0",
     "@feature-hub/todomvc-todo-manager": "^0.0.0",
-    "lit-html": "^0.13.0"
-  },
-  "devDependencies": {
+    "lit-html": "^0.13.0",
     "parcel-bundler": "^1.10.3",
     "rimraf": "^2.6.2"
   }

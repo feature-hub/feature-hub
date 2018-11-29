@@ -663,14 +663,16 @@ project you agree to abide by its terms.
 
 ### Development Scripts
 
-- `yarn build`: Compiles all sources and generates the API documentation.
-- `yarn build:sources`: Compiles all sources.
-- `yarn format`: Formats all files.
+- `yarn compile`: Compiles all sources.
+- `yarn bundle`: Bundles all (example) Feature Apps.
+- `yarn generate-docs`: Generates the API documentation.
 - `yarn lint`: Lints all sources.
 - `yarn test`: Executes all unit tests.
 - `yarn verify`: Verifies non-functional requirements (used on CI).
+- `yarn format`: Formats all files.
+- `yarn sort-package-jsons`: Sorts all `package.json` files.
 - `yarn watch`: Watches all sources and all unit tests.
-- `yarn watch:build:sources`: Watches all sources.
+- `yarn watch:compile`: Watches all sources.
 - `yarn watch:test`: Watches all unit tests.
 
 ### Publishing a New Release

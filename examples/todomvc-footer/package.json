@@ -8,12 +8,10 @@
     "prebundle": "rimraf dist",
     "bundle": "parcel build src/index.tsx"
   },
-  "dependencies": {
+  "devDependencies": {
     "@feature-hub/core": "^0.2.0",
     "@feature-hub/react": "^0.2.0",
-    "@feature-hub/todomvc-todo-manager": "^0.0.0"
-  },
-  "devDependencies": {
+    "@feature-hub/todomvc-todo-manager": "^0.0.0",
     "@types/react": "^16.7.8",
     "caniuse-lite": "^1.0.30000912",
     "parcel-bundler": "^1.10.3",

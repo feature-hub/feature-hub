@@ -1,4 +1,4 @@
-# @feature-hub/todomvc-todo-manager
+# @feature-hub/todomvc-footer
 
 ---
 
