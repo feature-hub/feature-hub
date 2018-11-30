@@ -123,7 +123,7 @@ describe('FeatureAppManager', () => {
       });
     }
 
-    describe('for a known feature app url', () => {
+    describe('for a known feature app module url', () => {
       it('returns the same async feature app definition', () => {
         const asyncFeatureAppDefinition = manager.getAsyncFeatureAppDefinition(
           '/example.js'

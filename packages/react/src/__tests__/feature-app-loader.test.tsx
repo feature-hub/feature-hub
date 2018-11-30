@@ -151,7 +151,7 @@ describe('FeatureAppLoader', () => {
 
       expect(spyConsoleError.mock.calls).toEqual([
         [
-          'The feature app for the url "/test.js" and the key "testKey" could not be loaded.',
+          'The feature app for the src "/test.js" and the key "testKey" could not be loaded.',
           mockError
         ]
       ]);
@@ -257,7 +257,7 @@ describe('FeatureAppLoader', () => {
 
       expect(spyConsoleError.mock.calls).toEqual([
         [
-          'The feature app for the url "/test.js" and the key "testKey" could not be loaded.',
+          'The feature app for the src "/test.js" and the key "testKey" could not be loaded.',
           mockError
         ]
       ]);
@@ -285,7 +285,7 @@ describe('FeatureAppLoader', () => {
 
         expect(spyConsoleError.mock.calls).toEqual([
           [
-            'The feature app for the url "/test.js" and the key "testKey" could not be loaded.',
+            'The feature app for the src "/test.js" and the key "testKey" could not be loaded.',
             mockError
           ]
         ]);

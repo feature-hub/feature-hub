@@ -145,7 +145,7 @@ export class FeatureAppLoader extends React.PureComponent<
     const src = inBrowser ? browserSrc : nodeSrc;
 
     console.error(
-      `The feature app for the url ${JSON.stringify(
+      `The feature app for the src ${JSON.stringify(
         src
       )} and the key ${JSON.stringify(featureAppKey)} could not be loaded.`,
       error

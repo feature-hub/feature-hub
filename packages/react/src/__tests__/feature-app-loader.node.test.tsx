@@ -94,7 +94,7 @@ describe('FeatureAppLoader (on Node.js)', () => {
 
         expect(spyConsoleError.mock.calls).toEqual([
           [
-            'The feature app for the url "example-node.js" and the key "testKey" could not be loaded.',
+            'The feature app for the src "example-node.js" and the key "testKey" could not be loaded.',
             mockError
           ]
         ]);
