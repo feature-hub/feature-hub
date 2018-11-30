@@ -1,0 +1,25 @@
+{
+  "name": "@feature-hub/todomvc-footer",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "main": "dist/index.js",
+  "scripts": {
+    "prebundle": "rimraf dist",
+    "bundle": "parcel build src/index.tsx"
+  },
+  "dependencies": {
+    "react": "^16.6.3"
+  },
+  "devDependencies": {
+    "@feature-hub/core": "^0.2.0",
+    "@feature-hub/react": "^0.2.0",
+    "@feature-hub/todomvc-todo-manager": "^0.0.0",
+    "@types/react": "^16.7.8",
+    "caniuse-lite": "^1.0.30000912",
+    "parcel-bundler": "^1.10.3",
+    "postcss-cssnext": "^3.1.0",
+    "postcss-modules": "^1.4.1",
+    "rimraf": "^2.6.2"
+  }
+}

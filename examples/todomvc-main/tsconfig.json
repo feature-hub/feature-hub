@@ -1,0 +1,8 @@
+{
+  "extends": "../../tsconfig.json",
+  "include": ["src/**/*", "typings/**/*"],
+  "compilerOptions": {
+    "noEmit": true,
+    "plugins": [{"name": "typescript-styled-plugin"}]
+  }
+}

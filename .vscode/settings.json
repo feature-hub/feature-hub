@@ -3,6 +3,7 @@
   "search.exclude": {
     "**/.cache": true,
     "**/coverage": true,
+    "**/dist": true,
     "**/docs": true,
     "**/lerna-debug.log": true,
     "**/lib": true,
