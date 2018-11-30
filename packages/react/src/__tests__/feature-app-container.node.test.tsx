@@ -65,7 +65,7 @@ describe('FeatureAppContainer (on Node.js)', () => {
             <FeatureAppContainer
               manager={mockManager}
               featureAppDefinition={mockFeatureAppDefinition}
-              featureAppKey="testKey"
+              idSpecifier="test"
             />
           )
         ).toThrowError(expectedError);
@@ -92,7 +92,7 @@ describe('FeatureAppContainer (on Node.js)', () => {
           <FeatureAppContainer
             manager={mockManager}
             featureAppDefinition={mockFeatureAppDefinition}
-            featureAppKey="testKey"
+            idSpecifier="test"
           />
         )
       ).toThrowError(mockError);

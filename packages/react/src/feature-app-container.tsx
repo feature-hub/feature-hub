@@ -19,7 +19,7 @@ export type FeatureApp = DomFeatureApp | ReactFeatureApp;
 export interface FeatureAppContainerProps {
   readonly manager: FeatureAppManagerLike;
   readonly featureAppDefinition: FeatureAppDefinition<unknown>;
-  readonly featureAppKey?: string;
+  readonly idSpecifier?: string;
 }
 
 // tslint:disable:strict-type-predicates
@@ -39,12 +39,12 @@ export class FeatureAppContainer extends React.PureComponent<
   public constructor(props: FeatureAppContainerProps) {
     super(props);
 
-    const {manager, featureAppDefinition, featureAppKey} = props;
+    const {manager, featureAppDefinition, idSpecifier} = props;
 
     try {
       this.featureAppScope = manager.getFeatureAppScope(
         featureAppDefinition,
-        featureAppKey
+        idSpecifier
       );
 
       if (!isFeatureApp(this.featureAppScope.featureApp)) {

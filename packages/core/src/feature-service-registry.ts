@@ -54,7 +54,7 @@ export interface FeatureServiceRegistryLike {
 
   bindFeatureServices(
     consumerDefinition: FeatureServiceConsumerDefinition,
-    consumerKey?: string
+    consumerIdSpecifier?: string
   ): FeatureServiceBindings;
 }
 
@@ -116,15 +116,15 @@ export class FeatureServiceRegistry implements FeatureServiceRegistryLike {
 
   public bindFeatureServices(
     consumerDefinition: FeatureServiceConsumerDefinition,
-    consumerKey?: string
+    consumerIdSpecifier?: string
   ): FeatureServiceBindings {
     const {
       id: consumerId,
       dependencies: consumerDependencies
     } = consumerDefinition;
 
-    const uniqueConsumerId = consumerKey
-      ? `${consumerId}:${consumerKey}`
+    const uniqueConsumerId = consumerIdSpecifier
+      ? `${consumerId}:${consumerIdSpecifier}`
       : consumerId;
 
     if (this.uniqueConsumerIds.has(uniqueConsumerId)) {

@@ -49,7 +49,7 @@ describe('FeatureAppContainer', () => {
         <FeatureAppContainer
           manager={mockManager}
           featureAppDefinition={mockFeatureAppDefinition}
-          featureAppKey="testKey"
+          idSpecifier="test"
         />
       );
 
@@ -66,7 +66,7 @@ describe('FeatureAppContainer', () => {
           <FeatureAppContainer
             manager={mockManager}
             featureAppDefinition={mockFeatureAppDefinition}
-            featureAppKey="testKey"
+            idSpecifier="test"
           />
         );
 
@@ -95,7 +95,7 @@ describe('FeatureAppContainer', () => {
             <FeatureAppContainer
               manager={mockManager}
               featureAppDefinition={mockFeatureAppDefinition}
-              featureAppKey="testKey"
+              idSpecifier="test"
             />
           );
 
@@ -124,7 +124,7 @@ describe('FeatureAppContainer', () => {
         <FeatureAppContainer
           manager={mockManager}
           featureAppDefinition={mockFeatureAppDefinition}
-          featureAppKey="testKey"
+          idSpecifier="test"
         />
       );
 
@@ -139,7 +139,7 @@ describe('FeatureAppContainer', () => {
           <FeatureAppContainer
             manager={mockManager}
             featureAppDefinition={mockFeatureAppDefinition}
-            featureAppKey="testKey"
+            idSpecifier="test"
           />
         );
 
@@ -168,7 +168,7 @@ describe('FeatureAppContainer', () => {
             <FeatureAppContainer
               manager={mockManager}
               featureAppDefinition={mockFeatureAppDefinition}
-              featureAppKey="testKey"
+              idSpecifier="test"
             />
           );
 
@@ -202,7 +202,7 @@ describe('FeatureAppContainer', () => {
           <FeatureAppContainer
             manager={mockManager}
             featureAppDefinition={mockFeatureAppDefinition}
-            featureAppKey="testKey"
+            idSpecifier="test"
           />
         );
 
@@ -233,7 +233,7 @@ describe('FeatureAppContainer', () => {
         <FeatureAppContainer
           manager={mockManager}
           featureAppDefinition={mockFeatureAppDefinition}
-          featureAppKey="testKey"
+          idSpecifier="test"
         />
       );
 
@@ -248,7 +248,7 @@ describe('FeatureAppContainer', () => {
           <FeatureAppContainer
             manager={mockManager}
             featureAppDefinition={mockFeatureAppDefinition}
-            featureAppKey="testKey"
+            idSpecifier="test"
           />
         );
 

@@ -223,7 +223,7 @@ You can also define a `css` prop to add stylesheets to the document.
 ```
 
 If multiple instances of the same Feature App must be placed onto a single page,
-a `featureAppKey` that is unique for the Feature App `id` must be defined by the
+a `idSpecifier` that is unique for the Feature App `id` must be defined by the
 integrator, e.g.:
 
 ```jsx
@@ -232,14 +232,14 @@ integrator, e.g.:
     <FeatureAppLoader
       manager={manager}
       src="https://example.com/my-feature-app.js"
-      featureAppKey="main"
+      idSpecifier="main"
     />
   </div>
   <aside>
     <FeatureAppLoader
       manager={manager}
       src="https://example.com/my-feature-app.js"
-      featureAppKey="aside"
+      idSpecifier="aside"
     />
   </aside>
 </section>
@@ -266,7 +266,7 @@ This allows the integrator to bundle Feature Apps, instead of loading them from
 a remote location.
 
 If multiple instances of the same Feature App must be placed onto a single page,
-a `featureAppKey` that is unique for the Feature App `id` must be defined by the
+a `idSpecifier` that is unique for the Feature App `id` must be defined by the
 integrator, e.g.:
 
 ```jsx
@@ -275,14 +275,14 @@ integrator, e.g.:
     <FeatureAppContainer
       manager={manager}
       featureAppDefinition={myFeatureAppDefinition}
-      featureAppKey="main"
+      idSpecifier="main"
     />
   </div>
   <aside>
     <FeatureAppContainer
       manager={manager}
       featureAppDefinition={myFeatureAppDefinition}
-      featureAppKey="aside"
+      idSpecifier="aside"
     />
   </aside>
 </section>
@@ -326,9 +326,9 @@ const id = 'acme:my-feature-app';
 
 This ID is used to look up the config for a Feature App. Furthermore, it is used
 as a consumer ID for Feature Services. If there is more than one instance of a
-Feature App on a single page, the integrator must set a unique `featureAppKey`
-for each Feature App with the same ID. The `FeatureServiceRegistry` then uses
-the ID together with the key to create a unique consumer ID.
+Feature App on a single page, the integrator must set a unique ID specifier for
+each Feature App with the same ID. The `FeatureServiceRegistry` then uses the ID
+together with the ID specifier to create a unique consumer ID.
 
 #### Feature App Dependencies
 

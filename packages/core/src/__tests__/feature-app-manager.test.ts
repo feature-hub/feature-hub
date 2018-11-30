@@ -138,20 +138,20 @@ describe('FeatureAppManager', () => {
 
   describe('#getFeatureAppScope', () => {
     it('logs an info message after creation', () => {
-      manager.getFeatureAppScope(mockFeatureAppDefinition, 'testKey');
+      manager.getFeatureAppScope(mockFeatureAppDefinition, 'test');
 
       expect(spyConsoleInfo.mock.calls).toEqual([
         [
-          'The feature app scope for the id "id" and the key "testKey" has been successfully created.'
+          'The feature app scope for the ID "id" and its ID specifier "test" has been successfully created.'
         ]
       ]);
     });
 
     it('creates a feature app with a consumer environment using the service registry', () => {
-      manager.getFeatureAppScope(mockFeatureAppDefinition, 'testKey');
+      manager.getFeatureAppScope(mockFeatureAppDefinition, 'test');
 
       expect(mockFeatureServiceRegistry.bindFeatureServices.mock.calls).toEqual(
-        [[mockFeatureAppDefinition, 'testKey']]
+        [[mockFeatureAppDefinition, 'test']]
       );
 
       expect(mockFeatureAppCreate.mock.calls).toEqual([
@@ -184,7 +184,7 @@ describe('FeatureAppManager', () => {
       });
 
       it("registers the feature app's own feature service definitions before binding the feature services", () => {
-        manager.getFeatureAppScope(mockFeatureAppDefinition, 'testKey');
+        manager.getFeatureAppScope(mockFeatureAppDefinition, 'test');
 
         expect(mockFeatureServiceRegistry.registerProviders.mock.calls).toEqual(
           [[mockFeatureAppDefinition.ownFeatureServiceDefinitions, 'id']]
@@ -192,7 +192,7 @@ describe('FeatureAppManager', () => {
 
         expect(
           mockFeatureServiceRegistry.bindFeatureServices.mock.calls
-        ).toEqual([[mockFeatureAppDefinition, 'testKey']]);
+        ).toEqual([[mockFeatureAppDefinition, 'test']]);
 
         expect(featureServiceRegistryMethodCalls).toEqual([
           'registerProviders',
@@ -202,7 +202,7 @@ describe('FeatureAppManager', () => {
     });
 
     describe('for a known feature app definition', () => {
-      describe('and no feature app key', () => {
+      describe('and no id specifier', () => {
         it('returns the same feature app scope', () => {
           const featureAppScope = manager.getFeatureAppScope(
             mockFeatureAppDefinition
@@ -228,15 +228,15 @@ describe('FeatureAppManager', () => {
         });
       });
 
-      describe('and feature app key', () => {
+      describe('and an id specifier', () => {
         it('returns the same feature app scope', () => {
           const featureAppScope = manager.getFeatureAppScope(
             mockFeatureAppDefinition,
-            'testKey'
+            'test'
           );
 
           expect(
-            manager.getFeatureAppScope(mockFeatureAppDefinition, 'testKey')
+            manager.getFeatureAppScope(mockFeatureAppDefinition, 'test')
           ).toBe(featureAppScope);
         });
 
@@ -244,26 +244,26 @@ describe('FeatureAppManager', () => {
           it('returns another feature app scope', () => {
             const featureAppScope = manager.getFeatureAppScope(
               mockFeatureAppDefinition,
-              'testKey'
+              'test'
             );
 
             featureAppScope.destroy();
 
             expect(
-              manager.getFeatureAppScope(mockFeatureAppDefinition, 'testKey')
+              manager.getFeatureAppScope(mockFeatureAppDefinition, 'test')
             ).not.toBe(featureAppScope);
           });
         });
       });
 
-      describe('and a different feature app key', () => {
+      describe('and a different id specifier', () => {
         it('returns another feature app scope', () => {
           const featureAppScope = manager.getFeatureAppScope(
             mockFeatureAppDefinition
           );
 
           expect(
-            manager.getFeatureAppScope(mockFeatureAppDefinition, 'testKey')
+            manager.getFeatureAppScope(mockFeatureAppDefinition, 'test')
           ).not.toBe(featureAppScope);
         });
       });
@@ -293,7 +293,7 @@ describe('FeatureAppManager', () => {
       it('throws an error when destroy is called multiple times', () => {
         const featureAppScope = manager.getFeatureAppScope(
           mockFeatureAppDefinition,
-          'testKey'
+          'test'
         );
 
         featureAppScope.destroy();
@@ -301,24 +301,24 @@ describe('FeatureAppManager', () => {
         expect(() =>
           featureAppScope.destroy()
         ).toThrowErrorMatchingInlineSnapshot(
-          '"The feature app scope for the id \\"id\\" and the key \\"testKey\\" could not be destroyed."'
+          '"The feature app scope for the ID \\"id\\" and its ID specifier \\"test\\" could not be destroyed."'
         );
       });
 
       it('fails to destroy an already destroyed feature app scope, even if this scope has been re-created', () => {
         const featureAppScope = manager.getFeatureAppScope(
           mockFeatureAppDefinition,
-          'testKey'
+          'test'
         );
 
         featureAppScope.destroy();
 
-        manager.getFeatureAppScope(mockFeatureAppDefinition, 'testKey');
+        manager.getFeatureAppScope(mockFeatureAppDefinition, 'test');
 
         expect(() =>
           featureAppScope.destroy()
         ).toThrowErrorMatchingInlineSnapshot(
-          '"The feature app scope for the id \\"id\\" and the key \\"testKey\\" could not be destroyed."'
+          '"The feature app scope for the ID \\"id\\" and its ID specifier \\"test\\" could not be destroyed."'
         );
       });
     });
@@ -326,8 +326,8 @@ describe('FeatureAppManager', () => {
 
   describe('#destroy', () => {
     it('unbinds the bound feature services for all feature apps', () => {
-      manager.getFeatureAppScope(mockFeatureAppDefinition, 'testKey1');
-      manager.getFeatureAppScope(mockFeatureAppDefinition, 'testKey2');
+      manager.getFeatureAppScope(mockFeatureAppDefinition, 'test1');
+      manager.getFeatureAppScope(mockFeatureAppDefinition, 'test2');
 
       manager.destroy();
 

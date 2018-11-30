@@ -33,7 +33,7 @@ export interface FeatureAppManagerLike {
 
   getFeatureAppScope(
     featureAppDefinition: FeatureAppDefinition<unknown>,
-    featureAppKey?: string
+    idSpecifier?: string
   ): FeatureAppScope<unknown>;
 
   preloadFeatureApp(url: string): Promise<void>;
@@ -79,10 +79,10 @@ export class FeatureAppManager implements FeatureAppManagerLike {
 
   public getFeatureAppScope(
     featureAppDefinition: FeatureAppDefinition<unknown>,
-    featureAppKey?: string
+    idSpecifier?: string
   ): FeatureAppScope<unknown> {
     const {id: featureAppId} = featureAppDefinition;
-    const featureAppScopeId = JSON.stringify({featureAppId, featureAppKey});
+    const featureAppScopeId = JSON.stringify({featureAppId, idSpecifier});
 
     let featureAppScope = this.featureAppScopes.get(featureAppScopeId);
 
@@ -94,7 +94,7 @@ export class FeatureAppManager implements FeatureAppManagerLike {
 
       featureAppScope = this.createFeatureAppScope(
         featureAppDefinition,
-        featureAppKey,
+        idSpecifier,
         deleteFeatureAppScope
       );
 
@@ -163,12 +163,12 @@ export class FeatureAppManager implements FeatureAppManagerLike {
 
   private createFeatureAppScope(
     featureAppDefinition: FeatureAppDefinition<unknown>,
-    featureAppKey: string | undefined,
+    idSpecifier: string | undefined,
     deleteFeatureAppScope: () => void
   ): FeatureAppScope<unknown> {
     const featureServiceBindings = this.featureServiceRegistry.bindFeatureServices(
       featureAppDefinition,
-      featureAppKey
+      idSpecifier
     );
 
     const featureApp = featureAppDefinition.create(
@@ -176,10 +176,10 @@ export class FeatureAppManager implements FeatureAppManagerLike {
     );
 
     console.info(
-      `The feature app scope for the id ${JSON.stringify(
+      `The feature app scope for the ID ${JSON.stringify(
         featureAppDefinition.id
-      )} and the key ${JSON.stringify(
-        featureAppKey
+      )} and its ID specifier ${JSON.stringify(
+        idSpecifier
       )} has been successfully created.`
     );
 
@@ -188,10 +188,10 @@ export class FeatureAppManager implements FeatureAppManagerLike {
     const destroy = () => {
       if (destroyed) {
         throw new Error(
-          `The feature app scope for the id ${JSON.stringify(
+          `The feature app scope for the ID ${JSON.stringify(
             featureAppDefinition.id
-          )} and the key ${JSON.stringify(
-            featureAppKey
+          )} and its ID specifier ${JSON.stringify(
+            idSpecifier
           )} could not be destroyed.`
         );
       }

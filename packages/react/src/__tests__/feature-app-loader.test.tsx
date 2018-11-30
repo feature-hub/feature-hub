@@ -83,7 +83,7 @@ describe('FeatureAppLoader', () => {
             manager={mockManager}
             src="/test.js"
             css={[{href: 'foo.css'}]}
-            featureAppKey="testKey"
+            idSpecifier="test"
           />
         );
 
@@ -111,7 +111,7 @@ describe('FeatureAppLoader', () => {
         <FeatureAppLoader
           manager={mockManager}
           src="/test.js"
-          featureAppKey="testKey"
+          idSpecifier="test"
         />
       );
 
@@ -119,7 +119,7 @@ describe('FeatureAppLoader', () => {
         <FeatureAppContainer
           manager={mockManager}
           featureAppDefinition={mockFeatureAppDefinition}
-          featureAppKey="testKey"
+          idSpecifier="test"
         />
       );
     });
@@ -143,7 +143,7 @@ describe('FeatureAppLoader', () => {
         <FeatureAppLoader
           manager={mockManager}
           src="/test.js"
-          featureAppKey="testKey"
+          idSpecifier="test"
         />
       );
 
@@ -151,7 +151,7 @@ describe('FeatureAppLoader', () => {
 
       expect(spyConsoleError.mock.calls).toEqual([
         [
-          'The feature app for the src "/test.js" and the key "testKey" could not be loaded.',
+          'The feature app for the src "/test.js" and the ID specifier "test" could not be loaded.',
           mockError
         ]
       ]);
@@ -188,7 +188,7 @@ describe('FeatureAppLoader', () => {
         <FeatureAppLoader
           manager={mockManager}
           src="/test.js"
-          featureAppKey="testKey"
+          idSpecifier="test"
         />
       );
 
@@ -198,7 +198,7 @@ describe('FeatureAppLoader', () => {
         <FeatureAppContainer
           manager={mockManager}
           featureAppDefinition={mockFeatureAppDefinition}
-          featureAppKey="testKey"
+          idSpecifier="test"
         />
       );
     });
@@ -209,7 +209,7 @@ describe('FeatureAppLoader', () => {
           <FeatureAppLoader
             manager={mockManager}
             src="/test.js"
-            featureAppKey="testKey"
+            idSpecifier="test"
           />
         );
 
@@ -241,7 +241,7 @@ describe('FeatureAppLoader', () => {
         <FeatureAppLoader
           manager={mockManager}
           src="/test.js"
-          featureAppKey="testKey"
+          idSpecifier="test"
         />
       );
 
@@ -257,7 +257,7 @@ describe('FeatureAppLoader', () => {
 
       expect(spyConsoleError.mock.calls).toEqual([
         [
-          'The feature app for the src "/test.js" and the key "testKey" could not be loaded.',
+          'The feature app for the src "/test.js" and the ID specifier "test" could not be loaded.',
           mockError
         ]
       ]);
@@ -269,7 +269,7 @@ describe('FeatureAppLoader', () => {
           <FeatureAppLoader
             manager={mockManager}
             src="/test.js"
-            featureAppKey="testKey"
+            idSpecifier="test"
           />
         );
 
@@ -285,7 +285,7 @@ describe('FeatureAppLoader', () => {
 
         expect(spyConsoleError.mock.calls).toEqual([
           [
-            'The feature app for the src "/test.js" and the key "testKey" could not be loaded.',
+            'The feature app for the src "/test.js" and the ID specifier "test" could not be loaded.',
             mockError
           ]
         ]);
