@@ -12,12 +12,12 @@ const featureAppDefinition: FeatureAppDefinition<ReactFeatureApp> = {
   },
 
   create: ({featureServices}) => {
-    const todoBucket = featureServices[
+    const todoManager = featureServices[
       's2:todomvc-todo-manager'
     ] as TodoManagerV1;
 
     return {
-      render: () => <TodoMvcMain todoBucket={todoBucket} />
+      render: () => <TodoMvcMain todoManager={todoManager} />
     };
   }
 };
