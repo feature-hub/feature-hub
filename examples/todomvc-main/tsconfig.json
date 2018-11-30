@@ -2,7 +2,8 @@
   "extends": "../../tsconfig.json",
   "include": ["src/**/*", "typings/**/*"],
   "compilerOptions": {
-    "noEmit": true,
+    "outDir": "dist",
+    "rootDir": "src",
     "plugins": [{"name": "typescript-styled-plugin"}]
   }
 }
