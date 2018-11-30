@@ -1,7 +1,7 @@
 {
-  "name": "@feature-hub/server-renderer-feature-service",
+  "name": "@feature-hub/server-renderer",
   "version": "0.0.0",
-  "description": "A feature service to manage server-side rendering.",
+  "description": "A Feature Service to manage server-side rendering.",
   "bugs": {
     "url": "https://github.com/sinnerschrader/feature-hub/issues"
   },

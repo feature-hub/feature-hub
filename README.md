@@ -116,12 +116,12 @@ achieved by creating Feature Services:
 
 ## Monorepo Packages
 
-| Package                                                                             | Version                                                                                          | Description                                        | API                                       |
-| ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ | -------------------------------------------------- | ----------------------------------------- |
-| [@feature-hub/core][core-pkg]                                                       | [![Package Version][core-badge]][core-npm]                                                       | The core functionality of the Feature Hub.         | [📖][core-api]                            |
-| [@feature-hub/react][react-pkg]                                                     | [![Package Version][react-badge]][react-npm]                                                     | A Feature Hub integrator for React.                | [📖][react-api]                           |
-| [@feature-hub/module-loader][module-loader-pkg]                                     | [![Package Version][module-loader-badge]][module-loader-npm]                                     | A universal module loader.                         | [📖][module-loader-api]                   |
-| [@feature-hub/server-renderer-feature-service][server-renderer-feature-service-pkg] | [![Package Version][server-renderer-feature-service-badge]][server-renderer-feature-service-npm] | A feature service to manage server-side rendering. | [📖][server-renderer-feature-service-api] |
+| Package                                             | Version                                                          | Description                                        | API                       |
+| --------------------------------------------------- | ---------------------------------------------------------------- | -------------------------------------------------- | ------------------------- |
+| [@feature-hub/core][core-pkg]                       | [![Package Version][core-badge]][core-npm]                       | The core functionality of the Feature Hub.         | [📖][core-api]            |
+| [@feature-hub/react][react-pkg]                     | [![Package Version][react-badge]][react-npm]                     | A Feature Hub integrator for React.                | [📖][react-api]           |
+| [@feature-hub/module-loader][module-loader-pkg]     | [![Package Version][module-loader-badge]][module-loader-npm]     | A universal module loader.                         | [📖][module-loader-api]   |
+| [@feature-hub/server-renderer][server-renderer-pkg] | [![Package Version][server-renderer-badge]][server-renderer-npm] | A Feature Service to manage server-side rendering. | [📖][server-renderer-api] |
 
 ## Using the Feature Hub
 
@@ -706,11 +706,11 @@ empty.
 [react-pkg]:
   https://github.com/sinnerschrader/feature-hub/tree/master/packages/react
 [react-npm]: https://www.npmjs.com/package/@feature-hub/react
-[server-renderer-feature-service-api]:
-  https://sinnerschrader.github.io/feature-hub/api/@feature-hub/server-renderer-feature-service/
-[server-renderer-feature-service-badge]:
-  https://img.shields.io/npm/v/@feature-hub/server-renderer-feature-service.svg
-[server-renderer-feature-service-pkg]:
-  https://github.com/sinnerschrader/feature-hub/tree/master/packages/server-renderer-feature-service
-[server-renderer-feature-service-npm]:
-  https://www.npmjs.com/package/@feature-hub/server-renderer-feature-service
+[server-renderer-api]:
+  https://sinnerschrader.github.io/feature-hub/api/@feature-hub/server-renderer/
+[server-renderer-badge]:
+  https://img.shields.io/npm/v/@feature-hub/server-renderer.svg
+[server-renderer-pkg]:
+  https://github.com/sinnerschrader/feature-hub/tree/master/packages/server-renderer
+[server-renderer-npm]:
+  https://www.npmjs.com/package/@feature-hub/server-renderer
