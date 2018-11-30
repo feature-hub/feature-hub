@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.3.0](https://github.com/sinnerschrader/feature-hub/compare/v0.2.0...v0.3.0) (2018-11-30)
+
+
+### Bug Fixes
+
+* **module-loader:** move [@feature-hub](https://github.com/feature-hub)/core to dependencies ([9d1b0f7](https://github.com/sinnerschrader/feature-hub/commit/9d1b0f7))
+* **react:** move [@feature-hub](https://github.com/feature-hub)/core to dependencies ([1af784c](https://github.com/sinnerschrader/feature-hub/commit/1af784c))
+
+
+### Features
+
+* **all:** rename `featureAppKey` to `idSpecifier` ([#102](https://github.com/sinnerschrader/feature-hub/issues/102)) ([0e2da7e](https://github.com/sinnerschrader/feature-hub/commit/0e2da7e))
+* **core:** rename `url` method argument of the FeatureAppManager ([#101](https://github.com/sinnerschrader/feature-hub/issues/101)) ([eb65651](https://github.com/sinnerschrader/feature-hub/commit/eb65651))
+* **core:** rename the `ownFeatureServiceDefinitions` property of Feature Apps ([#100](https://github.com/sinnerschrader/feature-hub/issues/100)) ([078fa9e](https://github.com/sinnerschrader/feature-hub/commit/078fa9e))
+* **examples:** setup examples workspace ([#81](https://github.com/sinnerschrader/feature-hub/issues/81)) ([170bfb4](https://github.com/sinnerschrader/feature-hub/commit/170bfb4))
+* **server-renderer:** rename server-renderer package ([#99](https://github.com/sinnerschrader/feature-hub/issues/99)) ([302fcf3](https://github.com/sinnerschrader/feature-hub/commit/302fcf3))
+* **server-renderer-feature-service:** create package ([7fddfbf](https://github.com/sinnerschrader/feature-hub/commit/7fddfbf)), closes [#21](https://github.com/sinnerschrader/feature-hub/issues/21) [#25](https://github.com/sinnerschrader/feature-hub/issues/25)
+
+
+
+
+
 # [0.2.0](https://github.com/sinnerschrader/feature-hub/compare/v0.1.1...v0.2.0) (2018-11-28)
 
 

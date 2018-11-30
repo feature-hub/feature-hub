@@ -1,11 +1,11 @@
 {
   "name": "@feature-hub/todomvc-todo-manager",
-  "version": "0.0.0",
+  "version": "0.3.0",
   "private": true,
   "license": "MIT",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "dependencies": {
-    "@feature-hub/core": "^0.2.0"
+    "@feature-hub/core": "^0.3.0"
   }
 }
