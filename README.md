@@ -116,12 +116,13 @@ achieved by creating Feature Services:
 
 ## Monorepo Packages
 
-| Package                                             | Version                                                          | Description                                        | API                       |
-| --------------------------------------------------- | ---------------------------------------------------------------- | -------------------------------------------------- | ------------------------- |
-| [@feature-hub/core][core-pkg]                       | [![Package Version][core-badge]][core-npm]                       | The core functionality of the Feature Hub.         | [📖][core-api]            |
-| [@feature-hub/react][react-pkg]                     | [![Package Version][react-badge]][react-npm]                     | A Feature Hub integrator for React.                | [📖][react-api]           |
-| [@feature-hub/module-loader][module-loader-pkg]     | [![Package Version][module-loader-badge]][module-loader-npm]     | A universal module loader.                         | [📖][module-loader-api]   |
-| [@feature-hub/server-renderer][server-renderer-pkg] | [![Package Version][server-renderer-badge]][server-renderer-npm] | A Feature Service to manage server-side rendering. | [📖][server-renderer-api] |
+| Package                                             | Version                                                          | Description                                                       | API                       |
+| --------------------------------------------------- | ---------------------------------------------------------------- | ----------------------------------------------------------------- | ------------------------- |
+| [@feature-hub/core][core-pkg]                       | [![Package Version][core-badge]][core-npm]                       | The core functionality of the Feature Hub.                        | [📖][core-api]            |
+| [@feature-hub/react][react-pkg]                     | [![Package Version][react-badge]][react-npm]                     | A Feature Hub integrator for React.                               | [📖][react-api]           |
+| [@feature-hub/module-loader][module-loader-pkg]     | [![Package Version][module-loader-badge]][module-loader-npm]     | A universal module loader.                                        | [📖][module-loader-api]   |
+| [@feature-hub/history-service][history-service-pkg] | [![Package Version][history-service-badge]][history-service-npm] | A history facade guaranteeing safe access for multiple consumers. | [📖][history-service-api] |
+| [@feature-hub/server-renderer][server-renderer-pkg] | [![Package Version][server-renderer-badge]][server-renderer-npm] | A Feature Service to manage server-side rendering.                | [📖][server-renderer-api] |
 
 ## Using the Feature Hub
 
@@ -712,6 +713,14 @@ the
 [react-pkg]:
   https://github.com/sinnerschrader/feature-hub/tree/master/packages/react
 [react-npm]: https://www.npmjs.com/package/@feature-hub/react
+[history-service-api]:
+  https://sinnerschrader.github.io/feature-hub/api/@feature-hub/history-service/
+[history-service-badge]:
+  https://img.shields.io/npm/v/@feature-hub/history-service.svg
+[history-service-pkg]:
+  https://github.com/sinnerschrader/feature-hub/tree/master/packages/history-service
+[history-service-npm]:
+  https://www.npmjs.com/package/@feature-hub/history-service
 [server-renderer-api]:
   https://feature-hub.netlify.com/api/@feature-hub/server-renderer/
 [server-renderer-badge]:
