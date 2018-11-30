@@ -1,4 +1,4 @@
-# TodoMVC - TodoManager Feature Service
+# @feature-hub/todomvc-todo-manager
 
 ---
 

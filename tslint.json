@@ -1,5 +1,10 @@
 {
   "extends": "ts-config",
-  "linterOptions": {"exclude": ["**/lib/**", "**/node_modules/**"]},
-  "rules": {"no-implicit-dependencies": [true, "dev", ["enzyme"]]}
+  "linterOptions": {
+    "exclude": ["**/dist/**", "**/lib/**", "**/node_modules/**"]
+  },
+  "rules": {
+    "no-default-export": false,
+    "no-implicit-dependencies": [true, "dev", ["enzyme"]]
+  }
 }

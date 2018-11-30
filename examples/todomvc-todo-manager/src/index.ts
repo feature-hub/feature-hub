@@ -14,21 +14,21 @@ export interface Todos {
   readonly [id: string]: Todo | undefined;
 }
 
-export interface TodoBucketState {
+export interface TodoManagerState {
   readonly byId: Todos;
   readonly allIds: string[];
 }
 
-export interface TodoBucketV1 {
-  getTodos(): TodoBucketState;
+export interface TodoManagerV1 {
+  getTodos(): TodoManagerState;
   add(title: string): void;
   remove(id: string): void;
   setCompleted(id: string, completed: boolean): void;
   editTitle(id: string, title: string): void;
 }
 
-export interface SharedTodoBucket extends SharedFeatureService {
-  readonly '1.0': FeatureServiceBinder<TodoBucketV1>;
+export interface SharedTodoManager extends SharedFeatureService {
+  readonly '1.0': FeatureServiceBinder<TodoManagerV1>;
 }
 
 class Id {
@@ -39,10 +39,13 @@ class Id {
   }
 }
 
-class TodoBucketV1Impl implements TodoBucketV1 {
-  public constructor(private todos: TodoBucketState, private readonly id: Id) {}
+class TodoManagerV1Impl implements TodoManagerV1 {
+  public constructor(
+    private todos: TodoManagerState,
+    private readonly id: Id
+  ) {}
 
-  public getTodos(): TodoBucketState {
+  public getTodos(): TodoManagerState {
     return this.todos;
   }
 
@@ -108,16 +111,16 @@ class TodoBucketV1Impl implements TodoBucketV1 {
   }
 }
 
-function create(): SharedTodoBucket {
+function create(): SharedTodoManager {
   const todos = {byId: {}, allIds: []};
-  const todoBucket = new TodoBucketV1Impl(todos, new Id());
+  const todoManager = new TodoManagerV1Impl(todos, new Id());
 
   return {
-    '1.0': () => ({featureService: todoBucket})
+    '1.0': () => ({featureService: todoManager})
   };
 }
 
-export const todoBucketDefinition: FeatureServiceProviderDefinition = {
+export const todoManagerDefinition: FeatureServiceProviderDefinition = {
   id: 's2:todomvc-todo-manager',
   create
 };
