@@ -256,7 +256,7 @@ describe('FeatureServiceRegistry', () => {
       });
     });
 
-    describe('for a feature service consumer with key and dependencies', () => {
+    describe('for a feature service consumer with an id specifier and dependencies', () => {
       it('creates a bindings object with feature services', () => {
         consumerConfigs = {
           foo: {kind: 'consumerConfigFoo'}

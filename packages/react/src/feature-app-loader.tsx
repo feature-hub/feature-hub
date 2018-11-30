@@ -12,7 +12,7 @@ export interface FeatureAppLoaderProps {
   readonly src: string;
   readonly nodeSrc?: string;
   readonly css?: Css[];
-  readonly featureAppKey?: string;
+  readonly idSpecifier?: string;
 }
 
 interface FeatureAppLoaderState {
@@ -95,7 +95,7 @@ export class FeatureAppLoader extends React.PureComponent<
 
   public render(): React.ReactNode {
     const {featureAppDefinition, loadingError} = this.state;
-    const {manager, featureAppKey} = this.props;
+    const {manager, idSpecifier} = this.props;
 
     if (loadingError) {
       // An error UI could be rendered here.
@@ -111,7 +111,7 @@ export class FeatureAppLoader extends React.PureComponent<
       <FeatureAppContainer
         manager={manager}
         featureAppDefinition={featureAppDefinition}
-        featureAppKey={featureAppKey}
+        idSpecifier={idSpecifier}
       />
     );
   }
@@ -141,13 +141,15 @@ export class FeatureAppLoader extends React.PureComponent<
 
     this.loggedLoadingError = true;
 
-    const {featureAppKey, src: browserSrc, nodeSrc} = this.props;
+    const {idSpecifier, src: browserSrc, nodeSrc} = this.props;
     const src = inBrowser ? browserSrc : nodeSrc;
 
     console.error(
       `The feature app for the src ${JSON.stringify(
         src
-      )} and the key ${JSON.stringify(featureAppKey)} could not be loaded.`,
+      )} and the ID specifier ${JSON.stringify(
+        idSpecifier
+      )} could not be loaded.`,
       error
     );
   }

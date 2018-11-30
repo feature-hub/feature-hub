@@ -34,6 +34,20 @@ describe('FeatureAppContainer', () => {
     spyConsoleError.mockRestore();
   });
 
+  it('calls the manager with the given feature app definition and id specifier', () => {
+    shallow(
+      <FeatureAppContainer
+        manager={mockManager}
+        featureAppDefinition={mockFeatureAppDefinition}
+        idSpecifier="testIdSpecifier"
+      />
+    );
+
+    expect(mockGetFeatureAppScope.mock.calls).toEqual([
+      [mockFeatureAppDefinition, 'testIdSpecifier']
+    ]);
+  });
+
   describe('with a react feature app', () => {
     beforeEach(() => {
       mockFeatureAppScope = {
@@ -49,7 +63,6 @@ describe('FeatureAppContainer', () => {
         <FeatureAppContainer
           manager={mockManager}
           featureAppDefinition={mockFeatureAppDefinition}
-          featureAppKey="testKey"
         />
       );
 
@@ -66,7 +79,6 @@ describe('FeatureAppContainer', () => {
           <FeatureAppContainer
             manager={mockManager}
             featureAppDefinition={mockFeatureAppDefinition}
-            featureAppKey="testKey"
           />
         );
 
@@ -95,7 +107,6 @@ describe('FeatureAppContainer', () => {
             <FeatureAppContainer
               manager={mockManager}
               featureAppDefinition={mockFeatureAppDefinition}
-              featureAppKey="testKey"
             />
           );
 
@@ -124,7 +135,6 @@ describe('FeatureAppContainer', () => {
         <FeatureAppContainer
           manager={mockManager}
           featureAppDefinition={mockFeatureAppDefinition}
-          featureAppKey="testKey"
         />
       );
 
@@ -139,7 +149,6 @@ describe('FeatureAppContainer', () => {
           <FeatureAppContainer
             manager={mockManager}
             featureAppDefinition={mockFeatureAppDefinition}
-            featureAppKey="testKey"
           />
         );
 
@@ -168,7 +177,6 @@ describe('FeatureAppContainer', () => {
             <FeatureAppContainer
               manager={mockManager}
               featureAppDefinition={mockFeatureAppDefinition}
-              featureAppKey="testKey"
             />
           );
 
@@ -202,7 +210,6 @@ describe('FeatureAppContainer', () => {
           <FeatureAppContainer
             manager={mockManager}
             featureAppDefinition={mockFeatureAppDefinition}
-            featureAppKey="testKey"
           />
         );
 
@@ -233,7 +240,6 @@ describe('FeatureAppContainer', () => {
         <FeatureAppContainer
           manager={mockManager}
           featureAppDefinition={mockFeatureAppDefinition}
-          featureAppKey="testKey"
         />
       );
 
@@ -248,7 +254,6 @@ describe('FeatureAppContainer', () => {
           <FeatureAppContainer
             manager={mockManager}
             featureAppDefinition={mockFeatureAppDefinition}
-            featureAppKey="testKey"
           />
         );
 
