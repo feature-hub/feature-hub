@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "react": "^16.6.3",
+    "react-dom": "^16.6.3",
     "styled-components": "^4.1.2"
   },
   "devDependencies": {
@@ -19,7 +20,6 @@
     "@types/react": "^16.7.8",
     "@types/styled-components": "^4.1.2",
     "parcel-bundler": "^1.10.3",
-    "react-dom": "^16.6.3",
     "rimraf": "^2.6.2",
     "typescript-styled-plugin": "^0.13.0"
   }
