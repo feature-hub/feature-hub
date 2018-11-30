@@ -2,6 +2,7 @@
   "extends": "../../tsconfig.json",
   "include": ["src/**/*", "typings/**/*"],
   "compilerOptions": {
+    "declaration": false,
     "outDir": "dist",
     "rootDir": "src",
     "plugins": [{"name": "typescript-styled-plugin"}]
