@@ -28,7 +28,7 @@ export interface FeatureAppScope<TFeatureApp> {
 
 export interface FeatureAppManagerLike {
   getAsyncFeatureAppDefinition(
-    featureAppUrl: string
+    moduleUrl: string
   ): AsyncValue<FeatureAppDefinition<unknown>>;
 
   getFeatureAppScope(
@@ -36,16 +36,16 @@ export interface FeatureAppManagerLike {
     featureAppKey?: string
   ): FeatureAppScope<unknown>;
 
-  preloadFeatureApp(featureAppUrl: string): Promise<void>;
+  preloadFeatureApp(moduleUrl: string): Promise<void>;
   destroy(): void;
 }
 
-type FeatureAppUrl = string;
+type ModuleUrl = string;
 type FeatureAppScopeId = string;
 
 export class FeatureAppManager implements FeatureAppManagerLike {
   private readonly asyncFeatureAppDefinitions = new Map<
-    FeatureAppUrl,
+    ModuleUrl,
     AsyncValue<FeatureAppDefinition<unknown>>
   >();
 
@@ -64,21 +64,18 @@ export class FeatureAppManager implements FeatureAppManagerLike {
   ) {}
 
   public getAsyncFeatureAppDefinition(
-    featureAppUrl: string
+    moduleUrl: string
   ): AsyncValue<FeatureAppDefinition<unknown>> {
     let asyncFeatureAppDefinition = this.asyncFeatureAppDefinitions.get(
-      featureAppUrl
+      moduleUrl
     );
 
     if (!asyncFeatureAppDefinition) {
       asyncFeatureAppDefinition = this.createAsyncFeatureAppDefinition(
-        featureAppUrl
+        moduleUrl
       );
 
-      this.asyncFeatureAppDefinitions.set(
-        featureAppUrl,
-        asyncFeatureAppDefinition
-      );
+      this.asyncFeatureAppDefinitions.set(moduleUrl, asyncFeatureAppDefinition);
     }
 
     return asyncFeatureAppDefinition;
@@ -111,8 +108,8 @@ export class FeatureAppManager implements FeatureAppManagerLike {
     return featureAppScope;
   }
 
-  public async preloadFeatureApp(featureAppUrl: string): Promise<void> {
-    await this.getAsyncFeatureAppDefinition(featureAppUrl).promise;
+  public async preloadFeatureApp(moduleUrl: string): Promise<void> {
+    await this.getAsyncFeatureAppDefinition(moduleUrl).promise;
   }
 
   public destroy(): void {
@@ -122,21 +119,21 @@ export class FeatureAppManager implements FeatureAppManagerLike {
   }
 
   private createAsyncFeatureAppDefinition(
-    featureAppUrl: string
+    moduleUrl: string
   ): AsyncValue<FeatureAppDefinition<unknown>> {
     return new AsyncValue(
-      this.loadModule(featureAppUrl).then(featureAppModule => {
+      this.loadModule(moduleUrl).then(featureAppModule => {
         if (!isFeatureAppModule(featureAppModule)) {
           throw new Error(
             `The feature app module at url ${JSON.stringify(
-              featureAppUrl
+              moduleUrl
             )} is invalid. A feature app module must have a feature app definition as default export. A feature app definition is an object with at least an \`id\` string and a \`create\` method.`
           );
         }
 
         console.info(
           `The feature app module for the url ${JSON.stringify(
-            featureAppUrl
+            moduleUrl
           )} has been successfully loaded.`
         );
 
