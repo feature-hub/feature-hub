@@ -396,24 +396,24 @@ A Feature App can also register its own Feature Services by declaring
 `ownFeatureServiceDefinitions`, e.g.:
 
 ```js
-import {myService} from './my-service';
+import {myFeatureServiceDefinition} from './my-feature-service';
 
 export default {
   id: 'acme:my-feature-app',
 
   dependencies: {
-    'acme:my-service': '^1.0'
+    'acme:my-feature-service': '^1.0'
   },
 
-  ownFeatureServiceDefinitions: [myService],
+  ownFeatureServiceDefinitions: [myFeatureServiceDefinition],
 
   create(env) {
-    const myService = env.featureService['acme:my-service'];
+    const myFeatureService = env.featureServices['acme:my-feature-service'];
 
-    myService.init(42);
+    myFeatureService.init(42);
 
     return {
-      render: () => <div>{myService.getSomeSharedState()}</div>
+      render: () => <div>{myFeatureService.getSomeSharedState()}</div>
     };
   }
 };

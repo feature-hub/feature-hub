@@ -49,7 +49,7 @@ export class FeatureAppManager implements FeatureAppManagerLike {
     AsyncValue<FeatureAppDefinition<unknown>>
   >();
 
-  private readonly ownFeatureServiceRegistered = new WeakSet<
+  private readonly featureAppDefinitionsWithRegisteredOwnFeatureServices = new WeakSet<
     FeatureAppDefinition<unknown>
   >();
 
@@ -148,7 +148,11 @@ export class FeatureAppManager implements FeatureAppManagerLike {
   private registerOwnFeatureServices(
     featureAppDefinition: FeatureAppDefinition<unknown>
   ): void {
-    if (this.ownFeatureServiceRegistered.has(featureAppDefinition)) {
+    if (
+      this.featureAppDefinitionsWithRegisteredOwnFeatureServices.has(
+        featureAppDefinition
+      )
+    ) {
       return;
     }
 
@@ -159,7 +163,9 @@ export class FeatureAppManager implements FeatureAppManagerLike {
       );
     }
 
-    this.ownFeatureServiceRegistered.add(featureAppDefinition);
+    this.featureAppDefinitionsWithRegisteredOwnFeatureServices.add(
+      featureAppDefinition
+    );
   }
 
   private createFeatureAppScope(
