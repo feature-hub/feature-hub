@@ -159,7 +159,7 @@ describe('FeatureAppManager', () => {
       ]);
     });
 
-    describe('with a feature app definition with own feature service provider definitions', () => {
+    describe('with a feature app definition with own feature service definitions', () => {
       let featureServiceRegistryMethodCalls: string[];
 
       beforeEach(() => {
@@ -179,22 +179,15 @@ describe('FeatureAppManager', () => {
 
         mockFeatureAppDefinition = {
           ...mockFeatureAppDefinition,
-          ownFeatureServiceProviderDefinitions: [
-            {id: 'ownId', create: jest.fn()}
-          ]
+          ownFeatureServiceDefinitions: [{id: 'ownId', create: jest.fn()}]
         };
       });
 
-      it("registers the feature app's own service definitions before binding the feature services", () => {
+      it("registers the feature app's own feature service definitions before binding the feature services", () => {
         manager.getFeatureAppScope(mockFeatureAppDefinition, 'testKey');
 
         expect(mockFeatureServiceRegistry.registerProviders.mock.calls).toEqual(
-          [
-            [
-              mockFeatureAppDefinition.ownFeatureServiceProviderDefinitions,
-              'id'
-            ]
-          ]
+          [[mockFeatureAppDefinition.ownFeatureServiceDefinitions, 'id']]
         );
 
         expect(
