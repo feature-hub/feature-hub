@@ -44,7 +44,7 @@ be viewed [here](https://github.com/sinnerschrader/feature-hub/milestones).**
     - [Writing a Feature Service](#writing-a-feature-service)
       - [Feature Service ID & Dependencies](#feature-service-id--dependencies)
       - [Feature Service Instantiation & Programmatic Versioning](#feature-service-instantiation--programmatic-versioning)
-      - [Feature Service Provider Definition](#feature-service-provider-definition)
+      - [Feature Service Definition](#feature-service-definition)
       - [Feature Service Binding](#feature-service-binding)
   - [Contributing to the Feature Hub](#contributing-to-the-feature-hub)
     - [Code of Conduct](#code-of-conduct)
@@ -129,7 +129,7 @@ There are three different roles in a Feature Hub environment:
 
 1.  An **integrator** instantiates the Feature Hub components and provides the
     Feature App compositions.
-2.  A **provider** provides Feature Services to consumers through the feature
+2.  A **provider** provides a Feature Service to consumers through the feature
     service registry. Most providers are registered by the integrator but they
     can also be registered by Feature Apps.
 3.  A **consumer** is everyone who consumes Feature Services. This can be a
@@ -392,28 +392,28 @@ A Feature App can either be a "React Feature App" or a "DOM Feature App".
 
 #### Registering Feature Services
 
-A Feature App can also register its own Feature Service providers by declaring
-`ownFeatureServiceProviderDefinitions`, e.g.:
+A Feature App can also register its own Feature Services by declaring
+`ownFeatureServiceDefinitions`, e.g.:
 
 ```js
-import {myService} from './my-service';
+import {myFeatureServiceDefinition} from './my-feature-service';
 
 export default {
   id: 'acme:my-feature-app',
 
   dependencies: {
-    'acme:my-service': '^1.0'
+    'acme:my-feature-service': '^1.0'
   },
 
-  ownFeatureServiceProviderDefinitions: [myService],
+  ownFeatureServiceDefinitions: [myFeatureServiceDefinition],
 
   create(env) {
-    const myService = env.featureService['acme:my-service'];
+    const myFeatureService = env.featureServices['acme:my-feature-service'];
 
-    myService.init(42);
+    myFeatureService.init(42);
 
     return {
-      render: () => <div>{myService.getSomeSharedState()}</div>
+      render: () => <div>{myFeatureService.getSomeSharedState()}</div>
     };
   }
 };
@@ -440,8 +440,8 @@ should define these externals in their build config. For example, defining
 
 ### Writing a Feature Service
 
-A Feature Service is defined by a Feature Service provider definition. It
-consists of an `id`, a `dependencies` object, and a `create` method.
+A Feature Service definition consists of an `id`, a `dependencies` object, and a
+`create` method.
 
 #### Feature Service ID & Dependencies
 
@@ -464,8 +464,8 @@ const dependencies = {
 
 #### Feature Service Instantiation & Programmatic Versioning
 
-The Feature Service provider definition's `create` method is called exactly once
-by the Feature Service registry. It should store, and possibly initialize, any
+The `create` method of a Feature Service definition is called exactly once by
+the Feature Service registry. It should store, and possibly initialize, any
 shared state. The method takes the single argument `env`, which has the
 following properties:
 
@@ -581,10 +581,10 @@ function create(env) {
 }
 ```
 
-#### Feature Service Provider Definition
+#### Feature Service Definition
 
 Finally, the `id`, the `dependencies` object, and the `create` method constitute
-the Feature Service provider definition that needs to be exported:
+the Feature Service definition that needs to be exported:
 
 ```js
 export const counterDefinition = {

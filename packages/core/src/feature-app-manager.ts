@@ -9,7 +9,7 @@ import {isFeatureAppModule} from './internal/is-feature-app-module';
 
 export interface FeatureAppDefinition<TFeatureApp>
   extends FeatureServiceConsumerDefinition {
-  readonly ownFeatureServiceProviderDefinitions?: FeatureServiceProviderDefinition[];
+  readonly ownFeatureServiceDefinitions?: FeatureServiceProviderDefinition[];
 
   create(env: FeatureServiceConsumerEnvironment): TFeatureApp;
 }
@@ -49,7 +49,7 @@ export class FeatureAppManager implements FeatureAppManagerLike {
     AsyncValue<FeatureAppDefinition<unknown>>
   >();
 
-  private readonly ownFeatureServiceProvidersRegistered = new WeakSet<
+  private readonly featureAppDefinitionsWithRegisteredOwnFeatureServices = new WeakSet<
     FeatureAppDefinition<unknown>
   >();
 
@@ -94,7 +94,7 @@ export class FeatureAppManager implements FeatureAppManagerLike {
     let featureAppScope = this.featureAppScopes.get(featureAppScopeId);
 
     if (!featureAppScope) {
-      this.registerOwnFeatureServiceProviders(featureAppDefinition);
+      this.registerOwnFeatureServices(featureAppDefinition);
 
       const deleteFeatureAppScope = () =>
         this.featureAppScopes.delete(featureAppScopeId);
@@ -145,21 +145,27 @@ export class FeatureAppManager implements FeatureAppManagerLike {
     );
   }
 
-  private registerOwnFeatureServiceProviders(
+  private registerOwnFeatureServices(
     featureAppDefinition: FeatureAppDefinition<unknown>
   ): void {
-    if (this.ownFeatureServiceProvidersRegistered.has(featureAppDefinition)) {
+    if (
+      this.featureAppDefinitionsWithRegisteredOwnFeatureServices.has(
+        featureAppDefinition
+      )
+    ) {
       return;
     }
 
-    if (featureAppDefinition.ownFeatureServiceProviderDefinitions) {
+    if (featureAppDefinition.ownFeatureServiceDefinitions) {
       this.featureServiceRegistry.registerProviders(
-        featureAppDefinition.ownFeatureServiceProviderDefinitions,
+        featureAppDefinition.ownFeatureServiceDefinitions,
         featureAppDefinition.id
       );
     }
 
-    this.ownFeatureServiceProvidersRegistered.add(featureAppDefinition);
+    this.featureAppDefinitionsWithRegisteredOwnFeatureServices.add(
+      featureAppDefinition
+    );
   }
 
   private createFeatureAppScope(
