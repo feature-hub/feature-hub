@@ -12,4 +12,5 @@ yarn generate-docs
 
 yarn lint
 yarn test --no-cache --runInBand
+yarn sort-package-jsons
 yarn verify
