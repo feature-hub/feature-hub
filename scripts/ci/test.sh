@@ -2,14 +2,11 @@
 
 set -e
 
-./scripts/word-blacklist.sh
+./scripts/ci/word-blacklist.sh
 
 yarn commitlint-travis
 
-yarn compile
-yarn bundle
-yarn generate-docs
-
+yarn build
 yarn lint
 yarn test --no-cache --runInBand
 yarn sort-package-jsons
