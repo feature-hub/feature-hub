@@ -178,7 +178,7 @@ export class FeatureAppManager implements FeatureAppManagerLike {
     console.info(
       `The feature app scope for the ID ${JSON.stringify(
         featureAppDefinition.id
-      )} and its ID specifier ${JSON.stringify(
+      )} and its specifier ${JSON.stringify(
         idSpecifier
       )} has been successfully created.`
     );
@@ -190,7 +190,7 @@ export class FeatureAppManager implements FeatureAppManagerLike {
         throw new Error(
           `The feature app scope for the ID ${JSON.stringify(
             featureAppDefinition.id
-          )} and its ID specifier ${JSON.stringify(
+          )} and its specifier ${JSON.stringify(
             idSpecifier
           )} could not be destroyed.`
         );

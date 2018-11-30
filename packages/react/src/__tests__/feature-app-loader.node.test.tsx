@@ -84,7 +84,7 @@ describe('FeatureAppLoader (on Node.js)', () => {
               manager={mockManager}
               src="example.js"
               nodeSrc="example-node.js"
-              idSpecifier="test"
+              idSpecifier="testIdSpecifier"
             />,
             {
               disableLifecycleMethods: true
@@ -94,7 +94,7 @@ describe('FeatureAppLoader (on Node.js)', () => {
 
         expect(spyConsoleError.mock.calls).toEqual([
           [
-            'The feature app for the src "example-node.js" and the ID specifier "test" could not be loaded.',
+            'The feature app for the src "example-node.js" and the ID specifier "testIdSpecifier" could not be loaded.',
             mockError
           ]
         ]);
