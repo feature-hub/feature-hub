@@ -4,7 +4,8 @@
 
 A Feature Service to manage server-side rendering.
 
-**Note:** This service is under active development (see [#25]). It currently
+**Note:** This Feature Service is under active development (see
+[#25](https://github.com/sinnerschrader/feature-hub/issues/25)). It currently
 doesn't implement everything necessary for server-side rendering, but instead
 only provides read-access to the incoming request.
 
