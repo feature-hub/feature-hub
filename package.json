@@ -7,6 +7,7 @@
     "packages/*"
   ],
   "scripts": {
+    "build": "run-s compile bundle generate-docs",
     "bundle": "lerna run bundle",
     "precompile": "lerna exec --parallel -- rimraf lib",
     "compile": "lerna exec -- tsc --project tsconfig.build.json",

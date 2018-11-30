@@ -666,6 +666,7 @@ project you agree to abide by its terms.
 
 ### Development Scripts
 
+- `yarn build`: Runs `compile`, `bundle`, and `generate-docs`.
 - `yarn compile`: Compiles all sources.
 - `yarn bundle`: Bundles all (example) Feature Apps.
 - `yarn generate-docs`: Generates the API documentation.
