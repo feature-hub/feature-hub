@@ -1,6 +1,10 @@
-const path = require('path');
+// @ts-check
 
-module.exports = {
+const path = require('path');
+const webpack = require('webpack');
+
+/** @type webpack.Configuration */
+const config = {
   entry: './src/index.tsx',
   output: {
     filename: 'todomvc-footer.js',
@@ -50,3 +54,5 @@ module.exports = {
     react: 'react'
   }
 };
+
+module.exports = config;
