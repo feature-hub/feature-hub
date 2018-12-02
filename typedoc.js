@@ -7,6 +7,6 @@ module.exports = {
   excludeExternals: true,
   excludeNotExported: true,
   excludePrivate: true,
-  theme: 'minimal',
+  theme: 'markdown',
   gitRevision: 'master'
 };
