@@ -901,10 +901,10 @@
     yargs-parser "^9.0.2"
     zen-observable "^0.7.1"
 
-"@patternplate/cli@^3.2.0":
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/@patternplate/cli/-/cli-3.2.0.tgz#af7aa21391770f7a103f9660f30c7002d781b0f5"
-  integrity sha512-yab0De1fLsKrNrNCjbuhZu/dYO7t1IH3U/U0cY9flqBGEOrR2GnNJ8CokbeNImkhvTS8MOewCmOTgee3WAz6kg==
+"@patternplate/cli@^3.2.1":
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/@patternplate/cli/-/cli-3.2.1.tgz#f975ae73afa00eecc3f302ffc478838cb186f1c5"
+  integrity sha512-CtwqL3pt2Wjph4oq8UXWJ3rMY0btSdqlCjxZTjiCdkikimPpUmouyb1UyC2a1ST7/vV0WxHiynqtSw+JnXIZlQ==
   dependencies:
     "@babel/runtime" "^7.0.0-beta.40"
     "@marionebl/sander" "^0.6.1"

@@ -8,3 +8,4 @@ npm-debug.log
 package-lock.json
 todo.tasks
 yarn-error.log
+.tmp
