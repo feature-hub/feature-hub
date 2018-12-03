@@ -34,29 +34,27 @@ describe('#defineServerRenderer', () => {
   });
 
   describe('ServerRendererV1', () => {
-    describe('exposes', () => {
-      it('#serverRequest', () => {
-        const serverRequest = {
-          path: '/app',
-          cookies: {
-            hallo: 'world'
-          },
-          headers: {
-            'content-type': 'application/json'
-          }
-        };
+    it('exposes a serverRequest', () => {
+      const serverRequest = {
+        path: '/app',
+        cookies: {
+          hallo: 'world'
+        },
+        headers: {
+          'content-type': 'application/json'
+        }
+      };
 
-        serverRendererDefinition = defineServerRenderer(serverRequest);
+      serverRendererDefinition = defineServerRenderer(serverRequest);
 
-        const serverRendererBinder = serverRendererDefinition.create({
-          featureServices: {},
-          config: {}
-        })['1.0'] as FeatureServiceBinder<ServerRendererV1>;
+      const serverRendererBinder = serverRendererDefinition.create({
+        featureServices: {},
+        config: {}
+      })['1.0'] as FeatureServiceBinder<ServerRendererV1>;
 
-        expect(
-          serverRendererBinder('test:1').featureService.serverRequest
-        ).toEqual(serverRequest);
-      });
+      expect(
+        serverRendererBinder('test:1').featureService.serverRequest
+      ).toEqual(serverRequest);
     });
   });
 });
