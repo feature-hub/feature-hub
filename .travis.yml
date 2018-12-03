@@ -3,6 +3,12 @@ node_js:
   - '10'
   - '8'
 cache: yarn
+before_install:
+  - curl -o- -L https://yarnpkg.com/install.sh | bash
+  - export PATH="$HOME/.yarn/bin:$PATH"
+  - yarn --version
+install:
+  - yarn --frozen-lockfile
 before_script:
   - git remote set-url origin
     https://${GITHUB_TOKEN}@github.com/sinnerschrader/feature-hub.git
