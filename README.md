@@ -714,7 +714,7 @@ the
   https://github.com/sinnerschrader/feature-hub/tree/master/packages/react
 [react-npm]: https://www.npmjs.com/package/@feature-hub/react
 [history-service-api]:
-  https://sinnerschrader.github.io/feature-hub/api/@feature-hub/history-service/
+  https://feature-hub.netlify.com/api/@feature-hub/history-service/
 [history-service-badge]:
   https://img.shields.io/npm/v/@feature-hub/history-service.svg
 [history-service-pkg]:
