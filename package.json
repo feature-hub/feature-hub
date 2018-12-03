@@ -6,7 +6,7 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "run-s compile bundle generate-docs",
+    "build": "run-s compile bundle",
     "bundle": "lerna run bundle",
     "precompile": "lerna exec --parallel -- rimraf lib",
     "compile": "lerna exec -- tsc --project tsconfig.build.json",
@@ -20,8 +20,7 @@
     "test": "jest --verbose",
     "verify": "run-p verify:**",
     "verify:format": "prettier --list-different '**/*.{js,json,md,ts,tsx,yml}'",
-    "verify:generate-docs": "git diff --exit-code docs/",
-    "verify:install": "git diff --exit-code yarn.lock",
+    "preverify:sort-package-jsons": "yarn sort-package-jsons",
     "verify:sort-package-jsons": "git diff --exit-code package.json packages/*/package.json",
     "watch": "run-p watch:**",
     "watch:compile": "yarn compile --watch --preserveWatchOutput",
