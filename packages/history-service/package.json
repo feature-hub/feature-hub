@@ -1,0 +1,31 @@
+{
+  "name": "@feature-hub/history-service",
+  "version": "0.0.0",
+  "description": "A history facade guaranteeing safe access for multiple consumers.",
+  "bugs": {
+    "url": "https://github.com/sinnerschrader/feature-hub/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sinnerschrader/feature-hub.git"
+  },
+  "license": "MIT",
+  "author": "SinnerSchrader Deutschland GmbH",
+  "files": [
+    "lib",
+    "!__tests__"
+  ],
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
+  "dependencies": {
+    "@feature-hub/core": "^0.3.0",
+    "@feature-hub/server-renderer": "^0.3.0",
+    "history": "^4.7.2"
+  },
+  "devDependencies": {
+    "@types/history": "^4.7.2"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
