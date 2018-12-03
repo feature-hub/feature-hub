@@ -4,8 +4,8 @@
 
 The Feature Hub is an [opinionated](#our-requirements-for-micro-frontends)
 JavaScript implementation of the
-[micro frontends](#micro-frontends-instead-of-monoliths) approach to building
-modern web applications with multiple teams and different technologies.
+[micro frontends](#micro-frontends-instead-of-monoliths) approach to creating
+scalable web applications with multiple teams and different technologies.
 
 This monorepo contains a [collection of packages](#monorepo-packages) that can
 be used together as a full-fledged solution for composing micro frontends. It
@@ -31,10 +31,6 @@ be viewed [here](https://github.com/sinnerschrader/feature-hub/milestones).**
     - [Feature Apps & Feature Services](#feature-apps--feature-services)
   - [Monorepo Packages](#monorepo-packages)
   - [Using the Feature Hub](#using-the-feature-hub)
-    - [Integrating the Feature Hub](#integrating-the-feature-hub)
-      - [The React Feature App Loader](#the-react-feature-app-loader)
-      - [The React Feature App Container](#the-react-feature-app-container)
-      - [Providing Externals](#providing-externals)
     - [Writing a Feature App](#writing-a-feature-app)
       - [Feature App ID](#feature-app-id)
       - [Feature App Dependencies](#feature-app-dependencies)
@@ -46,6 +42,10 @@ be viewed [here](https://github.com/sinnerschrader/feature-hub/milestones).**
       - [Feature Service Instantiation & Programmatic Versioning](#feature-service-instantiation--programmatic-versioning)
       - [Feature Service Definition](#feature-service-definition)
       - [Feature Service Binding](#feature-service-binding)
+    - [Integrating the Feature Hub](#integrating-the-feature-hub)
+      - [The React Feature App Loader](#the-react-feature-app-loader)
+      - [The React Feature App Container](#the-react-feature-app-container)
+      - [Providing Externals](#providing-externals)
   - [Contributing to the Feature Hub](#contributing-to-the-feature-hub)
     - [Code of Conduct](#code-of-conduct)
     - [Development Scripts](#development-scripts)
@@ -135,176 +135,6 @@ There are three different roles in a Feature Hub environment:
     can also be registered by Feature Apps.
 3.  A **consumer** is everyone who consumes Feature Services. This can be a
     Feature App, other Feature Services, or even the integrator.
-
-### Integrating the Feature Hub
-
-The [`@feature-hub/core`][core-pkg] package provides the following two major
-building blocks:
-
-- The `FeatureServiceRegistry`: A class for providing Feature Services to
-  dependent consumers.
-- The `FeatureAppManager`: A class for managing the lifecycle of Feature Apps.
-
-There are a few steps an integrator needs to follow to compose a web page of
-multiple Feature Apps that share state through Feature Services:
-
-1.  Gather consumer configs (for Feature Apps and Feature Services).
-1.  Instantiate a `FeatureServiceRegistry` (with consumer configs).
-1.  Register a set of Feature Services at the registry.
-1.  Create a `FeatureAppManager` singleton instance with the registry and a
-    browser or Node.js module loader.
-
-A typical integrator bootstrap code would look like this:
-
-```js
-import {FeatureAppManager, FeatureServiceRegistry} from '@feature-hub/core';
-import {loadCommonJsModule} from '@feature-hub/module-loader/node';
-
-const configs = {}; // import configs from somewhere
-const registry = new FeatureServiceRegistry(configs);
-
-const featureServiceDefinitions = [
-  sampleFeatureServiceDefinition1, // import definitions from somewhere
-  sampleFeatureServiceDefinition2
-];
-
-registry.registerProviders(featureServiceDefinitions, 'integrator');
-
-const manager = new FeatureAppManager(registry, loadCommonJsModule);
-```
-
-A React integrator can then use the `FeatureAppLoader` or the
-`FeatureAppContainer` (both from the `@feature-hub/react` package) to place
-Feature Apps onto the web page. Each of them need the `FeatureAppManager`
-singleton instance to render their Feature App.
-
-#### The React Feature App Loader
-
-With the React `FeatureAppLoader` a Feature App can be loaded and rendered by
-defining a `src` which is the URL to its JavaScript UMD bundle, e.g.:
-
-```js
-import {FeatureAppLoader} from '@feature-hub/react';
-```
-
-```jsx
-<FeatureAppLoader
-  manager={manager}
-  src="https://example.com/my-feature-app.js"
-/>
-```
-
-Additionally, when a Feature App wants to be rendered on the server, its
-`nodeSrc` must be specified, which is the URL to its CommonJS bundle (targeted
-at Node.js):
-
-```jsx
-<FeatureAppLoader
-  manager={manager}
-  src="https://example.com/my-feature-app.js"
-  nodeSrc="https://example.com/my-feature-app-node.js"
-/>
-```
-
-**Note:** Server-side rendering of Feature Apps is not fully supported yet. See
-our [roadmap](https://github.com/sinnerschrader/feature-hub/milestone/3) for
-details.
-
-You can also define a `css` prop to add stylesheets to the document.
-
-```jsx
-<FeatureAppLoader
-  manager={manager}
-  src="https://example.com/my-feature-app.js"
-  css={[
-    {href: 'https://example.com/my-feature-app.css'},
-    {href: 'https://example.com/my-feature-app-print.css', media: 'print'}
-  ]}
-/>
-```
-
-If multiple instances of the same Feature App must be placed onto a single page,
-a `idSpecifier` that is unique for the Feature App `id` must be defined by the
-integrator, e.g.:
-
-```jsx
-<section>
-  <div>
-    <FeatureAppLoader
-      manager={manager}
-      src="https://example.com/my-feature-app.js"
-      idSpecifier="main"
-    />
-  </div>
-  <aside>
-    <FeatureAppLoader
-      manager={manager}
-      src="https://example.com/my-feature-app.js"
-      idSpecifier="aside"
-    />
-  </aside>
-</section>
-```
-
-#### The React Feature App Container
-
-With the React `FeatureAppContainer` a Feature App can be rendered by directly
-providing its Feature App definition:
-
-```js
-import {FeatureAppContainer} from '@feature-hub/react';
-import {myFeatureAppDefinition} from './my-feature-app';
-```
-
-```jsx
-<FeatureAppContainer
-  manager={manager}
-  featureAppDefinition={myFeatureAppDefinition}
-/>
-```
-
-This allows the integrator to bundle Feature Apps, instead of loading them from
-a remote location.
-
-If multiple instances of the same Feature App must be placed onto a single page,
-a `idSpecifier` that is unique for the Feature App `id` must be defined by the
-integrator, e.g.:
-
-```jsx
-<section>
-  <div>
-    <FeatureAppContainer
-      manager={manager}
-      featureAppDefinition={myFeatureAppDefinition}
-      idSpecifier="main"
-    />
-  </div>
-  <aside>
-    <FeatureAppContainer
-      manager={manager}
-      featureAppDefinition={myFeatureAppDefinition}
-      idSpecifier="aside"
-    />
-  </aside>
-</section>
-```
-
-#### Providing Externals
-
-When using the browser module loader, the integrator can provide shared npm
-dependencies to Feature Apps using the `defineExternals` function:
-
-```js
-import {defineExternals, loadAmdModule} from '@feature-hub/module-loader';
-import * as React from 'react';
-import Loadable from 'react-loadable';
-```
-
-```js
-defineExternals({react: React, 'react-loadable': Loadable});
-
-const manager = new FeatureAppManager(registry, loadAmdModule);
-```
 
 ### Writing a Feature App
 
@@ -645,6 +475,176 @@ function create(env) {
     }
   };
 }
+```
+
+### Integrating the Feature Hub
+
+The [`@feature-hub/core`][core-pkg] package provides the following two major
+building blocks:
+
+- The `FeatureServiceRegistry`: A class for providing Feature Services to
+  dependent consumers.
+- The `FeatureAppManager`: A class for managing the lifecycle of Feature Apps.
+
+There are a few steps an integrator needs to follow to compose a web page of
+multiple Feature Apps that share state through Feature Services:
+
+1.  Gather consumer configs (for Feature Apps and Feature Services).
+1.  Instantiate a `FeatureServiceRegistry` (with consumer configs).
+1.  Register a set of Feature Services at the registry.
+1.  Create a `FeatureAppManager` singleton instance with the registry and a
+    browser or Node.js module loader.
+
+A typical integrator bootstrap code would look like this:
+
+```js
+import {FeatureAppManager, FeatureServiceRegistry} from '@feature-hub/core';
+import {loadCommonJsModule} from '@feature-hub/module-loader/node';
+
+const configs = {}; // import configs from somewhere
+const registry = new FeatureServiceRegistry(configs);
+
+const featureServiceDefinitions = [
+  sampleFeatureServiceDefinition1, // import definitions from somewhere
+  sampleFeatureServiceDefinition2
+];
+
+registry.registerProviders(featureServiceDefinitions, 'integrator');
+
+const manager = new FeatureAppManager(registry, loadCommonJsModule);
+```
+
+A React integrator can then use the `FeatureAppLoader` or the
+`FeatureAppContainer` (both from the `@feature-hub/react` package) to place
+Feature Apps onto the web page. Each of them need the `FeatureAppManager`
+singleton instance to render their Feature App.
+
+#### The React Feature App Loader
+
+With the React `FeatureAppLoader` a Feature App can be loaded and rendered by
+defining a `src` which is the URL to its JavaScript UMD bundle, e.g.:
+
+```js
+import {FeatureAppLoader} from '@feature-hub/react';
+```
+
+```jsx
+<FeatureAppLoader
+  manager={manager}
+  src="https://example.com/my-feature-app.js"
+/>
+```
+
+Additionally, when a Feature App wants to be rendered on the server, its
+`nodeSrc` must be specified, which is the URL to its CommonJS bundle (targeted
+at Node.js):
+
+```jsx
+<FeatureAppLoader
+  manager={manager}
+  src="https://example.com/my-feature-app.js"
+  nodeSrc="https://example.com/my-feature-app-node.js"
+/>
+```
+
+**Note:** Server-side rendering of Feature Apps is not fully supported yet. See
+our [roadmap](https://github.com/sinnerschrader/feature-hub/milestone/3) for
+details.
+
+You can also define a `css` prop to add stylesheets to the document.
+
+```jsx
+<FeatureAppLoader
+  manager={manager}
+  src="https://example.com/my-feature-app.js"
+  css={[
+    {href: 'https://example.com/my-feature-app.css'},
+    {href: 'https://example.com/my-feature-app-print.css', media: 'print'}
+  ]}
+/>
+```
+
+If multiple instances of the same Feature App must be placed onto a single page,
+a `idSpecifier` that is unique for the Feature App `id` must be defined by the
+integrator, e.g.:
+
+```jsx
+<section>
+  <div>
+    <FeatureAppLoader
+      manager={manager}
+      src="https://example.com/my-feature-app.js"
+      idSpecifier="main"
+    />
+  </div>
+  <aside>
+    <FeatureAppLoader
+      manager={manager}
+      src="https://example.com/my-feature-app.js"
+      idSpecifier="aside"
+    />
+  </aside>
+</section>
+```
+
+#### The React Feature App Container
+
+With the React `FeatureAppContainer` a Feature App can be rendered by directly
+providing its Feature App definition:
+
+```js
+import {FeatureAppContainer} from '@feature-hub/react';
+import {myFeatureAppDefinition} from './my-feature-app';
+```
+
+```jsx
+<FeatureAppContainer
+  manager={manager}
+  featureAppDefinition={myFeatureAppDefinition}
+/>
+```
+
+This allows the integrator to bundle Feature Apps, instead of loading them from
+a remote location.
+
+If multiple instances of the same Feature App must be placed onto a single page,
+a `idSpecifier` that is unique for the Feature App `id` must be defined by the
+integrator, e.g.:
+
+```jsx
+<section>
+  <div>
+    <FeatureAppContainer
+      manager={manager}
+      featureAppDefinition={myFeatureAppDefinition}
+      idSpecifier="main"
+    />
+  </div>
+  <aside>
+    <FeatureAppContainer
+      manager={manager}
+      featureAppDefinition={myFeatureAppDefinition}
+      idSpecifier="aside"
+    />
+  </aside>
+</section>
+```
+
+#### Providing Externals
+
+When using the browser module loader, the integrator can provide shared npm
+dependencies to Feature Apps using the `defineExternals` function:
+
+```js
+import {defineExternals, loadAmdModule} from '@feature-hub/module-loader';
+import * as React from 'react';
+import Loadable from 'react-loadable';
+```
+
+```js
+defineExternals({react: React, 'react-loadable': Loadable});
+
+const manager = new FeatureAppManager(registry, loadAmdModule);
 ```
 
 ## Contributing to the Feature Hub
