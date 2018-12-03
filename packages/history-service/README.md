@@ -5,6 +5,38 @@
 A history facade guaranteeing safe access for multiple consumers on the same
 page.
 
+**This package is part of the
+[Feature Hub](https://github.com/sinnerschrader/feature-hub) monorepo.**
+
+## Table of Contents
+
+- [@feature-hub/history-service](#feature-hubhistory-service)
+  - [Table of Contents](#table-of-contents)
+  - [Getting started](#getting-started)
+  - [Motivation](#motivation)
+  - [Functional Behaviour](#functional-behaviour)
+    - [Location Transformer](#location-transformer)
+  - [Usage](#usage)
+    - [As a Consumer](#as-a-consumer)
+      - [In the browser:](#in-the-browser)
+      - [On the server:](#on-the-server)
+    - [As the Integrator](#as-the-integrator)
+      - [Building a Custom Location Transformer](#building-a-custom-location-transformer)
+
+## Getting started
+
+Install `@feature-hub/history-service` as a dependency:
+
+```sh
+# Install using Yarn
+yarn add @feature-hub/history-service
+```
+
+```sh
+# Install using npm
+npm install @feature-hub/history-service
+```
+
 ## Motivation
 
 When multiple feature apps coexist on the same page, they shouldn't access the
@@ -198,3 +230,9 @@ const rootLocationTransformer = {
 
 // ...
 ```
+
+---
+
+Copyright (c) 2018 SinnerSchrader Deutschland GmbH. Released under the terms of
+the
+[MIT License](https://github.com/sinnerschrader/feature-hub/blob/master/LICENSE).
