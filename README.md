@@ -109,14 +109,10 @@ Feature Apps, on the Feature Hub. While simple code sharing should be achieved
 by creating libraries, there are features that can only, or more easily, be
 achieved by creating Feature Services:
 
-Enable Feature Apps to...
-
-- ...share state to ensure a consistent user experience.
-- ...share browser APIs not intended for shared use (e.g. History,
+- Share state across Feature Apps to ensure a consistent user experience.
+- Share browser APIs and resources not intended for shared use (e.g. History,
   LocalStorage).
-- ...share configuration, but only maintain it once.
-- ...work together that have been developed for different Feature Service API
-  versions.
+- Share configuration across Feature Apps, but only maintain it once.
 
 ## Monorepo Packages
 
