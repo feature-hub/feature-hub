@@ -9,6 +9,7 @@ page.
 
 - [@feature-hub/history-service](#feature-hubhistory-service)
   - [Table of Contents](#table-of-contents)
+  - [Getting started](#getting-started)
   - [Motivation](#motivation)
   - [Functional Behaviour](#functional-behaviour)
     - [Location Transformer](#location-transformer)
@@ -18,6 +19,23 @@ page.
       - [On the server:](#on-the-server)
     - [As the Integrator](#as-the-integrator)
       - [Building a Custom Location Transformer](#building-a-custom-location-transformer)
+
+**This package is part of the
+[Feature Hub](https://github.com/sinnerschrader/feature-hub) monorepo.**
+
+## Getting started
+
+Install `@feature-hub/history-service` as a dependency:
+
+```sh
+# Install using Yarn
+yarn add @feature-hub/history-service
+```
+
+```sh
+# Install using npm
+npm install @feature-hub/history-service
+```
 
 ## Motivation
 
@@ -212,3 +230,9 @@ const rootLocationTransformer = {
 
 // ...
 ```
+
+---
+
+Copyright (c) 2018 SinnerSchrader Deutschland GmbH. Released under the terms of
+the
+[MIT License](https://github.com/sinnerschrader/feature-hub/blob/master/LICENSE).
