@@ -5,6 +5,9 @@
 A history facade guaranteeing safe access for multiple consumers on the same
 page.
 
+**This package is part of the
+[Feature Hub](https://github.com/sinnerschrader/feature-hub) monorepo.**
+
 ## Table of Contents
 
 - [@feature-hub/history-service](#feature-hubhistory-service)
@@ -19,9 +22,6 @@ page.
       - [On the server:](#on-the-server)
     - [As the Integrator](#as-the-integrator)
       - [Building a Custom Location Transformer](#building-a-custom-location-transformer)
-
-**This package is part of the
-[Feature Hub](https://github.com/sinnerschrader/feature-hub) monorepo.**
 
 ## Getting started
 
