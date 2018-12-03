@@ -5,6 +5,20 @@
 A history facade guaranteeing safe access for multiple consumers on the same
 page.
 
+## Table of Contents
+
+- [@feature-hub/history-service](#feature-hubhistory-service)
+  - [Table of Contents](#table-of-contents)
+  - [Motivation](#motivation)
+  - [Functional Behaviour](#functional-behaviour)
+    - [Location Transformer](#location-transformer)
+  - [Usage](#usage)
+    - [As a Consumer](#as-a-consumer)
+      - [In the browser:](#in-the-browser)
+      - [On the server:](#on-the-server)
+    - [As the Integrator](#as-the-integrator)
+      - [Building a Custom Location Transformer](#building-a-custom-location-transformer)
+
 ## Motivation
 
 When multiple feature apps coexist on the same page, they shouldn't access the
