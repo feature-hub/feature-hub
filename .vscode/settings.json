@@ -4,7 +4,7 @@
     "**/.cache": true,
     "**/coverage": true,
     "**/dist": true,
-    "**/docs/api": true,
+    "**/docs": true,
     "**/lerna-debug.log": true,
     "**/lib": true,
     "**/node_modules": true,
