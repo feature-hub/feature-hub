@@ -7,6 +7,7 @@ set -e
 yarn commitlint-travis
 
 yarn build
+yarn generate-docs
 yarn lint
 yarn test --no-cache --runInBand
 yarn verify

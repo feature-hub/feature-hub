@@ -109,10 +109,14 @@ Feature Apps, on the Feature Hub. While simple code sharing should be achieved
 by creating libraries, there are features that can only, or more easily, be
 achieved by creating Feature Services:
 
-- Share state across consumers.
-- Safe access to browser APIs and resources (e.g. URL).
-- Automatically scope API usage by consumer (e.g. logging).
-- Share configuration across consumers, but only maintain it once.
+Enable Feature Apps to...
+
+- ...share state to ensure a consistent user experience.
+- ...share browser APIs not intended for shared use (e.g. History,
+  LocalStorage).
+- ...share configuration, but only maintain it once.
+- ...work together that have been developed for different Feature Service API
+  versions.
 
 ## Monorepo Packages
 
@@ -310,7 +314,7 @@ const manager = new FeatureAppManager(registry, loadAmdModule);
 A Feature App must be bundled as a [UMD](https://github.com/umdjs/umd) module.
 This JavaScript bundle file must be deployed to a publicly available endpoint.
 The integrator uses this URL to place the Feature App onto a page using a
-Feature App loader, e.g. `FeatureAppLoader`.
+Feature App loader, e.g. the React `FeatureAppLoader`.
 
 The default export of this module must be a `FeatureAppDefinition`. It consists
 of an `id`, a `dependencies` object, and the method `create`.
@@ -689,26 +693,31 @@ members must trigger a custom [Travis CI](https://travis-ci.com) build on the
 `master` branch. You should leave the custom config and commit message fields
 empty.
 
-[core-api]: https://sinnerschrader.github.io/feature-hub/api/@feature-hub/core/
+---
+
+Copyright (c) 2018 SinnerSchrader Deutschland GmbH. Released under the terms of
+the
+[MIT License](https://github.com/sinnerschrader/feature-hub/blob/master/LICENSE).
+
+[core-api]: https://feature-hub.netlify.com/api/@feature-hub/core/
 [core-badge]: https://img.shields.io/npm/v/@feature-hub/core.svg
 [core-pkg]:
   https://github.com/sinnerschrader/feature-hub/tree/master/packages/core
 [core-npm]: https://www.npmjs.com/package/@feature-hub/core
 [module-loader-api]:
-  https://sinnerschrader.github.io/feature-hub/api/@feature-hub/module-loader/
+  https://feature-hub.netlify.com/api/@feature-hub/module-loader/
 [module-loader-badge]:
   https://img.shields.io/npm/v/@feature-hub/module-loader.svg
 [module-loader-pkg]:
   https://github.com/sinnerschrader/feature-hub/tree/master/packages/module-loader
 [module-loader-npm]: https://www.npmjs.com/package/@feature-hub/module-loader
-[react-api]:
-  https://sinnerschrader.github.io/feature-hub/api/@feature-hub/react/
+[react-api]: https://feature-hub.netlify.com/api/@feature-hub/react/
 [react-badge]: https://img.shields.io/npm/v/@feature-hub/react.svg
 [react-pkg]:
   https://github.com/sinnerschrader/feature-hub/tree/master/packages/react
 [react-npm]: https://www.npmjs.com/package/@feature-hub/react
 [server-renderer-api]:
-  https://sinnerschrader.github.io/feature-hub/api/@feature-hub/server-renderer/
+  https://feature-hub.netlify.com/api/@feature-hub/server-renderer/
 [server-renderer-badge]:
   https://img.shields.io/npm/v/@feature-hub/server-renderer.svg
 [server-renderer-pkg]:
