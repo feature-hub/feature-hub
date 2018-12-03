@@ -4,7 +4,7 @@ import {
 } from '@feature-hub/core';
 import {ServerRendererV1, defineServerRenderer} from '..';
 
-describe('#defineServerRenderer', () => {
+describe('defineServerRenderer', () => {
   let serverRendererDefinition: FeatureServiceProviderDefinition;
 
   beforeEach(() => {

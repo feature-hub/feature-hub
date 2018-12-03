@@ -35,13 +35,11 @@ export interface SharedHistoryService extends SharedFeatureService {
   readonly '1.1': FeatureServiceBinder<HistoryServiceV1>;
 }
 
-const serviceId = 's2:history';
-
 export function defineHistoryService(
   rootLocationTransformer: RootLocationTransformer
 ): FeatureServiceProviderDefinition {
   return {
-    id: serviceId,
+    id: 's2:history',
     dependencies: {'s2:server-renderer': '^1.0'},
 
     create: ({featureServices}: FeatureServiceConsumerEnvironment) => {
