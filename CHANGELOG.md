@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.4.0](https://github.com/sinnerschrader/feature-hub/compare/v0.3.0...v0.4.0) (2018-12-03)
+
+
+### Bug Fixes
+
+* **all:** enable inlineSources in tsconfig to fix source maps ([#116](https://github.com/sinnerschrader/feature-hub/issues/116)) ([03f3b02](https://github.com/sinnerschrader/feature-hub/commit/03f3b02))
+
+
+### Features
+
+* **history-service:** add history feature service ([#113](https://github.com/sinnerschrader/feature-hub/issues/113)) ([309e66d](https://github.com/sinnerschrader/feature-hub/commit/309e66d)), closes [#21](https://github.com/sinnerschrader/feature-hub/issues/21)
+
+
+
+
+
 # [0.3.0](https://github.com/sinnerschrader/feature-hub/compare/v0.2.0...v0.3.0) (2018-11-30)
 
 
