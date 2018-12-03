@@ -18,10 +18,7 @@ module.exports = {
   modulePathIgnorePatterns: ['/lib'],
   setupTestFrameworkScriptFile: '<rootDir>/scripts/setup-test-framework.js',
   snapshotSerializers: ['enzyme-to-json/serializer'],
-  testMatch: [
-    '<rootDir>/packages/*/src/**/*.test.{ts,tsx}',
-    '<rootDir>/examples/*/src/**/*.test.{ts,tsx}'
-  ],
+  testMatch: ['<rootDir>/packages/*/src/**/*.test.{ts,tsx}'],
   testURL: 'http://localhost',
   transform: {'\\.tsx?$': 'ts-jest'}
 };

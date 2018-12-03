@@ -3,7 +3,6 @@
   "private": true,
   "license": "MIT",
   "workspaces": [
-    "examples/*",
     "packages/*"
   ],
   "scripts": {
@@ -16,14 +15,14 @@
     "generate-docs": "lerna exec --no-private --parallel -- typedoc --options ../../typedoc.js --out ../../docs/api/\\$LERNA_PACKAGE_NAME --readme README.md --tsconfig tsconfig.build.json .",
     "postgenerate-docs": "node scripts/process-api-docs.js",
     "lint": "lerna exec --parallel -- tslint --config tslint.json --project tsconfig.build.json --format verbose",
-    "sort-package-jsons": "sort-package-json package.json packages/*/package.json examples/*/package.json",
+    "sort-package-jsons": "sort-package-json package.json packages/*/package.json",
     "pretest": "rimraf coverage",
     "test": "jest --verbose",
     "verify": "run-p verify:**",
     "verify:format": "prettier --list-different '**/*.{js,json,md,ts,tsx,yml}'",
     "verify:generate-docs": "git diff --exit-code docs/",
     "verify:install": "git diff --exit-code yarn.lock",
-    "verify:sort-package-jsons": "git diff --exit-code package.json packages/*/package.json examples/*/package.json",
+    "verify:sort-package-jsons": "git diff --exit-code package.json packages/*/package.json",
     "watch": "run-p watch:**",
     "watch:compile": "yarn compile --watch --preserveWatchOutput",
     "watch:test": "yarn test --watch"
