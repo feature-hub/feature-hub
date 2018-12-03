@@ -17,7 +17,7 @@ describe('#defineServerRenderer', () => {
     serverRendererDefinition = defineServerRenderer(serverRequest);
   });
 
-  it('defines a server renderer', () => {
+  it('creates a server renderer definition', () => {
     expect(serverRendererDefinition.id).toBe('s2:server-renderer');
     expect(serverRendererDefinition.dependencies).toBeUndefined();
   });
@@ -31,8 +31,10 @@ describe('#defineServerRenderer', () => {
 
       expect(sharedServerRenderer['1.0']).toBeDefined();
     });
+  });
 
-    it('creates a feature service that exposes the provided server request', () => {
+  describe('ServerRendererV1', () => {
+    it('exposes a serverRequest', () => {
       const serverRequest = {
         path: '/app',
         cookies: {

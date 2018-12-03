@@ -8,7 +8,7 @@ import {areAllTodosCompleted} from './selectors';
 import {TodoMvcItem} from './todomvc-item';
 
 export interface TodoMvcMainProps {
-  readonly todoBucket: TodoManagerV1;
+  readonly todoManager: TodoManagerV1;
 }
 
 export interface TodoMvcMainState {
@@ -63,12 +63,12 @@ export class TodoMvcMain extends React.Component<
   TodoMvcMainProps,
   TodoMvcMainState
 > {
-  public readonly state = {todos: this.props.todoBucket.getTodos()};
+  public readonly state = {todos: this.props.todoManager.getTodos()};
 
   public componentDidMount(): void {
     // TODO: reactivate when subscribe has been re-added
-    // this.props.todoBucket.subscribe(() => {
-    //   this.setState({todos: this.props.todoBucket.getTodos()});
+    // this.props.todoManager.subscribe(() => {
+    //   this.setState({todos: this.props.todoManager.getTodos()});
     // });
   }
 
@@ -112,24 +112,24 @@ export class TodoMvcMain extends React.Component<
   }
 
   private readonly handleTodoItemToggle = (id: string, checked: boolean) => {
-    this.props.todoBucket.setCompleted(id, checked);
+    this.props.todoManager.setCompleted(id, checked);
   };
 
   private readonly handleToggleAll = (checked: boolean) => {
     this.state.todos.allIds.forEach(id => {
-      this.props.todoBucket.setCompleted(id, checked);
+      this.props.todoManager.setCompleted(id, checked);
     });
   };
 
   private readonly handleTodoItemDestroy = (id: string) => {
-    this.props.todoBucket.remove(id);
+    this.props.todoManager.remove(id);
   };
 
   private readonly handleTodoItemEditTitle = (id: string, title: string) => {
     if (title) {
-      this.props.todoBucket.editTitle(id, title);
+      this.props.todoManager.editTitle(id, title);
     } else {
-      this.props.todoBucket.remove(id);
+      this.props.todoManager.remove(id);
     }
   };
 }

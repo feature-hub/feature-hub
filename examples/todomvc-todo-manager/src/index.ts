@@ -49,6 +49,10 @@ class TodoManagerV1Impl implements TodoManagerV1 {
     return this.todos;
   }
 
+  /* TODO: The add method should return the created Todo or its ID. Otherwise
+   * you can not create a Todo programmatically and set it to completed
+   * afterwards.
+   */
   public add(title: string): void {
     const id = this.id.next();
     const todo = {id, title, completed: false};
