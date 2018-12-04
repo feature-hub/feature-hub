@@ -5,14 +5,9 @@ import {
   FeatureServiceBinding,
   FeatureServiceEnvironment
 } from '@feature-hub/core';
-import {ServerRendererV1, ServerRequest} from '@feature-hub/server-renderer';
+import {ServerRendererV1} from '@feature-hub/server-renderer';
 import {History} from 'history';
-import {
-  HistoryServiceV1,
-  RootLocationTransformer,
-  SharedHistoryService,
-  defineHistoryService
-} from '..';
+import {HistoryServiceV1, SharedHistoryService, defineHistoryService} from '..';
 import {testRootLocationTransformer} from '../internal/test-root-location-transformer';
 
 const simulateOnPopState = (state: unknown, url: string) => {
@@ -37,10 +32,9 @@ describe('defineHistoryService', () => {
   });
 
   describe('#create', () => {
-    let createHistoryServiceBinder: (
-      serverRequest?: ServerRequest,
-      rootLocationTransformer?: RootLocationTransformer
-    ) => FeatureServiceBinder<HistoryServiceV1>;
+    let createHistoryServiceBinder: () => FeatureServiceBinder<
+      HistoryServiceV1
+    >;
 
     let pushStateSpy: jest.SpyInstance;
     let replaceStateSpy: jest.SpyInstance;
@@ -55,19 +49,21 @@ describe('defineHistoryService', () => {
       consoleWarnSpy = jest.spyOn(console, 'warn');
       consoleWarnSpy.mockImplementation(jest.fn());
 
+      const mockServerRenderer: Partial<ServerRendererV1> = {
+        serverRequest: {
+          path: '/example',
+          cookies: {},
+          headers: {}
+        }
+      };
+
       const mockEnv: FeatureServiceEnvironment<
         undefined,
         {'s2:server-renderer': ServerRendererV1}
       > = {
         config: undefined,
         featureServices: {
-          's2:server-renderer': {
-            serverRequest: {
-              path: '/example',
-              cookies: {},
-              headers: {}
-            }
-          }
+          's2:server-renderer': mockServerRenderer as ServerRendererV1
         }
       };
 
