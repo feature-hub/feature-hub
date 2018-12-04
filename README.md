@@ -14,7 +14,7 @@ integration of micro frontends that are built with any other frontend technology
 (e.g. Vue.js, Angular, Web Components).
 
 In fact, the [`@feature-hub/core`][core-pkg] package is totally independent of
-React. It could be used to build an end-to-end solution with any other frontend
+React. It could be used to create an end-to-end solution with any other frontend
 technology.
 
 **This software is in active development and is subject to potentially breaking
@@ -653,10 +653,11 @@ The main purpose of this monorepo is to further develop the Feature Hub. It is
 developed in the open on GitHub, and we are grateful to the community for
 contributing bugfixes and improvements.
 
-To get started, install the dependencies, build the sources, and run the tests:
+To get started, install the dependencies, compile the sources, and run the
+tests:
 
 ```sh
-yarn && yarn build && yarn test
+yarn && yarn compile && yarn test
 ```
 
 ### Code of Conduct
@@ -667,9 +668,7 @@ project you agree to abide by its terms.
 
 ### Development Scripts
 
-- `yarn build`: Runs `compile` and `bundle`.
 - `yarn compile`: Compiles all sources.
-- `yarn bundle`: Bundles all (example) Feature Apps.
 - `yarn generate-docs`: Generates the API documentation.
 - `yarn lint`: Lints all sources.
 - `yarn test`: Executes all unit tests.

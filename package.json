@@ -6,8 +6,6 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "run-s compile bundle",
-    "bundle": "lerna run bundle",
     "precompile": "lerna exec --parallel -- rimraf lib",
     "compile": "lerna exec -- tsc --project tsconfig.build.json",
     "format": "prettier --write '**/*.{js,json,md,ts,tsx,yml}'",

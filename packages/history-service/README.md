@@ -21,7 +21,7 @@ page.
       - [In the browser:](#in-the-browser)
       - [On the server:](#on-the-server)
     - [As the Integrator](#as-the-integrator)
-      - [Building a Custom Location Transformer](#building-a-custom-location-transformer)
+      - [Writing a Custom Location Transformer](#writing-a-custom-location-transformer)
 
 ## Getting started
 
@@ -193,7 +193,7 @@ const featureServiceDefinitions = [
 registry.registerProviders(featureServiceDefinitions, 'integrator');
 ```
 
-#### Building a Custom Location Transformer
+#### Writing a Custom Location Transformer
 
 A location transformer is an object exposing two functions,
 `getConsumerPathFromRootLocation` and `createRootLocation`. In the following
