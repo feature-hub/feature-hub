@@ -37,12 +37,17 @@ const undefinedRerenderErrorMessage =
 
 export class ServerRenderer implements ServerRendererV1 {
   private debouncedRerender?: () => Promise<void>;
-  private registeredConsumers: (() => boolean)[] = [];
-  private loadingFeatureAppModules = new Map<string, PromiseWithStatus<void>>();
+
+  private readonly registeredConsumers: (() => boolean)[] = [];
+
+  private readonly loadingFeatureAppModules = new Map<
+    string,
+    PromiseWithStatus<void>
+  >();
 
   public constructor(
     public serverRequest: ServerRequest | undefined,
-    private rerenderWait: number = 50 // TODO: remove default, extract from config
+    private readonly rerenderWait: number = 50 // TODO: remove default, extract from config
   ) {}
 
   public async startRendering(render: () => string): Promise<string> {

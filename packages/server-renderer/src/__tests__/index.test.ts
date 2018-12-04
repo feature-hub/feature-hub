@@ -132,9 +132,9 @@ describe('defineServerRenderer', () => {
           let featureAppCompleted = false;
 
           const mockIsCompleted = jest.fn(() => {
-            setTimeout(() => {
+            setTimeout(async () => {
               featureAppCompleted = true;
-              serverRendererFeatureApp.rerender();
+              await serverRendererFeatureApp.rerender();
             }, 0);
 
             return featureAppCompleted;
