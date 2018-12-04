@@ -6,7 +6,7 @@ set -e
 
 yarn commitlint-travis
 
-yarn build
+yarn compile
 yarn lint
 yarn test --no-cache --runInBand
 yarn verify
