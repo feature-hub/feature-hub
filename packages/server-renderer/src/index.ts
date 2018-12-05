@@ -12,6 +12,8 @@ export interface ServerRequest {
   readonly headers: Record<string, string>;
 }
 
+export type IsCompletedCallback = () => boolean;
+
 export interface ServerRendererV1 {
   readonly serverRequest: ServerRequest | undefined;
 
@@ -22,7 +24,7 @@ export interface ServerRendererV1 {
     featureAppLoadingEvent: Promise<void>
   ): void;
 
-  register(isCompleted: () => boolean): void;
+  register(isCompleted: IsCompletedCallback): void;
   rerender(): Promise<void>;
 }
 
@@ -36,7 +38,7 @@ const undefinedRerenderErrorMessage =
 export class ServerRenderer implements ServerRendererV1 {
   private debouncedRerender?: () => Promise<void>;
 
-  private readonly registeredConsumers: (() => boolean)[] = [];
+  private readonly consumerCompletedCallbacks: IsCompletedCallback[] = [];
 
   private readonly loadingFeatureAppModules = new Map<
     string,
@@ -88,8 +90,8 @@ export class ServerRenderer implements ServerRendererV1 {
     this.loadingFeatureAppModules.set(featureAppClientUrl, promiseWithStatus);
   }
 
-  public register(isCompleted: () => boolean): void {
-    this.registeredConsumers.push(isCompleted);
+  public register(isCompleted: IsCompletedCallback): void {
+    this.consumerCompletedCallbacks.push(isCompleted);
   }
 
   public async rerender(): Promise<void> {
@@ -108,7 +110,7 @@ export class ServerRenderer implements ServerRendererV1 {
       }
     }
 
-    return this.registeredConsumers.every(isCompleted => isCompleted());
+    return this.consumerCompletedCallbacks.every(isCompleted => isCompleted());
   }
 
   private handleLoadingFeatureAppModule(
