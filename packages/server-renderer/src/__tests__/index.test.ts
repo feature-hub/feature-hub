@@ -176,6 +176,27 @@ describe('defineServerRenderer', () => {
           ).rejects.toEqual(mockError);
         });
       });
+
+      describe('when a feature app loading promise is rejected', () => {
+        it('renders once more after the error to give consumers the chance to synchronously handle the error', async () => {
+          const serverRenderer = serverRendererBinder('test').featureService;
+          const mockError = new Error('Failed to load feature app module.');
+
+          const mockRender = jest.fn(() => {
+            serverRenderer.waitForFeatureApp(
+              'http://example.com/foo.js',
+              Promise.reject(mockError)
+            );
+
+            return 'testHtml';
+          });
+
+          const html = await serverRenderer.renderUntilCompleted(mockRender);
+
+          expect(html).toEqual('testHtml');
+          expect(mockRender).toHaveBeenCalledTimes(2);
+        });
+      });
     });
   });
 });
