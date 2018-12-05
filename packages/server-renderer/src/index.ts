@@ -14,11 +14,13 @@ export interface ServerRequest {
 export interface ServerRendererV1 {
   readonly serverRequest: ServerRequest | undefined;
 
-  startRendering(render: () => string): Promise<string>;
+  renderUntilCompleted(render: () => string): Promise<string>;
+
   waitForFeatureApp(
     featureAppClientUrl: string,
     featureAppLoadingEvent: Promise<void>
   ): void;
+
   register(isCompleted: () => boolean): void;
   rerender(): Promise<void>;
 }
@@ -50,7 +52,7 @@ export class ServerRenderer implements ServerRendererV1 {
     private readonly rerenderWait: number = 50 // TODO: remove default, extract from config
   ) {}
 
-  public async startRendering(render: () => string): Promise<string> {
+  public async renderUntilCompleted(render: () => string): Promise<string> {
     return new Promise<string>((resolve, reject) => {
       const renderAndResolveIfCompleted = () => {
         try {

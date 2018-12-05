@@ -55,7 +55,7 @@ describe('defineServerRenderer', () => {
         it('resolves with the result of the given render function, in 1 render pass', async () => {
           const serverRenderer = serverRendererBinder('test').featureService;
           const mockRender = jest.fn(() => 'testHtml');
-          const html = await serverRenderer.startRendering(mockRender);
+          const html = await serverRenderer.renderUntilCompleted(mockRender);
 
           expect(html).toEqual('testHtml');
           expect(mockRender).toHaveBeenCalledTimes(1);
@@ -78,7 +78,7 @@ describe('defineServerRenderer', () => {
             return 'testHtml';
           });
 
-          const html = await serverRendererIntegrator.startRendering(
+          const html = await serverRendererIntegrator.renderUntilCompleted(
             mockRender
           );
 
@@ -110,7 +110,7 @@ describe('defineServerRenderer', () => {
             return 'testHtml';
           });
 
-          const htmlPromise = serverRendererIntegrator.startRendering(
+          const htmlPromise = serverRendererIntegrator.renderUntilCompleted(
             mockRender
           );
 
@@ -153,7 +153,7 @@ describe('defineServerRenderer', () => {
             return 'testHtml';
           });
 
-          const html = await serverRendererIntegrator.startRendering(
+          const html = await serverRendererIntegrator.renderUntilCompleted(
             mockRender
           );
 
@@ -172,7 +172,7 @@ describe('defineServerRenderer', () => {
           });
 
           return expect(
-            serverRenderer.startRendering(mockRender)
+            serverRenderer.renderUntilCompleted(mockRender)
           ).rejects.toEqual(mockError);
         });
       });
