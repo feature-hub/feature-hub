@@ -4,6 +4,7 @@ import {
   SharedFeatureService
 } from '@feature-hub/core';
 import {debounceAsync} from './internal/debounce-async';
+import {PromiseWithStatus} from './internal/promise-with-status';
 
 export interface ServerRequest {
   readonly path: string;
@@ -27,11 +28,6 @@ export interface ServerRendererV1 {
 
 export interface SharedServerRenderer extends SharedFeatureService {
   readonly '1.0': FeatureServiceBinder<ServerRendererV1>;
-}
-
-interface PromiseWithStatus<TResult> {
-  readonly promise: Promise<TResult>;
-  status: 'new' | 'pending' | 'final';
 }
 
 const undefinedRerenderErrorMessage =
@@ -87,10 +83,7 @@ export class ServerRenderer implements ServerRendererV1 {
       return;
     }
 
-    const promiseWithStatus: PromiseWithStatus<void> = {
-      promise: featureAppLoadingEvent,
-      status: 'new'
-    };
+    const promiseWithStatus = new PromiseWithStatus(featureAppLoadingEvent);
 
     this.loadingFeatureAppModules.set(featureAppClientUrl, promiseWithStatus);
   }
@@ -109,8 +102,8 @@ export class ServerRenderer implements ServerRendererV1 {
   }
 
   private isRenderingCompleted(): boolean {
-    for (const {status} of this.loadingFeatureAppModules.values()) {
-      if (status !== 'final') {
+    for (const loadingFeatureAppModule of this.loadingFeatureAppModules.values()) {
+      if (loadingFeatureAppModule.status !== 'final') {
         return false;
       }
     }
@@ -125,11 +118,7 @@ export class ServerRenderer implements ServerRendererV1 {
       return;
     }
 
-    loadingFeatureAppModule.status = 'pending';
-
     const onFulfilledOrRejected = async () => {
-      loadingFeatureAppModule.status = 'final';
-
       /* istanbul ignore if */
       if (!this.debouncedRerender) {
         throw new Error(undefinedRerenderErrorMessage);
@@ -138,10 +127,7 @@ export class ServerRenderer implements ServerRendererV1 {
       await this.debouncedRerender();
     };
 
-    loadingFeatureAppModule.promise.then(
-      onFulfilledOrRejected,
-      onFulfilledOrRejected
-    );
+    loadingFeatureAppModule.then(onFulfilledOrRejected, onFulfilledOrRejected);
   }
 }
 
