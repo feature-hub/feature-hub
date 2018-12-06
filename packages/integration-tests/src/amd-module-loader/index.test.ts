@@ -26,6 +26,7 @@ describe('integration test: "amd module loader"', () => {
 
     app.use(devMiddleware(webpack(config), {publicPath: '/'}));
 
+    // tslint:disable-next-line:await-promise
     port = await getPort();
     server = app.listen(port);
   });
