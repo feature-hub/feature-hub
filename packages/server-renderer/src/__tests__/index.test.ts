@@ -33,6 +33,21 @@ describe('defineServerRenderer', () => {
 
       expect(sharedServerRenderer['1.0']).toBeDefined();
     });
+
+    for (const invalidConfig of [null, {rerenderWait: false}]) {
+      describe(`with an invalid config ${JSON.stringify(
+        invalidConfig
+      )}`, () => {
+        it('throws an error', () => {
+          expect(() =>
+            serverRendererDefinition.create({
+              featureServices: {},
+              config: invalidConfig
+            })
+          ).toThrowError(new Error('The ServerRenderer config is invalid.'));
+        });
+      });
+    }
   });
 
   describe('ServerRendererV1', () => {

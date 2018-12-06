@@ -3,8 +3,11 @@ import {
   FeatureServiceProviderDefinition,
   SharedFeatureService
 } from '@feature-hub/core';
+import {validateConfig} from './config';
 import {debounceAsync} from './internal/debounce-async';
 import {PromiseWithStatus} from './internal/promise-with-status';
+
+export {ServerRendererConfig} from './config';
 
 export interface ServerRequest {
   readonly path: string;
@@ -47,7 +50,7 @@ export class ServerRenderer implements ServerRendererV1 {
 
   public constructor(
     public serverRequest: ServerRequest | undefined,
-    private readonly rerenderWait: number = 50 // TODO: remove default, extract from config
+    private readonly rerenderWait: number
   ) {}
 
   public async renderUntilCompleted(render: () => string): Promise<string> {
@@ -139,8 +142,9 @@ export function defineServerRenderer(
   return {
     id: 's2:server-renderer',
 
-    create(): SharedServerRenderer {
-      const serverRenderer = new ServerRenderer(serverRequest);
+    create: (env): SharedServerRenderer => {
+      const {rerenderWait = 50} = validateConfig(env.config) || {};
+      const serverRenderer = new ServerRenderer(serverRequest, rerenderWait);
 
       return {
         '1.0': () => ({featureService: serverRenderer})
