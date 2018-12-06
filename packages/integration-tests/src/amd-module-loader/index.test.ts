@@ -31,9 +31,7 @@ describe('integration test: "amd module loader"', () => {
     server = app.listen(port);
   });
 
-  afterAll(done => {
-    server.close(done);
-  });
+  afterAll(done => server.close(done));
 
   beforeEach(async () => {
     await page.goto(`http://localhost:${port}`);
