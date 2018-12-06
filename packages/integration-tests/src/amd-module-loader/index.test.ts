@@ -31,8 +31,8 @@ describe('integration test: "amd module loader"', () => {
     server = app.listen(port);
   });
 
-  afterAll(() => {
-    server.close();
+  afterAll(done => {
+    server.close(done);
   });
 
   beforeEach(async () => {
