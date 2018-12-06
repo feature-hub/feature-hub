@@ -77,18 +77,17 @@ describe('defineServerRenderer', () => {
         });
       });
 
-      describe('with an integrator, and a feature app that is completed in the first render pass, as consumers', () => {
+      describe('with an integrator, and a consumer that is completed in the first render pass', () => {
         it('resolves with an html string, in 1 render pass', async () => {
           const serverRendererIntegrator = serverRendererBinder(
             'test:integrator'
           ).featureService;
 
-          const serverRendererFeatureApp = serverRendererBinder(
-            'test:feature-app'
-          ).featureService;
+          const serverRendererConsumer = serverRendererBinder('test:consumer')
+            .featureService;
 
           const mockRender = jest.fn(() => {
-            serverRendererFeatureApp.register(() => true);
+            serverRendererConsumer.register(() => true);
 
             return 'testHtml';
           });
@@ -102,68 +101,25 @@ describe('defineServerRenderer', () => {
         });
       });
 
-      describe('with an integrator, and a feature app that is completed immediately after being loaded, as consumers', () => {
+      describe('with an integrator, and a consumer that is completed after triggering a rerender', () => {
         it('resolves with an html string, in 2 render passes', async () => {
           const serverRendererIntegrator = serverRendererBinder(
             'test:integrator'
           ).featureService;
 
-          const serverRendererFeatureApp = serverRendererBinder(
-            'test:feature-app'
-          ).featureService;
+          const serverRendererConsumer = serverRendererBinder('test:consumer')
+            .featureService;
 
-          const mockFeatureAppModuleLoadedEvent = Promise.resolve().then(() => {
-            serverRendererFeatureApp.register(() => true);
-          });
+          let completed = false;
 
           const mockRender = jest.fn(() => {
-            serverRendererIntegrator.waitForFeatureApp(
-              'http://example.com/foo.js',
-              mockFeatureAppModuleLoadedEvent
-            );
+            serverRendererConsumer.register(() => completed);
 
-            return 'testHtml';
-          });
-
-          const htmlPromise = serverRendererIntegrator.renderUntilCompleted(
-            mockRender
-          );
-
-          expect(await htmlPromise).toEqual('testHtml');
-          expect(mockRender).toHaveBeenCalledTimes(2);
-        });
-      });
-
-      describe('with an integrator, and a feature app that is completed after triggering a rerender, as consumers', () => {
-        it('resolves with an html string, in 3 render passes', async () => {
-          const serverRendererIntegrator = serverRendererBinder(
-            'test:integrator'
-          ).featureService;
-
-          const serverRendererFeatureApp = serverRendererBinder(
-            'test:feature-app'
-          ).featureService;
-
-          let featureAppCompleted = false;
-
-          const mockIsCompleted = jest.fn(() => {
-            setTimeout(async () => {
-              featureAppCompleted = true;
-              await serverRendererFeatureApp.rerender();
-            }, 0);
-
-            return featureAppCompleted;
-          });
-
-          const mockFeatureAppModuleLoadedEvent = Promise.resolve().then(() => {
-            serverRendererFeatureApp.register(mockIsCompleted);
-          });
-
-          const mockRender = jest.fn(() => {
-            serverRendererIntegrator.waitForFeatureApp(
-              'http://example.com/foo.js',
-              mockFeatureAppModuleLoadedEvent
-            );
+            // tslint:disable-next-line:no-floating-promises
+            Promise.resolve().then(async () => {
+              completed = true;
+              await serverRendererConsumer.rerender();
+            });
 
             return 'testHtml';
           });
@@ -173,7 +129,7 @@ describe('defineServerRenderer', () => {
           );
 
           expect(html).toEqual('testHtml');
-          expect(mockRender).toHaveBeenCalledTimes(3);
+          expect(mockRender).toHaveBeenCalledTimes(2);
         });
       });
 
@@ -189,27 +145,6 @@ describe('defineServerRenderer', () => {
           return expect(
             serverRenderer.renderUntilCompleted(mockRender)
           ).rejects.toEqual(mockError);
-        });
-      });
-
-      describe('when a feature app loading promise is rejected', () => {
-        it('renders once more after the error to give consumers the chance to synchronously handle the error', async () => {
-          const serverRenderer = serverRendererBinder('test').featureService;
-          const mockError = new Error('Failed to load feature app module.');
-
-          const mockRender = jest.fn(() => {
-            serverRenderer.waitForFeatureApp(
-              'http://example.com/foo.js',
-              Promise.reject(mockError)
-            );
-
-            return 'testHtml';
-          });
-
-          const html = await serverRenderer.renderUntilCompleted(mockRender);
-
-          expect(html).toEqual('testHtml');
-          expect(mockRender).toHaveBeenCalledTimes(2);
         });
       });
     });
