@@ -15,7 +15,7 @@ describe('integration test: "amd module loader"', () => {
   let port: number;
   let server: Server;
 
-  beforeAll(async () => {
+  beforeAll(async done => {
     const app = express();
 
     app.get('/', (_req, res) => {
@@ -28,7 +28,7 @@ describe('integration test: "amd module loader"', () => {
 
     // tslint:disable-next-line:await-promise
     port = await getPort();
-    server = app.listen(port);
+    server = app.listen(port, done);
   });
 
   afterAll(done => server.close(done));
