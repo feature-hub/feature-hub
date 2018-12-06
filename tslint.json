@@ -1,7 +1,7 @@
 {
   "extends": "ts-config",
   "linterOptions": {
-    "exclude": ["**/dist/**", "**/lib/**", "**/node_modules/**"]
+    "exclude": ["**/lib/**", "**/node_modules/**"]
   },
   "rules": {
     "no-default-export": false,

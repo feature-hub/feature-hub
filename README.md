@@ -671,13 +671,13 @@ project you agree to abide by its terms.
 - `yarn compile`: Compiles all sources.
 - `yarn generate-docs`: Generates the API documentation.
 - `yarn lint`: Lints all sources.
-- `yarn test`: Executes all unit tests.
+- `yarn test`: Executes all tests.
 - `yarn verify`: Verifies non-functional requirements (used on CI).
 - `yarn format`: Formats all files.
 - `yarn sort-package-jsons`: Sorts all `package.json` files.
-- `yarn watch`: Watches all sources and all unit tests.
+- `yarn watch`: Watches all sources and all tests.
 - `yarn watch:compile`: Watches all sources.
-- `yarn watch:test`: Watches all unit tests.
+- `yarn watch:test`: Watches all tests.
 
 ### Publishing a New Release
 

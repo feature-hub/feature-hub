@@ -1,3 +1,7 @@
+/**
+ * @jest-environment node
+ */
+
 let mockResponse: string;
 
 // tslint:disable promise-function-async
