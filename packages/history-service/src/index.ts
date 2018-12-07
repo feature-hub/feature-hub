@@ -49,7 +49,7 @@ export function defineHistoryService(
       let memoryHistory: history.MemoryHistory;
 
       return {
-        '1.1': (consumerId: string) => {
+        '1.1': consumerId => {
           const consumerHistories: ConsumerHistory[] = [];
 
           const registerConsumerHistory = <
@@ -64,13 +64,17 @@ export function defineHistoryService(
 
           const featureService: HistoryServiceV1 = {
             get rootLocation(): history.Location | undefined {
-              const rootHistory = browserHistory || memoryHistory;
-
-              return rootHistory && rootHistory.location;
+              return memoryHistory && memoryHistory.location;
             },
 
             createBrowserHistory(): history.History {
-              browserHistory = browserHistory || history.createBrowserHistory();
+              if (!browserHistory) {
+                browserHistory = history.createBrowserHistory();
+                // We need to replace the initial location with itself to make
+                // sure a key is defined.
+                // See also https://github.com/ReactTraining/history/issues/502
+                browserHistory.replace(browserHistory.location);
+              }
 
               return registerConsumerHistory(
                 new BrowserHistory(
@@ -90,11 +94,10 @@ export function defineHistoryService(
                 );
               }
 
-              memoryHistory =
-                memoryHistory ||
-                history.createMemoryHistory({
-                  initialEntries: [serverRequest.path]
-                });
+              if (!memoryHistory) {
+                const initialEntries = [serverRequest.path];
+                memoryHistory = history.createMemoryHistory({initialEntries});
+              }
 
               return registerConsumerHistory(
                 new MemoryHistory(
