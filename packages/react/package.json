@@ -21,7 +21,6 @@
     "@feature-hub/core": "^0.4.0"
   },
   "devDependencies": {
-    "@types/react": "^16.7.6",
     "react": "^16.6.3"
   },
   "peerDependencies": {

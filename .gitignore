@@ -1,6 +1,5 @@
 .cache
 coverage
-dist
 docs
 lerna-debug.log
 lib
