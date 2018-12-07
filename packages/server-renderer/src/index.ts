@@ -39,6 +39,29 @@ export class ServerRenderer implements ServerRendererV1 {
   ) {}
 
   public async renderUntilCompleted(render: () => string): Promise<string> {
+    if (this.debouncedRerender) {
+      throw new Error('Rendering has already been started.');
+    }
+
+    return this.startRendering(render);
+  }
+
+  public register(isCompleted: IsCompletedCallback): void {
+    this.consumerCompletedCallbacks.push(isCompleted);
+  }
+
+  public async rerender(): Promise<void> {
+    /* istanbul ignore if */
+    if (!this.debouncedRerender) {
+      throw new Error(
+        'Invalid state: ServerRenderer#debouncedRerender is undefined.'
+      );
+    }
+
+    return this.debouncedRerender();
+  }
+
+  private async startRendering(render: () => string): Promise<string> {
     return new Promise<string>((resolve, reject) => {
       const renderAndResolveIfCompleted = () => {
         try {
@@ -59,21 +82,6 @@ export class ServerRenderer implements ServerRendererV1 {
 
       renderAndResolveIfCompleted();
     });
-  }
-
-  public register(isCompleted: IsCompletedCallback): void {
-    this.consumerCompletedCallbacks.push(isCompleted);
-  }
-
-  public async rerender(): Promise<void> {
-    /* istanbul ignore if */
-    if (!this.debouncedRerender) {
-      throw new Error(
-        'Invalid state: ServerRenderer#debouncedRerender is undefined.'
-      );
-    }
-
-    return this.debouncedRerender();
   }
 
   private isRenderingCompleted(): boolean {

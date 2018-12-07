@@ -147,6 +147,19 @@ describe('defineServerRenderer', () => {
           ).rejects.toEqual(mockError);
         });
       });
+
+      describe('when renderUntilCompleted is called multiple times', () => {
+        it('throws an error', async () => {
+          const serverRenderer = serverRendererBinder('test').featureService;
+          const mockRender = jest.fn(() => 'testHtml');
+
+          await serverRenderer.renderUntilCompleted(mockRender);
+
+          return expect(
+            serverRenderer.renderUntilCompleted(mockRender)
+          ).rejects.toEqual(new Error('Rendering has already been started.'));
+        });
+      });
     });
   });
 });
