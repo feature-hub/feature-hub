@@ -40,7 +40,7 @@ describe('defineHistoryService', () => {
     let mockCreateRootLocation: jest.Mock;
     let mockGetConsumerPathFromRootLocation: jest.Mock;
 
-    const getLocation = (historyService: HistoryServiceV1) =>
+    const getRootLocation = (historyService: HistoryServiceV1) =>
       historyService.rootLocation &&
       `${historyService.rootLocation.pathname}${
         historyService.rootLocation.search
@@ -101,34 +101,30 @@ describe('defineHistoryService', () => {
     });
 
     describe('#get rootLocation()', () => {
-      describe('without a rootHistory', () => {
-        it('returns undefined', () => {
-          const historyServiceBinder = createHistoryServiceBinder();
-          const service = historyServiceBinder('test').featureService;
+      it('returns the initially created memoryHistory location', () => {
+        const historyServiceBinder = createHistoryServiceBinder();
+        const service = historyServiceBinder('test').featureService;
+        service.createMemoryHistory();
 
-          expect(service.rootLocation).toBeUndefined();
-        });
+        const expected = {pathname: '/example', search: ''};
+
+        expect(service.rootLocation).toMatchObject(expected);
       });
 
-      describe('with a memoryHistory as rootHistory', () => {
-        it('returns the initially created memoryHistory location', () => {
-          const historyServiceBinder = createHistoryServiceBinder();
+      describe('when a server request is defined', () => {
+        it('returns the initially created memoryHistory location for the given request path', () => {
+          const historyServiceBinder = createHistoryServiceBinder({
+            path: '/test',
+            cookies: {},
+            headers: {}
+          });
+
           const service = historyServiceBinder('test').featureService;
           service.createMemoryHistory();
 
-          const expected = {pathname: '/example', search: ''};
+          const expected = {pathname: '/test', search: ''};
 
           expect(service.rootLocation).toMatchObject(expected);
-        });
-      });
-
-      describe('with a browserHistory as rootHistory', () => {
-        it('returns undefined', () => {
-          const historyServiceBinder = createHistoryServiceBinder();
-          const service = historyServiceBinder('test').featureService;
-          service.createBrowserHistory();
-
-          expect(service.rootLocation).toBeUndefined();
         });
       });
     });
@@ -872,7 +868,7 @@ describe('defineHistoryService', () => {
           expect(history1.length).toEqual(2);
           expect(history2.length).toEqual(2);
 
-          expect(getLocation(historyService)).toBe('/rootpath');
+          expect(getRootLocation(historyService)).toBe('/rootpath');
         });
       });
 
@@ -912,7 +908,7 @@ describe('defineHistoryService', () => {
           expect(history1.length).toEqual(1);
           expect(history2.length).toEqual(1);
 
-          expect(getLocation(historyService)).toBe('/rootpath');
+          expect(getRootLocation(historyService)).toBe('/rootpath');
         });
       });
 
