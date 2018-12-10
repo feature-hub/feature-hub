@@ -7,7 +7,7 @@ import getPort from 'get-port';
 import {Server} from 'http';
 import webpack from 'webpack';
 import devMiddleware from 'webpack-dev-middleware';
-import {config} from './webpack-config';
+import {configs} from './webpack-config';
 
 jest.setTimeout(60000);
 
@@ -24,7 +24,7 @@ describe('integration test: "amd module loader"', () => {
       );
     });
 
-    app.use(devMiddleware(webpack(config), {publicPath: '/'}));
+    app.use(devMiddleware(webpack(configs), {publicPath: '/'}));
 
     // tslint:disable-next-line:await-promise
     port = await getPort();
