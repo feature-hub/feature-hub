@@ -93,8 +93,8 @@ The Feature Hub was designed with the following specific requirements in mind:
 - Micro frontends that are incompatible with the integration environment should
   fail early, and not just when the user interacts with the specific
   incompatible feature.
-- The composition of micro frontends should be possible without deployment of
-  the integration environment.
+- It should be possible to compose micro frontends without deployment of the
+  integration environment.
 
 In this implementation, a micro frontend is referred to as a **Feature App**.
 
