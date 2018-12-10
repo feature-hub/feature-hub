@@ -34,9 +34,13 @@ export interface SharedHistoryService extends SharedFeatureService {
   readonly '1.1': FeatureServiceBinder<HistoryServiceV1>;
 }
 
+export interface RequiredFeatureServices {
+  's2:server-renderer': ServerRendererV1;
+}
+
 export function defineHistoryService(
   rootLocationTransformer: RootLocationTransformer
-): FeatureServiceProviderDefinition {
+): FeatureServiceProviderDefinition<undefined, RequiredFeatureServices> {
   return {
     id: 's2:history',
     dependencies: {'s2:server-renderer': '^1.0'},
@@ -79,9 +83,9 @@ export function defineHistoryService(
             },
 
             createMemoryHistory(): history.MemoryHistory {
-              const {serverRequest} = env.featureServices[
+              const {serverRequest} = env.requiredFeatureServices[
                 's2:server-renderer'
-              ] as ServerRendererV1;
+              ];
 
               if (!serverRequest) {
                 throw new Error(

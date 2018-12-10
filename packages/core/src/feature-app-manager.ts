@@ -9,26 +9,28 @@ import {isFeatureAppModule} from './internal/is-feature-app-module';
 
 export interface FeatureAppEnvironment<
   TConfig,
-  TFeatureServices extends FeatureServices
+  TRequiredFeatureServices extends FeatureServices
 > {
   readonly config: TConfig;
-  readonly featureServices: TFeatureServices;
+  readonly requiredFeatureServices: TRequiredFeatureServices;
 }
 
 export interface FeatureAppDefinition<
-  TFeatureApp = unknown,
+  TFeatureApp,
   TConfig = unknown,
-  TFeatureServices extends FeatureServices = FeatureServices
+  TRequiredFeatureServices extends FeatureServices = FeatureServices
 > extends FeatureServiceConsumerDefinition {
   readonly ownFeatureServiceDefinitions?: FeatureServiceProviderDefinition[];
 
-  create(env: FeatureAppEnvironment<TConfig, TFeatureServices>): TFeatureApp;
+  create(
+    env: FeatureAppEnvironment<TConfig, TRequiredFeatureServices>
+  ): TFeatureApp;
 }
 
 export type ModuleLoader = (url: string) => Promise<unknown>;
 
-export interface FeatureAppScope<TFeatureApp = unknown> {
-  readonly featureApp: TFeatureApp;
+export interface FeatureAppScope {
+  readonly featureApp: unknown;
 
   destroy(): void;
 }
@@ -38,10 +40,12 @@ export interface FeatureAppConfigs {
 }
 
 export interface FeatureAppManagerLike {
-  getAsyncFeatureAppDefinition(url: string): AsyncValue<FeatureAppDefinition>;
+  getAsyncFeatureAppDefinition(
+    url: string
+  ): AsyncValue<FeatureAppDefinition<unknown>>;
 
   getFeatureAppScope(
-    featureAppDefinition: FeatureAppDefinition,
+    featureAppDefinition: FeatureAppDefinition<unknown>,
     idSpecifier?: string
   ): FeatureAppScope;
 
@@ -55,11 +59,11 @@ type FeatureAppScopeId = string;
 export class FeatureAppManager implements FeatureAppManagerLike {
   private readonly asyncFeatureAppDefinitions = new Map<
     FeatureAppModuleUrl,
-    AsyncValue<FeatureAppDefinition>
+    AsyncValue<FeatureAppDefinition<unknown>>
   >();
 
   private readonly featureAppDefinitionsWithRegisteredOwnFeatureServices = new WeakSet<
-    FeatureAppDefinition
+    FeatureAppDefinition<unknown>
   >();
 
   private readonly featureAppScopes = new Map<
@@ -75,7 +79,7 @@ export class FeatureAppManager implements FeatureAppManagerLike {
 
   public getAsyncFeatureAppDefinition(
     url: string
-  ): AsyncValue<FeatureAppDefinition> {
+  ): AsyncValue<FeatureAppDefinition<unknown>> {
     let asyncFeatureAppDefinition = this.asyncFeatureAppDefinitions.get(url);
 
     if (!asyncFeatureAppDefinition) {
@@ -88,7 +92,7 @@ export class FeatureAppManager implements FeatureAppManagerLike {
   }
 
   public getFeatureAppScope(
-    featureAppDefinition: FeatureAppDefinition,
+    featureAppDefinition: FeatureAppDefinition<unknown>,
     idSpecifier?: string
   ): FeatureAppScope {
     const {id: featureAppId} = featureAppDefinition;
@@ -126,7 +130,7 @@ export class FeatureAppManager implements FeatureAppManagerLike {
 
   private createAsyncFeatureAppDefinition(
     url: string
-  ): AsyncValue<FeatureAppDefinition> {
+  ): AsyncValue<FeatureAppDefinition<unknown>> {
     return new AsyncValue(
       this.loadModule(url).then(featureAppModule => {
         if (!isFeatureAppModule(featureAppModule)) {
@@ -149,7 +153,7 @@ export class FeatureAppManager implements FeatureAppManagerLike {
   }
 
   private registerOwnFeatureServices(
-    featureAppDefinition: FeatureAppDefinition
+    featureAppDefinition: FeatureAppDefinition<unknown>
   ): void {
     if (
       this.featureAppDefinitionsWithRegisteredOwnFeatureServices.has(
@@ -172,7 +176,7 @@ export class FeatureAppManager implements FeatureAppManagerLike {
   }
 
   private createFeatureAppScope(
-    featureAppDefinition: FeatureAppDefinition,
+    featureAppDefinition: FeatureAppDefinition<unknown>,
     idSpecifier: string | undefined,
     deleteFeatureAppScope: () => void
   ): FeatureAppScope {
@@ -185,7 +189,7 @@ export class FeatureAppManager implements FeatureAppManagerLike {
 
     const featureApp = featureAppDefinition.create({
       config,
-      featureServices: binding.featureServices
+      requiredFeatureServices: binding.featureServices
     });
 
     console.info(

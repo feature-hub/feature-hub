@@ -10,7 +10,7 @@ import {FeatureAppContainer} from '..';
 describe('FeatureAppContainer', () => {
   let mockManager: FeatureAppManagerLike;
   let mockGetFeatureAppScope: jest.Mock;
-  let mockFeatureAppDefinition: FeatureAppDefinition;
+  let mockFeatureAppDefinition: FeatureAppDefinition<unknown>;
   let mockFeatureAppScope: FeatureAppScope;
   let spyConsoleError: jest.SpyInstance;
 

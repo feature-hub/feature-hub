@@ -1,13 +1,13 @@
 import {FeatureAppDefinition} from '../feature-app-manager';
 
 export interface FeatureAppModule {
-  readonly default: FeatureAppDefinition;
+  readonly default: FeatureAppDefinition<unknown>;
 }
 
 function isFeatureAppDefinition(
   // tslint:disable-next-line:no-any
   maybeFeatureAppDefinition: any
-): maybeFeatureAppDefinition is FeatureAppDefinition {
+): maybeFeatureAppDefinition is FeatureAppDefinition<unknown> {
   if (
     typeof maybeFeatureAppDefinition !== 'object' ||
     !maybeFeatureAppDefinition
@@ -15,7 +15,9 @@ function isFeatureAppDefinition(
     return false;
   }
 
-  const featureAppDefinition = maybeFeatureAppDefinition as FeatureAppDefinition;
+  const featureAppDefinition = maybeFeatureAppDefinition as FeatureAppDefinition<
+    unknown
+  >;
 
   // tslint:disable-next-line:strict-type-predicates
   if (typeof featureAppDefinition.id !== 'string') {

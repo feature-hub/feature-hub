@@ -19,7 +19,7 @@ describe('FeatureAppManager', () => {
   let mockFeatureServicesBinding: FeatureServicesBinding;
   let mockFeatureServicesBindingUnbind: () => void;
   let mockModuleLoader: ModuleLoader;
-  let mockFeatureAppDefinition: FeatureAppDefinition;
+  let mockFeatureAppDefinition: FeatureAppDefinition<unknown>;
   let mockFeatureAppModule: FeatureAppModule | undefined;
   let mockFeatureAppCreate: jest.Mock;
   let mockFeatureApp: {};
@@ -160,7 +160,12 @@ describe('FeatureAppManager', () => {
       );
 
       expect(mockFeatureAppCreate.mock.calls).toEqual([
-        [{config: mockConfig, featureServices: {}}]
+        [
+          {
+            config: mockConfig,
+            requiredFeatureServices: mockFeatureServicesBinding.featureServices
+          }
+        ]
       ]);
     });
 

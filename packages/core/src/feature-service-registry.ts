@@ -16,18 +16,18 @@ export interface FeatureServices {
 
 export interface FeatureServiceEnvironment<
   TConfig,
-  TFeatureServices extends FeatureServices
+  TRequiredFeatureServices extends FeatureServices
 > {
   readonly config: TConfig;
-  readonly featureServices: TFeatureServices;
+  readonly requiredFeatureServices: TRequiredFeatureServices;
 }
 
 export interface FeatureServiceProviderDefinition<
   TConfig = unknown,
-  TFeatureServices extends FeatureServices = FeatureServices
+  TRequiredFeatureServices extends FeatureServices = FeatureServices
 > extends FeatureServiceConsumerDefinition {
   create(
-    env: FeatureServiceEnvironment<TConfig, TFeatureServices>
+    env: FeatureServiceEnvironment<TConfig, TRequiredFeatureServices>
   ): SharedFeatureService;
 }
 
@@ -37,12 +37,12 @@ export interface FeatureServiceBinding<TFeatureService> {
   unbind?(): void;
 }
 
-export type FeatureServiceBinder<TFeatureService = unknown> = (
+export type FeatureServiceBinder<TFeatureService> = (
   uniqueConsumerId: string
 ) => FeatureServiceBinding<TFeatureService>;
 
 export interface SharedFeatureService {
-  readonly [version: string]: FeatureServiceBinder | undefined;
+  readonly [version: string]: FeatureServiceBinder<unknown> | undefined;
 }
 
 export interface FeatureServicesBinding {
@@ -110,7 +110,10 @@ export class FeatureServiceRegistry implements FeatureServiceRegistryLike {
 
         this.sharedFeatureServices.set(
           providerId,
-          providerDefinition.create({config, featureServices})
+          providerDefinition.create({
+            config,
+            requiredFeatureServices: featureServices
+          })
         );
 
         console.info(

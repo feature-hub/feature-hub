@@ -18,7 +18,7 @@ export type FeatureApp = DomFeatureApp | ReactFeatureApp;
 
 export interface FeatureAppContainerProps {
   readonly manager: FeatureAppManagerLike;
-  readonly featureAppDefinition: FeatureAppDefinition;
+  readonly featureAppDefinition: FeatureAppDefinition<unknown>;
   readonly idSpecifier?: string;
 }
 

@@ -1,7 +1,12 @@
 // tslint:disable:no-non-null-assertion no-unbound-method
-import {FeatureServiceBinder, FeatureServices} from '@feature-hub/core';
+import {FeatureServiceBinder} from '@feature-hub/core';
 import {ServerRendererV1, ServerRequest} from '@feature-hub/server-renderer';
-import {History, HistoryServiceV1, defineHistoryService} from '..';
+import {
+  History,
+  HistoryServiceV1,
+  RequiredFeatureServices,
+  defineHistoryService
+} from '..';
 import {RootLocationTransformer} from '../root-location-transformer';
 
 describe('defineHistoryService', () => {
@@ -64,13 +69,13 @@ describe('defineHistoryService', () => {
       ) => {
         const mockServerRenderer: ServerRendererV1 = {serverRequest};
 
-        const mockFeatureServices: FeatureServices = {
+        const mockRequiredFeatureServices: RequiredFeatureServices = {
           's2:server-renderer': mockServerRenderer
         };
 
         const mockEnv = {
           config: undefined,
-          featureServices: mockFeatureServices
+          requiredFeatureServices: mockRequiredFeatureServices
         };
 
         const historyServiceBinder = defineHistoryService(

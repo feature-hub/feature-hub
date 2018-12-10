@@ -14,12 +14,12 @@ import {FeatureAppLoader} from '..';
 describe('FeatureAppLoader (on Node.js)', () => {
   let mockManager: FeatureAppManagerLike;
   let mockGetAsyncFeatureAppDefinition: jest.Mock;
-  let mockAsyncFeatureAppDefinition: AsyncValue<FeatureAppDefinition>;
+  let mockAsyncFeatureAppDefinition: AsyncValue<FeatureAppDefinition<unknown>>;
   let spyConsoleError: jest.SpyInstance;
 
   beforeEach(() => {
     mockAsyncFeatureAppDefinition = new AsyncValue(
-      new Promise<FeatureAppDefinition>(jest.fn())
+      new Promise<FeatureAppDefinition<unknown>>(jest.fn())
     );
 
     mockGetAsyncFeatureAppDefinition = jest.fn(
