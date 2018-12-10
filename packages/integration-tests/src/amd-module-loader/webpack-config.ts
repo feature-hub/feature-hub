@@ -23,7 +23,7 @@ const baseConfig: Configuration = {
   }
 };
 
-export const config: Configuration[] = [
+export const configs: Configuration[] = [
   {
     ...baseConfig,
     entry: join(__dirname, './feature-app.tsx'),
