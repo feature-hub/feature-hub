@@ -16,7 +16,7 @@ export interface FeatureAppLoaderProps {
 }
 
 interface FeatureAppLoaderState {
-  readonly featureAppDefinition?: FeatureAppDefinition<unknown>;
+  readonly featureAppDefinition?: FeatureAppDefinition;
   readonly loadingError?: boolean;
 }
 

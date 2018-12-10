@@ -1,13 +1,17 @@
 import {
+  FeatureAppEnvironment,
   FeatureServiceBinder,
   FeatureServiceProviderDefinition
 } from '@feature-hub/core';
 import {ServerRendererV1, defineServerRenderer} from '..';
 
 describe('defineServerRenderer', () => {
+  let mockEnv: FeatureAppEnvironment<undefined, {}>;
   let serverRendererDefinition: FeatureServiceProviderDefinition;
 
   beforeEach(() => {
+    mockEnv = {config: undefined, featureServices: {}};
+
     const serverRequest = {
       path: '/app',
       cookies: {},
@@ -24,10 +28,7 @@ describe('defineServerRenderer', () => {
 
   describe('#create', () => {
     it('creates a shared feature service containing version 1.0', () => {
-      const sharedServerRenderer = serverRendererDefinition.create({
-        featureServices: {},
-        config: {}
-      });
+      const sharedServerRenderer = serverRendererDefinition.create(mockEnv);
 
       expect(sharedServerRenderer['1.0']).toBeDefined();
     });
@@ -47,10 +48,9 @@ describe('defineServerRenderer', () => {
 
       serverRendererDefinition = defineServerRenderer(serverRequest);
 
-      const serverRendererBinder = serverRendererDefinition.create({
-        featureServices: {},
-        config: {}
-      })['1.0'] as FeatureServiceBinder<ServerRendererV1>;
+      const serverRendererBinder = serverRendererDefinition.create(mockEnv)[
+        '1.0'
+      ] as FeatureServiceBinder<ServerRendererV1>;
 
       expect(
         serverRendererBinder('test:1').featureService.serverRequest

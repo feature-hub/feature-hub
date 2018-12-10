@@ -1,6 +1,5 @@
 import {
   FeatureServiceBinder,
-  FeatureServiceConsumerEnvironment,
   FeatureServiceProviderDefinition,
   SharedFeatureService
 } from '@feature-hub/core';
@@ -42,7 +41,7 @@ export function defineHistoryService(
     id: 's2:history',
     dependencies: {'s2:server-renderer': '^1.0'},
 
-    create: ({featureServices}: FeatureServiceConsumerEnvironment) => {
+    create: (env): SharedHistoryService => {
       let browserHistory: history.History;
       let memoryHistory: history.MemoryHistory;
 
@@ -80,7 +79,7 @@ export function defineHistoryService(
             },
 
             createMemoryHistory(): history.MemoryHistory {
-              const {serverRequest} = featureServices[
+              const {serverRequest} = env.featureServices[
                 's2:server-renderer'
               ] as ServerRendererV1;
 

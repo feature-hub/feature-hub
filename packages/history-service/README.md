@@ -115,7 +115,7 @@ export default {
   },
 
   create(env) {
-    const historyService = env.featureService['s2:history'];
+    const historyService = env.featureServices['s2:history'];
     const memoryHistory = historyService.createMemoryHistory();
 
     return {
@@ -148,8 +148,7 @@ import {
 } from '@feature-hub/history-service';
 import {defineServerRenderer} from '@feature-hub/server-renderer';
 
-const configs = {}; // import configs from somewhere
-const registry = new FeatureServiceRegistry(configs);
+const registry = new FeatureServiceRegistry();
 
 const rootLocationTransformer = createRootLocationTransformer({
   consumerPathsQueryParamName: '---'
@@ -176,8 +175,7 @@ import {
 } from '@feature-hub/history-service';
 import {defineServerRenderer} from '@feature-hub/server-renderer';
 
-const configs = {}; // import configs from somewhere
-const registry = new FeatureServiceRegistry(configs);
+const registry = new FeatureServiceRegistry();
 
 const rootLocationTransformer = createRootLocationTransformer({
   consumerPathsQueryParamName: '---'

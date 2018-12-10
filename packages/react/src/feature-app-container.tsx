@@ -18,7 +18,7 @@ export type FeatureApp = DomFeatureApp | ReactFeatureApp;
 
 export interface FeatureAppContainerProps {
   readonly manager: FeatureAppManagerLike;
-  readonly featureAppDefinition: FeatureAppDefinition<unknown>;
+  readonly featureAppDefinition: FeatureAppDefinition;
   readonly idSpecifier?: string;
 }
 
@@ -32,7 +32,7 @@ const inBrowser =
 export class FeatureAppContainer extends React.PureComponent<
   FeatureAppContainerProps
 > {
-  private readonly featureAppScope?: FeatureAppScope<unknown>;
+  private readonly featureAppScope?: FeatureAppScope;
   private readonly featureApp?: FeatureApp;
   private readonly containerRef = React.createRef<HTMLDivElement>();
 

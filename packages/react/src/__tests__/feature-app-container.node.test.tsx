@@ -14,8 +14,8 @@ import {FeatureAppContainer} from '..';
 describe('FeatureAppContainer (on Node.js)', () => {
   let mockManager: FeatureAppManagerLike;
   let mockGetFeatureAppScope: jest.Mock;
-  let mockFeatureAppDefinition: FeatureAppDefinition<unknown>;
-  let mockFeatureAppScope: FeatureAppScope<unknown>;
+  let mockFeatureAppDefinition: FeatureAppDefinition;
+  let mockFeatureAppScope: FeatureAppScope;
   let spyConsoleError: jest.SpyInstance;
 
   beforeEach(() => {

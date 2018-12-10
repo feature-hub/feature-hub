@@ -10,7 +10,7 @@ import {FeatureAppContainer, FeatureAppLoader} from '..';
 describe('FeatureAppLoader', () => {
   let mockManager: FeatureAppManagerLike;
   let mockGetAsyncFeatureAppDefinition: jest.Mock;
-  let mockAsyncFeatureAppDefinition: AsyncValue<FeatureAppDefinition<unknown>>;
+  let mockAsyncFeatureAppDefinition: AsyncValue<FeatureAppDefinition>;
   let spyConsoleError: jest.SpyInstance;
 
   beforeEach(() => {
@@ -19,7 +19,7 @@ describe('FeatureAppLoader', () => {
     }
 
     mockAsyncFeatureAppDefinition = new AsyncValue(
-      new Promise<FeatureAppDefinition<unknown>>(jest.fn())
+      new Promise<FeatureAppDefinition>(jest.fn())
     );
 
     mockGetAsyncFeatureAppDefinition = jest.fn(
@@ -92,7 +92,7 @@ describe('FeatureAppLoader', () => {
   });
 
   describe('when a feature app definition is synchronously available', () => {
-    let mockFeatureAppDefinition: FeatureAppDefinition<unknown>;
+    let mockFeatureAppDefinition: FeatureAppDefinition;
 
     beforeEach(() => {
       mockFeatureAppDefinition = {
@@ -158,7 +158,7 @@ describe('FeatureAppLoader', () => {
   });
 
   describe('when a feature app definition is loaded asynchronously', () => {
-    let mockFeatureAppDefinition: FeatureAppDefinition<unknown>;
+    let mockFeatureAppDefinition: FeatureAppDefinition;
 
     beforeEach(() => {
       mockFeatureAppDefinition = {
@@ -167,7 +167,7 @@ describe('FeatureAppLoader', () => {
       };
 
       mockAsyncFeatureAppDefinition = new AsyncValue(
-        new Promise<FeatureAppDefinition<unknown>>(resolve =>
+        new Promise<FeatureAppDefinition>(resolve =>
           // defer to next event loop turn to guarantee asynchronism
           setImmediate(() => resolve(mockFeatureAppDefinition))
         )
@@ -224,7 +224,7 @@ describe('FeatureAppLoader', () => {
       mockError = new Error('Failed to load feature app module.');
 
       mockAsyncFeatureAppDefinition = new AsyncValue(
-        new Promise<FeatureAppDefinition<unknown>>((_, reject) =>
+        new Promise<FeatureAppDefinition>((_, reject) =>
           // defer to next event loop turn to guarantee asynchronism
           setImmediate(() => reject(mockError))
         )
