@@ -88,7 +88,7 @@ export default {
   },
 
   create(env) {
-    const historyService = env.requiredFeatureServices['s2:history'];
+    const historyService = env.featureServices['s2:history'];
     const browserHistory = historyService.createBrowserHistory();
 
     return {
@@ -115,7 +115,7 @@ export default {
   },
 
   create(env) {
-    const historyService = env.requiredFeatureServices['s2:history'];
+    const historyService = env.featureServices['s2:history'];
     const memoryHistory = historyService.createMemoryHistory();
 
     return {

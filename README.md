@@ -177,8 +177,9 @@ The method `create` takes the single argument `env`, which has the following
 properties:
 
 1.  `config` — a config object that is provided by the integrator.
-1.  `requiredFeatureServices` — an object of required Feature Services that are
-    [semver-compatible](https://semver.org) with the declared dependencies.
+1.  `featureServices` — an object of required Feature Services that are
+    [semver-compatible](https://semver.org) with the declared dependencies in
+    the Feature App definition.
 
 A Feature App can either be a "React Feature App" or a "DOM Feature App".
 
@@ -238,8 +239,7 @@ export default {
   ownFeatureServiceDefinitions: [myFeatureServiceDefinition],
 
   create(env) {
-    const myFeatureService =
-      env.requiredFeatureServices['acme:my-feature-service'];
+    const myFeatureService = env.featureServices['acme:my-feature-service'];
 
     myFeatureService.init(42);
 
@@ -303,8 +303,9 @@ shared state. The method takes the single argument `env`, which has the
 following properties:
 
 1.  `config` — a config object that is provided by the integrator.
-1.  `requiredFeatureServices` — an object of required Feature Services that are
-    [semver-compatible](https://semver.org) with the declared dependencies.
+1.  `featureServices` — an object of required Feature Services that are
+    [semver-compatible](https://semver.org) with the declared dependencies in
+    the Feature App definition.
 
 A Feature Service provider can support multiple major versions at the same time
 which have access to the same underlying shared state. The `create` method must
@@ -388,7 +389,7 @@ function create(env) {
   const decrement = () => void --count;
   const increment = () => void ++count;
 
-  const logger = env.requiredFeatureServices['acme:logger'];
+  const logger = env.featureServices['acme:logger'];
 
   const v1 = uniqueConsumerId => ({
     featureService: {

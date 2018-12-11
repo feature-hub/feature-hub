@@ -90,13 +90,13 @@ describe('FeatureServiceRegistry', () => {
 
     function testRegistrationOrderABC(): void {
       expect(providerDefinitionA.create.mock.calls).toEqual([
-        [{config: configs.a, requiredFeatureServices: {}}]
+        [{config: configs.a, featureServices: {}}]
       ]);
 
       expect(binderA.mock.calls).toEqual([['b'], ['c']]);
 
       expect(providerDefinitionB.create.mock.calls).toEqual([
-        [{requiredFeatureServices: {a: featureServiceA}}]
+        [{featureServices: {a: featureServiceA}}]
       ]);
 
       expect(binderB.mock.calls).toEqual([['c']]);
@@ -105,7 +105,7 @@ describe('FeatureServiceRegistry', () => {
         [
           {
             config: configs.c,
-            requiredFeatureServices: {a: featureServiceA, b: featureServiceB}
+            featureServices: {a: featureServiceA, b: featureServiceB}
           }
         ]
       ]);
@@ -161,7 +161,7 @@ describe('FeatureServiceRegistry', () => {
       registry.registerProviders([providerDefinitionA], 'test');
 
       expect(providerDefinitionA.create.mock.calls).toEqual([
-        [{config: configs.a, requiredFeatureServices: {}}]
+        [{config: configs.a, featureServices: {}}]
       ]);
 
       expect(binderA.mock.calls).toEqual([]);

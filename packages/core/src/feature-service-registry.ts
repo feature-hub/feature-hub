@@ -16,18 +16,26 @@ export interface FeatureServices {
 
 export interface FeatureServiceEnvironment<
   TConfig,
-  TRequiredFeatureServices extends FeatureServices
+  TFeatureServices extends FeatureServices
 > {
+  /**
+   * A consumer config object that is provided by the integrator.
+   */
   readonly config: TConfig;
-  readonly requiredFeatureServices: TRequiredFeatureServices;
+
+  /**
+   * An object of required Feature Services that are semver-compatible with the
+   * declared dependencies in the Feature App definition.
+   */
+  readonly featureServices: TFeatureServices;
 }
 
 export interface FeatureServiceProviderDefinition<
   TConfig = unknown,
-  TRequiredFeatureServices extends FeatureServices = FeatureServices
+  TFeatureServices extends FeatureServices = FeatureServices
 > extends FeatureServiceConsumerDefinition {
   create(
-    env: FeatureServiceEnvironment<TConfig, TRequiredFeatureServices>
+    env: FeatureServiceEnvironment<TConfig, TFeatureServices>
   ): SharedFeatureService;
 }
 
@@ -110,10 +118,7 @@ export class FeatureServiceRegistry implements FeatureServiceRegistryLike {
 
         this.sharedFeatureServices.set(
           providerId,
-          providerDefinition.create({
-            config,
-            requiredFeatureServices: featureServices
-          })
+          providerDefinition.create({config, featureServices})
         );
 
         console.info(

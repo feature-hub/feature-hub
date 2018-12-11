@@ -9,22 +9,28 @@ import {isFeatureAppModule} from './internal/is-feature-app-module';
 
 export interface FeatureAppEnvironment<
   TConfig,
-  TRequiredFeatureServices extends FeatureServices
+  TFeatureServices extends FeatureServices
 > {
+  /**
+   * A consumer config object that is provided by the integrator.
+   */
   readonly config: TConfig;
-  readonly requiredFeatureServices: TRequiredFeatureServices;
+
+  /**
+   * An object of required Feature Services that are semver-compatible with the
+   * declared dependencies in the Feature App definition.
+   */
+  readonly featureServices: TFeatureServices;
 }
 
 export interface FeatureAppDefinition<
   TFeatureApp,
   TConfig = unknown,
-  TRequiredFeatureServices extends FeatureServices = FeatureServices
+  TFeatureServices extends FeatureServices = FeatureServices
 > extends FeatureServiceConsumerDefinition {
   readonly ownFeatureServiceDefinitions?: FeatureServiceProviderDefinition[];
 
-  create(
-    env: FeatureAppEnvironment<TConfig, TRequiredFeatureServices>
-  ): TFeatureApp;
+  create(env: FeatureAppEnvironment<TConfig, TFeatureServices>): TFeatureApp;
 }
 
 export type ModuleLoader = (url: string) => Promise<unknown>;
@@ -189,7 +195,7 @@ export class FeatureAppManager implements FeatureAppManagerLike {
 
     const featureApp = featureAppDefinition.create({
       config,
-      requiredFeatureServices: binding.featureServices
+      featureServices: binding.featureServices
     });
 
     console.info(

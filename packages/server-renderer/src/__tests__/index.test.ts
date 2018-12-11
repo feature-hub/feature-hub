@@ -10,7 +10,7 @@ describe('defineServerRenderer', () => {
   let serverRendererDefinition: FeatureServiceProviderDefinition;
 
   beforeEach(() => {
-    mockEnv = {config: undefined, requiredFeatureServices: {}};
+    mockEnv = {config: undefined, featureServices: {}};
 
     const serverRequest = {
       path: '/app',

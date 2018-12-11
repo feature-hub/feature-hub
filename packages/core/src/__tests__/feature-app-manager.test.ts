@@ -29,7 +29,7 @@ describe('FeatureAppManager', () => {
     mockFeatureServicesBindingUnbind = jest.fn();
 
     mockFeatureServicesBinding = {
-      featureServices: {},
+      featureServices: {foo: {}},
       unbind: mockFeatureServicesBindingUnbind
     };
 
@@ -159,13 +159,10 @@ describe('FeatureAppManager', () => {
         [[mockFeatureAppDefinition, 'testIdSpecifier']]
       );
 
+      const {featureServices} = mockFeatureServicesBinding;
+
       expect(mockFeatureAppCreate.mock.calls).toEqual([
-        [
-          {
-            config: mockConfig,
-            requiredFeatureServices: mockFeatureServicesBinding.featureServices
-          }
-        ]
+        [{config: mockConfig, featureServices}]
       ]);
     });
 
