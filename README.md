@@ -148,8 +148,8 @@ of an `id`, a `dependencies` object, and the method `create`.
 
 #### Feature App ID
 
-A Feature App definition must declare an ID. It is recommended to use namespaces
-for the Feature App ID to avoid naming conflicts, e.g.:
+A Feature App definition must declare an `id`. It is recommended to use
+namespaces for the Feature App ID to avoid naming conflicts, e.g.:
 
 ```js
 const id = 'acme:my-feature-app';
@@ -280,7 +280,7 @@ A Feature Service definition consists of an `id`, a `dependencies` object, and a
 
 #### Feature Service ID
 
-A Feature Service definition must declare an ID. It is recommended to use
+A Feature Service definition must declare an `id`. It is recommended to use
 namespaces for the Feature Service ID to avoid naming conflicts, e.g.:
 
 ```js
