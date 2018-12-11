@@ -647,8 +647,9 @@ integrator, e.g.:
 
 #### Providing Config Objects
 
-The integrator can provide config objects for Feature Services and Feature Apps
-via the Feature Service registry and Feature App manager:
+The integrator can provide config objects for Feature Services and Feature Apps,
+associated by their respective IDs, via the Feature Service registry and Feature
+App manager:
 
 ```js
 const featureServiceConfigs = {'acme:my-feature-service': {foo: 'bar'}};
