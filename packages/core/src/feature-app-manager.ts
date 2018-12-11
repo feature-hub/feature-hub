@@ -12,7 +12,7 @@ export interface FeatureAppEnvironment<
   TFeatureServices extends FeatureServices
 > {
   /**
-   * A consumer config object that is provided by the integrator.
+   * A Feature App config object that is provided by the integrator.
    */
   readonly config: TConfig;
 

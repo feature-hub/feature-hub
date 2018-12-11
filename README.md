@@ -155,10 +155,13 @@ const id = 'acme:my-feature-app';
 ```
 
 This ID is used to look up the config for a Feature App. Furthermore, it is used
-as a consumer ID for its required Feature Services. If there is more than one
-instance of a Feature App on a single page, the integrator must set a unique ID
-specifier for each Feature App with the same ID. The `FeatureServiceRegistry`
-then uses the ID together with the ID specifier to create a unique consumer ID.
+as a consumer ID for the [bindings](#feature-service-binding) of the Feature
+Services that this Feature App depends on.
+
+If there is more than one instance of a Feature App on a single page, the
+integrator must set a unique ID specifier for each Feature App with the same ID.
+The `FeatureServiceRegistry` then uses the ID together with the ID specifier to
+create a unique consumer ID.
 
 #### Feature App Dependencies
 
@@ -176,7 +179,7 @@ const dependencies = {
 The method `create` takes the single argument `env`, which has the following
 properties:
 
-1.  `config` — a config object that is provided by the integrator.
+1.  `config` — a Feature App config object that is provided by the integrator.
 1.  `featureServices` — an object of required Feature Services that are
     [semver-compatible](https://semver.org) with the declared dependencies in
     the Feature App definition.
@@ -285,8 +288,9 @@ const id = 'acme:my-feature-service';
 ```
 
 This ID is used to look up the config for a Feature Service. It is also used as
-a consumer ID for its required Feature Services. And it can be referenced by
-other consumers in their `dependencies` declaration along with a
+a consumer ID for the [bindings](#feature-service-binding) of the Feature
+Services that this Feature Service depends on. And it can be referenced by other
+consumers in their `dependencies` declaration along with a
 [semver](https://semver.org) version string, e.g.:
 
 ```js
@@ -302,7 +306,8 @@ the Feature Service registry. It should store, and possibly initialize, any
 shared state. The method takes the single argument `env`, which has the
 following properties:
 
-1.  `config` — a config object that is provided by the integrator.
+1.  `config` — a Feature Service config object that is provided by the
+    integrator.
 1.  `featureServices` — an object of required Feature Services that are
     [semver-compatible](https://semver.org) with the declared dependencies in
     the Feature App definition.
