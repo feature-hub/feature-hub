@@ -32,7 +32,7 @@ const inBrowser =
 export class FeatureAppContainer extends React.PureComponent<
   FeatureAppContainerProps
 > {
-  private readonly featureAppScope?: FeatureAppScope<unknown>;
+  private readonly featureAppScope?: FeatureAppScope;
   private readonly featureApp?: FeatureApp;
   private readonly containerRef = React.createRef<HTMLDivElement>();
 

@@ -23,7 +23,7 @@ function createTuple<TFirst, TSecond>(
 
 function createDependencyEdges(
   dependentName: string,
-  dependencies: Dependencies = {}
+  dependencies: Dependencies = Object.create(null)
 ): DependencyEdges {
   return Object.keys(dependencies).map(createTuple(dependentName));
 }

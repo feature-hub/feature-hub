@@ -93,9 +93,8 @@ The Feature Hub was designed with the following specific requirements in mind:
 - Micro frontends that are incompatible with the integration environment should
   fail early, and not just when the user interacts with the specific
   incompatible feature.
-- The composition environment for micro frontends should be flexible. Not only
-  preprogrammed templates in a Node.js app, but also integrations from CMS
-  environments where authors compose pages should be possible.
+- It should be possible to compose micro frontends without deployment of the
+  integration environment.
 
 In this implementation, a micro frontend is referred to as a **Feature App**.
 
@@ -156,10 +155,13 @@ const id = 'acme:my-feature-app';
 ```
 
 This ID is used to look up the config for a Feature App. Furthermore, it is used
-as a consumer ID for Feature Services. If there is more than one instance of a
-Feature App on a single page, the integrator must set a unique ID specifier for
-each Feature App with the same ID. The `FeatureServiceRegistry` then uses the ID
-together with the ID specifier to create a unique consumer ID.
+as a consumer ID for the [bindings](#feature-service-binding) of the Feature
+Services that this Feature App depends on.
+
+If there is more than one instance of a Feature App on a single page, the
+integrator must set a unique ID specifier for each Feature App with the same ID.
+The `FeatureServiceRegistry` then uses the ID together with the ID specifier to
+create a unique consumer ID.
 
 #### Feature App Dependencies
 
@@ -177,9 +179,10 @@ const dependencies = {
 The method `create` takes the single argument `env`, which has the following
 properties:
 
-1.  `featureServices` — an object of Feature Services that are
-    [semver-compatible](https://semver.org) with the declared dependencies.
-1.  `config` — a consumer config object that is provided by the integrator.
+1.  `config` — a Feature App config object that is provided by the integrator.
+1.  `featureServices` — an object of required Feature Services that are
+    [semver-compatible](https://semver.org) with the declared dependencies in
+    the Feature App definition.
 
 A Feature App can either be a "React Feature App" or a "DOM Feature App".
 
@@ -191,7 +194,7 @@ A Feature App can either be a "React Feature App" or a "DOM Feature App".
       id,
       dependencies,
 
-      create(env) {
+      create() {
         return {
           render: () => <div>Foo</div>
         };
@@ -211,7 +214,7 @@ A Feature App can either be a "React Feature App" or a "DOM Feature App".
       id,
       dependencies,
 
-      create(env) {
+      create() {
         return {
           attachTo(container) {
             container.innerText = 'Foo';
@@ -276,16 +279,19 @@ A Feature Service definition consists of an `id`, a `dependencies` object, and a
 
 #### Feature Service ID & Dependencies
 
-A Feature Service provider must declare a unique consumer `id`. It is
-recommended to use namespaces in the Feature Service ID to avoid naming
+A Feature Service definition must declare a unique consumer `id`. It is
+recommended to use namespaces for the Feature Service ID to avoid naming
 conflicts, e.g.:
 
 ```js
 const id = 'acme:my-feature-service';
 ```
 
-The Feature Service ID is referenced by other consumers in their `dependencies`
-declaration along with a [semver](https://semver.org) version string, e.g.:
+This ID is used to look up the config for a Feature Service. It is also used as
+a consumer ID for the [bindings](#feature-service-binding) of the Feature
+Services that this Feature Service depends on. And it can be referenced by other
+consumers in their `dependencies` declaration along with a
+[semver](https://semver.org) version string, e.g.:
 
 ```js
 const dependencies = {
@@ -300,9 +306,11 @@ the Feature Service registry. It should store, and possibly initialize, any
 shared state. The method takes the single argument `env`, which has the
 following properties:
 
-1.  `featureServices` — an object with Feature Services that are
-    [semver-compatible](https://semver.org) with the declared dependencies.
-1.  `config` — a consumer config object that is provided by the integrator.
+1.  `config` — a Feature Service config object that is provided by the
+    integrator.
+1.  `featureServices` — an object of required Feature Services that are
+    [semver-compatible](https://semver.org) with the declared dependencies in
+    the Feature App definition.
 
 A Feature Service provider can support multiple major versions at the same time
 which have access to the same underlying shared state. The `create` method must
@@ -437,7 +445,7 @@ consumer-specific counts.
 With our Feature Service binders, this could be implemented like this:
 
 ```js
-function create(env) {
+function create() {
   // Shared state lives here.
   let consumerCounts = {};
 
@@ -489,8 +497,7 @@ building blocks:
 There are a few steps an integrator needs to follow to compose a web page of
 multiple Feature Apps that share state through Feature Services:
 
-1.  Gather consumer configs (for Feature Apps and Feature Services).
-1.  Instantiate a `FeatureServiceRegistry` (with consumer configs).
+1.  Instantiate a `FeatureServiceRegistry`.
 1.  Register a set of Feature Services at the registry.
 1.  Create a `FeatureAppManager` singleton instance with the registry and a
     browser or Node.js module loader.
@@ -501,8 +508,7 @@ A typical integrator bootstrap code would look like this:
 import {FeatureAppManager, FeatureServiceRegistry} from '@feature-hub/core';
 import {loadCommonJsModule} from '@feature-hub/module-loader/node';
 
-const configs = {}; // import configs from somewhere
-const registry = new FeatureServiceRegistry(configs);
+const registry = new FeatureServiceRegistry();
 
 const featureServiceDefinitions = [
   sampleFeatureServiceDefinition1, // import definitions from somewhere

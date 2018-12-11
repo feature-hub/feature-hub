@@ -1,29 +1,48 @@
 import {AsyncValue} from './async-value';
 import {
   FeatureServiceConsumerDefinition,
-  FeatureServiceConsumerEnvironment,
   FeatureServiceProviderDefinition,
-  FeatureServiceRegistryLike
+  FeatureServiceRegistryLike,
+  FeatureServices
 } from './feature-service-registry';
 import {isFeatureAppModule} from './internal/is-feature-app-module';
 
-export interface FeatureAppDefinition<TFeatureApp>
-  extends FeatureServiceConsumerDefinition {
-  readonly ownFeatureServiceDefinitions?: FeatureServiceProviderDefinition[];
+export interface FeatureAppEnvironment<
+  TConfig,
+  TFeatureServices extends FeatureServices
+> {
+  /**
+   * A Feature App config object that is provided by the integrator.
+   */
+  readonly config: TConfig;
 
-  create(env: FeatureServiceConsumerEnvironment): TFeatureApp;
+  /**
+   * An object of required Feature Services that are semver-compatible with the
+   * declared dependencies in the Feature App definition.
+   */
+  readonly featureServices: TFeatureServices;
 }
 
-export interface FeatureAppModule<TFeatureApp> {
-  readonly default: FeatureAppDefinition<TFeatureApp>;
+export interface FeatureAppDefinition<
+  TFeatureApp,
+  TConfig = unknown,
+  TFeatureServices extends FeatureServices = FeatureServices
+> extends FeatureServiceConsumerDefinition {
+  readonly ownFeatureServiceDefinitions?: FeatureServiceProviderDefinition[];
+
+  create(env: FeatureAppEnvironment<TConfig, TFeatureServices>): TFeatureApp;
 }
 
 export type ModuleLoader = (url: string) => Promise<unknown>;
 
-export interface FeatureAppScope<TFeatureApp> {
-  readonly featureApp: TFeatureApp;
+export interface FeatureAppScope {
+  readonly featureApp: unknown;
 
   destroy(): void;
+}
+
+export interface FeatureAppConfigs {
+  readonly [featureAppId: string]: unknown;
 }
 
 export interface FeatureAppManagerLike {
@@ -34,7 +53,7 @@ export interface FeatureAppManagerLike {
   getFeatureAppScope(
     featureAppDefinition: FeatureAppDefinition<unknown>,
     idSpecifier?: string
-  ): FeatureAppScope<unknown>;
+  ): FeatureAppScope;
 
   preloadFeatureApp(url: string): Promise<void>;
   destroy(): void;
@@ -55,12 +74,13 @@ export class FeatureAppManager implements FeatureAppManagerLike {
 
   private readonly featureAppScopes = new Map<
     FeatureAppScopeId,
-    FeatureAppScope<unknown>
+    FeatureAppScope
   >();
 
   public constructor(
     private readonly featureServiceRegistry: FeatureServiceRegistryLike,
-    private readonly loadModule: ModuleLoader
+    private readonly loadModule: ModuleLoader,
+    private readonly configs: FeatureAppConfigs = Object.create(null)
   ) {}
 
   public getAsyncFeatureAppDefinition(
@@ -80,7 +100,7 @@ export class FeatureAppManager implements FeatureAppManagerLike {
   public getFeatureAppScope(
     featureAppDefinition: FeatureAppDefinition<unknown>,
     idSpecifier?: string
-  ): FeatureAppScope<unknown> {
+  ): FeatureAppScope {
     const {id: featureAppId} = featureAppDefinition;
     const featureAppScopeId = JSON.stringify({featureAppId, idSpecifier});
 
@@ -165,15 +185,18 @@ export class FeatureAppManager implements FeatureAppManagerLike {
     featureAppDefinition: FeatureAppDefinition<unknown>,
     idSpecifier: string | undefined,
     deleteFeatureAppScope: () => void
-  ): FeatureAppScope<unknown> {
-    const featureServiceBindings = this.featureServiceRegistry.bindFeatureServices(
+  ): FeatureAppScope {
+    const config = this.configs[featureAppDefinition.id];
+
+    const binding = this.featureServiceRegistry.bindFeatureServices(
       featureAppDefinition,
       idSpecifier
     );
 
-    const featureApp = featureAppDefinition.create(
-      featureServiceBindings.consumerEnvironment
-    );
+    const featureApp = featureAppDefinition.create({
+      config,
+      featureServices: binding.featureServices
+    });
 
     console.info(
       `The feature app scope for the ID ${JSON.stringify(
@@ -197,7 +220,7 @@ export class FeatureAppManager implements FeatureAppManagerLike {
       }
 
       deleteFeatureAppScope();
-      featureServiceBindings.unbind();
+      binding.unbind();
 
       destroyed = true;
     };

@@ -11,7 +11,7 @@ describe('FeatureAppContainer', () => {
   let mockManager: FeatureAppManagerLike;
   let mockGetFeatureAppScope: jest.Mock;
   let mockFeatureAppDefinition: FeatureAppDefinition<unknown>;
-  let mockFeatureAppScope: FeatureAppScope<unknown>;
+  let mockFeatureAppScope: FeatureAppScope;
   let spyConsoleError: jest.SpyInstance;
 
   beforeEach(() => {

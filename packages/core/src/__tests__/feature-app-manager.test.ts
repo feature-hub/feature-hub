@@ -2,12 +2,11 @@ import {
   FeatureAppDefinition,
   FeatureAppManager,
   FeatureAppManagerLike,
-  FeatureAppModule,
-  FeatureServiceBindings,
-  FeatureServiceConsumerEnvironment,
   FeatureServiceRegistryLike,
+  FeatureServicesBinding,
   ModuleLoader
 } from '..';
+import {FeatureAppModule} from '../internal/is-feature-app-module';
 
 interface MockFeatureServiceRegistry extends FeatureServiceRegistryLike {
   registerProviders: jest.Mock;
@@ -17,28 +16,26 @@ interface MockFeatureServiceRegistry extends FeatureServiceRegistryLike {
 describe('FeatureAppManager', () => {
   let manager: FeatureAppManagerLike;
   let mockFeatureServiceRegistry: MockFeatureServiceRegistry;
-  let mockFeatureServiceBindings: FeatureServiceBindings;
-  let mockFeatureServiceBindingsUnbind: () => void;
-  let mockFeatureServiceConsumerEnvironment: FeatureServiceConsumerEnvironment;
+  let mockFeatureServicesBinding: FeatureServicesBinding;
+  let mockFeatureServicesBindingUnbind: () => void;
   let mockModuleLoader: ModuleLoader;
   let mockFeatureAppDefinition: FeatureAppDefinition<unknown>;
-  let mockFeatureAppModule: FeatureAppModule<unknown> | undefined;
+  let mockFeatureAppModule: FeatureAppModule | undefined;
   let mockFeatureAppCreate: jest.Mock;
   let mockFeatureApp: {};
   let spyConsoleInfo: jest.SpyInstance;
 
   beforeEach(() => {
-    mockFeatureServiceConsumerEnvironment = {featureServices: {}, config: {}};
-    mockFeatureServiceBindingsUnbind = jest.fn();
+    mockFeatureServicesBindingUnbind = jest.fn();
 
-    mockFeatureServiceBindings = {
-      consumerEnvironment: mockFeatureServiceConsumerEnvironment,
-      unbind: mockFeatureServiceBindingsUnbind
+    mockFeatureServicesBinding = {
+      featureServices: {foo: {}},
+      unbind: mockFeatureServicesBindingUnbind
     };
 
     mockFeatureServiceRegistry = {
       registerProviders: jest.fn(),
-      bindFeatureServices: jest.fn(() => mockFeatureServiceBindings)
+      bindFeatureServices: jest.fn(() => mockFeatureServicesBinding)
     };
 
     mockFeatureApp = {};
@@ -148,14 +145,24 @@ describe('FeatureAppManager', () => {
     });
 
     it('creates a feature app with a consumer environment using the service registry', () => {
+      const mockConfig = {kind: 'test'};
+
+      manager = new FeatureAppManager(
+        mockFeatureServiceRegistry,
+        mockModuleLoader,
+        {[mockFeatureAppDefinition.id]: mockConfig}
+      );
+
       manager.getFeatureAppScope(mockFeatureAppDefinition, 'testIdSpecifier');
 
       expect(mockFeatureServiceRegistry.bindFeatureServices.mock.calls).toEqual(
         [[mockFeatureAppDefinition, 'testIdSpecifier']]
       );
 
+      const {featureServices} = mockFeatureServicesBinding;
+
       expect(mockFeatureAppCreate.mock.calls).toEqual([
-        [mockFeatureServiceConsumerEnvironment]
+        [{config: mockConfig, featureServices}]
       ]);
     });
 
@@ -173,7 +180,7 @@ describe('FeatureAppManager', () => {
           () => {
             featureServiceRegistryMethodCalls.push('bindFeatureServices');
 
-            return mockFeatureServiceBindings;
+            return mockFeatureServicesBinding;
           }
         );
 
@@ -296,7 +303,7 @@ describe('FeatureAppManager', () => {
 
         featureAppScope.destroy();
 
-        expect(mockFeatureServiceBindingsUnbind).toHaveBeenCalledTimes(1);
+        expect(mockFeatureServicesBindingUnbind).toHaveBeenCalledTimes(1);
       });
 
       it('throws an error when destroy is called multiple times', () => {
@@ -321,7 +328,6 @@ describe('FeatureAppManager', () => {
         );
 
         featureAppScope.destroy();
-
         manager.getFeatureAppScope(mockFeatureAppDefinition, 'testIdSpecifier');
 
         expect(() =>
@@ -337,10 +343,9 @@ describe('FeatureAppManager', () => {
     it('unbinds the bound feature services for all feature apps', () => {
       manager.getFeatureAppScope(mockFeatureAppDefinition, 'test1');
       manager.getFeatureAppScope(mockFeatureAppDefinition, 'test2');
-
       manager.destroy();
 
-      expect(mockFeatureServiceBindingsUnbind).toHaveBeenCalledTimes(2);
+      expect(mockFeatureServicesBindingUnbind).toHaveBeenCalledTimes(2);
     });
   });
 

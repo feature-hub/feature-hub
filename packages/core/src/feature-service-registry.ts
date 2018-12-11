@@ -14,19 +14,35 @@ export interface FeatureServices {
   [providerId: string]: unknown | undefined;
 }
 
+export interface FeatureServiceEnvironment<
+  TConfig,
+  TFeatureServices extends FeatureServices
+> {
+  /**
+   * A Feature Service config object that is provided by the integrator.
+   */
+  readonly config: TConfig;
+
+  /**
+   * An object of required Feature Services that are semver-compatible with the
+   * declared dependencies in the Feature App definition.
+   */
+  readonly featureServices: TFeatureServices;
+}
+
+export interface FeatureServiceProviderDefinition<
+  TConfig = unknown,
+  TFeatureServices extends FeatureServices = FeatureServices
+> extends FeatureServiceConsumerDefinition {
+  create(
+    env: FeatureServiceEnvironment<TConfig, TFeatureServices>
+  ): SharedFeatureService;
+}
+
 export interface FeatureServiceBinding<TFeatureService> {
   readonly featureService: TFeatureService;
+
   unbind?(): void;
-}
-
-export interface FeatureServiceConsumerEnvironment {
-  readonly featureServices: FeatureServices;
-  readonly config: unknown;
-}
-
-export interface FeatureServiceBindings {
-  readonly consumerEnvironment: FeatureServiceConsumerEnvironment;
-  unbind(): void;
 }
 
 export type FeatureServiceBinder<TFeatureService> = (
@@ -37,13 +53,14 @@ export interface SharedFeatureService {
   readonly [version: string]: FeatureServiceBinder<unknown> | undefined;
 }
 
-export interface FeatureServiceProviderDefinition
-  extends FeatureServiceConsumerDefinition {
-  create(env: FeatureServiceConsumerEnvironment): SharedFeatureService;
+export interface FeatureServicesBinding {
+  readonly featureServices: FeatureServices;
+
+  unbind(): void;
 }
 
-export interface FeatureServiceConsumerConfigs {
-  readonly [consumerId: string]: unknown;
+export interface FeatureServiceConfigs {
+  readonly [featureServiceId: string]: unknown;
 }
 
 export interface FeatureServiceRegistryLike {
@@ -55,7 +72,7 @@ export interface FeatureServiceRegistryLike {
   bindFeatureServices(
     consumerDefinition: FeatureServiceConsumerDefinition,
     consumerIdSpecifier?: string
-  ): FeatureServiceBindings;
+  ): FeatureServicesBinding;
 }
 
 type ProviderId = string;
@@ -69,7 +86,7 @@ export class FeatureServiceRegistry implements FeatureServiceRegistryLike {
   private readonly uniqueConsumerIds = new Set<string>();
 
   public constructor(
-    private readonly consumerConfigs: FeatureServiceConsumerConfigs
+    private readonly configs: FeatureServiceConfigs = Object.create(null)
   ) {}
 
   public registerProviders(
@@ -96,11 +113,12 @@ export class FeatureServiceRegistry implements FeatureServiceRegistryLike {
           );
         }
       } else if (providerDefinition) {
+        const config = this.configs[providerId];
+        const {featureServices} = this.bindFeatureServices(providerDefinition);
+
         this.sharedFeatureServices.set(
           providerId,
-          providerDefinition.create(
-            this.bindFeatureServices(providerDefinition).consumerEnvironment
-          )
+          providerDefinition.create({config, featureServices})
         );
 
         console.info(
@@ -117,7 +135,7 @@ export class FeatureServiceRegistry implements FeatureServiceRegistryLike {
   public bindFeatureServices(
     consumerDefinition: FeatureServiceConsumerDefinition,
     consumerIdSpecifier?: string
-  ): FeatureServiceBindings {
+  ): FeatureServicesBinding {
     const {
       id: consumerId,
       dependencies: consumerDependencies
@@ -153,11 +171,6 @@ export class FeatureServiceRegistry implements FeatureServiceRegistryLike {
     }
 
     this.uniqueConsumerIds.add(uniqueConsumerId);
-
-    const consumerEnvironment = {
-      featureServices,
-      config: this.consumerConfigs[consumerId]
-    };
 
     let unbound = false;
 
@@ -206,7 +219,7 @@ export class FeatureServiceRegistry implements FeatureServiceRegistryLike {
       )}.`
     );
 
-    return {consumerEnvironment, unbind};
+    return {featureServices, unbind};
   }
 
   private bindFeatureService(

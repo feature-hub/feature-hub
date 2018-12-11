@@ -1,4 +1,8 @@
-import {FeatureAppDefinition, FeatureAppModule} from '../feature-app-manager';
+import {FeatureAppDefinition} from '../feature-app-manager';
+
+export interface FeatureAppModule {
+  readonly default: FeatureAppDefinition<unknown>;
+}
 
 function isFeatureAppDefinition(
   // tslint:disable-next-line:no-any
@@ -27,12 +31,12 @@ function isFeatureAppDefinition(
 export function isFeatureAppModule(
   // tslint:disable-next-line:no-any
   maybeFeatureAppModule: any
-): maybeFeatureAppModule is FeatureAppModule<unknown> {
+): maybeFeatureAppModule is FeatureAppModule {
   if (typeof maybeFeatureAppModule !== 'object' || !maybeFeatureAppModule) {
     return false;
   }
 
   return isFeatureAppDefinition(
-    (maybeFeatureAppModule as FeatureAppModule<unknown>).default
+    (maybeFeatureAppModule as FeatureAppModule).default
   );
 }

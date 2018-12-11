@@ -1,10 +1,5 @@
-// tslint:disable:no-non-null-assertion
-// tslint:disable:no-unbound-method
-import {
-  FeatureServiceBinder,
-  FeatureServiceConsumerEnvironment,
-  FeatureServices
-} from '@feature-hub/core';
+// tslint:disable:no-non-null-assertion no-unbound-method
+import {FeatureServiceBinder} from '@feature-hub/core';
 import {ServerRendererV1, ServerRequest} from '@feature-hub/server-renderer';
 import {History, HistoryServiceV1, defineHistoryService} from '..';
 import {RootLocationTransformer} from '../root-location-transformer';
@@ -69,18 +64,13 @@ describe('defineHistoryService', () => {
       ) => {
         const mockServerRenderer: ServerRendererV1 = {serverRequest};
 
-        const mockFeatureServices: FeatureServices = {
+        const mockFeatureServices = {
           's2:server-renderer': mockServerRenderer
         };
 
-        const config = {
-          consumerPathsQueryParamName: '---',
-          primaryConsumerId: 'test:pri'
-        };
-
-        const mockEnv: FeatureServiceConsumerEnvironment = {
-          featureServices: mockFeatureServices,
-          config
+        const mockEnv = {
+          config: undefined,
+          featureServices: mockFeatureServices
         };
 
         const historyServiceBinder = defineHistoryService(

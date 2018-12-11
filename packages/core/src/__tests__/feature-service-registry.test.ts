@@ -1,6 +1,6 @@
 import {
   FeatureServiceBinding,
-  FeatureServiceConsumerConfigs,
+  FeatureServiceConfigs,
   FeatureServiceConsumerDefinition,
   FeatureServiceRegistry,
   FeatureServiceRegistryLike
@@ -14,12 +14,12 @@ interface MockFeatureService {
   kind: string;
 }
 
-interface MockBinding extends FeatureServiceBinding<MockFeatureService> {
+interface MockFeatureServiceBinding
+  extends FeatureServiceBinding<MockFeatureService> {
   unbind?: jest.Mock;
 }
 
 describe('FeatureServiceRegistry', () => {
-  let consumerConfigs: FeatureServiceConsumerConfigs;
   let registry: FeatureServiceRegistryLike;
   let providerDefinitionA: MockProviderDefinition;
   let providerDefinitionB: MockProviderDefinition;
@@ -27,9 +27,9 @@ describe('FeatureServiceRegistry', () => {
   let binderA: jest.Mock;
   let binderB: jest.Mock;
   let binderC: jest.Mock;
-  let bindingA: MockBinding;
-  let bindingB: MockBinding;
-  let bindingC: MockBinding;
+  let bindingA: MockFeatureServiceBinding;
+  let bindingB: MockFeatureServiceBinding;
+  let bindingC: MockFeatureServiceBinding;
   let featureServiceA: MockFeatureService;
   let featureServiceB: MockFeatureService;
   let featureServiceC: MockFeatureService;
@@ -38,12 +38,7 @@ describe('FeatureServiceRegistry', () => {
   let spyConsoleWarn: jest.SpyInstance;
 
   beforeEach(() => {
-    consumerConfigs = {
-      a: {kind: 'consumerConfigA'},
-      c: {kind: 'consumerConfigC'}
-    };
-
-    registry = new FeatureServiceRegistry(consumerConfigs);
+    registry = new FeatureServiceRegistry();
 
     featureServiceA = {kind: 'featureServiceA'};
     bindingA = {featureService: featureServiceA};
@@ -90,53 +85,60 @@ describe('FeatureServiceRegistry', () => {
     spyConsoleWarn.mockRestore();
   });
 
-  function testRegistrationOrderABC(): void {
-    expect(providerDefinitionA.create.mock.calls).toEqual([
-      [{featureServices: {}, config: consumerConfigs.a}]
-    ]);
-
-    expect(binderA.mock.calls).toEqual([['b'], ['c']]);
-
-    expect(providerDefinitionB.create.mock.calls).toEqual([
-      [{featureServices: {a: featureServiceA}, config: undefined}]
-    ]);
-
-    expect(binderB.mock.calls).toEqual([['c']]);
-
-    expect(providerDefinitionC.create.mock.calls).toEqual([
-      [
-        {
-          featureServices: {a: featureServiceA, b: featureServiceB},
-          config: consumerConfigs.c
-        }
-      ]
-    ]);
-
-    expect(binderC.mock.calls).toEqual([]);
-
-    expect(spyConsoleInfo.mock.calls).toEqual([
-      [
-        'All required feature services have been successfully bound to the consumer "a".'
-      ],
-      [
-        'The feature service provider "a" has been successfully registered by the consumer "test".'
-      ],
-      [
-        'All required feature services have been successfully bound to the consumer "b".'
-      ],
-      [
-        'The feature service provider "b" has been successfully registered by the consumer "test".'
-      ],
-      [
-        'All required feature services have been successfully bound to the consumer "c".'
-      ],
-      [
-        'The feature service provider "c" has been successfully registered by the consumer "test".'
-      ]
-    ]);
-  }
-
   describe('#registerProviders', () => {
+    let configs: FeatureServiceConfigs;
+
+    function testRegistrationOrderABC(): void {
+      expect(providerDefinitionA.create.mock.calls).toEqual([
+        [{config: configs.a, featureServices: {}}]
+      ]);
+
+      expect(binderA.mock.calls).toEqual([['b'], ['c']]);
+
+      expect(providerDefinitionB.create.mock.calls).toEqual([
+        [{featureServices: {a: featureServiceA}}]
+      ]);
+
+      expect(binderB.mock.calls).toEqual([['c']]);
+
+      expect(providerDefinitionC.create.mock.calls).toEqual([
+        [
+          {
+            config: configs.c,
+            featureServices: {a: featureServiceA, b: featureServiceB}
+          }
+        ]
+      ]);
+
+      expect(binderC.mock.calls).toEqual([]);
+
+      expect(spyConsoleInfo.mock.calls).toEqual([
+        [
+          'All required feature services have been successfully bound to the consumer "a".'
+        ],
+        [
+          'The feature service provider "a" has been successfully registered by the consumer "test".'
+        ],
+        [
+          'All required feature services have been successfully bound to the consumer "b".'
+        ],
+        [
+          'The feature service provider "b" has been successfully registered by the consumer "test".'
+        ],
+        [
+          'All required feature services have been successfully bound to the consumer "c".'
+        ],
+        [
+          'The feature service provider "c" has been successfully registered by the consumer "test".'
+        ]
+      ]);
+    }
+
+    beforeEach(() => {
+      configs = {a: {kind: 'a'}, c: {kind: 'c'}};
+      registry = new FeatureServiceRegistry(configs);
+    });
+
     it('registers the feature service providers "a", "b", "c" one after the other', () => {
       registry.registerProviders([providerDefinitionA], 'test');
       registry.registerProviders([providerDefinitionB], 'test');
@@ -159,7 +161,7 @@ describe('FeatureServiceRegistry', () => {
       registry.registerProviders([providerDefinitionA], 'test');
 
       expect(providerDefinitionA.create.mock.calls).toEqual([
-        [{featureServices: {}, config: consumerConfigs.a}]
+        [{config: configs.a, featureServices: {}}]
       ]);
 
       expect(binderA.mock.calls).toEqual([]);
@@ -250,7 +252,7 @@ describe('FeatureServiceRegistry', () => {
     describe('for a feature service consumer without dependencies', () => {
       it('creates a bindings object with no feature services', () => {
         expect(registry.bindFeatureServices({id: 'foo'})).toEqual({
-          consumerEnvironment: {featureServices: {}, config: undefined},
+          featureServices: {},
           unbind: expect.any(Function)
         });
       });
@@ -258,11 +260,7 @@ describe('FeatureServiceRegistry', () => {
 
     describe('for a feature service consumer with an id specifier and dependencies', () => {
       it('creates a bindings object with feature services', () => {
-        consumerConfigs = {
-          foo: {kind: 'consumerConfigFoo'}
-        };
-
-        registry = new FeatureServiceRegistry(consumerConfigs);
+        registry = new FeatureServiceRegistry();
 
         registry.registerProviders([providerDefinitionA], 'test');
 
@@ -274,10 +272,7 @@ describe('FeatureServiceRegistry', () => {
             'bar'
           )
         ).toEqual({
-          consumerEnvironment: {
-            featureServices: {a: featureServiceA},
-            config: consumerConfigs.foo
-          },
+          featureServices: {a: featureServiceA},
           unbind: expect.any(Function)
         });
 
