@@ -4,10 +4,9 @@ import {
   SharedFeatureService
 } from '@feature-hub/core';
 import {ServerRendererV1} from '@feature-hub/server-renderer';
-import * as history from 'history';
 import {ConsumerHistory} from './base-history';
-import {BrowserHistory} from './browser-history';
-import {MemoryHistory} from './memory-history';
+import {HistoryService, HistoryServiceV1} from './history-service-v1';
+import {createRootHistories} from './root-histories';
 import {RootLocationTransformer} from './root-location-transformer';
 
 export {
@@ -23,12 +22,7 @@ export {
   UnregisterCallback
 } from 'history';
 export * from './root-location-transformer';
-
-export interface HistoryServiceV1 {
-  readonly rootLocation?: history.Location;
-  createBrowserHistory(): history.History;
-  createMemoryHistory(): history.MemoryHistory;
-}
+export {HistoryServiceV1} from './history-service-v1';
 
 export interface SharedHistoryService extends SharedFeatureService {
   readonly '1.1': FeatureServiceBinder<HistoryServiceV1>;
@@ -45,66 +39,19 @@ export function defineHistoryService(
     dependencies: {'s2:server-renderer': '^1.0'},
 
     create: (env): SharedHistoryService => {
-      let browserHistory: history.History;
-      let memoryHistory: history.MemoryHistory;
+      const {serverRequest} = env.featureServices['s2:server-renderer'];
+      const rootHistories = createRootHistories(serverRequest);
 
       return {
-        '1.1': (consumerId: string) => {
+        '1.1': consumerId => {
           const consumerHistories: ConsumerHistory[] = [];
 
-          const registerConsumerHistory = <
-            TConsumerHistory extends ConsumerHistory
-          >(
-            consumerHistory: TConsumerHistory
-          ) => {
-            consumerHistories.push(consumerHistory);
-
-            return consumerHistory;
-          };
-
-          const featureService: HistoryServiceV1 = {
-            get rootLocation(): history.Location | undefined {
-              const rootHistory = browserHistory || memoryHistory;
-
-              return rootHistory && rootHistory.location;
-            },
-
-            createBrowserHistory(): history.History {
-              browserHistory = browserHistory || history.createBrowserHistory();
-
-              return registerConsumerHistory(
-                new BrowserHistory(
-                  consumerId,
-                  browserHistory,
-                  rootLocationTransformer
-                )
-              );
-            },
-
-            createMemoryHistory(): history.MemoryHistory {
-              const {serverRequest} = env.featureServices['s2:server-renderer'];
-
-              if (!serverRequest) {
-                throw new Error(
-                  'Memory history can not be created without a server request.'
-                );
-              }
-
-              memoryHistory =
-                memoryHistory ||
-                history.createMemoryHistory({
-                  initialEntries: [serverRequest.path]
-                });
-
-              return registerConsumerHistory(
-                new MemoryHistory(
-                  consumerId,
-                  memoryHistory,
-                  rootLocationTransformer
-                )
-              );
-            }
-          };
+          const featureService = new HistoryService(
+            rootHistories,
+            rootLocationTransformer,
+            consumerId,
+            consumerHistories
+          );
 
           const unbind = () => {
             consumerHistories.forEach(consumerHistory =>

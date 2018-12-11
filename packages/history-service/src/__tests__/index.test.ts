@@ -1,8 +1,18 @@
 // tslint:disable:no-non-null-assertion no-unbound-method
-import {FeatureServiceBinder} from '@feature-hub/core';
+import {
+  FeatureServiceBinder,
+  FeatureServiceEnvironment
+} from '@feature-hub/core';
 import {ServerRendererV1, ServerRequest} from '@feature-hub/server-renderer';
 import {History, HistoryServiceV1, defineHistoryService} from '..';
 import {RootLocationTransformer} from '../root-location-transformer';
+
+const simulateOnPopState = (key: string) => {
+  const popStateEvent = document.createEvent('Event');
+  popStateEvent.initEvent('popstate', true, true);
+  (popStateEvent as any).state = {key}; // tslint:disable-line:no-any
+  window.dispatchEvent(popStateEvent);
+};
 
 describe('defineHistoryService', () => {
   it('creates a history service definition', () => {
@@ -23,13 +33,14 @@ describe('defineHistoryService', () => {
       serverRequest?: ServerRequest,
       rootLocationTransformer?: RootLocationTransformer
     ) => FeatureServiceBinder<HistoryServiceV1>;
+
     let pushStateSpy: jest.SpyInstance;
     let replaceStateSpy: jest.SpyInstance;
     let consoleWarnSpy: jest.SpyInstance;
-    let mockRootLocationTransformer: RootLocationTransformer;
+    let mockCreateRootLocation: jest.Mock;
     let mockGetConsumerPathFromRootLocation: jest.Mock;
 
-    const getLocation = (historyService: HistoryServiceV1) =>
+    const getRootLocation = (historyService: HistoryServiceV1) =>
       historyService.rootLocation &&
       `${historyService.rootLocation.pathname}${
         historyService.rootLocation.search
@@ -50,12 +61,11 @@ describe('defineHistoryService', () => {
         headers: {}
       };
 
-      mockGetConsumerPathFromRootLocation = jest.fn(() => 'consumerpath');
+      mockCreateRootLocation = jest.fn(() => ({pathname: 'rootpath'}));
+      mockGetConsumerPathFromRootLocation = jest.fn(() => '/consumerpath');
 
-      mockRootLocationTransformer = {
-        createRootLocation: jest.fn(() => ({
-          pathname: 'rootpath'
-        })),
+      const mockRootLocationTransformer = {
+        createRootLocation: mockCreateRootLocation,
         getConsumerPathFromRootLocation: mockGetConsumerPathFromRootLocation
       };
 
@@ -68,7 +78,10 @@ describe('defineHistoryService', () => {
           's2:server-renderer': mockServerRenderer
         };
 
-        const mockEnv = {
+        const mockEnv: FeatureServiceEnvironment<
+          undefined,
+          {'s2:server-renderer': ServerRendererV1}
+        > = {
           config: undefined,
           featureServices: mockFeatureServices
         };
@@ -88,34 +101,28 @@ describe('defineHistoryService', () => {
     });
 
     describe('#get rootLocation()', () => {
-      describe('without a rootHistory', () => {
-        it('returns undefined', () => {
-          const historyServiceBinder = createHistoryServiceBinder();
-          const service = historyServiceBinder('test').featureService;
+      it('returns the initially created memoryHistory location', () => {
+        const historyServiceBinder = createHistoryServiceBinder();
+        const service = historyServiceBinder('test').featureService;
+        service.createMemoryHistory();
 
-          expect(service.rootLocation).toBeUndefined();
-        });
+        const expected = {pathname: '/example', search: ''};
+
+        expect(service.rootLocation).toMatchObject(expected);
       });
 
-      describe('with a memoryHistory as rootHistory', () => {
-        it('returns the initially created memoryHistory location', () => {
-          const historyServiceBinder = createHistoryServiceBinder();
+      describe('when a server request is defined', () => {
+        it('returns the initially created memoryHistory location for the given request path', () => {
+          const historyServiceBinder = createHistoryServiceBinder({
+            path: '/test',
+            cookies: {},
+            headers: {}
+          });
+
           const service = historyServiceBinder('test').featureService;
           service.createMemoryHistory();
 
-          const expected = {pathname: '/example', search: ''};
-
-          expect(service.rootLocation).toMatchObject(expected);
-        });
-      });
-
-      describe('with a browserHistory as rootHistory', () => {
-        it('returns the initially created browserHistory location', () => {
-          const historyServiceBinder = createHistoryServiceBinder();
-          const service = historyServiceBinder('test').featureService;
-          service.createBrowserHistory();
-
-          const expected = {pathname: '/', search: ''};
+          const expected = {pathname: '/test', search: ''};
 
           expect(service.rootLocation).toMatchObject(expected);
         });
@@ -202,27 +209,19 @@ describe('defineHistoryService', () => {
           const historyServiceBinder = createHistoryServiceBinder();
           mockGetConsumerPathFromRootLocation.mockImplementation((_, id) => id);
 
-          const primaryHistory = historyServiceBinder(
-            'test:pri'
-          ).featureService.createBrowserHistory();
-
-          const otherHistory1 = historyServiceBinder(
+          const history1 = historyServiceBinder(
             'test:1'
           ).featureService.createBrowserHistory();
 
-          const otherHistory2 = historyServiceBinder(
+          const history2 = historyServiceBinder(
             'test:2'
           ).featureService.createBrowserHistory();
 
-          expect(primaryHistory.location).toMatchObject({
-            pathname: 'test:pri'
-          });
-
-          expect(otherHistory1.location).toMatchObject({
+          expect(history1.location).toMatchObject({
             pathname: 'test:1'
           });
 
-          expect(otherHistory2.location).toMatchObject({
+          expect(history2.location).toMatchObject({
             pathname: 'test:2'
           });
         });
@@ -264,14 +263,9 @@ describe('defineHistoryService', () => {
 
           expect(window.location.href).toBe('http://example.com/rootpath');
 
-          expect(
-            mockRootLocationTransformer.createRootLocation
-          ).toHaveBeenCalledTimes(2);
+          expect(mockCreateRootLocation).toHaveBeenCalledTimes(2);
 
-          expect(
-            (mockRootLocationTransformer.createRootLocation as jest.Mock).mock
-              .calls
-          ).toMatchObject([
+          expect(mockCreateRootLocation.mock.calls).toMatchObject([
             [{pathname: '/foo'}, {pathname: '/'}, 'test:1'],
             [
               {
@@ -299,13 +293,12 @@ describe('defineHistoryService', () => {
             'test:2'
           ).featureService.createBrowserHistory();
 
+          replaceStateSpy.mockClear();
+
           history1.replace('/foo');
           history2.replace('/bar?baz=1');
 
-          expect(
-            (mockRootLocationTransformer.createRootLocation as jest.Mock).mock
-              .calls
-          ).toMatchObject([
+          expect(mockCreateRootLocation.mock.calls).toMatchObject([
             [
               {
                 pathname: '/foo',
@@ -335,18 +328,16 @@ describe('defineHistoryService', () => {
           const historyServiceBinder = createHistoryServiceBinder();
 
           const history = historyServiceBinder(
-            'test:pri'
+            'test:1'
           ).featureService.createBrowserHistory();
 
           history.push('foo');
 
-          (mockRootLocationTransformer.createRootLocation as jest.Mock).mockClear();
+          mockCreateRootLocation.mockClear();
 
           history.go(-1);
 
-          expect(
-            mockRootLocationTransformer.createRootLocation
-          ).not.toHaveBeenCalled();
+          expect(mockCreateRootLocation).not.toHaveBeenCalled();
 
           expect(consoleWarnSpy).toHaveBeenCalledWith(
             'history.go() is not supported.'
@@ -359,18 +350,16 @@ describe('defineHistoryService', () => {
           const historyServiceBinder = createHistoryServiceBinder();
 
           const history = historyServiceBinder(
-            'test:pri'
+            'test:1'
           ).featureService.createBrowserHistory();
 
           history.push('foo');
 
-          (mockRootLocationTransformer.createRootLocation as jest.Mock).mockClear();
+          mockCreateRootLocation.mockClear();
 
           history.goBack();
 
-          expect(
-            mockRootLocationTransformer.createRootLocation
-          ).not.toHaveBeenCalled();
+          expect(mockCreateRootLocation).not.toHaveBeenCalled();
 
           expect(consoleWarnSpy).toHaveBeenCalledWith(
             'history.goBack() is not supported.'
@@ -383,18 +372,16 @@ describe('defineHistoryService', () => {
           const historyServiceBinder = createHistoryServiceBinder();
 
           const history = historyServiceBinder(
-            'test:pri'
+            'test:1'
           ).featureService.createBrowserHistory();
 
           history.push('foo');
 
-          (mockRootLocationTransformer.createRootLocation as jest.Mock).mockClear();
+          mockCreateRootLocation.mockClear();
 
           history.goForward();
 
-          expect(
-            mockRootLocationTransformer.createRootLocation
-          ).not.toHaveBeenCalled();
+          expect(mockCreateRootLocation).not.toHaveBeenCalled();
 
           expect(window.location.href).toBe('http://example.com/rootpath');
 
@@ -510,97 +497,90 @@ describe('defineHistoryService', () => {
         });
 
         describe('for a POP action', () => {
-          const createPopLocation = (
-            primaryPath: string,
-            consumerPath?: string
-          ) =>
-            consumerPath
-              ? `http://example.com${primaryPath}&---=%7B%22test%3A1%22%3A%22${encodeURIComponent(
-                  consumerPath
-                )}%22%7D`
-              : `http://example.com${primaryPath}`;
-
-          const simulateOnPopState = (
-            state: object,
-            primaryPath: string,
-            consumerPath?: string
-          ) => {
-            const url = createPopLocation(primaryPath, consumerPath);
-            window.history.pushState(null, '', url);
-
-            const popStateEvent = document.createEvent('Event');
-            popStateEvent.initEvent('popstate', true, true);
-            (popStateEvent as any).state = state; // tslint:disable-line:no-any
-            window.dispatchEvent(popStateEvent);
-          };
-
-          let primaryHistory: History;
-          let otherHistory: History;
-          let listenerSpy: jest.Mock;
+          let history1: History;
+          let history2: History;
+          let history1ListenerSpy: jest.Mock;
+          let history2ListenerSpy: jest.Mock;
 
           beforeEach(() => {
-            window.history.pushState(null, '', 'http://example.com/foo?bar=1');
-
             const historyServiceBinder = createHistoryServiceBinder();
 
-            primaryHistory = historyServiceBinder(
-              'test:pri'
-            ).featureService.createBrowserHistory();
-
-            otherHistory = historyServiceBinder(
+            history1 = historyServiceBinder(
               'test:1'
             ).featureService.createBrowserHistory();
 
-            listenerSpy = jest.fn();
-            otherHistory.listen(listenerSpy);
+            history2 = historyServiceBinder(
+              'test:2'
+            ).featureService.createBrowserHistory();
+
+            history1ListenerSpy = jest.fn();
+            history1.listen(history1ListenerSpy);
+
+            history2ListenerSpy = jest.fn();
+            history2.listen(history2ListenerSpy);
           });
 
-          describe('without a consumer path', () => {
-            it('does not call the listener', () => {
-              primaryHistory.push('/foo?baz=2');
-              const key = window.history.state.key;
-              simulateOnPopState({key}, '/foo?baz=1');
+          it('calls listeners only for matching consumer locations', () => {
+            const key = window.history.state.key;
 
-              expect(listenerSpy).not.toHaveBeenCalled();
-            });
+            history1.push('/foo');
+            history1ListenerSpy.mockClear();
+
+            simulateOnPopState(key);
+
+            expect(history1ListenerSpy).toHaveBeenCalledWith(
+              expect.objectContaining({pathname: '/consumerpath'}),
+              'POP'
+            );
+
+            expect(history2ListenerSpy).not.toHaveBeenCalled();
           });
 
-          describe('with an unchanged consumer path', () => {
-            it('does not call the listener', () => {
-              otherHistory.push('/baz?qux=3');
-              const key = window.history.state.key;
-              primaryHistory.push('/foo?baz=2');
-
-              listenerSpy.mockClear();
-
-              simulateOnPopState({key}, '/foo?bar=1', '/baz?qux=3');
-
-              expect(listenerSpy).not.toHaveBeenCalled();
-            });
-          });
-
-          describe('with a changed consumer path', () => {
-            it('calls the listener', () => {
-              otherHistory.push('/baz?qux=3');
+          describe('with back and forward navigation', () => {
+            it('calls the listener with the correct locations', () => {
+              history1.push('/baz?qux=3');
               const key1 = window.history.state.key;
-              otherHistory.push('/bar?qux=4');
+              history1.push('/bar?qux=4');
               const key2 = window.history.state.key;
 
-              listenerSpy.mockClear();
+              history1ListenerSpy.mockClear();
 
-              simulateOnPopState({key: key1}, '/foo?bar=1', '/baz?qux=3');
+              simulateOnPopState(key1); // POP backward
 
-              expect(listenerSpy).toHaveBeenCalledWith(
+              expect(history1ListenerSpy).toHaveBeenCalledWith(
                 expect.objectContaining({pathname: '/baz', search: '?qux=3'}),
                 'POP'
               );
 
-              listenerSpy.mockClear();
+              history1ListenerSpy.mockClear();
 
-              simulateOnPopState({key: key2}, '/foo?bar=1', '/bar?qux=4');
+              simulateOnPopState(key2); // POP foward
 
-              expect(listenerSpy).toHaveBeenCalledWith(
+              expect(history1ListenerSpy).toHaveBeenCalledWith(
                 expect.objectContaining({pathname: '/bar', search: '?qux=4'}),
+                'POP'
+              );
+            });
+          });
+
+          describe('when a location is replaced', () => {
+            it('calls the listener with the correct locations', () => {
+              history1.push('/a1');
+              history2.push('/b1');
+              history1.push('/a2');
+              history2.push('/b2');
+              history1.replace('/a3');
+
+              const replacedKey = window.history.state.key;
+
+              history2.push('/b3');
+
+              history2ListenerSpy.mockClear();
+
+              simulateOnPopState(replacedKey); // POP to replaced location
+
+              expect(history2ListenerSpy).toHaveBeenCalledWith(
+                expect.objectContaining({pathname: '/b2'}),
                 'POP'
               );
             });
@@ -612,18 +592,17 @@ describe('defineHistoryService', () => {
         it('returns the href for the given location based on the root browser history', () => {
           const historyServiceBinder = createHistoryServiceBinder();
 
-          const browserHistory = historyServiceBinder(
-            'test:pri'
+          const history = historyServiceBinder(
+            'test:1'
           ).featureService.createBrowserHistory();
 
           const location = {pathname: '/quux', search: '?a=b'};
 
-          const href = browserHistory.createHref(location);
+          const href = history.createHref(location);
 
-          expect(
-            (mockRootLocationTransformer.createRootLocation as jest.Mock).mock
-              .calls
-          ).toMatchObject([[location, {pathname: '/'}, 'test:pri']]);
+          expect(mockCreateRootLocation.mock.calls).toMatchObject([
+            [location, {pathname: '/'}, 'test:1']
+          ]);
 
           expect(href).toBe('rootpath');
         });
@@ -631,76 +610,52 @@ describe('defineHistoryService', () => {
 
       describe('when the history consumer is destroyed', () => {
         it('removes the consumer path from the root location', () => {
-          const historyServiceBinder = createHistoryServiceBinder();
+          const historyServiceBinding = createHistoryServiceBinder()('test:1');
+          const history = historyServiceBinding.featureService.createBrowserHistory();
 
-          const primaryHistoryServiceBinder = historyServiceBinder('test:pri');
-          const browserHistory = primaryHistoryServiceBinder.featureService.createBrowserHistory();
-
-          browserHistory.push('/something');
+          history.push('/something');
 
           expect(window.location.href).toBe('http://example.com/rootpath');
 
-          (mockRootLocationTransformer.createRootLocation as jest.Mock).mockClear();
+          mockCreateRootLocation.mockClear();
 
-          primaryHistoryServiceBinder.unbind!();
+          historyServiceBinding.unbind!();
 
-          expect(
-            (mockRootLocationTransformer.createRootLocation as jest.Mock).mock
-              .calls
-          ).toMatchObject([[undefined, {pathname: '/rootpath'}, 'test:pri']]);
+          expect(mockCreateRootLocation.mock.calls).toMatchObject([
+            [undefined, {pathname: '/rootpath'}, 'test:1']
+          ]);
         });
 
-        describe('a POP event', () => {
-          const createPopLocation = (
-            primaryPath: string,
-            consumerPath?: string
-          ) =>
-            consumerPath
-              ? `http://example.com${primaryPath}&---=%7B%22test%3A1%22%3A%22${encodeURIComponent(
-                  consumerPath
-                )}%22%7D`
-              : `http://example.com${primaryPath}`;
+        it('does not call the listener of a destroyed consumer', () => {
+          const historyServiceBinder = createHistoryServiceBinder();
 
-          const simulateOnPopState = (
-            state: object,
-            primaryPath: string,
-            consumerPath?: string
-          ) => {
-            const url = createPopLocation(primaryPath, consumerPath);
-            window.history.pushState(null, '', url);
+          const history1 = historyServiceBinder(
+            'test:1'
+          ).featureService.createBrowserHistory();
 
-            const popStateEvent = document.createEvent('Event');
-            popStateEvent.initEvent('popstate', true, true);
-            (popStateEvent as any).state = state; // tslint:disable-line:no-any
-            window.dispatchEvent(popStateEvent);
-          };
+          const history2ServiceBinding = historyServiceBinder('test:2');
+          const history2 = history2ServiceBinding.featureService.createBrowserHistory();
+          const history1ListenerSpy = jest.fn();
+          const history2ListenerSpy = jest.fn();
 
-          it('does not call the listener of the destroyed consumer', () => {
-            window.history.pushState(null, '', 'http://example.com/foo?bar=1');
+          history1.listen(history1ListenerSpy);
+          history2.listen(history2ListenerSpy);
 
-            const historyServiceBinder = createHistoryServiceBinder();
+          history2.push('/baz?qux=3');
+          const key1 = window.history.state.key;
+          history1.push('/foo?baz=2');
+          const key2 = window.history.state.key;
 
-            const primaryHistory = historyServiceBinder(
-              'test:pri'
-            ).featureService.createBrowserHistory();
+          history2ServiceBinding.unbind!();
+          history2ListenerSpy.mockClear();
 
-            const otherHistoryServiceBinder = historyServiceBinder('test:1');
-            const otherHistory = otherHistoryServiceBinder.featureService.createBrowserHistory();
+          simulateOnPopState(key1);
 
-            const listenerSpy = jest.fn();
-            otherHistory.listen(listenerSpy);
+          expect(history2ListenerSpy).not.toHaveBeenCalled();
 
-            otherHistory.push('/baz?qux=3');
-            const key = window.history.state.key;
-            primaryHistory.push('/foo?baz=2');
+          simulateOnPopState(key2);
 
-            otherHistoryServiceBinder.unbind!();
-            listenerSpy.mockClear();
-
-            simulateOnPopState({key}, '/foo?bar=1', '/baz?qux=3');
-
-            expect(listenerSpy).not.toHaveBeenCalled();
-          });
+          expect(history1ListenerSpy).toHaveBeenCalled();
         });
       });
     });
@@ -794,27 +749,19 @@ describe('defineHistoryService', () => {
           const historyServiceBinder = createHistoryServiceBinder();
           mockGetConsumerPathFromRootLocation.mockImplementation((_, id) => id);
 
-          const primaryHistory = historyServiceBinder(
-            'test:pri'
-          ).featureService.createMemoryHistory();
-
-          const otherHistory1 = historyServiceBinder(
+          const history1 = historyServiceBinder(
             'test:1'
           ).featureService.createMemoryHistory();
 
-          const otherHistory2 = historyServiceBinder(
+          const history2 = historyServiceBinder(
             'test:2'
           ).featureService.createMemoryHistory();
 
-          expect(primaryHistory.location).toMatchObject({
-            pathname: 'test:pri'
-          });
-
-          expect(otherHistory1.location).toMatchObject({
+          expect(history1.location).toMatchObject({
             pathname: 'test:1'
           });
 
-          expect(otherHistory2.location).toMatchObject({
+          expect(history2.location).toMatchObject({
             pathname: 'test:2'
           });
         });
@@ -861,7 +808,7 @@ describe('defineHistoryService', () => {
 
           const expected1 = [
             {
-              pathname: 'consumerpath',
+              pathname: '/consumerpath',
               search: ''
             },
             {
@@ -899,10 +846,7 @@ describe('defineHistoryService', () => {
           history1.push('/foo');
           history2.push('/bar?baz=1');
 
-          expect(
-            (mockRootLocationTransformer.createRootLocation as jest.Mock).mock
-              .calls
-          ).toMatchObject([
+          expect(mockCreateRootLocation.mock.calls).toMatchObject([
             [
               {
                 pathname: '/foo',
@@ -924,7 +868,7 @@ describe('defineHistoryService', () => {
           expect(history1.length).toEqual(2);
           expect(history2.length).toEqual(2);
 
-          expect(getLocation(historyService)).toBe('/rootpath');
+          expect(getRootLocation(historyService)).toBe('/rootpath');
         });
       });
 
@@ -942,10 +886,7 @@ describe('defineHistoryService', () => {
           history1.replace('/foo');
           history2.replace('/bar?baz=1');
 
-          expect(
-            (mockRootLocationTransformer.createRootLocation as jest.Mock).mock
-              .calls
-          ).toMatchObject([
+          expect(mockCreateRootLocation.mock.calls).toMatchObject([
             [
               {
                 pathname: '/foo',
@@ -967,26 +908,22 @@ describe('defineHistoryService', () => {
           expect(history1.length).toEqual(1);
           expect(history2.length).toEqual(1);
 
-          expect(getLocation(historyService)).toBe('/rootpath');
+          expect(getRootLocation(historyService)).toBe('/rootpath');
         });
       });
 
       describe('#go()', () => {
         it('does nothing and logs a warning that go() is not supported', () => {
           const historyServiceBinder = createHistoryServiceBinder();
-
-          const historyService = historyServiceBinder('test:pri')
-            .featureService;
+          const historyService = historyServiceBinder('test:1').featureService;
           const history = historyService.createMemoryHistory();
 
           history.push('foo');
-          (mockRootLocationTransformer.createRootLocation as jest.Mock).mockClear();
+          mockCreateRootLocation.mockClear();
 
           history.go(-1);
 
-          expect(
-            mockRootLocationTransformer.createRootLocation
-          ).not.toHaveBeenCalled();
+          expect(mockCreateRootLocation).not.toHaveBeenCalled();
 
           expect(consoleWarnSpy).toHaveBeenCalledWith(
             'history.go() is not supported.'
@@ -997,19 +934,15 @@ describe('defineHistoryService', () => {
       describe('#goBack()', () => {
         it('does nothing and logs a warning that goBack() is not supported', () => {
           const historyServiceBinder = createHistoryServiceBinder();
-
-          const historyService = historyServiceBinder('test:pri')
-            .featureService;
+          const historyService = historyServiceBinder('test:1').featureService;
           const history = historyService.createMemoryHistory();
 
           history.push('foo');
-          (mockRootLocationTransformer.createRootLocation as jest.Mock).mockClear();
+          mockCreateRootLocation.mockClear();
 
           history.goBack();
 
-          expect(
-            mockRootLocationTransformer.createRootLocation
-          ).not.toHaveBeenCalled();
+          expect(mockCreateRootLocation).not.toHaveBeenCalled();
 
           expect(consoleWarnSpy).toHaveBeenCalledWith(
             'history.goBack() is not supported.'
@@ -1020,20 +953,16 @@ describe('defineHistoryService', () => {
       describe('#goForward()', () => {
         it('does nothing and logs a warning that goForward() is not supported', () => {
           const historyServiceBinder = createHistoryServiceBinder();
-
-          const historyService = historyServiceBinder('test:pri')
-            .featureService;
+          const historyService = historyServiceBinder('test:1').featureService;
           const history = historyService.createMemoryHistory();
 
           history.push('foo');
 
-          (mockRootLocationTransformer.createRootLocation as jest.Mock).mockClear();
+          mockCreateRootLocation.mockClear();
 
           history.goForward();
 
-          expect(
-            mockRootLocationTransformer.createRootLocation
-          ).not.toHaveBeenCalled();
+          expect(mockCreateRootLocation).not.toHaveBeenCalled();
 
           expect(consoleWarnSpy).toHaveBeenCalledWith(
             'history.goForward() is not supported.'
@@ -1044,19 +973,15 @@ describe('defineHistoryService', () => {
       describe('#canGo()', () => {
         it('returns false and logs a warning that canGo() is not supported', () => {
           const historyServiceBinder = createHistoryServiceBinder();
-
-          const historyService = historyServiceBinder('test:pri')
-            .featureService;
+          const historyService = historyServiceBinder('test:1').featureService;
           const history = historyService.createMemoryHistory();
           history.push('foo');
 
-          (mockRootLocationTransformer.createRootLocation as jest.Mock).mockClear();
+          mockCreateRootLocation.mockClear();
 
           expect(history.canGo(-1)).toBe(false);
 
-          expect(
-            mockRootLocationTransformer.createRootLocation
-          ).not.toHaveBeenCalled();
+          expect(mockCreateRootLocation).not.toHaveBeenCalled();
 
           expect(consoleWarnSpy).toHaveBeenCalledWith(
             'memoryHistory.canGo() is not supported.'
@@ -1174,18 +1099,16 @@ describe('defineHistoryService', () => {
         it('returns the href for the given location based on the root memory history', () => {
           const historyServiceBinder = createHistoryServiceBinder();
 
-          const memoryHistory = historyServiceBinder(
-            'test:pri'
+          const history = historyServiceBinder(
+            'test:1'
           ).featureService.createMemoryHistory();
 
           const location = {pathname: '/quux', search: '?a=b'};
+          const href = history.createHref(location);
 
-          const href = memoryHistory.createHref(location);
-
-          expect(
-            (mockRootLocationTransformer.createRootLocation as jest.Mock).mock
-              .calls
-          ).toMatchObject([[location, {pathname: '/example'}, 'test:pri']]);
+          expect(mockCreateRootLocation.mock.calls).toMatchObject([
+            [location, {pathname: '/example'}, 'test:1']
+          ]);
 
           expect(href).toBe('rootpath');
         });
@@ -1193,24 +1116,18 @@ describe('defineHistoryService', () => {
 
       describe('when the history consumer is destroyed', () => {
         it('removes the consumer path from the root location', () => {
-          const historyServiceBinder = createHistoryServiceBinder();
+          const serviceBinding = createHistoryServiceBinder()('test:1');
+          const history = serviceBinding.featureService.createMemoryHistory();
 
-          const serviceBinding = historyServiceBinder('test:pri');
+          history.push('/foo');
 
-          const historyService = serviceBinding.featureService;
-
-          const memoryHistory = historyService.createMemoryHistory();
-
-          memoryHistory.push('/foo');
-
-          (mockRootLocationTransformer.createRootLocation as jest.Mock).mockClear();
+          mockCreateRootLocation.mockClear();
 
           serviceBinding.unbind!();
 
-          expect(
-            (mockRootLocationTransformer.createRootLocation as jest.Mock).mock
-              .calls
-          ).toMatchObject([[undefined, {pathname: '/rootpath'}, 'test:pri']]);
+          expect(mockCreateRootLocation.mock.calls).toMatchObject([
+            [undefined, {pathname: '/rootpath'}, 'test:1']
+          ]);
         });
       });
     });
