@@ -38,7 +38,8 @@ be viewed [here](https://github.com/sinnerschrader/feature-hub/milestones).**
       - [Registering Feature Services](#registering-feature-services)
       - [Using Externals](#using-externals)
     - [Writing a Feature Service](#writing-a-feature-service)
-      - [Feature Service ID & Dependencies](#feature-service-id--dependencies)
+      - [Feature Service ID](#feature-service-id)
+      - [Feature Service Dependencies](#feature-service-dependencies)
       - [Feature Service Instantiation & Programmatic Versioning](#feature-service-instantiation--programmatic-versioning)
       - [Feature Service Definition](#feature-service-definition)
       - [Feature Service Binding](#feature-service-binding)
@@ -129,8 +130,8 @@ There are three different roles in a Feature Hub environment:
 
 1.  An **integrator** instantiates the Feature Hub components and provides the
     Feature App compositions.
-2.  A **provider** provides a Feature Service to consumers through the feature
-    service registry. Most providers are registered by the integrator but they
+2.  A **provider** provides a Feature Service to consumers through the Feature
+    Service registry. Most providers are registered by the integrator but they
     can also be registered by Feature Apps.
 3.  A **consumer** is everyone who consumes Feature Services. This can be a
     Feature App, other Feature Services, or even the integrator.
@@ -165,8 +166,8 @@ create a unique consumer ID.
 
 #### Feature App Dependencies
 
-In `dependencies`, required Feature Services are declared with their service ID
-and a [semver](https://semver.org) version string:
+In `dependencies`, required Feature Services are declared with their ID and a
+[semver](https://semver.org) version string:
 
 ```js
 const dependencies = {
@@ -277,7 +278,7 @@ should define these externals in their build config. For example, defining
 A Feature Service definition consists of an `id`, a `dependencies` object, and a
 `create` method.
 
-#### Feature Service ID & Dependencies
+#### Feature Service ID
 
 A Feature Service definition must declare a unique consumer `id`. It is
 recommended to use namespaces for the Feature Service ID to avoid naming
@@ -289,9 +290,12 @@ const id = 'acme:my-feature-service';
 
 This ID is used to look up the config for a Feature Service. It is also used as
 a consumer ID for the [bindings](#feature-service-binding) of the Feature
-Services that this Feature Service depends on. And it can be referenced by other
-consumers in their `dependencies` declaration along with a
-[semver](https://semver.org) version string, e.g.:
+Services that this Feature Service depends on.
+
+#### Feature Service Dependencies
+
+In `dependencies`, required Feature Services are declared with their ID and a
+[semver](https://semver.org) version string:
 
 ```js
 const dependencies = {
