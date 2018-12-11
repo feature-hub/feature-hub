@@ -1,6 +1,6 @@
 {
   "name": "@feature-hub/react",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "A Feature Hub integrator for React.",
   "bugs": {
     "url": "https://github.com/sinnerschrader/feature-hub/issues"
