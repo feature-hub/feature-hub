@@ -148,8 +148,8 @@ of an `id`, a `dependencies` object, and the method `create`.
 
 #### Feature App ID
 
-A Feature App definition must declare a unique consumer `id`. It is recommended
-to use namespaces for the Feature App ID to avoid naming conflicts, e.g.:
+A Feature App definition must declare an ID. It is recommended to use namespaces
+for the Feature App ID to avoid naming conflicts, e.g.:
 
 ```js
 const id = 'acme:my-feature-app';
@@ -157,7 +157,7 @@ const id = 'acme:my-feature-app';
 
 This ID is used to look up the config for a Feature App. Furthermore, it is used
 as a consumer ID for the [bindings](#feature-service-binding) of the Feature
-Services that this Feature App depends on.
+Services that a Feature App depends on.
 
 If there is more than one instance of a Feature App on a single page, the
 integrator must set a unique ID specifier for each Feature App with the same ID.
@@ -280,17 +280,16 @@ A Feature Service definition consists of an `id`, a `dependencies` object, and a
 
 #### Feature Service ID
 
-A Feature Service definition must declare a unique consumer `id`. It is
-recommended to use namespaces for the Feature Service ID to avoid naming
-conflicts, e.g.:
+A Feature Service definition must declare an ID. It is recommended to use
+namespaces for the Feature Service ID to avoid naming conflicts, e.g.:
 
 ```js
 const id = 'acme:my-feature-service';
 ```
 
-This ID is used to look up the config for a Feature Service. It is also used as
-a consumer ID for the [bindings](#feature-service-binding) of the Feature
-Services that this Feature Service depends on.
+This ID is used to look up the config for a Feature Service. Furthermore, it is
+used as a consumer ID for the [bindings](#feature-service-binding) of the
+Feature Services that a Feature Service depends on.
 
 #### Feature Service Dependencies
 
