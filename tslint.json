@@ -5,7 +5,7 @@
   },
   "rules": {
     "no-default-export": false,
-    "no-implicit-dependencies": [true, "dev", ["enzyme"]],
+    "no-implicit-dependencies": true,
     "no-object-literal-type-assertion": false
   }
 }

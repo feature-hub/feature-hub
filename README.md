@@ -46,6 +46,7 @@ be viewed [here](https://github.com/sinnerschrader/feature-hub/milestones).**
     - [Integrating the Feature Hub](#integrating-the-feature-hub)
       - [The React Feature App Loader](#the-react-feature-app-loader)
       - [The React Feature App Container](#the-react-feature-app-container)
+      - [Providing Config Objects](#providing-config-objects)
       - [Providing Externals](#providing-externals)
   - [Contributing to the Feature Hub](#contributing-to-the-feature-hub)
     - [Code of Conduct](#code-of-conduct)
@@ -171,7 +172,7 @@ In `dependencies`, required Feature Services are declared with their ID and a
 
 ```js
 const dependencies = {
-  'acme:counter': '^2.0'
+  'acme:my-feature-app': '^2.0'
 };
 ```
 
@@ -180,7 +181,8 @@ const dependencies = {
 The method `create` takes the single argument `env`, which has the following
 properties:
 
-1.  `config` — a Feature App config object that is provided by the integrator.
+1.  `config` — a Feature App config object that is
+    [provided](#providing-config-objects) by the integrator.
 1.  `featureServices` — an object of required Feature Services that are
     [semver-compatible](https://semver.org) with the declared dependencies in
     the Feature App definition.
@@ -232,7 +234,9 @@ A Feature App can also register its own Feature Services by declaring
 
 ```js
 import {myFeatureServiceDefinition} from './my-feature-service';
+```
 
+```js
 export default {
   id: 'acme:my-feature-app',
 
@@ -309,8 +313,8 @@ the Feature Service registry. It should store, and possibly initialize, any
 shared state. The method takes the single argument `env`, which has the
 following properties:
 
-1.  `config` — a Feature Service config object that is provided by the
-    integrator.
+1.  `config` — a Feature Service config object that is
+    [provided](#providing-config-objects) by the integrator.
 1.  `featureServices` — an object of required Feature Services that are
     [semver-compatible](https://semver.org) with the declared dependencies in
     the Feature App definition.
@@ -510,7 +514,9 @@ A typical integrator bootstrap code would look like this:
 ```js
 import {FeatureAppManager, FeatureServiceRegistry} from '@feature-hub/core';
 import {loadCommonJsModule} from '@feature-hub/module-loader/node';
+```
 
+```js
 const registry = new FeatureServiceRegistry();
 
 const featureServiceDefinitions = [
@@ -637,6 +643,52 @@ integrator, e.g.:
     />
   </aside>
 </section>
+```
+
+#### Providing Config Objects
+
+The integrator can provide config objects for Feature Services and Feature Apps,
+associated by their respective IDs, via the Feature Service registry and Feature
+App manager:
+
+```js
+const featureServiceConfigs = {'acme:my-feature-service': {foo: 'bar'}};
+const featureAppConfigs = {'acme:my-feature-app': {baz: 'qux'}};
+
+const registry = new FeatureServiceRegistry(featureServiceConfigs);
+
+const manager = new FeatureAppManager(
+  registry,
+  loadAmdModule,
+  featureAppConfigs
+);
+```
+
+Feature Services and Feature Apps can then use their respective config object as
+follows:
+
+```js
+const myFeatureServiceDefinition = {
+  id: 'acme:my-feature-service',
+
+  create(env) {
+    const {foo} = env.config; // foo is 'bar'
+
+    // ...
+  }
+};
+```
+
+```js
+const myFeatureAppDefinition = {
+  id: 'acme:my-feature-app',
+
+  create(env) {
+    const {baz} = env.config; // baz is 'qux'
+
+    // ...
+  }
+};
 ```
 
 #### Providing Externals

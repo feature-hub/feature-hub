@@ -2,6 +2,8 @@
  * @jest-environment node
  */
 
+// tslint:disable:no-implicit-dependencies
+
 import {
   AsyncValue,
   FeatureAppDefinition,
