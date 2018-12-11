@@ -43,8 +43,8 @@ be viewed [here](https://github.com/sinnerschrader/feature-hub/milestones).**
       - [Feature Service Instantiation & Programmatic Versioning](#feature-service-instantiation--programmatic-versioning)
       - [Binding Feature Services](#binding-feature-services)
     - [Integrating the Feature Hub](#integrating-the-feature-hub)
-      - [The React Feature App Loader](#the-react-feature-app-loader)
-      - [The React Feature App Container](#the-react-feature-app-container)
+      - [React Feature App Loader](#react-feature-app-loader)
+      - [React Feature App Container](#react-feature-app-container)
       - [Providing Config Objects](#providing-config-objects)
       - [Providing Externals](#providing-externals)
   - [Contributing to the Feature Hub](#contributing-to-the-feature-hub)
@@ -545,7 +545,7 @@ A React integrator can then use the `FeatureAppLoader` or the
 Feature Apps onto the web page. Each of them need the `FeatureAppManager`
 singleton instance to render their Feature App.
 
-#### The React Feature App Loader
+#### React Feature App Loader
 
 With the React `FeatureAppLoader` a Feature App can be loaded and rendered by
 defining a `src` which is the URL to its JavaScript UMD bundle, e.g.:
@@ -613,7 +613,7 @@ integrator, e.g.:
 </section>
 ```
 
-#### The React Feature App Container
+#### React Feature App Container
 
 With the React `FeatureAppContainer` a Feature App can be rendered by directly
 providing its Feature App definition:
