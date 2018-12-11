@@ -144,7 +144,7 @@ describe('FeatureAppManager', () => {
       ]);
     });
 
-    it('creates a feature app with feature services using the service registry', () => {
+    it('creates a feature app with a consumer environment using the service registry', () => {
       const mockConfig = {kind: 'test'};
 
       manager = new FeatureAppManager(
