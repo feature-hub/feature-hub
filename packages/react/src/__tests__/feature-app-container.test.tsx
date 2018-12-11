@@ -1,3 +1,5 @@
+// tslint:disable:no-implicit-dependencies
+
 import {
   FeatureAppDefinition,
   FeatureAppManagerLike,
