@@ -5,6 +5,13 @@ export interface ConsumerHistory extends history.History {
   destroy(): void;
 }
 
+function setRootHistoryKey(
+  consumerLocation: history.Location,
+  rootHistoryKey: string | undefined
+): void {
+  consumerLocation.state = {...consumerLocation.state, rootHistoryKey};
+}
+
 export abstract class BaseHistory implements ConsumerHistory {
   protected readonly consumerHistory: history.MemoryHistory;
   protected readonly unregisterCallbacks: history.UnregisterCallback[] = [];
@@ -21,8 +28,9 @@ export abstract class BaseHistory implements ConsumerHistory {
       rootHistory.listen(this.handleRootLocationChange.bind(this))
     );
 
-    const initialConsumerPath = this.getConsumerPathFromRootLocation(
-      rootHistory.location
+    const initialConsumerPath = rootLocationTransformer.getConsumerPathFromRootLocation(
+      rootHistory.location,
+      consumerId
     );
 
     this.consumerHistory = history.createMemoryHistory({
@@ -30,7 +38,7 @@ export abstract class BaseHistory implements ConsumerHistory {
     });
 
     // Set the root history key for the initial consumer location.
-    this.setRootHistoryKey(this.consumerHistory.location);
+    setRootHistoryKey(this.consumerHistory.location, rootHistory.location.key);
   }
 
   public get length(): number {
@@ -140,34 +148,8 @@ export abstract class BaseHistory implements ConsumerHistory {
     method: 'push' | 'replace'
   ): void {
     this.rootHistory[method](this.createRootLocation(consumerLocation));
-    this.setRootHistoryKey(consumerLocation);
+    setRootHistoryKey(consumerLocation, this.rootHistory.location.key);
     this.consumerHistory[method](consumerLocation);
-  }
-
-  private getConsumerPathFromRootLocation(
-    location: history.Location
-  ): string | undefined {
-    return this.rootLocationTransformer.getConsumerPathFromRootLocation(
-      location,
-      this.consumerId
-    );
-  }
-
-  private setRootHistoryKey(consumerLocation: history.Location): void {
-    consumerLocation.state = {
-      ...consumerLocation.state,
-      rootHistoryKey: this.rootHistory.location.key
-    };
-  }
-
-  private updateRootHistoryKey(oldKey: string): void {
-    const consumerLocation = this.consumerHistory.entries.find(
-      ({state}) => state.rootHistoryKey === oldKey
-    );
-
-    if (consumerLocation) {
-      this.setRootHistoryKey(consumerLocation);
-    }
   }
 
   private handleRootLocationChange(
@@ -177,7 +159,13 @@ export abstract class BaseHistory implements ConsumerHistory {
     if (action === 'REPLACE') {
       /* istanbul ignore else */
       if (this.currentRootHistoryKey) {
-        this.updateRootHistoryKey(this.currentRootHistoryKey);
+        const consumerLocation = this.consumerHistory.entries.find(
+          ({state}) => state.rootHistoryKey === this.currentRootHistoryKey
+        );
+
+        if (consumerLocation) {
+          setRootHistoryKey(consumerLocation, location.key);
+        }
       } else {
         console.error(
           'Invalid history: The current root history key is undefined.'
