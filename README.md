@@ -41,11 +41,10 @@ be viewed [here](https://github.com/sinnerschrader/feature-hub/milestones).**
       - [Feature Service ID](#feature-service-id)
       - [Feature Service Dependencies](#feature-service-dependencies)
       - [Feature Service Instantiation & Programmatic Versioning](#feature-service-instantiation--programmatic-versioning)
-      - [Feature Service Definition](#feature-service-definition)
-      - [Feature Service Binding](#feature-service-binding)
+      - [Binding Feature Services](#binding-feature-services)
     - [Integrating the Feature Hub](#integrating-the-feature-hub)
-      - [The React Feature App Loader](#the-react-feature-app-loader)
-      - [The React Feature App Container](#the-react-feature-app-container)
+      - [React Feature App Loader](#react-feature-app-loader)
+      - [React Feature App Container](#react-feature-app-container)
       - [Providing Config Objects](#providing-config-objects)
       - [Providing Externals](#providing-externals)
   - [Contributing to the Feature Hub](#contributing-to-the-feature-hub)
@@ -131,21 +130,35 @@ There are three different roles in a Feature Hub environment:
 
 1.  An **integrator** instantiates the Feature Hub components and provides the
     Feature App compositions.
-2.  A **provider** provides a Feature Service to consumers through the Feature
-    Service registry. Most providers are registered by the integrator but they
-    can also be registered by Feature Apps.
+2.  A **provider** provides a Feature Service to consumers through the
+    `FeatureServiceRegistry`. Most providers are registered by the integrator
+    but they can also be registered by Feature Apps.
 3.  A **consumer** is everyone who consumes Feature Services. This can be a
     Feature App, other Feature Services, or even the integrator.
 
 ### Writing a Feature App
 
-A Feature App must be bundled as a [UMD](https://github.com/umdjs/umd) module.
-This JavaScript bundle file must be deployed to a publicly available endpoint.
-The integrator uses this URL to place the Feature App onto a page using a
-Feature App loader, e.g. the React `FeatureAppLoader`.
+A Feature App must be bundled as a [UMD](https://github.com/umdjs/umd) module
+and deployed to a publicly available endpoint. The integrator uses the bundle
+URL to place the Feature App onto a page using a Feature App loader, e.g. the
+React `FeatureAppLoader`.
 
-The default export of this module must be a `FeatureAppDefinition`. It consists
-of an `id`, a `dependencies` object, and the method `create`.
+The default export of a Feature App module must be a definition object. It
+consists of an `id`, an optional `dependencies` object, and the `create` method:
+
+```js
+export default {
+  id: 'acme:my-feature-app',
+
+  dependencies: {
+    'acme:some-feature-service': '^2.0'
+  },
+
+  create(env) {
+    // ...
+  }
+};
+```
 
 #### Feature App ID
 
@@ -157,7 +170,7 @@ const id = 'acme:my-feature-app';
 ```
 
 This ID is used to look up the config for a Feature App. Furthermore, it is used
-as a consumer ID for the [bindings](#feature-service-binding) of the Feature
+as a consumer ID for the [bindings](#binding-feature-services) of the Feature
 Services that a Feature App depends on.
 
 If there is more than one instance of a Feature App on a single page, the
@@ -172,13 +185,13 @@ In `dependencies`, required Feature Services are declared with their ID and a
 
 ```js
 const dependencies = {
-  'acme:my-feature-app': '^2.0'
+  'acme:some-feature-service': '^2.0'
 };
 ```
 
 #### Feature App Instantiation
 
-The method `create` takes the single argument `env`, which has the following
+The `create` method takes the single argument `env`, which has the following
 properties:
 
 1.  `config` — a Feature App config object that is
@@ -197,7 +210,7 @@ A Feature App can either be a "React Feature App" or a "DOM Feature App".
       id,
       dependencies,
 
-      create() {
+      create(env) {
         return {
           render: () => <div>Foo</div>
         };
@@ -217,7 +230,7 @@ A Feature App can either be a "React Feature App" or a "DOM Feature App".
       id,
       dependencies,
 
-      create() {
+      create(env) {
         return {
           attachTo(container) {
             container.innerText = 'Foo';
@@ -279,8 +292,22 @@ should define these externals in their build config. For example, defining
 
 ### Writing a Feature Service
 
-A Feature Service definition consists of an `id`, a `dependencies` object, and a
-`create` method.
+A Feature Service module must export a definition object. It consists of an
+`id`, an optional `dependencies` object, and the `create` method:
+
+```js
+export const myFeatureServiceDefinition = {
+  id: 'acme:my-feature-service',
+
+  dependencies: {
+    'acme:other-feature-service': '^2.0'
+  },
+
+  create(env) {
+    // ...
+  }
+};
+```
 
 #### Feature Service ID
 
@@ -292,7 +319,7 @@ const id = 'acme:my-feature-service';
 ```
 
 This ID is used to look up the config for a Feature Service. Furthermore, it is
-used as a consumer ID for the [bindings](#feature-service-binding) of the
+used as a consumer ID for the [bindings](#binding-feature-services) of the
 Feature Services that a Feature Service depends on.
 
 #### Feature Service Dependencies
@@ -302,14 +329,14 @@ In `dependencies`, required Feature Services are declared with their ID and a
 
 ```js
 const dependencies = {
-  'acme:my-feature-service': '^2.0'
+  'acme:other-feature-service': '^2.0'
 };
 ```
 
 #### Feature Service Instantiation & Programmatic Versioning
 
 The `create` method of a Feature Service definition is called exactly once by
-the Feature Service registry. It should store, and possibly initialize, any
+the `FeatureServiceRegistry`. It should store, and possibly initialize, any
 shared state. The method takes the single argument `env`, which has the
 following properties:
 
@@ -324,7 +351,7 @@ which have access to the same underlying shared state. The `create` method must
 return an object with a so-called Feature Service binder for each supported
 major version. The Feature Service binder is a function that is called for each
 consumer. It returns a Feature Service binding with a consumer-bound
-`featureService` and an optional `unbind` method. The Feature Service registry
+`featureService` and an optional `unbind` method. The `FeatureServiceRegistry`
 passes the bound Feature Service to the consumer's `create` method.
 
 With this in mind, a simple counter Feature Service could look like this:
@@ -351,7 +378,7 @@ function create(env) {
 
 Let's say after the first release of this Feature Service, the Feature Service
 provider noticed that there is no way to retrieve the current count. Therefore,
-they introduce the method `getCount` in version `1.1`:
+they introduce the `getCount` method in version `1.1`:
 
 ```js
 function create(env) {
@@ -390,8 +417,7 @@ Furthermore, it is possible to add deprecation warnings, and later remove
 deprecated APIs.
 
 In our example the Feature Service provider decides to rename the `plus`/`minus`
-methods to `increment`/`decrement` and adds deprecation warnings (using a
-fictive logger Feature Service that is declared as a dependency):
+methods to `increment`/`decrement` and adds deprecation warnings:
 
 ```js
 function create(env) {
@@ -401,19 +427,17 @@ function create(env) {
   const decrement = () => void --count;
   const increment = () => void ++count;
 
-  const logger = env.featureServices['acme:logger'];
-
   const v1 = uniqueConsumerId => ({
     featureService: {
       getCount,
 
       plus() {
-        logger.warn('Deprecation warning: use increment instead of plus.');
+        console.warn('Deprecation warning: use increment instead of plus.');
         increment();
       },
 
       minus() {
-        logger.warn('Deprecation warning: use decrement instead of minus.');
+        console.warn('Deprecation warning: use decrement instead of minus.');
         decrement();
       }
     }
@@ -427,20 +451,7 @@ function create(env) {
 }
 ```
 
-#### Feature Service Definition
-
-Finally, the `id`, the `dependencies` object, and the `create` method constitute
-the Feature Service definition that needs to be exported:
-
-```js
-export const counterDefinition = {
-  id: 'acme:counter',
-  dependencies: {'acme:logger': '^1.0'},
-  create
-};
-```
-
-#### Feature Service Binding
+#### Binding Feature Services
 
 Declaring a Feature Service binder (for each major version) allows Feature
 Service providers to create and destroy consumer-specific state.
@@ -452,7 +463,7 @@ consumer-specific counts.
 With our Feature Service binders, this could be implemented like this:
 
 ```js
-function create() {
+function create(env) {
   // Shared state lives here.
   let consumerCounts = {};
 
@@ -504,10 +515,10 @@ building blocks:
 There are a few steps an integrator needs to follow to compose a web page of
 multiple Feature Apps that share state through Feature Services:
 
-1.  Instantiate a `FeatureServiceRegistry`.
-1.  Register a set of Feature Services at the registry.
-1.  Create a `FeatureAppManager` singleton instance with the registry and a
-    browser or Node.js module loader.
+1.  Instantiate a `FeatureServiceRegistry` singleton instance.
+1.  Register a set of Feature Services at the `FeatureServiceRegistry`.
+1.  Instantiate a `FeatureAppManager` singleton instance with the
+    `FeatureServiceRegistry` and a browser or Node.js module loader.
 
 A typical integrator bootstrap code would look like this:
 
@@ -534,7 +545,7 @@ A React integrator can then use the `FeatureAppLoader` or the
 Feature Apps onto the web page. Each of them need the `FeatureAppManager`
 singleton instance to render their Feature App.
 
-#### The React Feature App Loader
+#### React Feature App Loader
 
 With the React `FeatureAppLoader` a Feature App can be loaded and rendered by
 defining a `src` which is the URL to its JavaScript UMD bundle, e.g.:
@@ -602,7 +613,7 @@ integrator, e.g.:
 </section>
 ```
 
-#### The React Feature App Container
+#### React Feature App Container
 
 With the React `FeatureAppContainer` a Feature App can be rendered by directly
 providing its Feature App definition:
@@ -648,8 +659,8 @@ integrator, e.g.:
 #### Providing Config Objects
 
 The integrator can provide config objects for Feature Services and Feature Apps,
-associated by their respective IDs, via the Feature Service registry and Feature
-App manager:
+associated by their respective IDs, via the `FeatureServiceRegistry` and
+`FeatureAppManager`:
 
 ```js
 const featureServiceConfigs = {'acme:my-feature-service': {foo: 'bar'}};
