@@ -151,7 +151,7 @@ export default {
   id: 'acme:my-feature-app',
 
   dependencies: {
-    'acme:other-feature-service': '^2.0'
+    'acme:feature-service': '^2.0'
   },
 
   create(env) {
@@ -185,7 +185,7 @@ In `dependencies`, required Feature Services are declared with their ID and a
 
 ```js
 const dependencies = {
-  'acme:other-feature-service': '^2.0'
+  'acme:feature-service': '^2.0'
 };
 ```
 
