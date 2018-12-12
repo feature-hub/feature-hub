@@ -110,8 +110,8 @@ by creating libraries, there are features that can only, or more easily, be
 achieved by creating Feature Services:
 
 - Share state across Feature Apps to ensure a consistent user experience.
-- Share browser APIs and resources not intended for shared use (e.g. History,
-  LocalStorage).
+- Share browser APIs and resources not intended for shared use (e.g.
+  [History][history-service-pkg], LocalStorage).
 - Share configuration across Feature Apps, but only maintain it once.
 
 ## Monorepo Packages
@@ -200,7 +200,8 @@ properties:
     [semver-compatible](https://semver.org) with the declared dependencies in
     the Feature App definition.
 
-A Feature App can either be a "React Feature App" or a "DOM Feature App".
+Assuming the [`@feature-hub/react`][react-pkg] package is used, a Feature App
+can be either a "React Feature App" or a "DOM Feature App":
 
 1.  A React Feature App definition's `create` method returns a Feature App
     object with a `render` method that itself returns a `ReactNode`.
