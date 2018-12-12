@@ -200,7 +200,8 @@ properties:
     [semver-compatible](https://semver.org) with the declared dependencies in
     the Feature App definition.
 
-A Feature App can either be a "React Feature App" or a "DOM Feature App".
+Assuming the [`@feature-hub/react`][react-pkg] package is used, a Feature App
+can be either a "React Feature App" or a "DOM Feature App":
 
 1.  A React Feature App definition's `create` method returns a Feature App
     object with a `render` method that itself returns a `ReactNode`.
