@@ -110,8 +110,8 @@ by creating libraries, there are features that can only, or more easily, be
 achieved by creating Feature Services:
 
 - Share state across Feature Apps to ensure a consistent user experience.
-- Share browser APIs and resources not intended for shared use (e.g. History,
-  LocalStorage).
+- Share browser APIs and resources not intended for shared use (e.g.
+  [History][history-service-pkg], LocalStorage).
 - Share configuration across Feature Apps, but only maintain it once.
 
 ## Monorepo Packages
