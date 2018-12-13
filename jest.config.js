@@ -5,7 +5,7 @@ module.exports = {
   collectCoverage: true,
   collectCoverageFrom: [
     '**/packages/*/src/**/*.{ts,tsx}',
-    '!**/packages/integration-tests/src/**/*.{ts,tsx}',
+    '!**/packages/demos/src/**/*.{ts,tsx}',
     // Covered by the integration test 'amd-module-loader'
     '!**/packages/module-loader/src/index.ts'
   ],

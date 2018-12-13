@@ -18,7 +18,7 @@ module.exports = () => ({
   ],
   tests: [
     'packages/*/src/**/*.test.{ts,tsx}',
-    '!packages/integration-tests/src/**/*.test.{ts,tsx}'
+    '!packages/demos/src/**/*.test.{ts,tsx}'
   ],
   env: {type: 'node', runner: 'node'},
   setup,

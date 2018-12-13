@@ -21,8 +21,8 @@
     "verify:size-limit": "lerna exec --no-private --parallel -- size-limit",
     "preverify:sort-package-jsons": "yarn sort-package-jsons",
     "verify:sort-package-jsons": "git diff --exit-code package.json packages/*/package.json",
-    "watch": "run-p watch:**",
     "watch:compile": "yarn compile --watch --preserveWatchOutput",
+    "watch:demo": "lerna exec --scope @feature-hub/demos -- ts-node src/watch-demo.ts",
     "watch:test": "yarn test --watch"
   },
   "devDependencies": {

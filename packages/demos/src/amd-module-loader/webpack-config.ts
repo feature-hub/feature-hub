@@ -1,5 +1,5 @@
 import {join} from 'path';
-import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
+import TsConfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
 import {Configuration} from 'webpack';
 
 const baseConfig: Configuration = {
@@ -9,21 +9,24 @@ const baseConfig: Configuration = {
     rules: [
       {
         test: /\.tsx?$/,
-        use: {loader: 'ts-loader'}
+        use: 'ts-loader'
       }
     ]
   },
   resolve: {
     extensions: ['.js', '.json', '.ts', '.tsx'],
     plugins: [
-      new TsconfigPathsPlugin({
+      new TsConfigPathsPlugin({
         configFile: join(__dirname, '../../tsconfig.json')
       })
     ]
+  },
+  resolveLoader: {
+    modules: [join(__dirname, '../../node_modules'), 'node_modules']
   }
 };
 
-export const configs: Configuration[] = [
+export default [
   {
     ...baseConfig,
     entry: join(__dirname, './feature-app.tsx'),
@@ -44,4 +47,4 @@ export const configs: Configuration[] = [
       publicPath: '/'
     }
   }
-];
+] as Configuration[];
