@@ -16,13 +16,9 @@ class HistoryConsumer extends React.Component<
   HistoryConsumerProps,
   HistoryConsumerState
 > {
+  public readonly state = {pathname: this.props.history.location.pathname};
+
   private unlisten?: () => void;
-
-  public constructor(props: HistoryConsumerProps) {
-    super(props);
-
-    this.state = {pathname: props.history.location.pathname};
-  }
 
   public componentDidMount(): void {
     const {history} = this.props;
