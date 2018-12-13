@@ -123,6 +123,7 @@ achieved by creating Feature Services:
 | [@feature-hub/module-loader][module-loader-pkg]     | [![Package Version][module-loader-badge]][module-loader-npm]     | A universal module loader.                                        | [📖][module-loader-api]   |
 | [@feature-hub/history-service][history-service-pkg] | [![Package Version][history-service-badge]][history-service-npm] | A history facade guaranteeing safe access for multiple consumers. | [📖][history-service-api] |
 | [@feature-hub/server-renderer][server-renderer-pkg] | [![Package Version][server-renderer-badge]][server-renderer-npm] | A Feature Service to manage server-side rendering.                | [📖][server-renderer-api] |
+| [@feature-hub/demos][demos-pkg]                     |                                                                  | A collection of demos for the Feature Hub.                        |                           |
 
 ## Using the Feature Hub
 
@@ -710,7 +711,6 @@ dependencies to Feature Apps using the `defineExternals` function:
 
 ```js
 import {defineExternals, loadAmdModule} from '@feature-hub/module-loader';
-import * as React from 'react';
 import Loadable from 'react-loadable';
 ```
 
@@ -748,8 +748,8 @@ project you agree to abide by its terms.
 - `yarn verify`: Verifies non-functional requirements (used on CI).
 - `yarn format`: Formats all files.
 - `yarn sort-package-jsons`: Sorts all `package.json` files.
-- `yarn watch`: Watches all sources and all tests.
 - `yarn watch:compile`: Watches all sources.
+- `yarn watch:demo <demo-name>`: Watches the given demo.
 - `yarn watch:test`: Watches all tests.
 
 ### Publishing a New Release
@@ -801,3 +801,5 @@ the
   https://github.com/sinnerschrader/feature-hub/tree/master/packages/server-renderer
 [server-renderer-npm]:
   https://www.npmjs.com/package/@feature-hub/server-renderer
+[demos-pkg]:
+  https://github.com/sinnerschrader/feature-hub/tree/master/packages/demos

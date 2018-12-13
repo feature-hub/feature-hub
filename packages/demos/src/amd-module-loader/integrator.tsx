@@ -4,7 +4,7 @@ import {FeatureAppLoader} from '@feature-hub/react';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-const registry = new FeatureServiceRegistry({});
+const registry = new FeatureServiceRegistry();
 const manager = new FeatureAppManager(registry, loadAmdModule);
 
 defineExternals({react: React});

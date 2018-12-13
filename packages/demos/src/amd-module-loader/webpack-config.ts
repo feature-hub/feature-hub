@@ -2,14 +2,14 @@ import {join} from 'path';
 import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
 import {Configuration} from 'webpack';
 
-const baseConfig: Configuration = {
+const webpackBaseConfig: Configuration = {
   devtool: false,
   mode: 'production',
   module: {
     rules: [
       {
         test: /\.tsx?$/,
-        use: {loader: 'ts-loader'}
+        use: 'ts-loader'
       }
     ]
   },
@@ -20,12 +20,15 @@ const baseConfig: Configuration = {
         configFile: join(__dirname, '../../tsconfig.json')
       })
     ]
+  },
+  resolveLoader: {
+    modules: [join(__dirname, '../../node_modules'), 'node_modules']
   }
 };
 
-export const configs: Configuration[] = [
+export default [
   {
-    ...baseConfig,
+    ...webpackBaseConfig,
     entry: join(__dirname, './feature-app.tsx'),
     externals: {
       react: 'react'
@@ -37,11 +40,11 @@ export const configs: Configuration[] = [
     }
   },
   {
-    ...baseConfig,
+    ...webpackBaseConfig,
     entry: join(__dirname, './integrator.tsx'),
     output: {
       filename: 'integrator.js',
       publicPath: '/'
     }
   }
-];
+] as Configuration[];

@@ -1,9 +1,9 @@
 {
-  "name": "@feature-hub/integration-tests",
-  "version": "0.5.1",
+  "name": "@feature-hub/demos",
+  "version": "0.0.0",
   "private": true,
   "license": "MIT",
-  "devDependencies": {
+  "dependencies": {
     "@feature-hub/core": "^0.5.0",
     "@feature-hub/module-loader": "^0.5.0",
     "@feature-hub/react": "^0.5.1",
@@ -16,7 +16,9 @@
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
     "ts-loader": "^5.3.1",
+    "ts-node": "^7.0.1",
     "tsconfig-paths-webpack-plugin": "^3.2.0",
+    "typescript": "3.1.6",
     "webpack": "^4.27.0",
     "webpack-dev-middleware": "^3.4.0"
   }
