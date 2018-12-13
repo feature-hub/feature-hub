@@ -23,8 +23,8 @@ export interface FeatureAppEnvironment<
   readonly featureServices: TFeatureServices;
 
   /**
-   * An optional ID specifier that is used together with the Feature App ID to
-   * create a unique consumer ID.
+   * An optional ID specifier that distinguishes the Feature App instance from
+   * other Feature App instances with the same ID.
    */
   readonly idSpecifier: string | undefined;
 }
