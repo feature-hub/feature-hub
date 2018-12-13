@@ -5,7 +5,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
 const registry = new FeatureServiceRegistry();
-const manager = new FeatureAppManager(registry, loadAmdModule);
+const manager = new FeatureAppManager(registry, {moduleLoader: loadAmdModule});
 
 defineExternals({react: React});
 

@@ -136,7 +136,7 @@ describe('FeatureServiceRegistry', () => {
 
     beforeEach(() => {
       configs = {a: {kind: 'a'}, c: {kind: 'c'}};
-      registry = new FeatureServiceRegistry(configs);
+      registry = new FeatureServiceRegistry({configs});
     });
 
     it('registers the feature service providers "a", "b", "c" one after the other', () => {

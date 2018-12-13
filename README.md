@@ -522,13 +522,12 @@ multiple Feature Apps that share state through Feature Services:
 1.  Instantiate a `FeatureServiceRegistry` singleton instance.
 1.  Register a set of Feature Services at the `FeatureServiceRegistry`.
 1.  Instantiate a `FeatureAppManager` singleton instance with the
-    `FeatureServiceRegistry` and a browser or Node.js module loader.
+    `FeatureServiceRegistry`.
 
 A typical integrator bootstrap code would look like this:
 
 ```js
 import {FeatureAppManager, FeatureServiceRegistry} from '@feature-hub/core';
-import {loadCommonJsModule} from '@feature-hub/module-loader/node';
 ```
 
 ```js
@@ -541,7 +540,7 @@ const featureServiceDefinitions = [
 
 registry.registerProviders(featureServiceDefinitions, 'integrator');
 
-const manager = new FeatureAppManager(registry, loadCommonJsModule);
+const manager = new FeatureAppManager(registry);
 ```
 
 A React integrator can then use the `FeatureAppLoader` or the
@@ -670,13 +669,8 @@ associated by their respective IDs, via the `FeatureServiceRegistry` and
 const featureServiceConfigs = {'acme:my-feature-service': {foo: 'bar'}};
 const featureAppConfigs = {'acme:my-feature-app': {baz: 'qux'}};
 
-const registry = new FeatureServiceRegistry(featureServiceConfigs);
-
-const manager = new FeatureAppManager(
-  registry,
-  loadAmdModule,
-  featureAppConfigs
-);
+const registry = new FeatureServiceRegistry({configs: featureServiceConfigs});
+const manager = new FeatureAppManager(registry, {configs: featureAppConfigs});
 ```
 
 Feature Services and Feature Apps can then use their respective config object as
@@ -720,7 +714,7 @@ import Loadable from 'react-loadable';
 ```js
 defineExternals({react: React, 'react-loadable': Loadable});
 
-const manager = new FeatureAppManager(registry, loadAmdModule);
+const manager = new FeatureAppManager(registry, {moduleLoader: loadAmdModule});
 ```
 
 ## Contributing to the Feature Hub
