@@ -1,13 +1,11 @@
 import {FeatureAppManager, FeatureServiceRegistry} from '@feature-hub/core';
-import {
-  createRootLocationTransformer,
-  defineHistoryService
-} from '@feature-hub/history-service';
+import {defineHistoryService} from '@feature-hub/history-service';
 import {FeatureAppContainer} from '@feature-hub/react';
 import {defineServerRenderer} from '@feature-hub/server-renderer';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {historyConsumerDefinition} from './history-consumer';
+import {rootLocationTransformer} from './root-location-transformer';
 
 // tslint:disable
 import 'normalize.css/normalize.css';
@@ -20,9 +18,7 @@ const registry = new FeatureServiceRegistry();
 registry.registerProviders(
   [
     defineServerRenderer(undefined),
-    defineHistoryService(
-      createRootLocationTransformer({consumerPathsQueryParamName: 'test'})
-    )
+    defineHistoryService(rootLocationTransformer)
   ],
   'integrator'
 );

@@ -23,7 +23,7 @@
     "verify:sort-package-jsons": "git diff --exit-code package.json packages/*/package.json",
     "watch:compile": "yarn compile --watch --preserveWatchOutput",
     "watch:demo": "lerna exec --scope @feature-hub/demos -- ts-node src/watch-demo.ts",
-    "watch:test": "yarn test --watch"
+    "watch:test": "yarn test --watch --no-coverage"
   },
   "devDependencies": {
     "@commitlint/cli": "^7.2.1",
