@@ -200,6 +200,8 @@ properties:
 1.  `featureServices` — an object of required Feature Services that are
     [semver-compatible](https://semver.org) with the declared dependencies in
     the Feature App definition.
+1.  `idSpecifier` — an optional ID specifier that is used together with the
+    Feature App ID to create a unique consumer ID.
 
 Assuming the [`@feature-hub/react`][react-pkg] package is used, a Feature App
 can be either a "React Feature App" or a "DOM Feature App":

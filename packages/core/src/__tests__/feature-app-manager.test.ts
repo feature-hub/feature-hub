@@ -146,6 +146,7 @@ describe('FeatureAppManager', () => {
 
     it('creates a feature app with a consumer environment using the service registry', () => {
       const mockConfig = {kind: 'test'};
+      const idSpecifier = 'testIdSpecifier';
 
       manager = new FeatureAppManager(
         mockFeatureServiceRegistry,
@@ -153,16 +154,16 @@ describe('FeatureAppManager', () => {
         {[mockFeatureAppDefinition.id]: mockConfig}
       );
 
-      manager.getFeatureAppScope(mockFeatureAppDefinition, 'testIdSpecifier');
+      manager.getFeatureAppScope(mockFeatureAppDefinition, idSpecifier);
 
       expect(mockFeatureServiceRegistry.bindFeatureServices.mock.calls).toEqual(
-        [[mockFeatureAppDefinition, 'testIdSpecifier']]
+        [[mockFeatureAppDefinition, idSpecifier]]
       );
 
       const {featureServices} = mockFeatureServicesBinding;
 
       expect(mockFeatureAppCreate.mock.calls).toEqual([
-        [{config: mockConfig, featureServices}]
+        [{config: mockConfig, featureServices, idSpecifier}]
       ]);
     });
 
