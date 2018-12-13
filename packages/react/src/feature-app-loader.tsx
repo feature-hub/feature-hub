@@ -16,8 +16,8 @@ export interface FeatureAppLoaderProps {
 }
 
 interface FeatureAppLoaderState {
+  readonly crashed?: boolean;
   readonly featureAppDefinition?: FeatureAppDefinition<unknown>;
-  readonly loadingError?: boolean;
 }
 
 // tslint:disable:strict-type-predicates
@@ -34,7 +34,7 @@ export class FeatureAppLoader extends React.PureComponent<
   public readonly state: FeatureAppLoaderState = {};
 
   private mounted = false;
-  private loggedLoadingError = false;
+  private crashReported = false;
 
   public constructor(props: FeatureAppLoaderProps) {
     super(props);
@@ -49,14 +49,14 @@ export class FeatureAppLoader extends React.PureComponent<
     const asyncFeatureAppDefinition = manager.getAsyncFeatureAppDefinition(src);
 
     if (asyncFeatureAppDefinition.error) {
-      this.logLoadingError(asyncFeatureAppDefinition.error);
+      this.reportCrash(asyncFeatureAppDefinition.error);
 
       if (!inBrowser) {
         // TODO: we should only throw for "mission critical" feature apps ...
         throw asyncFeatureAppDefinition.error;
       }
 
-      this.state = {loadingError: true};
+      this.state = {crashed: true};
     } else {
       this.state = {featureAppDefinition: asyncFeatureAppDefinition.value};
     }
@@ -81,10 +81,10 @@ export class FeatureAppLoader extends React.PureComponent<
         this.setState({featureAppDefinition});
       }
     } catch (error) {
-      this.logLoadingError(error);
+      this.reportCrash(error);
 
       if (this.mounted) {
-        this.setState({loadingError: true});
+        this.setState({crashed: true});
       }
     }
   }
@@ -94,10 +94,10 @@ export class FeatureAppLoader extends React.PureComponent<
   }
 
   public render(): React.ReactNode {
-    const {featureAppDefinition, loadingError} = this.state;
+    const {featureAppDefinition, crashed} = this.state;
     const {manager, idSpecifier} = this.props;
 
-    if (loadingError) {
+    if (crashed) {
       // An error UI could be rendered here.
       return null;
     }
@@ -134,12 +134,12 @@ export class FeatureAppLoader extends React.PureComponent<
     }
   }
 
-  private logLoadingError(error: Error): void {
-    if (this.loggedLoadingError) {
+  private reportCrash(error: Error): void {
+    if (this.crashReported) {
       return;
     }
 
-    this.loggedLoadingError = true;
+    this.crashReported = true;
 
     const {idSpecifier, src: browserSrc, nodeSrc} = this.props;
     const src = inBrowser ? browserSrc : nodeSrc;
@@ -147,9 +147,7 @@ export class FeatureAppLoader extends React.PureComponent<
     console.error(
       `The feature app for the src ${JSON.stringify(
         src
-      )} and the ID specifier ${JSON.stringify(
-        idSpecifier
-      )} could not be loaded.`,
+      )} and the ID specifier ${JSON.stringify(idSpecifier)} crashed.`,
       error
     );
   }

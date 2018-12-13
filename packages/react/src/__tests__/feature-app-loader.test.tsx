@@ -152,7 +152,7 @@ describe('FeatureAppLoader', () => {
 
       expect(spyConsoleError.mock.calls).toEqual([
         [
-          'The feature app for the src "/test.js" and the ID specifier "testIdSpecifier" could not be loaded.',
+          'The feature app for the src "/test.js" and the ID specifier "testIdSpecifier" crashed.',
           mockError
         ]
       ]);
@@ -254,7 +254,7 @@ describe('FeatureAppLoader', () => {
 
       expect(spyConsoleError.mock.calls).toEqual([
         [
-          'The feature app for the src "/test.js" and the ID specifier "testIdSpecifier" could not be loaded.',
+          'The feature app for the src "/test.js" and the ID specifier "testIdSpecifier" crashed.',
           mockError
         ]
       ]);
@@ -282,7 +282,7 @@ describe('FeatureAppLoader', () => {
 
         expect(spyConsoleError.mock.calls).toEqual([
           [
-            'The feature app for the src "/test.js" and the ID specifier "testIdSpecifier" could not be loaded.',
+            'The feature app for the src "/test.js" and the ID specifier "testIdSpecifier" crashed.',
             mockError
           ]
         ]);

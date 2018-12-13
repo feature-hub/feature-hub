@@ -96,7 +96,7 @@ describe('FeatureAppLoader (on Node.js)', () => {
 
         expect(spyConsoleError.mock.calls).toEqual([
           [
-            'The feature app for the src "example-node.js" and the ID specifier "testIdSpecifier" could not be loaded.',
+            'The feature app for the src "example-node.js" and the ID specifier "testIdSpecifier" crashed.',
             mockError
           ]
         ]);
