@@ -200,12 +200,14 @@ properties:
 1.  `featureServices` — an object of required Feature Services that are
     [semver-compatible](https://semver.org) with the declared dependencies in
     the Feature App definition.
+1.  `idSpecifier` — an optional ID specifier that distinguishes the Feature App
+    instance from other Feature App instances with the same ID.
 
 Assuming the [`@feature-hub/react`][react-pkg] package is used, a Feature App
 can be either a "React Feature App" or a "DOM Feature App":
 
 1.  A React Feature App definition's `create` method returns a Feature App
-    object with a `render` method that itself returns a `ReactNode`.
+    instance with a `render` method that itself returns a `ReactNode`.
 
     ```js
     export default {
@@ -224,8 +226,8 @@ can be either a "React Feature App" or a "DOM Feature App":
     React lifecyle methods can be used (if `render` returns an instance of a
     React component class).
 
-1.  A DOM Feature App definition's `create` method returns a Feature App object
-    with an `attachTo` method that accepts a DOM container element.
+1.  A DOM Feature App definition's `create` method returns a Feature App
+    instance with an `attachTo` method that accepts a DOM container element.
 
     ```js
     export default {

@@ -21,6 +21,12 @@ export interface FeatureAppEnvironment<
    * declared dependencies in the Feature App definition.
    */
   readonly featureServices: TFeatureServices;
+
+  /**
+   * An optional ID specifier that distinguishes the Feature App instance from
+   * other Feature App instances with the same ID.
+   */
+  readonly idSpecifier: string | undefined;
 }
 
 export interface FeatureAppDefinition<
@@ -195,7 +201,8 @@ export class FeatureAppManager implements FeatureAppManagerLike {
 
     const featureApp = featureAppDefinition.create({
       config,
-      featureServices: binding.featureServices
+      featureServices: binding.featureServices,
+      idSpecifier
     });
 
     console.info(
