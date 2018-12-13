@@ -5,15 +5,15 @@ import {startServer} from './start-server';
 const demoName = process.argv[2];
 
 function loadWebpackConfigs(): Configuration[] {
-  const webpackConfigs: Configuration[] = require(`./${demoName}/webpack-config`)
-    .default;
+  const configPath = `./${demoName}/webpack-config`;
+  const configs: Configuration[] = require(configPath).default;
 
-  for (const webpackConfig of webpackConfigs) {
-    webpackConfig.devtool = 'source-map';
-    webpackConfig.mode = 'development';
+  for (const config of configs) {
+    config.devtool = 'source-map';
+    config.mode = 'development';
   }
 
-  return webpackConfigs;
+  return configs;
 }
 
 startServer(loadWebpackConfigs())
