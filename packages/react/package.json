@@ -1,6 +1,6 @@
 {
   "name": "@feature-hub/react",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "description": "A Feature Hub integrator for React.",
   "bugs": {
     "url": "https://github.com/sinnerschrader/feature-hub/issues"
@@ -18,7 +18,7 @@
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "dependencies": {
-    "@feature-hub/core": "^0.5.0"
+    "@feature-hub/core": "^0.6.0"
   },
   "devDependencies": {
     "react": "^16.6.3"
