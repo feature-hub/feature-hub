@@ -19,6 +19,10 @@ Now run one of the following demos:
 yarn watch:demo amd-module-loader
 ```
 
+```sh
+yarn watch:demo history-service
+```
+
 ---
 
 Copyright (c) 2018 SinnerSchrader Deutschland GmbH. Released under the terms of

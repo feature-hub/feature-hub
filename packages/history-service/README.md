@@ -16,6 +16,7 @@ page.
   - [Motivation](#motivation)
   - [Functional Behaviour](#functional-behaviour)
     - [Location Transformer](#location-transformer)
+  - [Demo](#demo)
   - [Usage](#usage)
     - [As a Consumer](#as-a-consumer)
       - [In the browser:](#in-the-browser)
@@ -47,11 +48,11 @@ access to the history for multiple consumers.
 
 ## Functional Behaviour
 
-The history service combines multiple consumer histories (and their locations)
+The History Service combines multiple consumer histories (and their locations)
 into a single one. It does this by merging all registered consumer locations
 into one, and persisting this combined root location on the history stack. As
 long as the consumer performs all history and location interactions through the
-history it obtained from the history service, the existence of the facade and
+history it obtained from the History Service, the existence of the facade and
 other consumers isn't noticeable for the consumer. For example, the consumer
 receives history change events only for location changes that affect its own
 history.
@@ -70,6 +71,25 @@ a primary consumer. Only the primary's location (pathname and query) will get
 inserted directly into the root location. All other consumer locations are
 encoded into a json string which will be assigned to a single configurable query
 parameter.
+
+## Demo
+
+There is a demo that simulates the capabilities of the History Service with two
+Feature Apps.
+
+### Running the Demo
+
+Go to the monorepo top-level directory and install all dependencies:
+
+```sh
+yarn
+```
+
+Now run the demo:
+
+```sh
+yarn watch:demo history-service
+```
 
 ## Usage
 
@@ -95,7 +115,7 @@ export default {
       render: () => (
         <Router history={browserHistory}>
           <App />
-        <Router>
+        </Router>
       )
     };
   }
@@ -122,7 +142,7 @@ export default {
       render: () => (
         <Router history={memoryHistory}>
           <App />
-        <Router>
+        </Router>
       )
     };
   }
@@ -135,7 +155,7 @@ the history package. For further information reference
 
 ### As the Integrator
 
-The integrator defines the history service with a
+The integrator defines the History Service with a
 [location transformer](#location-transformer) and registers it at the Feature
 Service registry:
 
@@ -163,7 +183,7 @@ registry.registerProviders(featureServiceDefinitions, 'integrator');
 ```
 
 On the server, the integrator defines the server renderer with a request. The
-history service depends on the server renderer to obtain its request and use it
+History Service depends on the server renderer to obtain its request and use it
 for the initial history location:
 
 ```js
@@ -181,7 +201,9 @@ const rootLocationTransformer = createRootLocationTransformer({
   consumerPathsQueryParamName: '---'
 });
 
-const request = {}; // obtain the request from somewhere, e.g. a request handler
+const request = {
+  // ... obtain the request from somewhere, e.g. a request handler
+};
 
 const featureServiceDefinitions = [
   defineHistoryService(rootLocationTransformer),
