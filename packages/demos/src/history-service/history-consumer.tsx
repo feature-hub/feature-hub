@@ -39,12 +39,7 @@ class HistoryConsumer extends React.Component<
       <Card>
         <Label className="bp3-inline">
           Pathname
-          <input
-            id="pathname"
-            className={Classes.INPUT}
-            value={pathname}
-            disabled
-          />
+          <input className={Classes.INPUT} value={pathname} disabled />
         </Label>
       </Card>
     );
