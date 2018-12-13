@@ -711,6 +711,7 @@ dependencies to Feature Apps using the `defineExternals` function:
 
 ```js
 import {defineExternals, loadAmdModule} from '@feature-hub/module-loader';
+import * as React from 'react';
 import Loadable from 'react-loadable';
 ```
 

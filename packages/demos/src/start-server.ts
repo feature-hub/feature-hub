@@ -5,7 +5,7 @@ import webpack from 'webpack';
 import devMiddleware from 'webpack-dev-middleware';
 
 export async function startServer(
-  webpackConfig: webpack.Configuration[]
+  webpackConfigs: webpack.Configuration[]
 ): Promise<Server> {
   const app = express();
 
@@ -20,7 +20,7 @@ export async function startServer(
     );
   });
 
-  app.use(devMiddleware(webpack(webpackConfig), {publicPath: '/'}));
+  app.use(devMiddleware(webpack(webpackConfigs), {publicPath: '/'}));
 
   // tslint:disable-next-line:await-promise
   const port = await getPort();

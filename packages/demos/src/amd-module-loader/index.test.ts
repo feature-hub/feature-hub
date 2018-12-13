@@ -5,7 +5,7 @@
 import {Server} from 'http';
 import {AddressInfo} from 'net';
 import {startServer} from '../start-server';
-import webpackConfig from './webpack-config';
+import webpackConfigs from './webpack-config';
 
 jest.setTimeout(60000);
 
@@ -13,7 +13,7 @@ describe('integration test: "amd module loader"', () => {
   let server: Server;
 
   beforeAll(async () => {
-    server = await startServer(webpackConfig);
+    server = await startServer(webpackConfigs);
   });
 
   afterAll(done => server.close(done));

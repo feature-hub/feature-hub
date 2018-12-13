@@ -4,17 +4,19 @@ import {startServer} from './start-server';
 
 const demoName = process.argv[2];
 
-function loadWebpackConfig(): Configuration[] {
-  return (require(`./${demoName}/webpack-config`)
-    .default as Configuration[]).map(webpackConfig => {
+function loadWebpackConfigs(): Configuration[] {
+  const webpackConfigs: Configuration[] = require(`./${demoName}/webpack-config`)
+    .default;
+
+  for (const webpackConfig of webpackConfigs) {
     webpackConfig.devtool = 'source-map';
     webpackConfig.mode = 'development';
+  }
 
-    return webpackConfig;
-  });
+  return webpackConfigs;
 }
 
-startServer(loadWebpackConfig())
+startServer(loadWebpackConfigs())
   .then(server => {
     const {port} = server.address() as AddressInfo;
 
