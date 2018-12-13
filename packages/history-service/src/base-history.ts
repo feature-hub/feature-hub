@@ -5,28 +5,20 @@ export interface ConsumerHistory extends history.History {
   destroy(): void;
 }
 
-function setRootHistoryKey(
-  consumerLocation: history.Location,
-  rootHistoryKey: string | undefined
-): void {
-  consumerLocation.state = {...consumerLocation.state, rootHistoryKey};
+export interface ConsumerHistoryIndices {
+  [consumerId: string]: number | undefined;
 }
 
 export abstract class BaseHistory implements ConsumerHistory {
   protected readonly consumerHistory: history.MemoryHistory;
   protected readonly unregisterCallbacks: history.UnregisterCallback[] = [];
-  private currentRootHistoryKey: string | undefined;
 
   public constructor(
     protected readonly consumerId: string,
     protected readonly rootHistory: history.History,
     private readonly rootLocationTransformer: RootLocationTransformer
   ) {
-    this.currentRootHistoryKey = rootHistory.location.key;
-
-    this.unregisterCallbacks.push(
-      rootHistory.listen(this.handleRootLocationChange.bind(this))
-    );
+    this.consumerHistory = history.createMemoryHistory();
 
     const initialConsumerPath = rootLocationTransformer.getConsumerPathFromRootLocation(
       rootHistory.location,
@@ -36,9 +28,6 @@ export abstract class BaseHistory implements ConsumerHistory {
     this.consumerHistory = history.createMemoryHistory({
       initialEntries: initialConsumerPath ? [initialConsumerPath] : undefined
     });
-
-    // Set the root history key for the initial consumer location.
-    setRootHistoryKey(this.consumerHistory.location, rootHistory.location.key);
   }
 
   public get length(): number {
@@ -109,70 +98,35 @@ export abstract class BaseHistory implements ConsumerHistory {
   protected createRootLocation(
     consumerLocation: history.Location | undefined
   ): history.LocationDescriptorObject {
-    return this.rootLocationTransformer.createRootLocation(
+    const rootLocation = this.rootLocationTransformer.createRootLocation(
       consumerLocation,
       this.rootHistory.location,
       this.consumerId
     );
-  }
 
-  // This method is only used in the BrowserHistory. It still lives in the
-  // BaseHistory class though, since the rootHistoryKey is set here as well
-  // on the any-typed consumer location state.
-  protected belongsToRootLocation(
-    rootLocation: history.Location
-  ): (consumerLocation: history.Location, index: number) => boolean {
-    return (consumerLocation: history.Location, index: number): boolean => {
-      /* istanbul ignore if */
-      if (
-        !rootLocation.key ||
-        !consumerLocation.state ||
-        !consumerLocation.state.rootHistoryKey
-      ) {
-        console.error(
-          `Invalid consumer history for "${this.consumerId}". The ${index +
-            1}. location
-          } has no rootHistoryKey set in its state.`,
-          this.consumerHistory.entries
-        );
+    const state = this.rootHistory.location.state as ConsumerHistoryIndices;
+    const index = consumerLocation ? this.consumerHistory.index : -1;
 
-        return false;
-      }
-
-      return consumerLocation.state.rootHistoryKey === rootLocation.key;
+    const newState: ConsumerHistoryIndices = {
+      ...state,
+      [this.consumerId]: index
     };
+
+    return history.createLocation(rootLocation, newState);
   }
 
-  private persistConsumerLocation(
+  protected getConsumerHistoryIndexFromRootHistory(): number {
+    const state = this.rootHistory.location.state as ConsumerHistoryIndices;
+    const index = state && state[this.consumerId];
+
+    return typeof index === 'undefined' ? -1 : index;
+  }
+
+  protected persistConsumerLocation(
     consumerLocation: history.Location,
     method: 'push' | 'replace'
   ): void {
-    this.rootHistory[method](this.createRootLocation(consumerLocation));
-    setRootHistoryKey(consumerLocation, this.rootHistory.location.key);
     this.consumerHistory[method](consumerLocation);
-  }
-
-  private handleRootLocationChange(
-    location: history.Location,
-    action: history.Action
-  ): void {
-    if (action === 'REPLACE') {
-      /* istanbul ignore else */
-      if (this.currentRootHistoryKey) {
-        const consumerLocation = this.consumerHistory.entries.find(
-          ({state}) => state.rootHistoryKey === this.currentRootHistoryKey
-        );
-
-        if (consumerLocation) {
-          setRootHistoryKey(consumerLocation, location.key);
-        }
-      } else {
-        console.error(
-          'Invalid history: The current root history key is undefined.'
-        );
-      }
-    }
-
-    this.currentRootHistoryKey = location.key;
+    this.rootHistory[method](this.createRootLocation(consumerLocation));
   }
 }

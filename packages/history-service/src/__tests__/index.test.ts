@@ -4,13 +4,14 @@ import {
   FeatureServiceEnvironment
 } from '@feature-hub/core';
 import {ServerRendererV1, ServerRequest} from '@feature-hub/server-renderer';
+import {UnregisterCallback} from 'history';
 import {History, HistoryServiceV1, defineHistoryService} from '..';
 import {RootLocationTransformer} from '../root-location-transformer';
 
-const simulateOnPopState = (key: string) => {
+const simulateOnPopState = (state: unknown) => {
   const popStateEvent = document.createEvent('Event');
   popStateEvent.initEvent('popstate', true, true);
-  (popStateEvent as any).state = {key}; // tslint:disable-line:no-any
+  (popStateEvent as any).state = state; // tslint:disable-line:no-any
   window.dispatchEvent(popStateEvent);
 };
 
@@ -37,6 +38,7 @@ describe('defineHistoryService', () => {
     let pushStateSpy: jest.SpyInstance;
     let replaceStateSpy: jest.SpyInstance;
     let consoleWarnSpy: jest.SpyInstance;
+    let consoleErrorSpy: jest.SpyInstance;
     let mockCreateRootLocation: jest.Mock;
     let mockGetConsumerPathFromRootLocation: jest.Mock;
 
@@ -49,11 +51,13 @@ describe('defineHistoryService', () => {
     beforeEach(() => {
       // ensure the window.location.href is the same before each test
       window.history.pushState(null, '', 'http://example.com');
+      window.sessionStorage.clear();
 
       pushStateSpy = jest.spyOn(window.history, 'pushState');
       replaceStateSpy = jest.spyOn(window.history, 'replaceState');
       consoleWarnSpy = jest.spyOn(console, 'warn');
       consoleWarnSpy.mockImplementation(jest.fn());
+      consoleErrorSpy = jest.spyOn(console, 'error');
 
       const mockServerRequest: ServerRequest = {
         path: '/example',
@@ -98,6 +102,8 @@ describe('defineHistoryService', () => {
       pushStateSpy.mockRestore();
       replaceStateSpy.mockRestore();
       consoleWarnSpy.mockRestore();
+
+      expect(consoleErrorSpy).not.toHaveBeenCalled();
     });
 
     describe('#get rootLocation()', () => {
@@ -258,6 +264,8 @@ describe('defineHistoryService', () => {
             'test:2'
           ).featureService.createBrowserHistory();
 
+          mockCreateRootLocation.mockClear();
+
           history1.push('/foo');
           history2.push('/bar?baz=1');
 
@@ -266,7 +274,7 @@ describe('defineHistoryService', () => {
           expect(mockCreateRootLocation).toHaveBeenCalledTimes(2);
 
           expect(mockCreateRootLocation.mock.calls).toMatchObject([
-            [{pathname: '/foo'}, {pathname: '/'}, 'test:1'],
+            [{pathname: '/foo'}, {pathname: '/rootpath'}, 'test:1'],
             [
               {
                 pathname: '/bar',
@@ -294,6 +302,7 @@ describe('defineHistoryService', () => {
           ).featureService.createBrowserHistory();
 
           replaceStateSpy.mockClear();
+          mockCreateRootLocation.mockClear();
 
           history1.replace('/foo');
           history2.replace('/bar?baz=1');
@@ -304,7 +313,7 @@ describe('defineHistoryService', () => {
                 pathname: '/foo',
                 search: ''
               },
-              {pathname: '/'},
+              {pathname: '/rootpath'},
               'test:1'
             ],
             [
@@ -458,8 +467,8 @@ describe('defineHistoryService', () => {
             'test:2'
           ).featureService.createBrowserHistory();
 
-          history1.listen(listenerSpy1);
-          history2.listen(listenerSpy2);
+          const history1Unregister = history1.listen(listenerSpy1);
+          const history2Unregister = history2.listen(listenerSpy2);
 
           history1.push('/foo?bar=1');
           history2.replace('/baz?qux=2');
@@ -477,6 +486,9 @@ describe('defineHistoryService', () => {
             expect.objectContaining({pathname: '/baz', search: '?qux=2'}),
             'REPLACE'
           );
+
+          history1Unregister();
+          history2Unregister();
         });
 
         it('returns an unregister function', () => {
@@ -501,8 +513,10 @@ describe('defineHistoryService', () => {
           let history2: History;
           let history1ListenerSpy: jest.Mock;
           let history2ListenerSpy: jest.Mock;
+          let history1Unregister: UnregisterCallback;
+          let history2Unregister: UnregisterCallback;
 
-          beforeEach(() => {
+          const createHistories = () => {
             const historyServiceBinder = createHistoryServiceBinder();
 
             history1 = historyServiceBinder(
@@ -514,19 +528,27 @@ describe('defineHistoryService', () => {
             ).featureService.createBrowserHistory();
 
             history1ListenerSpy = jest.fn();
-            history1.listen(history1ListenerSpy);
+            history1Unregister = history1.listen(history1ListenerSpy);
 
             history2ListenerSpy = jest.fn();
-            history2.listen(history2ListenerSpy);
-          });
+            history2Unregister = history2.listen(history2ListenerSpy);
+          };
+
+          const unregisterHistories = () => {
+            history1Unregister();
+            history2Unregister();
+          };
+
+          beforeEach(createHistories);
+          afterEach(unregisterHistories);
 
           it('calls listeners only for matching consumer locations', () => {
-            const key = window.history.state.key;
+            const state = window.history.state;
 
             history1.push('/foo');
             history1ListenerSpy.mockClear();
 
-            simulateOnPopState(key);
+            simulateOnPopState(state);
 
             expect(history1ListenerSpy).toHaveBeenCalledWith(
               expect.objectContaining({pathname: '/consumerpath'}),
@@ -539,13 +561,13 @@ describe('defineHistoryService', () => {
           describe('with back and forward navigation', () => {
             it('calls the listener with the correct locations', () => {
               history1.push('/baz?qux=3');
-              const key1 = window.history.state.key;
+              const state1 = window.history.state;
               history1.push('/bar?qux=4');
-              const key2 = window.history.state.key;
+              const state2 = window.history.state;
 
               history1ListenerSpy.mockClear();
 
-              simulateOnPopState(key1); // POP backward
+              simulateOnPopState(state1); // POP backward
 
               expect(history1ListenerSpy).toHaveBeenCalledWith(
                 expect.objectContaining({pathname: '/baz', search: '?qux=3'}),
@@ -554,7 +576,7 @@ describe('defineHistoryService', () => {
 
               history1ListenerSpy.mockClear();
 
-              simulateOnPopState(key2); // POP foward
+              simulateOnPopState(state2); // POP foward
 
               expect(history1ListenerSpy).toHaveBeenCalledWith(
                 expect.objectContaining({pathname: '/bar', search: '?qux=4'}),
@@ -571,18 +593,65 @@ describe('defineHistoryService', () => {
               history2.push('/b2');
               history1.replace('/a3');
 
-              const replacedKey = window.history.state.key;
+              const replacedState = window.history.state;
 
               history2.push('/b3');
 
               history2ListenerSpy.mockClear();
 
-              simulateOnPopState(replacedKey); // POP to replaced location
+              simulateOnPopState(replacedState); // POP to replaced location
 
               expect(history2ListenerSpy).toHaveBeenCalledWith(
                 expect.objectContaining({pathname: '/b2'}),
                 'POP'
               );
+            });
+          });
+
+          describe('after re-initializing the history service, e.g. because of a page reload', () => {
+            it('calls listeners only for matching consumer locations', () => {
+              const state = window.history.state;
+
+              history1.push('/foo');
+
+              unregisterHistories();
+              createHistories();
+
+              history1ListenerSpy.mockClear();
+
+              simulateOnPopState(state);
+
+              expect(history1ListenerSpy).toHaveBeenCalledWith(
+                expect.objectContaining({pathname: '/consumerpath'}),
+                'POP'
+              );
+
+              expect(history2ListenerSpy).not.toHaveBeenCalled();
+            });
+
+            describe('when the session storage does not contain the consumer history entries', () => {
+              it('logs a warning and does not call the listeners', () => {
+                const state = window.history.state;
+
+                history1.push('/foo');
+
+                unregisterHistories();
+
+                window.sessionStorage.clear();
+
+                createHistories();
+
+                history1ListenerSpy.mockClear();
+
+                simulateOnPopState(state);
+
+                expect(history1ListenerSpy).not.toHaveBeenCalled();
+                expect(history2ListenerSpy).not.toHaveBeenCalled();
+
+                expect(consoleWarnSpy).toHaveBeenCalledWith(
+                  'Can not find stored consumer history entries in session storage for consumer "test:1".'
+                );
+              });
             });
           });
         });
@@ -596,12 +665,13 @@ describe('defineHistoryService', () => {
             'test:1'
           ).featureService.createBrowserHistory();
 
-          const location = {pathname: '/quux', search: '?a=b'};
+          mockCreateRootLocation.mockClear();
 
+          const location = {pathname: '/quux', search: '?a=b'};
           const href = history.createHref(location);
 
           expect(mockCreateRootLocation.mock.calls).toMatchObject([
-            [location, {pathname: '/'}, 'test:1']
+            [location, {pathname: '/rootpath'}, 'test:1']
           ]);
 
           expect(href).toBe('rootpath');
@@ -638,24 +708,26 @@ describe('defineHistoryService', () => {
           const history1ListenerSpy = jest.fn();
           const history2ListenerSpy = jest.fn();
 
-          history1.listen(history1ListenerSpy);
+          const history1Unregister = history1.listen(history1ListenerSpy);
           history2.listen(history2ListenerSpy);
 
+          const state1 = window.history.state;
           history2.push('/baz?qux=3');
-          const key1 = window.history.state.key;
+          const state2 = window.history.state;
           history1.push('/foo?baz=2');
-          const key2 = window.history.state.key;
 
           history2ServiceBinding.unbind!();
           history2ListenerSpy.mockClear();
 
-          simulateOnPopState(key1);
+          simulateOnPopState(state1);
 
           expect(history2ListenerSpy).not.toHaveBeenCalled();
 
-          simulateOnPopState(key2);
+          simulateOnPopState(state2);
 
           expect(history1ListenerSpy).toHaveBeenCalled();
+
+          history1Unregister();
         });
       });
     });
@@ -1056,8 +1128,8 @@ describe('defineHistoryService', () => {
             'test:2'
           ).featureService.createMemoryHistory();
 
-          history1.listen(listenerSpy1);
-          history2.listen(listenerSpy2);
+          const history1Unregister = history1.listen(listenerSpy1);
+          const history2Unregister = history2.listen(listenerSpy2);
 
           history1.push('/foo?bar=1');
           history2.replace('/baz?qux=2');
@@ -1075,6 +1147,9 @@ describe('defineHistoryService', () => {
             expect.objectContaining({pathname: '/baz', search: '?qux=2'}),
             'REPLACE'
           );
+
+          history1Unregister();
+          history2Unregister();
         });
 
         it('returns an unregister function', () => {
