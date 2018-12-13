@@ -1,5 +1,5 @@
 import {join} from 'path';
-import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
+import TsConfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
 import {Configuration} from 'webpack';
 
 const webpackBaseConfig: Configuration = {
@@ -16,7 +16,7 @@ const webpackBaseConfig: Configuration = {
   resolve: {
     extensions: ['.js', '.json', '.ts', '.tsx'],
     plugins: [
-      new TsconfigPathsPlugin({
+      new TsConfigPathsPlugin({
         configFile: join(__dirname, '../../tsconfig.json')
       })
     ]
