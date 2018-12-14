@@ -4,7 +4,7 @@ import {FeatureAppContainer} from '@feature-hub/react';
 import {defineServerRenderer} from '@feature-hub/server-renderer';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import {historyConsumerDefinition} from './history-consumer';
+import {historyConsumerDefinition} from './history-consumer-definition';
 import {rootLocationTransformer} from './root-location-transformer';
 
 // tslint:disable
