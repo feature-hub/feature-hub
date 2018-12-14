@@ -4,7 +4,7 @@ import {Configuration} from 'webpack';
 
 export const webpackBaseConfig: Configuration = {
   devtool: false,
-  mode: 'production',
+  mode: 'development',
   module: {
     rules: [
       {

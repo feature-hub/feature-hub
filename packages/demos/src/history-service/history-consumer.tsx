@@ -6,6 +6,7 @@ import * as React from 'react';
 
 interface HistoryConsumerProps {
   readonly history: History;
+  readonly idSpecifier: string;
 }
 
 interface HistoryConsumerState {
@@ -33,13 +34,19 @@ class HistoryConsumer extends React.Component<
   }
 
   public render(): React.ReactNode {
+    const {idSpecifier} = this.props;
     const {pathname} = this.state;
 
     return (
       <Card>
         <Label className="bp3-inline">
           Pathname
-          <input className={Classes.INPUT} value={pathname} disabled />
+          <input
+            id={`pathname-${idSpecifier}`}
+            className={Classes.INPUT}
+            value={pathname}
+            disabled
+          />
         </Label>
       </Card>
     );
@@ -57,12 +64,15 @@ export const historyConsumerDefinition: FeatureAppDefinition<
     's2:history': '^1.0'
   },
 
-  create: env => {
-    const historyService = env.featureServices['s2:history'];
+  create: ({featureServices, idSpecifier}) => {
+    const historyService = featureServices['s2:history'];
 
     return {
       render: () => (
-        <HistoryConsumer history={historyService.createBrowserHistory()} />
+        <HistoryConsumer
+          history={historyService.createBrowserHistory()}
+          idSpecifier={idSpecifier || ''}
+        />
       )
     };
   }

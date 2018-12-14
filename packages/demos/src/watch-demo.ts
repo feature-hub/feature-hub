@@ -10,7 +10,6 @@ function loadWebpackConfigs(): Configuration[] {
 
   for (const config of configs) {
     config.devtool = 'source-map';
-    config.mode = 'development';
   }
 
   return configs;
