@@ -17,7 +17,7 @@ export interface FeatureAppLoaderProps {
 
 interface FeatureAppLoaderState {
   readonly featureAppDefinition?: FeatureAppDefinition<unknown>;
-  readonly loadingError?: boolean;
+  readonly hasError?: boolean;
 }
 
 // tslint:disable:strict-type-predicates
@@ -33,8 +33,8 @@ export class FeatureAppLoader extends React.PureComponent<
 > {
   public readonly state: FeatureAppLoaderState = {};
 
+  private errorReported = false;
   private mounted = false;
-  private loggedLoadingError = false;
 
   public constructor(props: FeatureAppLoaderProps) {
     super(props);
@@ -53,14 +53,14 @@ export class FeatureAppLoader extends React.PureComponent<
     const asyncFeatureAppDefinition = manager.getAsyncFeatureAppDefinition(src);
 
     if (asyncFeatureAppDefinition.error) {
-      this.logLoadingError(asyncFeatureAppDefinition.error);
+      this.reportError(asyncFeatureAppDefinition.error);
 
       if (!inBrowser) {
         // TODO: we should only throw for "mission critical" feature apps ...
         throw asyncFeatureAppDefinition.error;
       }
 
-      this.state = {loadingError: true};
+      this.state = {hasError: true};
     } else {
       this.state = {featureAppDefinition: asyncFeatureAppDefinition.value};
     }
@@ -85,10 +85,10 @@ export class FeatureAppLoader extends React.PureComponent<
         this.setState({featureAppDefinition});
       }
     } catch (error) {
-      this.logLoadingError(error);
+      this.reportError(error);
 
       if (this.mounted) {
-        this.setState({loadingError: true});
+        this.setState({hasError: true});
       }
     }
   }
@@ -98,10 +98,10 @@ export class FeatureAppLoader extends React.PureComponent<
   }
 
   public render(): React.ReactNode {
-    const {featureAppDefinition, loadingError} = this.state;
+    const {featureAppDefinition, hasError} = this.state;
     const {manager, idSpecifier} = this.props;
 
-    if (loadingError) {
+    if (hasError) {
       // An error UI could be rendered here.
       return null;
     }
@@ -138,12 +138,12 @@ export class FeatureAppLoader extends React.PureComponent<
     }
   }
 
-  private logLoadingError(error: Error): void {
-    if (this.loggedLoadingError) {
+  private reportError(error: Error): void {
+    if (this.errorReported) {
       return;
     }
 
-    this.loggedLoadingError = true;
+    this.errorReported = true;
 
     const {idSpecifier, src: browserSrc, nodeSrc} = this.props;
     const src = inBrowser ? browserSrc : nodeSrc;
@@ -153,7 +153,7 @@ export class FeatureAppLoader extends React.PureComponent<
         src
       )} and the ID specifier ${JSON.stringify(
         idSpecifier
-      )} could not be loaded.`,
+      )} could not be rendered.`,
       error
     );
   }
