@@ -19,11 +19,14 @@
   "typings": "lib/index.d.ts",
   "dependencies": {
     "@feature-hub/core": "^0.6.0",
-    "@feature-hub/server-renderer": "^0.6.0",
-    "history": "^4.7.2"
+    "@feature-hub/server-renderer": "^0.6.0"
   },
   "devDependencies": {
-    "@types/history": "^4.7.2"
+    "@types/history": "^4.7.2",
+    "history": "^4.7.2"
+  },
+  "peerDependencies": {
+    "history": "^4.7.2"
   },
   "publishConfig": {
     "access": "public"
