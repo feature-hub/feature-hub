@@ -5,41 +5,32 @@ export interface ConsumerHistory extends history.History {
   destroy(): void;
 }
 
-export interface ConsumerHistoryIndices {
-  [consumerId: string]: number | undefined;
+export interface ConsumerHistoryStates {
+  readonly [consumerId: string]: unknown;
 }
 
 export abstract class BaseHistory implements ConsumerHistory {
-  protected readonly consumerHistory: history.MemoryHistory;
+  public action: history.Action = 'POP';
+
+  protected consumerLocation: history.Location;
+  protected readonly listeners = new Set<history.LocationListener>();
   protected readonly unregisterCallbacks: history.UnregisterCallback[] = [];
 
   public constructor(
     protected readonly consumerId: string,
     protected readonly rootHistory: history.History,
-    private readonly rootLocationTransformer: RootLocationTransformer
+    protected readonly rootLocationTransformer: RootLocationTransformer
   ) {
-    this.consumerHistory = history.createMemoryHistory();
+    const consumerPath = this.getConsumerPathFromRootHistory();
+    const consumerState = this.getConsumerLocationStateFromRootHistory();
 
-    const initialConsumerPath = rootLocationTransformer.getConsumerPathFromRootLocation(
-      rootHistory.location,
-      consumerId
-    );
-
-    this.consumerHistory = history.createMemoryHistory({
-      initialEntries: initialConsumerPath ? [initialConsumerPath] : undefined
-    });
+    this.consumerLocation = history.createLocation(consumerPath, consumerState);
   }
 
-  public get length(): number {
-    return this.consumerHistory.length;
-  }
-
-  public get action(): history.Action {
-    return this.consumerHistory.action;
-  }
+  public abstract get length(): number;
 
   public get location(): history.Location {
-    return this.consumerHistory.location;
+    return this.consumerLocation;
   }
 
   public push(
@@ -47,8 +38,8 @@ export abstract class BaseHistory implements ConsumerHistory {
     state?: history.LocationState
   ): void {
     const consumerLocation = history.createLocation(pathOrLocation, state);
-
-    this.persistConsumerLocation(consumerLocation, 'push');
+    this.rootHistory.push(this.createRootLocation(consumerLocation));
+    this.updateConsumerLocation(consumerLocation, 'PUSH');
   }
 
   public replace(
@@ -56,8 +47,8 @@ export abstract class BaseHistory implements ConsumerHistory {
     state?: history.LocationState
   ): void {
     const consumerLocation = history.createLocation(pathOrLocation, state);
-
-    this.persistConsumerLocation(consumerLocation, 'replace');
+    this.rootHistory.replace(this.createRootLocation(consumerLocation));
+    this.updateConsumerLocation(consumerLocation, 'REPLACE');
   }
 
   public go(_n: number): void {
@@ -73,9 +64,11 @@ export abstract class BaseHistory implements ConsumerHistory {
   }
 
   public block(
-    prompt?: boolean | string | history.TransitionPromptHook
+    _prompt?: boolean | string | history.TransitionPromptHook
   ): history.UnregisterCallback {
-    return this.consumerHistory.block(prompt);
+    console.warn('history.block() is not supported.');
+
+    return () => undefined;
   }
 
   public abstract listen(
@@ -104,29 +97,41 @@ export abstract class BaseHistory implements ConsumerHistory {
       this.consumerId
     );
 
-    const state = this.rootHistory.location.state as ConsumerHistoryIndices;
-    const index = consumerLocation ? this.consumerHistory.index : -1;
+    const state = this.rootHistory.location.state as ConsumerHistoryStates;
+    const consumerState = consumerLocation && consumerLocation.state;
 
-    const newState: ConsumerHistoryIndices = {
+    const newState: ConsumerHistoryStates = {
       ...state,
-      [this.consumerId]: index
+      [this.consumerId]: consumerState
     };
 
     return history.createLocation(rootLocation, newState);
   }
 
-  protected getConsumerHistoryIndexFromRootHistory(): number {
-    const state = this.rootHistory.location.state as ConsumerHistoryIndices;
-    const index = state && state[this.consumerId];
-
-    return typeof index === 'undefined' ? -1 : index;
+  protected getConsumerPathFromRootHistory(): string {
+    return (
+      this.rootLocationTransformer.getConsumerPathFromRootLocation(
+        this.rootHistory.location,
+        this.consumerId
+      ) || '/'
+    );
   }
 
-  protected persistConsumerLocation(
+  protected getConsumerLocationStateFromRootHistory(): unknown {
+    const state = this.rootHistory.location.state as ConsumerHistoryStates;
+
+    return state && state[this.consumerId];
+  }
+
+  protected updateConsumerLocation(
     consumerLocation: history.Location,
-    method: 'push' | 'replace'
+    action: history.Action
   ): void {
-    this.consumerHistory[method](consumerLocation);
-    this.rootHistory[method](this.createRootLocation(consumerLocation));
+    this.consumerLocation = consumerLocation;
+    this.action = action;
+
+    for (const listener of this.listeners) {
+      listener(consumerLocation, action);
+    }
   }
 }

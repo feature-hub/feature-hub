@@ -19,7 +19,8 @@
   "typings": "lib/index.d.ts",
   "dependencies": {
     "@feature-hub/core": "^0.7.0",
-    "@feature-hub/server-renderer": "^0.7.0"
+    "@feature-hub/server-renderer": "^0.7.0",
+    "fast-deep-equal": "^2.0.1"
   },
   "devDependencies": {
     "@types/history": "^4.7.2",
