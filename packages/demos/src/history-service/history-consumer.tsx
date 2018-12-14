@@ -64,8 +64,7 @@ export const historyConsumerDefinition: FeatureAppDefinition<
     's2:history': '^1.0'
   },
 
-  create: env => {
-    const {featureServices, idSpecifier} = env;
+  create: ({featureServices, idSpecifier}) => {
     const historyService = featureServices['s2:history'];
 
     return {
