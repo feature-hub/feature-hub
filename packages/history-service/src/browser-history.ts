@@ -37,7 +37,7 @@ export class BrowserHistory extends BaseHistory {
     }
 
     this.updateConsumerLocation(
-      history.createLocation(consumerPath, consumerState),
+      this.createConsumerLocation(consumerPath, consumerState),
       'POP'
     );
   }

@@ -186,7 +186,7 @@ describe('defineHistoryService', () => {
           destroyHistories();
 
           const consumerStates = {'test:1': 'foo state', 'test:2': 'bar state'};
-          const url = 'http://example.com?test:1=/foo&test:2=/bar';
+          const url = 'http://example.com?test:1=/foo&test:2=bar';
 
           window.history.pushState({state: consumerStates}, '', url);
 
@@ -224,6 +224,21 @@ describe('defineHistoryService', () => {
 
           expect(pushStateSpy).toHaveBeenCalledTimes(2);
         });
+
+        it('normalizes the pathname', () => {
+          history1.push('foo');
+
+          expect(window.location.href).toBe('http://example.com/?test:1=/foo');
+        });
+
+        it('handles relative pathnames', () => {
+          history1.push('/foo/bar');
+          history1.push('baz');
+
+          expect(window.location.href).toBe(
+            'http://example.com/?test:1=/foo/baz'
+          );
+        });
       });
 
       describe('#replace()', () => {
@@ -238,6 +253,21 @@ describe('defineHistoryService', () => {
           );
 
           expect(replaceStateSpy).toHaveBeenCalledTimes(2);
+        });
+
+        it('normalizes the pathname', () => {
+          history1.replace('foo');
+
+          expect(window.location.href).toBe('http://example.com/?test:1=/foo');
+        });
+
+        it('handles relative pathnames', () => {
+          history1.replace('/foo/bar');
+          history1.replace('baz');
+
+          expect(window.location.href).toBe(
+            'http://example.com/?test:1=/foo/baz'
+          );
         });
       });
 
@@ -422,6 +452,25 @@ describe('defineHistoryService', () => {
             });
           });
 
+          it('normalizes the pathname', () => {
+            history1.push('/foo');
+
+            const state = window.history.state;
+
+            // fake a denormalized consumer pathname
+            const href = window.location.href.replace('/foo', 'foo');
+
+            history1.push('/bar');
+            history1ListenerSpy.mockClear();
+
+            simulateOnPopState(state, href); // POP backward
+
+            expect(history1ListenerSpy).toHaveBeenCalledWith(
+              expect.objectContaining({pathname: '/foo'}),
+              'POP'
+            );
+          });
+
           describe('when a location is replaced', () => {
             it('calls the listener with the correct locations', () => {
               history1.push('/a1');
@@ -485,6 +534,15 @@ describe('defineHistoryService', () => {
           const href = history2.createHref(location);
 
           expect(href).toBe('/?test:1=/foo&test:2=/bar?a=b');
+        });
+
+        it('normalizes the pathname', () => {
+          history1.push('/foo');
+
+          const location = {pathname: 'bar'};
+          const href = history2.createHref(location);
+
+          expect(href).toBe('/?test:1=/foo&test:2=/bar');
         });
       });
 

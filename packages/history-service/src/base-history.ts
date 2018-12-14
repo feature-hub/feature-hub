@@ -24,7 +24,11 @@ export abstract class BaseHistory implements ConsumerHistory {
     const consumerPath = this.getConsumerPathFromRootHistory();
     const consumerState = this.getConsumerLocationStateFromRootHistory();
 
-    this.consumerLocation = history.createLocation(consumerPath, consumerState);
+    this.consumerLocation = this.createConsumerLocation(
+      consumerPath,
+      consumerState,
+      history.createLocation('/')
+    );
   }
 
   public abstract get length(): number;
@@ -37,7 +41,7 @@ export abstract class BaseHistory implements ConsumerHistory {
     pathOrLocation: history.LocationDescriptor,
     state?: history.LocationState
   ): void {
-    const consumerLocation = history.createLocation(pathOrLocation, state);
+    const consumerLocation = this.createConsumerLocation(pathOrLocation, state);
     this.rootHistory.push(this.createRootLocation(consumerLocation));
     this.updateConsumerLocation(consumerLocation, 'PUSH');
   }
@@ -46,7 +50,7 @@ export abstract class BaseHistory implements ConsumerHistory {
     pathOrLocation: history.LocationDescriptor,
     state?: history.LocationState
   ): void {
-    const consumerLocation = history.createLocation(pathOrLocation, state);
+    const consumerLocation = this.createConsumerLocation(pathOrLocation, state);
     this.rootHistory.replace(this.createRootLocation(consumerLocation));
     this.updateConsumerLocation(consumerLocation, 'REPLACE');
   }
@@ -76,7 +80,7 @@ export abstract class BaseHistory implements ConsumerHistory {
   ): history.UnregisterCallback;
 
   public createHref(location: history.LocationDescriptorObject): history.Href {
-    const consumerLocation = history.createLocation(location);
+    const consumerLocation = this.createConsumerLocation(location);
 
     return this.rootHistory.createHref(
       this.createRootLocation(consumerLocation)
@@ -86,6 +90,19 @@ export abstract class BaseHistory implements ConsumerHistory {
   public destroy(): void {
     this.unregisterCallbacks.forEach(unregister => unregister());
     this.rootHistory.replace(this.createRootLocation(undefined));
+  }
+
+  protected createConsumerLocation(
+    pathOrLocation: history.LocationDescriptor,
+    state?: history.LocationState,
+    currentLocation: history.Location = this.consumerLocation
+  ): history.Location {
+    return history.createLocation(
+      pathOrLocation,
+      state,
+      undefined,
+      currentLocation
+    );
   }
 
   protected createRootLocation(
