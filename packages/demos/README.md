@@ -76,6 +76,17 @@ Demonstrates:
 yarn watch:demo server-side-rendering
 ```
 
+### [TodoMVC](src/todomvc)
+
+Demonstrates:
+
+- how to compose the [TodoMVC][todomvc] application using three Feature Apps and
+  a Feature Service
+
+```sh
+yarn watch:demo todomvc
+```
+
 ---
 
 Copyright (c) 2018-2019 SinnerSchrader Deutschland GmbH. Released under the
@@ -85,3 +96,4 @@ terms of the [MIT License][license].
 [website]: https://feature-hub.io/
 [website-badge]:
   https://img.shields.io/badge/Website-feature--hub.io-%23500dc5.svg
+[todomvc]: http://todomvc.com
