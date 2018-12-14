@@ -43,6 +43,10 @@ export class FeatureAppLoader extends React.PureComponent<
     const src = inBrowser ? browserSrc : nodeSrc;
 
     if (!src) {
+      if (inBrowser) {
+        throw new Error('No src provided.');
+      }
+
       return;
     }
 

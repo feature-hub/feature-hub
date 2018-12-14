@@ -43,8 +43,16 @@ describe('FeatureAppLoader', () => {
     spyConsoleError.mockRestore();
   });
 
+  it('throws an error if no src is provided', () => {
+    expect(() =>
+      shallow(<FeatureAppLoader manager={mockManager} src="" />)
+    ).toThrowError(new Error('No src provided.'));
+  });
+
   it('initially renders nothing', () => {
-    const wrapper = shallow(<FeatureAppLoader manager={mockManager} src="" />);
+    const wrapper = shallow(
+      <FeatureAppLoader manager={mockManager} src="/test.js" />
+    );
 
     expect(wrapper.isEmptyRender()).toBe(true);
   });
