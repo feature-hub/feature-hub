@@ -37,34 +37,24 @@ describe('integration test: "history-service"', () => {
   afterAll(done => server.close(done));
 
   test('Scenario 1: The user loads a page without consumer-specific pathnames', async () => {
-    // GIVEN: the path of the page is '/'
     await page.goto(url);
 
-    // THEN: the path of the page is '/'
     expect(parse(page.url()).path).toBe('/');
 
-    // AND: the pathname for consumer A is '/'
     expect(await getInputValue('#pathname-a')).toBe('/');
-
-    // AND: the pathname for consumer B is '/'
     expect(await getInputValue('#pathname-b')).toBe('/');
   });
 
   test('Scenario 2: The user loads a page with consumer-specific pathnames', async () => {
-    // GIVEN: the path of the page is '/'
     await page.goto(
       `${url}?test:history-consumer:a=/a1&test:history-consumer:b=/b1`
     );
 
-    // THEN: the path of the page is '/'
     expect(parse(page.url()).path).toBe(
       '/?test:history-consumer:a=/a1&test:history-consumer:b=/b1'
     );
 
-    // AND: the pathname for consumer A is '/'
     expect(await getInputValue('#pathname-a')).toBe('/a1');
-
-    // AND: the pathname for consumer B is '/'
     expect(await getInputValue('#pathname-b')).toBe('/b1');
   });
 });
