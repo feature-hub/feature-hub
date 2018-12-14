@@ -65,6 +65,11 @@ export interface FeatureAppManagerLike {
   destroy(): void;
 }
 
+export interface FeatureAppManagerOptions {
+  readonly configs?: FeatureAppConfigs;
+  readonly moduleLoader?: ModuleLoader;
+}
+
 type FeatureAppModuleUrl = string;
 type FeatureAppScopeId = string;
 
@@ -84,9 +89,8 @@ export class FeatureAppManager implements FeatureAppManagerLike {
   >();
 
   public constructor(
-    private readonly featureServiceRegistry: FeatureServiceRegistryLike,
-    private readonly loadModule: ModuleLoader,
-    private readonly configs: FeatureAppConfigs = Object.create(null)
+    private readonly registry: FeatureServiceRegistryLike,
+    private readonly options: FeatureAppManagerOptions = {}
   ) {}
 
   public getAsyncFeatureAppDefinition(
@@ -143,8 +147,14 @@ export class FeatureAppManager implements FeatureAppManagerLike {
   private createAsyncFeatureAppDefinition(
     url: string
   ): AsyncValue<FeatureAppDefinition<unknown>> {
+    const {moduleLoader: loadModule} = this.options;
+
+    if (!loadModule) {
+      throw new Error('No module loader provided.');
+    }
+
     return new AsyncValue(
-      this.loadModule(url).then(featureAppModule => {
+      loadModule(url).then(featureAppModule => {
         if (!isFeatureAppModule(featureAppModule)) {
           throw new Error(
             `The feature app module at url ${JSON.stringify(
@@ -176,7 +186,7 @@ export class FeatureAppManager implements FeatureAppManagerLike {
     }
 
     if (featureAppDefinition.ownFeatureServiceDefinitions) {
-      this.featureServiceRegistry.registerProviders(
+      this.registry.registerProviders(
         featureAppDefinition.ownFeatureServiceDefinitions,
         featureAppDefinition.id
       );
@@ -192,9 +202,10 @@ export class FeatureAppManager implements FeatureAppManagerLike {
     idSpecifier: string | undefined,
     deleteFeatureAppScope: () => void
   ): FeatureAppScope {
-    const config = this.configs[featureAppDefinition.id];
+    const {configs} = this.options;
+    const config = configs && configs[featureAppDefinition.id];
 
-    const binding = this.featureServiceRegistry.bindFeatureServices(
+    const binding = this.registry.bindFeatureServices(
       featureAppDefinition,
       idSpecifier
     );

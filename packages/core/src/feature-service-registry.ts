@@ -75,6 +75,10 @@ export interface FeatureServiceRegistryLike {
   ): FeatureServicesBinding;
 }
 
+export interface FeatureServiceRegistryOptions {
+  readonly configs?: FeatureServiceConfigs;
+}
+
 type ProviderId = string;
 
 export class FeatureServiceRegistry implements FeatureServiceRegistryLike {
@@ -86,7 +90,7 @@ export class FeatureServiceRegistry implements FeatureServiceRegistryLike {
   private readonly uniqueConsumerIds = new Set<string>();
 
   public constructor(
-    private readonly configs: FeatureServiceConfigs = Object.create(null)
+    private readonly options: FeatureServiceRegistryOptions = {}
   ) {}
 
   public registerProviders(
@@ -113,7 +117,8 @@ export class FeatureServiceRegistry implements FeatureServiceRegistryLike {
           );
         }
       } else if (providerDefinition) {
-        const config = this.configs[providerId];
+        const {configs} = this.options;
+        const config = configs && configs[providerId];
         const {featureServices} = this.bindFeatureServices(providerDefinition);
 
         this.sharedFeatureServices.set(

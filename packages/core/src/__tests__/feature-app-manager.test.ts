@@ -15,7 +15,7 @@ interface MockFeatureServiceRegistry extends FeatureServiceRegistryLike {
 
 describe('FeatureAppManager', () => {
   let manager: FeatureAppManagerLike;
-  let mockFeatureServiceRegistry: MockFeatureServiceRegistry;
+  let mockRegistry: MockFeatureServiceRegistry;
   let mockFeatureServicesBinding: FeatureServicesBinding;
   let mockFeatureServicesBindingUnbind: () => void;
   let mockModuleLoader: ModuleLoader;
@@ -33,7 +33,7 @@ describe('FeatureAppManager', () => {
       unbind: mockFeatureServicesBindingUnbind
     };
 
-    mockFeatureServiceRegistry = {
+    mockRegistry = {
       registerProviders: jest.fn(),
       bindFeatureServices: jest.fn(() => mockFeatureServicesBinding)
     };
@@ -43,11 +43,7 @@ describe('FeatureAppManager', () => {
     mockFeatureAppDefinition = {create: mockFeatureAppCreate, id: 'testId'};
     mockFeatureAppModule = {default: mockFeatureAppDefinition};
     mockModuleLoader = jest.fn(async () => mockFeatureAppModule);
-
-    manager = new FeatureAppManager(
-      mockFeatureServiceRegistry,
-      mockModuleLoader
-    );
+    manager = new FeatureAppManager(mockRegistry);
 
     spyConsoleInfo = jest.spyOn(console, 'info');
     spyConsoleInfo.mockImplementation(jest.fn());
@@ -58,6 +54,12 @@ describe('FeatureAppManager', () => {
   });
 
   describe('#getAsyncFeatureAppDefinition', () => {
+    beforeEach(() => {
+      manager = new FeatureAppManager(mockRegistry, {
+        moduleLoader: mockModuleLoader
+      });
+    });
+
     it('logs an info message when the feature app module was loaded', async () => {
       const asyncFeatureAppDefinition = manager.getAsyncFeatureAppDefinition(
         '/example.js'
@@ -118,6 +120,14 @@ describe('FeatureAppManager', () => {
           ).toEqual(expectedError);
         });
       });
+
+      it('throws an error if no module loader was provided', () => {
+        manager = new FeatureAppManager(mockRegistry);
+
+        expect(() =>
+          manager.getAsyncFeatureAppDefinition('/example.js')
+        ).toThrowError(new Error('No module loader provided.'));
+      });
     }
 
     describe('for a known feature app module url', () => {
@@ -148,17 +158,15 @@ describe('FeatureAppManager', () => {
       const mockConfig = {kind: 'test'};
       const idSpecifier = 'testIdSpecifier';
 
-      manager = new FeatureAppManager(
-        mockFeatureServiceRegistry,
-        mockModuleLoader,
-        {[mockFeatureAppDefinition.id]: mockConfig}
-      );
+      manager = new FeatureAppManager(mockRegistry, {
+        configs: {[mockFeatureAppDefinition.id]: mockConfig}
+      });
 
       manager.getFeatureAppScope(mockFeatureAppDefinition, idSpecifier);
 
-      expect(mockFeatureServiceRegistry.bindFeatureServices.mock.calls).toEqual(
-        [[mockFeatureAppDefinition, idSpecifier]]
-      );
+      expect(mockRegistry.bindFeatureServices.mock.calls).toEqual([
+        [mockFeatureAppDefinition, idSpecifier]
+      ]);
 
       const {featureServices} = mockFeatureServicesBinding;
 
@@ -168,22 +176,20 @@ describe('FeatureAppManager', () => {
     });
 
     describe('with a feature app definition with own feature service definitions', () => {
-      let featureServiceRegistryMethodCalls: string[];
+      let registryMethodCalls: string[];
 
       beforeEach(() => {
-        featureServiceRegistryMethodCalls = [];
+        registryMethodCalls = [];
 
-        mockFeatureServiceRegistry.registerProviders.mockImplementation(() => {
-          featureServiceRegistryMethodCalls.push('registerProviders');
+        mockRegistry.registerProviders.mockImplementation(() => {
+          registryMethodCalls.push('registerProviders');
         });
 
-        mockFeatureServiceRegistry.bindFeatureServices.mockImplementation(
-          () => {
-            featureServiceRegistryMethodCalls.push('bindFeatureServices');
+        mockRegistry.bindFeatureServices.mockImplementation(() => {
+          registryMethodCalls.push('bindFeatureServices');
 
-            return mockFeatureServicesBinding;
-          }
-        );
+          return mockFeatureServicesBinding;
+        });
 
         mockFeatureAppDefinition = {
           ...mockFeatureAppDefinition,
@@ -194,15 +200,15 @@ describe('FeatureAppManager', () => {
       it("registers the feature app's own feature service definitions before binding the feature services", () => {
         manager.getFeatureAppScope(mockFeatureAppDefinition, 'testIdSpecifier');
 
-        expect(mockFeatureServiceRegistry.registerProviders.mock.calls).toEqual(
-          [[mockFeatureAppDefinition.ownFeatureServiceDefinitions, 'testId']]
-        );
+        expect(mockRegistry.registerProviders.mock.calls).toEqual([
+          [mockFeatureAppDefinition.ownFeatureServiceDefinitions, 'testId']
+        ]);
 
-        expect(
-          mockFeatureServiceRegistry.bindFeatureServices.mock.calls
-        ).toEqual([[mockFeatureAppDefinition, 'testIdSpecifier']]);
+        expect(mockRegistry.bindFeatureServices.mock.calls).toEqual([
+          [mockFeatureAppDefinition, 'testIdSpecifier']
+        ]);
 
-        expect(featureServiceRegistryMethodCalls).toEqual([
+        expect(registryMethodCalls).toEqual([
           'registerProviders',
           'bindFeatureServices'
         ]);
@@ -351,6 +357,12 @@ describe('FeatureAppManager', () => {
   });
 
   describe('#preloadFeatureApp', () => {
+    beforeEach(() => {
+      manager = new FeatureAppManager(mockRegistry, {
+        moduleLoader: mockModuleLoader
+      });
+    });
+
     it('preloads a feature app so that the scope is synchronously available', async () => {
       await manager.preloadFeatureApp('/example.js');
 
@@ -359,6 +371,14 @@ describe('FeatureAppManager', () => {
       );
 
       expect(asyncFeatureAppDefinition.value).toBe(mockFeatureAppDefinition);
+    });
+
+    it('throws an error if no module loader was provided', () => {
+      manager = new FeatureAppManager(mockRegistry);
+
+      expect(() =>
+        manager.getAsyncFeatureAppDefinition('/example.js')
+      ).toThrowError(new Error('No module loader provided.'));
     });
   });
 });

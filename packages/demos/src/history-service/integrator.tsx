@@ -27,7 +27,7 @@ registry.registerProviders(
   'integrator'
 );
 
-const manager = new FeatureAppManager(registry, async () => undefined);
+const manager = new FeatureAppManager(registry);
 
 ReactDOM.render(
   <>
