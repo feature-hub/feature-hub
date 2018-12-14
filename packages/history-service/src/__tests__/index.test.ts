@@ -64,7 +64,6 @@ describe('defineHistoryService', () => {
     let pushStateSpy: jest.SpyInstance;
     let replaceStateSpy: jest.SpyInstance;
     let consoleWarnSpy: jest.SpyInstance;
-    let consoleErrorSpy: jest.SpyInstance;
 
     beforeEach(() => {
       // ensure the window.location.href is the same before each test
@@ -74,7 +73,6 @@ describe('defineHistoryService', () => {
       replaceStateSpy = jest.spyOn(window.history, 'replaceState');
       consoleWarnSpy = jest.spyOn(console, 'warn');
       consoleWarnSpy.mockImplementation(jest.fn());
-      consoleErrorSpy = jest.spyOn(console, 'error');
 
       const mockServerRequest: ServerRequest = {
         path: '/example',
@@ -111,8 +109,6 @@ describe('defineHistoryService', () => {
       pushStateSpy.mockRestore();
       replaceStateSpy.mockRestore();
       consoleWarnSpy.mockRestore();
-
-      expect(consoleErrorSpy).not.toHaveBeenCalled();
     });
 
     describe('#createBrowserHistory()', () => {
