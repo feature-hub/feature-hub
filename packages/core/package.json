@@ -1,6 +1,6 @@
 {
   "name": "@feature-hub/core",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "The core functionality of the Feature Hub.",
   "keywords": [
     "feature-app",

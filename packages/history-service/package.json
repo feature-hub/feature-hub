@@ -1,6 +1,6 @@
 {
   "name": "@feature-hub/history-service",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "A history facade guaranteeing safe access for multiple consumers.",
   "bugs": {
     "url": "https://github.com/sinnerschrader/feature-hub/issues"
@@ -18,8 +18,8 @@
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "dependencies": {
-    "@feature-hub/core": "^0.6.0",
-    "@feature-hub/server-renderer": "^0.6.0"
+    "@feature-hub/core": "^0.7.0",
+    "@feature-hub/server-renderer": "^0.7.0"
   },
   "devDependencies": {
     "@types/history": "^4.7.2",
