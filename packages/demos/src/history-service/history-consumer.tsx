@@ -1,8 +1,15 @@
-import {Card, Classes, Label} from '@blueprintjs/core';
-import {FeatureAppDefinition} from '@feature-hub/core';
-import {History, HistoryServiceV1} from '@feature-hub/history-service';
-import {ReactFeatureApp} from '@feature-hub/react';
+import {
+  Button,
+  Card,
+  Classes,
+  ControlGroup,
+  H5,
+  InputGroup,
+  Label
+} from '@blueprintjs/core';
+import {History} from '@feature-hub/history-service';
 import * as React from 'react';
+import Media from 'react-media';
 
 interface HistoryConsumerProps {
   readonly history: History;
@@ -13,13 +20,14 @@ interface HistoryConsumerState {
   readonly pathname: string;
 }
 
-class HistoryConsumer extends React.Component<
+export class HistoryConsumer extends React.Component<
   HistoryConsumerProps,
   HistoryConsumerState
 > {
   public readonly state = {pathname: this.props.history.location.pathname};
 
   private unlisten?: () => void;
+  private inputElement: HTMLInputElement | null = null;
 
   public componentDidMount(): void {
     const {history} = this.props;
@@ -38,8 +46,10 @@ class HistoryConsumer extends React.Component<
     const {pathname} = this.state;
 
     return (
-      <Card>
-        <Label className="bp3-inline">
+      <Card style={{margin: '20px'}}>
+        <H5>History Consumer {idSpecifier.toUpperCase()}</H5>
+
+        <Label>
           Pathname
           <input
             id={`pathname-${idSpecifier}`}
@@ -48,34 +58,32 @@ class HistoryConsumer extends React.Component<
             disabled
           />
         </Label>
+
+        <Media query="(max-width: 370px)">
+          {matches => (
+            <ControlGroup vertical={matches}>
+              <InputGroup
+                placeholder="Enter a new path..."
+                inputRef={ref => (this.inputElement = ref)}
+              />
+              <Button text="Push" onClick={() => this.changePath('push')} />
+              <Button
+                text="Replace"
+                onClick={() => this.changePath('replace')}
+              />
+            </ControlGroup>
+          )}
+        </Media>
       </Card>
     );
   }
-}
 
-export const historyConsumerDefinition: FeatureAppDefinition<
-  ReactFeatureApp,
-  undefined,
-  {'s2:history': HistoryServiceV1}
-> = {
-  id: 'test:history-consumer',
+  private changePath(method: 'push' | 'replace'): void {
+    if (!this.inputElement) {
+      return;
+    }
 
-  dependencies: {
-    's2:history': '^1.0'
-  },
-
-  create: ({featureServices, idSpecifier}) => {
-    const historyService = featureServices['s2:history'];
-
-    return {
-      render: () => (
-        <HistoryConsumer
-          history={historyService.createBrowserHistory()}
-          idSpecifier={idSpecifier || ''}
-        />
-      )
-    };
+    this.props.history[method](this.inputElement.value);
+    this.inputElement.value = '';
   }
-};
-
-export default historyConsumerDefinition;
+}
