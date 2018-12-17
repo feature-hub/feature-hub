@@ -150,8 +150,8 @@ export default {
 ```
 
 For both the browser and the static history, the service is API-compatible with
-the history package. Note, however, that the `go`, `goBack` and `goForward`
-methods are not supported. For further information, reference
+the history package. Note, however, that the `go`, `goBack`, `goForward` and
+`block` methods are not supported. For further information, reference
 [its documentation](https://www.npmjs.com/package/history).
 
 ### As the Integrator
