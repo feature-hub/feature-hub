@@ -1,9 +1,6 @@
 import * as history from 'history';
+import {ConsumerHistoryStates} from './root-histories';
 import {RootLocationTransformer} from './root-location-transformer';
-
-export interface ConsumerHistoryStates {
-  readonly [consumerId: string]: unknown;
-}
 
 export abstract class BaseHistory implements history.History {
   public action: history.Action = 'POP';
@@ -12,7 +9,7 @@ export abstract class BaseHistory implements history.History {
 
   public constructor(
     protected readonly consumerId: string,
-    protected readonly rootHistory: history.History,
+    protected readonly rootHistory: history.History<ConsumerHistoryStates>,
     protected readonly rootLocationTransformer: RootLocationTransformer
   ) {
     const consumerPath = this.getConsumerPathFromRootHistory();
@@ -103,7 +100,7 @@ export abstract class BaseHistory implements history.History {
       this.consumerId
     );
 
-    const state = this.rootHistory.location.state as ConsumerHistoryStates;
+    const state = this.rootHistory.location.state;
     const consumerState = consumerLocation && consumerLocation.state;
 
     const newState: ConsumerHistoryStates = {
@@ -124,7 +121,7 @@ export abstract class BaseHistory implements history.History {
   }
 
   protected getConsumerLocationStateFromRootHistory(): unknown {
-    const state = this.rootHistory.location.state as ConsumerHistoryStates;
+    const state = this.rootHistory.location.state;
 
     return state && state[this.consumerId];
   }

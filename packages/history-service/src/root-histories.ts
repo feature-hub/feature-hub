@@ -1,8 +1,12 @@
 import {ServerRequest} from '@feature-hub/server-renderer';
 import * as history from 'history';
 
+export interface ConsumerHistoryStates {
+  readonly [consumerId: string]: unknown;
+}
+
 export interface RootHistories {
-  readonly browserHistory: history.History;
+  readonly browserHistory: history.History<ConsumerHistoryStates>;
 }
 
 export function createRootHistories(
