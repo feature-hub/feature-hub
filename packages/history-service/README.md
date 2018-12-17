@@ -136,11 +136,11 @@ export default {
 
   create(env) {
     const historyService = env.featureServices['s2:history'];
-    const memoryHistory = historyService.createMemoryHistory();
+    const staticHistory = historyService.createStaticHistory();
 
     return {
       render: () => (
-        <Router history={memoryHistory}>
+        <Router history={staticHistory}>
           <App />
         </Router>
       )
@@ -149,8 +149,9 @@ export default {
 };
 ```
 
-For both the browser and the memory history, the service is API-compatible with
-the history package. For further information reference
+For both the browser and the static history, the service is API-compatible with
+the history package. Note, however, that the `go`, `goBack` and `goForward`
+methods are not supported. For further information, reference
 [its documentation](https://www.npmjs.com/package/history).
 
 ### As the Integrator

@@ -5,40 +5,20 @@ import {
   FeatureServiceEnvironment
 } from '@feature-hub/core';
 import {ServerRendererV1, ServerRequest} from '@feature-hub/server-renderer';
-import {createPath} from 'history';
-import {History, HistoryServiceV1, defineHistoryService} from '..';
+import {
+  History,
+  HistoryServiceV1,
+  SharedHistoryService,
+  defineHistoryService
+} from '..';
 import {RootLocationTransformer} from '../root-location-transformer';
+import {testRootLocationTransformer} from './test-root-location-transformer';
 
 const simulateOnPopState = (state: unknown, url: string) => {
   // We need to use pushState to change to the URL that should set by the popstate event.
   history.pushState(state, '', url);
   const popStateEvent = new PopStateEvent('popstate', {state});
   window.dispatchEvent(popStateEvent);
-};
-
-const testRootLocationTransformer: RootLocationTransformer = {
-  getConsumerPathFromRootLocation: (rootLocation, consumerId) => {
-    const searchParams = new URLSearchParams(rootLocation.search);
-
-    return searchParams.get(consumerId) || undefined;
-  },
-
-  createRootLocation: (consumerLocation, rootLocation, consumerId) => {
-    const searchParams = new URLSearchParams(rootLocation.search);
-
-    if (consumerLocation) {
-      searchParams.set(consumerId, createPath(consumerLocation));
-    } else {
-      searchParams.delete(consumerId);
-    }
-
-    return {
-      pathname: rootLocation.pathname,
-      // decodeURIComponent is used here only for a better readability in the test expectations
-      search: decodeURIComponent(searchParams.toString()),
-      state: rootLocation.state
-    };
-  }
 };
 
 describe('defineHistoryService', () => {
@@ -74,34 +54,28 @@ describe('defineHistoryService', () => {
       consoleWarnSpy = jest.spyOn(console, 'warn');
       consoleWarnSpy.mockImplementation(jest.fn());
 
-      const mockServerRequest: ServerRequest = {
-        path: '/example',
-        cookies: {},
-        headers: {}
+      const mockEnv: FeatureServiceEnvironment<
+        undefined,
+        {'s2:server-renderer': ServerRendererV1}
+      > = {
+        config: undefined,
+        featureServices: {
+          's2:server-renderer': {
+            serverRequest: {
+              path: '/example',
+              cookies: {},
+              headers: {}
+            }
+          }
+        }
       };
 
-      createHistoryServiceBinder = (
-        serverRequest: ServerRequest = mockServerRequest
-      ) => {
-        const mockServerRenderer: ServerRendererV1 = {serverRequest};
-
-        const mockFeatureServices = {
-          's2:server-renderer': mockServerRenderer
-        };
-
-        const mockEnv: FeatureServiceEnvironment<
-          undefined,
-          {'s2:server-renderer': ServerRendererV1}
-        > = {
-          config: undefined,
-          featureServices: mockFeatureServices
-        };
-
-        const historyServiceBinder = defineHistoryService(
+      createHistoryServiceBinder = () => {
+        const sharedHistoryService = defineHistoryService(
           testRootLocationTransformer
-        ).create(mockEnv)['1.1'] as FeatureServiceBinder<HistoryServiceV1>;
+        ).create(mockEnv) as SharedHistoryService;
 
-        return historyServiceBinder;
+        return sharedHistoryService['1.1'];
       };
     });
 
@@ -234,7 +208,7 @@ describe('defineHistoryService', () => {
       });
 
       describe('#push()', () => {
-        it('pushes an new root location onto the root history for every consumer push', () => {
+        it('pushes a new root location onto the root history for every consumer push', () => {
           history1.push('/foo');
           history2.push('/bar?baz=1');
 
@@ -263,8 +237,6 @@ describe('defineHistoryService', () => {
 
       describe('#replace()', () => {
         it('replaces the root location in the root history for every consumer replace', () => {
-          replaceStateSpy.mockClear();
-
           history1.replace('/foo');
           history2.replace('/bar?baz=1');
 
@@ -293,7 +265,7 @@ describe('defineHistoryService', () => {
 
       describe('#go()', () => {
         it('does nothing and logs a warning that go() is not supported', () => {
-          history1.push('foo');
+          history1.push('/foo');
 
           const href = window.location.href;
 
@@ -309,7 +281,7 @@ describe('defineHistoryService', () => {
 
       describe('#goBack()', () => {
         it('does nothing and logs a warning that goBack() is not supported', () => {
-          history1.push('foo');
+          history1.push('/foo');
 
           const href = window.location.href;
 
@@ -325,7 +297,7 @@ describe('defineHistoryService', () => {
 
       describe('#goForward()', () => {
         it('does nothing and logs a warning that goForward() is not supported', () => {
-          history1.push('foo');
+          history1.push('/foo');
 
           const href = window.location.href;
 

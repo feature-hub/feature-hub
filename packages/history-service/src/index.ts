@@ -4,7 +4,10 @@ import {
   SharedFeatureService
 } from '@feature-hub/core';
 import {ServerRendererV1} from '@feature-hub/server-renderer';
-import {HistoryServiceV1, HistoryServiceV1Binding} from './history-service-v1';
+import {
+  HistoryServiceV1,
+  createHistoryServiceV1Binder
+} from './history-service-v1';
 import {createRootHistories} from './root-histories';
 import {RootLocationTransformer} from './root-location-transformer';
 
@@ -42,12 +45,10 @@ export function defineHistoryService(
       const rootHistories = createRootHistories(serverRequest);
 
       return {
-        '1.1': consumerId =>
-          new HistoryServiceV1Binding(
-            consumerId,
-            rootHistories,
-            rootLocationTransformer
-          )
+        '1.1': createHistoryServiceV1Binder(
+          rootHistories,
+          rootLocationTransformer
+        )
       };
     }
   };

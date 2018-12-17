@@ -1,48 +1,73 @@
-import {FeatureServiceBinding} from '@feature-hub/core';
+import {FeatureServiceBinder, FeatureServiceBinding} from '@feature-hub/core';
 import * as history from 'history';
 import {RootLocationTransformer} from '.';
 import {BrowserHistory} from './browser-history';
 import {RootHistories} from './root-histories';
+import {StaticHistory} from './static-history';
 
 export interface HistoryServiceV1 {
+  staticRootLocation: history.Location;
+
   createBrowserHistory(): history.History;
+  createStaticHistory(): history.History;
 }
 
-export class HistoryServiceV1Binding
-  implements FeatureServiceBinding<HistoryServiceV1> {
-  private browserHistory?: BrowserHistory;
+export function createHistoryServiceV1Binder(
+  rootHistories: RootHistories,
+  rootLocationTransformer: RootLocationTransformer
+): FeatureServiceBinder<HistoryServiceV1> {
+  return (consumerId: string): FeatureServiceBinding<HistoryServiceV1> => {
+    let browserHistory: BrowserHistory | undefined;
+    let staticHistory: history.History | undefined;
 
-  public constructor(
-    private readonly consumerId: string,
-    private readonly rootHistories: RootHistories,
-    private readonly rootLocationTransformer: RootLocationTransformer
-  ) {}
-
-  public get featureService(): HistoryServiceV1 {
-    return {
+    const featureService: HistoryServiceV1 = {
       createBrowserHistory: () => {
-        if (this.browserHistory) {
+        if (browserHistory) {
           console.warn(
             `createBrowserHistory was called multiple times by the consumer ${JSON.stringify(
-              this.consumerId
+              consumerId
             )}. Returning the same history instance as before.`
           );
         } else {
-          this.browserHistory = new BrowserHistory(
-            this.consumerId,
-            this.rootHistories.browserHistory,
-            this.rootLocationTransformer
+          browserHistory = new BrowserHistory(
+            consumerId,
+            rootHistories.browserHistory,
+            rootLocationTransformer
           );
         }
 
-        return this.browserHistory;
+        return browserHistory;
+      },
+
+      createStaticHistory: () => {
+        if (staticHistory) {
+          console.warn(
+            `createStaticHistory was called multiple times by the consumer ${JSON.stringify(
+              consumerId
+            )}. Returning the same history instance as before.`
+          );
+        } else {
+          staticHistory = new StaticHistory(
+            consumerId,
+            rootHistories.staticHistory,
+            rootLocationTransformer
+          );
+        }
+
+        return staticHistory;
+      },
+
+      get staticRootLocation(): history.Location {
+        return rootHistories.staticHistory.location;
       }
     };
-  }
 
-  public unbind(): void {
-    if (this.browserHistory) {
-      this.browserHistory.destroy();
-    }
-  }
+    const unbind = () => {
+      if (browserHistory) {
+        browserHistory.destroy();
+      }
+    };
+
+    return {featureService, unbind};
+  };
 }
