@@ -111,6 +111,14 @@ describe('defineHistoryService', () => {
       consoleWarnSpy.mockRestore();
     });
 
+    describe('when the history service consumer is destroyed without having created a browser history', () => {
+      it('does not try to unbind the non-existent browser history', () => {
+        const historyServiceBinder = createHistoryServiceBinder();
+
+        historyServiceBinder('test').unbind!();
+      });
+    });
+
     describe('#createBrowserHistory()', () => {
       let historyBinding1: FeatureServiceBinding<HistoryServiceV1>;
       let historyBinding2: FeatureServiceBinding<HistoryServiceV1>;
@@ -136,6 +144,18 @@ describe('defineHistoryService', () => {
 
       beforeEach(createHistories);
       afterEach(destroyHistories);
+
+      describe('when called multiple times for the same consumer', () => {
+        it('returns the same instance and logs a warning', () => {
+          expect(historyBinding1.featureService.createBrowserHistory()).toEqual(
+            history1
+          );
+
+          expect(consoleWarnSpy).toHaveBeenCalledWith(
+            'createBrowserHistory was called multiple times by the consumer "test:1". Returning the same history instance as before.'
+          );
+        });
+      });
 
       describe('#length', () => {
         it('returns the same root history length for all consumers', () => {

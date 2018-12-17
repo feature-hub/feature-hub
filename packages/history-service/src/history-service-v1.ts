@@ -1,6 +1,6 @@
+import {FeatureServiceBinding} from '@feature-hub/core';
 import * as history from 'history';
 import {RootLocationTransformer} from '.';
-import {ConsumerHistory} from './base-history';
 import {BrowserHistory} from './browser-history';
 import {RootHistories} from './root-histories';
 
@@ -8,29 +8,41 @@ export interface HistoryServiceV1 {
   createBrowserHistory(): history.History;
 }
 
-export class HistoryService implements HistoryServiceV1 {
+export class HistoryServiceV1Binding
+  implements FeatureServiceBinding<HistoryServiceV1> {
+  private browserHistory?: BrowserHistory;
+
   public constructor(
-    private readonly rootHistories: RootHistories,
-    private readonly rootLocationTransformer: RootLocationTransformer,
     private readonly consumerId: string,
-    private readonly consumerHistories: ConsumerHistory[]
+    private readonly rootHistories: RootHistories,
+    private readonly rootLocationTransformer: RootLocationTransformer
   ) {}
 
-  public createBrowserHistory(): history.History {
-    return this.registerConsumerHistory(
-      new BrowserHistory(
-        this.consumerId,
-        this.rootHistories.browserHistory,
-        this.rootLocationTransformer
-      )
-    );
+  public get featureService(): HistoryServiceV1 {
+    return {
+      createBrowserHistory: () => {
+        if (this.browserHistory) {
+          console.warn(
+            `createBrowserHistory was called multiple times by the consumer ${JSON.stringify(
+              this.consumerId
+            )}. Returning the same history instance as before.`
+          );
+        } else {
+          this.browserHistory = new BrowserHistory(
+            this.consumerId,
+            this.rootHistories.browserHistory,
+            this.rootLocationTransformer
+          );
+        }
+
+        return this.browserHistory;
+      }
+    };
   }
 
-  private registerConsumerHistory<TConsumerHistory extends ConsumerHistory>(
-    consumerHistory: TConsumerHistory
-  ): TConsumerHistory {
-    this.consumerHistories.push(consumerHistory);
-
-    return consumerHistory;
+  public unbind(): void {
+    if (this.browserHistory) {
+      this.browserHistory.destroy();
+    }
   }
 }

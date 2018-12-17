@@ -1,20 +1,14 @@
 import * as history from 'history';
 import {RootLocationTransformer} from './root-location-transformer';
 
-export interface ConsumerHistory extends history.History {
-  destroy(): void;
-}
-
 export interface ConsumerHistoryStates {
   readonly [consumerId: string]: unknown;
 }
 
-export abstract class BaseHistory implements ConsumerHistory {
+export abstract class BaseHistory implements history.History {
   public action: history.Action = 'POP';
 
   protected consumerLocation: history.Location;
-  protected readonly listeners = new Set<history.LocationListener>();
-  protected readonly unregisterCallbacks: history.UnregisterCallback[] = [];
 
   public constructor(
     protected readonly consumerId: string,
@@ -33,6 +27,10 @@ export abstract class BaseHistory implements ConsumerHistory {
 
   public abstract get length(): number;
 
+  public abstract listen(
+    listener: history.LocationListener
+  ): history.UnregisterCallback;
+
   public get location(): history.Location {
     return this.consumerLocation;
   }
@@ -41,18 +39,18 @@ export abstract class BaseHistory implements ConsumerHistory {
     pathOrLocation: history.LocationDescriptor,
     state?: history.LocationState
   ): void {
-    const consumerLocation = this.createConsumerLocation(pathOrLocation, state);
-    this.rootHistory.push(this.createRootLocation(consumerLocation));
-    this.updateConsumerLocation(consumerLocation, 'PUSH');
+    this.consumerLocation = this.createConsumerLocation(pathOrLocation, state);
+    this.rootHistory.push(this.createRootLocation(this.consumerLocation));
+    this.action = 'PUSH';
   }
 
   public replace(
     pathOrLocation: history.LocationDescriptor,
     state?: history.LocationState
   ): void {
-    const consumerLocation = this.createConsumerLocation(pathOrLocation, state);
-    this.rootHistory.replace(this.createRootLocation(consumerLocation));
-    this.updateConsumerLocation(consumerLocation, 'REPLACE');
+    this.consumerLocation = this.createConsumerLocation(pathOrLocation, state);
+    this.rootHistory.replace(this.createRootLocation(this.consumerLocation));
+    this.action = 'REPLACE';
   }
 
   public go(_n: number): void {
@@ -75,21 +73,12 @@ export abstract class BaseHistory implements ConsumerHistory {
     return () => undefined;
   }
 
-  public abstract listen(
-    listener: history.LocationListener
-  ): history.UnregisterCallback;
-
   public createHref(location: history.LocationDescriptorObject): history.Href {
     const consumerLocation = this.createConsumerLocation(location);
 
     return this.rootHistory.createHref(
       this.createRootLocation(consumerLocation)
     );
-  }
-
-  public destroy(): void {
-    this.unregisterCallbacks.forEach(unregister => unregister());
-    this.rootHistory.replace(this.createRootLocation(undefined));
   }
 
   protected createConsumerLocation(
@@ -138,17 +127,5 @@ export abstract class BaseHistory implements ConsumerHistory {
     const state = this.rootHistory.location.state as ConsumerHistoryStates;
 
     return state && state[this.consumerId];
-  }
-
-  protected updateConsumerLocation(
-    consumerLocation: history.Location,
-    action: history.Action
-  ): void {
-    this.consumerLocation = consumerLocation;
-    this.action = action;
-
-    for (const listener of this.listeners) {
-      listener(consumerLocation, action);
-    }
   }
 }

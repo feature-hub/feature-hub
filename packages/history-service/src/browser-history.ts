@@ -3,6 +3,14 @@ import * as history from 'history';
 import {BaseHistory} from './base-history';
 
 export class BrowserHistory extends BaseHistory {
+  private readonly listeners = new Set<history.LocationListener>();
+  private readonly unregisterCallbacks: history.UnregisterCallback[] = [];
+
+  public destroy(): void {
+    this.unregisterCallbacks.forEach(unregister => unregister());
+    this.rootHistory.replace(this.createRootLocation(undefined));
+  }
+
   public get length(): number {
     return this.rootHistory.length;
   }
@@ -28,6 +36,28 @@ export class BrowserHistory extends BaseHistory {
     return unregister;
   }
 
+  public push(
+    pathOrLocation: history.LocationDescriptor,
+    state?: history.LocationState
+  ): void {
+    super.push(pathOrLocation, state);
+    this.notifyListeners();
+  }
+
+  public replace(
+    pathOrLocation: history.LocationDescriptor,
+    state?: history.LocationState
+  ): void {
+    super.replace(pathOrLocation, state);
+    this.notifyListeners();
+  }
+
+  private notifyListeners(): void {
+    for (const listener of this.listeners) {
+      listener(this.consumerLocation, this.action);
+    }
+  }
+
   private handlePop(): void {
     const consumerPath = this.getConsumerPathFromRootHistory();
     const consumerState = this.getConsumerLocationStateFromRootHistory();
@@ -36,10 +66,14 @@ export class BrowserHistory extends BaseHistory {
       return;
     }
 
-    this.updateConsumerLocation(
-      this.createConsumerLocation(consumerPath, consumerState),
-      'POP'
+    this.consumerLocation = this.createConsumerLocation(
+      consumerPath,
+      consumerState
     );
+
+    this.action = 'POP';
+
+    this.notifyListeners();
   }
 
   private matchesConsumerLocation(
