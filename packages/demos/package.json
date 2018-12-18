@@ -18,6 +18,7 @@
     "express": "^4.16.4",
     "get-port": "^4.0.0",
     "history": "^4.7.2",
+    "puppeteer": "^1.11.0",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
     "react-media": "^1.9.2",

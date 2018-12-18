@@ -1,7 +1,6 @@
 import {
   Button,
   Card,
-  Classes,
   ControlGroup,
   H5,
   InputGroup,
@@ -51,9 +50,8 @@ export class HistoryConsumer extends React.Component<
 
         <Label>
           Pathname
-          <input
+          <InputGroup
             id={`pathname-${idSpecifier}`}
-            className={Classes.INPUT}
             value={pathname}
             disabled
           />
@@ -63,11 +61,17 @@ export class HistoryConsumer extends React.Component<
           {matches => (
             <ControlGroup vertical={matches}>
               <InputGroup
+                id={`new-pathname-${idSpecifier}`}
                 placeholder="Enter a new path..."
                 inputRef={ref => (this.inputElement = ref)}
               />
-              <Button text="Push" onClick={() => this.changePath('push')} />
               <Button
+                id={`push-${idSpecifier}`}
+                text="Push"
+                onClick={() => this.changePath('push')}
+              />
+              <Button
+                id={`replace-${idSpecifier}`}
                 text="Replace"
                 onClick={() => this.changePath('replace')}
               />
