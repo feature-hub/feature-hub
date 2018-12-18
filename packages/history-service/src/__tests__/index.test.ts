@@ -444,25 +444,6 @@ describe('defineHistoryService', () => {
             });
           });
 
-          it('normalizes the pathname', () => {
-            history1.push('/foo');
-
-            const state = window.history.state;
-
-            // fake a denormalized consumer pathname
-            const href = window.location.href.replace('/foo', 'foo');
-
-            history1.push('/bar');
-            history1ListenerSpy.mockClear();
-
-            simulateOnPopState(state, href); // POP backward
-
-            expect(history1ListenerSpy).toHaveBeenCalledWith(
-              expect.objectContaining({pathname: '/foo'}),
-              'POP'
-            );
-          });
-
           describe('when a location is replaced', () => {
             it('calls the listener with the correct locations', () => {
               history1.push('/a1');
@@ -539,8 +520,8 @@ describe('defineHistoryService', () => {
       });
 
       describe('when the history consumer is destroyed', () => {
-        it('removes the consumer path from the root location', () => {
-          history1.push('/foo');
+        it('removes the consumer path and state from the root location', () => {
+          history1.push('/foo', {foo: 1});
           history2.push('/bar');
 
           expect(window.location.href).toBe(
@@ -550,6 +531,10 @@ describe('defineHistoryService', () => {
           historyBinding1.unbind!();
 
           expect(window.location.href).toBe('http://example.com/?test:2=/bar');
+
+          createHistories();
+
+          expect(history1.location.state).toBe(undefined);
         });
 
         it('does not call the listener of a destroyed consumer', () => {

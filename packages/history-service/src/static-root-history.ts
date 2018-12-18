@@ -1,46 +1,27 @@
 import {ServerRequest} from '@feature-hub/server-renderer';
 import * as history from 'history';
-import {ConsumerHistoryStates} from './root-histories';
+import {RootHistory, RootLocation} from './history-multiplexer';
 
-/* istanbul ignore next */
-export const noop = () => undefined;
-
-export class StaticRootHistory
-  implements history.History<ConsumerHistoryStates> {
-  public action: history.Action = 'POP';
-  public length = 1;
+export class StaticRootHistory implements RootHistory {
+  public readonly length = 1;
   public location: history.Location;
-  public go = noop;
-  public goBack = noop;
-  public goForward = noop;
 
   public constructor(serverRequest: ServerRequest) {
     this.location = history.createLocation(serverRequest.path);
   }
 
   /* istanbul ignore next */
-  public block = () => noop;
+  public listen = () => () => undefined;
 
-  /* istanbul ignore next */
-  public listen = () => noop;
-
-  public push(
-    pathOrLocation: history.LocationDescriptor,
-    state?: ConsumerHistoryStates
-  ): void {
-    this.location = history.createLocation(pathOrLocation, state);
-    this.action = 'PUSH';
+  public push(location: RootLocation): void {
+    this.location = history.createLocation(location);
   }
 
-  public replace(
-    pathOrLocation: history.LocationDescriptor,
-    state?: ConsumerHistoryStates
-  ): void {
-    this.location = history.createLocation(pathOrLocation, state);
-    this.action = 'REPLACE';
+  public replace(location: RootLocation): void {
+    this.location = history.createLocation(location);
   }
 
-  public createHref(location: history.LocationDescriptorObject): history.Href {
+  public createHref(location: RootLocation): history.Href {
     return history.createPath(location);
   }
 }

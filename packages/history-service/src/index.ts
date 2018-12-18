@@ -4,11 +4,11 @@ import {
   SharedFeatureService
 } from '@feature-hub/core';
 import {ServerRendererV1} from '@feature-hub/server-renderer';
+import {createHistoryMultiplexers} from './create-history-multiplexers';
 import {
   HistoryServiceV1,
   createHistoryServiceV1Binder
 } from './history-service-v1';
-import {createRootHistories} from './root-histories';
 import {RootLocationTransformer} from './root-location-transformer';
 
 export {
@@ -42,13 +42,14 @@ export function defineHistoryService(
 
     create: (env): SharedHistoryService => {
       const {serverRequest} = env.featureServices['s2:server-renderer'];
-      const rootHistories = createRootHistories(serverRequest);
+
+      const historyMultiplexers = createHistoryMultiplexers(
+        rootLocationTransformer,
+        serverRequest
+      );
 
       return {
-        '1.1': createHistoryServiceV1Binder(
-          rootHistories,
-          rootLocationTransformer
-        )
+        '1.1': createHistoryServiceV1Binder(historyMultiplexers)
       };
     }
   };

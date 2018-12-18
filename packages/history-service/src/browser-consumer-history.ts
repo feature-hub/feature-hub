@@ -8,11 +8,7 @@ export class BrowserConsumerHistory extends ConsumerHistory {
 
   public destroy(): void {
     this.unregisterCallbacks.forEach(unregister => unregister());
-    this.rootHistory.replace(this.createRootLocation(undefined));
-  }
-
-  public get length(): number {
-    return this.rootHistory.length;
+    this.historyMultiplexer.replace(this.consumerId, undefined);
   }
 
   public listen(
@@ -20,10 +16,9 @@ export class BrowserConsumerHistory extends ConsumerHistory {
   ): history.UnregisterCallback {
     this.listeners.add(listener);
 
-    const browserUnregister = this.rootHistory.listen((_location, action) => {
-      if (action === 'POP') {
-        this.handlePop();
-      }
+    // TODO: register in constructor
+    const browserUnregister = this.historyMultiplexer.listenForPop(() => {
+      this.handlePop();
     });
 
     const unregister = () => {
@@ -54,36 +49,30 @@ export class BrowserConsumerHistory extends ConsumerHistory {
 
   private notifyListeners(): void {
     for (const listener of this.listeners) {
-      listener(this.consumerLocation, this.action);
+      listener(this.location, this.action);
     }
   }
 
   private handlePop(): void {
-    const consumerPath = this.getConsumerPathFromRootHistory();
-    const consumerState = this.getConsumerLocationStateFromRootHistory();
+    const location = this.historyMultiplexer.getConsumerLocation(
+      this.consumerId
+    );
 
-    if (this.matchesConsumerLocation(consumerPath, consumerState)) {
+    if (this.matchesConsumerLocation(location)) {
       return;
     }
 
-    this.consumerLocation = this.createConsumerLocation(
-      consumerPath,
-      consumerState
-    );
-
+    this.location = location;
     this.action = 'POP';
 
     this.notifyListeners();
   }
 
-  private matchesConsumerLocation(
-    consumerPath: string,
-    consumerState: unknown
-  ): boolean {
-    if (consumerPath !== history.createPath(this.consumerLocation)) {
+  private matchesConsumerLocation(location: history.Location): boolean {
+    if (history.createPath(location) !== history.createPath(this.location)) {
       return false;
     }
 
-    return equal(consumerState, this.consumerLocation.state);
+    return equal(location.state, this.location.state);
   }
 }

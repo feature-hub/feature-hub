@@ -1,8 +1,7 @@
 import {FeatureServiceBinder, FeatureServiceBinding} from '@feature-hub/core';
 import * as history from 'history';
-import {RootLocationTransformer} from '.';
 import {BrowserConsumerHistory} from './browser-consumer-history';
-import {RootHistories} from './root-histories';
+import {HistoryMultiplexers} from './create-history-multiplexers';
 import {StaticConsumerHistory} from './static-consumer-history';
 
 export interface HistoryServiceV1 {
@@ -13,8 +12,7 @@ export interface HistoryServiceV1 {
 }
 
 export function createHistoryServiceV1Binder(
-  rootHistories: RootHistories,
-  rootLocationTransformer: RootLocationTransformer
+  historyMultiplexers: HistoryMultiplexers
 ): FeatureServiceBinder<HistoryServiceV1> {
   return (consumerId: string): FeatureServiceBinding<HistoryServiceV1> => {
     let browserConsumerHistory: BrowserConsumerHistory | undefined;
@@ -31,8 +29,7 @@ export function createHistoryServiceV1Binder(
         } else {
           browserConsumerHistory = new BrowserConsumerHistory(
             consumerId,
-            rootHistories.browserHistory,
-            rootLocationTransformer
+            historyMultiplexers.browserHistoryMultiplexer
           );
         }
 
@@ -49,8 +46,7 @@ export function createHistoryServiceV1Binder(
         } else {
           staticConsumerHistory = new StaticConsumerHistory(
             consumerId,
-            rootHistories.staticHistory,
-            rootLocationTransformer
+            historyMultiplexers.staticHistoryMultiplexer
           );
         }
 
@@ -58,7 +54,7 @@ export function createHistoryServiceV1Binder(
       },
 
       get staticRootLocation(): history.Location {
-        return rootHistories.staticHistory.location;
+        return historyMultiplexers.staticHistoryMultiplexer.rootLocation;
       }
     };
 
