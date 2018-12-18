@@ -2,7 +2,7 @@ import * as history from 'history';
 import {ConsumerHistoryStates} from './root-histories';
 import {RootLocationTransformer} from './root-location-transformer';
 
-export abstract class BaseHistory implements history.History {
+export abstract class ConsumerHistory implements history.History {
   public action: history.Action = 'POP';
 
   protected consumerLocation: history.Location;

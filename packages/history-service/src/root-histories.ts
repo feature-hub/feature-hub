@@ -1,6 +1,6 @@
 import {ServerRequest} from '@feature-hub/server-renderer';
 import * as history from 'history';
-import {StaticRootHistory} from './static-history';
+import {StaticRootHistory} from './static-root-history';
 
 export interface ConsumerHistoryStates {
   readonly [consumerId: string]: unknown;

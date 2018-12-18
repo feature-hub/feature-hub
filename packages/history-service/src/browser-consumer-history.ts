@@ -1,8 +1,8 @@
 import equal from 'fast-deep-equal';
 import * as history from 'history';
-import {BaseHistory} from './base-history';
+import {ConsumerHistory} from './consumer-history';
 
-export class BrowserHistory extends BaseHistory {
+export class BrowserConsumerHistory extends ConsumerHistory {
   private readonly listeners = new Set<history.LocationListener>();
   private readonly unregisterCallbacks: history.UnregisterCallback[] = [];
 

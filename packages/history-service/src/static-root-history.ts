@@ -1,10 +1,9 @@
 import {ServerRequest} from '@feature-hub/server-renderer';
 import * as history from 'history';
-import {BaseHistory} from './base-history';
 import {ConsumerHistoryStates} from './root-histories';
 
 /* istanbul ignore next */
-const noop = () => undefined;
+export const noop = () => undefined;
 
 export class StaticRootHistory
   implements history.History<ConsumerHistoryStates> {
@@ -43,19 +42,5 @@ export class StaticRootHistory
 
   public createHref(location: history.LocationDescriptorObject): history.Href {
     return history.createPath(location);
-  }
-}
-
-export class StaticHistory extends BaseHistory {
-  public get length(): number {
-    return 1;
-  }
-
-  public listen(
-    _listener: history.LocationListener
-  ): history.UnregisterCallback {
-    console.warn('history.listen() is not supported.');
-
-    return () => undefined;
   }
 }

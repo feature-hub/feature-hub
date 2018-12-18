@@ -1,9 +1,9 @@
 import {FeatureServiceBinder, FeatureServiceBinding} from '@feature-hub/core';
 import * as history from 'history';
 import {RootLocationTransformer} from '.';
-import {BrowserHistory} from './browser-history';
+import {BrowserConsumerHistory} from './browser-consumer-history';
 import {RootHistories} from './root-histories';
-import {StaticHistory} from './static-history';
+import {StaticConsumerHistory} from './static-consumer-history';
 
 export interface HistoryServiceV1 {
   staticRootLocation: history.Location;
@@ -17,44 +17,44 @@ export function createHistoryServiceV1Binder(
   rootLocationTransformer: RootLocationTransformer
 ): FeatureServiceBinder<HistoryServiceV1> {
   return (consumerId: string): FeatureServiceBinding<HistoryServiceV1> => {
-    let browserHistory: BrowserHistory | undefined;
-    let staticHistory: history.History | undefined;
+    let browserConsumerHistory: BrowserConsumerHistory | undefined;
+    let staticConsumerHistory: history.History | undefined;
 
     const featureService: HistoryServiceV1 = {
       createBrowserHistory: () => {
-        if (browserHistory) {
+        if (browserConsumerHistory) {
           console.warn(
             `createBrowserHistory was called multiple times by the consumer ${JSON.stringify(
               consumerId
             )}. Returning the same history instance as before.`
           );
         } else {
-          browserHistory = new BrowserHistory(
+          browserConsumerHistory = new BrowserConsumerHistory(
             consumerId,
             rootHistories.browserHistory,
             rootLocationTransformer
           );
         }
 
-        return browserHistory;
+        return browserConsumerHistory;
       },
 
       createStaticHistory: () => {
-        if (staticHistory) {
+        if (staticConsumerHistory) {
           console.warn(
             `createStaticHistory was called multiple times by the consumer ${JSON.stringify(
               consumerId
             )}. Returning the same history instance as before.`
           );
         } else {
-          staticHistory = new StaticHistory(
+          staticConsumerHistory = new StaticConsumerHistory(
             consumerId,
             rootHistories.staticHistory,
             rootLocationTransformer
           );
         }
 
-        return staticHistory;
+        return staticConsumerHistory;
       },
 
       get staticRootLocation(): history.Location {
@@ -63,8 +63,8 @@ export function createHistoryServiceV1Binder(
     };
 
     const unbind = () => {
-      if (browserHistory) {
-        browserHistory.destroy();
+      if (browserConsumerHistory) {
+        browserConsumerHistory.destroy();
       }
     };
 
