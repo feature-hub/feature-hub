@@ -187,15 +187,16 @@ describe('integration test: "history-service"', () => {
     expect(await HistoryConsumerUI.b.getPathname()).toBe('/b1');
   });
 
-  test('Scenario 9: Consumer A pushes a new pathname, then the user reloads the page, and then the user navigates back', async () => {
+  test('Scenario 9: Consumer A pushes a new pathname two times, then the user reloads the page, and navigates back', async () => {
     await page.goto(url);
     await HistoryConsumerUI.a.push('/a1');
+    await HistoryConsumerUI.a.push('/a2');
     await page.reload();
     await page.goBack();
 
-    expect(await getRootPath()).toBe('/');
+    expect(await getRootPath()).toBe('/?test:history-consumer:a=/a1');
 
-    expect(await HistoryConsumerUI.a.getPathname()).toBe('/');
+    expect(await HistoryConsumerUI.a.getPathname()).toBe('/a1');
     expect(await HistoryConsumerUI.b.getPathname()).toBe('/');
   });
 });
