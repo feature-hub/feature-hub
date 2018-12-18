@@ -242,9 +242,12 @@ const rootLocationTransformer = {
       searchParams.delete(consumerId);
     }
 
+    const {pathname, state} = rootLocation;
+
     return {
-      ...rootLocation,
-      search: searchParams.toString()
+      pathname,
+      search: searchParams.toString(),
+      state
     };
   }
 };
