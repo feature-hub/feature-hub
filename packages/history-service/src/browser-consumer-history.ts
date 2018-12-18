@@ -1,12 +1,26 @@
 import equal from 'fast-deep-equal';
 import * as history from 'history';
 import {ConsumerHistory} from './consumer-history';
+import {HistoryMultiplexer} from './history-multiplexer';
 
 export class BrowserConsumerHistory extends ConsumerHistory {
   private readonly listeners = new Set<history.LocationListener>();
   private readonly unregisterCallbacks: history.UnregisterCallback[] = [];
+  private readonly browserUnregister: () => void;
+
+  public constructor(
+    consumerId: string,
+    historyMultiplexer: HistoryMultiplexer
+  ) {
+    super(consumerId, historyMultiplexer);
+
+    this.browserUnregister = historyMultiplexer.listenForPop(() => {
+      this.handlePop();
+    });
+  }
 
   public destroy(): void {
+    this.browserUnregister();
     this.unregisterCallbacks.forEach(unregister => unregister());
     this.historyMultiplexer.replace(this.consumerId, undefined);
   }
@@ -16,14 +30,8 @@ export class BrowserConsumerHistory extends ConsumerHistory {
   ): history.UnregisterCallback {
     this.listeners.add(listener);
 
-    // TODO: register in constructor
-    const browserUnregister = this.historyMultiplexer.listenForPop(() => {
-      this.handlePop();
-    });
-
     const unregister = () => {
       this.listeners.delete(listener);
-      browserUnregister();
     };
 
     this.unregisterCallbacks.push(unregister);

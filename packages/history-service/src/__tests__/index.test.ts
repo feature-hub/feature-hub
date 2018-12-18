@@ -205,6 +205,19 @@ describe('defineHistoryService', () => {
             });
           });
         });
+
+        describe('for a POP action', () => {
+          it('updates the location of matching consumers', () => {
+            const state = window.history.state;
+            const href = window.location.href;
+
+            history1.push('/foo');
+
+            simulateOnPopState(state, href);
+
+            expect(history1.location).toMatchObject({pathname: '/'});
+          });
+        });
       });
 
       describe('#push()', () => {
@@ -412,6 +425,18 @@ describe('defineHistoryService', () => {
             expect(history2ListenerSpy).not.toHaveBeenCalled();
           });
 
+          it('updates the location of matching consumers even when not listening', () => {
+            const state = window.history.state;
+            const href = window.location.href;
+
+            history1.push('/foo');
+            unregisterListeners();
+
+            simulateOnPopState(state, href);
+
+            expect(history1.location).toMatchObject({pathname: '/'});
+          });
+
           describe('with back and forward navigation', () => {
             it('calls the listener with the correct locations', () => {
               history1.push('/baz?qux=3');
@@ -568,6 +593,20 @@ describe('defineHistoryService', () => {
           expect(history1ListenerSpy).toHaveBeenCalled();
 
           history1Unregister();
+        });
+
+        describe('for a POP action', () => {
+          it('does not update the location of a destroyed consumer', () => {
+            const state = window.history.state;
+            const href = window.location.href;
+
+            history1.push('/foo');
+            historyBinding1.unbind!();
+
+            simulateOnPopState(state, href);
+
+            expect(history1.location).toMatchObject({pathname: '/foo'});
+          });
         });
       });
     });
