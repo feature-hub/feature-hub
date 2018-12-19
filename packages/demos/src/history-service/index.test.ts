@@ -2,27 +2,69 @@
  * @jest-environment puppeteer
  */
 
+// tslint:disable:no-non-null-assertion
+
 import {Server} from 'http';
 import {AddressInfo} from 'net';
-import {parse} from 'url';
+import {ElementHandle} from 'puppeteer';
+import {Browser} from '../browser';
 import {startServer} from '../start-server';
 import webpackConfigs from './webpack-config';
 
 jest.setTimeout(60000);
 
-async function getInputValue(selector: string): Promise<string | undefined> {
-  const element = await page.$(selector);
+class HistoryConsumerUI {
+  public constructor(
+    private readonly browser: Browser,
+    private readonly specifier: 'a' | 'b'
+  ) {}
 
-  if (!element) {
-    return;
+  public async getPathname(): Promise<string> {
+    const pathnameInput = await this.getPathnameInput();
+
+    const value = await pathnameInput.getProperty('value');
+
+    return value.jsonValue();
   }
 
-  const value = await element.getProperty('value');
+  public async push(pathname: string): Promise<void> {
+    await (await this.getNewPathnameInput()).type(pathname);
 
-  return value.jsonValue();
+    await this.browser.waitForNavigation((await this.getPushButton()).click());
+  }
+
+  public async replace(pathname: string): Promise<void> {
+    await (await this.getNewPathnameInput()).type(pathname);
+
+    await this.browser.waitForNavigation(
+      (await this.getReplaceButton()).click()
+    );
+  }
+
+  private async getNewPathnameInput(): Promise<
+    ElementHandle<HTMLInputElement>
+  > {
+    return (await page.$(`#new-pathname-${this.specifier}`))!;
+  }
+
+  private async getPathnameInput(): Promise<ElementHandle<HTMLInputElement>> {
+    return (await page.$(`#pathname-${this.specifier}`))!;
+  }
+
+  private async getPushButton(): Promise<ElementHandle<HTMLButtonElement>> {
+    return (await page.$(`#push-${this.specifier}`))!;
+  }
+
+  private async getReplaceButton(): Promise<ElementHandle<HTMLButtonElement>> {
+    return (await page.$(`#replace-${this.specifier}`))!;
+  }
 }
 
 describe('integration test: "history-service"', () => {
+  const browser = new Browser(5000);
+  const a = new HistoryConsumerUI(browser, 'a');
+  const b = new HistoryConsumerUI(browser, 'b');
+
   let server: Server;
   let url: string;
 
@@ -32,29 +74,125 @@ describe('integration test: "history-service"', () => {
     const {port} = server.address() as AddressInfo;
 
     url = `http://localhost:${port}/`;
+
+    // Trigger initial Webpack DEV build
+    await browser.goto(url, 60000);
   });
 
   afterAll(done => server.close(done));
 
   test('Scenario 1: The user loads a page without consumer-specific pathnames', async () => {
-    await page.goto(url);
+    await browser.goto(url);
 
-    expect(parse(page.url()).path).toBe('/');
-
-    expect(await getInputValue('#pathname-a')).toBe('/');
-    expect(await getInputValue('#pathname-b')).toBe('/');
+    expect(await browser.getPath()).toBe('/');
+    expect(await a.getPathname()).toBe('/');
+    expect(await b.getPathname()).toBe('/');
   });
 
   test('Scenario 2: The user loads a page with consumer-specific pathnames', async () => {
-    await page.goto(
+    await browser.goto(
       `${url}?test:history-consumer:a=/a1&test:history-consumer:b=/b1`
     );
 
-    expect(parse(page.url()).path).toBe(
+    expect(await browser.getPath()).toBe(
       '/?test:history-consumer:a=/a1&test:history-consumer:b=/b1'
     );
 
-    expect(await getInputValue('#pathname-a')).toBe('/a1');
-    expect(await getInputValue('#pathname-b')).toBe('/b1');
+    expect(await a.getPathname()).toBe('/a1');
+    expect(await b.getPathname()).toBe('/b1');
+  });
+
+  test('Scenario 3: Consumer A pushes a new pathname', async () => {
+    await browser.goto(url);
+
+    expect(await browser.getPath()).toBe('/');
+
+    await a.push('/a1');
+
+    expect(await browser.getPath()).toBe('/?test:history-consumer:a=/a1');
+    expect(await a.getPathname()).toBe('/a1');
+    expect(await b.getPathname()).toBe('/');
+  });
+
+  test('Scenario 4: Consumer A pushes a new pathname and then the user navigates back', async () => {
+    await browser.goto(url);
+    await a.push('/a1');
+    await browser.goBack();
+
+    expect(await browser.getPath()).toBe('/');
+    expect(await a.getPathname()).toBe('/');
+    expect(await b.getPathname()).toBe('/');
+  });
+
+  test('Scenario 5: Consumer A pushes a new pathname and then the user navigates back and forward', async () => {
+    await browser.goto(url);
+
+    expect(await browser.getPath()).toBe('/');
+
+    await a.push('/a1');
+    await browser.goBack();
+    await browser.goForward();
+
+    expect(await browser.getPath()).toBe('/?test:history-consumer:a=/a1');
+    expect(await a.getPathname()).toBe('/a1');
+    expect(await b.getPathname()).toBe('/');
+  });
+
+  test('Scenario 6: Consumer A and B both push new pathnames', async () => {
+    await browser.goto(url);
+
+    expect(await browser.getPath()).toBe('/');
+
+    await a.push('/a1');
+    await b.push('/b1');
+
+    expect(await browser.getPath()).toBe(
+      '/?test:history-consumer:a=/a1&test:history-consumer:b=/b1'
+    );
+
+    expect(await a.getPathname()).toBe('/a1');
+    expect(await b.getPathname()).toBe('/b1');
+  });
+
+  test.skip('Scenario 7: Consumer A pushes a new pathname, B replaces their pathname, and then the user navigates back', async () => {
+    await browser.goto(url);
+
+    expect(await browser.getPath()).toBe('/');
+
+    await a.push('/a1');
+    await b.replace('/b1');
+    await browser.goBack();
+
+    expect(await browser.getPath()).toBe('/');
+    expect(await a.getPathname()).toBe('/');
+    expect(await b.getPathname()).toBe('/');
+  });
+
+  test('Scenario 8: Consumer A pushes a new pathname two times, then the user navigates back two times, and consumer B pushes a new pathname', async () => {
+    await browser.goto(url);
+
+    expect(await browser.getPath()).toBe('/');
+
+    await a.push('/a1');
+    await a.push('/a2');
+    await browser.goBack();
+    await browser.goBack();
+    await b.push('/b1');
+
+    expect(await browser.getPath()).toBe('/?test:history-consumer:b=/b1');
+    expect(await a.getPathname()).toBe('/');
+    expect(await b.getPathname()).toBe('/b1');
+  });
+
+  test.skip('Scenario 9: Consumer A pushes a new pathname two times, then the user reloads the page, and navigates back', async () => {
+    await browser.goto(url);
+    await a.push('/a1');
+    await a.push('/a2');
+    await browser.reload();
+    await browser.goBack();
+
+    expect(await browser.getPath()).toBe('/?test:history-consumer:a=/a1');
+    expect(await a.getPathname()).toBe('/a1');
+    expect(await b.getPathname()).toBe('/');
   });
 });
