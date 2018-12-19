@@ -1,7 +1,7 @@
 import {ServerRequest} from '@feature-hub/server-renderer';
 import * as history from 'history';
+import {RootLocationTransformer} from '../create-root-location-transformer';
 import {HistoryMultiplexer} from './history-multiplexer';
-import {RootLocationTransformer} from './root-location-transformer';
 import {StaticRootHistory} from './static-root-history';
 
 export interface HistoryMultiplexers {

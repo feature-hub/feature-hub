@@ -1,5 +1,5 @@
 import {Location} from 'history';
-import {createRootLocationTransformer} from '../root-location-transformer';
+import {createRootLocationTransformer} from '..';
 
 describe('#createRootLocationTransformer', () => {
   describe('#createRootLocation', () => {

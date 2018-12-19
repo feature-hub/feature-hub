@@ -10,16 +10,16 @@ import {
   FeatureServiceEnvironment
 } from '@feature-hub/core';
 import {ServerRendererV1, ServerRequest} from '@feature-hub/server-renderer';
+import {History} from 'history';
 import {
-  History,
   HistoryServiceV1,
+  RootLocationTransformer,
   SharedHistoryService,
   defineHistoryService
 } from '..';
-import {RootLocationTransformer} from '../root-location-transformer';
-import {testRootLocationTransformer} from './test-root-location-transformer';
+import {testRootLocationTransformer} from '../internal/test-root-location-transformer';
 
-describe('HistoryService#create', () => {
+describe('HistoryService#create (on Node.js)', () => {
   let createHistoryServiceBinder: (
     serverRequest: ServerRequest | undefined,
     rootLocationTransformer?: RootLocationTransformer

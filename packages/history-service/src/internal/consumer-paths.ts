@@ -2,6 +2,14 @@ export interface ConsumerPaths {
   readonly [consumerId: string]: string;
 }
 
+function encodeConsumerPaths(consumerPaths: ConsumerPaths): string {
+  return JSON.stringify(consumerPaths);
+}
+
+function decodeConsumerPaths(encodedConsumerPaths: string): ConsumerPaths {
+  return JSON.parse(encodedConsumerPaths);
+}
+
 export function addConsumerPath(
   encodedConsumerPaths: string | null,
   consumerId: string,
@@ -38,12 +46,4 @@ export function getConsumerPath(
   consumerId: string
 ): string {
   return decodeConsumerPaths(encodedConsumerPaths)[consumerId];
-}
-
-function encodeConsumerPaths(consumerPaths: ConsumerPaths): string {
-  return JSON.stringify(consumerPaths);
-}
-
-function decodeConsumerPaths(encodedConsumerPaths: string): ConsumerPaths {
-  return JSON.parse(encodedConsumerPaths);
 }
