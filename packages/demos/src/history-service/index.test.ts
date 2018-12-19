@@ -4,6 +4,7 @@
 
 // tslint:disable:no-non-null-assertion
 
+import asyncRetry from 'async-retry';
 import {Server} from 'http';
 import {AddressInfo} from 'net';
 import {ElementHandle} from 'puppeteer';
@@ -17,7 +18,7 @@ class HistoryConsumerUI {
   public static readonly a = new HistoryConsumerUI('a');
   public static readonly b = new HistoryConsumerUI('b');
 
-  private constructor(private readonly prefix: 'a' | 'b') {}
+  private constructor(private readonly specifier: 'a' | 'b') {}
 
   public async getPathname(): Promise<string> {
     const pathnameInput = await this.getPathnameInput();
@@ -40,25 +41,36 @@ class HistoryConsumerUI {
   private async getNewPathnameInput(): Promise<
     ElementHandle<HTMLInputElement>
   > {
-    return (await page.$(`#new-pathname-${this.prefix}`))!;
+    return (await page.$(`#new-pathname-${this.specifier}`))!;
   }
 
   private async getPathnameInput(): Promise<ElementHandle<HTMLInputElement>> {
-    return (await page.$(`#pathname-${this.prefix}`))!;
+    return (await page.$(`#pathname-${this.specifier}`))!;
   }
 
   private async getPushButton(): Promise<ElementHandle<HTMLButtonElement>> {
-    return (await page.$(`#push-${this.prefix}`))!;
+    return (await page.$(`#push-${this.specifier}`))!;
   }
 
   private async getReplaceButton(): Promise<ElementHandle<HTMLButtonElement>> {
-    return (await page.$(`#replace-${this.prefix}`))!;
+    return (await page.$(`#replace-${this.specifier}`))!;
   }
 }
 
 async function getRootPath(): Promise<string> {
   return decodeURIComponent(
     parse(await page.evaluate('location.href')).path || ''
+  );
+}
+
+async function retry(expection: () => Promise<unknown>): Promise<void> {
+  await asyncRetry(
+    async () => {
+      console.log('retry expectation');
+
+      await expection();
+    },
+    {minTimeout: 100, retries: 5}
   );
 }
 
@@ -79,7 +91,7 @@ describe('integration test: "history-service"', () => {
   test('Scenario 1: The user loads a page without consumer-specific pathnames', async () => {
     await page.goto(url);
 
-    expect(await getRootPath()).toBe('/');
+    retry(async () => expect(await getRootPath()).toBe('/'));
 
     expect(await HistoryConsumerUI.a.getPathname()).toBe('/');
     expect(await HistoryConsumerUI.b.getPathname()).toBe('/');
@@ -90,8 +102,10 @@ describe('integration test: "history-service"', () => {
       `${url}?test:history-consumer:a=/a1&test:history-consumer:b=/b1`
     );
 
-    expect(await getRootPath()).toBe(
-      '/?test:history-consumer:a=/a1&test:history-consumer:b=/b1'
+    retry(async () =>
+      expect(await getRootPath()).toBe(
+        '/?test:history-consumer:a=/a1&test:history-consumer:b=/b1'
+      )
     );
 
     expect(await HistoryConsumerUI.a.getPathname()).toBe('/a1');
@@ -105,7 +119,9 @@ describe('integration test: "history-service"', () => {
 
     await HistoryConsumerUI.a.push('/a1');
 
-    expect(await getRootPath()).toBe('/?test:history-consumer:a=/a1');
+    retry(async () =>
+      expect(await getRootPath()).toBe('/?test:history-consumer:a=/a1')
+    );
 
     expect(await HistoryConsumerUI.a.getPathname()).toBe('/a1');
     expect(await HistoryConsumerUI.b.getPathname()).toBe('/');
@@ -116,7 +132,7 @@ describe('integration test: "history-service"', () => {
     await HistoryConsumerUI.a.push('/a1');
     await page.goBack();
 
-    expect(await getRootPath()).toBe('/');
+    retry(async () => expect(await getRootPath()).toBe('/'));
 
     expect(await HistoryConsumerUI.a.getPathname()).toBe('/');
     expect(await HistoryConsumerUI.b.getPathname()).toBe('/');
@@ -131,7 +147,9 @@ describe('integration test: "history-service"', () => {
     await page.goBack();
     await page.goForward();
 
-    expect(await getRootPath()).toBe('/?test:history-consumer:a=/a1');
+    retry(async () =>
+      expect(await getRootPath()).toBe('/?test:history-consumer:a=/a1')
+    );
 
     expect(await HistoryConsumerUI.a.getPathname()).toBe('/a1');
     expect(await HistoryConsumerUI.b.getPathname()).toBe('/');
@@ -145,8 +163,10 @@ describe('integration test: "history-service"', () => {
     await HistoryConsumerUI.a.push('/a1');
     await HistoryConsumerUI.b.push('/b1');
 
-    expect(await getRootPath()).toBe(
-      '/?test:history-consumer:a=/a1&test:history-consumer:b=/b1'
+    retry(async () =>
+      expect(await getRootPath()).toBe(
+        '/?test:history-consumer:a=/a1&test:history-consumer:b=/b1'
+      )
     );
 
     expect(await HistoryConsumerUI.a.getPathname()).toBe('/a1');
@@ -162,12 +182,14 @@ describe('integration test: "history-service"', () => {
     await HistoryConsumerUI.b.replace('/b1');
     await page.goBack();
 
-    expect(await getRootPath()).toBe(
-      '/?test:history-consumer:a=/&test:history-consumer:b=/b1'
+    retry(async () =>
+      expect(await getRootPath()).toBe(
+        '/?test:history-consumer:a=/&test:history-consumer:b=/'
+      )
     );
 
     expect(await HistoryConsumerUI.a.getPathname()).toBe('/');
-    expect(await HistoryConsumerUI.b.getPathname()).toBe('/b1');
+    expect(await HistoryConsumerUI.b.getPathname()).toBe('/');
   });
 
   test('Scenario 8: Consumer A pushes a new pathname two times, then the user navigates back two times, and consumer B pushes a new pathname', async () => {
@@ -181,7 +203,9 @@ describe('integration test: "history-service"', () => {
     await page.goBack();
     await HistoryConsumerUI.b.push('/b1');
 
-    expect(await getRootPath()).toBe('/?test:history-consumer:b=/b1');
+    retry(async () =>
+      expect(await getRootPath()).toBe('/?test:history-consumer:b=/b1')
+    );
 
     expect(await HistoryConsumerUI.a.getPathname()).toBe('/');
     expect(await HistoryConsumerUI.b.getPathname()).toBe('/b1');
@@ -194,7 +218,9 @@ describe('integration test: "history-service"', () => {
     await page.reload();
     await page.goBack();
 
-    expect(await getRootPath()).toBe('/?test:history-consumer:a=/a1');
+    retry(async () =>
+      expect(await getRootPath()).toBe('/?test:history-consumer:a=/a1')
+    );
 
     expect(await HistoryConsumerUI.a.getPathname()).toBe('/a1');
     expect(await HistoryConsumerUI.b.getPathname()).toBe('/');
