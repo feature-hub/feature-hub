@@ -17,6 +17,7 @@ page.
   - [Functional Behaviour](#functional-behaviour)
     - [Location Transformer](#location-transformer)
   - [Demo](#demo)
+    - [Running the Demo](#running-the-demo)
   - [Usage](#usage)
     - [As a Consumer](#as-a-consumer)
       - [In the browser:](#in-the-browser)
@@ -24,6 +25,8 @@ page.
     - [As the Integrator](#as-the-integrator)
       - [Writing a Custom Location Transformer](#writing-a-custom-location-transformer)
   - [Caveats](#caveats)
+    - [Replace & Pop](#replace--pop)
+    - [Push, Push & Pop](#push-push--pop)
 
 ## Getting started
 
