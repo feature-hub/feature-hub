@@ -1,3 +1,4 @@
+import {Card, Label} from '@blueprintjs/core';
 import {ReactFeatureApp} from '@feature-hub/react';
 import * as React from 'react';
 
@@ -6,7 +7,11 @@ export default {
 
   create(): ReactFeatureApp {
     return {
-      render: () => <span>Hello, World!</span>
+      render: () => (
+        <Card style={{margin: '20px'}}>
+          <Label>Hello, World!</Label>
+        </Card>
+      )
     };
   }
 };

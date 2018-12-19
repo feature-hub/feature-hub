@@ -7,11 +7,8 @@ import * as ReactDOM from 'react-dom';
 import {historyConsumerDefinition} from './history-consumer-definition';
 import {rootLocationTransformer} from './root-location-transformer';
 
-// tslint:disable
-import 'normalize.css/normalize.css';
-import '@blueprintjs/icons/lib/css/blueprint-icons.css';
-import '@blueprintjs/core/lib/css/blueprint.css';
-// tslint:enable
+// tslint:disable-next-line:no-import-side-effect
+import '../blueprint-css';
 
 const registry = new FeatureServiceRegistry();
 
