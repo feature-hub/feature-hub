@@ -13,18 +13,18 @@ import webpackConfigs from './webpack-config';
 
 jest.setTimeout(60000);
 
-class Browser {
-  public constructor(private readonly defaultNavigationTimeout: number) {}
+const defaultNavigationTimeout = 5000;
 
-  public async goto(
+class Browser {
+  public static async goto(
     url: string,
-    timeout: number = this.defaultNavigationTimeout
+    timeout: number = defaultNavigationTimeout
   ): Promise<void> {
     await Promise.all([page.waitForNavigation({timeout}), page.goto(url)]);
   }
 
-  public async reload(
-    timeout: number = this.defaultNavigationTimeout
+  public static async reload(
+    timeout: number = defaultNavigationTimeout
   ): Promise<void> {
     await Promise.all([
       page.waitForNavigation({timeout}),
@@ -32,8 +32,8 @@ class Browser {
     ]);
   }
 
-  public async goBack(
-    timeout: number = this.defaultNavigationTimeout
+  public static async goBack(
+    timeout: number = defaultNavigationTimeout
   ): Promise<void> {
     await Promise.all([
       page.waitForNavigation({timeout}),
@@ -41,8 +41,8 @@ class Browser {
     ]);
   }
 
-  public async goForward(
-    timeout: number = this.defaultNavigationTimeout
+  public static async goForward(
+    timeout: number = defaultNavigationTimeout
   ): Promise<void> {
     await Promise.all([
       page.waitForNavigation({timeout}),
@@ -65,16 +65,28 @@ class HistoryConsumerUI {
     return value.jsonValue();
   }
 
-  public async push(pathname: string): Promise<void> {
+  public async push(
+    pathname: string,
+    timeout: number = defaultNavigationTimeout
+  ): Promise<void> {
     await (await this.getNewPathnameInput()).type(pathname);
-    await (await this.getPushButton()).click();
-    await page.waitForNavigation();
+
+    await Promise.all([
+      page.waitForNavigation({timeout}),
+      (await this.getPushButton()).click()
+    ]);
   }
 
-  public async replace(pathname: string): Promise<void> {
+  public async replace(
+    pathname: string,
+    timeout: number = defaultNavigationTimeout
+  ): Promise<void> {
     await (await this.getNewPathnameInput()).type(pathname);
-    await (await this.getReplaceButton()).click();
-    await page.waitForNavigation();
+
+    await Promise.all([
+      page.waitForNavigation({timeout}),
+      (await this.getReplaceButton()).click()
+    ]);
   }
 
   private async getNewPathnameInput(): Promise<
@@ -103,25 +115,23 @@ async function getRootPath(): Promise<string> {
 }
 
 describe('integration test: "history-service"', () => {
-  let browser: Browser;
   let server: Server;
   let url: string;
 
   beforeAll(async () => {
-    browser = new Browser(5000);
     server = await startServer(webpackConfigs);
 
     const {port} = server.address() as AddressInfo;
 
     url = `http://localhost:${port}/`;
 
-    await browser.goto(url, 60000);
+    await Browser.goto(url, 60000);
   });
 
   afterAll(done => server.close(done));
 
   test('Scenario 1: The user loads a page without consumer-specific pathnames', async () => {
-    await browser.goto(url);
+    await Browser.goto(url);
 
     expect(await getRootPath()).toBe('/');
     expect(await HistoryConsumerUI.a.getPathname()).toBe('/');
@@ -129,7 +139,7 @@ describe('integration test: "history-service"', () => {
   });
 
   test('Scenario 2: The user loads a page with consumer-specific pathnames', async () => {
-    await browser.goto(
+    await Browser.goto(
       `${url}?test:history-consumer:a=/a1&test:history-consumer:b=/b1`
     );
 
@@ -142,7 +152,7 @@ describe('integration test: "history-service"', () => {
   });
 
   test('Scenario 3: Consumer A pushes a new pathname', async () => {
-    await browser.goto(url);
+    await Browser.goto(url);
 
     expect(await getRootPath()).toBe('/');
 
@@ -154,9 +164,9 @@ describe('integration test: "history-service"', () => {
   });
 
   test('Scenario 4: Consumer A pushes a new pathname and then the user navigates back', async () => {
-    await browser.goto(url);
+    await Browser.goto(url);
     await HistoryConsumerUI.a.push('/a1');
-    await browser.goBack();
+    await Browser.goBack();
 
     expect(await getRootPath()).toBe('/');
     expect(await HistoryConsumerUI.a.getPathname()).toBe('/');
@@ -164,13 +174,13 @@ describe('integration test: "history-service"', () => {
   });
 
   test('Scenario 5: Consumer A pushes a new pathname and then the user navigates back and forward', async () => {
-    await browser.goto(url);
+    await Browser.goto(url);
 
     expect(await getRootPath()).toBe('/');
 
     await HistoryConsumerUI.a.push('/a1');
-    await browser.goBack();
-    await browser.goForward();
+    await Browser.goBack();
+    await Browser.goForward();
 
     expect(await getRootPath()).toBe('/?test:history-consumer:a=/a1');
     expect(await HistoryConsumerUI.a.getPathname()).toBe('/a1');
@@ -178,7 +188,7 @@ describe('integration test: "history-service"', () => {
   });
 
   test('Scenario 6: Consumer A and B both push new pathnames', async () => {
-    await browser.goto(url);
+    await Browser.goto(url);
 
     expect(await getRootPath()).toBe('/');
 
@@ -194,13 +204,13 @@ describe('integration test: "history-service"', () => {
   });
 
   test.skip('Scenario 7: Consumer A pushes a new pathname, B replaces their pathname, and then the user navigates back', async () => {
-    await browser.goto(url);
+    await Browser.goto(url);
 
     expect(await getRootPath()).toBe('/');
 
     await HistoryConsumerUI.a.push('/a1');
     await HistoryConsumerUI.b.replace('/b1');
-    await browser.goBack();
+    await Browser.goBack();
 
     expect(await getRootPath()).toBe('/');
     expect(await HistoryConsumerUI.a.getPathname()).toBe('/');
@@ -208,14 +218,14 @@ describe('integration test: "history-service"', () => {
   });
 
   test('Scenario 8: Consumer A pushes a new pathname two times, then the user navigates back two times, and consumer B pushes a new pathname', async () => {
-    await browser.goto(url);
+    await Browser.goto(url);
 
     expect(await getRootPath()).toBe('/');
 
     await HistoryConsumerUI.a.push('/a1');
     await HistoryConsumerUI.a.push('/a2');
-    await browser.goBack();
-    await browser.goBack();
+    await Browser.goBack();
+    await Browser.goBack();
     await HistoryConsumerUI.b.push('/b1');
 
     expect(await getRootPath()).toBe('/?test:history-consumer:b=/b1');
@@ -224,11 +234,11 @@ describe('integration test: "history-service"', () => {
   });
 
   test.skip('Scenario 9: Consumer A pushes a new pathname two times, then the user reloads the page, and navigates back', async () => {
-    await browser.goto(url);
+    await Browser.goto(url);
     await HistoryConsumerUI.a.push('/a1');
     await HistoryConsumerUI.a.push('/a2');
-    await browser.reload();
-    await browser.goBack();
+    await Browser.reload();
+    await Browser.goBack();
 
     expect(await getRootPath()).toBe('/?test:history-consumer:a=/a1');
     expect(await HistoryConsumerUI.a.getPathname()).toBe('/a1');
