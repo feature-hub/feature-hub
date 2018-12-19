@@ -23,6 +23,7 @@ page.
       - [On the server:](#on-the-server)
     - [As the Integrator](#as-the-integrator)
       - [Writing a Custom Location Transformer](#writing-a-custom-location-transformer)
+  - [Caveats](#caveats)
 
 ## Getting started
 
@@ -254,6 +255,60 @@ const rootLocationTransformer = {
 
 // ...
 ```
+
+## Caveats
+
+### Replace & Pop
+
+Since multiple consumers can push and replace location changes at any time onto
+the browser history, special attention must be given when **replacing** consumer
+locations. Imagine the following scenario with two history service consumers (A
+and B):
+
+- A and B are initially loaded with `/`.
+
+  | Browser History Stack | Current URL  |
+  | --------------------- | ------------ |
+  | /?a=**/**&b=**/**     | :arrow_left: |
+
+* A pushes `/a1`, e.g. caused by user interaction.
+
+  | Browser History Stack | Current URL  |
+  | --------------------- | ------------ |
+  | /?a=/&b=/             |              |
+  | /?a=**/a1**&b=/       | :arrow_left: |
+
+* B decides it needs to replace `/` with `/b1`, e.g. because it received some
+  outdated data.
+
+  | Browser History Stack | Current URL  |
+  | --------------------- | ------------ |
+  | /?a=/&b=/             |              |
+  | /?a=/a1&b=**/b1**     | :arrow_left: |
+
+* The user navigates back.
+
+  | Browser History Stack | Current URL  |
+  | --------------------- | ------------ |
+  | /?a=/&b=/             | :arrow_left: |
+  | /?a=/a1&b=/b1         |              |
+
+* ⚠️ Now it is B's responsibility, again, to replace its location with `/b1` on
+  the first browser history entry.
+
+  | Browser History Stack | Current URL  |
+  | --------------------- | ------------ |
+  | /?a=/&b=**/b1**       | :arrow_left: |
+  | /?a=/a1&b=/b1         |              |
+
+**Note:** The alternating background colors of the table rows don't have any
+meaning.
+
+### Push, Push & Pop
+
+When a history service consumer pushes the same location multiple times in a row
+and the user subsequently navigates back, no pop event is emitted for the
+unchanged location of this consumer.
 
 ---
 
