@@ -576,9 +576,7 @@ at Node.js):
 />
 ```
 
-**Note:** Server-side rendering of Feature Apps is not fully supported yet. See
-our [roadmap](https://github.com/sinnerschrader/feature-hub/milestone/3) for
-details.
+**Note:** Server-side rendering of Feature Apps is not fully supported yet.
 
 You can also define a `css` prop to add stylesheets to the document.
 
