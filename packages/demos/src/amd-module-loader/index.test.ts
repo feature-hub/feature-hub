@@ -17,15 +17,13 @@ describe('integration test: "amd module loader"', () => {
 
   beforeAll(async () => {
     server = await startServer(webpackConfigs);
-  });
 
-  afterAll(done => server.close(done));
-
-  beforeEach(async () => {
     const {port} = server.address() as AddressInfo;
 
     await browser.goto(`http://localhost:${port}`, 60000);
   });
+
+  afterAll(done => server.close(done));
 
   it('loads the feature app with react as external', async () => {
     await expect(page).toMatch('Hello, World!');
