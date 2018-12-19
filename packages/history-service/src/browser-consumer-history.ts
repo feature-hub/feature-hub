@@ -66,7 +66,7 @@ export class BrowserConsumerHistory extends ConsumerHistory {
       this.consumerId
     );
 
-    if (this.matchesConsumerLocation(location)) {
+    if (this.matches(location)) {
       return;
     }
 
@@ -76,7 +76,7 @@ export class BrowserConsumerHistory extends ConsumerHistory {
     this.notifyListeners();
   }
 
-  private matchesConsumerLocation(location: history.Location): boolean {
+  private matches(location: history.Location): boolean {
     if (history.createPath(location) !== history.createPath(this.location)) {
       return false;
     }

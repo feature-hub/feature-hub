@@ -56,16 +56,16 @@ export class HistoryMultiplexer {
   }
 
   public getConsumerLocation(consumerId: string): history.Location {
-    const path =
+    const consumerPath =
       this.rootLocationTransformer.getConsumerPathFromRootLocation(
         this.rootHistory.location,
         consumerId
       ) || '/';
 
     const consumerStates = this.rootHistory.location.state;
-    const state = consumerStates && consumerStates[consumerId];
+    const consumerState = consumerStates && consumerStates[consumerId];
 
-    return history.createLocation(path, state);
+    return history.createLocation(consumerPath, consumerState);
   }
 
   public listenForPop(listener: () => void): () => void {
@@ -86,14 +86,14 @@ export class HistoryMultiplexer {
       consumerId
     );
 
-    const state = this.rootHistory.location.state;
+    const consumerStates = this.rootHistory.location.state;
     const consumerState = consumerLocation && consumerLocation.state;
 
-    const newState: ConsumerHistoryStates = {
-      ...state,
+    const newConsumerStates: ConsumerHistoryStates = {
+      ...consumerStates,
       [consumerId]: consumerState
     };
 
-    return history.createLocation({...rootLocation, state: newState});
+    return history.createLocation({...rootLocation, state: newConsumerStates});
   }
 }
