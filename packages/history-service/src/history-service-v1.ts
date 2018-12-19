@@ -1,53 +1,69 @@
+import {FeatureServiceBinder, FeatureServiceBinding} from '@feature-hub/core';
 import * as history from 'history';
-import {RootLocationTransformer} from '.';
-import {ConsumerHistory} from './base-history';
-import {BrowserHistory} from './browser-history';
-import {MemoryHistory} from './memory-history';
-import {RootHistories} from './root-histories';
+import {BrowserConsumerHistory} from './browser-consumer-history';
+import {HistoryMultiplexers} from './create-history-multiplexers';
+import {StaticConsumerHistory} from './static-consumer-history';
 
 export interface HistoryServiceV1 {
-  readonly rootLocation?: history.Location;
+  staticRootLocation: history.Location;
+
   createBrowserHistory(): history.History;
-  createMemoryHistory(): history.MemoryHistory;
+  createStaticHistory(): history.History;
 }
 
-export class HistoryService implements HistoryServiceV1 {
-  public constructor(
-    private readonly rootHistories: RootHistories,
-    private readonly rootLocationTransformer: RootLocationTransformer,
-    private readonly consumerId: string,
-    private readonly consumerHistories: ConsumerHistory[]
-  ) {}
+export function createHistoryServiceV1Binder(
+  historyMultiplexers: HistoryMultiplexers
+): FeatureServiceBinder<HistoryServiceV1> {
+  return (consumerId: string): FeatureServiceBinding<HistoryServiceV1> => {
+    let browserConsumerHistory: BrowserConsumerHistory | undefined;
+    let staticConsumerHistory: history.History | undefined;
 
-  public get rootLocation(): history.Location | undefined {
-    return this.rootHistories.memoryHistory.location;
-  }
+    const featureService: HistoryServiceV1 = {
+      createBrowserHistory: () => {
+        if (browserConsumerHistory) {
+          console.warn(
+            `createBrowserHistory was called multiple times by the consumer ${JSON.stringify(
+              consumerId
+            )}. Returning the same history instance as before.`
+          );
+        } else {
+          browserConsumerHistory = new BrowserConsumerHistory(
+            consumerId,
+            historyMultiplexers.browserHistoryMultiplexer
+          );
+        }
 
-  public createBrowserHistory(): history.History {
-    return this.registerConsumerHistory(
-      new BrowserHistory(
-        this.consumerId,
-        this.rootHistories.browserHistory,
-        this.rootLocationTransformer
-      )
-    );
-  }
+        return browserConsumerHistory;
+      },
 
-  public createMemoryHistory(): history.MemoryHistory {
-    return this.registerConsumerHistory(
-      new MemoryHistory(
-        this.consumerId,
-        this.rootHistories.memoryHistory,
-        this.rootLocationTransformer
-      )
-    );
-  }
+      createStaticHistory: () => {
+        if (staticConsumerHistory) {
+          console.warn(
+            `createStaticHistory was called multiple times by the consumer ${JSON.stringify(
+              consumerId
+            )}. Returning the same history instance as before.`
+          );
+        } else {
+          staticConsumerHistory = new StaticConsumerHistory(
+            consumerId,
+            historyMultiplexers.staticHistoryMultiplexer
+          );
+        }
 
-  private registerConsumerHistory<TConsumerHistory extends ConsumerHistory>(
-    consumerHistory: TConsumerHistory
-  ): TConsumerHistory {
-    this.consumerHistories.push(consumerHistory);
+        return staticConsumerHistory;
+      },
 
-    return consumerHistory;
-  }
+      get staticRootLocation(): history.Location {
+        return historyMultiplexers.staticHistoryMultiplexer.rootLocation;
+      }
+    };
+
+    const unbind = () => {
+      if (browserConsumerHistory) {
+        browserConsumerHistory.destroy();
+      }
+    };
+
+    return {featureService, unbind};
+  };
 }

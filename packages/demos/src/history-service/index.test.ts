@@ -154,7 +154,7 @@ describe('integration test: "history-service"', () => {
     expect(await b.getPathname()).toBe('/b1');
   });
 
-  test.skip('Scenario 7: Consumer A pushes a new pathname, B replaces their pathname, and then the user navigates back', async () => {
+  test('Scenario 7: Consumer A pushes a new pathname, B replaces their pathname, and then the user navigates back', async () => {
     await browser.goto(url);
 
     expect(await browser.getPath()).toBe('/');
@@ -184,7 +184,7 @@ describe('integration test: "history-service"', () => {
     expect(await b.getPathname()).toBe('/b1');
   });
 
-  test.skip('Scenario 9: Consumer A pushes a new pathname two times, then the user reloads the page, and navigates back', async () => {
+  test('Scenario 9: Consumer A pushes a new pathname two times, then the user reloads the page, and navigates back', async () => {
     await browser.goto(url);
     await a.push('/a1');
     await a.push('/a2');
