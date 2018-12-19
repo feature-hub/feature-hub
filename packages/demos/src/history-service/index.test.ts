@@ -63,10 +63,19 @@ async function getRootPath(): Promise<string> {
   );
 }
 
-async function retry(expection: () => Promise<unknown>): Promise<void> {
+async function retry(
+  scenarioNo: number,
+  expection: () => Promise<unknown>
+): Promise<void> {
+  let count = 0;
+
   await asyncRetry(
     async () => {
-      console.log('retry expectation');
+      if (count > 0) {
+        console.log(`${count}. retry in scenario ${scenarioNo}`);
+      }
+
+      count += 1;
 
       await expection();
     },
@@ -91,7 +100,7 @@ describe('integration test: "history-service"', () => {
   test('Scenario 1: The user loads a page without consumer-specific pathnames', async () => {
     await page.goto(url);
 
-    retry(async () => expect(await getRootPath()).toBe('/'));
+    await retry(1, async () => expect(await getRootPath()).toBe('/'));
 
     expect(await HistoryConsumerUI.a.getPathname()).toBe('/');
     expect(await HistoryConsumerUI.b.getPathname()).toBe('/');
@@ -102,7 +111,7 @@ describe('integration test: "history-service"', () => {
       `${url}?test:history-consumer:a=/a1&test:history-consumer:b=/b1`
     );
 
-    retry(async () =>
+    await retry(2, async () =>
       expect(await getRootPath()).toBe(
         '/?test:history-consumer:a=/a1&test:history-consumer:b=/b1'
       )
@@ -119,7 +128,7 @@ describe('integration test: "history-service"', () => {
 
     await HistoryConsumerUI.a.push('/a1');
 
-    retry(async () =>
+    await retry(3, async () =>
       expect(await getRootPath()).toBe('/?test:history-consumer:a=/a1')
     );
 
@@ -132,7 +141,7 @@ describe('integration test: "history-service"', () => {
     await HistoryConsumerUI.a.push('/a1');
     await page.goBack();
 
-    retry(async () => expect(await getRootPath()).toBe('/'));
+    await retry(4, async () => expect(await getRootPath()).toBe('/'));
 
     expect(await HistoryConsumerUI.a.getPathname()).toBe('/');
     expect(await HistoryConsumerUI.b.getPathname()).toBe('/');
@@ -147,7 +156,7 @@ describe('integration test: "history-service"', () => {
     await page.goBack();
     await page.goForward();
 
-    retry(async () =>
+    await retry(5, async () =>
       expect(await getRootPath()).toBe('/?test:history-consumer:a=/a1')
     );
 
@@ -163,7 +172,7 @@ describe('integration test: "history-service"', () => {
     await HistoryConsumerUI.a.push('/a1');
     await HistoryConsumerUI.b.push('/b1');
 
-    retry(async () =>
+    await retry(6, async () =>
       expect(await getRootPath()).toBe(
         '/?test:history-consumer:a=/a1&test:history-consumer:b=/b1'
       )
@@ -182,7 +191,7 @@ describe('integration test: "history-service"', () => {
     await HistoryConsumerUI.b.replace('/b1');
     await page.goBack();
 
-    retry(async () =>
+    await retry(7, async () =>
       expect(await getRootPath()).toBe(
         '/?test:history-consumer:a=/&test:history-consumer:b=/'
       )
@@ -203,7 +212,7 @@ describe('integration test: "history-service"', () => {
     await page.goBack();
     await HistoryConsumerUI.b.push('/b1');
 
-    retry(async () =>
+    await retry(8, async () =>
       expect(await getRootPath()).toBe('/?test:history-consumer:b=/b1')
     );
 
@@ -218,7 +227,7 @@ describe('integration test: "history-service"', () => {
     await page.reload();
     await page.goBack();
 
-    retry(async () =>
+    await retry(9, async () =>
       expect(await getRootPath()).toBe('/?test:history-consumer:a=/a1')
     );
 

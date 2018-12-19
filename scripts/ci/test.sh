@@ -8,5 +8,5 @@ yarn commitlint-travis
 
 yarn compile
 yarn lint
-yarn test --no-cache --maxWorkers 2
+yarn test --no-cache --maxWorkers 2 --no-verbose
 yarn verify
