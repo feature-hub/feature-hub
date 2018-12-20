@@ -726,11 +726,10 @@ The main purpose of this monorepo is to further develop the Feature Hub. It is
 developed in the open on GitHub, and we are grateful to the community for
 contributing bugfixes and improvements.
 
-To get started, install the dependencies, compile the sources, and run the
-tests:
+To get started, install the dependencies and run the tests:
 
 ```sh
-yarn && yarn compile && yarn test
+yarn && yarn test
 ```
 
 ### Code of Conduct
@@ -741,16 +740,16 @@ project you agree to abide by its terms.
 
 ### Development Scripts
 
-- `yarn compile`: Compiles all sources.
-- `yarn generate-docs`: Generates the API documentation.
-- `yarn lint`: Lints all sources.
+- `yarn watch:test`: Watches all tests.
+- `yarn watch:demo <demo-name>`: Watches the given demo.
+- `yarn watch:compile`: Watches all sources.
 - `yarn test`: Executes all tests.
+- `yarn compile`: Compiles all sources.
+- `yarn lint`: Lints all sources.
 - `yarn verify`: Verifies non-functional requirements (used on CI).
 - `yarn format`: Formats all files.
 - `yarn sort-package-jsons`: Sorts all `package.json` files.
-- `yarn watch:compile`: Watches all sources.
-- `yarn watch:demo <demo-name>`: Watches the given demo.
-- `yarn watch:test`: Watches all tests.
+- `yarn generate-docs`: Generates the API documentation.
 
 ### Publishing a New Release
 
