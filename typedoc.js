@@ -9,5 +9,5 @@ module.exports = {
   excludePrivate: true,
   theme: 'minimal',
   gitRevision: 'master',
-  readme: 'none'
+  readme: 'typedoc.md'
 };
