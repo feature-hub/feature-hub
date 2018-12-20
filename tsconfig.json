@@ -19,7 +19,9 @@
     "baseUrl": ".",
     "paths": {
       "@feature-hub/*": ["packages/*/src/index.ts"],
-      "@feature-hub/*/lib/node": ["packages/*/src/node.ts"]
+      "@feature-hub/module-loader/lib/node": [
+        "packages/module-loader/src/node.ts"
+      ]
     }
   }
 }
