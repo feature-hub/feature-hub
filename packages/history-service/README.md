@@ -44,8 +44,8 @@ npm install @feature-hub/history-service
 
 ## Motivation
 
-When multiple feature apps coexist on the same page, they shouldn't access the
-browser history API directly. Otherwise they would potentially overwrite their
+When multiple Feature Apps coexist on the same page, they shouldn't access the
+browser history API directly. Otherwise, they would potentially overwrite their
 respective history and location changes. This service provides an abstraction of
 the [history package](https://www.npmjs.com/package/history) to enable save
 access to the history for multiple consumers.
