@@ -14,7 +14,7 @@ jest.mock('node-fetch', () => () =>
 
 import {loadCommonJsModule} from '../node';
 
-describe('loadCommonJsModule', () => {
+describe('loadCommonJsModule (on Node.js)', () => {
   it('when a module is fetched successfully', async () => {
     const url = 'http://example.com/test.js';
 

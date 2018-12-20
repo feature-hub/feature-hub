@@ -1,5 +1,5 @@
 import * as history from 'history';
-import {RootLocationTransformer} from '../root-location-transformer';
+import {RootLocationTransformer} from '../create-root-location-transformer';
 
 export const testRootLocationTransformer: RootLocationTransformer = {
   getConsumerPathFromRootLocation: (rootLocation, consumerId) => {

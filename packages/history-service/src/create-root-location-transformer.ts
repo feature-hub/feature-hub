@@ -3,7 +3,7 @@ import {
   addConsumerPath,
   getConsumerPath,
   removeConsumerPath
-} from './consumer-paths';
+} from './internal/consumer-paths';
 
 export interface RootLocationOptions {
   readonly consumerPathsQueryParamName: string;
@@ -21,62 +21,6 @@ export interface RootLocationTransformer {
     rootLocation: history.Location,
     consumerId: string
   ): history.LocationDescriptorObject;
-}
-
-export function createRootLocationTransformer(
-  options: RootLocationOptions
-): RootLocationTransformer {
-  return {
-    getConsumerPathFromRootLocation: (
-      rootLocation: history.Location,
-      consumerId: string
-    ): string | undefined => {
-      const {consumerPathsQueryParamName, primaryConsumerId} = options;
-      const isPrimaryConsumer = consumerId === primaryConsumerId;
-      const searchParams = createSearchParams(rootLocation);
-
-      if (isPrimaryConsumer) {
-        searchParams.delete(consumerPathsQueryParamName);
-
-        const pathname = rootLocation.pathname;
-        const search = searchParams.toString();
-
-        return history.createPath({pathname, search});
-      } else {
-        const consumerPaths = searchParams.get(consumerPathsQueryParamName);
-
-        if (!consumerPaths) {
-          return undefined;
-        }
-
-        return getConsumerPath(consumerPaths, consumerId);
-      }
-    },
-
-    createRootLocation: (
-      consumerLocation: history.Location | undefined,
-      rootLocation: history.Location,
-      consumerId: string
-    ): history.LocationDescriptorObject => {
-      const {consumerPathsQueryParamName, primaryConsumerId} = options;
-      const isPrimaryConsumer = consumerId === primaryConsumerId;
-
-      if (isPrimaryConsumer) {
-        return createRootLocationForPrimaryConsumer(
-          rootLocation,
-          consumerLocation,
-          consumerPathsQueryParamName
-        );
-      } else {
-        return createRootLocationForOtherConsumer(
-          rootLocation,
-          consumerLocation,
-          consumerId,
-          consumerPathsQueryParamName
-        );
-      }
-    }
-  };
 }
 
 function createRootLocationForPrimaryConsumer(
@@ -146,4 +90,60 @@ function createSearchParams(
   location: history.Location | undefined
 ): URLSearchParams {
   return new URLSearchParams(location && location.search);
+}
+
+export function createRootLocationTransformer(
+  options: RootLocationOptions
+): RootLocationTransformer {
+  return {
+    getConsumerPathFromRootLocation: (
+      rootLocation: history.Location,
+      consumerId: string
+    ): string | undefined => {
+      const {consumerPathsQueryParamName, primaryConsumerId} = options;
+      const isPrimaryConsumer = consumerId === primaryConsumerId;
+      const searchParams = createSearchParams(rootLocation);
+
+      if (isPrimaryConsumer) {
+        searchParams.delete(consumerPathsQueryParamName);
+
+        const pathname = rootLocation.pathname;
+        const search = searchParams.toString();
+
+        return history.createPath({pathname, search});
+      } else {
+        const consumerPaths = searchParams.get(consumerPathsQueryParamName);
+
+        if (!consumerPaths) {
+          return undefined;
+        }
+
+        return getConsumerPath(consumerPaths, consumerId);
+      }
+    },
+
+    createRootLocation: (
+      consumerLocation: history.Location | undefined,
+      rootLocation: history.Location,
+      consumerId: string
+    ): history.LocationDescriptorObject => {
+      const {consumerPathsQueryParamName, primaryConsumerId} = options;
+      const isPrimaryConsumer = consumerId === primaryConsumerId;
+
+      if (isPrimaryConsumer) {
+        return createRootLocationForPrimaryConsumer(
+          rootLocation,
+          consumerLocation,
+          consumerPathsQueryParamName
+        );
+      } else {
+        return createRootLocationForOtherConsumer(
+          rootLocation,
+          consumerLocation,
+          consumerId,
+          consumerPathsQueryParamName
+        );
+      }
+    }
+  };
 }

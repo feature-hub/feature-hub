@@ -6,14 +6,14 @@ import {
   FeatureServiceEnvironment
 } from '@feature-hub/core';
 import {ServerRendererV1, ServerRequest} from '@feature-hub/server-renderer';
+import {History} from 'history';
 import {
-  History,
   HistoryServiceV1,
+  RootLocationTransformer,
   SharedHistoryService,
   defineHistoryService
 } from '..';
-import {RootLocationTransformer} from '../root-location-transformer';
-import {testRootLocationTransformer} from './test-root-location-transformer';
+import {testRootLocationTransformer} from '../internal/test-root-location-transformer';
 
 const simulateOnPopState = (state: unknown, url: string) => {
   // We need to use pushState to change to the URL that should set by the popstate event.

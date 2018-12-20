@@ -1,8 +1,8 @@
 import {FeatureServiceBinder, FeatureServiceBinding} from '@feature-hub/core';
 import * as history from 'history';
-import {BrowserConsumerHistory} from './browser-consumer-history';
-import {HistoryMultiplexers} from './create-history-multiplexers';
-import {StaticConsumerHistory} from './static-consumer-history';
+import {BrowserConsumerHistory} from './internal/browser-consumer-history';
+import {HistoryMultiplexers} from './internal/create-history-multiplexers';
+import {StaticConsumerHistory} from './internal/static-consumer-history';
 
 export interface HistoryServiceV1 {
   staticRootLocation: history.Location;

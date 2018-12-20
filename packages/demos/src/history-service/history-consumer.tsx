@@ -6,7 +6,7 @@ import {
   InputGroup,
   Label
 } from '@blueprintjs/core';
-import {History} from '@feature-hub/history-service';
+import {History} from 'history';
 import * as React from 'react';
 import Media from 'react-media';
 
