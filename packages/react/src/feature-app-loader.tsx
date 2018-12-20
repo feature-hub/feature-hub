@@ -149,11 +149,15 @@ export class FeatureAppLoader extends React.PureComponent<
     const src = inBrowser ? browserSrc : nodeSrc;
 
     console.error(
-      `The feature app for the src ${JSON.stringify(
-        src
-      )} and the ID specifier ${JSON.stringify(
-        idSpecifier
-      )} could not be rendered.`,
+      idSpecifier
+        ? `The feature app for the src ${JSON.stringify(
+            src
+          )} and the ID specifier ${JSON.stringify(
+            idSpecifier
+          )} could not be rendered.`
+        : `The feature app for the src ${JSON.stringify(
+            src
+          )} could not be rendered.`,
       error
     );
   }
