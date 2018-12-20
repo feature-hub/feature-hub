@@ -287,9 +287,9 @@ Feature Services by the integrator.
 
 #### Using Externals
 
-If the integrator has provided externals (see above) to Feature Apps, they
-should define these externals in their build config. For example, defining
-`react` as external in a webpack config would look like this:
+If the integrator has [provided externals](#providing-externals) to Feature
+Apps, they should define these externals in their build config. For example,
+defining `react` as external in a webpack config would look like this:
 
 ```json
 {
