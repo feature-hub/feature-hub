@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.10.0](https://github.com/sinnerschrader/feature-hub/compare/v0.9.0...v0.10.0) (2018-12-20)
+
+
+### Features
+
+* **module-loader:** use standard package entry for node module loader ([#203](https://github.com/sinnerschrader/feature-hub/issues/203)) ([e380857](https://github.com/sinnerschrader/feature-hub/commit/e380857))
+* **react:** improve log message if ID specifier is missing ([#204](https://github.com/sinnerschrader/feature-hub/issues/204)) ([cc8be3d](https://github.com/sinnerschrader/feature-hub/commit/cc8be3d))
+
+
+
+
+
 # [0.9.0](https://github.com/sinnerschrader/feature-hub/compare/v0.8.0...v0.9.0) (2018-12-20)
 
 
