@@ -271,11 +271,7 @@ describe('FeatureAppLoader', () => {
     describe('when unmounted before loading has finished', () => {
       it('logs an error', async () => {
         const wrapper = shallow(
-          <FeatureAppLoader
-            manager={mockManager}
-            src="/test.js"
-            idSpecifier="testIdSpecifier"
-          />
+          <FeatureAppLoader manager={mockManager} src="/test.js" />
         );
 
         wrapper.unmount();
@@ -290,7 +286,7 @@ describe('FeatureAppLoader', () => {
 
         expect(spyConsoleError.mock.calls).toEqual([
           [
-            'The feature app for the src "/test.js" and the ID specifier "testIdSpecifier" could not be rendered.',
+            'The feature app for the src "/test.js" could not be rendered.',
             mockError
           ]
         ]);
