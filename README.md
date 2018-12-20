@@ -113,8 +113,9 @@ achieved by creating Feature Services:
 - Share browser APIs and resources not intended for shared use (e.g.
   [History][history-service-pkg], LocalStorage).
 - Share configuration across Feature Apps, but only maintain it once.
-- Provide a versioned API to allow backward compatibility and thus flexible and
-  decoupled deployments of different consumers.
+- Provide a [versioned API](#feature-service-instantiation--api-versioning) to
+  allow backward compatibility and thus flexible and decoupled deployments of
+  different consumers.
 
 ## Monorepo Packages
 
