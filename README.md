@@ -36,6 +36,7 @@ be viewed [here](https://github.com/sinnerschrader/feature-hub/milestones).**
       - [Feature App Dependencies](#feature-app-dependencies)
       - [Feature App Instantiation](#feature-app-instantiation)
       - [Registering Feature Services](#registering-feature-services)
+      - [Accessing the Browser History API](#accessing-the-browser-history-api)
       - [Using Externals](#using-externals)
     - [Writing a Feature Service](#writing-a-feature-service)
       - [Feature Service ID](#feature-service-id)
@@ -284,6 +285,13 @@ This allows teams to quickly get Feature Apps off the ground, without being
 dependent on the integrator. However, as soon as other teams need to use this
 Feature Service, it should be published and included in the global set of
 Feature Services by the integrator.
+
+#### Accessing the Browser History API
+
+When multiple Feature Apps coexist on the same page, they shouldn't access the
+browser history API directly. Otherwise, they would potentially overwrite their
+respective history and location changes. To enable a save access to the history
+for multiple consumers, the [History Service][history-service-pkg] can be used.
 
 #### Using Externals
 
