@@ -6,7 +6,7 @@ set -e
 
 yarn commitlint-travis
 
-yarn compile
-yarn lint
-yarn test --no-cache --maxWorkers 2 --no-verbose
 yarn verify
+yarn test --no-cache --maxWorkers 2 --no-verbose
+yarn lint
+yarn compile

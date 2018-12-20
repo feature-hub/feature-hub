@@ -6,17 +6,18 @@ import {Server} from 'http';
 import {AddressInfo} from 'net';
 import {Browser} from '../browser';
 import {startServer} from '../start-server';
+import renderMainHtml from './integrator.node';
 import webpackConfigs from './webpack-config';
 
 jest.setTimeout(60000);
 
-describe('integration test: "amd module loader"', () => {
+describe('integration test: "commonjs module loader"', () => {
   const browser = new Browser(5000);
 
   let server: Server;
 
   beforeAll(async () => {
-    server = await startServer(webpackConfigs, undefined);
+    server = await startServer(webpackConfigs, renderMainHtml);
 
     const {port} = server.address() as AddressInfo;
 
@@ -25,7 +26,7 @@ describe('integration test: "amd module loader"', () => {
 
   afterAll(done => server.close(done));
 
-  it('loads the feature app with react as external', async () => {
+  it('loads the server-side rendered feature app HTML', async () => {
     await expect(page).toMatch('Hello, World!');
   });
 });

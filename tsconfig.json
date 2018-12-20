@@ -19,7 +19,7 @@
     "baseUrl": ".",
     "paths": {
       "@feature-hub/*": ["packages/*/src/index.ts"],
-      "@feature-hub/*/node": ["packages/*/src/node.ts"]
+      "@feature-hub/*/lib/node": ["packages/*/src/node.ts"]
     }
   }
 }

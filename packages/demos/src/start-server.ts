@@ -4,19 +4,27 @@ import {Server} from 'http';
 import webpack from 'webpack';
 import devMiddleware from 'webpack-dev-middleware';
 
+export type MainHtmlRenderer = (port: number) => Promise<string>;
+
 export async function startServer(
-  webpackConfigs: webpack.Configuration[]
+  webpackConfigs: webpack.Configuration[],
+  renderMainHtml: MainHtmlRenderer | undefined
 ): Promise<Server> {
+  // tslint:disable-next-line:await-promise
+  const port = await getPort();
+
   const app = express();
 
-  app.get('/', (_req, res) => {
+  app.get('/', async (_req, res) => {
+    const mainHtml = renderMainHtml ? await renderMainHtml(port) : '';
+
     res.send(
       `<html>
         <head>
           <meta name="viewport" content="width=device-width, initial-scale=1" />
         </head>
         <body>
-          <main></main>
+          <main>${mainHtml}</main>
           <script src="integrator.js"></script>
         </body>
       </html>`
@@ -24,9 +32,6 @@ export async function startServer(
   });
 
   app.use(devMiddleware(webpack(webpackConfigs), {publicPath: '/'}));
-
-  // tslint:disable-next-line:await-promise
-  const port = await getPort();
 
   return new Promise<Server>(resolve => {
     const server = app.listen(port, () => resolve(server));
