@@ -17,7 +17,8 @@ module.exports = {
   moduleFileExtensions: ['js', 'json', 'ts', 'tsx'],
   moduleNameMapper: {
     '^@feature-hub/([^/]+)$': '<rootDir>/packages/$1/src/index.ts',
-    '^@feature-hub/([^/]+)/node$': '<rootDir>/packages/$1/src/node.ts'
+    '^@feature-hub/module-loader/lib/node$':
+      '<rootDir>/packages/module-loader/src/node.ts'
   },
   modulePathIgnorePatterns: ['/lib'],
   setupTestFrameworkScriptFile: '<rootDir>/scripts/setup-test-framework.js',

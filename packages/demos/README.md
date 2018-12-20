@@ -20,6 +20,10 @@ yarn watch:demo amd-module-loader
 ```
 
 ```sh
+yarn watch:demo commonjs-module-loader
+```
+
+```sh
 yarn watch:demo history-service
 ```
 
