@@ -8,5 +8,6 @@ module.exports = {
   excludeNotExported: true,
   excludePrivate: true,
   theme: 'minimal',
-  gitRevision: 'master'
+  gitRevision: 'master',
+  readme: 'none'
 };
