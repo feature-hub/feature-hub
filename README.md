@@ -40,7 +40,7 @@ be viewed [here](https://github.com/sinnerschrader/feature-hub/milestones).**
     - [Writing a Feature Service](#writing-a-feature-service)
       - [Feature Service ID](#feature-service-id)
       - [Feature Service Dependencies](#feature-service-dependencies)
-      - [Feature Service Instantiation & Programmatic Versioning](#feature-service-instantiation--programmatic-versioning)
+      - [Feature Service Instantiation & API Versioning](#feature-service-instantiation--api-versioning)
       - [Binding Feature Services](#binding-feature-services)
     - [Integrating the Feature Hub](#integrating-the-feature-hub)
       - [React Feature App Loader](#react-feature-app-loader)
@@ -113,6 +113,8 @@ achieved by creating Feature Services:
 - Share browser APIs and resources not intended for shared use (e.g.
   [History][history-service-pkg], LocalStorage).
 - Share configuration across Feature Apps, but only maintain it once.
+- Provide a versioned API to allow backward compatibility and thus flexible and
+  decoupled deployments of different consumers.
 
 ## Monorepo Packages
 
@@ -337,7 +339,7 @@ const dependencies = {
 };
 ```
 
-#### Feature Service Instantiation & Programmatic Versioning
+#### Feature Service Instantiation & API Versioning
 
 The `create` method of a Feature Service definition is called exactly once by
 the `FeatureServiceRegistry`. It should store, and possibly initialize, any
