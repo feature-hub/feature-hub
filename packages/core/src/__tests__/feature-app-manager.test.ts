@@ -67,7 +67,7 @@ describe('FeatureAppManager', () => {
 
       expect(spyConsoleInfo.mock.calls).toEqual([]);
 
-      await asyncFeatureAppDefinition.promise;
+      await asyncFeatureAppDefinition;
 
       expect(spyConsoleInfo.mock.calls).toEqual([
         [
@@ -84,7 +84,7 @@ describe('FeatureAppManager', () => {
       expect(asyncFeatureAppDefinition.value).toBeUndefined();
       expect(asyncFeatureAppDefinition.error).toBeUndefined();
 
-      const featureAppDefinition = await asyncFeatureAppDefinition.promise;
+      const featureAppDefinition = await asyncFeatureAppDefinition;
 
       expect(asyncFeatureAppDefinition.value).toBe(featureAppDefinition);
       expect(asyncFeatureAppDefinition.error).toBeUndefined();
@@ -112,7 +112,7 @@ describe('FeatureAppManager', () => {
           );
 
           await expect(
-            manager.getAsyncFeatureAppDefinition('/example.js').promise
+            manager.getAsyncFeatureAppDefinition('/example.js')
           ).rejects.toEqual(expectedError);
 
           expect(
