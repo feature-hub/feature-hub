@@ -6,7 +6,12 @@ const fs = require('fs');
 const path = require('path');
 
 const filenames = glob
-  .sync(path.join(__dirname, '../docs/api/**/*.html'))
+  .sync(
+    path.join(
+      __dirname,
+      '../../packages/website/build/feature-hub/@feature-hub/**/*.html'
+    )
+  )
   .map(String);
 
 for (const filename of filenames) {

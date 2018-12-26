@@ -1,28 +1,24 @@
 # @feature-hub/react
 
-[![Package Version](https://img.shields.io/npm/v/@feature-hub/react.svg)](https://www.npmjs.com/package/@feature-hub/react)
+[![Package Version][package-badge]][package-npm]
 
 A Feature Hub integrator for React.
 
-**This package is part of the
-[Feature Hub](https://github.com/sinnerschrader/feature-hub) monorepo.**
-
-## Getting started
-
-Install `@feature-hub/react` as a dependency:
+## Installation
 
 ```sh
-# Install using Yarn
 yarn add @feature-hub/react
 ```
 
 ```sh
-# Install using npm
 npm install @feature-hub/react
 ```
 
 ---
 
 Copyright (c) 2018 SinnerSchrader Deutschland GmbH. Released under the terms of
-the
-[MIT License](https://github.com/sinnerschrader/feature-hub/blob/master/LICENSE).
+the [MIT License][license].
+
+[license]: https://github.com/sinnerschrader/feature-hub/blob/master/LICENSE
+[package-badge]: https://img.shields.io/npm/v/@feature-hub/react.svg
+[package-npm]: https://www.npmjs.com/package/@feature-hub/react

@@ -3,12 +3,13 @@
   "search.exclude": {
     "**/.cache": true,
     "**/coverage": true,
-    "**/docs": true,
     "**/lerna-debug.log": true,
     "**/lib": true,
     "**/node_modules": true,
     "**/npm-debug.log": true,
     "**/package-lock.json": true,
+    "**/packages/website/build": true,
+    "**/packages/website/i18n": true,
     "**/yarn-error.log": true,
     "**/yarn.lock": true
   },
