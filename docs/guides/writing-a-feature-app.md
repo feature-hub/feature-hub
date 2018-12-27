@@ -144,6 +144,42 @@ dependent on the integrator. However, as soon as other teams need to use this
 Feature Service, it should be published and included in the global set of
 Feature Services by the integrator.
 
+## Dynamic Code Splitting With Webpack
+
+Feature Apps can use webpack's [dynamic code splitting][dynamic-imports]
+technique using the `import()` syntax.
+
+To make this work for multiple Feature Apps living together on the Feature Hub
+two settings need to be made:
+
+1. Set a unique value for [`output.jsonpFunction`][output-jsonpfunction], e.g.
+   `'webpackJsonpMyFeatureApp'`.
+
+1. Set [`output.publicPath`][output-publicpath] to the public URL (relative or
+   absolute) of the output directory, i.e. where all the Feature App chunks are
+   hosted.
+
+   Since this is not always known at compile time, it can be left blank and set
+   dynamically at runtime in the Feature App's entry file using the global
+   variable `__webpack_public_path__`:
+
+   ```js
+   export default {
+     id: 'acme:my-feature-app',
+
+     create(env) {
+       __webpack_public_path__ = '/path/to/my-feature-app';
+
+       // ...
+     }
+   };
+   ```
+
+[dynamic-imports]: https://webpack.js.org/guides/code-splitting/#dynamic-imports
+[output-jsonpfunction]:
+  https://webpack.js.org/configuration/output/#output-jsonpfunction
+[output-publicpath]:
+  https://webpack.js.org/configuration/output/#output-publicpath
 [providing-config-objects]:
   /docs/guides/integrating-the-feature-hub#providing-config-objects
 [providing-consumer-specific-state]:

@@ -75,7 +75,7 @@ describe('integration test: "history-service"', () => {
 
     url = `http://localhost:${port}/`;
 
-    // Trigger initial Webpack DEV build
+    // Trigger initial webpack DEV build
     await browser.goto(url, 60000);
   });
 
