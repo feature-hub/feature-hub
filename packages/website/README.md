@@ -1,6 +1,8 @@
 # @feature-hub/website
 
-The website of the Feature Hub, built with [Docusaurus][docusaurus].
+[![Website][website-badge]][website]
+
+The [website][website] of the Feature Hub, built with [Docusaurus][docusaurus].
 
 ---
 
@@ -9,3 +11,6 @@ the [MIT License][license].
 
 [docusaurus]: https://docusaurus.io/en/
 [license]: https://github.com/sinnerschrader/feature-hub/blob/master/LICENSE
+[website]: https://feature-hub.netlify.com/
+[website-badge]:
+  https://img.shields.io/badge/website-Feature%20Hub-%234502da.svg

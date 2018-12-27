@@ -1,6 +1,7 @@
 # Feature Hub
 
 [![Build Status][travis-ci-badge]][travis-ci]
+[![Website][website-badge]][website]
 
 The Feature Hub is an opinionated JavaScript implementation of the micro
 frontends approach to creating scalable web applications with multiple teams and
@@ -65,3 +66,6 @@ the [MIT License][license].
 [travis-ci]: https://travis-ci.com/sinnerschrader/feature-hub
 [travis-ci-badge]:
   https://travis-ci.com/sinnerschrader/feature-hub.svg?branch=master
+[website]: https://feature-hub.netlify.com/
+[website-badge]:
+  https://img.shields.io/badge/website-Feature%20Hub-%234502da.svg

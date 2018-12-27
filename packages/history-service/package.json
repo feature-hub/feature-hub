@@ -2,6 +2,7 @@
   "name": "@feature-hub/history-service",
   "version": "0.10.0",
   "description": "A history facade guaranteeing safe access for multiple consumers.",
+  "homepage": "https://feature-hub.netlify.com/",
   "bugs": {
     "url": "https://github.com/sinnerschrader/feature-hub/issues"
   },

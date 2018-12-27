@@ -1,6 +1,7 @@
 # @feature-hub/server-renderer
 
 [![Package Version][package-badge]][package-npm]
+[![Website][website-badge]][website]
 
 A Feature Service to manage server-side rendering.
 
@@ -11,9 +12,13 @@ request.
 
 ## Installation
 
+### Using Yarn
+
 ```sh
 yarn add @feature-hub/server-renderer
 ```
+
+### Using NPM
 
 ```sh
 npm install @feature-hub/server-renderer
@@ -28,3 +33,6 @@ the [MIT License][license].
 [license]: https://github.com/sinnerschrader/feature-hub/blob/master/LICENSE
 [package-badge]: https://img.shields.io/npm/v/@feature-hub/server-renderer.svg
 [package-npm]: https://www.npmjs.com/package/@feature-hub/server-renderer
+[website]: https://feature-hub.netlify.com/
+[website-badge]:
+  https://img.shields.io/badge/website-Feature%20Hub-%234502da.svg
