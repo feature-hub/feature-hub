@@ -8,19 +8,10 @@ const siteConfig = {
   projectName: 'feature-hub',
   organizationName: 'sinnerschrader',
   headerLinks: [
-    {
-      doc: 'getting-started/introduction',
-      label: 'Docs'
-    },
-    {
-      href: 'https://github.com/sinnerschrader/feature-hub',
-      label: 'GitHub'
-    }
+    {label: 'Docs', doc: 'getting-started/introduction'},
+    {label: 'GitHub', href: 'https://github.com/sinnerschrader/feature-hub'}
   ],
-  colors: {
-    primaryColor: '#4502da',
-    secondaryColor: '#16181e'
-  },
+  colors: {primaryColor: '#4502da', secondaryColor: '#16181e'},
   copyright: `Copyright (c) ${new Date().getFullYear()} SinnerSchrader Deutschland GmbH`,
   highlight: {theme: 'default'},
   onPageNav: 'separate',
