@@ -69,7 +69,7 @@ const HomeSplash = ({config}) => (
         <Button
           href={createDocUrl('getting-started/introduction.html', config)}
         >
-          Docs
+          Get Started
         </Button>
         <Button href="https://github.com/sinnerschrader/feature-hub">
           GitHub

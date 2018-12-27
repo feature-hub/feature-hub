@@ -8,7 +8,6 @@ const siteConfig = {
   projectName: 'feature-hub',
   organizationName: 'sinnerschrader',
   headerLinks: [
-    {label: 'Docs', doc: 'getting-started/introduction'},
     {label: 'GitHub', href: 'https://github.com/sinnerschrader/feature-hub'}
   ],
   colors: {primaryColor: '#4502da', secondaryColor: '#16181e'},
