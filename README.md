@@ -6,9 +6,9 @@ The Feature Hub is an opinionated JavaScript implementation of the micro
 frontends approach to creating scalable web applications with multiple teams and
 different technologies.
 
-**This software is in active development and is subject to potentially breaking
-changes. It is not yet used in production. The currently planned milestones can
-be viewed [here][milestones].**
+**Note:** This software is in active development and is subject to potentially
+breaking changes. It is not yet used in production. The currently planned
+milestones can be viewed [here][milestones].
 
 ## Contributing to the Feature Hub
 
