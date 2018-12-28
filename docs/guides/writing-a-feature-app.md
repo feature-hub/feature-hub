@@ -4,11 +4,11 @@ title: Writing a Feature App
 sidebar_label: Writing a Feature App
 ---
 
-The default export of a Feature App module must be a definition object. It
-consists of an `id`, an optional `dependencies` object, and the `create` method:
+A Feature App is described by a definition object. Normally it consists of an
+`id`, an optional `dependencies` object, and a `create` method:
 
 ```js
-export default {
+const myFeatureAppDefinition = {
   id: 'acme:my-feature-app',
 
   dependencies: {
@@ -21,10 +21,17 @@ export default {
 };
 ```
 
-## Naming a Feature App
+If a Feature App module is to be loaded asynchronously with the
+`FeatureAppManager`, it must provide a definition object as its default export:
 
-A Feature App definition must declare an `id`. It is recommended to use
-namespaces for the Feature App ID to avoid naming conflicts, e.g.:
+```js
+export default myFeatureAppDefinition;
+```
+
+## `id`
+
+It is recommended to use namespaces for the Feature App ID to avoid naming
+conflicts, e.g.:
 
 ```js
 const id = 'acme:my-feature-app';
@@ -39,10 +46,10 @@ integrator must set a unique ID specifier for each Feature App with the same ID.
 The `FeatureServiceRegistry` then uses the ID together with the ID specifier to
 create a unique consumer ID.
 
-## Depending on Feature Services
+## `dependencies`
 
-In `dependencies`, required Feature Services are declared with their ID and a
-[semver][semver] version string:
+Required Feature Services are declared with their ID and a [semver][semver]
+version string:
 
 ```js
 const dependencies = {
@@ -50,35 +57,70 @@ const dependencies = {
 };
 ```
 
-## Instantiating a Feature App
+## `create`
 
 The `create` method takes the single argument `env`, which has the following
 properties:
 
-1.  `config`: A Feature App config object that is
-    [provided][providing-config-objects] by the integrator.
-1.  `featureServices`: An object of required Feature Services that are
-    [semver-compatible][semver] with the declared dependencies in the Feature
-    App definition.
-1.  `idSpecifier`: An optional ID specifier that distinguishes the Feature App
-    instance from other Feature App instances with the same ID.
+1. `config` — A Feature App config object that is
+   [provided][providing-config-objects] by the integrator:
 
-Assuming the `@feature-hub/react` package is used, a Feature App can be either a
-"React Feature App" or a "DOM Feature App".
+   ```js
+   const myFeatureAppDefinition = {
+     id: 'acme:my-feature-app',
 
-### Rendering a React Feature App
+     create(env) {
+       const {baz} = env.config; // baz is 'qux'
+
+       // ...
+     }
+   };
+   ```
+
+1. `featureServices` — An object of required Feature Services that are
+   [semver-compatible][semver] with the declared dependencies in the Feature App
+   definition:
+
+   ```js
+   const myFeatureAppDefinition = {
+     id: 'acme:my-feature-app',
+
+     dependencies: {
+       'acme:some-feature-service': '^2.0'
+     },
+
+     create(env) {
+       const someFeatureService =
+         env.featureServices['acme:some-feature-service'];
+
+       someFeatureService.foo(42);
+
+       // ...
+     }
+   };
+   ```
+
+1. `idSpecifier` — An optional ID specifier that distinguishes the Feature App
+   instance from other Feature App instances with the same ID.
+
+The return value of the `create` method can vary depending on the integration
+solution used. Assuming the `@feature-hub/react` package is used, a Feature App
+can be either a **React Feature App** or a **DOM Feature App**.
+
+### A React Feature App
 
 A React Feature App definition's `create` method returns a Feature App instance
 with a `render` method that itself returns a `ReactNode`:
 
 ```js
-export default {
-  id,
-  dependencies,
+const myFeatureAppDefinition = {
+  id: 'acme:my-feature-app',
 
   create(env) {
     return {
-      render: () => <div>Foo</div>
+      render() {
+        return <div>Foo</div>;
+      }
     };
   }
 };
@@ -86,17 +128,16 @@ export default {
 
 **Note:** Since this element is directly rendered by React, the standard React
 lifecyle methods can be used (if `render` returns an instance of a React
-component class).
+`ComponentClass`).
 
-### Rendering a DOM Feature App
+### A DOM Feature App
 
 A DOM Feature App definition's `create` method returns a Feature App instance
 with an `attachTo` method that accepts a DOM container element:
 
 ```js
-export default {
-  id,
-  dependencies,
+const myFeatureAppDefinition = {
+  id: 'acme:my-feature-app',
 
   create(env) {
     return {
@@ -108,7 +149,10 @@ export default {
 };
 ```
 
-## Registering Own Feature Services
+This type of Feature App allows the use of other frontend technologies such as
+Vue.js or Angular, although React is used as an integration solution.
+
+## `ownFeatureServiceDefinitions`
 
 A Feature App can also register its own Feature Services by declaring
 `ownFeatureServiceDefinitions`, e.g.:
@@ -118,7 +162,7 @@ import {myFeatureServiceDefinition} from './my-feature-service';
 ```
 
 ```js
-export default {
+const myFeatureAppDefinition = {
   id: 'acme:my-feature-app',
 
   dependencies: {
@@ -130,18 +174,14 @@ export default {
   create(env) {
     const myFeatureService = env.featureServices['acme:my-feature-service'];
 
-    myFeatureService.init(42);
-
-    return {
-      render: () => <div>{myFeatureService.getSomeSharedState()}</div>
-    };
+    // ...
   }
 };
 ```
 
-This allows teams to quickly get Feature Apps off the ground, without being
-dependent on the integrator. However, as soon as other teams need to use this
-Feature Service, it should be published and included in the global set of
+This mechanism allows teams to quickly get Feature Apps off the ground, without
+being dependent on the integrator. However, as soon as other teams need to use
+this Feature Service, it should be published and included in the global set of
 Feature Services by the integrator.
 
 ## Dynamic Code Splitting With Webpack
@@ -164,7 +204,7 @@ two settings need to be made:
    variable `__webpack_public_path__`:
 
    ```js
-   export default {
+   const myFeatureAppDefinition = {
      id: 'acme:my-feature-app',
 
      create(env) {
