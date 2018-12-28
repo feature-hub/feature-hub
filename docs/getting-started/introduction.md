@@ -35,7 +35,7 @@ creating Feature Services:
 
 - Share state across Feature Apps to ensure a consistent user experience.
 - Share browser APIs and resources not intended for shared use (e.g. History,
-  LocalStorage).
+  Local Storage).
 - Share configuration across Feature Apps, but only maintain it once.
 
 Furthermore, Feature Services provide a [versioned
@@ -44,7 +44,7 @@ flexible and decoupled deployments of different consumers.
 
 ## Integrator, Provider, and Consumer
 
-There are three different roles in a Feature Hub environment:
+There are three different roles in a Feature Hub integration environment:
 
 1.  The **integrator** initializes the Feature Hub, registers Feature Services,
     and composes Feature Apps.

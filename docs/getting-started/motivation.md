@@ -15,12 +15,11 @@ The Feature Hub was designed with the following specific requirements in mind:
 
 - Multiple teams with different technologies and knowledge should be able to
   own, develop, and deploy composable features independently.
-- Multiple micro frontends need a way to safely interact with singleton browser
-  APIs like the URL/history or localStorage.
+- Micro frontends need a way to share browser APIs and resources not intended
+  for shared use (e.g. History, Local Storage).
 - Micro frontends must be able to share state to facilitate a consistent UX.
-  - Examples for features needing shared state are: a manager for ensuring only
-    one modal is open at a time, or multiple micro frontends that display
-    information about the same product selected in one of the micro frontends.
+- It should be possible to compose micro frontends without deployment of the
+  integration environment.
 - For SEO purposes, and to operate existing fat client frontend apps which need
   to fetch great amounts of data on boot, server-side rendering must be
   supported.
@@ -33,7 +32,5 @@ The Feature Hub was designed with the following specific requirements in mind:
 - Micro frontends that are incompatible with the integration environment should
   fail early, and not just when the user interacts with the specific
   incompatible feature.
-- It should be possible to compose micro frontends without deployment of the
-  integration environment.
 
 [sinnerschrader]: https://sinnerschrader.com
