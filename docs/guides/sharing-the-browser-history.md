@@ -216,7 +216,7 @@ yarn watch:demo history-service
 
 ## Caveats
 
-### Replace & Pop
+### Replace and Pop
 
 Since multiple consumers can push and replace location changes at any time onto
 the browser history, special attention must be given when **replacing** consumer
@@ -262,7 +262,7 @@ and B):
 **Note:** The alternating background colors of the table rows don't have any
 meaning.
 
-### Push, Push & Pop
+### Push, Push, and Pop
 
 When a History Service consumer pushes the same location multiple times in a row
 and the user subsequently navigates back, no pop event is emitted for the
