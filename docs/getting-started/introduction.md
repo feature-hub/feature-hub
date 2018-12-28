@@ -38,9 +38,9 @@ creating Feature Services:
   Local Storage).
 - Share configuration across Feature Apps, but only maintain it once.
 
-Furthermore, Feature Services provide a [versioned
-API][providing-a-versioned-api] to allow backward compatibility and thus
-flexible and decoupled deployments of different consumers.
+Furthermore, Feature Services provide a [versioned API][versioned-api] to allow
+backward compatibility and thus flexible and decoupled deployments of different
+consumers.
 
 ## Integrator, Provider, and Consumer
 
@@ -54,6 +54,5 @@ There are three different roles in a Feature Hub integration environment:
 
 [our-requirements-for-micro-frontends]:
   /docs/getting-started/motivation#our-requirements-for-micro-frontends
-[providing-a-versioned-api]:
-  /docs/guides/writing-a-feature-service#providing-a-versioned-api
 [thoughtworks]: https://www.thoughtworks.com/de/radar/techniques/micro-frontends
+[versioned-api]: /docs/guides/writing-a-feature-service#versioned-api
