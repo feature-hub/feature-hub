@@ -8,18 +8,36 @@ When multiple Feature Apps coexist on the same page, they shouldn't access the
 [browser history API][browser-history-api] directly. Otherwise, they would
 potentially overwrite their respective history and location changes. To enable a
 save access to the history for multiple consumers, the
-`@feature-hub/history-service` can be used.
+`@feature-hub/history-service` package can be used.
 
-## Using the History Service
+## Functional Behaviour
 
-The History Service combines multiple consumer histories (and their locations)
-into a single one. It does this by merging all registered consumer locations
-into one, and persisting this combined root location on the history stack. As
-long as the consumer performs all history and location interactions through the
-history it obtained from the History Service, the existence of the facade and
-other consumers isn't noticeable for the consumer. For example, the consumer
-receives history change events only for location changes that affect its own
-history.
+The **History Service** combines multiple consumer histories (and their
+locations) into a single one. It does this by merging all registered consumer
+locations into one, and persisting this combined root location on the history
+stack. As long as the consumer performs all history and location interactions
+through the history it obtained from the History Service, the existence of the
+facade and other consumers isn't noticeable for the consumer. For example, the
+consumer receives history change events only for location changes that affect
+its own history.
+
+### Root Location Transformer
+
+How the root location is build from the consumer locations, is a problem that
+can not be solved generally, since it is dependant on the usecase. This is why
+the integrator defines the service with a so-called **root location
+transformer**. The root location transformer provides functions for merging
+consumer locations into a root location, and for extracting a consumer path from
+the root location.
+
+For a quick out-of-the-box experience, this package also provides a root
+location transformer (via the `createRootLocationTransformer` method) ready for
+use. This included root location transformer has the concept of a primary
+consumer. Only the primary's location (pathname and query) will get inserted
+directly into the root location. All other consumer locations are encoded into a
+JSON string which will be assigned to a single configurable query parameter.
+
+## Usage
 
 ### As a Consumer
 
@@ -27,8 +45,10 @@ In the browser:
 
 ```js
 import {Router} from 'react-router';
+```
 
-export default {
+```js
+const myFeatureAppDefinition = {
   id: 'acme:my-feature-app',
 
   dependencies: {
@@ -53,9 +73,7 @@ export default {
 On the server:
 
 ```js
-import {Router} from 'react-router';
-
-export default {
+const myFeatureAppDefinition = {
   id: 'acme:my-feature-app',
 
   dependencies: {
@@ -79,24 +97,24 @@ export default {
 
 For both the browser and the static history, the service is API-compatible with
 the history package. Note, however, that the `go`, `goBack`, `goForward` and
-`block` methods are not supported. For further information, reference [its
-documentation][history-npm].
+`block` methods are not supported. For further information, reference its
+[documentation][history-npm].
 
 ### As the Integrator
 
-The integrator defines the History Service with a [location
-transformer][building-the-root-location] and registers it at the Feature Service
-registry:
+The integrator defines the History Service using a root location transformer and
+registers it at the Feature Service registry. In the browser:
 
 ```js
-// In the browser:
 import {FeatureServiceRegistry} from '@feature-hub/core';
 import {
   defineHistoryService,
   createRootLocationTransformer
 } from '@feature-hub/history-service';
 import {defineServerRenderer} from '@feature-hub/server-renderer';
+```
 
+```js
 const registry = new FeatureServiceRegistry();
 
 const rootLocationTransformer = createRootLocationTransformer({
@@ -111,19 +129,11 @@ const featureServiceDefinitions = [
 registry.registerProviders(featureServiceDefinitions, 'integrator');
 ```
 
-On the server, the integrator defines the server renderer with a request. The
+On the server, the integrator defines the server renderer using the request. The
 History Service depends on the server renderer to obtain its request and use it
 for the initial history location:
 
 ```js
-// On the server:
-import {FeatureServiceRegistry} from '@feature-hub/core';
-import {
-  defineHistoryService,
-  createRootLocationTransformer
-} from '@feature-hub/history-service';
-import {defineServerRenderer} from '@feature-hub/server-renderer';
-
 const registry = new FeatureServiceRegistry();
 
 const rootLocationTransformer = createRootLocationTransformer({
@@ -142,33 +152,18 @@ const featureServiceDefinitions = [
 registry.registerProviders(featureServiceDefinitions, 'integrator');
 ```
 
-## Building the Root Location
+## Writing a Root Location Transformer
 
-How the root location is build from the consumer locations, is a problem that
-can not be solved generally, since it is dependant on the usecase. This is why
-the integrator defines the service with a so-called location transformer. The
-location transformer provides functions for merging consumer locations into a
-root location, and for extracting a consumer path from the root location.
-
-For a quick out-of-the-box experience, this package also provides a location
-transformer ready for use. The included location transformer has the concept of
-a primary consumer. Only the primary's location (pathname and query) will get
-inserted directly into the root location. All other consumer locations are
-encoded into a json string which will be assigned to a single configurable query
-parameter.
-
-### Writing a Custom Location Transformer
-
-A location transformer is an object exposing two functions,
+A root location transformer is an object exposing two functions,
 `getConsumerPathFromRootLocation` and `createRootLocation`. In the following
 example, each consumer location is encoded as its own query parameter, with the
 unique consumer ID used as parameter name:
 
 ```js
 import * as history from 'history';
+```
 
-// ...
-
+```js
 const rootLocationTransformer = {
   getConsumerPathFromRootLocation(rootLocation, consumerId) {
     const searchParams = new URLSearchParams(rootLocation.search);
@@ -194,11 +189,9 @@ const rootLocationTransformer = {
     };
   }
 };
-
-// ...
 ```
 
-## Running the Demo
+## Demo
 
 There is a demo that simulates the capabilities of the History Service with two
 Feature Apps. Go to the monorepo top-level directory and install all
@@ -269,6 +262,4 @@ and the user subsequently navigates back, no pop event is emitted for the
 unchanged location of this consumer.
 
 [browser-history-api]: https://developer.mozilla.org/en-US/docs/Web/API/History
-[building-the-root-location]:
-  /docs/guides/sharing-the-browser-history#building-the-root-location
 [history-npm]: https://www.npmjs.com/package/history
