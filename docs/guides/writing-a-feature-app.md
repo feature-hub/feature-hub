@@ -46,8 +46,8 @@ version string, e.g. `{'acme:some-feature-service': '^2.0'}`.
 The `create` method takes the single argument `env`, which has the following
 properties:
 
-1. `config` — A Feature App config object that is [provided][configuration] by
-   the integrator:
+1. `config` — A Feature App config object that is [provided][config-provision]
+   by the integrator:
 
    ```js
    const myFeatureAppDefinition = {
@@ -199,7 +199,7 @@ two settings need to be made:
    };
    ```
 
-[configuration]: /docs/guides/integrating-the-feature-hub#configuration
+[config-provision]: /docs/guides/integrating-the-feature-hub#config-provision
 [dynamic-imports]: https://webpack.js.org/guides/code-splitting/#dynamic-imports
 [feature-service-binder]:
   /docs/guides/writing-a-feature-service#feature-service-binder

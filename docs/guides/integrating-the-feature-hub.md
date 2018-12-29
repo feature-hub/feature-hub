@@ -159,7 +159,7 @@ integrator, e.g.:
 </section>
 ```
 
-## Configuration
+## Config Provision
 
 The integrator can provide config objects for Feature Services and Feature Apps,
 associated by their respective IDs, via the `FeatureServiceRegistry` and

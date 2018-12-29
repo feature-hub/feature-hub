@@ -41,8 +41,8 @@ the `FeatureServiceRegistry`. It should store, and possibly initialize, any
 shared state. The method takes the single argument `env`, which has the
 following properties:
 
-1. `config` — A Feature Service config object that is [provided][configuration]
-   by the integrator:
+1. `config` — A Feature Service config object that is
+   [provided][config-provision] by the integrator:
 
    ```js
    const myFeatureServiceDefinition = {
@@ -258,7 +258,7 @@ const myFeatureServiceDefinition = {
 };
 ```
 
-[configuration]: /docs/guides/integrating-the-feature-hub#configuration
+[config-provision]: /docs/guides/integrating-the-feature-hub#config-provision
 [feature-service-binder]:
   /docs/guides/writing-a-feature-service#feature-service-binder
 [semver]: https://semver.org
