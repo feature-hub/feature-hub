@@ -21,8 +21,6 @@ facade and other consumers isn't noticeable for the consumer. For example, the
 consumer receives history change events only for location changes that affect
 its own history.
 
-### Root Location Transformer
-
 How the root location is build from the consumer locations, is a problem that
 can not be solved generally, since it is dependant on the usecase. This is why
 the integrator defines the service with a so-called **root location
@@ -152,7 +150,7 @@ const featureServiceDefinitions = [
 registry.registerProviders(featureServiceDefinitions, 'integrator');
 ```
 
-## Writing a Root Location Transformer
+## Root Location Transformer
 
 A root location transformer is an object exposing two functions,
 `getConsumerPathFromRootLocation` and `createRootLocation`. In the following
