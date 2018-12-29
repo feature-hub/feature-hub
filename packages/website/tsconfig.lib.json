@@ -1,6 +1,9 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "paths": {}
+    "paths": {},
+    "declaration": false,
+    "noEmit": true,
+    "allowJs": true
   }
 }

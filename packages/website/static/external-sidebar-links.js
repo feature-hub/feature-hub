@@ -1,6 +1,10 @@
 // @ts-check
 
 (() => {
+  /**
+   * @param {string} title
+   * @param {({href: string, name: string})[]} links
+   */
   function renderNavGroup(title, links) {
     const navGroups = document.querySelector('.navGroups');
 
