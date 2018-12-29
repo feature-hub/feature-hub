@@ -16,7 +16,7 @@ multiple Feature Apps that share state through Feature Services:
 
 1.  Instantiate a `FeatureServiceRegistry` singleton instance.
 1.  Register a set of Feature Services at the `FeatureServiceRegistry`.
-1.  Instantiate a `FeatureAppManager` singleton instance with the
+1.  Instantiate a `FeatureAppManager` singleton instance using the
     `FeatureServiceRegistry`.
 
 A typical integrator bootstrap code would look like this:
@@ -43,10 +43,11 @@ A React integrator can then use the `FeatureAppLoader` or the
 Feature Apps onto the web page. Each of them need the `FeatureAppManager`
 singleton instance to render their Feature App.
 
-## Loading Feature Apps
+## React `FeatureAppLoader`
 
 With the React `FeatureAppLoader` a Feature App can be loaded and rendered by
-defining a `src` which is the URL to its JavaScript [UMD][umd] bundle, e.g.:
+defining a `src` which is the URL to its JavaScript [AMD][amd] module bundle,
+e.g.:
 
 ```js
 import {FeatureAppLoader} from '@feature-hub/react';
@@ -59,9 +60,11 @@ import {FeatureAppLoader} from '@feature-hub/react';
 />
 ```
 
+### `nodeSrc`
+
 Additionally, when a Feature App wants to be rendered on the server, its
-`nodeSrc` must be specified, which is the URL to its CommonJS bundle (targeted
-at Node.js):
+`nodeSrc` must be specified, which is the URL to its CommonJS module bundle
+(targeted at Node.js):
 
 ```jsx
 <FeatureAppLoader
@@ -71,9 +74,9 @@ at Node.js):
 />
 ```
 
-**Note:** Server-side rendering of Feature Apps is not fully supported yet.
+### `css`
 
-You can also define a `css` prop to add stylesheets to the document.
+You can also define a `css` prop to add stylesheets to the document:
 
 ```jsx
 <FeatureAppLoader
@@ -86,8 +89,10 @@ You can also define a `css` prop to add stylesheets to the document.
 />
 ```
 
+### `idSpecifier`
+
 If multiple instances of the same Feature App must be placed onto a single page,
-a `idSpecifier` that is unique for the Feature App `id` must be defined by the
+an `idSpecifier` that is unique for the Feature App ID must be defined by the
 integrator, e.g.:
 
 ```jsx
@@ -109,7 +114,7 @@ integrator, e.g.:
 </section>
 ```
 
-## Bundling Feature Apps
+## React `FeatureAppContainer`
 
 With the React `FeatureAppContainer` a Feature App can be rendered by directly
 providing its Feature App definition:
@@ -129,8 +134,10 @@ import {myFeatureAppDefinition} from './my-feature-app';
 This allows the integrator to bundle Feature Apps, instead of loading them from
 a remote location.
 
+### `idSpecifier`
+
 If multiple instances of the same Feature App must be placed onto a single page,
-a `idSpecifier` that is unique for the Feature App `id` must be defined by the
+an `idSpecifier` that is unique for the Feature App ID must be defined by the
 integrator, e.g.:
 
 ```jsx
@@ -152,7 +159,7 @@ integrator, e.g.:
 </section>
 ```
 
-## Providing Config Objects
+## Configuration
 
 The integrator can provide config objects for Feature Services and Feature Apps,
 associated by their respective IDs, via the `FeatureServiceRegistry` and
@@ -193,4 +200,4 @@ const myFeatureAppDefinition = {
 };
 ```
 
-[umd]: https://github.com/umdjs/umd
+[amd]: https://github.com/amdjs/amdjs-api/blob/master/AMD.md

@@ -41,15 +41,15 @@ the `FeatureServiceRegistry`. It should store, and possibly initialize, any
 shared state. The method takes the single argument `env`, which has the
 following properties:
 
-1. `config` — A Feature Service config object that is
-   [provided][providing-config-objects] by the integrator:
+1. `config` — A Feature Service config object that is [provided][configuration]
+   by the integrator:
 
    ```js
    const myFeatureServiceDefinition = {
      id: 'acme:my-feature-service',
 
      create(env) {
-       const {foo} = env.config; // foo is 'bar'
+       const {foo} = env.config;
 
        // ...
      }
@@ -81,12 +81,12 @@ following properties:
 
 ### Feature Service Binder
 
-The `create` method must return an object with a so-called Feature Service
-binder for each supported major version. The Feature Service binder is a
+The `create` method must return an object with a so-called **Feature Service
+binder** for each supported major version. The Feature Service binder is a
 function that is called for each consumer. It returns a Feature Service binding
 with a consumer-bound `featureService` and an optional `unbind` method. The
 `FeatureServiceRegistry` passes this consumer-bound `featureService` to the
-consumer's `create` method.
+consumer's `create` method via the `env.featureServices` argument.
 
 ### Versioned API
 
@@ -258,8 +258,7 @@ const myFeatureServiceDefinition = {
 };
 ```
 
+[configuration]: /docs/guides/integrating-the-feature-hub#configuration
 [feature-service-binder]:
   /docs/guides/writing-a-feature-service#feature-service-binder
-[providing-config-objects]:
-  /docs/guides/integrating-the-feature-hub#providing-config-objects
 [semver]: https://semver.org

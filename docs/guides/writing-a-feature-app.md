@@ -36,11 +36,6 @@ for a Feature App. Furthermore, it is used as a consumer ID for
 [binding][feature-service-binder] the required Feature Services to the dependent
 Feature App.
 
-If there is more than one instance of a Feature App on a single page, the
-integrator must set a unique ID specifier for each Feature App with the same ID.
-The `FeatureServiceRegistry` then uses the ID together with the ID specifier to
-create a unique consumer ID.
-
 ## `dependencies`
 
 Required Feature Services are declared with their ID and a [semver][semver]
@@ -51,15 +46,15 @@ version string, e.g. `{'acme:some-feature-service': '^2.0'}`.
 The `create` method takes the single argument `env`, which has the following
 properties:
 
-1. `config` — A Feature App config object that is
-   [provided][providing-config-objects] by the integrator:
+1. `config` — A Feature App config object that is [provided][configuration] by
+   the integrator:
 
    ```js
    const myFeatureAppDefinition = {
      id: 'acme:my-feature-app',
 
      create(env) {
-       const {baz} = env.config; // baz is 'qux'
+       const {foo} = env.config;
 
        // ...
      }
@@ -89,8 +84,8 @@ properties:
    };
    ```
 
-1. `idSpecifier` — An optional ID specifier that distinguishes the Feature App
-   instance from other Feature App instances with the same ID.
+1. `idSpecifier` — An optional [ID specifier][idspecifier] that distinguishes
+   the Feature App instance from other Feature App instances with the same ID.
 
 The return value of the `create` method can vary depending on the integration
 solution used. Assuming the `@feature-hub/react` package is used, a Feature App
@@ -204,13 +199,13 @@ two settings need to be made:
    };
    ```
 
+[configuration]: /docs/guides/integrating-the-feature-hub#configuration
 [dynamic-imports]: https://webpack.js.org/guides/code-splitting/#dynamic-imports
 [feature-service-binder]:
   /docs/guides/writing-a-feature-service#feature-service-binder
+[idspecifier]: /docs/guides/integrating-the-feature-hub#idspecifier
 [output-jsonpfunction]:
   https://webpack.js.org/configuration/output/#output-jsonpfunction
 [output-publicpath]:
   https://webpack.js.org/configuration/output/#output-publicpath
-[providing-config-objects]:
-  /docs/guides/integrating-the-feature-hub#providing-config-objects
 [semver]: https://semver.org
