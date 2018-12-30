@@ -22,7 +22,8 @@ const myFeatureAppDefinition = {
 ```
 
 If a Feature App module is to be loaded asynchronously with the
-`FeatureAppManager`, it must provide a definition object as its default export:
+`FeatureAppManager` or React `FeatureAppLoader`, it must provide a definition
+object as its default export:
 
 ```js
 export default myFeatureAppDefinition;
