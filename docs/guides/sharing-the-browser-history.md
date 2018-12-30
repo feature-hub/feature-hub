@@ -101,7 +101,9 @@ the history package. Note, however, that the `go`, `goBack`, `goForward` and
 ### As the Integrator
 
 The integrator defines the History Service using a root location transformer and
-registers it at the Feature Service registry. In the browser:
+registers it at the Feature Service registry.
+
+In the browser:
 
 ```js
 import {FeatureServiceRegistry} from '@feature-hub/core';

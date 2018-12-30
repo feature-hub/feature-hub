@@ -11,7 +11,7 @@ different technologies.
 breaking changes. It is not yet used in production. The currently planned
 milestones can be viewed [here][milestones].
 
-## Contributing to the Feature Hub
+## Contributing
 
 The main purpose of this monorepo is to further develop the Feature Hub. It is
 developed in the open on GitHub, and we are grateful to the community for

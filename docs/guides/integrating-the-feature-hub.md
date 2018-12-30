@@ -38,16 +38,48 @@ registry.registerProviders(featureServiceDefinitions, 'integrator');
 const manager = new FeatureAppManager(registry);
 ```
 
-A React integrator can then use the `FeatureAppLoader` or the
+A React integrator can then use the React `FeatureAppLoader` or the React
 `FeatureAppContainer` (both from the `@feature-hub/react` package) to place
 Feature Apps onto the web page. Each of them need the `FeatureAppManager`
 singleton instance to render their Feature App.
 
+## Module Loader
+
+For the `FeatureAppManager` or React `FeatureAppLoader` to be able to load
+Feature Apps from a remote location, it needs a module loader configured by the
+integrator (e.g. from the `@feature-hub/module-loader` package).
+
+In the browser:
+
+```js
+import {loadAmdModule} from '@feature-hub/module-loader';
+```
+
+```js
+const manager = new FeatureAppManager(registry, {moduleLoader: loadAmdModule});
+```
+
+On the server:
+
+```js
+import {loadCommonJsModule} from '@feature-hub/module-loader';
+```
+
+```js
+const manager = new FeatureAppManager(registry, {
+  moduleLoader: loadCommonJsModule
+});
+```
+
 ## React `FeatureAppLoader`
 
-With the React `FeatureAppLoader` a Feature App can be loaded and rendered by
-defining a `src` which is the URL to its JavaScript [AMD][amd] module bundle,
-e.g.:
+The React `FeatureAppLoader` allows the integrator to load Feature Apps from a
+remote location.
+
+### `src`
+
+A Feature App can be loaded and rendered by defining a `src` which is the URL to
+its module bundle, e.g.:
 
 ```js
 import {FeatureAppLoader} from '@feature-hub/react';
@@ -60,11 +92,13 @@ import {FeatureAppLoader} from '@feature-hub/react';
 />
 ```
 
+**Note:** If the integrator has configured the AMD module loader in the browser,
+the Feature App to be loaded via `src` must be provided as an [AMD][amd] module.
+
 ### `nodeSrc`
 
 Additionally, when a Feature App wants to be rendered on the server, its
-`nodeSrc` must be specified, which is the URL to its CommonJS module bundle
-(targeted at Node.js):
+`nodeSrc` must be specified, which is the URL to its module bundle, e.g.:
 
 ```jsx
 <FeatureAppLoader
@@ -73,6 +107,10 @@ Additionally, when a Feature App wants to be rendered on the server, its
   nodeSrc="https://example.com/my-feature-app-node.js"
 />
 ```
+
+**Note:** If the integrator has configured the CommonJS module loader on the
+server, the Feature App to be loaded via `nodeSrc` must be provided as a
+CommonJS module.
 
 ### `css`
 
@@ -116,8 +154,12 @@ integrator, e.g.:
 
 ## React `FeatureAppContainer`
 
-With the React `FeatureAppContainer` a Feature App can be rendered by directly
-providing its Feature App definition:
+The React `FeatureAppContainer` allows the integrator to bundle Feature Apps
+instead of loading them from a remote location.
+
+### `featureAppDefinition`
+
+A Feature App can be rendered by directly providing its `featureAppDefinition`:
 
 ```js
 import {FeatureAppContainer} from '@feature-hub/react';
@@ -130,9 +172,6 @@ import {myFeatureAppDefinition} from './my-feature-app';
   featureAppDefinition={myFeatureAppDefinition}
 />
 ```
-
-This allows the integrator to bundle Feature Apps, instead of loading them from
-a remote location.
 
 ### `idSpecifier`
 
