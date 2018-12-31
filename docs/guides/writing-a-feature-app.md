@@ -47,7 +47,7 @@ version string, e.g. `{'acme:some-feature-service': '^2.0'}`.
 The `create` method takes the single argument `env`, which has the following
 properties:
 
-1. `config` — A Feature App config object that is [provided][config-provision]
+1. `config` — A Feature App config object that is [provided][providing-configs]
    by the integrator:
 
    ```js
@@ -140,7 +140,7 @@ Vue.js or Angular, although React is used as an integration solution.
 ## `ownFeatureServiceDefinitions`
 
 A Feature App can also register its own Feature Services by declaring
-`ownFeatureServiceDefinitions`, e.g.:
+`ownFeatureServiceDefinitions`:
 
 ```js
 import {myFeatureServiceDefinition} from './my-feature-service';
@@ -200,7 +200,6 @@ two settings need to be made:
    };
    ```
 
-[config-provision]: /docs/guides/integrating-the-feature-hub#config-provision
 [dynamic-imports]: https://webpack.js.org/guides/code-splitting/#dynamic-imports
 [feature-service-binder]:
   /docs/guides/writing-a-feature-service#feature-service-binder
@@ -209,4 +208,5 @@ two settings need to be made:
   https://webpack.js.org/configuration/output/#output-jsonpfunction
 [output-publicpath]:
   https://webpack.js.org/configuration/output/#output-publicpath
+[providing-configs]: /docs/guides/integrating-the-feature-hub#providing-configs
 [semver]: https://semver.org

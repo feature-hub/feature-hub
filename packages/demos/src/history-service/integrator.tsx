@@ -17,7 +17,7 @@ registry.registerProviders(
     defineServerRenderer(undefined),
     defineHistoryService(rootLocationTransformer)
   ],
-  'integrator'
+  'demo:integrator'
 );
 
 const manager = new FeatureAppManager(registry);

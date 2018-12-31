@@ -42,7 +42,7 @@ shared state. The method takes the single argument `env`, which has the
 following properties:
 
 1. `config` — A Feature Service config object that is
-   [provided][config-provision] by the integrator:
+   [provided][providing-configs] by the integrator:
 
    ```js
    const myFeatureServiceDefinition = {
@@ -258,7 +258,7 @@ const myFeatureServiceDefinition = {
 };
 ```
 
-[config-provision]: /docs/guides/integrating-the-feature-hub#config-provision
 [feature-service-binder]:
   /docs/guides/writing-a-feature-service#feature-service-binder
+[providing-configs]: /docs/guides/integrating-the-feature-hub#providing-configs
 [semver]: https://semver.org
