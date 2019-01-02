@@ -56,8 +56,8 @@ branch. You should leave the custom config and commit message fields empty.
 
 ---
 
-Copyright (c) 2018 SinnerSchrader Deutschland GmbH. Released under the terms of
-the [MIT License][license].
+Copyright (c) 2018-2019 SinnerSchrader Deutschland GmbH. Released under the
+terms of the [MIT License][license].
 
 [code-of-conduct]:
   https://github.com/sinnerschrader/feature-hub/blob/master/CODE_OF_CONDUCT.md

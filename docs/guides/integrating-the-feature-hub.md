@@ -136,8 +136,8 @@ You can also define a `css` prop to add stylesheets to the document:
 
 ### `idSpecifier`
 
-If multiple instances of the same Feature App must be placed onto a single page,
-an `idSpecifier` that is unique for the Feature App ID must be defined by the
+If multiple instances of the same Feature App are placed onto a single page, an
+`idSpecifier` that is unique for the Feature App ID must be defined by the
 integrator:
 
 ```jsx
@@ -182,8 +182,8 @@ import {someFeatureAppDefinition} from './some-feature-app';
 
 ### `idSpecifier`
 
-If multiple instances of the same Feature App must be placed onto a single page,
-an `idSpecifier` that is unique for the Feature App ID must be defined by the
+If multiple instances of the same Feature App are placed onto a single page, an
+`idSpecifier` that is unique for the Feature App ID must be defined by the
 integrator:
 
 ```jsx
@@ -208,7 +208,7 @@ integrator:
 ## Providing Configs
 
 The integrator can provide config objects for Feature Services and Feature Apps,
-associated by their respective IDs, via the `FeatureServiceRegistry` and
+associated with their respective IDs, via the `FeatureServiceRegistry` and
 `FeatureAppManager`:
 
 ```js

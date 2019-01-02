@@ -21,8 +21,8 @@ npm install @feature-hub/react
 
 ---
 
-Copyright (c) 2018 SinnerSchrader Deutschland GmbH. Released under the terms of
-the [MIT License][license].
+Copyright (c) 2018-2019 SinnerSchrader Deutschland GmbH. Released under the
+terms of the [MIT License][license].
 
 [license]: https://github.com/sinnerschrader/feature-hub/blob/master/LICENSE
 [package-badge]: https://img.shields.io/npm/v/@feature-hub/react.svg

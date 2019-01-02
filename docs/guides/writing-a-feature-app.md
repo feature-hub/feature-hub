@@ -169,6 +169,9 @@ being dependent on the integrator. However, as soon as other teams need to use
 this Feature Service, it should be published and included in the global set of
 Feature Services by the integrator.
 
+**Note:** If the Feature Service to be registered has already been registered,
+the new Feature Service is ignored and a warning is emitted.
+
 ## Dynamic Code Splitting With Webpack
 
 Feature Apps can use webpack's [dynamic code splitting][dynamic-imports]

@@ -17,10 +17,11 @@ web applications with multiple teams and different technologies.
 > independently from other features. — [thoughtworks.com][thoughtworks]
 
 The Feature Hub includes a collection of npm packages that can be used together
-as a full-fledged solution for composing micro frontends. It supports React
-micro frontends as first-class citizens, but also allows the integration of
-micro frontends that are built with any other frontend technology (e.g. Vue.js,
-Angular, Web Components).
+as a full-fledged solution for composing micro frontends. Out of the box it
+supports React micro frontends as first-class citizens, but also allows the
+integration of micro frontends that are built with any other frontend technology
+(e.g. Vue.js, Angular, Web Components). The use without React is also possible,
+but requires an own implementation of the UI composition layer.
 
 ## Feature Apps and Feature Services
 
@@ -28,10 +29,10 @@ In the context of the Feature Hub, a micro frontend is referred to as a
 **Feature App**. Such a Feature App encapsulates a composable and reusable UI
 feature. It may have the need to share state with other Feature Apps.
 
-A **Feature Service** provides shared state and functionality to consumers, e.g.
-Feature Apps. While simple code sharing should be achieved by creating
-libraries, there are features that can only, or more easily, be achieved by
-creating Feature Services:
+A **Feature Service** provides shared state and shared functionality to
+consumers, e.g. Feature Apps. While simple code sharing should be achieved by
+creating libraries, there are features that can only, or more easily, be
+achieved by creating Feature Services:
 
 - Share state across Feature Apps to ensure a consistent user experience.
 - Share browser APIs and resources not intended for shared use (e.g. History,
