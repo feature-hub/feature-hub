@@ -11,6 +11,7 @@
       "guides/writing-a-feature-service",
       "guides/sharing-the-browser-history",
       "guides/sharing-npm-dependencies"
-    ]
+    ],
+    "Help": ["help/faq"]
   }
 }

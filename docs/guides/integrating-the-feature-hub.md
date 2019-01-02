@@ -46,9 +46,10 @@ const manager = new FeatureAppManager(registry);
 
 **Note:** The integrator needs a self-selected but unique consumer ID to
 register or [consume][consuming-feature-services] Feature Services (in the
-example above it is `'acme:integrator'`). All Feature services registered
-together via the `registerProvider` method are automatically sorted
-topologically and therefore do not have to be registered in the correct order.
+example above it is `'acme:integrator'`). All Feature Services registered
+**together** using the `registerProvider` method of the `FeatureServiceRegistry`
+are automatically sorted topologically and therefore do not need to be
+registered in the correct order.
 
 ## Module Loader
 
