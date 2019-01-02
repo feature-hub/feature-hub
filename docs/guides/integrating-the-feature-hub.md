@@ -23,7 +23,7 @@ multiple Feature Apps that share state through Feature Services:
    Feature Apps onto the web page. Each of them need the `FeatureAppManager`
    singleton instance to render their Feature App.
 
-A typical integrator bootstrap code would look like this:
+Typical integrator bootstrap code would look like this:
 
 ```js
 import {FeatureAppManager, FeatureServiceRegistry} from '@feature-hub/core';

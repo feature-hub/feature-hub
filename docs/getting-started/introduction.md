@@ -16,8 +16,8 @@ web applications with multiple teams and different technologies.
 > team. This ensures that every feature is developed, tested and deployed
 > independently from other features. — [thoughtworks.com][thoughtworks]
 
-The Feature Hub includes a collection of npm packages that can be used together
-as a full-fledged solution for composing micro frontends. Out of the box it
+The Feature Hub includes a collection of npm packages that when used together
+provide a full-fledged solution for composing micro frontends. Out of the box it
 supports React micro frontends as first-class citizens, but also allows the
 integration of micro frontends that are built with any other frontend technology
 (e.g. Vue.js, Angular, Web Components). The use without React is also possible,
