@@ -22,12 +22,10 @@ export interface FeatureAppContainerProps {
   readonly idSpecifier?: string;
 }
 
-// tslint:disable:strict-type-predicates
 const inBrowser =
   typeof window === 'object' &&
   typeof document === 'object' &&
   document.nodeType === 9;
-// tslint:enable:strict-type-predicates
 
 export class FeatureAppContainer extends React.PureComponent<
   FeatureAppContainerProps

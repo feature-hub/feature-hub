@@ -1,5 +1,4 @@
 // @ts-check
-// tslint:disable:file-name-casing
 
 const React = require('react');
 

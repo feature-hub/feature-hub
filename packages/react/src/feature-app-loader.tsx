@@ -20,12 +20,10 @@ interface FeatureAppLoaderState {
   readonly hasError?: boolean;
 }
 
-// tslint:disable:strict-type-predicates
 const inBrowser =
   typeof window === 'object' &&
   typeof document === 'object' &&
   document.nodeType === 9;
-// tslint:enable:strict-type-predicates
 
 export class FeatureAppLoader extends React.PureComponent<
   FeatureAppLoaderProps,
