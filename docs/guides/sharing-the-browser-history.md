@@ -37,7 +37,7 @@ JSON string which will be assigned to a single configurable query parameter.
 
 ## Usage
 
-### As a Consumer
+### As a Feature App
 
 In the browser:
 
