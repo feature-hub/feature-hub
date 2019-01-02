@@ -144,16 +144,6 @@ describe('FeatureAppManager', () => {
   });
 
   describe('#getFeatureAppScope', () => {
-    it('logs an info message after creation', () => {
-      manager.getFeatureAppScope(mockFeatureAppDefinition, 'testIdSpecifier');
-
-      expect(spyConsoleInfo.mock.calls).toEqual([
-        [
-          'The feature app scope for the ID "testId" and its specifier "testIdSpecifier" has been successfully created.'
-        ]
-      ]);
-    });
-
     it('creates a feature app with a consumer environment using the service registry', () => {
       const mockConfig = {kind: 'test'};
       const idSpecifier = 'testIdSpecifier';
@@ -217,6 +207,16 @@ describe('FeatureAppManager', () => {
 
     describe('for a known feature app definition', () => {
       describe('and no id specifier', () => {
+        it('logs an info message after creation', () => {
+          manager.getFeatureAppScope(mockFeatureAppDefinition);
+
+          expect(spyConsoleInfo.mock.calls).toEqual([
+            [
+              'The feature app scope for the ID "testId" has been successfully created.'
+            ]
+          ]);
+        });
+
         it('returns the same feature app scope', () => {
           const featureAppScope = manager.getFeatureAppScope(
             mockFeatureAppDefinition
@@ -243,6 +243,19 @@ describe('FeatureAppManager', () => {
       });
 
       describe('and an id specifier', () => {
+        it('logs an info message after creation', () => {
+          manager.getFeatureAppScope(
+            mockFeatureAppDefinition,
+            'testIdSpecifier'
+          );
+
+          expect(spyConsoleInfo.mock.calls).toEqual([
+            [
+              'The feature app scope for the ID "testId" with the specifier "testIdSpecifier" has been successfully created.'
+            ]
+          ]);
+        });
+
         it('returns the same feature app scope', () => {
           const featureAppScope = manager.getFeatureAppScope(
             mockFeatureAppDefinition,
