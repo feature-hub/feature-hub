@@ -2,8 +2,6 @@
  * @jest-environment puppeteer
  */
 
-// tslint:disable:no-non-null-assertion
-
 import {Server} from 'http';
 import {AddressInfo} from 'net';
 import {ElementHandle} from 'puppeteer';
@@ -44,18 +42,22 @@ class HistoryConsumerUI {
   private async getNewPathnameInput(): Promise<
     ElementHandle<HTMLInputElement>
   > {
+    // tslint:disable-next-line:no-non-null-assertion
     return (await page.$(`#new-pathname-${this.specifier}`))!;
   }
 
   private async getPathnameInput(): Promise<ElementHandle<HTMLInputElement>> {
+    // tslint:disable-next-line:no-non-null-assertion
     return (await page.$(`#pathname-${this.specifier}`))!;
   }
 
   private async getPushButton(): Promise<ElementHandle<HTMLButtonElement>> {
+    // tslint:disable-next-line:no-non-null-assertion
     return (await page.$(`#push-${this.specifier}`))!;
   }
 
   private async getReplaceButton(): Promise<ElementHandle<HTMLButtonElement>> {
+    // tslint:disable-next-line:no-non-null-assertion
     return (await page.$(`#replace-${this.specifier}`))!;
   }
 }

@@ -84,12 +84,10 @@ describe('FeatureAppContainer', () => {
           />
         );
 
-        // tslint:disable-next-line:no-unbound-method
         expect(mockFeatureAppScope.destroy).not.toHaveBeenCalled();
 
         wrapper.unmount();
 
-        // tslint:disable-next-line:no-unbound-method
         expect(mockFeatureAppScope.destroy).toHaveBeenCalledTimes(1);
       });
 
@@ -154,12 +152,10 @@ describe('FeatureAppContainer', () => {
           />
         );
 
-        // tslint:disable-next-line:no-unbound-method
         expect(mockFeatureAppScope.destroy).not.toHaveBeenCalled();
 
         wrapper.unmount();
 
-        // tslint:disable-next-line:no-unbound-method
         expect(mockFeatureAppScope.destroy).toHaveBeenCalledTimes(1);
       });
 

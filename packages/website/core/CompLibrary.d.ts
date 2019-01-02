@@ -1,5 +1,3 @@
-// tslint:disable:file-name-casing
-
 export interface ContainerProps {
   readonly padding?: ('all' | 'bottom' | 'left' | 'right' | 'top')[];
   readonly background?: 'dark' | 'highlight' | 'light';

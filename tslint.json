@@ -4,8 +4,7 @@
     "exclude": ["**/lib/**", "**/node_modules/**"]
   },
   "rules": {
-    "no-default-export": false,
-    "no-implicit-dependencies": true,
-    "no-object-literal-type-assertion": false
+    "await-promise": [true, "PromiseLike"],
+    "no-default-export": false
   }
 }

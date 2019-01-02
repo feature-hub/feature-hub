@@ -2,7 +2,7 @@
  * @jest-environment node
  */
 
-// tslint:disable:no-non-null-assertion no-unbound-method
+// tslint:disable:no-non-null-assertion
 
 import {
   FeatureServiceBinder,

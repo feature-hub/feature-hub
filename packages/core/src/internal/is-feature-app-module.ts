@@ -19,12 +19,10 @@ function isFeatureAppDefinition(
     unknown
   >;
 
-  // tslint:disable-next-line:strict-type-predicates
   if (typeof featureAppDefinition.id !== 'string') {
     return false;
   }
 
-  // tslint:disable-next-line:strict-type-predicates no-unbound-method
   return typeof featureAppDefinition.create === 'function';
 }
 

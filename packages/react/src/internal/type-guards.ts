@@ -1,5 +1,3 @@
-// tslint:disable:strict-type-predicates
-
 import {
   DomFeatureApp,
   FeatureApp,

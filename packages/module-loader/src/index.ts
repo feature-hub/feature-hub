@@ -1,7 +1,5 @@
-// tslint:disable-next-line:no-import-side-effect
-import 'systemjs/dist/system-production';
-
 import {ModuleLoader} from '@feature-hub/core';
+import 'systemjs/dist/system-production';
 
 export interface Externals {
   readonly [moduleName: string]: unknown;

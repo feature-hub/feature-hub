@@ -10,9 +10,7 @@ export async function startServer(
   webpackConfigs: webpack.Configuration[],
   renderMainHtml: MainHtmlRenderer | undefined
 ): Promise<Server> {
-  // tslint:disable-next-line:await-promise
   const port = await getPort();
-
   const app = express();
 
   app.get('/', async (_req, res) => {
