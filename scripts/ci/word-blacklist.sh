@@ -10,7 +10,7 @@ BLACKLIST_REGEXP=$(echo $BLACKLIST |tr "," "|")
 # read .gitignore, replace newlines with pipes and remove the last pipe
 IGNORE=$(cat .gitignore |tr "\n" "|" |sed -e 's/|$//')
 
-MATCHES=$(grep --extended-regexp --word-regexp --recursive --regexp="$BLACKLIST_REGEXP" . |grep --extended-regexp --invert-match --regexp="$IGNORE" |grep --extended-regexp --invert-match --regexp=".git|docs/api")
+MATCHES=$(grep --extended-regexp --word-regexp --recursive --regexp="$BLACKLIST_REGEXP" . |grep --extended-regexp --invert-match --regexp="$IGNORE" |grep --extended-regexp --invert-match --regexp=".git")
 RESULT=$?
 
 if [ "$CI" != "true" ] ; then

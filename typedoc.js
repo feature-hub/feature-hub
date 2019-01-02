@@ -3,11 +3,11 @@
 module.exports = {
   mode: 'file',
   ignoreCompilerErrors: false,
-  exclude: ['**/*+(__tests__|internal|node_modules)/**/*'],
+  exclude: ['**/*+(__tests__|internal|lib|node_modules)/**/*'],
   excludeExternals: true,
   excludeNotExported: true,
   excludePrivate: true,
   theme: 'minimal',
   gitRevision: 'master',
-  readme: 'typedoc-readme.md'
+  readme: 'README.md'
 };

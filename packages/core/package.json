@@ -9,6 +9,7 @@
     "micro-frontends",
     "react"
   ],
+  "homepage": "https://feature-hub.netlify.com/",
   "bugs": {
     "url": "https://github.com/sinnerschrader/feature-hub/issues"
   },
