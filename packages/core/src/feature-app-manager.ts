@@ -41,8 +41,8 @@ export interface FeatureAppDefinition<
 
 export type ModuleLoader = (url: string) => Promise<unknown>;
 
-export interface FeatureAppScope {
-  readonly featureApp: unknown;
+export interface FeatureAppScope<FeatureApp> {
+  readonly featureApp: FeatureApp;
 
   destroy(): void;
 }
@@ -56,10 +56,10 @@ export interface FeatureAppManagerLike {
     url: string
   ): AsyncValue<FeatureAppDefinition<unknown>>;
 
-  getFeatureAppScope(
-    featureAppDefinition: FeatureAppDefinition<unknown>,
+  getFeatureAppScope<FeatureApp>(
+    featureAppDefinition: FeatureAppDefinition<FeatureApp>,
     idSpecifier?: string
-  ): FeatureAppScope;
+  ): FeatureAppScope<FeatureApp>;
 
   preloadFeatureApp(url: string): Promise<void>;
   destroy(): void;
@@ -85,7 +85,7 @@ export class FeatureAppManager implements FeatureAppManagerLike {
 
   private readonly featureAppScopes = new Map<
     FeatureAppScopeId,
-    FeatureAppScope
+    FeatureAppScope<unknown>
   >();
 
   public constructor(
@@ -107,10 +107,10 @@ export class FeatureAppManager implements FeatureAppManagerLike {
     return asyncFeatureAppDefinition;
   }
 
-  public getFeatureAppScope(
-    featureAppDefinition: FeatureAppDefinition<unknown>,
+  public getFeatureAppScope<FeatureApp>(
+    featureAppDefinition: FeatureAppDefinition<FeatureApp>,
     idSpecifier?: string
-  ): FeatureAppScope {
+  ): FeatureAppScope<FeatureApp> {
     const {id: featureAppId} = featureAppDefinition;
     const featureAppScopeId = JSON.stringify({featureAppId, idSpecifier});
 
@@ -131,7 +131,7 @@ export class FeatureAppManager implements FeatureAppManagerLike {
       this.featureAppScopes.set(featureAppScopeId, featureAppScope);
     }
 
-    return featureAppScope;
+    return featureAppScope as FeatureAppScope<FeatureApp>;
   }
 
   public async preloadFeatureApp(url: string): Promise<void> {
@@ -197,11 +197,11 @@ export class FeatureAppManager implements FeatureAppManagerLike {
     );
   }
 
-  private createFeatureAppScope(
-    featureAppDefinition: FeatureAppDefinition<unknown>,
+  private createFeatureAppScope<FeatureApp>(
+    featureAppDefinition: FeatureAppDefinition<FeatureApp>,
     idSpecifier: string | undefined,
     deleteFeatureAppScope: () => void
-  ): FeatureAppScope {
+  ): FeatureAppScope<FeatureApp> {
     const {configs} = this.options;
     const config = configs && configs[featureAppDefinition.id];
 
