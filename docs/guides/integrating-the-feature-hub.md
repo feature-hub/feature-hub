@@ -7,9 +7,9 @@ sidebar_label: Integrating the Feature Hub
 The [`@feature-hub/core` package][core-api] provides the following two major
 building blocks:
 
-- The `FeatureServiceRegistry`: A class for providing Feature Services to
+- The `FeatureServiceRegistry` — A class for providing Feature Services to
   dependent consumers.
-- The `FeatureAppManager`: A class for managing the lifecycle of Feature Apps.
+- The `FeatureAppManager` — A class for managing the lifecycle of Feature Apps.
 
 There are a few steps the integrator needs to follow to compose a web page of
 multiple Feature Apps that share state through Feature Services:
