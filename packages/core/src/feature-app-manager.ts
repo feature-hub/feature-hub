@@ -217,11 +217,15 @@ export class FeatureAppManager implements FeatureAppManagerLike {
     });
 
     console.info(
-      `The feature app scope for the ID ${JSON.stringify(
-        featureAppDefinition.id
-      )} and its specifier ${JSON.stringify(
-        idSpecifier
-      )} has been successfully created.`
+      idSpecifier
+        ? `The feature app scope for the ID ${JSON.stringify(
+            featureAppDefinition.id
+          )} with the specifier ${JSON.stringify(
+            idSpecifier
+          )} has been successfully created.`
+        : `The feature app scope for the ID ${JSON.stringify(
+            featureAppDefinition.id
+          )} has been successfully created.`
     );
 
     let destroyed = false;

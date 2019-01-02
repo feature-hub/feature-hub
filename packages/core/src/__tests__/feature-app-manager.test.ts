@@ -149,7 +149,7 @@ describe('FeatureAppManager', () => {
 
       expect(spyConsoleInfo.mock.calls).toEqual([
         [
-          'The feature app scope for the ID "testId" and its specifier "testIdSpecifier" has been successfully created.'
+          'The feature app scope for the ID "testId" with the specifier "testIdSpecifier" has been successfully created.'
         ]
       ]);
     });
