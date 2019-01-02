@@ -68,4 +68,4 @@ terms of the [MIT License][license].
   https://travis-ci.com/sinnerschrader/feature-hub.svg?branch=master
 [website]: https://feature-hub.netlify.com/
 [website-badge]:
-  https://img.shields.io/badge/website-Feature%20Hub-%234502da.svg
+  https://img.shields.io/badge/Website-Feature%20Hub-%234502da.svg

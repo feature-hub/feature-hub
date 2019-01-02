@@ -1,7 +1,7 @@
 # @feature-hub/server-renderer
 
 [![Package Version][package-badge]][package-npm]
-[![Website][website-badge]][website]
+[![Website][website-badge]][website] [![API][api-badge]][api]
 
 A Feature Service to manage server-side rendering.
 
@@ -29,10 +29,12 @@ npm install @feature-hub/server-renderer
 Copyright (c) 2018-2019 SinnerSchrader Deutschland GmbH. Released under the
 terms of the [MIT License][license].
 
+[api]: https://feature-hub.netlify.com/@feature-hub/server-renderer/
+[api-badge]: https://img.shields.io/badge/API-Feature%20Hub-%234502da.svg
 [issue-25]: https://github.com/sinnerschrader/feature-hub/issues/25
 [license]: https://github.com/sinnerschrader/feature-hub/blob/master/LICENSE
 [package-badge]: https://img.shields.io/npm/v/@feature-hub/server-renderer.svg
 [package-npm]: https://www.npmjs.com/package/@feature-hub/server-renderer
 [website]: https://feature-hub.netlify.com/
 [website-badge]:
-  https://img.shields.io/badge/website-Feature%20Hub-%234502da.svg
+  https://img.shields.io/badge/Website-Feature%20Hub-%234502da.svg
