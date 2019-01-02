@@ -8,7 +8,7 @@ When multiple Feature Apps coexist on the same page, they shouldn't access the
 [browser history API][browser-history-api] directly. Otherwise, they would
 potentially overwrite their respective history and location changes. To enable a
 save access to the history for multiple consumers, the
-`@feature-hub/history-service` package can be used.
+[`@feature-hub/history-service` package][history-service-api] can be used.
 
 ## Functional Behaviour
 
@@ -263,3 +263,5 @@ unchanged location of this consumer.
 
 [browser-history-api]: https://developer.mozilla.org/en-US/docs/Web/API/History
 [history-npm]: https://www.npmjs.com/package/history
+[history-service-api]:
+  https://feature-hub.netlify.com/@feature-hub/history-service/
