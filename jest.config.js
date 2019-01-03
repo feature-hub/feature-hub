@@ -17,7 +17,7 @@ module.exports = {
   moduleFileExtensions: ['js', 'json', 'ts', 'tsx'],
   moduleNameMapper: {
     '^@feature-hub/([^/]+)$': '<rootDir>/packages/$1/src/index.ts',
-    '^@feature-hub/module-loader/lib/node$':
+    '^@feature-hub/module-loader/lib/cjs/node$':
       '<rootDir>/packages/module-loader/src/node.ts'
   },
   modulePathIgnorePatterns: ['/lib'],
