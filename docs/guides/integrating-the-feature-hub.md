@@ -251,11 +251,11 @@ const someFeatureAppDefinition = {
 ## Consuming Feature Services
 
 Just like Feature Apps or Feature Services, the integrator itself can consume
-its own registered Feature Services. To do this, they need a description of
-themselves in the form of a consumer definition object. Besides the
-self-selected but unique consumer `id`, this consumer definition object contains
-a `dependencies` object. The required Feature Services can then be instantiated
-(bound) using the `bindFeatureServices` method of the `FeatureServiceRegistry`:
+its own registered Feature Services. To do this, the integrator needs to define
+a consumer definition object for itself. Besides the self-selected but unique
+consumer `id`, this consumer definition object contains a `dependencies` object.
+The required Feature Services can then be instantiated (bound) using the
+`bindFeatureServices` method of the `FeatureServiceRegistry`:
 
 ```js
 import {FeatureServiceRegistry} from '@feature-hub/core';
