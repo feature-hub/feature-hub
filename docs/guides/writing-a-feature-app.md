@@ -176,5 +176,5 @@ the new Feature Service is ignored and a warning is emitted.
   /docs/guides/writing-a-feature-service#feature-service-binder
 [idspecifier]: /docs/guides/integrating-the-feature-hub#idspecifier
 [providing-configs]: /docs/guides/integrating-the-feature-hub#providing-configs
-[react-api]: https://feature-hub.netlify.com/@feature-hub/react/
+[react-api]: /@feature-hub/react/
 [semver]: https://semver.org

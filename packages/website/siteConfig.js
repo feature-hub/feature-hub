@@ -3,7 +3,7 @@
 const siteConfig = {
   title: 'Feature Hub',
   tagline: 'Create scalable web applications using micro frontends',
-  url: 'https://feature-hub.netlify.com',
+  url: 'https://feature-hub.io',
   baseUrl: '/',
   projectName: 'feature-hub',
   organizationName: 'sinnerschrader',
