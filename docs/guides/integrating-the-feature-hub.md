@@ -289,7 +289,7 @@ someFeatureService2.foo(42);
 [amd]: https://github.com/amdjs/amdjs-api/blob/master/AMD.md
 [consuming-feature-services]:
   /docs/guides/integrating-the-feature-hub#consuming-feature-services
-[core-api]: https://feature-hub.io/@feature-hub/core/
+[core-api]: /@feature-hub/core/
 [faq-1]: /docs/help/faq#can-the-integrator-register-feature-services-one-by-one
-[module-loader-api]: https://feature-hub.io/@feature-hub/module-loader/
-[react-api]: https://feature-hub.io/@feature-hub/react/
+[module-loader-api]: /@feature-hub/module-loader/
+[react-api]: /@feature-hub/react/
