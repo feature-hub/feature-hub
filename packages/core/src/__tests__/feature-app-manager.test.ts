@@ -165,7 +165,7 @@ describe('FeatureAppManager', () => {
       ]);
     });
 
-    describe('with a Feature App definition with own Feature Services', () => {
+    describe('with a Feature App definition with own Feature Service definitions', () => {
       let registryMethodCalls: string[];
 
       beforeEach(() => {
