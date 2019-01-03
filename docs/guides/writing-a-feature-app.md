@@ -89,8 +89,8 @@ properties:
    the Feature App instance from other Feature App instances with the same ID.
 
 The return value of the `create` method can vary depending on the integration
-solution used. Assuming the `@feature-hub/react` package is used, a Feature App
-can be either a **React Feature App** or a **DOM Feature App**.
+solution used. Assuming the [`@feature-hub/react` package][react-api] is used, a
+Feature App can be either a **React Feature App** or a **DOM Feature App**.
 
 ### React Feature App
 
@@ -212,4 +212,5 @@ two settings need to be made:
 [output-publicpath]:
   https://webpack.js.org/configuration/output/#output-publicpath
 [providing-configs]: /docs/guides/integrating-the-feature-hub#providing-configs
+[react-api]: https://feature-hub.netlify.com/@feature-hub/react/
 [semver]: https://semver.org

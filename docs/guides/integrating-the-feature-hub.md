@@ -4,12 +4,12 @@ title: Integrating the Feature Hub
 sidebar_label: Integrating the Feature Hub
 ---
 
-The `@feature-hub/core` package provides the following two major building
-blocks:
+The [`@feature-hub/core` package][core-api] provides the following two major
+building blocks:
 
-- The `FeatureServiceRegistry`: A class for providing Feature Services to
+- The `FeatureServiceRegistry` — A class for providing Feature Services to
   dependent consumers.
-- The `FeatureAppManager`: A class for managing the lifecycle of Feature Apps.
+- The `FeatureAppManager` — A class for managing the lifecycle of Feature Apps.
 
 There are a few steps the integrator needs to follow to compose a web page of
 multiple Feature Apps that share state through Feature Services:
@@ -19,9 +19,9 @@ multiple Feature Apps that share state through Feature Services:
 1. Instantiate a `FeatureAppManager` singleton instance using the
    `FeatureServiceRegistry`.
 1. A **React integrator** can then use the React `FeatureAppLoader` or the React
-   `FeatureAppContainer` (both from the `@feature-hub/react` package) to place
-   Feature Apps onto the web page. Each of them need the `FeatureAppManager`
-   singleton instance to render their Feature App.
+   `FeatureAppContainer` (both from the [`@feature-hub/react`
+   package][react-api]) to place Feature Apps onto the web page. Each of them
+   need the `FeatureAppManager` singleton instance to render their Feature App.
 
 Typical integrator bootstrap code would look like this:
 
@@ -54,7 +54,8 @@ topologically and therefore do not have to be registered in the correct order.
 
 For the `FeatureAppManager` or React `FeatureAppLoader` to be able to load
 Feature Apps from a remote location, it needs a module loader configured by the
-integrator (e.g. from the `@feature-hub/module-loader` package).
+integrator (e.g. from the [`@feature-hub/module-loader`
+package][module-loader-api]).
 
 In the browser:
 
@@ -287,3 +288,6 @@ someFeatureService2.foo(42);
 [amd]: https://github.com/amdjs/amdjs-api/blob/master/AMD.md
 [consuming-feature-services]:
   /docs/guides/integrating-the-feature-hub#consuming-feature-services
+[core-api]: https://feature-hub.netlify.com/@feature-hub/core/
+[module-loader-api]: https://feature-hub.netlify.com/@feature-hub/module-loader/
+[react-api]: https://feature-hub.netlify.com/@feature-hub/react/

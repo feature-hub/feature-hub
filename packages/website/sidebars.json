@@ -2,7 +2,8 @@
   "docs": {
     "Getting Started": [
       "getting-started/introduction",
-      "getting-started/motivation"
+      "getting-started/motivation",
+      "getting-started/demos"
     ],
     "Guides": [
       "guides/integrating-the-feature-hub",

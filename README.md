@@ -31,19 +31,17 @@ by its terms.
 
 ### Development Scripts
 
-- `yarn watch:test`: Watches all tests.
-- `yarn watch:demo <demo-name>`: Watches the given demo.
-  - `yarn watch:demo amd-module-loader`
-  - `yarn watch:demo commonjs-module-loader`
-  - `yarn watch:demo history-service`
-- `yarn watch:compile`: Watches all sources.
-- `yarn watch:website`: Watches the website.
-- `yarn test`: Executes all tests.
-- `yarn compile`: Compiles all sources.
-- `yarn lint`: Lints all sources.
-- `yarn verify`: Verifies non-functional requirements (used on CI).
-- `yarn format`: Formats all files.
-- `yarn sort-package-jsons`: Sorts all `package.json` files.
+- `yarn watch:test` — Watches all tests.
+- `yarn watch:demo <demo-name>` — Watches the given
+  [demo][demos-package-getting-started].
+- `yarn watch:compile` — Watches all sources.
+- `yarn watch:website` — Watches the website.
+- `yarn test` — Executes all tests.
+- `yarn compile` — Compiles all sources.
+- `yarn lint` — Lints all sources.
+- `yarn verify` — Verifies non-functional requirements (used on CI).
+- `yarn format` — Formats all files.
+- `yarn sort-package-jsons` — Sorts all `package.json` files.
 
 ### Publishing a New Release
 
@@ -61,6 +59,8 @@ terms of the [MIT License][license].
 
 [code-of-conduct]:
   https://github.com/sinnerschrader/feature-hub/blob/master/CODE_OF_CONDUCT.md
+[demos-package-getting-started]:
+  https://github.com/sinnerschrader/feature-hub/tree/master/packages/demos#getting-started
 [license]: https://github.com/sinnerschrader/feature-hub/blob/master/LICENSE
 [milestones]: https://github.com/sinnerschrader/feature-hub/milestones
 [travis-ci]: https://travis-ci.com/sinnerschrader/feature-hub
