@@ -7,9 +7,9 @@ sidebar_label: FAQ
 ## Can the integrator register Feature Services one by one?
 
 Yes, but then you need to guarantee the correct order. On the other hand, all
-Feature Services registered **together** using the `registerProviders` method of
-the `FeatureServiceRegistry` are automatically sorted topologically and
-therefore do not need to be registered in the correct order.
+Feature Services registered **together** using the `registerFeatureServices`
+method of the `FeatureServiceRegistry` are automatically sorted topologically
+and therefore do not need to be registered in the correct order.
 
 ## Can Feature Services be dynamically loaded after initial load?
 

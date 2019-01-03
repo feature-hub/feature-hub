@@ -85,7 +85,7 @@ describe('FeatureServiceRegistry', () => {
     spyConsoleWarn.mockRestore();
   });
 
-  describe('#registerProviders', () => {
+  describe('#registerFeatureServices', () => {
     let configs: FeatureServiceConfigs;
 
     function testRegistrationOrderABC(): void {
@@ -114,22 +114,22 @@ describe('FeatureServiceRegistry', () => {
 
       expect(spyConsoleInfo.mock.calls).toEqual([
         [
-          'All required feature services have been successfully bound to the consumer "a".'
+          'The Feature Service "a" has been successfully registered by consumer "test".'
         ],
         [
-          'The feature service provider "a" has been successfully registered by the consumer "test".'
+          'The required Feature Service "a" has been successfully bound to consumer "b".'
         ],
         [
-          'All required feature services have been successfully bound to the consumer "b".'
+          'The Feature Service "b" has been successfully registered by consumer "test".'
         ],
         [
-          'The feature service provider "b" has been successfully registered by the consumer "test".'
+          'The required Feature Service "a" has been successfully bound to consumer "c".'
         ],
         [
-          'All required feature services have been successfully bound to the consumer "c".'
+          'The required Feature Service "b" has been successfully bound to consumer "c".'
         ],
         [
-          'The feature service provider "c" has been successfully registered by the consumer "test".'
+          'The Feature Service "c" has been successfully registered by consumer "test".'
         ]
       ]);
     }
@@ -139,16 +139,16 @@ describe('FeatureServiceRegistry', () => {
       registry = new FeatureServiceRegistry({configs});
     });
 
-    it('registers the feature service providers "a", "b", "c" one after the other', () => {
-      registry.registerProviders([providerDefinitionA], 'test');
-      registry.registerProviders([providerDefinitionB], 'test');
-      registry.registerProviders([providerDefinitionC], 'test');
+    it('registers the Feature Services "a", "b", "c" one after the other', () => {
+      registry.registerFeatureServices([providerDefinitionA], 'test');
+      registry.registerFeatureServices([providerDefinitionB], 'test');
+      registry.registerFeatureServices([providerDefinitionC], 'test');
 
       testRegistrationOrderABC();
     });
 
-    it('registers the feature service providers "a", "b", "c" all at once in topologically sorted order', () => {
-      registry.registerProviders(
+    it('registers the Feature Services "a", "b", "c" all at once in topologically sorted order', () => {
+      registry.registerFeatureServices(
         [providerDefinitionB, providerDefinitionC, providerDefinitionA],
         'test'
       );
@@ -156,9 +156,9 @@ describe('FeatureServiceRegistry', () => {
       testRegistrationOrderABC();
     });
 
-    it('does not register the already existing feature service provider "a"', () => {
-      registry.registerProviders([providerDefinitionA], 'test');
-      registry.registerProviders([providerDefinitionA], 'test');
+    it('does not register the already existing Feature Service "a"', () => {
+      registry.registerFeatureServices([providerDefinitionA], 'test');
+      registry.registerFeatureServices([providerDefinitionA], 'test');
 
       expect(providerDefinitionA.create.mock.calls).toEqual([
         [{config: configs.a, featureServices: {}}]
@@ -168,29 +168,28 @@ describe('FeatureServiceRegistry', () => {
 
       expect(spyConsoleInfo.mock.calls).toEqual([
         [
-          'All required feature services have been successfully bound to the consumer "a".'
-        ],
-        [
-          'The feature service provider "a" has been successfully registered by the consumer "test".'
+          'The Feature Service "a" has been successfully registered by consumer "test".'
         ]
       ]);
 
       expect(spyConsoleWarn.mock.calls).toEqual([
         [
-          'The already registered feature service provider "a" could not be re-registered by the consumer "test".'
+          'The already registered Feature Service "a" could not be re-registered by consumer "test".'
         ]
       ]);
     });
 
-    it('fails to register the feature service provider "b" due to the lack of dependency "a"', () => {
+    it('fails to register the Feature Service "b" due to the lack of dependency "a"', () => {
       expect(() =>
-        registry.registerProviders([providerDefinitionB], 'test')
+        registry.registerFeatureServices([providerDefinitionB], 'test')
       ).toThrowError(
-        'The required feature service in version "^1.0" of the unregistered provider "a" could not be bound to the consumer "b".'
+        new Error(
+          'The required Feature Service "a" is not registered and therefore could not be bound to consumer "b".'
+        )
       );
     });
 
-    it('fails to register the feature service provider "d" due to an unsupported dependency version', () => {
+    it('fails to register the Feature Service "d" due to an unsupported dependency version', () => {
       const stateProviderD = {
         id: 'd',
         dependencies: {a: '1.0'},
@@ -198,16 +197,18 @@ describe('FeatureServiceRegistry', () => {
       };
 
       expect(() =>
-        registry.registerProviders(
+        registry.registerFeatureServices(
           [providerDefinitionA, stateProviderD],
           'test'
         )
       ).toThrowError(
-        'The required feature service in the unsupported version "1.0" of the provider "a" could not be bound to the consumer "d". The supported versions are ["1.1"].'
+        new Error(
+          'The required Feature Service "a" in the unsupported version "1.0" could not be bound to consumer "d". The supported versions are ["1.1"].'
+        )
       );
     });
 
-    it('fails to register the feature service provider "d" due to an invalid dependency version', () => {
+    it('fails to register the Feature Service "d" due to an invalid dependency version', () => {
       const stateProviderDefinitionD = {
         id: 'd',
         dependencies: {a: ''},
@@ -215,16 +216,18 @@ describe('FeatureServiceRegistry', () => {
       };
 
       expect(() =>
-        registry.registerProviders(
+        registry.registerFeatureServices(
           [providerDefinitionA, stateProviderDefinitionD],
           'test'
         )
       ).toThrowError(
-        'The required unknown feature service of the provider "a" could not be bound to the consumer "d".'
+        new Error(
+          'The required Feature Service "a" in an invalid version could not be bound to consumer "d".'
+        )
       );
     });
 
-    it('fails to register the feature service provider "e" due to a dependency with an invalid version', () => {
+    it('fails to register the Feature Service "e" due to a dependency with an invalid version', () => {
       const stateProviderDefinitionD = {
         id: 'd',
         dependencies: {},
@@ -238,19 +241,21 @@ describe('FeatureServiceRegistry', () => {
       };
 
       expect(() =>
-        registry.registerProviders(
+        registry.registerFeatureServices(
           [stateProviderDefinitionD, stateProviderDefinitionE],
           'test'
         )
       ).toThrowError(
-        'The required feature service in version "1.0" of the provider "d" could not be bound to the consumer "e" due to an invalid provider version "foo".'
+        new Error(
+          'The required Feature Service "d" in the unsupported version "1.0" could not be bound to consumer "e". The supported versions are ["foo"].'
+        )
       );
     });
   });
 
   describe('#bindFeatureServices', () => {
-    describe('for a feature service consumer without dependencies', () => {
-      it('creates a bindings object with no feature services', () => {
+    describe('for a Feature Service consumer without dependencies', () => {
+      it('creates a bindings object with no Feature Services', () => {
         expect(registry.bindFeatureServices({id: 'foo'})).toEqual({
           featureServices: {},
           unbind: expect.any(Function)
@@ -258,11 +263,11 @@ describe('FeatureServiceRegistry', () => {
       });
     });
 
-    describe('for a feature service consumer with an id specifier and dependencies', () => {
-      it('creates a bindings object with feature services', () => {
+    describe('for a Feature Service consumer with an id specifier and dependencies', () => {
+      it('creates a bindings object with Feature Services', () => {
         registry = new FeatureServiceRegistry();
 
-        registry.registerProviders([providerDefinitionA], 'test');
+        registry.registerFeatureServices([providerDefinitionA], 'test');
 
         expect(binderA.mock.calls).toEqual([]);
 
@@ -288,7 +293,9 @@ describe('FeatureServiceRegistry', () => {
       expect(() =>
         registry.bindFeatureServices({id: 'foo'}, 'baz')
       ).toThrowError(
-        'All required feature services are already bound to the consumer "foo:baz".'
+        new Error(
+          'All required Feature Services are already bound to consumer "foo:baz".'
+        )
       );
     });
 
@@ -314,7 +321,7 @@ describe('FeatureServiceRegistry', () => {
 
         bindingC.unbind = jest.fn();
 
-        registry.registerProviders(
+        registry.registerFeatureServices(
           [providerDefinitionA, providerDefinitionB, providerDefinitionC],
           'test'
         );
@@ -331,37 +338,43 @@ describe('FeatureServiceRegistry', () => {
 
         expect(spyConsoleInfo.mock.calls).toEqual([
           [
-            'All required feature services have been successfully bound to the consumer "a".'
+            'The Feature Service "a" has been successfully registered by consumer "test".'
           ],
           [
-            'The feature service provider "a" has been successfully registered by the consumer "test".'
+            'The required Feature Service "a" has been successfully bound to consumer "b".'
           ],
           [
-            'All required feature services have been successfully bound to the consumer "b".'
+            'The Feature Service "b" has been successfully registered by consumer "test".'
           ],
           [
-            'The feature service provider "b" has been successfully registered by the consumer "test".'
+            'The required Feature Service "a" has been successfully bound to consumer "c".'
           ],
           [
-            'All required feature services have been successfully bound to the consumer "c".'
+            'The required Feature Service "b" has been successfully bound to consumer "c".'
           ],
           [
-            'The feature service provider "c" has been successfully registered by the consumer "test".'
+            'The Feature Service "c" has been successfully registered by consumer "test".'
           ],
           [
-            'All required feature services have been successfully bound to the consumer "foo".'
+            'The required Feature Service "a" has been successfully bound to consumer "foo".'
           ],
           [
-            'The required feature service of the provider "b" has been successfully unbound from the consumer "foo".'
+            'The required Feature Service "b" has been successfully bound to consumer "foo".'
           ],
           [
-            'The required feature service of the provider "c" has been successfully unbound from the consumer "foo".'
+            'The required Feature Service "c" has been successfully bound to consumer "foo".'
+          ],
+          [
+            'The required Feature Service "b" has been successfully unbound from consumer "foo".'
+          ],
+          [
+            'The required Feature Service "c" has been successfully unbound from consumer "foo".'
           ]
         ]);
 
         expect(spyConsoleError.mock.calls).toEqual([
           [
-            'The required feature service of the provider "a" could not be unbound from the consumer "foo".',
+            'The required Feature Service "a" could not be unbound from consumer "foo".',
             mockError
           ]
         ]);
@@ -374,7 +387,7 @@ describe('FeatureServiceRegistry', () => {
 
         expect(() => bindings.unbind()).toThrowError(
           new Error(
-            'All required feature services are already unbound from the consumer "a".'
+            'All required Feature Services are already unbound from consumer "a".'
           )
         );
       });
@@ -388,7 +401,7 @@ describe('FeatureServiceRegistry', () => {
 
         expect(() => bindings.unbind()).toThrowError(
           new Error(
-            'All required feature services are already unbound from the consumer "a".'
+            'All required Feature Services are already unbound from consumer "a".'
           )
         );
       });

@@ -26,7 +26,7 @@ describe('integration test: "commonjs module loader"', () => {
 
   afterAll(done => server.close(done));
 
-  it('loads the server-side rendered feature app HTML', async () => {
+  it('loads the server-side rendered Feature App HTML', async () => {
     await expect(page).toMatch('Hello, World!');
   });
 });

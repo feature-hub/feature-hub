@@ -5,6 +5,7 @@ import {
   FeatureServiceRegistryLike,
   FeatureServices
 } from './feature-service-registry';
+import {createUid} from './internal/create-uid';
 import {isFeatureAppModule} from './internal/is-feature-app-module';
 
 export interface FeatureAppEnvironment<
@@ -71,7 +72,7 @@ export interface FeatureAppManagerOptions {
 }
 
 type FeatureAppModuleUrl = string;
-type FeatureAppScopeId = string;
+type FeatureAppUid = string;
 
 export class FeatureAppManager implements FeatureAppManagerLike {
   private readonly asyncFeatureAppDefinitions = new Map<
@@ -84,7 +85,7 @@ export class FeatureAppManager implements FeatureAppManagerLike {
   >();
 
   private readonly featureAppScopes = new Map<
-    FeatureAppScopeId,
+    FeatureAppUid,
     FeatureAppScope<unknown>
   >();
 
@@ -112,15 +113,15 @@ export class FeatureAppManager implements FeatureAppManagerLike {
     idSpecifier?: string
   ): FeatureAppScope<TFeatureApp> {
     const {id: featureAppId} = featureAppDefinition;
-    const featureAppScopeId = JSON.stringify({featureAppId, idSpecifier});
+    const featureAppUid = createUid(featureAppId, idSpecifier);
 
-    let featureAppScope = this.featureAppScopes.get(featureAppScopeId);
+    let featureAppScope = this.featureAppScopes.get(featureAppUid);
 
     if (!featureAppScope) {
       this.registerOwnFeatureServices(featureAppDefinition);
 
       const deleteFeatureAppScope = () =>
-        this.featureAppScopes.delete(featureAppScopeId);
+        this.featureAppScopes.delete(featureAppUid);
 
       featureAppScope = this.createFeatureAppScope(
         featureAppDefinition,
@@ -128,7 +129,7 @@ export class FeatureAppManager implements FeatureAppManagerLike {
         deleteFeatureAppScope
       );
 
-      this.featureAppScopes.set(featureAppScopeId, featureAppScope);
+      this.featureAppScopes.set(featureAppUid, featureAppScope);
     }
 
     return featureAppScope as FeatureAppScope<TFeatureApp>;
@@ -157,14 +158,14 @@ export class FeatureAppManager implements FeatureAppManagerLike {
       loadModule(url).then(featureAppModule => {
         if (!isFeatureAppModule(featureAppModule)) {
           throw new Error(
-            `The feature app module at url ${JSON.stringify(
+            `The Feature App module for the url ${JSON.stringify(
               url
-            )} is invalid. A feature app module must have a feature app definition as default export. A feature app definition is an object with at least an \`id\` string and a \`create\` method.`
+            )} is invalid. A Feature App module must have a Feature App definition as default export. A Feature App definition is an object with at least an \`id\` string and a \`create\` method.`
           );
         }
 
         console.info(
-          `The feature app module for the url ${JSON.stringify(
+          `The Feature App module for the url ${JSON.stringify(
             url
           )} has been successfully loaded.`
         );
@@ -186,7 +187,7 @@ export class FeatureAppManager implements FeatureAppManagerLike {
     }
 
     if (featureAppDefinition.ownFeatureServiceDefinitions) {
-      this.registry.registerProviders(
+      this.registry.registerFeatureServices(
         featureAppDefinition.ownFeatureServiceDefinitions,
         featureAppDefinition.id
       );
@@ -204,6 +205,7 @@ export class FeatureAppManager implements FeatureAppManagerLike {
   ): FeatureAppScope<TFeatureApp> {
     const {configs} = this.options;
     const config = configs && configs[featureAppDefinition.id];
+    const featureAppUid = createUid(featureAppDefinition.id, idSpecifier);
 
     const binding = this.registry.bindFeatureServices(
       featureAppDefinition,
@@ -217,15 +219,9 @@ export class FeatureAppManager implements FeatureAppManagerLike {
     });
 
     console.info(
-      idSpecifier
-        ? `The feature app scope for the ID ${JSON.stringify(
-            featureAppDefinition.id
-          )} with the specifier ${JSON.stringify(
-            idSpecifier
-          )} has been successfully created.`
-        : `The feature app scope for the ID ${JSON.stringify(
-            featureAppDefinition.id
-          )} has been successfully created.`
+      `The Feature App ${JSON.stringify(
+        featureAppUid
+      )} has been successfully created.`
     );
 
     let destroyed = false;
@@ -233,10 +229,8 @@ export class FeatureAppManager implements FeatureAppManagerLike {
     const destroy = () => {
       if (destroyed) {
         throw new Error(
-          `The feature app scope for the ID ${JSON.stringify(
-            featureAppDefinition.id
-          )} and its specifier ${JSON.stringify(
-            idSpecifier
+          `The Feature App ${JSON.stringify(
+            featureAppUid
           )} could not be destroyed.`
         );
       }

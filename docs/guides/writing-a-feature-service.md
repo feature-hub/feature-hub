@@ -101,7 +101,7 @@ const myFeatureServiceDefinition = {
   create(env) {
     let count = env.config.initialCount || 0;
 
-    const v1 = uniqueConsumerId => ({
+    const v1 = consumerUid => ({
       featureService: {
         plus() {
           count += 1;
@@ -129,7 +129,7 @@ const myFeatureServiceDefinition = {
   create(env) {
     let count = env.config.initialCount || 0;
 
-    const v1 = uniqueConsumerId => ({
+    const v1 = consumerUid => ({
       featureService: {
         plus() {
           count += 1;
@@ -176,7 +176,7 @@ const myFeatureServiceDefinition = {
     const decrement = () => void --count;
     const increment = () => void ++count;
 
-    const v1 = uniqueConsumerId => ({
+    const v1 = consumerUid => ({
       featureService: {
         getCount,
 
@@ -192,7 +192,7 @@ const myFeatureServiceDefinition = {
       }
     });
 
-    const v2 = uniqueConsumerId => ({
+    const v2 = consumerUid => ({
       featureService: {getCount, increment, decrement}
     });
 
@@ -220,21 +220,21 @@ const myFeatureServiceDefinition = {
     // Shared state lives here.
     let consumerCounts = {};
 
-    const v1 = uniqueConsumerId => {
+    const v1 = consumerUid => {
       // Consumer-specific state lives here.
-      consumerCounts[uniqueConsumerId] = 0;
+      consumerCounts[consumerUid] = 0;
 
       const featureService = {
         increment() {
-          consumerCounts[uniqueConsumerId] += 1;
+          consumerCounts[consumerUid] += 1;
         },
 
         decrement() {
-          consumerCounts[uniqueConsumerId] -= 1;
+          consumerCounts[consumerUid] -= 1;
         },
 
         getCount() {
-          return consumerCounts[uniqueConsumerId];
+          return consumerCounts[consumerUid];
         },
 
         getTotalCount() {
@@ -247,7 +247,7 @@ const myFeatureServiceDefinition = {
 
       const unbind = () => {
         // Cleaning up the consumer-specific state.
-        delete consumerCounts[uniqueConsumerId];
+        delete consumerCounts[consumerUid];
       };
 
       return {featureService, unbind};

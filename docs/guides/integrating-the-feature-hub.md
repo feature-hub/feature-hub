@@ -39,7 +39,7 @@ const featureServiceDefinitions = [
   someFeatureServiceDefinition2
 ];
 
-registry.registerProviders(featureServiceDefinitions, 'acme:integrator');
+registry.registerFeatureServices(featureServiceDefinitions, 'acme:integrator');
 
 const manager = new FeatureAppManager(registry);
 ```
@@ -47,7 +47,7 @@ const manager = new FeatureAppManager(registry);
 **Note:** The integrator needs a self-selected but unique consumer ID to
 register or [consume][consuming-feature-services] Feature Services (in the
 example above it is `'acme:integrator'`). All Feature Services [registered
-together][faq-1] using the `registerProviders` method of the
+together][faq-1] using the `registerFeatureServices` method of the
 `FeatureServiceRegistry` are automatically sorted topologically and therefore do
 not need to be registered in the correct order.
 
@@ -278,7 +278,10 @@ const featureServiceDefinitions = [
   someFeatureServiceDefinition2
 ];
 
-registry.registerProviders(featureServiceDefinitions, integratorDefinition.id);
+registry.registerFeatureServices(
+  featureServiceDefinitions,
+  integratorDefinition.id
+);
 
 const {featureServices} = registry.bindFeatureServices(integratorDefinition);
 const someFeatureService2 = featureServices[someFeatureServiceDefinition2.id];
