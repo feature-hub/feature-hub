@@ -6,8 +6,8 @@ sidebar_label: Reducing the Bundle Size
 
 To minimize the amount of code shipped to the client, common npm dependencies
 can be [shared][sharing-npm-dependencies] between Feature Apps and Feature
-Services. In addition, code can be dynamically loaded using webpack's dynamic
-code splitting technique.
+Services. In addition, code can be dynamically loaded using dynamic code
+splitting.
 
 Although it is generally possible to integrate Feature Apps built using
 different frontend technologies (e.g. Vue.js, Angular, Web Components), this is
