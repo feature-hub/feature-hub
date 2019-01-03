@@ -47,7 +47,7 @@ export class FeatureAppContainer extends React.PureComponent<
 
       if (!isFeatureApp(this.featureAppScope.featureApp)) {
         throw new Error(
-          'Invalid feature app found. The feature app must be an object with either 1) a `render` method that returns a react element, or 2) an `attachTo` method that accepts a container DOM element.'
+          'Invalid Feature App found. The Feature App must be an object with either 1) a `render` method that returns a React element, or 2) an `attachTo` method that accepts a container DOM element.'
         );
       }
 
@@ -56,7 +56,7 @@ export class FeatureAppContainer extends React.PureComponent<
       console.error(error);
 
       if (!inBrowser) {
-        // TODO: we should only throw for "mission critical" feature apps ...
+        // TODO: we should only throw for "mission critical" Feature Apps ...
         throw error;
       }
     }

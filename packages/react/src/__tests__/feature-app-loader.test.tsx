@@ -101,7 +101,7 @@ describe('FeatureAppLoader', () => {
     });
   });
 
-  describe('when a feature app definition is synchronously available', () => {
+  describe('when a Feature App definition is synchronously available', () => {
     let mockFeatureAppDefinition: FeatureAppDefinition<unknown>;
 
     beforeEach(() => {
@@ -134,11 +134,11 @@ describe('FeatureAppLoader', () => {
     });
   });
 
-  describe('when the async feature app definition synchronously has an error', () => {
+  describe('when the async Feature App definition synchronously has an error', () => {
     let mockError: Error;
 
     beforeEach(() => {
-      mockError = new Error('Failed to load feature app module.');
+      mockError = new Error('Failed to load Feature App module.');
 
       mockAsyncFeatureAppDefinition = new AsyncValue(
         Promise.reject(mockError),
@@ -160,14 +160,14 @@ describe('FeatureAppLoader', () => {
 
       expect(spyConsoleError.mock.calls).toEqual([
         [
-          'The feature app for the src "/test.js" and the ID specifier "testIdSpecifier" could not be rendered.',
+          'The Feature App for the src "/test.js" and the ID specifier "testIdSpecifier" could not be rendered.',
           mockError
         ]
       ]);
     });
   });
 
-  describe('when a feature app definition is loaded asynchronously', () => {
+  describe('when a Feature App definition is loaded asynchronously', () => {
     let mockFeatureAppDefinition: FeatureAppDefinition<unknown>;
 
     beforeEach(() => {
@@ -227,11 +227,11 @@ describe('FeatureAppLoader', () => {
     });
   });
 
-  describe('when a feature app definition fails to load asynchronously', () => {
+  describe('when a Feature App definition fails to load asynchronously', () => {
     let mockError: Error;
 
     beforeEach(() => {
-      mockError = new Error('Failed to load feature app module.');
+      mockError = new Error('Failed to load Feature App module.');
 
       mockAsyncFeatureAppDefinition = new AsyncValue(
         new Promise<FeatureAppDefinition<unknown>>((_, reject) =>
@@ -262,7 +262,7 @@ describe('FeatureAppLoader', () => {
 
       expect(spyConsoleError.mock.calls).toEqual([
         [
-          'The feature app for the src "/test.js" and the ID specifier "testIdSpecifier" could not be rendered.',
+          'The Feature App for the src "/test.js" and the ID specifier "testIdSpecifier" could not be rendered.',
           mockError
         ]
       ]);
@@ -286,7 +286,7 @@ describe('FeatureAppLoader', () => {
 
         expect(spyConsoleError.mock.calls).toEqual([
           [
-            'The feature app for the src "/test.js" could not be rendered.',
+            'The Feature App for the src "/test.js" could not be rendered.',
             mockError
           ]
         ]);

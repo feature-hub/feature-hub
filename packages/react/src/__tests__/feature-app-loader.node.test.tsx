@@ -44,7 +44,7 @@ describe('FeatureAppLoader (on Node.js)', () => {
   });
 
   describe('without a nodeSrc', () => {
-    it('does not try to load a feature app definition', () => {
+    it('does not try to load a Feature App definition', () => {
       shallow(<FeatureAppLoader manager={mockManager} src="example.js" />, {
         disableLifecycleMethods: true
       });
@@ -54,7 +54,7 @@ describe('FeatureAppLoader (on Node.js)', () => {
   });
 
   describe('with a nodeSrc', () => {
-    it('loads a feature app definition for the nodeSrc', () => {
+    it('loads a Feature App definition for the nodeSrc', () => {
       shallow(
         <FeatureAppLoader
           manager={mockManager}
@@ -71,11 +71,11 @@ describe('FeatureAppLoader (on Node.js)', () => {
       ]);
     });
 
-    describe('when the async feature app definition synchronously has an error', () => {
+    describe('when the async Feature App definition synchronously has an error', () => {
       let mockError: Error;
 
       beforeEach(() => {
-        mockError = new Error('Failed to load feature app module.');
+        mockError = new Error('Failed to load Feature App module.');
         mockAsyncFeatureAppDefinition.error = mockError;
       });
 
@@ -96,7 +96,7 @@ describe('FeatureAppLoader (on Node.js)', () => {
 
         expect(spyConsoleError.mock.calls).toEqual([
           [
-            'The feature app for the src "example-node.js" and the ID specifier "testIdSpecifier" could not be rendered.',
+            'The Feature App for the src "example-node.js" and the ID specifier "testIdSpecifier" could not be rendered.',
             mockError
           ]
         ]);
