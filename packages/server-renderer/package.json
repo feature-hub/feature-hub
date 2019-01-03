@@ -14,9 +14,11 @@
   "author": "SinnerSchrader Deutschland GmbH",
   "files": [
     "lib",
+    "esm",
     "!__tests__"
   ],
   "main": "lib/index.js",
+  "module": "esm/index.js",
   "typings": "lib/index.d.ts",
   "dependencies": {
     "@feature-hub/core": "^0.10.0"

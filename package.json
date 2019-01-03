@@ -6,8 +6,11 @@
     "packages/*"
   ],
   "scripts": {
-    "precompile": "lerna exec --parallel -- rimraf lib",
-    "compile": "lerna exec -- tsc --project tsconfig.lib.json",
+    "compile": "run-p compile:**",
+    "precompile:cjs": "lerna exec --parallel -- rimraf lib",
+    "compile:cjs": "lerna exec -- tsc --project tsconfig.lib.json",
+    "precompile:esm": "lerna exec --no-private --parallel -- rimraf esm",
+    "compile:esm": "lerna exec --no-private -- tsc --project tsconfig.esm.json",
     "format": "prettier --write '**/*.{js,json,md,ts,tsx,yml}'",
     "lint": "lerna exec --parallel -- tslint --config tslint.json --project tsconfig.json --format verbose",
     "sort-package-jsons": "sort-package-json package.json packages/*/package.json",
