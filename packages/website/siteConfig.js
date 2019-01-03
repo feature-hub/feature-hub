@@ -18,7 +18,11 @@ const siteConfig = {
   customDocsPath: '../docs',
   scripts: [{src: '/external-sidebar-links.js', async: true}],
   headerIcon: 'img/logo.svg',
-  favicon: 'img/favicon.png'
+  favicon: 'img/favicon.png',
+  editUrl: 'https://github.com/sinnerschrader/feature-hub/edit/master/docs/',
+  enableUpdateBy: true,
+  enableUpdateTime: true,
+  scrollToTop: true
 };
 
 module.exports = siteConfig;
