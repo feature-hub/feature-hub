@@ -5,7 +5,8 @@ sidebar_label: Sharing NPM Dependencies
 ---
 
 When using the [AMD][amd] module loader, the integrator can provide shared npm
-dependencies to Feature Apps using the `defineExternals` function:
+dependencies to Feature Apps and Feature Services using the `defineExternals`
+function:
 
 ```js
 import {defineExternals, loadAmdModule} from '@feature-hub/module-loader';
@@ -19,8 +20,9 @@ defineExternals({react: React, 'react-loadable': Loadable});
 const manager = new FeatureAppManager(registry, {moduleLoader: loadAmdModule});
 ```
 
-Feature Apps should define these externals in their build config. For example,
-defining `react` as external in a webpack config would look like this:
+Feature Apps and Feature Services should define these externals in their build
+config. For example, defining `react` as external in a webpack config would look
+like this:
 
 ```json
 {
