@@ -22,7 +22,7 @@ supports React micro frontends as first-class citizens, but also allows the
 integration of micro frontends that are built with any other frontend technology
 (e.g. Vue.js, Angular, Web Components). The use **without React** is also
 possible, but requires a custom implementation of the ability to place micro
-frontends on a web site.
+frontends on a web page.
 
 ## Feature Apps and Feature Services
 
