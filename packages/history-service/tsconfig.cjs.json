@@ -2,7 +2,7 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "paths": {},
-    "outDir": "lib",
+    "outDir": "lib/cjs",
     "rootDir": "src"
   }
 }

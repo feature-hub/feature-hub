@@ -34,7 +34,6 @@ by its terms.
 - `yarn watch:test` — Watches all tests.
 - `yarn watch:demo <demo-name>` — Watches the given
   [demo][demos-package-getting-started].
-- `yarn watch:compile` — Watches all sources.
 - `yarn watch:website` — Watches the website.
 - `yarn test` — Executes all tests.
 - `yarn compile` — Compiles all sources.
