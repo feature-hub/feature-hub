@@ -20,6 +20,9 @@ function createDocUrl(doc, {baseUrl, docsUrl}, language = '') {
 const SplashContainer = ({children}) => (
   <div className="homeContainer">
     <div className="homeSplashFade">
+      <div className="projectLogo">
+        <img src="/img/logo.svg" alt="Logo" />
+      </div>
       <div className="wrapper homeWrapper">{children}</div>
     </div>
   </div>
