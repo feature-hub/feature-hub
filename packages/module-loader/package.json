@@ -2,7 +2,7 @@
   "name": "@feature-hub/module-loader",
   "version": "0.10.0",
   "description": "A universal module loader.",
-  "homepage": "https://feature-hub.netlify.com/",
+  "homepage": "https://feature-hub.io/",
   "bugs": {
     "url": "https://github.com/sinnerschrader/feature-hub/issues"
   },

@@ -263,5 +263,4 @@ unchanged location of this consumer.
 
 [browser-history-api]: https://developer.mozilla.org/en-US/docs/Web/API/History
 [history-npm]: https://www.npmjs.com/package/history
-[history-service-api]:
-  https://feature-hub.netlify.com/@feature-hub/history-service/
+[history-service-api]: https://feature-hub.io/@feature-hub/history-service/

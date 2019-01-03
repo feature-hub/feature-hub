@@ -11,6 +11,6 @@ terms of the [MIT License][license].
 
 [docusaurus]: https://docusaurus.io/en/
 [license]: https://github.com/sinnerschrader/feature-hub/blob/master/LICENSE
-[website]: https://feature-hub.netlify.com/
+[website]: https://feature-hub.io/
 [website-badge]:
   https://img.shields.io/badge/Website-Feature%20Hub-%234502da.svg

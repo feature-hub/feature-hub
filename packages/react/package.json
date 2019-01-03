@@ -2,7 +2,7 @@
   "name": "@feature-hub/react",
   "version": "0.10.0",
   "description": "A Feature Hub integrator for React.",
-  "homepage": "https://feature-hub.netlify.com/",
+  "homepage": "https://feature-hub.io/",
   "bugs": {
     "url": "https://github.com/sinnerschrader/feature-hub/issues"
   },
