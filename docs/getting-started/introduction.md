@@ -18,11 +18,12 @@ web applications with multiple teams and different technologies.
 
 The Feature Hub includes a collection of npm packages that when used together
 provide a full-fledged solution for composing micro frontends. Out of the box it
-supports React micro frontends as first-class citizens, but also allows the
-integration of micro frontends that are built with any other frontend technology
-(e.g. Vue.js, Angular, Web Components). The use **without React** is also
-possible, but requires a custom implementation of the ability to place micro
-frontends on a web page.
+supports React micro frontends as [first-class
+citizens][placing-feature-apps-on-a-web-page-using-react], but also allows the
+integration of micro frontends that are built with any [other frontend
+technology][dom-feature-app] (e.g. Vue.js, Angular, Web Components). The use
+**without React** is also possible, but requires a custom implementation of the
+ability to place micro frontends on a web page.
 
 ## Feature Apps and Feature Services
 
@@ -54,7 +55,10 @@ There are three different roles in a Feature Hub integration environment:
 3.  A **consumer** is everyone who consumes Feature Services. This can be a
     Feature App, other Feature Services, or even the integrator.
 
+[dom-feature-app]: /docs/guides/writing-a-feature-app#dom-feature-app
 [our-requirements-for-micro-frontends]:
   /docs/getting-started/motivation#our-requirements-for-micro-frontends
+[placing-feature-apps-on-a-web-page-using-react]:
+  /docs/guides/integrating-the-feature-hub#placing-feature-apps-on-a-web-page-using-react
 [thoughtworks]: https://www.thoughtworks.com/de/radar/techniques/micro-frontends
 [versioned-api]: /docs/guides/writing-a-feature-service#versioned-api
