@@ -4,8 +4,8 @@ title: Writing a Feature App
 sidebar_label: Writing a Feature App
 ---
 
-A Feature App is described by a definition object. It consists of an `id`, an
-optional `dependencies` object, and a `create` method:
+A Feature App is described by a consumer definition object. It consists of an
+`id`, an optional `dependencies` object, and a `create` method:
 
 ```js
 const myFeatureAppDefinition = {
@@ -172,45 +172,9 @@ Feature Services by the integrator.
 **Note:** If the Feature Service to be registered has already been registered,
 the new Feature Service is ignored and a warning is emitted.
 
-## Dynamic Code Splitting With Webpack
-
-Feature Apps can use webpack's [dynamic code splitting][dynamic-imports]
-technique using the `import()` syntax.
-
-To make this work for multiple Feature Apps living together on the Feature Hub
-two settings need to be made:
-
-1. Set a unique value for [`output.jsonpFunction`][output-jsonpfunction], e.g.
-   `'webpackJsonpMyFeatureApp'`.
-
-1. Set [`output.publicPath`][output-publicpath] to the public URL (relative or
-   absolute) of the output directory, i.e. where all the Feature App chunks are
-   hosted.
-
-   Since this is not always known at compile time, it can be left blank and set
-   dynamically at runtime in the Feature App's entry file using the global
-   variable `__webpack_public_path__`:
-
-   ```js
-   const myFeatureAppDefinition = {
-     id: 'acme:my-feature-app',
-
-     create(env) {
-       __webpack_public_path__ = '/path/to/my-feature-app';
-
-       // ...
-     }
-   };
-   ```
-
-[dynamic-imports]: https://webpack.js.org/guides/code-splitting/#dynamic-imports
 [feature-service-binder]:
   /docs/guides/writing-a-feature-service#feature-service-binder
 [idspecifier]: /docs/guides/integrating-the-feature-hub#idspecifier
-[output-jsonpfunction]:
-  https://webpack.js.org/configuration/output/#output-jsonpfunction
-[output-publicpath]:
-  https://webpack.js.org/configuration/output/#output-publicpath
 [providing-configs]: /docs/guides/integrating-the-feature-hub#providing-configs
 [react-api]: https://feature-hub.netlify.com/@feature-hub/react/
 [semver]: https://semver.org

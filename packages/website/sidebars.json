@@ -10,7 +10,8 @@
       "guides/writing-a-feature-app",
       "guides/writing-a-feature-service",
       "guides/sharing-the-browser-history",
-      "guides/sharing-npm-dependencies"
+      "guides/sharing-npm-dependencies",
+      "guides/reducing-the-bundle-size"
     ],
     "Help": ["help/faq"]
   }
