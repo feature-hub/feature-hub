@@ -30,11 +30,11 @@ Copyright (c) 2018-2019 SinnerSchrader Deutschland GmbH. Released under the
 terms of the [MIT License][license].
 
 [api]: https://feature-hub.io/@feature-hub/server-renderer/
-[api-badge]: https://img.shields.io/badge/API-Feature%20Hub-%234502da.svg
+[api-badge]: https://img.shields.io/badge/API-Feature%20Hub-%234811ca.svg
 [issue-25]: https://github.com/sinnerschrader/feature-hub/issues/25
 [license]: https://github.com/sinnerschrader/feature-hub/blob/master/LICENSE
 [package-badge]: https://img.shields.io/npm/v/@feature-hub/server-renderer.svg
 [package-npm]: https://www.npmjs.com/package/@feature-hub/server-renderer
 [website]: https://feature-hub.io/
 [website-badge]:
-  https://img.shields.io/badge/Website-Feature%20Hub-%234502da.svg
+  https://img.shields.io/badge/Website-Feature%20Hub-%236215a5.svg

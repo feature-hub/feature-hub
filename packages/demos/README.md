@@ -34,4 +34,4 @@ terms of the [MIT License][license].
 [license]: https://github.com/sinnerschrader/feature-hub/blob/master/LICENSE
 [website]: https://feature-hub.io/
 [website-badge]:
-  https://img.shields.io/badge/Website-Feature%20Hub-%234502da.svg
+  https://img.shields.io/badge/Website-Feature%20Hub-%236215a5.svg
