@@ -20,8 +20,8 @@ multiple Feature Apps that share state through Feature Services:
    `FeatureServiceRegistry`.
 1. A **React integrator** can then use the React `FeatureAppLoader` or the React
    `FeatureAppContainer` (both from the [`@feature-hub/react`
-   package][react-api]) to place Feature Apps onto the web page. Each of them
-   need the `FeatureAppManager` singleton instance to render their Feature App.
+   package][react-api]) to place Feature Apps on a web page. Each of them need
+   the `FeatureAppManager` singleton instance to render their Feature App.
 
 Typical integrator bootstrap code would look like this:
 
