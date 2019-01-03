@@ -2,7 +2,6 @@
 coverage
 lerna-debug.log
 lib
-esm
 node_modules
 npm-debug.log
 package-lock.json
