@@ -127,7 +127,7 @@ describe('defineHistoryService', () => {
           );
 
           expect(consoleWarnSpy).toHaveBeenCalledWith(
-            'createBrowserHistory was called multiple times by the consumer "test:1". Returning the same history instance as before.'
+            'createBrowserHistory was called multiple times by consumer "test:1". Returning the same history instance as before.'
           );
         });
       });

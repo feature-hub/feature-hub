@@ -2,19 +2,19 @@ import {RootLocationTransformer} from '@feature-hub/history-service';
 import {createPath} from 'history';
 
 export const rootLocationTransformer: RootLocationTransformer = {
-  getConsumerPathFromRootLocation: (rootLocation, consumerId) => {
+  getConsumerPathFromRootLocation: (rootLocation, consumerUid) => {
     const searchParams = new URLSearchParams(rootLocation.search);
 
-    return searchParams.get(consumerId) || undefined;
+    return searchParams.get(consumerUid) || undefined;
   },
 
-  createRootLocation: (consumerLocation, rootLocation, consumerId) => {
+  createRootLocation: (consumerLocation, rootLocation, consumerUid) => {
     const searchParams = new URLSearchParams(rootLocation.search);
 
     if (consumerLocation) {
-      searchParams.set(consumerId, createPath(consumerLocation));
+      searchParams.set(consumerUid, createPath(consumerLocation));
     } else {
-      searchParams.delete(consumerId);
+      searchParams.delete(consumerUid);
     }
 
     const {pathname, state} = rootLocation;

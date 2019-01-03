@@ -7,19 +7,19 @@ import {
 
 export interface RootLocationOptions {
   readonly consumerPathsQueryParamName: string;
-  readonly primaryConsumerId?: string;
+  readonly primaryConsumerUid?: string;
 }
 
 export interface RootLocationTransformer {
   getConsumerPathFromRootLocation(
     rootLocation: history.Location,
-    consumerId: string
+    consumerUid: string
   ): string | undefined;
 
   createRootLocation(
     consumerLocation: history.Location | undefined,
     rootLocation: history.Location,
-    consumerId: string
+    consumerUid: string
   ): history.LocationDescriptorObject;
 }
 
@@ -60,7 +60,7 @@ function createRootLocationForPrimaryConsumer(
 function createRootLocationForOtherConsumer(
   rootLocation: history.Location,
   consumerLocation: history.Location | undefined,
-  consumerId: string,
+  consumerUid: string,
   consumerPathsQueryParamName: string
 ): history.LocationDescriptorObject {
   const allSearchParams = createSearchParams(rootLocation);
@@ -69,10 +69,10 @@ function createRootLocationForOtherConsumer(
   const newConsumerPaths = consumerLocation
     ? addConsumerPath(
         consumerPaths,
-        consumerId,
+        consumerUid,
         history.createPath(consumerLocation)
       )
-    : removeConsumerPath(consumerPaths, consumerId);
+    : removeConsumerPath(consumerPaths, consumerUid);
 
   if (newConsumerPaths) {
     allSearchParams.set(consumerPathsQueryParamName, newConsumerPaths);
@@ -98,10 +98,10 @@ export function createRootLocationTransformer(
   return {
     getConsumerPathFromRootLocation: (
       rootLocation: history.Location,
-      consumerId: string
+      consumerUid: string
     ): string | undefined => {
-      const {consumerPathsQueryParamName, primaryConsumerId} = options;
-      const isPrimaryConsumer = consumerId === primaryConsumerId;
+      const {consumerPathsQueryParamName, primaryConsumerUid} = options;
+      const isPrimaryConsumer = consumerUid === primaryConsumerUid;
       const searchParams = createSearchParams(rootLocation);
 
       if (isPrimaryConsumer) {
@@ -118,17 +118,17 @@ export function createRootLocationTransformer(
           return undefined;
         }
 
-        return getConsumerPath(consumerPaths, consumerId);
+        return getConsumerPath(consumerPaths, consumerUid);
       }
     },
 
     createRootLocation: (
       consumerLocation: history.Location | undefined,
       rootLocation: history.Location,
-      consumerId: string
+      consumerUid: string
     ): history.LocationDescriptorObject => {
-      const {consumerPathsQueryParamName, primaryConsumerId} = options;
-      const isPrimaryConsumer = consumerId === primaryConsumerId;
+      const {consumerPathsQueryParamName, primaryConsumerUid} = options;
+      const isPrimaryConsumer = consumerUid === primaryConsumerUid;
 
       if (isPrimaryConsumer) {
         return createRootLocationForPrimaryConsumer(
@@ -140,7 +140,7 @@ export function createRootLocationTransformer(
         return createRootLocationForOtherConsumer(
           rootLocation,
           consumerLocation,
-          consumerId,
+          consumerUid,
           consumerPathsQueryParamName
         );
       }

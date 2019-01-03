@@ -96,7 +96,9 @@ describe('HistoryService#create (on Node.js)', () => {
     describe('when the server renderer provides no server request', () => {
       it('throws an error', () => {
         expect(() => createHistories(undefined)).toThrowError(
-          'Static history can not be created without a server request.'
+          new Error(
+            'Static history can not be created without a server request.'
+          )
         );
       });
     });
@@ -108,7 +110,7 @@ describe('HistoryService#create (on Node.js)', () => {
         );
 
         expect(consoleWarnSpy).toHaveBeenCalledWith(
-          'createStaticHistory was called multiple times by the consumer "test:1". Returning the same history instance as before.'
+          'createStaticHistory was called multiple times by consumer "test:1". Returning the same history instance as before.'
         );
       });
     });
