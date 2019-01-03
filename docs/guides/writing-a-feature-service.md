@@ -4,8 +4,8 @@ title: Writing a Feature Service
 sidebar_label: Writing a Feature Service
 ---
 
-A Feature Service is described by a definition object. It consists of an `id`,
-an optional `dependencies` object, and a `create` method:
+A Feature Service is described by a provider definition object. It consists of
+an `id`, an optional `dependencies` object, and a `create` method:
 
 ```js
 const myFeatureServiceDefinition = {

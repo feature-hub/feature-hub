@@ -46,9 +46,10 @@ const manager = new FeatureAppManager(registry);
 
 **Note:** The integrator needs a self-selected but unique consumer ID to
 register or [consume][consuming-feature-services] Feature Services (in the
-example above it is `'acme:integrator'`). All Feature services registered
-together via the `registerProvider` method are automatically sorted
-topologically and therefore do not have to be registered in the correct order.
+example above it is `'acme:integrator'`). All Feature Services [registered
+together][faq-1] using the `registerProviders` method of the
+`FeatureServiceRegistry` are automatically sorted topologically and therefore do
+not need to be registered in the correct order.
 
 ## Module Loader
 
@@ -250,9 +251,9 @@ const someFeatureAppDefinition = {
 ## Consuming Feature Services
 
 Just like Feature Apps or Feature Services, the integrator itself can consume
-its own registered Feature Services. To do this, they need a description of
-themselves in the form of a definition object. Besides the self-selected but
-unique consumer `id`, this definition object contains a `dependencies` object.
+its own registered Feature Services. To do this, the integrator needs to define
+a consumer definition object for itself. Besides the self-selected but unique
+consumer `id`, this consumer definition object contains a `dependencies` object.
 The required Feature Services can then be instantiated (bound) using the
 `bindFeatureServices` method of the `FeatureServiceRegistry`:
 
@@ -289,5 +290,6 @@ someFeatureService2.foo(42);
 [consuming-feature-services]:
   /docs/guides/integrating-the-feature-hub#consuming-feature-services
 [core-api]: https://feature-hub.netlify.com/@feature-hub/core/
+[faq-1]: /docs/help/faq#can-the-integrator-register-feature-services-one-by-one
 [module-loader-api]: https://feature-hub.netlify.com/@feature-hub/module-loader/
 [react-api]: https://feature-hub.netlify.com/@feature-hub/react/
