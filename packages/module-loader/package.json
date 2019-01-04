@@ -16,8 +16,9 @@
     "lib",
     "!__tests__"
   ],
-  "main": "lib/index.js",
-  "typings": "lib/index.d.ts",
+  "main": "lib/cjs/index.js",
+  "module": "lib/esm/index.js",
+  "typings": "lib/cjs/index.d.ts",
   "dependencies": {
     "@feature-hub/core": "^0.10.0",
     "fs-extra": "^7.0.1",

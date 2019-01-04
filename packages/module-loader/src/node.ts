@@ -37,7 +37,7 @@ async function requireAsync(url: string): Promise<unknown> {
 
 /**
  * ```js
- * import {loadCommonJsModule} from '@feature-hub/module-loader/lib/node';
+ * import {loadCommonJsModule} from '@feature-hub/module-loader/lib/cjs/node';
  * ```
  */
 export const loadCommonJsModule: ModuleLoader = async (url: string) =>

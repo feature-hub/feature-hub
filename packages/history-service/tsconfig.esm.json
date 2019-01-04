@@ -1,8 +1,9 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
+    "module": "es6",
     "paths": {},
-    "outDir": "lib",
+    "outDir": "lib/esm",
     "rootDir": "src"
   }
 }
