@@ -22,7 +22,18 @@ Alternatively, a Feature Service could be implemented using [dynamic code
 splitting][dynamic-code-splitting]. The relevant code components would only be
 dynamically loaded when the Feature Service is used.
 
+## Can we integrate an existing Angular 2.0 application into the Feature Hub?
+
+Yes, but the application must first be [converted to a Feature
+App][writing-a-feature-app]. The [`@feature-hub/react`][react-api] package could
+be used to integrate the application as a [DOM Feature App][dom-feature-app].
+However, if no other React Feature Apps are to be integrated, it could make
+sense to use an integration solution without React.
+
 [own-feature-service-definitions]:
   /docs/guides/writing-a-feature-app#ownfeatureservicedefinitions
+[dom-feature-app]: /docs/guides/writing-a-feature-app#dom-feature-app
 [dynamic-code-splitting]:
   /docs/guides/reducing-the-bundle-size#dynamic-code-splitting-with-webpack
+[react-api]: /@feature-hub/react/
+[writing-a-feature-app]: /docs/guides/writing-a-feature-app
