@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="108px" height="108px" viewBox="0 0 108 108" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs>
+        <path d="M50,100 C22.43,100 0,77.57 0,50 C0,22.43 22.43,0 50,0 C77.57,0 100,22.43 100,50 C100,77.57 77.57,100 50,100" id="path-1"></path>
+        <filter x="-6.0%" y="-6.0%" width="112.0%" height="112.0%" filterUnits="objectBoundingBox" id="filter-2">
+            <feOffset dx="0" dy="0" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.2 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Feature_Hub" transform="translate(4.000000, 4.000000)">
+            <g id="circle">
+                <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                <use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-1"></use>
+            </g>
+            <g id="Group" transform="translate(31.000000, 26.000000)">
+                <path d="M33.6917,33.6283 C34.2147,34.1773 33.8597,35.1453 33.1347,35.1453 L6.0667,35.1453 C5.6227,35.1453 5.2617,34.7503 5.2617,34.2643 L5.2617,5.1823 L33.6917,33.6283 Z" id="Fill-1" fill="#FF0454"></path>
+                <path d="M38.929,-0.0002 L1.069,-0.0002 C0.479,-0.0002 3.19744231e-14,0.4738 3.19744231e-14,1.0578 L3.19744231e-14,46.4878 C3.19744231e-14,47.1328 0.532,47.5468 1.078,47.5468 C1.372,47.5468 1.67,47.4278 1.893,47.1608 L39.753,1.7308 C40.328,1.0408 39.833,-0.0002 38.929,-0.0002 M29.826,5.3248 L5.325,34.7248 L5.325,5.3248 L29.826,5.3248" id="Fill-3" fill="#5802CD"></path>
+                <path d="M18.722,18.6497 L5.367,34.6747 C5.503,34.9507 5.76,35.1447 6.067,35.1447 L11.907,35.1447 L22.501,22.4317 L18.722,18.6497 Z" id="Fill-6" fill="#570042"></path>
+            </g>
+        </g>
+    </g>
+</svg>

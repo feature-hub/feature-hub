@@ -10,8 +10,8 @@ integrator. In addition, code can be dynamically loaded using dynamic code
 splitting.
 
 Although it is generally possible to integrate Feature Apps built using
-different frontend technologies (e.g. Vue.js, Angular, Web Components), this is
-not recommended because it increases the bundle size significantly.
+different frontend technologies (e.g. React, Vue.js, Angular, Web Components),
+this is not recommended because it increases the bundle size significantly.
 
 ## Dynamic Code Splitting With Webpack
 
