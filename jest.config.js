@@ -18,6 +18,8 @@ module.exports = {
   moduleNameMapper: {
     '^@feature-hub/([^/]+)$': '<rootDir>/packages/$1/src/index.ts',
     '^@feature-hub/module-loader/lib/cjs/node$':
+      '<rootDir>/packages/module-loader/src/node.ts',
+    '^@feature-hub/module-loader/lib/esm/node$':
       '<rootDir>/packages/module-loader/src/node.ts'
   },
   modulePathIgnorePatterns: ['/lib'],
