@@ -2,12 +2,22 @@
 
 (() => {
   /**
+   * @param {(navGroups: Element) => void} callback
+   */
+  function findNavGroups(callback) {
+    document.addEventListener(
+      'DOMContentLoaded',
+      () => callback(document.querySelector('.navGroups')),
+      {once: true}
+    );
+  }
+
+  /**
+   * @param {Element} navGroups
    * @param {string} title
    * @param {({href: string, name: string})[]} links
    */
-  function renderNavGroup(title, links) {
-    const navGroups = document.querySelector('.navGroups');
-
+  function renderNavGroup(navGroups, title, links) {
     if (navGroups) {
       const navGroup = document.createElement('div');
       navGroup.className = 'navGroup';
@@ -35,17 +45,20 @@
     }
   }
 
-  renderNavGroup(
-    'Packages',
-    [
-      'core',
-      'react',
-      'module-loader',
-      'history-service',
-      'server-renderer'
-    ].map(name => ({
-      href: `/@feature-hub/${name}`,
-      name: `@feature-hub/${name}`
-    }))
+  findNavGroups(navGroups =>
+    renderNavGroup(
+      navGroups,
+      'Packages',
+      [
+        'core',
+        'react',
+        'module-loader',
+        'history-service',
+        'server-renderer'
+      ].map(name => ({
+        href: `/@feature-hub/${name}`,
+        name: `@feature-hub/${name}`
+      }))
+    )
   );
 })();
