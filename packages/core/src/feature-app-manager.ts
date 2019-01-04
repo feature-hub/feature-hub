@@ -158,14 +158,14 @@ export class FeatureAppManager implements FeatureAppManagerLike {
       loadModule(url).then(featureAppModule => {
         if (!isFeatureAppModule(featureAppModule)) {
           throw new Error(
-            `The Feature App module for the url ${JSON.stringify(
+            `The Feature App module at the url ${JSON.stringify(
               url
             )} is invalid. A Feature App module must have a Feature App definition as default export. A Feature App definition is an object with at least an \`id\` string and a \`create\` method.`
           );
         }
 
         console.info(
-          `The Feature App module for the url ${JSON.stringify(
+          `The Feature App module at the url ${JSON.stringify(
             url
           )} has been successfully loaded.`
         );

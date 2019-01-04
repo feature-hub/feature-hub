@@ -71,7 +71,7 @@ describe('FeatureAppManager', () => {
 
       expect(spyConsoleInfo.mock.calls).toEqual([
         [
-          'The Feature App module for the url "/example.js" has been successfully loaded.'
+          'The Feature App module at the url "/example.js" has been successfully loaded.'
         ]
       ]);
     });
@@ -108,7 +108,7 @@ describe('FeatureAppManager', () => {
 
         it('throws an error (and stores it on the async value)', async () => {
           const expectedError = new Error(
-            'The Feature App module for the url "/example.js" is invalid. A Feature App module must have a Feature App definition as default export. A Feature App definition is an object with at least an `id` string and a `create` method.'
+            'The Feature App module at the url "/example.js" is invalid. A Feature App module must have a Feature App definition as default export. A Feature App definition is an object with at least an `id` string and a `create` method.'
           );
 
           await expect(
