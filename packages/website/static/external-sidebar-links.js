@@ -60,7 +60,8 @@
       [
         'core',
         'react',
-        'module-loader',
+        'module-loader-amd',
+        'module-loader-commonjs',
         'history-service',
         'server-renderer'
       ].map(name => ({

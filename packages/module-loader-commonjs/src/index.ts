@@ -35,10 +35,5 @@ async function requireAsync(url: string): Promise<unknown> {
   return require(filename);
 }
 
-/**
- * ```js
- * import {loadCommonJsModule} from '@feature-hub/module-loader/lib/cjs/node';
- * ```
- */
 export const loadCommonJsModule: ModuleLoader = async (url: string) =>
   requireAsync(url);

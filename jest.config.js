@@ -6,8 +6,8 @@ module.exports = {
   collectCoverageFrom: [
     '**/packages/*/src/**/*.{ts,tsx}',
     '!**/packages/demos/src/**/*.{ts,tsx}',
-    // Covered by the integration test 'amd-module-loader'
-    '!**/packages/module-loader/src/index.ts'
+    // Covered by the integration test 'module-loader-amd'
+    '!**/packages/module-loader-amd/src/index.ts'
   ],
   coverageThreshold: {
     global: {branches: 100, functions: 100, lines: 100, statements: 100}
@@ -16,9 +16,7 @@ module.exports = {
   globalTeardown: 'jest-environment-puppeteer/teardown',
   moduleFileExtensions: ['js', 'json', 'ts', 'tsx'],
   moduleNameMapper: {
-    '^@feature-hub/([^/]+)$': '<rootDir>/packages/$1/src/index.ts',
-    '^@feature-hub/module-loader/lib/(?:cjs|esm)/node$':
-      '<rootDir>/packages/module-loader/src/node.ts'
+    '^@feature-hub/([^/]+)$': '<rootDir>/packages/$1/src/index.ts'
   },
   modulePathIgnorePatterns: ['/lib'],
   setupTestFrameworkScriptFile: '<rootDir>/scripts/setup-test-framework.js',
