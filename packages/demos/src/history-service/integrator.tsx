@@ -10,7 +10,7 @@ import {rootLocationTransformer} from './root-location-transformer';
 
 const registry = new FeatureServiceRegistry();
 
-registry.registerProviders(
+registry.registerFeatureServices(
   [
     defineServerRenderer(undefined),
     defineHistoryService(rootLocationTransformer)

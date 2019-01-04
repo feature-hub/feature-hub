@@ -25,7 +25,7 @@ describe('integration test: "amd module loader"', () => {
 
   afterAll(done => server.close(done));
 
-  it('loads the feature app with react as external', async () => {
+  it('loads the Feature App with React as external', async () => {
     await expect(page).toMatch('Hello, World!');
   });
 });

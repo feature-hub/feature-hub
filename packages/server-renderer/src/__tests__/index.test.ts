@@ -27,7 +27,7 @@ describe('defineServerRenderer', () => {
   });
 
   describe('#create', () => {
-    it('creates a shared feature service containing version 1.0', () => {
+    it('creates a shared Feature Service containing version 1.0', () => {
       const sharedServerRenderer = serverRendererDefinition.create(mockEnv);
 
       expect(sharedServerRenderer['1.0']).toBeDefined();

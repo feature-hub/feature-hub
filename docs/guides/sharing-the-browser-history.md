@@ -126,7 +126,7 @@ const featureServiceDefinitions = [
   defineServerRenderer()
 ];
 
-registry.registerProviders(featureServiceDefinitions, 'acme:integrator');
+registry.registerFeatureServices(featureServiceDefinitions, 'acme:integrator');
 ```
 
 On the server, the integrator defines the server renderer using the request. The
@@ -149,7 +149,7 @@ const featureServiceDefinitions = [
   defineServerRenderer(request)
 ];
 
-registry.registerProviders(featureServiceDefinitions, 'acme:integrator');
+registry.registerFeatureServices(featureServiceDefinitions, 'acme:integrator');
 ```
 
 ## Root Location Transformer
