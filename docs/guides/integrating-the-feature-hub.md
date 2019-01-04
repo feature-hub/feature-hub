@@ -4,7 +4,7 @@ title: Integrating the Feature Hub
 sidebar_label: Integrating the Feature Hub
 ---
 
-The [`@feature-hub/core` package][core-api] provides the following two major
+The [`@feature-hub/core`][core-api] package provides the following two major
 building blocks:
 
 - The `FeatureServiceRegistry` — A class for providing Feature Services to
@@ -53,7 +53,7 @@ not need to be registered in the correct order.
 
 For the `FeatureAppManager` to be able to load Feature Apps from a remote
 location, it needs a module loader configured by the integrator (e.g. from the
-[`@feature-hub/module-loader` package][module-loader-api]).
+[`@feature-hub/module-loader`][module-loader-api] package).
 
 In the browser:
 
@@ -80,7 +80,7 @@ const manager = new FeatureAppManager(registry, {
 ## Placing Feature Apps on a Web Page Using React
 
 An integrator can use the `FeatureAppLoader` or the `FeatureAppContainer` (both
-from the [`@feature-hub/react` package][react-api]) to place Feature Apps on a
+from the [`@feature-hub/react`][react-api] package) to place Feature Apps on a
 web page that have been [implemented using
 React][implementing-a-feature-app-using-react]. Each of them need the
 `FeatureAppManager` singleton instance.
