@@ -43,7 +43,7 @@ describe('FeatureAppLoader (on Node.js)', () => {
     spyConsoleError.mockRestore();
   });
 
-  describe('without a nodeSrc', () => {
+  describe('without a serverSrc', () => {
     it('does not try to load a Feature App definition', () => {
       shallow(<FeatureAppLoader manager={mockManager} src="example.js" />, {
         disableLifecycleMethods: true
@@ -53,13 +53,13 @@ describe('FeatureAppLoader (on Node.js)', () => {
     });
   });
 
-  describe('with a nodeSrc', () => {
-    it('loads a Feature App definition for the nodeSrc', () => {
+  describe('with a serverSrc', () => {
+    it('loads a Feature App definition for the serverSrc', () => {
       shallow(
         <FeatureAppLoader
           manager={mockManager}
           src="example.js"
-          nodeSrc="example-node.js"
+          serverSrc="example-node.js"
         />,
         {
           disableLifecycleMethods: true
@@ -85,7 +85,7 @@ describe('FeatureAppLoader (on Node.js)', () => {
             <FeatureAppLoader
               manager={mockManager}
               src="example.js"
-              nodeSrc="example-node.js"
+              serverSrc="example-node.js"
               idSpecifier="testIdSpecifier"
             />,
             {
