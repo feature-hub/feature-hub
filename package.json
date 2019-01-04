@@ -18,7 +18,7 @@
     "verify": "run-p verify:**",
     "verify:format": "prettier --list-different '**/*.{js,json,md,ts,tsx,yml}'",
     "verify:install": "git diff --exit-code yarn.lock",
-    "verify:size-limit": "lerna exec --no-private --parallel -- size-limit",
+    "verify:size-limit": "lerna exec --no-private --ignore @feature-hub/module-loader-commonjs --parallel -- size-limit",
     "preverify:sort-package-jsons": "yarn sort-package-jsons",
     "verify:sort-package-jsons": "git diff --exit-code package.json packages/*/package.json",
     "watch:demo": "lerna exec --scope @feature-hub/demos -- ts-node src/watch-demo.ts",
