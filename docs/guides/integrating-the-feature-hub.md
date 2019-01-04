@@ -109,21 +109,21 @@ import {FeatureAppLoader} from '@feature-hub/react';
 **Note:** If the integrator has configured the AMD module loader in the browser,
 the Feature App to be loaded via `src` must be provided as an [AMD module][amd].
 
-#### `nodeSrc`
+#### `serverSrc`
 
 Additionally, when a Feature App needs to be rendered on the server, its
-`nodeSrc` must be specified, which is the URL to its server module bundle:
+`serverSrc` must be specified, which is the URL to its server module bundle:
 
 ```jsx
 <FeatureAppLoader
   manager={manager}
   src="https://example.com/some-feature-app.js"
-  nodeSrc="https://example.com/some-feature-app-node.js"
+  serverSrc="https://example.com/some-feature-app-node.js"
 />
 ```
 
 **Note:** If the integrator has configured the CommonJS module loader on the
-server, the Feature App to be loaded via `nodeSrc` must be provided as a
+server, the Feature App to be loaded via `serverSrc` must be provided as a
 CommonJS module.
 
 #### `css`

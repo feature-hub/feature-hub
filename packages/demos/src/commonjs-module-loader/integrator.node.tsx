@@ -15,6 +15,6 @@ export default async function renderMainHtml(port: number): Promise<string> {
   await manager.preloadFeatureApp(featureAppNodeUrl);
 
   return ReactDOM.renderToString(
-    <FeatureAppLoader manager={manager} src="" nodeSrc={featureAppNodeUrl} />
+    <FeatureAppLoader manager={manager} src="" serverSrc={featureAppNodeUrl} />
   );
 }

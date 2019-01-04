@@ -10,7 +10,7 @@ export interface Css {
 export interface FeatureAppLoaderProps {
   readonly manager: FeatureAppManagerLike;
   readonly src: string;
-  readonly nodeSrc?: string;
+  readonly serverSrc?: string;
   readonly css?: Css[];
   readonly idSpecifier?: string;
 }
@@ -37,8 +37,8 @@ export class FeatureAppLoader extends React.PureComponent<
   public constructor(props: FeatureAppLoaderProps) {
     super(props);
 
-    const {manager, src: browserSrc, nodeSrc} = props;
-    const src = inBrowser ? browserSrc : nodeSrc;
+    const {manager, src: browserSrc, serverSrc} = props;
+    const src = inBrowser ? browserSrc : serverSrc;
 
     if (!src) {
       if (inBrowser) {
@@ -143,8 +143,8 @@ export class FeatureAppLoader extends React.PureComponent<
 
     this.errorReported = true;
 
-    const {idSpecifier, src: browserSrc, nodeSrc} = this.props;
-    const src = inBrowser ? browserSrc : nodeSrc;
+    const {idSpecifier, src: browserSrc, serverSrc} = this.props;
+    const src = inBrowser ? browserSrc : serverSrc;
 
     console.error(
       idSpecifier
