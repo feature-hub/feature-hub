@@ -31,11 +31,11 @@ terms of the [MIT License][license].
 
 [api]: https://feature-hub.io/@feature-hub/server-renderer/
 [api-badge]:
-  https://img.shields.io/badge/API-%40feature--hub%2Fserver--renderer-%234811ca.svg
+  https://img.shields.io/badge/API-%40feature--hub%2Fserver--renderer-%23ea3458.svg
 [issue-25]: https://github.com/sinnerschrader/feature-hub/issues/25
 [license]: https://github.com/sinnerschrader/feature-hub/blob/master/LICENSE
 [package-badge]: https://img.shields.io/npm/v/@feature-hub/server-renderer.svg
 [package-npm]: https://www.npmjs.com/package/@feature-hub/server-renderer
 [website]: https://feature-hub.io/
 [website-badge]:
-  https://img.shields.io/badge/Website-feature--hub.io-%236215a5.svg
+  https://img.shields.io/badge/Website-feature--hub.io-%23500dc5.svg

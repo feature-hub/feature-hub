@@ -10,7 +10,7 @@ const siteConfig = {
   headerLinks: [
     {label: 'GitHub', href: 'https://github.com/sinnerschrader/feature-hub'}
   ],
-  colors: {primaryColor: '#6215a5', secondaryColor: '#4811ca'},
+  colors: {primaryColor: '#500dc5', secondaryColor: '#ea3458'},
   copyright: `Copyright (c) 2018-${new Date().getFullYear()} SinnerSchrader Deutschland GmbH`,
   highlight: {theme: 'default'},
   onPageNav: 'separate',
