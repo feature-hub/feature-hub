@@ -46,7 +46,7 @@ achieved by creating Feature Services:
 - Share state across Feature Apps to ensure a consistent user experience.
 - Share browser APIs and resources not intended for shared use (e.g. History,
   Local Storage).
-- Share config objects across Feature Apps, but only maintain it once.
+- Share configuration across Feature Apps, but only maintain it once.
 
 Furthermore, [Feature Services provide a versioned
 API][providing-a-versioned-api] to allow backward compatibility and thus
