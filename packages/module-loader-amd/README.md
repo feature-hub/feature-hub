@@ -3,7 +3,7 @@
 [![Package Version][package-badge]][package-npm]
 [![Website][website-badge]][website] [![API][api-badge]][api]
 
-A AMD module loader.
+A FeatureAppManager-compatible AMD module loader.
 
 ## Installation
 

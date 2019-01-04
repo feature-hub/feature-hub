@@ -19,11 +19,11 @@ yarn watch:demo history-service
 ```
 
 ```sh
-yarn watch:demo amd-module-loader
+yarn watch:demo module-loader-amd
 ```
 
 ```sh
-yarn watch:demo commonjs-module-loader
+yarn watch:demo module-loader-commonjs
 ```
 
 ---

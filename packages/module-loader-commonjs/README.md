@@ -3,7 +3,7 @@
 [![Package Version][package-badge]][package-npm]
 [![Website][website-badge]][website] [![API][api-badge]][api]
 
-A CommonJS module loader.
+A FeatureAppManager-compatible CommonJS module loader.
 
 ## Installation
 
@@ -33,4 +33,4 @@ terms of the [MIT License][license].
 [package-npm]: https://www.npmjs.com/package/@feature-hub/module-loader-commonjs
 [website]: https://feature-hub.io/
 [website-badge]:
-  https://img.shields.io/badge/Website-Feature%20Hub-%234502da.svg
+  https://img.shields.io/badge/Website-feature--hub.io-%23500dc5.svg
