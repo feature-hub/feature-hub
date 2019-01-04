@@ -3,7 +3,7 @@
 [![Package Version][package-badge]][package-npm]
 [![Website][website-badge]][website] [![API][api-badge]][api]
 
-A Feature Hub integrator for React.
+A library for building a Feature Hub Integrator with React.
 
 ## Installation
 
