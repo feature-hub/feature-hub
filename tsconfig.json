@@ -18,13 +18,7 @@
     "experimentalDecorators": true,
     "baseUrl": ".",
     "paths": {
-      "@feature-hub/*": ["packages/*/src/index.ts"],
-      "@feature-hub/module-loader/lib/cjs/node": [
-        "packages/module-loader/src/node.ts"
-      ],
-      "@feature-hub/module-loader/lib/esm/node": [
-        "packages/module-loader/src/node.ts"
-      ]
+      "@feature-hub/*": ["packages/*/src/index.ts"]
     }
   }
 }

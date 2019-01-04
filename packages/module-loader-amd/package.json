@@ -1,7 +1,7 @@
 {
-  "name": "@feature-hub/module-loader",
-  "version": "0.10.0",
-  "description": "A universal module loader.",
+  "name": "@feature-hub/module-loader-amd",
+  "version": "0.0.0",
+  "description": "A FeatureAppManager-compatible AMD module loader.",
   "homepage": "https://feature-hub.io/",
   "bugs": {
     "url": "https://github.com/sinnerschrader/feature-hub/issues"
@@ -21,13 +21,9 @@
   "typings": "lib/cjs/index.d.ts",
   "dependencies": {
     "@feature-hub/core": "^0.10.0",
-    "fs-extra": "^7.0.1",
-    "node-fetch": "^2.3.0",
     "systemjs": "^0.21.5"
   },
   "devDependencies": {
-    "@types/fs-extra": "^5.0.4",
-    "@types/node-fetch": "^2.1.4",
     "@types/systemjs": "^0.20.6"
   },
   "publishConfig": {

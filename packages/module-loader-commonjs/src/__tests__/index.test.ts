@@ -12,7 +12,7 @@ jest.mock('node-fetch', () => () =>
 );
 // tslint:enable promise-function-async
 
-import {loadCommonJsModule} from '../node';
+import {loadCommonJsModule} from '..';
 
 describe('loadCommonJsModule (on Node.js)', () => {
   it('when a module is fetched successfully', async () => {

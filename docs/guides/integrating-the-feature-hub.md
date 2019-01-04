@@ -52,13 +52,15 @@ not need to be registered in the correct order.
 ## Module Loader
 
 For the `FeatureAppManager` to be able to load Feature Apps from a remote
-location, it needs a module loader configured by the integrator (e.g. from the
-[`@feature-hub/module-loader`][module-loader-api] package).
+location, it needs to be configured with an implementation of the `ModuleLoader`
+interface of the [`@feature-hub/core`][core-api] package by the integrator (e.g.
+the [`@feature-hub/module-loader-amd`][module-loader-amd-api] package or the
+[`@feature-hub/module-loader-commonjs`][module-loader-commonjs-api] package).
 
 In the browser:
 
 ```js
-import {loadAmdModule} from '@feature-hub/module-loader';
+import {loadAmdModule} from '@feature-hub/module-loader-amd';
 ```
 
 ```js
@@ -68,7 +70,7 @@ const manager = new FeatureAppManager(registry, {moduleLoader: loadAmdModule});
 On the server:
 
 ```js
-import {loadCommonJsModule} from '@feature-hub/module-loader';
+import {loadCommonJsModule} from '@feature-hub/module-loader-commonjs';
 ```
 
 ```js
@@ -302,7 +304,8 @@ someFeatureService2.foo(42);
 [faq-1]: /docs/help/faq#can-the-integrator-register-feature-services-one-by-one
 [implementing-a-feature-app-using-react]:
   /docs/guides/writing-a-feature-app#implementing-a-feature-app-using-react
-[module-loader-api]: /@feature-hub/module-loader/
+[module-loader-amd-api]: /@feature-hub/module-loader-amd/
+[module-loader-commonjs-api]: /@feature-hub/module-loader-commonjs/
 [placing-feature-apps-on-a-web-page-using-react]:
   /docs/guides/integrating-the-feature-hub#placing-feature-apps-on-a-web-page-using-react
 [react-api]: /@feature-hub/react/

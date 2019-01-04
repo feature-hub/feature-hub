@@ -8,7 +8,7 @@ When using the AMD module loader, the integrator can provide shared npm
 dependencies to Feature Apps using the `defineExternals` function:
 
 ```js
-import {defineExternals, loadAmdModule} from '@feature-hub/module-loader';
+import {defineExternals, loadAmdModule} from '@feature-hub/module-loader-amd';
 import * as React from 'react';
 import Loadable from 'react-loadable';
 ```
