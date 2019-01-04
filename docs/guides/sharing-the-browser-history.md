@@ -157,7 +157,7 @@ registry.registerProviders(featureServiceDefinitions, 'acme:integrator');
 A root location transformer is an object exposing two functions,
 `getConsumerPathFromRootLocation` and `createRootLocation`. In the following
 example, each consumer location is encoded as its own query parameter, with the
-unique consumer ID used as parameter name:
+`consumerUid` used as parameter name:
 
 ```js
 import * as history from 'history';
@@ -165,19 +165,19 @@ import * as history from 'history';
 
 ```js
 const rootLocationTransformer = {
-  getConsumerPathFromRootLocation(rootLocation, consumerId) {
+  getConsumerPathFromRootLocation(rootLocation, consumerUid) {
     const searchParams = new URLSearchParams(rootLocation.search);
 
-    return searchParams.get(consumerId);
+    return searchParams.get(consumerUid);
   },
 
-  createRootLocation(consumerLocation, rootLocation, consumerId) {
+  createRootLocation(consumerLocation, rootLocation, consumerUid) {
     const searchParams = new URLSearchParams(rootLocation.search);
 
     if (consumerLocation) {
-      searchParams.set(consumerId, history.createPath(consumerLocation));
+      searchParams.set(consumerUid, history.createPath(consumerLocation));
     } else {
-      searchParams.delete(consumerId);
+      searchParams.delete(consumerUid);
     }
 
     const {pathname, state} = rootLocation;

@@ -9,10 +9,10 @@ export class BrowserConsumerHistory extends ConsumerHistory {
   private readonly browserUnregister: () => void;
 
   public constructor(
-    consumerId: string,
+    consumerUid: string,
     historyMultiplexer: HistoryMultiplexer
   ) {
-    super(consumerId, historyMultiplexer);
+    super(consumerUid, historyMultiplexer);
 
     this.browserUnregister = historyMultiplexer.listenForPop(() => {
       this.handlePop();
@@ -22,7 +22,7 @@ export class BrowserConsumerHistory extends ConsumerHistory {
   public destroy(): void {
     this.browserUnregister();
     this.unregisterCallbacks.forEach(unregister => unregister());
-    this.historyMultiplexer.replace(this.consumerId, undefined);
+    this.historyMultiplexer.replace(this.consumerUid, undefined);
   }
 
   public listen(
@@ -63,7 +63,7 @@ export class BrowserConsumerHistory extends ConsumerHistory {
 
   private handlePop(): void {
     const location = this.historyMultiplexer.getConsumerLocation(
-      this.consumerId
+      this.consumerUid
     );
 
     if (this.matches(location)) {

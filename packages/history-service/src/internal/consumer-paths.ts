@@ -1,5 +1,5 @@
 export interface ConsumerPaths {
-  readonly [consumerId: string]: string;
+  readonly [consumerUid: string]: string;
 }
 
 function encodeConsumerPaths(consumerPaths: ConsumerPaths): string {
@@ -12,25 +12,25 @@ function decodeConsumerPaths(encodedConsumerPaths: string): ConsumerPaths {
 
 export function addConsumerPath(
   encodedConsumerPaths: string | null,
-  consumerId: string,
+  consumerUid: string,
   path: string
 ): string {
   return encodeConsumerPaths({
     ...decodeConsumerPaths(encodedConsumerPaths || '{}'),
-    [consumerId]: path
+    [consumerUid]: path
   });
 }
 
 export function removeConsumerPath(
   encodedConsumerPaths: string | null,
-  consumerId: string
+  consumerUid: string
 ): string | undefined {
   if (!encodedConsumerPaths) {
     return undefined;
   }
 
   /* istanbul ignore next */
-  const {[consumerId]: _removed, ...rest} = decodeConsumerPaths(
+  const {[consumerUid]: _removed, ...rest} = decodeConsumerPaths(
     encodedConsumerPaths
   );
 
@@ -43,7 +43,7 @@ export function removeConsumerPath(
 
 export function getConsumerPath(
   encodedConsumerPaths: string,
-  consumerId: string
+  consumerUid: string
 ): string {
-  return decodeConsumerPaths(encodedConsumerPaths)[consumerId];
+  return decodeConsumerPaths(encodedConsumerPaths)[consumerUid];
 }
