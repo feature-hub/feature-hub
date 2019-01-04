@@ -7,7 +7,15 @@
   function findNavGroups(callback) {
     document.addEventListener(
       'DOMContentLoaded',
-      () => callback(document.querySelector('.navGroups')),
+      () => {
+        const navGroups = document.querySelector('.navGroups');
+
+        if (!navGroups) {
+          console.error('The external sidebar links could not be added.');
+        } else {
+          callback(navGroups);
+        }
+      },
       {once: true}
     );
   }
