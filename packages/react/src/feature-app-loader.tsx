@@ -54,7 +54,7 @@ export class FeatureAppLoader extends React.PureComponent<
       this.reportError(asyncFeatureAppDefinition.error);
 
       if (!inBrowser) {
-        // TODO: we should only throw for "mission critical" feature apps ...
+        // TODO: we should only throw for "mission critical" Feature Apps ...
         throw asyncFeatureAppDefinition.error;
       }
 
@@ -148,12 +148,12 @@ export class FeatureAppLoader extends React.PureComponent<
 
     console.error(
       idSpecifier
-        ? `The feature app for the src ${JSON.stringify(
+        ? `The Feature App for the src ${JSON.stringify(
             src
           )} and the ID specifier ${JSON.stringify(
             idSpecifier
           )} could not be rendered.`
-        : `The feature app for the src ${JSON.stringify(
+        : `The Feature App for the src ${JSON.stringify(
             src
           )} could not be rendered.`,
       error

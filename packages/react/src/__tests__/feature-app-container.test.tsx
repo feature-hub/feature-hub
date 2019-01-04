@@ -36,7 +36,7 @@ describe('FeatureAppContainer', () => {
     spyConsoleError.mockRestore();
   });
 
-  it('calls the manager with the given feature app definition and id specifier', () => {
+  it('calls the manager with the given Feature App definition and id specifier', () => {
     shallow(
       <FeatureAppContainer
         manager={mockManager}
@@ -50,17 +50,17 @@ describe('FeatureAppContainer', () => {
     ]);
   });
 
-  describe('with a react feature app', () => {
+  describe('with a React Feature App', () => {
     beforeEach(() => {
       mockFeatureAppScope = {
         featureApp: {
-          render: () => <div>This is the react feature app.</div>
+          render: () => <div>This is the React Feature App.</div>
         },
         destroy: jest.fn()
       };
     });
 
-    it('renders the react element', () => {
+    it('renders the React element', () => {
       const wrapper = shallow(
         <FeatureAppContainer
           manager={mockManager}
@@ -70,13 +70,13 @@ describe('FeatureAppContainer', () => {
 
       expect(wrapper).toMatchInlineSnapshot(`
 <div>
-  This is the react feature app.
+  This is the React Feature App.
 </div>
 `);
     });
 
     describe('when unmounted', () => {
-      it('calls destroy() on the feature app scope', () => {
+      it('calls destroy() on the Feature App scope', () => {
         const wrapper = shallow(
           <FeatureAppContainer
             manager={mockManager}
@@ -91,11 +91,11 @@ describe('FeatureAppContainer', () => {
         expect(mockFeatureAppScope.destroy).toHaveBeenCalledTimes(1);
       });
 
-      describe('when the feature app scope throws an error while being destroyed', () => {
+      describe('when the Feature App scope throws an error while being destroyed', () => {
         let mockError: Error;
 
         beforeEach(() => {
-          mockError = new Error('Failed to destroy feature app scope');
+          mockError = new Error('Failed to destroy Feature App scope');
 
           mockFeatureAppScope.destroy = () => {
             throw mockError;
@@ -118,19 +118,19 @@ describe('FeatureAppContainer', () => {
     });
   });
 
-  describe('with a dom feature app', () => {
+  describe('with a DOM Feature App', () => {
     beforeEach(() => {
       mockFeatureAppScope = {
         featureApp: {
           attachTo(container: HTMLElement): void {
-            container.innerHTML = 'This is the dom feature app.';
+            container.innerHTML = 'This is the DOM Feature App.';
           }
         },
         destroy: jest.fn()
       };
     });
 
-    it("renders a container and passes it to the feature app's render method", () => {
+    it("renders a container and passes it to the Feature App's render method", () => {
       const wrapper = mount(
         <FeatureAppContainer
           manager={mockManager}
@@ -139,12 +139,12 @@ describe('FeatureAppContainer', () => {
       );
 
       expect(wrapper.html()).toMatchInlineSnapshot(
-        '"<div>This is the dom feature app.</div>"'
+        '"<div>This is the DOM Feature App.</div>"'
       );
     });
 
     describe('when unmounted', () => {
-      it('calls destroy() on the feature app scope', () => {
+      it('calls destroy() on the Feature App scope', () => {
         const wrapper = shallow(
           <FeatureAppContainer
             manager={mockManager}
@@ -159,11 +159,11 @@ describe('FeatureAppContainer', () => {
         expect(mockFeatureAppScope.destroy).toHaveBeenCalledTimes(1);
       });
 
-      describe('when the feature app scope throws an error while being destroyed', () => {
+      describe('when the Feature App scope throws an error while being destroyed', () => {
         let mockError: Error;
 
         beforeEach(() => {
-          mockError = new Error('Failed to destroy feature app scope');
+          mockError = new Error('Failed to destroy Feature App scope');
 
           mockFeatureAppScope.destroy = () => {
             throw mockError;
@@ -193,7 +193,7 @@ describe('FeatureAppContainer', () => {
     {attachTo: 'foo'},
     {render: 'foo'}
   ]) {
-    describe(`when an invalid feature app (${JSON.stringify(
+    describe(`when an invalid Feature App (${JSON.stringify(
       invalidFeatureApp
     )}) is created`, () => {
       beforeEach(() => {
@@ -214,7 +214,7 @@ describe('FeatureAppContainer', () => {
         expect(wrapper.isEmptyRender()).toBe(true);
 
         const expectedError = new Error(
-          'Invalid feature app found. The feature app must be an object with either 1) a `render` method that returns a react element, or 2) an `attachTo` method that accepts a container DOM element.'
+          'Invalid Feature App found. The Feature App must be an object with either 1) a `render` method that returns a React element, or 2) an `attachTo` method that accepts a container DOM element.'
         );
 
         expect(spyConsoleError.mock.calls).toEqual([[expectedError]]);
@@ -222,11 +222,11 @@ describe('FeatureAppContainer', () => {
     });
   }
 
-  describe('when a feature app scope fails to be created', () => {
+  describe('when a Feature App scope fails to be created', () => {
     let mockError: Error;
 
     beforeEach(() => {
-      mockError = new Error('Failed to create feature app scope.');
+      mockError = new Error('Failed to create Feature App scope.');
 
       mockGetFeatureAppScope.mockImplementation(() => {
         throw mockError;

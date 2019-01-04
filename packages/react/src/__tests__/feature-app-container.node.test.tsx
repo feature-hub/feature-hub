@@ -47,7 +47,7 @@ describe('FeatureAppContainer (on Node.js)', () => {
     {attachTo: 'foo'},
     {render: 'foo'}
   ]) {
-    describe(`when an invalid feature app (${JSON.stringify(
+    describe(`when an invalid Feature App (${JSON.stringify(
       invalidFeatureApp
     )}) is created`, () => {
       beforeEach(() => {
@@ -59,7 +59,7 @@ describe('FeatureAppContainer (on Node.js)', () => {
 
       it('logs and throws an error', () => {
         const expectedError = new Error(
-          'Invalid feature app found. The feature app must be an object with either 1) a `render` method that returns a react element, or 2) an `attachTo` method that accepts a container DOM element.'
+          'Invalid Feature App found. The Feature App must be an object with either 1) a `render` method that returns a React element, or 2) an `attachTo` method that accepts a container DOM element.'
         );
 
         expect(() =>
@@ -76,11 +76,11 @@ describe('FeatureAppContainer (on Node.js)', () => {
     });
   }
 
-  describe('when a feature app scope fails to be created', () => {
+  describe('when a Feature App scope fails to be created', () => {
     let mockError: Error;
 
     beforeEach(() => {
-      mockError = new Error('Failed to create feature app scope.');
+      mockError = new Error('Failed to create Feature App scope.');
 
       mockGetFeatureAppScope.mockImplementation(() => {
         throw mockError;
