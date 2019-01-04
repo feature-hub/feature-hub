@@ -32,3 +32,8 @@ body:not(.sideNavVisible) .projectLogo img {
   height: 200px;
   margin-bottom: 0px;
 }
+
+body:not(.sideNavVisible) .button:hover {
+  background: #ea3458;
+  color: #fff;
+}
