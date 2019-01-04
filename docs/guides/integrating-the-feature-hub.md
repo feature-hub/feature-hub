@@ -4,7 +4,7 @@ title: Integrating the Feature Hub
 sidebar_label: Integrating the Feature Hub
 ---
 
-The [`@feature-hub/core` package][core-api] provides the following two major
+The [`@feature-hub/core`][core-api] package provides the following two major
 building blocks:
 
 - The `FeatureServiceRegistry` — A class for providing Feature Services to
@@ -18,10 +18,8 @@ multiple Feature Apps that share state through Feature Services:
 1. Register a set of Feature Services at the `FeatureServiceRegistry`.
 1. Instantiate a `FeatureAppManager` singleton instance using the
    `FeatureServiceRegistry`.
-1. A **React integrator** can then use the React `FeatureAppLoader` or the React
-   `FeatureAppContainer` (both from the [`@feature-hub/react`
-   package][react-api]) to place Feature Apps onto the web page. Each of them
-   need the `FeatureAppManager` singleton instance to render their Feature App.
+1. Place Feature Apps on a web page, e.g. [using
+   React][placing-feature-apps-on-a-web-page-using-react].
 
 Typical integrator bootstrap code would look like this:
 
@@ -45,18 +43,17 @@ const manager = new FeatureAppManager(registry);
 ```
 
 **Note:** The integrator needs a self-selected but unique consumer ID to
-register or [consume][consuming-feature-services] Feature Services (in the
-example above it is `'acme:integrator'`). All Feature Services [registered
+register or [consume Feature Services][consuming-feature-services] (in the
+example above it is `'acme:integrator'`). All [Feature Services registered
 together][faq-1] using the `registerFeatureServices` method of the
 `FeatureServiceRegistry` are automatically sorted topologically and therefore do
 not need to be registered in the correct order.
 
 ## Module Loader
 
-For the `FeatureAppManager` or React `FeatureAppLoader` to be able to load
-Feature Apps from a remote location, it needs a module loader configured by the
-integrator (e.g. from the [`@feature-hub/module-loader`
-package][module-loader-api]).
+For the `FeatureAppManager` to be able to load Feature Apps from a remote
+location, it needs a module loader configured by the integrator (e.g. from the
+[`@feature-hub/module-loader`][module-loader-api] package).
 
 In the browser:
 
@@ -80,15 +77,23 @@ const manager = new FeatureAppManager(registry, {
 });
 ```
 
-## React `FeatureAppLoader`
+## Placing Feature Apps on a Web Page Using React
 
-The React `FeatureAppLoader` allows the integrator to load Feature Apps from a
-remote location.
+An integrator can use the `FeatureAppLoader` or the `FeatureAppContainer` (both
+from the [`@feature-hub/react`][react-api] package) to place Feature Apps on a
+web page that have been [implemented using
+React][implementing-a-feature-app-using-react]. Each of them need the
+`FeatureAppManager` singleton instance.
 
-### `src`
+### React Feature App Loader
 
-A Feature App can be loaded and rendered by defining a `src` which is the URL to
-its module bundle:
+The `FeatureAppLoader` component allows the integrator to load Feature Apps from
+a remote location.
+
+#### `src`
+
+A Feature App can be loaded and integrated by defining a `src` which is the URL
+to its browser module bundle:
 
 ```js
 import {FeatureAppLoader} from '@feature-hub/react';
@@ -102,12 +107,12 @@ import {FeatureAppLoader} from '@feature-hub/react';
 ```
 
 **Note:** If the integrator has configured the AMD module loader in the browser,
-the Feature App to be loaded via `src` must be provided as an [AMD][amd] module.
+the Feature App to be loaded via `src` must be provided as an [AMD module][amd].
 
-### `nodeSrc`
+#### `nodeSrc`
 
-Additionally, when a Feature App wants to be rendered on the server, its
-`nodeSrc` must be specified, which is the URL to its module bundle:
+Additionally, when a Feature App needs to be rendered on the server, its
+`nodeSrc` must be specified, which is the URL to its server module bundle:
 
 ```jsx
 <FeatureAppLoader
@@ -121,7 +126,7 @@ Additionally, when a Feature App wants to be rendered on the server, its
 server, the Feature App to be loaded via `nodeSrc` must be provided as a
 CommonJS module.
 
-### `css`
+#### `css`
 
 You can also define a `css` prop to add stylesheets to the document:
 
@@ -136,10 +141,10 @@ You can also define a `css` prop to add stylesheets to the document:
 />
 ```
 
-### `idSpecifier`
+#### `idSpecifier`
 
-If multiple instances of the same Feature App are placed onto a single page, an
-`idSpecifier` that is unique for the Feature App ID must be defined by the
+If multiple instances of the same Feature App are placed on a single web page,
+an `idSpecifier` that is unique for the Feature App ID must be defined by the
 integrator:
 
 ```jsx
@@ -161,14 +166,15 @@ integrator:
 </section>
 ```
 
-## React `FeatureAppContainer`
+### React Feature App Container
 
-The React `FeatureAppContainer` allows the integrator to bundle Feature Apps
+The `FeatureAppContainer` component allows the integrator to bundle Feature Apps
 instead of loading them from a remote location.
 
-### `featureAppDefinition`
+#### `featureAppDefinition`
 
-A Feature App can be rendered by directly providing its `featureAppDefinition`:
+A Feature App can be integrated by directly providing its
+`featureAppDefinition`:
 
 ```js
 import {FeatureAppContainer} from '@feature-hub/react';
@@ -182,10 +188,10 @@ import {someFeatureAppDefinition} from './some-feature-app';
 />
 ```
 
-### `idSpecifier`
+#### `idSpecifier`
 
-If multiple instances of the same Feature App are placed onto a single page, an
-`idSpecifier` that is unique for the Feature App ID must be defined by the
+If multiple instances of the same Feature App are placed on a single web page,
+an `idSpecifier` that is unique for the Feature App ID must be defined by the
 integrator:
 
 ```jsx
@@ -294,5 +300,9 @@ someFeatureService2.foo(42);
   /docs/guides/integrating-the-feature-hub#consuming-feature-services
 [core-api]: /@feature-hub/core/
 [faq-1]: /docs/help/faq#can-the-integrator-register-feature-services-one-by-one
+[implementing-a-feature-app-using-react]:
+  /docs/guides/writing-a-feature-app#implementing-a-feature-app-using-react
 [module-loader-api]: /@feature-hub/module-loader/
+[placing-feature-apps-on-a-web-page-using-react]:
+  /docs/guides/integrating-the-feature-hub#placing-feature-apps-on-a-web-page-using-react
 [react-api]: /@feature-hub/react/

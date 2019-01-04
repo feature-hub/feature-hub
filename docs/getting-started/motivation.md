@@ -18,8 +18,8 @@ The Feature Hub was designed with the following specific requirements in mind:
 - Micro frontends need a way to share browser APIs and resources not intended
   for shared use (e.g. History, Local Storage).
 - Micro frontends must be able to share state to facilitate a consistent UX.
-- It should be possible to compose micro frontends without deployment of the
-  integration environment.
+- It should be possible to integrate new micro frontends without deployment of
+  the integration environment.
 - For SEO purposes, and to operate existing fat client frontend apps which need
   to fetch great amounts of data on boot, server-side rendering must be
   supported.

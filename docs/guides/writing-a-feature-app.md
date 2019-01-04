@@ -22,8 +22,7 @@ const myFeatureAppDefinition = {
 ```
 
 If a Feature App module is to be loaded asynchronously with the
-`FeatureAppManager` or React `FeatureAppLoader`, it must provide a definition
-object as its default export:
+`FeatureAppManager`, it must provide a definition object as its default export:
 
 ```js
 export default myFeatureAppDefinition;
@@ -33,22 +32,21 @@ export default myFeatureAppDefinition;
 
 It is recommended to use namespaces for the Feature App ID to avoid naming
 conflicts, e.g. `'acme:my-feature-app'`. This ID is used to look up the config
-for a Feature App. Furthermore, it is used as a consumer ID for
-[binding][feature-service-binder] the required Feature Services to the dependent
-Feature App.
+for a Feature App. Furthermore, it is used as a consumer ID for [binding the
+required Feature Services][feature-service-binder] to the dependent Feature App.
 
 ## `dependencies`
 
-Required Feature Services are declared with their ID and a [semver][semver]
-version string, e.g. `{'acme:some-feature-service': '^2.0'}`.
+Required Feature Services are declared with their ID and a [semver version
+string][semver], e.g. `{'acme:some-feature-service': '^2.0'}`.
 
 ## `create`
 
 The `create` method takes the single argument `env`, which has the following
 properties:
 
-1. `config` — A Feature App config object that is [provided][providing-configs]
-   by the integrator:
+1. `config` — A Feature App [config object that is provided by the
+   integrator][providing-configs]:
 
    ```js
    const myFeatureAppDefinition = {
@@ -63,7 +61,7 @@ properties:
    ```
 
 1. `featureServices` — An object of required Feature Services that are
-   [semver-compatible][semver] with the declared dependencies in the Feature App
+   semver-compatible with the declared dependencies in the Feature App
    definition:
 
    ```js
@@ -89,53 +87,9 @@ properties:
    the Feature App instance from other Feature App instances with the same ID.
 
 The return value of the `create` method can vary depending on the integration
-solution used. Assuming the [`@feature-hub/react` package][react-api] is used, a
-Feature App can be either a **React Feature App** or a **DOM Feature App**.
-
-### React Feature App
-
-A React Feature App definition's `create` method returns a Feature App instance
-with a `render` method that itself returns a `ReactNode`:
-
-```js
-const myFeatureAppDefinition = {
-  id: 'acme:my-feature-app',
-
-  create(env) {
-    return {
-      render() {
-        return <div>Foo</div>;
-      }
-    };
-  }
-};
-```
-
-**Note:** Since this element is directly rendered by React, the standard React
-lifecyle methods can be used (if `render` returns an instance of a React
-`ComponentClass`).
-
-### DOM Feature App
-
-A DOM Feature App definition's `create` method returns a Feature App instance
-with an `attachTo` method that accepts a DOM container element:
-
-```js
-const myFeatureAppDefinition = {
-  id: 'acme:my-feature-app',
-
-  create(env) {
-    return {
-      attachTo(container) {
-        container.innerText = 'Foo';
-      }
-    };
-  }
-};
-```
-
-This type of Feature App allows the use of other frontend technologies such as
-Vue.js or Angular, although React is used as an integration solution.
+solution used. Assuming the [`@feature-hub/react`][react-api] package is used, a
+Feature App can be either a [React Feature App][react-feature-app] or a [DOM
+Feature App][dom-feature-app].
 
 ## `ownFeatureServiceDefinitions`
 
@@ -172,9 +126,65 @@ Feature Services by the integrator.
 **Note:** If the Feature Service to be registered has already been registered,
 the new Feature Service is ignored and a warning is emitted.
 
+## Implementing a Feature App Using React
+
+The [`@feature-hub/react`][react-api] package defines two interfaces,
+`ReactFeatureApp` and `DomFeatureApp`. A Feature App that implements one of
+these interfaces can be [placed on a web page using the `FeatureAppLoader` or
+`FeatureAppContainer`
+components][placing-feature-apps-on-a-web-page-using-react].
+
+### React Feature App
+
+A React Feature App definition's `create` method returns a Feature App instance
+with a `render` method that itself returns a `ReactNode`:
+
+```js
+const myFeatureAppDefinition = {
+  id: 'acme:my-feature-app',
+
+  create(env) {
+    return {
+      render() {
+        return <div>Foo</div>;
+      }
+    };
+  }
+};
+```
+
+**Note:** Since this element is directly rendered by React, the standard React
+lifecyle methods can be used (if `render` returns an instance of a React
+`ComponentClass`).
+
+### DOM Feature App
+
+A DOM Feature App allows the use of other frontend technologies such as Vue.js
+or Angular, although it is placed on a web page using React. Its definition's
+`create` method returns a Feature App instance with an `attachTo` method that
+accepts a DOM container element:
+
+```js
+const myFeatureAppDefinition = {
+  id: 'acme:my-feature-app',
+
+  create(env) {
+    return {
+      attachTo(container) {
+        container.innerText = 'Foo';
+      }
+    };
+  }
+};
+```
+
+[dom-feature-app]: /docs/guides/writing-a-feature-app#dom-feature-app
 [feature-service-binder]:
   /docs/guides/writing-a-feature-service#feature-service-binder
 [idspecifier]: /docs/guides/integrating-the-feature-hub#idspecifier
+[placing-feature-apps-on-a-web-page-using-react]:
+  /docs/guides/integrating-the-feature-hub#placing-feature-apps-on-a-web-page-using-react
 [providing-configs]: /docs/guides/integrating-the-feature-hub#providing-configs
 [react-api]: /@feature-hub/react/
+[react-feature-app]: /docs/guides/writing-a-feature-app#react-feature-app
 [semver]: https://semver.org

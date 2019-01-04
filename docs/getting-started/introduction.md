@@ -17,11 +17,20 @@ web applications with multiple teams and different technologies.
 > independently from other features. — [thoughtworks.com][thoughtworks]
 
 The Feature Hub includes a collection of npm packages that when used together
-provide a full-fledged solution for composing micro frontends. Out of the box it
-supports React micro frontends as first-class citizens, but also allows the
-integration of micro frontends that are built with any other frontend technology
-(e.g. Vue.js, Angular, Web Components). The use without React is also possible,
-but requires an own implementation of the UI composition layer.
+provide a full-fledged solution for composing micro frontends:
+
+- [`@feature-hub/core`][core-api] — Allows dynamic loading of micro frontends,
+  lifecycle management of micro frontends, and controlled sharing of state and
+  functionality between micro frontends.
+- [`@feature-hub/react`][react-api] — Provides an out-of-the-box solution for
+  [placing micro frontends on a web page using
+  React][placing-feature-apps-on-a-web-page-using-react], but also allows the
+  integration of micro frontends that are [built with any other frontend
+  technology][dom-feature-app] (e.g. Vue.js, Angular, Web Components).
+
+The use of the [`@feature-hub/core`][core-api] package without React is
+possible, but requires a custom implementation of the ability to place micro
+frontends on a web page.
 
 ## Feature Apps and Feature Services
 
@@ -39,21 +48,27 @@ achieved by creating Feature Services:
   Local Storage).
 - Share configuration across Feature Apps, but only maintain it once.
 
-Furthermore, Feature Services provide a [versioned API][versioned-api] to allow
-backward compatibility and thus flexible and decoupled deployments of different
-consumers.
+Furthermore, [Feature Services provide a versioned
+API][providing-a-versioned-api] to allow backward compatibility and thus
+flexible and decoupled deployments of different consumers.
 
 ## Integrator, Provider, and Consumer
 
-There are three different roles in a Feature Hub integration environment:
+There are three different personas in a Feature Hub environment:
 
 1.  The **integrator** initializes the Feature Hub, registers Feature Services,
-    and composes Feature Apps.
+    and places Feature Apps on a web page.
 2.  A **provider** implements a Feature Service.
 3.  A **consumer** is everyone who consumes Feature Services. This can be a
     Feature App, other Feature Services, or even the integrator.
 
+[core-api]: /@feature-hub/core/
+[dom-feature-app]: /docs/guides/writing-a-feature-app#dom-feature-app
 [our-requirements-for-micro-frontends]:
   /docs/getting-started/motivation#our-requirements-for-micro-frontends
+[placing-feature-apps-on-a-web-page-using-react]:
+  /docs/guides/integrating-the-feature-hub#placing-feature-apps-on-a-web-page-using-react
+[react-api]: /@feature-hub/react/
 [thoughtworks]: https://www.thoughtworks.com/de/radar/techniques/micro-frontends
-[versioned-api]: /docs/guides/writing-a-feature-service#versioned-api
+[providing-a-versioned-api]:
+  /docs/guides/writing-a-feature-service#providing-a-versioned-api
