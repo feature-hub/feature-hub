@@ -23,10 +23,10 @@ provide a full-fledged solution for composing micro frontends:
   lifecycle management of micro frontends, and controlled sharing of state and
   functionality between micro frontends.
 - [`@feature-hub/react`][react-api] — Provides an out-of-the-box solution for
-  [placing micro frontends][placing-feature-apps-on-a-web-page-using-react] on a
-  web page using React, but also allows the integration of micro frontends that
-  are built with any [other frontend technology][dom-feature-app] (e.g. Vue.js,
-  Angular, Web Components).
+  [placing micro frontends on a web page using
+  React][placing-feature-apps-on-a-web-page-using-react], but also allows the
+  integration of micro frontends that are [built with any other frontend
+  technology][dom-feature-app] (e.g. Vue.js, Angular, Web Components).
 
 The use of the [`@feature-hub/core`][core-api] package without React is
 possible, but requires a custom implementation of the ability to place micro
@@ -48,9 +48,9 @@ achieved by creating Feature Services:
   Local Storage).
 - Share configuration across Feature Apps, but only maintain it once.
 
-Furthermore, Feature Services provide a [versioned API][versioned-api] to allow
-backward compatibility and thus flexible and decoupled deployments of different
-consumers.
+Furthermore, [Feature Services provide a versioned
+API][providing-a-versioned-api] to allow backward compatibility and thus
+flexible and decoupled deployments of different consumers.
 
 ## Integrator, Provider, and Consumer
 
@@ -70,4 +70,5 @@ There are three different personas in a Feature Hub environment:
   /docs/guides/integrating-the-feature-hub#placing-feature-apps-on-a-web-page-using-react
 [react-api]: /@feature-hub/react/
 [thoughtworks]: https://www.thoughtworks.com/de/radar/techniques/micro-frontends
-[versioned-api]: /docs/guides/writing-a-feature-service#versioned-api
+[providing-a-versioned-api]:
+  /docs/guides/writing-a-feature-service#providing-a-versioned-api

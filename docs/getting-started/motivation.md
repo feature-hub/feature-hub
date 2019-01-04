@@ -19,7 +19,7 @@ The Feature Hub was designed with the following specific requirements in mind:
   for shared use (e.g. History, Local Storage).
 - Micro frontends must be able to share state to facilitate a consistent UX.
 - It should be possible to integrate new micro frontends without deployment of
-  the Feature Hub environment.
+  the integration environment.
 - For SEO purposes, and to operate existing fat client frontend apps which need
   to fetch great amounts of data on boot, server-side rendering must be
   supported.
@@ -29,7 +29,7 @@ The Feature Hub was designed with the following specific requirements in mind:
     the client.
   - The server-side rendered UI and its corresponding state must be hydrated on
     the client without visual impact.
-- Micro frontends that are incompatible with the Feature Hub environment should
+- Micro frontends that are incompatible with the integration environment should
   fail early, and not just when the user interacts with the specific
   incompatible feature.
 

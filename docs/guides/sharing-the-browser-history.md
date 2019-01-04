@@ -211,7 +211,7 @@ yarn watch:demo history-service
 
 ### Replace and Pop
 
-Since multiple consumers can push and replace locations at any time on the
+Since multiple consumers can push and replace locations at any time onto the
 browser history stack, special attention must be given when **replacing**
 consumer locations. Imagine the following scenario with two History Service
 consumers (A and B):

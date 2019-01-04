@@ -4,8 +4,8 @@ title: Reducing the Bundle Size
 sidebar_label: Reducing the Bundle Size
 ---
 
-To minimize the amount of code shipped to the client, common npm dependencies
-can be [shared][sharing-npm-dependencies] between Feature Apps and the
+To minimize the amount of code shipped to the client, [common npm dependencies
+can be shared][sharing-npm-dependencies] between Feature Apps and the
 integrator. In addition, code can be dynamically loaded using dynamic code
 splitting.
 

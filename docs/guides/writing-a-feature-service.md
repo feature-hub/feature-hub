@@ -26,13 +26,13 @@ const myFeatureServiceDefinition = {
 It is recommended to use namespaces for the Feature Service ID to avoid naming
 conflicts, e.g. `'acme:my-feature-service'`. This ID is used to look up the
 config for a Feature Service. Furthermore, it is used as a consumer ID for
-[binding][feature-service-binder] the required Feature Services to the dependent
+[binding the required Feature Services][feature-service-binder] to the dependent
 Feature Service.
 
 ## `dependencies`
 
-Required Feature Services are declared with their ID and a [semver][semver]
-version string, e.g. `{'acme:other-feature-service': '^2.0'}`.
+Required Feature Services are declared with their ID and a [semver version
+string][semver], e.g. `{'acme:other-feature-service': '^2.0'}`.
 
 ## `create`
 
@@ -41,8 +41,8 @@ the `FeatureServiceRegistry`. It should store, and possibly initialize, any
 shared state. The method takes the single argument `env`, which has the
 following properties:
 
-1. `config` — A Feature Service config object that is
-   [provided][providing-configs] by the integrator:
+1. `config` — A Feature Service [config object that is provided by the
+   integrator][providing-configs]:
 
    ```js
    const myFeatureServiceDefinition = {
@@ -57,8 +57,8 @@ following properties:
    ```
 
 1. `featureServices` — An object of required Feature Services that are
-   [semver-compatible][semver] with the declared dependencies in the Feature
-   Service definition:
+   semver-compatible with the declared dependencies in the Feature Service
+   definition:
 
    ```js
    const myFeatureServiceDefinition = {
@@ -79,7 +79,7 @@ following properties:
    };
    ```
 
-### Feature Service Binder
+## Feature Service Binder
 
 The `create` method must return an object with a so-called **Feature Service
 binder** for each supported major version. The Feature Service binder is a
@@ -88,7 +88,7 @@ with a consumer-bound `featureService` and an optional `unbind` method. The
 `FeatureServiceRegistry` passes this consumer-bound `featureService` to the
 consumer's `create` method via the `env.featureServices` argument.
 
-### Versioned API
+## Providing a Versioned API
 
 A Feature Service provider can support multiple major versions at the same time
 which have access to the same underlying shared state. With this in mind, a
@@ -150,9 +150,9 @@ const myFeatureServiceDefinition = {
 };
 ```
 
-The version of a Feature Service needs to be incremented in a
-[semver-compatible][semver] manner (without the need for a patch version). In
-this case, a method is added, leading to a minor version bump.
+The version of a Feature Service needs to be incremented in a semver-compatible
+manner (without the need for a patch version). In this case, a method is added,
+leading to a minor version bump.
 
 In general, breaking changes should be avoided. If a Feature Service provider
 still needs to make breaking changes, a new Feature Service implementation for
@@ -201,7 +201,7 @@ const myFeatureServiceDefinition = {
 };
 ```
 
-### Consumer-specific state
+## Managing Consumer-specific State
 
 Declaring a Feature Service binder (for each major version) allows Feature
 Service providers to create and destroy consumer-specific state.

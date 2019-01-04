@@ -18,8 +18,8 @@ multiple Feature Apps that share state through Feature Services:
 1. Register a set of Feature Services at the `FeatureServiceRegistry`.
 1. Instantiate a `FeatureAppManager` singleton instance using the
    `FeatureServiceRegistry`.
-1. Place Feature Apps on a web page, e.g. using
-   [React][placing-feature-apps-on-a-web-page-using-react].
+1. Place Feature Apps on a web page, e.g. [using
+   React][placing-feature-apps-on-a-web-page-using-react].
 
 Typical integrator bootstrap code would look like this:
 
@@ -43,8 +43,8 @@ const manager = new FeatureAppManager(registry);
 ```
 
 **Note:** The integrator needs a self-selected but unique consumer ID to
-register or [consume][consuming-feature-services] Feature Services (in the
-example above it is `'acme:integrator'`). All Feature Services [registered
+register or [consume Feature Services][consuming-feature-services] (in the
+example above it is `'acme:integrator'`). All [Feature Services registered
 together][faq-1] using the `registerFeatureServices` method of the
 `FeatureServiceRegistry` are automatically sorted topologically and therefore do
 not need to be registered in the correct order.
@@ -92,8 +92,8 @@ a remote location.
 
 #### `src`
 
-A Feature App can be loaded and placed on a web page by defining a `src` which
-is the URL to its browser module bundle:
+A Feature App can be loaded and integrated by defining a `src` which is the URL
+to its browser module bundle:
 
 ```js
 import {FeatureAppLoader} from '@feature-hub/react';
@@ -107,7 +107,7 @@ import {FeatureAppLoader} from '@feature-hub/react';
 ```
 
 **Note:** If the integrator has configured the AMD module loader in the browser,
-the Feature App to be loaded via `src` must be provided as an [AMD][amd] module.
+the Feature App to be loaded via `src` must be provided as an [AMD module][amd].
 
 #### `nodeSrc`
 
@@ -173,7 +173,7 @@ instead of loading them from a remote location.
 
 #### `featureAppDefinition`
 
-A Feature App can be placed on a web page by directly providing its
+A Feature App can be integrated by directly providing its
 `featureAppDefinition`:
 
 ```js

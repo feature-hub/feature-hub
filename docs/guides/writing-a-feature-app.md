@@ -32,22 +32,21 @@ export default myFeatureAppDefinition;
 
 It is recommended to use namespaces for the Feature App ID to avoid naming
 conflicts, e.g. `'acme:my-feature-app'`. This ID is used to look up the config
-for a Feature App. Furthermore, it is used as a consumer ID for
-[binding][feature-service-binder] the required Feature Services to the dependent
-Feature App.
+for a Feature App. Furthermore, it is used as a consumer ID for [binding the
+required Feature Services][feature-service-binder] to the dependent Feature App.
 
 ## `dependencies`
 
-Required Feature Services are declared with their ID and a [semver][semver]
-version string, e.g. `{'acme:some-feature-service': '^2.0'}`.
+Required Feature Services are declared with their ID and a [semver version
+string][semver], e.g. `{'acme:some-feature-service': '^2.0'}`.
 
 ## `create`
 
 The `create` method takes the single argument `env`, which has the following
 properties:
 
-1. `config` — A Feature App config object that is [provided][providing-configs]
-   by the integrator:
+1. `config` — A Feature App [config object that is provided by the
+   integrator][providing-configs]:
 
    ```js
    const myFeatureAppDefinition = {
@@ -62,7 +61,7 @@ properties:
    ```
 
 1. `featureServices` — An object of required Feature Services that are
-   [semver-compatible][semver] with the declared dependencies in the Feature App
+   semver-compatible with the declared dependencies in the Feature App
    definition:
 
    ```js
@@ -87,10 +86,10 @@ properties:
 1. `idSpecifier` — An optional [ID specifier][idspecifier] that distinguishes
    the Feature App instance from other Feature App instances with the same ID.
 
-The return value of the `create` method can vary depending on how the integrator
-places Feature Apps on a web page. Assuming React is used, a Feature App can be
-either a [React Feature App][react-feature-app] or a [DOM Feature
-App][dom-feature-app].
+The return value of the `create` method can vary depending on the integration
+solution used. Assuming the [`@feature-hub/react`][react-api] package is used, a
+Feature App can be either a [React Feature App][react-feature-app] or a [DOM
+Feature App][dom-feature-app].
 
 ## `ownFeatureServiceDefinitions`
 
@@ -129,8 +128,11 @@ the new Feature Service is ignored and a warning is emitted.
 
 ## Implementing a Feature App Using React
 
-Both a React Feature App and a DOM Feature App can be [placed on a web page
-using React][placing-feature-apps-on-a-web-page-using-react].
+The [`@feature-hub/react`][react-api] package defines two interfaces,
+`ReactFeatureApp` and `DomFeatureApp`. A Feature App that implements one of
+these interfaces can be [placed on a web page using the `FeatureAppLoader` or
+`FeatureAppContainer`
+components][placing-feature-apps-on-a-web-page-using-react].
 
 ### React Feature App
 
@@ -183,5 +185,6 @@ const myFeatureAppDefinition = {
 [placing-feature-apps-on-a-web-page-using-react]:
   /docs/guides/integrating-the-feature-hub#placing-feature-apps-on-a-web-page-using-react
 [providing-configs]: /docs/guides/integrating-the-feature-hub#providing-configs
+[react-api]: /@feature-hub/react/
 [react-feature-app]: /docs/guides/writing-a-feature-app#react-feature-app
 [semver]: https://semver.org
