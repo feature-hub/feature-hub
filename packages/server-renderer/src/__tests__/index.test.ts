@@ -117,8 +117,11 @@ describe('defineServerRenderer', () => {
 
             // tslint:disable-next-line:no-floating-promises
             Promise.resolve().then(async () => {
+              const rerenderPromise = serverRendererConsumer.rerender();
+
               completed = true;
-              await serverRendererConsumer.rerender();
+
+              await rerenderPromise;
             });
 
             return 'testHtml';
