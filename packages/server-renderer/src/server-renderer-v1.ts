@@ -22,7 +22,7 @@ export class ServerRenderer implements ServerRendererV1 {
   private readonly consumerCompletedCallbacks: IsCompletedCallback[] = [];
 
   public constructor(
-    public serverRequest: ServerRequest | undefined,
+    public readonly serverRequest: ServerRequest | undefined,
     private readonly rerenderWait: number
   ) {}
 
