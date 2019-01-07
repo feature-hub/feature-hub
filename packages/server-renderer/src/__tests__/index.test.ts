@@ -11,6 +11,8 @@ describe('defineServerRenderer', () => {
   let serverRequest: ServerRequest;
 
   beforeEach(() => {
+    jest.useFakeTimers();
+
     mockEnv = {config: undefined, featureServices: {}, idSpecifier: undefined};
 
     serverRequest = {
@@ -20,6 +22,10 @@ describe('defineServerRenderer', () => {
     };
 
     serverRendererDefinition = defineServerRenderer(serverRequest);
+  });
+
+  afterEach(() => {
+    jest.useRealTimers();
   });
 
   it('creates a server renderer definition', () => {
@@ -115,23 +121,24 @@ describe('defineServerRenderer', () => {
           const mockRender = jest.fn(() => {
             serverRendererConsumer.register(() => completed);
 
-            // TODO: switch to setTimeout and fake timers
-            Promise.resolve()
-              .then(async () => {
+            if (!completed) {
+              setTimeout(async () => {
                 completed = true;
 
                 await serverRendererConsumer.rerender();
-              })
-              .catch(done.fail);
+              });
+            }
 
             return 'testHtml';
           });
 
-          const html = await serverRendererIntegrator.renderUntilCompleted(
+          const htmlPromise = serverRendererIntegrator.renderUntilCompleted(
             mockRender
           );
 
-          expect(html).toEqual('testHtml');
+          jest.runAllTimers();
+
+          expect(await htmlPromise).toEqual('testHtml');
           expect(mockRender).toHaveBeenCalledTimes(2);
 
           done();
