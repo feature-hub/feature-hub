@@ -5,5 +5,6 @@
     {"depTypeList": ["dependencies"], "semanticCommitType": "fix"}
   ],
   "semanticCommitScope": "all",
+  "semanticCommitType": "build",
   "lockFileMaintenance": {"enabled": true}
 }
