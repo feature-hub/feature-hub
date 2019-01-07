@@ -67,7 +67,7 @@ describe('defineServerRenderer', () => {
 
     describe('rendering', () => {
       describe('with an integrator as the only consumer', () => {
-        it('resolves with the result of the given render function, in 1 render pass', async () => {
+        it('resolves with the result of the given render function after the first render pass', async () => {
           const serverRenderer = serverRendererBinder('test').featureService;
           const mockRender = jest.fn(() => 'testHtml');
           const html = await serverRenderer.renderUntilCompleted(mockRender);
@@ -78,7 +78,7 @@ describe('defineServerRenderer', () => {
       });
 
       describe('with an integrator, and a consumer that is completed in the first render pass', () => {
-        it('resolves with an html string, in 1 render pass', async () => {
+        it('resolves with an html string after the first render pass', async () => {
           const serverRendererIntegrator = serverRendererBinder(
             'test:integrator'
           ).featureService;
@@ -102,7 +102,7 @@ describe('defineServerRenderer', () => {
       });
 
       describe('with an integrator, and a consumer that is completed after triggering a rerender', () => {
-        it('resolves with an html string, in 2 render passes', async () => {
+        it('resolves with an html string after the second render pass', async () => {
           const serverRendererIntegrator = serverRendererBinder(
             'test:integrator'
           ).featureService;
@@ -149,7 +149,7 @@ describe('defineServerRenderer', () => {
       });
 
       describe('when renderUntilCompleted is called multiple times', () => {
-        it('throws an error', async () => {
+        it('rejects with an error', async () => {
           const serverRenderer = serverRendererBinder('test').featureService;
           const mockRender = jest.fn(() => 'testHtml');
 
