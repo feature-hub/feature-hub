@@ -102,7 +102,7 @@ describe('defineServerRenderer', () => {
       });
 
       describe('with an integrator, and a consumer that is completed after triggering a rerender', () => {
-        it('resolves with an html string after the second render pass', async () => {
+        it('resolves with an html string after the second render pass', async done => {
           const serverRendererIntegrator = serverRendererBinder(
             'test:integrator'
           ).featureService;
@@ -115,14 +115,14 @@ describe('defineServerRenderer', () => {
           const mockRender = jest.fn(() => {
             serverRendererConsumer.register(() => completed);
 
-            // tslint:disable-next-line:no-floating-promises
-            Promise.resolve().then(async () => {
-              const rerenderPromise = serverRendererConsumer.rerender();
+            // TODO: switch to setTimeout and fake timers
+            Promise.resolve()
+              .then(async () => {
+                completed = true;
 
-              completed = true;
-
-              await rerenderPromise;
-            });
+                await serverRendererConsumer.rerender();
+              })
+              .catch(done.fail);
 
             return 'testHtml';
           });
@@ -133,6 +133,8 @@ describe('defineServerRenderer', () => {
 
           expect(html).toEqual('testHtml');
           expect(mockRender).toHaveBeenCalledTimes(2);
+
+          done();
         });
       });
 
