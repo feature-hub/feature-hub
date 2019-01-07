@@ -3,9 +3,11 @@
 [![Package Version][package-badge]][package-npm]
 [![Website][website-badge]][website] [![API][api-badge]][api]
 
-The core functionality of the Feature Hub. It allows dynamic loading of Feature
-Apps, lifecycle management of Feature Apps, and controlled sharing of state and
-functionality between Feature Apps through Feature Services.
+Create scalable web applications using micro frontends.
+
+> Allows dynamic loading of micro frontends, lifecycle management of micro
+> frontends, and controlled sharing of state and functionality between micro
+> frontends.
 
 ## Installation
 

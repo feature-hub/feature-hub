@@ -81,12 +81,14 @@ following properties:
 
 ## Feature Service Binder
 
-The `create` method must return an object with a so-called **Feature Service
-binder** for each supported major version. The Feature Service binder is a
-function that is called for each consumer. It returns a Feature Service binding
-with a consumer-bound `featureService` and an optional `unbind` method. The
-`FeatureServiceRegistry` passes this consumer-bound `featureService` to the
-consumer's `create` method via the `env.featureServices` argument.
+The `create` method must return an object that provides an implementation of the
+`FeatureServiceBinder` type of the [`@feature-hub/core`][core-api] package for
+each supported major version. The Feature Service binder is a function that is
+called for each consumer with its `consumerUid` string as the first argument. It
+returns a Feature Service binding with a consumer-bound `featureService` and an
+optional `unbind` method. The `FeatureServiceRegistry` passes this
+consumer-bound `featureService` to the consumer's `create` method via the
+`env.featureServices` argument.
 
 ## Providing a Versioned API
 
@@ -258,6 +260,7 @@ const myFeatureServiceDefinition = {
 };
 ```
 
+[core-api]: /@feature-hub/core/
 [feature-service-binder]:
   /docs/guides/writing-a-feature-service#feature-service-binder
 [providing-configs]: /docs/guides/integrating-the-feature-hub#providing-configs

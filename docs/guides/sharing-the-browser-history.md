@@ -154,10 +154,12 @@ registry.registerFeatureServices(featureServiceDefinitions, 'acme:integrator');
 
 ## Root Location Transformer
 
-A root location transformer is an object exposing two functions,
-`getConsumerPathFromRootLocation` and `createRootLocation`. In the following
-example, each consumer location is encoded as its own query parameter, with the
-`consumerUid` used as parameter name:
+A root location transformer is an object that implements the
+`RootLocationTransformer` interface of the
+[`@feature-hub/history-service`][history-service-api] package. It provides two
+functions, `getConsumerPathFromRootLocation` and `createRootLocation`. In the
+following example, each consumer location is encoded as its own query parameter,
+with the `consumerUid` used as parameter name:
 
 ```js
 import * as history from 'history';

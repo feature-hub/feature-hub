@@ -27,8 +27,8 @@ dynamically loaded when the Feature Service is used.
 Yes, but the application must first be [converted to a Feature
 App][writing-a-feature-app]. The [`@feature-hub/react`][react-api] package could
 be used to integrate the application as a [DOM Feature App][dom-feature-app].
-However, if no other React Feature Apps are to be integrated, it could make
-sense to use an integration solution without React.
+However, if you don't want to integrate other React Feature Apps, you probably
+should build a Feature Hub Integrator without React.
 
 [own-feature-service-definitions]:
   /docs/guides/writing-a-feature-app#ownfeatureservicedefinitions

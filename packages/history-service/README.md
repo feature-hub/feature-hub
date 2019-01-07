@@ -3,8 +3,7 @@
 [![Package Version][package-badge]][package-npm]
 [![Website][website-badge]][website] [![API][api-badge]][api]
 
-A history facade guaranteeing safe access for multiple consumers on the same web
-page.
+A history facade guaranteeing safe access for multiple consumers.
 
 ## Installation
 
