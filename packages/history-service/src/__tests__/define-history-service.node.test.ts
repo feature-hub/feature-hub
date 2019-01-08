@@ -32,18 +32,16 @@ describe('HistoryService#create (on Node.js)', () => {
     consoleWarnSpy.mockImplementation(jest.fn());
 
     createHistoryServiceBinder = (serverRequest: ServerRequest | undefined) => {
-      const mockServerRenderer: ServerRendererV1 = {serverRequest};
-
-      const mockFeatureServices = {
-        's2:server-renderer': mockServerRenderer
-      };
+      const mockServerRenderer: Partial<ServerRendererV1> = {serverRequest};
 
       const mockEnv: FeatureServiceEnvironment<
         undefined,
         {'s2:server-renderer': ServerRendererV1}
       > = {
         config: undefined,
-        featureServices: mockFeatureServices
+        featureServices: {
+          's2:server-renderer': mockServerRenderer as ServerRendererV1
+        }
       };
 
       const sharedHistoryService = defineHistoryService(
