@@ -5,11 +5,8 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom/server';
 
 export default async function renderMainHtml(port: number): Promise<string> {
-  // TODO: Remove server renderer config when optional dependencies have landed:
-  // https://github.com/sinnerschrader/feature-hub/issues/24
-  const configs = {'s2:server-renderer': {timeout: 0}};
-  const registry = new FeatureServiceRegistry({configs});
   const featureAppNodeUrl = `http://localhost:${port}/feature-app.commonjs.js`;
+  const registry = new FeatureServiceRegistry();
 
   const manager = new FeatureAppManager(registry, {
     moduleLoader: loadCommonJsModule

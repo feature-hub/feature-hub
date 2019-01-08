@@ -1,5 +1,11 @@
 import {setTimeoutAsync} from './internal/set-timeout-async';
 
+async function renderingTimeout(timeout: number): Promise<never> {
+  await setTimeoutAsync(timeout);
+
+  throw Error(`Got rendering timeout after ${timeout} ms.`);
+}
+
 export interface ServerRequest {
   readonly path: string;
   readonly cookies: Record<string, string>;
@@ -20,21 +26,25 @@ export class ServerRenderer implements ServerRendererV1 {
 
   public constructor(
     public readonly serverRequest: ServerRequest | undefined,
-    private readonly timeout: number
+    private readonly timeout?: number
   ) {}
 
   public async renderUntilCompleted(render: () => string): Promise<string> {
-    return Promise.race([this.renderingLoop(render), this.renderingTimeout()]);
+    const renderPromise = this.renderingLoop(render);
+
+    if (typeof this.timeout !== 'number') {
+      console.warn(
+        'No timeout is configured for the server renderer. This could lead to unexpectedly long render times or, in the worst case, never resolving render calls!'
+      );
+
+      return renderPromise;
+    }
+
+    return Promise.race([renderPromise, renderingTimeout(this.timeout)]);
   }
 
   public rerenderAfter(promise: Promise<unknown>): void {
     this.rerenderPromises.add(promise);
-  }
-
-  private async renderingTimeout(): Promise<never> {
-    await setTimeoutAsync(this.timeout);
-
-    throw Error(`Got rendering timeout after ${this.timeout} ms.`);
   }
 
   private async renderingLoop(render: () => string): Promise<string> {

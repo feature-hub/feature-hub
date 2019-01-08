@@ -3,6 +3,8 @@ import {
   FeatureServiceBinder,
   FeatureServiceProviderDefinition
 } from '@feature-hub/core';
+// tslint:disable-next-line:no-implicit-dependencies
+import mockConsole from 'jest-mock-console';
 import {ServerRendererV1, ServerRequest, defineServerRenderer} from '..';
 import {ServerRendererConfig} from '../config';
 import {useFakeTimers} from './use-fake-timers';
@@ -40,7 +42,7 @@ describe('defineServerRenderer', () => {
       expect(sharedServerRenderer['1.0']).toBeDefined();
     });
 
-    for (const invalidConfig of [null, {}, {timeout: false}]) {
+    for (const invalidConfig of [null, {timeout: false}]) {
       describe(`with an invalid config ${JSON.stringify(
         invalidConfig
       )}`, () => {
@@ -180,13 +182,34 @@ describe('defineServerRenderer', () => {
           return expect(
             useFakeTimers(
               async () => serverRenderer.renderUntilCompleted(mockRender),
-              mockEnv.config.timeout
+              5
             )
-          ).rejects.toEqual(
-            new Error(
-              `Got rendering timeout after ${mockEnv.config.timeout} ms.`
-            )
+          ).rejects.toEqual(new Error('Got rendering timeout after 5 ms.'));
+        });
+      });
+
+      describe('when no timeout is configured', () => {
+        beforeEach(() => {
+          serverRendererBinder = serverRendererDefinition.create({
+            config: undefined,
+            featureServices: {}
+          })['1.0'] as FeatureServiceBinder<ServerRendererV1>;
+        });
+
+        it('logs a warning', async () => {
+          const serverRenderer = serverRendererBinder('test').featureService;
+          const mockRender = jest.fn(() => 'testHtml');
+          const restoreConsole = mockConsole();
+
+          await useFakeTimers(async () =>
+            serverRenderer.renderUntilCompleted(mockRender)
           );
+
+          expect(console.warn).toHaveBeenCalledWith(
+            'No timeout is configured for the server renderer. This could lead to unexpectedly long render times or, in the worst case, never resolving render calls!'
+          );
+
+          restoreConsole();
         });
       });
     });

@@ -22,6 +22,9 @@
   "dependencies": {
     "@feature-hub/core": "^0.11.0"
   },
+  "devDependencies": {
+    "jest-mock-console": "^0.4.2"
+  },
   "publishConfig": {
     "access": "public"
   }

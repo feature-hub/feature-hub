@@ -3,7 +3,7 @@ import {
   FeatureServiceProviderDefinition,
   SharedFeatureService
 } from '@feature-hub/core';
-import {validateConfig} from './config';
+import {ServerRendererConfig, validateConfig} from './config';
 import {
   ServerRenderer,
   ServerRendererV1,
@@ -21,7 +21,9 @@ export function defineServerRenderer(
     id: 's2:server-renderer',
 
     create: (env): SharedServerRenderer => {
-      const {timeout} = validateConfig(env.config);
+      const {timeout} =
+        validateConfig(env.config) || ({} as ServerRendererConfig);
+
       const serverRenderer = new ServerRenderer(serverRequest, timeout);
 
       return {
