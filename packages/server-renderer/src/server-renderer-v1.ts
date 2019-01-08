@@ -48,21 +48,17 @@ export class ServerRenderer implements ServerRendererV1 {
   }
 
   private async renderingLoop(render: () => string): Promise<string> {
-    try {
-      let html = render();
+    let html = render();
 
-      // During a render pass, rerender promises might be added via the
-      // rerenderAfter method.
-      while (this.rerenderPromises.size > 0) {
-        await Promise.all(this.rerenderPromises.values());
-        this.rerenderPromises.clear();
+    // During a render pass, rerender promises might be added via the
+    // rerenderAfter method.
+    while (this.rerenderPromises.size > 0) {
+      await Promise.all(this.rerenderPromises.values());
+      this.rerenderPromises.clear();
 
-        html = render();
-      }
-
-      return html;
-    } catch (error) {
-      throw error;
+      html = render();
     }
+
+    return html;
   }
 }
