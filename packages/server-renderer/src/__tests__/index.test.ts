@@ -4,17 +4,20 @@ import {
   FeatureServiceProviderDefinition
 } from '@feature-hub/core';
 import {ServerRendererV1, ServerRequest, defineServerRenderer} from '..';
+import {ServerRendererConfig} from '../config';
 import {useFakeTimers} from './use-fake-timers';
 
 describe('defineServerRenderer', () => {
-  let mockEnv: FeatureAppEnvironment<undefined, {}>;
+  let mockEnv: FeatureAppEnvironment<ServerRendererConfig, {}>;
   let serverRendererDefinition: FeatureServiceProviderDefinition;
   let serverRequest: ServerRequest;
 
   beforeEach(() => {
-    jest.useFakeTimers();
-
-    mockEnv = {config: undefined, featureServices: {}, idSpecifier: undefined};
+    mockEnv = {
+      config: {timeout: 5},
+      featureServices: {},
+      idSpecifier: undefined
+    };
 
     serverRequest = {
       path: '/app',
@@ -23,10 +26,6 @@ describe('defineServerRenderer', () => {
     };
 
     serverRendererDefinition = defineServerRenderer(serverRequest);
-  });
-
-  afterEach(() => {
-    jest.useRealTimers();
   });
 
   it('creates a server renderer definition', () => {
@@ -41,7 +40,7 @@ describe('defineServerRenderer', () => {
       expect(sharedServerRenderer['1.0']).toBeDefined();
     });
 
-    for (const invalidConfig of [null, {rerenderWait: false}]) {
+    for (const invalidConfig of [null, {}, {timeout: false}]) {
       describe(`with an invalid config ${JSON.stringify(
         invalidConfig
       )}`, () => {
@@ -73,25 +72,15 @@ describe('defineServerRenderer', () => {
     });
 
     describe('rendering', () => {
-      const createServerRendererConsumer = (
-        consumerUid: string,
-        rerenderWait = 0
-      ) => {
+      const createServerRendererConsumer = (consumerUid: string) => {
         const serverRenderer = serverRendererBinder(consumerUid).featureService;
 
         let firstRender = true;
-        let completed = false;
 
         const render = () => {
           if (firstRender) {
             firstRender = false;
-            serverRenderer.register(() => completed);
-
-            setTimeout(async () => {
-              completed = true;
-
-              await serverRenderer.rerender();
-            }, rerenderWait);
+            serverRenderer.rerenderAfter(Promise.resolve());
           }
         };
 
@@ -109,31 +98,7 @@ describe('defineServerRenderer', () => {
         });
       });
 
-      describe('with an integrator, and a consumer that is completed in the first render pass', () => {
-        it('resolves with an html string after the first render pass', async () => {
-          const serverRendererIntegrator = serverRendererBinder(
-            'test:integrator'
-          ).featureService;
-
-          const serverRendererConsumer = serverRendererBinder('test:consumer')
-            .featureService;
-
-          const mockRender = jest.fn(() => {
-            serverRendererConsumer.register(() => true);
-
-            return 'testHtml';
-          });
-
-          const html = await useFakeTimers(async () =>
-            serverRendererIntegrator.renderUntilCompleted(mockRender)
-          );
-
-          expect(html).toEqual('testHtml');
-          expect(mockRender).toHaveBeenCalledTimes(1);
-        });
-      });
-
-      describe('with an integrator, and a consumer that is completed after triggering a rerender', () => {
+      describe('with an integrator, and a consumer that triggers a rerender', () => {
         it('resolves with an html string after the second render pass', async () => {
           const serverRendererIntegrator = serverRendererBinder(
             'test:integrator'
@@ -149,8 +114,8 @@ describe('defineServerRenderer', () => {
             return 'testHtml';
           });
 
-          const html = await useFakeTimers(async () =>
-            serverRendererIntegrator.renderUntilCompleted(mockRender)
+          const html = await serverRendererIntegrator.renderUntilCompleted(
+            mockRender
           );
 
           expect(html).toEqual('testHtml');
@@ -158,20 +123,18 @@ describe('defineServerRenderer', () => {
         });
       });
 
-      describe('with an integrator, and two consumers that are completed after both triggered a rerender within "rerenderWait" milliseconds', () => {
+      describe('with an integrator, and two consumers that both trigger a rerender in the first render pass', () => {
         it('resolves with an html string after the second render pass', async () => {
           const serverRendererIntegrator = serverRendererBinder(
             'test:integrator'
           ).featureService;
 
           const serverRendererConsumer1 = createServerRendererConsumer(
-            'test:consumer:1',
-            50
+            'test:consumer:1'
           );
 
           const serverRendererConsumer2 = createServerRendererConsumer(
-            'test:consumer:2',
-            100
+            'test:consumer:2'
           );
 
           const mockRender = jest.fn(() => {
@@ -181,91 +144,12 @@ describe('defineServerRenderer', () => {
             return 'testHtml';
           });
 
-          const html = await useFakeTimers(
-            async () =>
-              serverRendererIntegrator.renderUntilCompleted(mockRender),
-            150
+          const html = await serverRendererIntegrator.renderUntilCompleted(
+            mockRender
           );
 
           expect(html).toEqual('testHtml');
           expect(mockRender).toHaveBeenCalledTimes(2);
-        });
-      });
-
-      describe('with an integrator, and two consumers that are completed after triggering a rerender more than "rerenderWait" milliseconds apart from one another', () => {
-        describe('and the default "rerenderWait"', () => {
-          it('resolves with an html string after the third render pass', async () => {
-            const serverRendererIntegrator = serverRendererBinder(
-              'test:integrator'
-            ).featureService;
-
-            const serverRendererConsumer1 = createServerRendererConsumer(
-              'test:consumer:1',
-              50
-            );
-
-            const serverRendererConsumer2 = createServerRendererConsumer(
-              'test:consumer:2',
-              101
-            );
-
-            const mockRender = jest.fn(() => {
-              serverRendererConsumer1.render();
-              serverRendererConsumer2.render();
-
-              return 'testHtml';
-            });
-
-            const html = await useFakeTimers(
-              async () =>
-                serverRendererIntegrator.renderUntilCompleted(mockRender),
-              151
-            );
-
-            expect(html).toEqual('testHtml');
-            expect(mockRender).toHaveBeenCalledTimes(3);
-          });
-        });
-
-        describe('and a custom, higher rerenderWait', () => {
-          beforeEach(() => {
-            serverRendererBinder = serverRendererDefinition.create({
-              config: {rerenderWait: 51},
-              featureServices: {}
-            })['1.0'] as FeatureServiceBinder<ServerRendererV1>;
-          });
-
-          it('resolves with an html string after the second render pass', async () => {
-            const serverRendererIntegrator = serverRendererBinder(
-              'test:integrator'
-            ).featureService;
-
-            const serverRendererConsumer1 = createServerRendererConsumer(
-              'test:consumer:1',
-              50
-            );
-
-            const serverRendererConsumer2 = createServerRendererConsumer(
-              'test:consumer:2',
-              101
-            );
-
-            const mockRender = jest.fn(() => {
-              serverRendererConsumer1.render();
-              serverRendererConsumer2.render();
-
-              return 'testHtml';
-            });
-
-            const html = await useFakeTimers(
-              async () =>
-                serverRendererIntegrator.renderUntilCompleted(mockRender),
-              152
-            );
-
-            expect(html).toEqual('testHtml');
-            expect(mockRender).toHaveBeenCalledTimes(2);
-          });
         });
       });
 
@@ -284,16 +168,25 @@ describe('defineServerRenderer', () => {
         });
       });
 
-      describe('when renderUntilCompleted is called multiple times', () => {
-        it('rejects with an error', async () => {
+      describe('when rendering takes longer than the configured timeout', () => {
+        it('rejects with an error after the configured timeout', async () => {
           const serverRenderer = serverRendererBinder('test').featureService;
-          const mockRender = jest.fn(() => 'testHtml');
+          const mockRender = jest.fn(() => {
+            serverRenderer.rerenderAfter(new Promise<void>(() => undefined));
 
-          await serverRenderer.renderUntilCompleted(mockRender);
+            return 'testHtml';
+          });
 
           return expect(
-            serverRenderer.renderUntilCompleted(mockRender)
-          ).rejects.toEqual(new Error('Rendering has already been started.'));
+            useFakeTimers(
+              async () => serverRenderer.renderUntilCompleted(mockRender),
+              mockEnv.config.timeout
+            )
+          ).rejects.toEqual(
+            new Error(
+              `Got rendering timeout after ${mockEnv.config.timeout} ms.`
+            )
+          );
         });
       });
     });

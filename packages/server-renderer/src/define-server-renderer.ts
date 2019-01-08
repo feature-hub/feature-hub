@@ -21,8 +21,8 @@ export function defineServerRenderer(
     id: 's2:server-renderer',
 
     create: (env): SharedServerRenderer => {
-      const {rerenderWait = 50} = validateConfig(env.config) || {};
-      const serverRenderer = new ServerRenderer(serverRequest, rerenderWait);
+      const {timeout} = validateConfig(env.config);
+      const serverRenderer = new ServerRenderer(serverRequest, timeout);
 
       return {
         '1.0': () => ({featureService: serverRenderer})

@@ -8,7 +8,10 @@ import '../blueprint-css';
 import {historyConsumerDefinition} from './history-consumer-definition';
 import {rootLocationTransformer} from './root-location-transformer';
 
-const registry = new FeatureServiceRegistry();
+// TODO: Remove server renderer config when optional dependencies have landed:
+// https://github.com/sinnerschrader/feature-hub/issues/24
+const configs = {'s2:server-renderer': {timeout: 0}};
+const registry = new FeatureServiceRegistry({configs});
 
 registry.registerFeatureServices(
   [

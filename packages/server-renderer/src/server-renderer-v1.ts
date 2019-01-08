@@ -1,4 +1,4 @@
-import {debounceAsync} from './internal/debounce-async';
+import {setTimeoutAsync} from './internal/set-timeout-async';
 
 export interface ServerRequest {
   readonly path: string;
@@ -12,67 +12,47 @@ export interface ServerRendererV1 {
   readonly serverRequest: ServerRequest | undefined;
 
   renderUntilCompleted(render: () => string): Promise<string>;
-  register(isCompleted: IsCompletedCallback): void;
-  rerender(): Promise<void>;
+  rerenderAfter(promise: Promise<unknown>): void;
 }
 
 export class ServerRenderer implements ServerRendererV1 {
-  private debouncedRerender?: () => Promise<void>;
-
-  private readonly consumerCompletedCallbacks: IsCompletedCallback[] = [];
+  private readonly rerenderPromises = new Set<Promise<unknown>>();
 
   public constructor(
     public readonly serverRequest: ServerRequest | undefined,
-    private readonly rerenderWait: number
+    private readonly timeout: number
   ) {}
 
   public async renderUntilCompleted(render: () => string): Promise<string> {
-    if (this.debouncedRerender) {
-      throw new Error('Rendering has already been started.');
+    return Promise.race([this.renderingLoop(render), this.renderingTimeout()]);
+  }
+
+  public rerenderAfter(promise: Promise<unknown>): void {
+    this.rerenderPromises.add(promise);
+  }
+
+  private async renderingTimeout(): Promise<never> {
+    await setTimeoutAsync(this.timeout);
+
+    throw Error(`Got rendering timeout after ${this.timeout} ms.`);
+  }
+
+  private async renderingLoop(render: () => string): Promise<string> {
+    try {
+      let html = render();
+
+      // During a render pass, rerender promises might be added via the
+      // rerenderAfter method.
+      while (this.rerenderPromises.size > 0) {
+        await Promise.all(this.rerenderPromises.values());
+        this.rerenderPromises.clear();
+
+        html = render();
+      }
+
+      return html;
+    } catch (error) {
+      throw error;
     }
-
-    return this.startRendering(render);
-  }
-
-  public register(isCompleted: IsCompletedCallback): void {
-    this.consumerCompletedCallbacks.push(isCompleted);
-  }
-
-  public async rerender(): Promise<void> {
-    /* istanbul ignore if */
-    if (!this.debouncedRerender) {
-      throw new Error(
-        'Invalid state: ServerRenderer#debouncedRerender is undefined.'
-      );
-    }
-
-    return this.debouncedRerender();
-  }
-
-  private async startRendering(render: () => string): Promise<string> {
-    return new Promise<string>((resolve, reject) => {
-      const renderAndResolveIfCompleted = () => {
-        try {
-          const html = render();
-
-          if (this.isRenderingCompleted()) {
-            resolve(html);
-          }
-        } catch (error) {
-          reject(error);
-        }
-      };
-
-      this.debouncedRerender = debounceAsync(
-        renderAndResolveIfCompleted,
-        this.rerenderWait
-      );
-
-      renderAndResolveIfCompleted();
-    });
-  }
-
-  private isRenderingCompleted(): boolean {
-    return this.consumerCompletedCallbacks.every(isCompleted => isCompleted());
   }
 }

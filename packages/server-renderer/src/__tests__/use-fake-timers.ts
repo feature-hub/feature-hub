@@ -26,7 +26,7 @@ class ObservablePromise<TResult> {
 
 export async function useFakeTimers<TResult>(
   effect: Effect<TResult>,
-  expectedTimeoutInMilliseconds?: number
+  expectedTimeoutInMilliseconds: number
 ): Promise<TResult> {
   jest.useFakeTimers();
 
@@ -43,9 +43,7 @@ export async function useFakeTimers<TResult>(
       actualTimeoutInMilliseconds += 1;
     }
 
-    if (expectedTimeoutInMilliseconds !== undefined) {
-      expect(actualTimeoutInMilliseconds).toBe(expectedTimeoutInMilliseconds);
-    }
+    expect(actualTimeoutInMilliseconds).toBe(expectedTimeoutInMilliseconds);
 
     return result.promise;
   } finally {
