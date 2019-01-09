@@ -12,6 +12,10 @@ export interface ServerRequest {
   readonly headers: Record<string, string>;
 }
 
+export interface AsyncSsrManagerConfig {
+  readonly timeout?: number;
+}
+
 export interface AsyncSsrManagerV1 {
   readonly serverRequest: ServerRequest | undefined;
 
@@ -19,12 +23,8 @@ export interface AsyncSsrManagerV1 {
   rerenderAfter(promise: Promise<unknown>): void;
 }
 
-export interface SharedAsyncSsrManager extends SharedFeatureService {
+interface SharedAsyncSsrManager extends SharedFeatureService {
   readonly '1.0': FeatureServiceBinder<AsyncSsrManagerV1>;
-}
-
-export interface AsyncSsrManagerConfig {
-  readonly timeout?: number;
 }
 
 export function defineAsyncSsrManager(
