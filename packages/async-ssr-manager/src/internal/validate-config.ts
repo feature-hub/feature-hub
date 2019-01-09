@@ -1,6 +1,4 @@
-export interface AsyncSsrManagerConfig {
-  timeout?: number;
-}
+import {AsyncSsrManagerConfig} from '../define-async-ssr-manager';
 
 function isValidConfig(
   config: unknown

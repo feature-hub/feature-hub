@@ -8,10 +8,14 @@ import {
   AsyncSsrManagerV1,
   ServerRequest
 } from './async-ssr-manager-v1';
-import {AsyncSsrManagerConfig, validateConfig} from './config';
+import {validateConfig} from './internal/validate-config';
 
 export interface SharedAsyncSsrManager extends SharedFeatureService {
   readonly '1.0': FeatureServiceBinder<AsyncSsrManagerV1>;
+}
+
+export interface AsyncSsrManagerConfig {
+  timeout?: number;
 }
 
 export function defineAsyncSsrManager(

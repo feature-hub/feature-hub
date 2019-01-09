@@ -6,8 +6,12 @@ import {
   FeatureServiceProviderDefinition
 } from '@feature-hub/core';
 import mockConsole from 'jest-mock-console';
-import {AsyncSsrManagerV1, ServerRequest, defineAsyncSsrManager} from '..';
-import {AsyncSsrManagerConfig} from '../config';
+import {
+  AsyncSsrManagerConfig,
+  AsyncSsrManagerV1,
+  ServerRequest,
+  defineAsyncSsrManager
+} from '..';
 import {useFakeTimers} from './use-fake-timers';
 
 describe('defineAsyncSsrManager', () => {
