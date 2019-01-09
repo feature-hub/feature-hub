@@ -1,5 +1,5 @@
 export interface ServerRendererConfig {
-  rerenderWait: number;
+  timeout?: number;
 }
 
 function isValidConfig(
@@ -13,11 +13,9 @@ function isValidConfig(
     return false;
   }
 
-  const {rerenderWait} = config as ServerRendererConfig;
+  const {timeout} = config as ServerRendererConfig;
 
-  return (
-    typeof rerenderWait === 'undefined' || typeof rerenderWait === 'number'
-  );
+  return typeof timeout === 'undefined' || typeof timeout === 'number';
 }
 
 export function validateConfig(

@@ -43,7 +43,7 @@ export async function useFakeTimers<TResult>(
       actualTimeoutInMilliseconds += 1;
     }
 
-    if (expectedTimeoutInMilliseconds !== undefined) {
+    if (typeof expectedTimeoutInMilliseconds === 'number') {
       expect(actualTimeoutInMilliseconds).toBe(expectedTimeoutInMilliseconds);
     }
 
