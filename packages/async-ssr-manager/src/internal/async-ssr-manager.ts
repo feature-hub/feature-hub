@@ -1,22 +1,10 @@
-import {setTimeoutAsync} from './internal/set-timeout-async';
+import {AsyncSsrManagerV1, ServerRequest} from '../define-async-ssr-manager';
+import {setTimeoutAsync} from './set-timeout-async';
 
 async function renderingTimeout(timeout: number): Promise<never> {
   await setTimeoutAsync(timeout);
 
   throw Error(`Got rendering timeout after ${timeout} ms.`);
-}
-
-export interface ServerRequest {
-  readonly path: string;
-  readonly cookies: Record<string, string>;
-  readonly headers: Record<string, string>;
-}
-
-export interface AsyncSsrManagerV1 {
-  readonly serverRequest: ServerRequest | undefined;
-
-  renderUntilCompleted(render: () => string): Promise<string>;
-  rerenderAfter(promise: Promise<unknown>): void;
 }
 
 export class AsyncSsrManager implements AsyncSsrManagerV1 {

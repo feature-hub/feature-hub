@@ -3,12 +3,21 @@ import {
   FeatureServiceProviderDefinition,
   SharedFeatureService
 } from '@feature-hub/core';
-import {
-  AsyncSsrManager,
-  AsyncSsrManagerV1,
-  ServerRequest
-} from './async-ssr-manager-v1';
+import {AsyncSsrManager} from './internal/async-ssr-manager';
 import {validateConfig} from './internal/validate-config';
+
+export interface ServerRequest {
+  readonly path: string;
+  readonly cookies: Record<string, string>;
+  readonly headers: Record<string, string>;
+}
+
+export interface AsyncSsrManagerV1 {
+  readonly serverRequest: ServerRequest | undefined;
+
+  renderUntilCompleted(render: () => string): Promise<string>;
+  rerenderAfter(promise: Promise<unknown>): void;
+}
 
 export interface SharedAsyncSsrManager extends SharedFeatureService {
   readonly '1.0': FeatureServiceBinder<AsyncSsrManagerV1>;
