@@ -4,12 +4,12 @@
 
 // tslint:disable:no-non-null-assertion
 
+import {AsyncSsrManagerV1, ServerRequest} from '@feature-hub/async-ssr-manager';
 import {
   FeatureServiceBinder,
   FeatureServiceBinding,
   FeatureServiceEnvironment
 } from '@feature-hub/core';
-import {ServerRendererV1, ServerRequest} from '@feature-hub/server-renderer';
 import {History} from 'history';
 import {
   HistoryServiceV1,
@@ -32,15 +32,15 @@ describe('HistoryService#create (on Node.js)', () => {
     consoleWarnSpy.mockImplementation(jest.fn());
 
     createHistoryServiceBinder = (serverRequest: ServerRequest | undefined) => {
-      const mockServerRenderer: Partial<ServerRendererV1> = {serverRequest};
+      const mockAsyncSsrManager: Partial<AsyncSsrManagerV1> = {serverRequest};
 
       const mockEnv: FeatureServiceEnvironment<
         undefined,
-        {'s2:server-renderer': ServerRendererV1}
+        {'s2:async-ssr-manager': AsyncSsrManagerV1}
       > = {
         config: undefined,
         featureServices: {
-          's2:server-renderer': mockServerRenderer as ServerRendererV1
+          's2:async-ssr-manager': mockAsyncSsrManager as AsyncSsrManagerV1
         }
       };
 
@@ -91,7 +91,7 @@ describe('HistoryService#create (on Node.js)', () => {
 
     afterEach(destroyHistories);
 
-    describe('when the server renderer provides no server request', () => {
+    describe('when the Async SSR Manager provides no server request', () => {
       it('throws an error', () => {
         expect(() => createHistories(undefined)).toThrowError(
           new Error(

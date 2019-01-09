@@ -1,11 +1,11 @@
 // tslint:disable:no-non-null-assertion
 
+import {AsyncSsrManagerV1} from '@feature-hub/async-ssr-manager';
 import {
   FeatureServiceBinder,
   FeatureServiceBinding,
   FeatureServiceEnvironment
 } from '@feature-hub/core';
-import {ServerRendererV1} from '@feature-hub/server-renderer';
 import {History} from 'history';
 import {HistoryServiceV1, SharedHistoryService, defineHistoryService} from '..';
 import {testRootLocationTransformer} from '../internal/test-root-location-transformer';
@@ -27,7 +27,7 @@ describe('defineHistoryService', () => {
     expect(historyServiceDefinition.id).toBe('s2:history');
 
     expect(historyServiceDefinition.dependencies).toEqual({
-      's2:server-renderer': '^1.0'
+      's2:async-ssr-manager': '^1.0'
     });
   });
 
@@ -49,7 +49,7 @@ describe('defineHistoryService', () => {
       consoleWarnSpy = jest.spyOn(console, 'warn');
       consoleWarnSpy.mockImplementation(jest.fn());
 
-      const mockServerRenderer: Partial<ServerRendererV1> = {
+      const mockAsyncSsrManager: Partial<AsyncSsrManagerV1> = {
         serverRequest: {
           path: '/example',
           cookies: {},
@@ -59,11 +59,11 @@ describe('defineHistoryService', () => {
 
       const mockEnv: FeatureServiceEnvironment<
         undefined,
-        {'s2:server-renderer': ServerRendererV1}
+        {'s2:async-ssr-manager': AsyncSsrManagerV1}
       > = {
         config: undefined,
         featureServices: {
-          's2:server-renderer': mockServerRenderer as ServerRendererV1
+          's2:async-ssr-manager': mockAsyncSsrManager as AsyncSsrManagerV1
         }
       };
 

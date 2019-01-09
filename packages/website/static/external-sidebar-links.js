@@ -63,7 +63,7 @@
         'module-loader-amd',
         'module-loader-commonjs',
         'history-service',
-        'server-renderer'
+        'async-ssr-manager'
       ].map(name => ({
         href: `/@feature-hub/${name}`,
         name: `@feature-hub/${name}`
