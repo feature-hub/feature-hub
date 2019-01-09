@@ -5,7 +5,7 @@
   "license": "MIT",
   "dependencies": {
     "@blueprintjs/core": "^3.10.0",
-    "@feature-hub/async-ssr-manager": "^0.11.0",
+    "@feature-hub/async-ssr-manager": "^0.0.0",
     "@feature-hub/core": "^0.11.0",
     "@feature-hub/history-service": "^0.11.0",
     "@feature-hub/module-loader-amd": "^0.11.0",
