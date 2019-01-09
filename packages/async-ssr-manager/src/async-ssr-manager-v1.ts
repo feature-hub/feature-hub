@@ -14,14 +14,14 @@ export interface ServerRequest {
 
 export type IsCompletedCallback = () => boolean;
 
-export interface ServerRendererV1 {
+export interface AsyncSsrManagerV1 {
   readonly serverRequest: ServerRequest | undefined;
 
   renderUntilCompleted(render: () => string): Promise<string>;
   rerenderAfter(promise: Promise<unknown>): void;
 }
 
-export class ServerRenderer implements ServerRendererV1 {
+export class AsyncSsrManager implements AsyncSsrManagerV1 {
   private readonly rerenderPromises = new Set<Promise<unknown>>();
 
   public constructor(
@@ -34,7 +34,7 @@ export class ServerRenderer implements ServerRendererV1 {
 
     if (typeof this.timeout !== 'number') {
       console.warn(
-        'No timeout is configured for the server renderer. This could lead to unexpectedly long render times or, in the worst case, never resolving render calls!'
+        'No timeout is configured for the Async SSR Manager. This could lead to unexpectedly long render times or, in the worst case, never resolving render calls!'
       );
 
       return renderPromise;

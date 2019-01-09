@@ -1,7 +1,7 @@
+import {defineAsyncSsrManager} from '@feature-hub/async-ssr-manager';
 import {FeatureAppManager, FeatureServiceRegistry} from '@feature-hub/core';
 import {defineHistoryService} from '@feature-hub/history-service';
 import {FeatureAppContainer} from '@feature-hub/react';
-import {defineServerRenderer} from '@feature-hub/server-renderer';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import '../blueprint-css';
@@ -12,7 +12,7 @@ const registry = new FeatureServiceRegistry();
 
 registry.registerFeatureServices(
   [
-    defineServerRenderer(undefined),
+    defineAsyncSsrManager(undefined),
     defineHistoryService(rootLocationTransformer)
   ],
   'demo:integrator'

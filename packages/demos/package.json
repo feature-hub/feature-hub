@@ -5,12 +5,12 @@
   "license": "MIT",
   "dependencies": {
     "@blueprintjs/core": "^3.10.0",
+    "@feature-hub/async-ssr-manager": "^0.11.0",
     "@feature-hub/core": "^0.11.0",
     "@feature-hub/history-service": "^0.11.0",
     "@feature-hub/module-loader-amd": "^0.11.0",
     "@feature-hub/module-loader-commonjs": "^0.11.0",
     "@feature-hub/react": "^0.11.0",
-    "@feature-hub/server-renderer": "^0.11.0",
     "@types/express": "^4.16.0",
     "@types/get-port": "^4.0.0",
     "@types/history": "^4.7.2",

@@ -1,10 +1,10 @@
-export interface ServerRendererConfig {
+export interface AsyncSsrManagerConfig {
   timeout?: number;
 }
 
 function isValidConfig(
   config: unknown
-): config is ServerRendererConfig | undefined {
+): config is AsyncSsrManagerConfig | undefined {
   if (typeof config === 'undefined') {
     return true;
   }
@@ -13,16 +13,16 @@ function isValidConfig(
     return false;
   }
 
-  const {timeout} = config as ServerRendererConfig;
+  const {timeout} = config as AsyncSsrManagerConfig;
 
   return typeof timeout === 'undefined' || typeof timeout === 'number';
 }
 
 export function validateConfig(
   config: unknown
-): ServerRendererConfig | undefined {
+): AsyncSsrManagerConfig | undefined {
   if (!isValidConfig(config)) {
-    throw new Error('The ServerRenderer config is invalid.');
+    throw new Error('The Async SSR Manager config is invalid.');
   }
 
   return config;

@@ -106,12 +106,12 @@ registers it at the Feature Service registry.
 In the browser:
 
 ```js
+import {defineAsyncSsrManager} from '@feature-hub/async-ssr-manager';
 import {FeatureServiceRegistry} from '@feature-hub/core';
 import {
   defineHistoryService,
   createRootLocationTransformer
 } from '@feature-hub/history-service';
-import {defineServerRenderer} from '@feature-hub/server-renderer';
 ```
 
 ```js
@@ -122,16 +122,16 @@ const rootLocationTransformer = createRootLocationTransformer({
 });
 
 const featureServiceDefinitions = [
-  defineHistoryService(rootLocationTransformer),
-  defineServerRenderer()
+  defineAsyncSsrManager(undefined),
+  defineHistoryService(rootLocationTransformer)
 ];
 
 registry.registerFeatureServices(featureServiceDefinitions, 'acme:integrator');
 ```
 
-On the server, the integrator defines the server renderer using the request. The
-History Service depends on the server renderer to obtain its request and use it
-for the initial history location:
+On the server, the integrator defines the Async SSR Manager using the request.
+The History Service depends on the Async SSR Manager to obtain its request and
+use it for the initial history location:
 
 ```js
 const registry = new FeatureServiceRegistry();
@@ -145,8 +145,8 @@ const request = {
 };
 
 const featureServiceDefinitions = [
-  defineHistoryService(rootLocationTransformer),
-  defineServerRenderer(request)
+  defineAsyncSsrManager(request),
+  defineHistoryService(rootLocationTransformer)
 ];
 
 registry.registerFeatureServices(featureServiceDefinitions, 'acme:integrator');

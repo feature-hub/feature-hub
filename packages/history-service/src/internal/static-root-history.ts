@@ -1,4 +1,4 @@
-import {ServerRequest} from '@feature-hub/server-renderer';
+import {ServerRequest} from '@feature-hub/async-ssr-manager';
 import * as history from 'history';
 import {RootHistory, RootLocation} from './history-multiplexer';
 
