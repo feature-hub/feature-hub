@@ -15,7 +15,7 @@ export interface SharedAsyncSsrManager extends SharedFeatureService {
 }
 
 export interface AsyncSsrManagerConfig {
-  timeout?: number;
+  readonly timeout?: number;
 }
 
 export function defineAsyncSsrManager(
