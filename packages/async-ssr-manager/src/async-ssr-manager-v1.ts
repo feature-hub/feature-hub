@@ -12,8 +12,6 @@ export interface ServerRequest {
   readonly headers: Record<string, string>;
 }
 
-export type IsCompletedCallback = () => boolean;
-
 export interface AsyncSsrManagerV1 {
   readonly serverRequest: ServerRequest | undefined;
 
