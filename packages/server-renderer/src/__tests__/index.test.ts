@@ -1,9 +1,10 @@
+// tslint:disable:no-implicit-dependencies
+
 import {
   FeatureAppEnvironment,
   FeatureServiceBinder,
   FeatureServiceProviderDefinition
 } from '@feature-hub/core';
-// tslint:disable-next-line:no-implicit-dependencies
 import mockConsole from 'jest-mock-console';
 import {ServerRendererV1, ServerRequest, defineServerRenderer} from '..';
 import {ServerRendererConfig} from '../config';
