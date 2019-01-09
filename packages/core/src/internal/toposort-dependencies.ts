@@ -6,6 +6,7 @@ export interface Dependencies {
 
 export interface Dependant {
   readonly dependencies?: Dependencies;
+  readonly optionalDependencies?: Dependencies;
 }
 
 export type DependencyGraph<TDependant extends Dependant = Dependant> = Map<
@@ -23,7 +24,7 @@ function createTuple<TFirst, TSecond>(
 
 function createDependencyEdges(
   dependentName: string,
-  dependencies: Dependencies = Object.create(null)
+  dependencies: Dependencies
 ): DependencyEdges {
   return Object.keys(dependencies).map(createTuple(dependentName));
 }
@@ -40,10 +41,10 @@ function createAllDependencyEdges(
         return allDependencyEdges;
       }
 
-      const dependencyEdges = createDependencyEdges(
-        dependencyName,
-        dependant.dependencies
-      );
+      const dependencyEdges = createDependencyEdges(dependencyName, {
+        ...dependant.dependencies,
+        ...dependant.optionalDependencies
+      });
 
       return [...allDependencyEdges, ...dependencyEdges];
     },

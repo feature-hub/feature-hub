@@ -55,7 +55,7 @@ describe('FeatureServiceRegistry', () => {
 
     providerDefinitionB = {
       id: 'b',
-      dependencies: {a: '^1.0'},
+      optionalDependencies: {a: '^1.0'},
       create: jest.fn(() => ({'1.0': binderB}))
     };
 
@@ -194,17 +194,41 @@ describe('FeatureServiceRegistry', () => {
       ]);
     });
 
-    it('fails to register the Feature Service "b" due to the lack of dependency "a"', () => {
+    it('fails to register the Feature Service "c" due to the lack of dependency "a"', () => {
+      expect(() =>
+        featureServiceRegistry.registerFeatureServices(
+          [providerDefinitionC],
+          'test'
+        )
+      ).toThrowError(
+        new Error(
+          'The required Feature Service "a" is not registered and therefore could not be bound to consumer "c".'
+        )
+      );
+    });
+
+    it('doesnt fail to register the Feature Service "b" due to the lack of optional dependency "a"', () => {
+      providerDefinitionB = {
+        id: 'b',
+        optionalDependencies: {a: '^1.0'},
+        create: jest.fn(() => ({'1.0': jest.fn()}))
+      };
+
       expect(() =>
         featureServiceRegistry.registerFeatureServices(
           [providerDefinitionB],
           'test'
         )
-      ).toThrowError(
-        new Error(
-          'The required Feature Service "a" is not registered and therefore could not be bound to consumer "b".'
-        )
-      );
+      ).not.toThrow();
+
+      expect(spyConsoleInfo.mock.calls).toEqual([
+        [
+          'The optional Feature Service "a" is not registered and therefore could not be bound to consumer "b".'
+        ],
+        [
+          'The Feature Service "b" has been successfully registered by consumer "test".'
+        ]
+      ]);
     });
 
     it('fails to register the Feature Service "d" due to an unsupported dependency version', () => {
@@ -243,6 +267,33 @@ describe('FeatureServiceRegistry', () => {
           'The required Feature Service "a" in an invalid version could not be bound to consumer "d".'
         )
       );
+    });
+
+    it('does not fail to register the Feature Service "d" due to an invalid optional dependency version', () => {
+      const stateProviderDefinitionD = {
+        id: 'd',
+        optionalDependencies: {a: ''},
+        create: jest.fn()
+      };
+
+      expect(() =>
+        featureServiceRegistry.registerFeatureServices(
+          [providerDefinitionA, stateProviderDefinitionD],
+          'test'
+        )
+      ).not.toThrow();
+
+      expect(spyConsoleInfo.mock.calls).toEqual([
+        [
+          'The Feature Service "a" has been successfully registered by consumer "test".'
+        ],
+        [
+          'The optional Feature Service "a" in an invalid version could not be bound to consumer "d".'
+        ],
+        [
+          'The Feature Service "d" has been successfully registered by consumer "test".'
+        ]
+      ]);
     });
 
     it('fails to register the Feature Service "e" due to a dependency with an invalid version', () => {
@@ -305,6 +356,56 @@ describe('FeatureServiceRegistry', () => {
         });
 
         expect(binderA.mock.calls).toEqual([['foo:bar']]);
+      });
+    });
+
+    describe('for a Feature Service consumer without an id specifier and dependencies', () => {
+      it('creates a bindings object with Feature Services', () => {
+        featureServiceRegistry = new FeatureServiceRegistry();
+
+        featureServiceRegistry.registerFeatureServices(
+          [providerDefinitionA],
+          'test'
+        );
+
+        expect(binderA.mock.calls).toEqual([]);
+
+        expect(
+          featureServiceRegistry.bindFeatureServices({
+            id: 'foo',
+            dependencies: {a: '1.1'}
+          })
+        ).toEqual({
+          featureServices: {a: featureServiceA},
+          unbind: expect.any(Function)
+        });
+
+        expect(binderA.mock.calls).toEqual([['foo']]);
+      });
+    });
+
+    describe('for a Feature Service consumer and optional dependencies', () => {
+      it('creates a bindings object with Feature Services', () => {
+        featureServiceRegistry = new FeatureServiceRegistry();
+
+        featureServiceRegistry.registerFeatureServices(
+          [providerDefinitionA],
+          'test'
+        );
+
+        expect(binderA.mock.calls).toEqual([]);
+
+        expect(
+          featureServiceRegistry.bindFeatureServices({
+            id: 'foo',
+            optionalDependencies: {a: '1.1'}
+          })
+        ).toEqual({
+          featureServices: {a: featureServiceA},
+          unbind: expect.any(Function)
+        });
+
+        expect(binderA.mock.calls).toEqual([['foo']]);
       });
     });
 
