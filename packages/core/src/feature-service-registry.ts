@@ -192,7 +192,7 @@ export class FeatureServiceRegistry implements FeatureServiceRegistryLike {
       );
 
       if (!binding) {
-        break;
+        continue;
       }
 
       console.info(

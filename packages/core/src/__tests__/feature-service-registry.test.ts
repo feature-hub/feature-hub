@@ -384,28 +384,80 @@ describe('FeatureServiceRegistry', () => {
       });
     });
 
-    describe('for a Feature Service consumer and optional dependencies', () => {
-      it('creates a bindings object with Feature Services', () => {
-        featureServiceRegistry = new FeatureServiceRegistry();
+    describe('for a Feature Service consumer and two optional dependencies', () => {
+      describe('with the first dependency missing', () => {
+        it('creates a bindings object with Feature Services', () => {
+          featureServiceRegistry = new FeatureServiceRegistry();
 
-        featureServiceRegistry.registerFeatureServices(
-          [providerDefinitionA],
-          'test'
-        );
+          featureServiceRegistry.registerFeatureServices(
+            [providerDefinitionA],
+            'test'
+          );
 
-        expect(binderA.mock.calls).toEqual([]);
+          expect(binderA.mock.calls).toEqual([]);
 
-        expect(
-          featureServiceRegistry.bindFeatureServices({
-            id: 'foo',
-            optionalDependencies: {a: '1.1'}
-          })
-        ).toEqual({
-          featureServices: {a: featureServiceA},
-          unbind: expect.any(Function)
+          expect(
+            featureServiceRegistry.bindFeatureServices({
+              id: 'foo',
+              optionalDependencies: {b: '1.0', a: '1.1'}
+            })
+          ).toEqual({
+            featureServices: {a: featureServiceA},
+            unbind: expect.any(Function)
+          });
+
+          expect(binderA.mock.calls).toEqual([['foo']]);
         });
+      });
 
-        expect(binderA.mock.calls).toEqual([['foo']]);
+      describe('with the second dependency missing', () => {
+        it('creates a bindings object with Feature Services', () => {
+          featureServiceRegistry = new FeatureServiceRegistry();
+
+          featureServiceRegistry.registerFeatureServices(
+            [providerDefinitionA],
+            'test'
+          );
+
+          expect(binderA.mock.calls).toEqual([]);
+
+          expect(
+            featureServiceRegistry.bindFeatureServices({
+              id: 'foo',
+              optionalDependencies: {a: '1.1', b: '1.0'}
+            })
+          ).toEqual({
+            featureServices: {a: featureServiceA},
+            unbind: expect.any(Function)
+          });
+
+          expect(binderA.mock.calls).toEqual([['foo']]);
+        });
+      });
+
+      describe('with no dependency missing', () => {
+        it('creates a bindings object with Feature Services', () => {
+          featureServiceRegistry = new FeatureServiceRegistry();
+
+          featureServiceRegistry.registerFeatureServices(
+            [providerDefinitionA, providerDefinitionB],
+            'test'
+          );
+
+          expect(binderA.mock.calls).toEqual([['b']]);
+
+          expect(
+            featureServiceRegistry.bindFeatureServices({
+              id: 'foo',
+              optionalDependencies: {a: '1.1', b: '^1.0'}
+            })
+          ).toEqual({
+            featureServices: {a: featureServiceA, b: featureServiceB},
+            unbind: expect.any(Function)
+          });
+
+          expect(binderA.mock.calls).toEqual([['b'], ['foo']]);
+        });
       });
     });
 
