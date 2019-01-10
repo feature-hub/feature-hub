@@ -115,7 +115,7 @@ import {
 ```
 
 ```js
-const registry = new FeatureServiceRegistry();
+const featureServiceRegistry = new FeatureServiceRegistry();
 
 const rootLocationTransformer = createRootLocationTransformer({
   consumerPathsQueryParamName: '---'
@@ -126,7 +126,10 @@ const featureServiceDefinitions = [
   defineHistoryService(rootLocationTransformer)
 ];
 
-registry.registerFeatureServices(featureServiceDefinitions, 'acme:integrator');
+featureServiceRegistry.registerFeatureServices(
+  featureServiceDefinitions,
+  'acme:integrator'
+);
 ```
 
 On the server, the integrator defines the Async SSR Manager using the request.
@@ -134,7 +137,7 @@ The History Service depends on the Async SSR Manager to obtain its request and
 use it for the initial history location:
 
 ```js
-const registry = new FeatureServiceRegistry();
+const featureServiceRegistry = new FeatureServiceRegistry();
 
 const rootLocationTransformer = createRootLocationTransformer({
   consumerPathsQueryParamName: '---'
@@ -149,7 +152,10 @@ const featureServiceDefinitions = [
   defineHistoryService(rootLocationTransformer)
 ];
 
-registry.registerFeatureServices(featureServiceDefinitions, 'acme:integrator');
+featureServiceRegistry.registerFeatureServices(
+  featureServiceDefinitions,
+  'acme:integrator'
+);
 ```
 
 ## Root Location Transformer

@@ -14,7 +14,7 @@ import * as React from 'react';
 import {FeatureAppLoader} from '..';
 
 describe('FeatureAppLoader (on Node.js)', () => {
-  let mockManager: FeatureAppManagerLike;
+  let mockFeatureAppManager: FeatureAppManagerLike;
   let mockGetAsyncFeatureAppDefinition: jest.Mock;
   let mockAsyncFeatureAppDefinition: AsyncValue<FeatureAppDefinition<unknown>>;
   let spyConsoleError: jest.SpyInstance;
@@ -28,7 +28,7 @@ describe('FeatureAppLoader (on Node.js)', () => {
       () => mockAsyncFeatureAppDefinition
     );
 
-    mockManager = {
+    mockFeatureAppManager = {
       getAsyncFeatureAppDefinition: mockGetAsyncFeatureAppDefinition,
       getFeatureAppScope: jest.fn(),
       preloadFeatureApp: jest.fn(),
@@ -45,9 +45,15 @@ describe('FeatureAppLoader (on Node.js)', () => {
 
   describe('without a serverSrc', () => {
     it('does not try to load a Feature App definition', () => {
-      shallow(<FeatureAppLoader manager={mockManager} src="example.js" />, {
-        disableLifecycleMethods: true
-      });
+      shallow(
+        <FeatureAppLoader
+          featureAppManager={mockFeatureAppManager}
+          src="example.js"
+        />,
+        {
+          disableLifecycleMethods: true
+        }
+      );
 
       expect(mockGetAsyncFeatureAppDefinition).not.toHaveBeenCalled();
     });
@@ -57,7 +63,7 @@ describe('FeatureAppLoader (on Node.js)', () => {
     it('loads a Feature App definition for the serverSrc', () => {
       shallow(
         <FeatureAppLoader
-          manager={mockManager}
+          featureAppManager={mockFeatureAppManager}
           src="example.js"
           serverSrc="example-node.js"
         />,
@@ -83,7 +89,7 @@ describe('FeatureAppLoader (on Node.js)', () => {
         expect(() =>
           shallow(
             <FeatureAppLoader
-              manager={mockManager}
+              featureAppManager={mockFeatureAppManager}
               src="example.js"
               serverSrc="example-node.js"
               idSpecifier="testIdSpecifier"

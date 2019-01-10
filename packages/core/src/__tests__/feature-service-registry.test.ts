@@ -20,7 +20,7 @@ interface MockFeatureServiceBinding
 }
 
 describe('FeatureServiceRegistry', () => {
-  let registry: FeatureServiceRegistryLike;
+  let featureServiceRegistry: FeatureServiceRegistryLike;
   let providerDefinitionA: MockProviderDefinition;
   let providerDefinitionB: MockProviderDefinition;
   let providerDefinitionC: MockProviderDefinition;
@@ -38,7 +38,7 @@ describe('FeatureServiceRegistry', () => {
   let spyConsoleWarn: jest.SpyInstance;
 
   beforeEach(() => {
-    registry = new FeatureServiceRegistry();
+    featureServiceRegistry = new FeatureServiceRegistry();
 
     featureServiceA = {kind: 'featureServiceA'};
     bindingA = {featureService: featureServiceA};
@@ -136,19 +136,28 @@ describe('FeatureServiceRegistry', () => {
 
     beforeEach(() => {
       configs = {a: {kind: 'a'}, c: {kind: 'c'}};
-      registry = new FeatureServiceRegistry({configs});
+      featureServiceRegistry = new FeatureServiceRegistry({configs});
     });
 
     it('registers the Feature Services "a", "b", "c" one after the other', () => {
-      registry.registerFeatureServices([providerDefinitionA], 'test');
-      registry.registerFeatureServices([providerDefinitionB], 'test');
-      registry.registerFeatureServices([providerDefinitionC], 'test');
+      featureServiceRegistry.registerFeatureServices(
+        [providerDefinitionA],
+        'test'
+      );
+      featureServiceRegistry.registerFeatureServices(
+        [providerDefinitionB],
+        'test'
+      );
+      featureServiceRegistry.registerFeatureServices(
+        [providerDefinitionC],
+        'test'
+      );
 
       testRegistrationOrderABC();
     });
 
     it('registers the Feature Services "a", "b", "c" all at once in topologically sorted order', () => {
-      registry.registerFeatureServices(
+      featureServiceRegistry.registerFeatureServices(
         [providerDefinitionB, providerDefinitionC, providerDefinitionA],
         'test'
       );
@@ -157,8 +166,14 @@ describe('FeatureServiceRegistry', () => {
     });
 
     it('does not register the already existing Feature Service "a"', () => {
-      registry.registerFeatureServices([providerDefinitionA], 'test');
-      registry.registerFeatureServices([providerDefinitionA], 'test');
+      featureServiceRegistry.registerFeatureServices(
+        [providerDefinitionA],
+        'test'
+      );
+      featureServiceRegistry.registerFeatureServices(
+        [providerDefinitionA],
+        'test'
+      );
 
       expect(providerDefinitionA.create.mock.calls).toEqual([
         [{config: configs.a, featureServices: {}}]
@@ -181,7 +196,10 @@ describe('FeatureServiceRegistry', () => {
 
     it('fails to register the Feature Service "b" due to the lack of dependency "a"', () => {
       expect(() =>
-        registry.registerFeatureServices([providerDefinitionB], 'test')
+        featureServiceRegistry.registerFeatureServices(
+          [providerDefinitionB],
+          'test'
+        )
       ).toThrowError(
         new Error(
           'The required Feature Service "a" is not registered and therefore could not be bound to consumer "b".'
@@ -197,7 +215,7 @@ describe('FeatureServiceRegistry', () => {
       };
 
       expect(() =>
-        registry.registerFeatureServices(
+        featureServiceRegistry.registerFeatureServices(
           [providerDefinitionA, stateProviderD],
           'test'
         )
@@ -216,7 +234,7 @@ describe('FeatureServiceRegistry', () => {
       };
 
       expect(() =>
-        registry.registerFeatureServices(
+        featureServiceRegistry.registerFeatureServices(
           [providerDefinitionA, stateProviderDefinitionD],
           'test'
         )
@@ -241,7 +259,7 @@ describe('FeatureServiceRegistry', () => {
       };
 
       expect(() =>
-        registry.registerFeatureServices(
+        featureServiceRegistry.registerFeatureServices(
           [stateProviderDefinitionD, stateProviderDefinitionE],
           'test'
         )
@@ -256,23 +274,28 @@ describe('FeatureServiceRegistry', () => {
   describe('#bindFeatureServices', () => {
     describe('for a Feature Service consumer without dependencies', () => {
       it('creates a bindings object with no Feature Services', () => {
-        expect(registry.bindFeatureServices({id: 'foo'})).toEqual({
-          featureServices: {},
-          unbind: expect.any(Function)
-        });
+        expect(featureServiceRegistry.bindFeatureServices({id: 'foo'})).toEqual(
+          {
+            featureServices: {},
+            unbind: expect.any(Function)
+          }
+        );
       });
     });
 
     describe('for a Feature Service consumer with an id specifier and dependencies', () => {
       it('creates a bindings object with Feature Services', () => {
-        registry = new FeatureServiceRegistry();
+        featureServiceRegistry = new FeatureServiceRegistry();
 
-        registry.registerFeatureServices([providerDefinitionA], 'test');
+        featureServiceRegistry.registerFeatureServices(
+          [providerDefinitionA],
+          'test'
+        );
 
         expect(binderA.mock.calls).toEqual([]);
 
         expect(
-          registry.bindFeatureServices(
+          featureServiceRegistry.bindFeatureServices(
             {id: 'foo', dependencies: {a: '1.1'}},
             'bar'
           )
@@ -286,12 +309,12 @@ describe('FeatureServiceRegistry', () => {
     });
 
     it('fails to create a bindings object for an consumer which is already bound', () => {
-      registry.bindFeatureServices({id: 'foo'});
-      registry.bindFeatureServices({id: 'foo'}, 'bar');
-      registry.bindFeatureServices({id: 'foo'}, 'baz');
+      featureServiceRegistry.bindFeatureServices({id: 'foo'});
+      featureServiceRegistry.bindFeatureServices({id: 'foo'}, 'bar');
+      featureServiceRegistry.bindFeatureServices({id: 'foo'}, 'baz');
 
       expect(() =>
-        registry.bindFeatureServices({id: 'foo'}, 'baz')
+        featureServiceRegistry.bindFeatureServices({id: 'foo'}, 'baz')
       ).toThrowError(
         new Error(
           'All required Feature Services are already bound to consumer "foo:baz".'
@@ -301,12 +324,14 @@ describe('FeatureServiceRegistry', () => {
 
     describe('#unbind', () => {
       it('unbinds the consumer', () => {
-        const bindings = registry.bindFeatureServices(providerDefinitionA);
+        const bindings = featureServiceRegistry.bindFeatureServices(
+          providerDefinitionA
+        );
 
         bindings.unbind();
 
         expect(() =>
-          registry.bindFeatureServices(providerDefinitionA)
+          featureServiceRegistry.bindFeatureServices(providerDefinitionA)
         ).not.toThrowError();
       });
 
@@ -321,12 +346,12 @@ describe('FeatureServiceRegistry', () => {
 
         bindingC.unbind = jest.fn();
 
-        registry.registerFeatureServices(
+        featureServiceRegistry.registerFeatureServices(
           [providerDefinitionA, providerDefinitionB, providerDefinitionC],
           'test'
         );
 
-        const bindings = registry.bindFeatureServices({
+        const bindings = featureServiceRegistry.bindFeatureServices({
           id: 'foo',
           dependencies: {a: '1.1', b: '1.0', c: '2.0'}
         });
@@ -381,7 +406,9 @@ describe('FeatureServiceRegistry', () => {
       });
 
       it('fails to unbind an already unbound consumer', () => {
-        const bindings = registry.bindFeatureServices(providerDefinitionA);
+        const bindings = featureServiceRegistry.bindFeatureServices(
+          providerDefinitionA
+        );
 
         bindings.unbind();
 
@@ -393,11 +420,13 @@ describe('FeatureServiceRegistry', () => {
       });
 
       it('fails to unbind an already unbound consumer, even if this consumer has been re-bound', () => {
-        const bindings = registry.bindFeatureServices(providerDefinitionA);
+        const bindings = featureServiceRegistry.bindFeatureServices(
+          providerDefinitionA
+        );
 
         bindings.unbind();
 
-        registry.bindFeatureServices(providerDefinitionA);
+        featureServiceRegistry.bindFeatureServices(providerDefinitionA);
 
         expect(() => bindings.unbind()).toThrowError(
           new Error(

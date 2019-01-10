@@ -30,16 +30,19 @@ import {someFeatureServiceDefinition2} from './some-feature-service-2';
 ```
 
 ```js
-const registry = new FeatureServiceRegistry();
+const featureServiceRegistry = new FeatureServiceRegistry();
 
 const featureServiceDefinitions = [
   someFeatureServiceDefinition1,
   someFeatureServiceDefinition2
 ];
 
-registry.registerFeatureServices(featureServiceDefinitions, 'acme:integrator');
+featureServiceRegistry.registerFeatureServices(
+  featureServiceDefinitions,
+  'acme:integrator'
+);
 
-const manager = new FeatureAppManager(registry);
+const featureAppManager = new FeatureAppManager(featureServiceRegistry);
 ```
 
 **Note:** The integrator needs a self-selected but unique consumer ID to
@@ -64,7 +67,9 @@ import {loadAmdModule} from '@feature-hub/module-loader-amd';
 ```
 
 ```js
-const manager = new FeatureAppManager(registry, {moduleLoader: loadAmdModule});
+const featureAppManager = new FeatureAppManager(featureServiceRegistry, {
+  moduleLoader: loadAmdModule
+});
 ```
 
 On the server:
@@ -74,7 +79,7 @@ import {loadCommonJsModule} from '@feature-hub/module-loader-commonjs';
 ```
 
 ```js
-const manager = new FeatureAppManager(registry, {
+const featureAppManager = new FeatureAppManager(featureServiceRegistry, {
   moduleLoader: loadCommonJsModule
 });
 ```
@@ -103,7 +108,7 @@ import {FeatureAppLoader} from '@feature-hub/react';
 
 ```jsx
 <FeatureAppLoader
-  manager={manager}
+  featureAppManager={featureAppManager}
   src="https://example.com/some-feature-app.js"
 />
 ```
@@ -118,7 +123,7 @@ Additionally, when a Feature App needs to be rendered on the server, its
 
 ```jsx
 <FeatureAppLoader
-  manager={manager}
+  featureAppManager={featureAppManager}
   src="https://example.com/some-feature-app.js"
   serverSrc="https://example.com/some-feature-app-node.js"
 />
@@ -134,7 +139,7 @@ You can also define a `css` prop to add stylesheets to the document:
 
 ```jsx
 <FeatureAppLoader
-  manager={manager}
+  featureAppManager={featureAppManager}
   src="https://example.com/some-feature-app.js"
   css={[
     {href: 'https://example.com/some-feature-app.css'},
@@ -153,14 +158,14 @@ integrator:
 <section>
   <div>
     <FeatureAppLoader
-      manager={manager}
+      featureAppManager={featureAppManager}
       src="https://example.com/some-feature-app.js"
       idSpecifier="main"
     />
   </div>
   <aside>
     <FeatureAppLoader
-      manager={manager}
+      featureAppManager={featureAppManager}
       src="https://example.com/some-feature-app.js"
       idSpecifier="aside"
     />
@@ -185,7 +190,7 @@ import {someFeatureAppDefinition} from './some-feature-app';
 
 ```jsx
 <FeatureAppContainer
-  manager={manager}
+  featureAppManager={featureAppManager}
   featureAppDefinition={someFeatureAppDefinition}
 />
 ```
@@ -200,14 +205,14 @@ integrator:
 <section>
   <div>
     <FeatureAppContainer
-      manager={manager}
+      featureAppManager={featureAppManager}
       featureAppDefinition={someFeatureAppDefinition}
       idSpecifier="main"
     />
   </div>
   <aside>
     <FeatureAppContainer
-      manager={manager}
+      featureAppManager={featureAppManager}
       featureAppDefinition={someFeatureAppDefinition}
       idSpecifier="aside"
     />
@@ -225,8 +230,13 @@ associated with their respective IDs, via the `FeatureServiceRegistry` and
 const featureServiceConfigs = {'acme:some-feature-service': {foo: 'bar'}};
 const featureAppConfigs = {'acme:some-feature-app': {baz: 'qux'}};
 
-const registry = new FeatureServiceRegistry({configs: featureServiceConfigs});
-const manager = new FeatureAppManager(registry, {configs: featureAppConfigs});
+const featureServiceRegistry = new FeatureServiceRegistry({
+  configs: featureServiceConfigs
+});
+
+const featureAppManager = new FeatureAppManager(featureServiceRegistry, {
+  configs: featureAppConfigs
+});
 ```
 
 Feature Services and Feature Apps can then use their respective config object as
@@ -279,19 +289,22 @@ const integratorDefinition = {
   }
 };
 
-const registry = new FeatureServiceRegistry();
+const featureServiceRegistry = new FeatureServiceRegistry();
 
 const featureServiceDefinitions = [
   someFeatureServiceDefinition1,
   someFeatureServiceDefinition2
 ];
 
-registry.registerFeatureServices(
+featureServiceRegistry.registerFeatureServices(
   featureServiceDefinitions,
   integratorDefinition.id
 );
 
-const {featureServices} = registry.bindFeatureServices(integratorDefinition);
+const {featureServices} = featureServiceRegistry.bindFeatureServices(
+  integratorDefinition
+);
+
 const someFeatureService2 = featureServices[someFeatureServiceDefinition2.id];
 
 someFeatureService2.foo(42);

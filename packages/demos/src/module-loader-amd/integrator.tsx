@@ -5,12 +5,18 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import '../blueprint-css';
 
-const registry = new FeatureServiceRegistry();
-const manager = new FeatureAppManager(registry, {moduleLoader: loadAmdModule});
+const featureServiceRegistry = new FeatureServiceRegistry();
+
+const featureAppManager = new FeatureAppManager(featureServiceRegistry, {
+  moduleLoader: loadAmdModule
+});
 
 defineExternals({react: React});
 
 ReactDOM.render(
-  <FeatureAppLoader manager={manager} src="feature-app.umd.js" />,
+  <FeatureAppLoader
+    featureAppManager={featureAppManager}
+    src="feature-app.umd.js"
+  />,
   document.querySelector('main')
 );

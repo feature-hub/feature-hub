@@ -6,15 +6,19 @@ import * as ReactDOM from 'react-dom/server';
 
 export default async function renderMainHtml(port: number): Promise<string> {
   const featureAppNodeUrl = `http://localhost:${port}/feature-app.commonjs.js`;
-  const registry = new FeatureServiceRegistry();
+  const featureServiceRegistry = new FeatureServiceRegistry();
 
-  const manager = new FeatureAppManager(registry, {
+  const featureAppManager = new FeatureAppManager(featureServiceRegistry, {
     moduleLoader: loadCommonJsModule
   });
 
-  await manager.preloadFeatureApp(featureAppNodeUrl);
+  await featureAppManager.preloadFeatureApp(featureAppNodeUrl);
 
   return ReactDOM.renderToString(
-    <FeatureAppLoader manager={manager} src="" serverSrc={featureAppNodeUrl} />
+    <FeatureAppLoader
+      featureAppManager={featureAppManager}
+      src=""
+      serverSrc={featureAppNodeUrl}
+    />
   );
 }

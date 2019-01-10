@@ -36,10 +36,10 @@ describe('FeatureAppContainer', () => {
     spyConsoleError.mockRestore();
   });
 
-  it('calls the manager with the given Feature App definition and id specifier', () => {
+  it('calls the feature app manager with the given Feature App definition and id specifier', () => {
     shallow(
       <FeatureAppContainer
-        manager={mockManager}
+        featureAppManager={mockManager}
         featureAppDefinition={mockFeatureAppDefinition}
         idSpecifier="testIdSpecifier"
       />
@@ -63,7 +63,7 @@ describe('FeatureAppContainer', () => {
     it('renders the React element', () => {
       const wrapper = shallow(
         <FeatureAppContainer
-          manager={mockManager}
+          featureAppManager={mockManager}
           featureAppDefinition={mockFeatureAppDefinition}
         />
       );
@@ -79,7 +79,7 @@ describe('FeatureAppContainer', () => {
       it('calls destroy() on the Feature App scope', () => {
         const wrapper = shallow(
           <FeatureAppContainer
-            manager={mockManager}
+            featureAppManager={mockManager}
             featureAppDefinition={mockFeatureAppDefinition}
           />
         );
@@ -105,7 +105,7 @@ describe('FeatureAppContainer', () => {
         it('logs the error', () => {
           const wrapper = shallow(
             <FeatureAppContainer
-              manager={mockManager}
+              featureAppManager={mockManager}
               featureAppDefinition={mockFeatureAppDefinition}
             />
           );
@@ -133,7 +133,7 @@ describe('FeatureAppContainer', () => {
     it("renders a container and passes it to the Feature App's render method", () => {
       const wrapper = mount(
         <FeatureAppContainer
-          manager={mockManager}
+          featureAppManager={mockManager}
           featureAppDefinition={mockFeatureAppDefinition}
         />
       );
@@ -147,7 +147,7 @@ describe('FeatureAppContainer', () => {
       it('calls destroy() on the Feature App scope', () => {
         const wrapper = shallow(
           <FeatureAppContainer
-            manager={mockManager}
+            featureAppManager={mockManager}
             featureAppDefinition={mockFeatureAppDefinition}
           />
         );
@@ -173,7 +173,7 @@ describe('FeatureAppContainer', () => {
         it('logs the error', () => {
           const wrapper = shallow(
             <FeatureAppContainer
-              manager={mockManager}
+              featureAppManager={mockManager}
               featureAppDefinition={mockFeatureAppDefinition}
             />
           );
@@ -206,7 +206,7 @@ describe('FeatureAppContainer', () => {
       it('renders nothing and logs an error', () => {
         const wrapper = shallow(
           <FeatureAppContainer
-            manager={mockManager}
+            featureAppManager={mockManager}
             featureAppDefinition={mockFeatureAppDefinition}
           />
         );
@@ -236,7 +236,7 @@ describe('FeatureAppContainer', () => {
     it('renders nothing and logs an error', () => {
       const wrapper = shallow(
         <FeatureAppContainer
-          manager={mockManager}
+          featureAppManager={mockManager}
           featureAppDefinition={mockFeatureAppDefinition}
         />
       );
@@ -250,7 +250,7 @@ describe('FeatureAppContainer', () => {
       it('does nothing', () => {
         const wrapper = shallow(
           <FeatureAppContainer
-            manager={mockManager}
+            featureAppManager={mockManager}
             featureAppDefinition={mockFeatureAppDefinition}
           />
         );
