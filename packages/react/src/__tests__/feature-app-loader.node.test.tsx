@@ -4,6 +4,7 @@
 
 // tslint:disable:no-implicit-dependencies
 
+import {AsyncSsrManagerV1} from '@feature-hub/async-ssr-manager';
 import {
   AsyncValue,
   FeatureAppDefinition,
@@ -13,10 +14,15 @@ import {shallow} from 'enzyme';
 import * as React from 'react';
 import {FeatureAppLoader} from '..';
 
+interface MockAsyncSsrManager extends AsyncSsrManagerV1 {
+  rerenderAfter: ((promise: Promise<unknown>) => void) & jest.Mock;
+}
+
 describe('FeatureAppLoader (on Node.js)', () => {
   let mockFeatureAppManager: FeatureAppManagerLike;
   let mockGetAsyncFeatureAppDefinition: jest.Mock;
   let mockAsyncFeatureAppDefinition: AsyncValue<FeatureAppDefinition<unknown>>;
+  let mockAsyncSsrManager: MockAsyncSsrManager;
   let spyConsoleError: jest.SpyInstance;
 
   beforeEach(() => {
@@ -35,6 +41,12 @@ describe('FeatureAppLoader (on Node.js)', () => {
       destroy: jest.fn()
     };
 
+    mockAsyncSsrManager = {
+      rerenderAfter: jest.fn(),
+      renderUntilCompleted: jest.fn(),
+      serverRequest: undefined
+    };
+
     spyConsoleError = jest.spyOn(console, 'error');
     spyConsoleError.mockImplementation(jest.fn());
   });
@@ -50,12 +62,23 @@ describe('FeatureAppLoader (on Node.js)', () => {
           featureAppManager={mockFeatureAppManager}
           src="example.js"
         />,
-        {
-          disableLifecycleMethods: true
-        }
+        {disableLifecycleMethods: true}
       );
 
       expect(mockGetAsyncFeatureAppDefinition).not.toHaveBeenCalled();
+    });
+
+    it('does not trigger a rerender on the Async SSR Manager', () => {
+      shallow(
+        <FeatureAppLoader
+          featureAppManager={mockFeatureAppManager}
+          src="example.js"
+          asyncSsrManager={mockAsyncSsrManager}
+        />,
+        {disableLifecycleMethods: true}
+      );
+
+      expect(mockAsyncSsrManager.rerenderAfter).not.toHaveBeenCalled();
     });
   });
 
@@ -67,14 +90,57 @@ describe('FeatureAppLoader (on Node.js)', () => {
           src="example.js"
           serverSrc="example-node.js"
         />,
-        {
-          disableLifecycleMethods: true
-        }
+        {disableLifecycleMethods: true}
       );
 
       expect(mockGetAsyncFeatureAppDefinition.mock.calls).toEqual([
         ['example-node.js']
       ]);
+    });
+
+    it('triggers a rerender on the Async SSR Manager with the feature app definition promise', () => {
+      shallow(
+        <FeatureAppLoader
+          featureAppManager={mockFeatureAppManager}
+          src="example.js"
+          serverSrc="example-node.js"
+          asyncSsrManager={mockAsyncSsrManager}
+        />,
+        {disableLifecycleMethods: true}
+      );
+
+      expect(mockAsyncSsrManager.rerenderAfter.mock.calls).toEqual([
+        [mockAsyncFeatureAppDefinition.promise]
+      ]);
+    });
+
+    describe('when a Feature App definition is synchronously available', () => {
+      let mockFeatureAppDefinition: FeatureAppDefinition<unknown>;
+
+      beforeEach(() => {
+        mockFeatureAppDefinition = {
+          id: 'testId',
+          create: jest.fn()
+        };
+
+        mockAsyncFeatureAppDefinition = new AsyncValue(
+          Promise.resolve(mockFeatureAppDefinition)
+        );
+      });
+
+      it('does not trigger a rerender on the Async SSR Manager', () => {
+        shallow(
+          <FeatureAppLoader
+            featureAppManager={mockFeatureAppManager}
+            src="example.js"
+            serverSrc="example-node.js"
+            asyncSsrManager={mockAsyncSsrManager}
+          />,
+          {disableLifecycleMethods: true}
+        );
+
+        expect(mockAsyncSsrManager.rerenderAfter).not.toHaveBeenCalled();
+      });
     });
 
     describe('when the async Feature App definition synchronously has an error', () => {
@@ -94,9 +160,7 @@ describe('FeatureAppLoader (on Node.js)', () => {
               serverSrc="example-node.js"
               idSpecifier="testIdSpecifier"
             />,
-            {
-              disableLifecycleMethods: true
-            }
+            {disableLifecycleMethods: true}
           )
         ).toThrowError(mockError);
 
@@ -106,6 +170,22 @@ describe('FeatureAppLoader (on Node.js)', () => {
             mockError
           ]
         ]);
+      });
+
+      it('does not trigger a rerender on the Async SSR Manager', () => {
+        try {
+          shallow(
+            <FeatureAppLoader
+              featureAppManager={mockFeatureAppManager}
+              src="example.js"
+              serverSrc="example-node.js"
+              asyncSsrManager={mockAsyncSsrManager}
+            />,
+            {disableLifecycleMethods: true}
+          );
+        } catch {}
+
+        expect(mockAsyncSsrManager.rerenderAfter).not.toHaveBeenCalled();
       });
     });
   });

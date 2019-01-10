@@ -1,5 +1,6 @@
 // tslint:disable:no-implicit-dependencies
 
+import {AsyncSsrManagerV1} from '@feature-hub/async-ssr-manager';
 import {
   AsyncValue,
   FeatureAppDefinition,
@@ -9,10 +10,15 @@ import {shallow} from 'enzyme';
 import * as React from 'react';
 import {FeatureAppContainer, FeatureAppLoader} from '..';
 
+interface MockAsyncSsrManager extends AsyncSsrManagerV1 {
+  rerenderAfter: ((promise: Promise<unknown>) => void) & jest.Mock;
+}
+
 describe('FeatureAppLoader', () => {
   let mockFeatureAppManager: FeatureAppManagerLike;
   let mockGetAsyncFeatureAppDefinition: jest.Mock;
   let mockAsyncFeatureAppDefinition: AsyncValue<FeatureAppDefinition<unknown>>;
+  let mockAsyncSsrManager: MockAsyncSsrManager;
   let spyConsoleError: jest.SpyInstance;
 
   beforeEach(() => {
@@ -33,6 +39,12 @@ describe('FeatureAppLoader', () => {
       getFeatureAppScope: jest.fn(),
       preloadFeatureApp: jest.fn(),
       destroy: jest.fn()
+    };
+
+    mockAsyncSsrManager = {
+      rerenderAfter: jest.fn(),
+      renderUntilCompleted: jest.fn(),
+      serverRequest: undefined
     };
 
     spyConsoleError = jest.spyOn(console, 'error');
@@ -142,6 +154,18 @@ describe('FeatureAppLoader', () => {
         />
       );
     });
+
+    it('does not trigger a rerender on the Async SSR Manager', () => {
+      shallow(
+        <FeatureAppLoader
+          featureAppManager={mockFeatureAppManager}
+          src="/test.js"
+          asyncSsrManager={mockAsyncSsrManager}
+        />
+      );
+
+      expect(mockAsyncSsrManager.rerenderAfter).not.toHaveBeenCalled();
+    });
   });
 
   describe('when the async Feature App definition synchronously has an error', () => {
@@ -223,6 +247,20 @@ describe('FeatureAppLoader', () => {
           idSpecifier="testIdSpecifier"
         />
       );
+    });
+
+    describe('with an Async SSR Manager', () => {
+      it('does not trigger a rerender on the Async SSR Manager', () => {
+        shallow(
+          <FeatureAppLoader
+            featureAppManager={mockFeatureAppManager}
+            src="/test.js"
+            asyncSsrManager={mockAsyncSsrManager}
+          />
+        );
+
+        expect(mockAsyncSsrManager.rerenderAfter).not.toHaveBeenCalled();
+      });
     });
 
     describe('when unmounted before loading has finished', () => {
