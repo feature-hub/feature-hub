@@ -181,7 +181,6 @@ export class FeatureServiceRegistry implements FeatureServiceRegistryLike {
 
     const bindings = new Map<string, FeatureServiceBinding<unknown>>();
     const featureServices: FeatureServices = Object.create(null);
-
     const allDependencies = {...optionalDependencies, ...dependencies};
 
     for (const providerId of Object.keys(allDependencies)) {
