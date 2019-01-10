@@ -457,6 +457,7 @@ describe('FeatureServiceRegistry', () => {
           });
 
           expect(binderA.mock.calls).toEqual([['b'], ['foo']]);
+          expect(binderB.mock.calls).toEqual([['foo']]);
         });
       });
     });
