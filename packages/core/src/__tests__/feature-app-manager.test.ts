@@ -15,7 +15,7 @@ interface MockFeatureServiceRegistry extends FeatureServiceRegistryLike {
 
 describe('FeatureAppManager', () => {
   let featureAppManager: FeatureAppManagerLike;
-  let mockRegistry: MockFeatureServiceRegistry;
+  let mockFeatureServiceRegistry: MockFeatureServiceRegistry;
   let mockFeatureServicesBinding: FeatureServicesBinding;
   let mockFeatureServicesBindingUnbind: () => void;
   let mockModuleLoader: ModuleLoader;
@@ -33,7 +33,7 @@ describe('FeatureAppManager', () => {
       unbind: mockFeatureServicesBindingUnbind
     };
 
-    mockRegistry = {
+    mockFeatureServiceRegistry = {
       registerFeatureServices: jest.fn(),
       bindFeatureServices: jest.fn(() => mockFeatureServicesBinding)
     };
@@ -43,7 +43,7 @@ describe('FeatureAppManager', () => {
     mockFeatureAppDefinition = {create: mockFeatureAppCreate, id: 'testId'};
     mockFeatureAppModule = {default: mockFeatureAppDefinition};
     mockModuleLoader = jest.fn(async () => mockFeatureAppModule);
-    featureAppManager = new FeatureAppManager(mockRegistry);
+    featureAppManager = new FeatureAppManager(mockFeatureServiceRegistry);
 
     spyConsoleInfo = jest.spyOn(console, 'info');
     spyConsoleInfo.mockImplementation(jest.fn());
@@ -55,7 +55,7 @@ describe('FeatureAppManager', () => {
 
   describe('#getAsyncFeatureAppDefinition', () => {
     beforeEach(() => {
-      featureAppManager = new FeatureAppManager(mockRegistry, {
+      featureAppManager = new FeatureAppManager(mockFeatureServiceRegistry, {
         moduleLoader: mockModuleLoader
       });
     });
@@ -123,7 +123,7 @@ describe('FeatureAppManager', () => {
       });
 
       it('throws an error if no module loader was provided', () => {
-        featureAppManager = new FeatureAppManager(mockRegistry);
+        featureAppManager = new FeatureAppManager(mockFeatureServiceRegistry);
 
         expect(() =>
           featureAppManager.getAsyncFeatureAppDefinition('/example.js')
@@ -149,7 +149,7 @@ describe('FeatureAppManager', () => {
       const mockConfig = {kind: 'test'};
       const idSpecifier = 'testIdSpecifier';
 
-      featureAppManager = new FeatureAppManager(mockRegistry, {
+      featureAppManager = new FeatureAppManager(mockFeatureServiceRegistry, {
         configs: {[mockFeatureAppDefinition.id]: mockConfig}
       });
 
@@ -158,9 +158,9 @@ describe('FeatureAppManager', () => {
         idSpecifier
       );
 
-      expect(mockRegistry.bindFeatureServices.mock.calls).toEqual([
-        [mockFeatureAppDefinition, idSpecifier]
-      ]);
+      expect(mockFeatureServiceRegistry.bindFeatureServices.mock.calls).toEqual(
+        [[mockFeatureAppDefinition, idSpecifier]]
+      );
 
       const {featureServices} = mockFeatureServicesBinding;
 
@@ -170,20 +170,24 @@ describe('FeatureAppManager', () => {
     });
 
     describe('with a Feature App definition with own Feature Service definitions', () => {
-      let registryMethodCalls: string[];
+      let featureServiceRegistryMethodCalls: string[];
 
       beforeEach(() => {
-        registryMethodCalls = [];
+        featureServiceRegistryMethodCalls = [];
 
-        mockRegistry.registerFeatureServices.mockImplementation(() => {
-          registryMethodCalls.push('registerFeatureServices');
-        });
+        mockFeatureServiceRegistry.registerFeatureServices.mockImplementation(
+          () => {
+            featureServiceRegistryMethodCalls.push('registerFeatureServices');
+          }
+        );
 
-        mockRegistry.bindFeatureServices.mockImplementation(() => {
-          registryMethodCalls.push('bindFeatureServices');
+        mockFeatureServiceRegistry.bindFeatureServices.mockImplementation(
+          () => {
+            featureServiceRegistryMethodCalls.push('bindFeatureServices');
 
-          return mockFeatureServicesBinding;
-        });
+            return mockFeatureServicesBinding;
+          }
+        );
 
         mockFeatureAppDefinition = {
           ...mockFeatureAppDefinition,
@@ -197,15 +201,17 @@ describe('FeatureAppManager', () => {
           'testIdSpecifier'
         );
 
-        expect(mockRegistry.registerFeatureServices.mock.calls).toEqual([
+        expect(
+          mockFeatureServiceRegistry.registerFeatureServices.mock.calls
+        ).toEqual([
           [mockFeatureAppDefinition.ownFeatureServiceDefinitions, 'testId']
         ]);
 
-        expect(mockRegistry.bindFeatureServices.mock.calls).toEqual([
-          [mockFeatureAppDefinition, 'testIdSpecifier']
-        ]);
+        expect(
+          mockFeatureServiceRegistry.bindFeatureServices.mock.calls
+        ).toEqual([[mockFeatureAppDefinition, 'testIdSpecifier']]);
 
-        expect(registryMethodCalls).toEqual([
+        expect(featureServiceRegistryMethodCalls).toEqual([
           'registerFeatureServices',
           'bindFeatureServices'
         ]);
@@ -379,7 +385,7 @@ describe('FeatureAppManager', () => {
 
   describe('#preloadFeatureApp', () => {
     beforeEach(() => {
-      featureAppManager = new FeatureAppManager(mockRegistry, {
+      featureAppManager = new FeatureAppManager(mockFeatureServiceRegistry, {
         moduleLoader: mockModuleLoader
       });
     });
@@ -395,7 +401,7 @@ describe('FeatureAppManager', () => {
     });
 
     it('throws an error if no module loader was provided', () => {
-      featureAppManager = new FeatureAppManager(mockRegistry);
+      featureAppManager = new FeatureAppManager(mockFeatureServiceRegistry);
 
       expect(() =>
         featureAppManager.getAsyncFeatureAppDefinition('/example.js')
