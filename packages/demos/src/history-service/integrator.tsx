@@ -8,9 +8,9 @@ import '../blueprint-css';
 import {historyConsumerDefinition} from './history-consumer-definition';
 import {rootLocationTransformer} from './root-location-transformer';
 
-const registry = new FeatureServiceRegistry();
+const featureServiceRegistry = new FeatureServiceRegistry();
 
-registry.registerFeatureServices(
+featureServiceRegistry.registerFeatureServices(
   [
     defineAsyncSsrManager(undefined),
     defineHistoryService(rootLocationTransformer)
@@ -18,17 +18,17 @@ registry.registerFeatureServices(
   'demo:integrator'
 );
 
-const manager = new FeatureAppManager(registry);
+const featureAppManager = new FeatureAppManager(featureServiceRegistry);
 
 ReactDOM.render(
   <>
     <FeatureAppContainer
-      manager={manager}
+      featureAppManager={featureAppManager}
       featureAppDefinition={historyConsumerDefinition}
       idSpecifier="a"
     />
     <FeatureAppContainer
-      manager={manager}
+      featureAppManager={featureAppManager}
       featureAppDefinition={historyConsumerDefinition}
       idSpecifier="b"
     />

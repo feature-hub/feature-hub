@@ -10,7 +10,7 @@ import * as React from 'react';
 import {FeatureAppContainer, FeatureAppLoader} from '..';
 
 describe('FeatureAppLoader', () => {
-  let mockManager: FeatureAppManagerLike;
+  let mockFeatureAppManager: FeatureAppManagerLike;
   let mockGetAsyncFeatureAppDefinition: jest.Mock;
   let mockAsyncFeatureAppDefinition: AsyncValue<FeatureAppDefinition<unknown>>;
   let spyConsoleError: jest.SpyInstance;
@@ -28,7 +28,7 @@ describe('FeatureAppLoader', () => {
       () => mockAsyncFeatureAppDefinition
     );
 
-    mockManager = {
+    mockFeatureAppManager = {
       getAsyncFeatureAppDefinition: mockGetAsyncFeatureAppDefinition,
       getFeatureAppScope: jest.fn(),
       preloadFeatureApp: jest.fn(),
@@ -45,13 +45,18 @@ describe('FeatureAppLoader', () => {
 
   it('throws an error if no src is provided', () => {
     expect(() =>
-      shallow(<FeatureAppLoader manager={mockManager} src="" />)
+      shallow(
+        <FeatureAppLoader featureAppManager={mockFeatureAppManager} src="" />
+      )
     ).toThrowError(new Error('No src provided.'));
   });
 
   it('initially renders nothing', () => {
     const wrapper = shallow(
-      <FeatureAppLoader manager={mockManager} src="/test.js" />
+      <FeatureAppLoader
+        featureAppManager={mockFeatureAppManager}
+        src="/test.js"
+      />
     );
 
     expect(wrapper.isEmptyRender()).toBe(true);
@@ -59,7 +64,12 @@ describe('FeatureAppLoader', () => {
 
   describe('without a css prop', () => {
     it('does not change the document head', () => {
-      shallow(<FeatureAppLoader manager={mockManager} src="/test.js" />);
+      shallow(
+        <FeatureAppLoader
+          featureAppManager={mockFeatureAppManager}
+          src="/test.js"
+        />
+      );
 
       expect(document.head).toMatchSnapshot();
     });
@@ -69,7 +79,7 @@ describe('FeatureAppLoader', () => {
     it('appends link elements to the document head', () => {
       shallow(
         <FeatureAppLoader
-          manager={mockManager}
+          featureAppManager={mockFeatureAppManager}
           src="/test.js"
           css={[{href: 'foo.css'}, {href: 'bar.css', media: 'print'}]}
         />
@@ -82,7 +92,7 @@ describe('FeatureAppLoader', () => {
       it('does not append the css a second time', () => {
         shallow(
           <FeatureAppLoader
-            manager={mockManager}
+            featureAppManager={mockFeatureAppManager}
             src="/test.js"
             css={[{href: 'foo.css'}]}
           />
@@ -90,7 +100,7 @@ describe('FeatureAppLoader', () => {
 
         shallow(
           <FeatureAppLoader
-            manager={mockManager}
+            featureAppManager={mockFeatureAppManager}
             src="/test.js"
             css={[{href: 'foo.css'}]}
           />
@@ -118,7 +128,7 @@ describe('FeatureAppLoader', () => {
     it('renders a FeatureAppContainer', () => {
       const wrapper = shallow(
         <FeatureAppLoader
-          manager={mockManager}
+          featureAppManager={mockFeatureAppManager}
           src="/test.js"
           idSpecifier="testIdSpecifier"
         />
@@ -126,7 +136,7 @@ describe('FeatureAppLoader', () => {
 
       expect(wrapper.getElement()).toEqual(
         <FeatureAppContainer
-          manager={mockManager}
+          featureAppManager={mockFeatureAppManager}
           featureAppDefinition={mockFeatureAppDefinition}
           idSpecifier="testIdSpecifier"
         />
@@ -150,7 +160,7 @@ describe('FeatureAppLoader', () => {
     it('renders nothing and logs an error', () => {
       const wrapper = shallow(
         <FeatureAppLoader
-          manager={mockManager}
+          featureAppManager={mockFeatureAppManager}
           src="/test.js"
           idSpecifier="testIdSpecifier"
         />
@@ -186,7 +196,10 @@ describe('FeatureAppLoader', () => {
 
     it('initially renders nothing', () => {
       const wrapper = shallow(
-        <FeatureAppLoader manager={mockManager} src="/test.js" />
+        <FeatureAppLoader
+          featureAppManager={mockFeatureAppManager}
+          src="/test.js"
+        />
       );
 
       expect(wrapper.isEmptyRender()).toBe(true);
@@ -195,7 +208,7 @@ describe('FeatureAppLoader', () => {
     it('renders a FeatureAppContainer when loaded', async () => {
       const wrapper = shallow(
         <FeatureAppLoader
-          manager={mockManager}
+          featureAppManager={mockFeatureAppManager}
           src="/test.js"
           idSpecifier="testIdSpecifier"
         />
@@ -205,7 +218,7 @@ describe('FeatureAppLoader', () => {
 
       expect(wrapper.getElement()).toEqual(
         <FeatureAppContainer
-          manager={mockManager}
+          featureAppManager={mockFeatureAppManager}
           featureAppDefinition={mockFeatureAppDefinition}
           idSpecifier="testIdSpecifier"
         />
@@ -215,7 +228,10 @@ describe('FeatureAppLoader', () => {
     describe('when unmounted before loading has finished', () => {
       it('renders nothing', async () => {
         const wrapper = shallow(
-          <FeatureAppLoader manager={mockManager} src="/test.js" />
+          <FeatureAppLoader
+            featureAppManager={mockFeatureAppManager}
+            src="/test.js"
+          />
         );
 
         wrapper.unmount();
@@ -244,7 +260,7 @@ describe('FeatureAppLoader', () => {
     it('renders nothing and logs an error', async () => {
       const wrapper = shallow(
         <FeatureAppLoader
-          manager={mockManager}
+          featureAppManager={mockFeatureAppManager}
           src="/test.js"
           idSpecifier="testIdSpecifier"
         />
@@ -271,7 +287,10 @@ describe('FeatureAppLoader', () => {
     describe('when unmounted before loading has finished', () => {
       it('logs an error', async () => {
         const wrapper = shallow(
-          <FeatureAppLoader manager={mockManager} src="/test.js" />
+          <FeatureAppLoader
+            featureAppManager={mockFeatureAppManager}
+            src="/test.js"
+          />
         );
 
         wrapper.unmount();

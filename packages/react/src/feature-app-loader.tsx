@@ -8,7 +8,7 @@ export interface Css {
 }
 
 export interface FeatureAppLoaderProps {
-  readonly manager: FeatureAppManagerLike;
+  readonly featureAppManager: FeatureAppManagerLike;
   readonly src: string;
   readonly serverSrc?: string;
   readonly css?: Css[];
@@ -37,7 +37,7 @@ export class FeatureAppLoader extends React.PureComponent<
   public constructor(props: FeatureAppLoaderProps) {
     super(props);
 
-    const {manager, src: browserSrc, serverSrc} = props;
+    const {featureAppManager, src: browserSrc, serverSrc} = props;
     const src = inBrowser ? browserSrc : serverSrc;
 
     if (!src) {
@@ -48,7 +48,9 @@ export class FeatureAppLoader extends React.PureComponent<
       return;
     }
 
-    const asyncFeatureAppDefinition = manager.getAsyncFeatureAppDefinition(src);
+    const asyncFeatureAppDefinition = featureAppManager.getAsyncFeatureAppDefinition(
+      src
+    );
 
     if (asyncFeatureAppDefinition.error) {
       this.reportError(asyncFeatureAppDefinition.error);
@@ -73,8 +75,11 @@ export class FeatureAppLoader extends React.PureComponent<
       return;
     }
 
-    const {manager, src} = this.props;
-    const asyncFeatureAppDefinition = manager.getAsyncFeatureAppDefinition(src);
+    const {featureAppManager, src} = this.props;
+
+    const asyncFeatureAppDefinition = featureAppManager.getAsyncFeatureAppDefinition(
+      src
+    );
 
     try {
       const featureAppDefinition = await asyncFeatureAppDefinition.promise;
@@ -97,7 +102,7 @@ export class FeatureAppLoader extends React.PureComponent<
 
   public render(): React.ReactNode {
     const {featureAppDefinition, hasError} = this.state;
-    const {manager, idSpecifier} = this.props;
+    const {featureAppManager, idSpecifier} = this.props;
 
     if (hasError) {
       // An error UI could be rendered here.
@@ -111,7 +116,7 @@ export class FeatureAppLoader extends React.PureComponent<
 
     return (
       <FeatureAppContainer
-        manager={manager}
+        featureAppManager={featureAppManager}
         featureAppDefinition={featureAppDefinition}
         idSpecifier={idSpecifier}
       />

@@ -17,7 +17,7 @@ export interface ReactFeatureApp {
 export type FeatureApp = DomFeatureApp | ReactFeatureApp;
 
 export interface FeatureAppContainerProps {
-  readonly manager: FeatureAppManagerLike;
+  readonly featureAppManager: FeatureAppManagerLike;
   readonly featureAppDefinition: FeatureAppDefinition<unknown>;
   readonly idSpecifier?: string;
 }
@@ -37,10 +37,10 @@ export class FeatureAppContainer extends React.PureComponent<
   public constructor(props: FeatureAppContainerProps) {
     super(props);
 
-    const {manager, featureAppDefinition, idSpecifier} = props;
+    const {featureAppManager, featureAppDefinition, idSpecifier} = props;
 
     try {
-      this.featureAppScope = manager.getFeatureAppScope(
+      this.featureAppScope = featureAppManager.getFeatureAppScope(
         featureAppDefinition,
         idSpecifier
       );

@@ -14,7 +14,7 @@ import * as React from 'react';
 import {FeatureAppContainer} from '..';
 
 describe('FeatureAppContainer (on Node.js)', () => {
-  let mockManager: FeatureAppManagerLike;
+  let mockFeatureAppManager: FeatureAppManagerLike;
   let mockGetFeatureAppScope: jest.Mock;
   let mockFeatureAppDefinition: FeatureAppDefinition<unknown>;
   let mockFeatureAppScope: FeatureAppScope<unknown>;
@@ -25,7 +25,7 @@ describe('FeatureAppContainer (on Node.js)', () => {
     mockFeatureAppScope = {featureApp: {}, destroy: jest.fn()};
     mockGetFeatureAppScope = jest.fn(() => mockFeatureAppScope);
 
-    mockManager = {
+    mockFeatureAppManager = {
       getAsyncFeatureAppDefinition: jest.fn(),
       getFeatureAppScope: mockGetFeatureAppScope,
       preloadFeatureApp: jest.fn(),
@@ -65,7 +65,7 @@ describe('FeatureAppContainer (on Node.js)', () => {
         expect(() =>
           shallow(
             <FeatureAppContainer
-              manager={mockManager}
+              featureAppManager={mockFeatureAppManager}
               featureAppDefinition={mockFeatureAppDefinition}
             />
           )
@@ -91,7 +91,7 @@ describe('FeatureAppContainer (on Node.js)', () => {
       expect(() =>
         shallow(
           <FeatureAppContainer
-            manager={mockManager}
+            featureAppManager={mockFeatureAppManager}
             featureAppDefinition={mockFeatureAppDefinition}
           />
         )

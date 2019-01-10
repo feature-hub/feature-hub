@@ -17,7 +17,9 @@ import Loadable from 'react-loadable';
 ```js
 defineExternals({react: React, 'react-loadable': Loadable});
 
-const manager = new FeatureAppManager(registry, {moduleLoader: loadAmdModule});
+const featureAppManager = new FeatureAppManager(featureServiceRegistry, {
+  moduleLoader: loadAmdModule
+});
 ```
 
 Feature Apps should define these externals in their build config. For example,
