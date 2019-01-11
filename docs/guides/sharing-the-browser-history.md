@@ -135,6 +135,10 @@ The History Service depends on the Async SSR Manager to obtain its request and
 use it for the initial history location:
 
 ```js
+import {defineAsyncSsrManager} from '@feature-hub/async-ssr-manager';
+```
+
+```js
 const featureServiceRegistry = new FeatureServiceRegistry();
 
 const rootLocationTransformer = createRootLocationTransformer({
