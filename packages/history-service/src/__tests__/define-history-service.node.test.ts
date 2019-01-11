@@ -14,7 +14,6 @@ import {History} from 'history';
 import {
   HistoryServiceV1,
   RootLocationTransformer,
-  SharedHistoryService,
   defineHistoryService
 } from '..';
 import {testRootLocationTransformer} from '../internal/test-root-location-transformer';
@@ -46,9 +45,11 @@ describe('HistoryService#create (on Node.js)', () => {
 
       const sharedHistoryService = defineHistoryService(
         testRootLocationTransformer
-      ).create(mockEnv) as SharedHistoryService;
+      ).create(mockEnv);
 
-      return sharedHistoryService['1.1'];
+      return sharedHistoryService['1.1'] as FeatureServiceBinder<
+        HistoryServiceV1
+      >;
     };
   });
 
