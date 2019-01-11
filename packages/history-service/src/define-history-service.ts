@@ -19,18 +19,18 @@ export function defineHistoryService(
   rootLocationTransformer: RootLocationTransformer
 ): FeatureServiceProviderDefinition<
   undefined,
-  {'s2:async-ssr-manager': AsyncSsrManagerV1}
+  {'s2:async-ssr-manager': AsyncSsrManagerV1 | undefined}
 > {
   return {
     id: 's2:history',
-    dependencies: {'s2:async-ssr-manager': '^1.0'},
+    optionalDependencies: {'s2:async-ssr-manager': '^1.0'},
 
     create: (env): SharedHistoryService => {
-      const {serverRequest} = env.featureServices['s2:async-ssr-manager'];
+      const asyncSsrManager = env.featureServices['s2:async-ssr-manager'];
 
       const historyMultiplexers = createHistoryMultiplexers(
         rootLocationTransformer,
-        serverRequest
+        asyncSsrManager && asyncSsrManager.serverRequest
       );
 
       return {

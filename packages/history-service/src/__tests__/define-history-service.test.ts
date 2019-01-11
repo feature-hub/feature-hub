@@ -26,7 +26,8 @@ describe('defineHistoryService', () => {
 
     expect(historyServiceDefinition.id).toBe('s2:history');
 
-    expect(historyServiceDefinition.dependencies).toEqual({
+    expect(historyServiceDefinition.dependencies).toBeUndefined();
+    expect(historyServiceDefinition.optionalDependencies).toEqual({
       's2:async-ssr-manager': '^1.0'
     });
   });
