@@ -10,7 +10,7 @@ export async function startServer(
   webpackConfigs: webpack.Configuration[],
   renderMainHtml: MainHtmlRenderer | undefined
 ): Promise<Server> {
-  const port = await getPort();
+  const port = await getPort({port: 3000});
   const app = express();
 
   app.get('/', async (_req, res) => {
