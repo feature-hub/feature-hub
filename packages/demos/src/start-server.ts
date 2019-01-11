@@ -6,14 +6,14 @@ import devMiddleware from 'webpack-dev-middleware';
 
 export type MainHtmlRenderer = (port: number) => Promise<string>;
 
-function createDocumentHtml(body: string): string {
+function createDocumentHtml(bodyHtml: string): string {
   return `
     <html>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </head>
       <body>
-        ${body}
+        ${bodyHtml}
         <script src="integrator.js"></script>
       </body>
     </html>
