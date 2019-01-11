@@ -1,4 +1,3 @@
-import {defineAsyncSsrManager} from '@feature-hub/async-ssr-manager';
 import {FeatureAppManager, FeatureServiceRegistry} from '@feature-hub/core';
 import {defineHistoryService} from '@feature-hub/history-service';
 import {FeatureAppContainer} from '@feature-hub/react';
@@ -11,10 +10,7 @@ import {rootLocationTransformer} from './root-location-transformer';
 const featureServiceRegistry = new FeatureServiceRegistry();
 
 featureServiceRegistry.registerFeatureServices(
-  [
-    defineAsyncSsrManager(undefined),
-    defineHistoryService(rootLocationTransformer)
-  ],
+  [defineHistoryService(rootLocationTransformer)],
   'demo:integrator'
 );
 
