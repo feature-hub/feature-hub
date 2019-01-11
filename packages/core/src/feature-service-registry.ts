@@ -83,21 +83,22 @@ export interface FeatureServiceRegistryOptions {
 
 type ProviderId = string;
 
-function createUnsupportedFeatureServiceError(
+function createUnsupportedFeatureServiceMessage(
+  optional: boolean,
   providerId: string,
   consumerUid: string,
   requiredVersion: string,
   supportedVersions: string[]
-): Error {
-  return new Error(
-    `The required Feature Service ${JSON.stringify(
-      providerId
-    )} in the unsupported version ${JSON.stringify(
-      requiredVersion
-    )} could not be bound to consumer ${JSON.stringify(
-      consumerUid
-    )}. The supported versions are ${JSON.stringify(supportedVersions)}.`
-  );
+): string {
+  return `The ${
+    optional ? 'optional' : 'required'
+  } Feature Service ${JSON.stringify(
+    providerId
+  )} in the unsupported version ${JSON.stringify(
+    requiredVersion
+  )} could not be bound to consumer ${JSON.stringify(
+    consumerUid
+  )}. The supported versions are ${JSON.stringify(supportedVersions)}.`;
 }
 
 export class FeatureServiceRegistry implements FeatureServiceRegistryLike {
@@ -304,11 +305,14 @@ export class FeatureServiceRegistry implements FeatureServiceRegistryLike {
       const actualVersion = coerce(supportedVersion);
 
       if (!actualVersion) {
-        throw createUnsupportedFeatureServiceError(
-          providerId,
-          consumerUid,
-          requiredVersion,
-          supportedVersions
+        throw new Error(
+          createUnsupportedFeatureServiceMessage(
+            optional,
+            providerId,
+            consumerUid,
+            requiredVersion,
+            supportedVersions
+          )
         );
       }
 
@@ -318,12 +322,21 @@ export class FeatureServiceRegistry implements FeatureServiceRegistryLike {
     const bindFeatureService = version && sharedFeatureService[version];
 
     if (!bindFeatureService) {
-      throw createUnsupportedFeatureServiceError(
+      const message = createUnsupportedFeatureServiceMessage(
+        optional,
         providerId,
         consumerUid,
         requiredVersion,
         supportedVersions
       );
+
+      if (optional) {
+        console.info(message);
+
+        return;
+      }
+
+      throw new Error(message);
     }
 
     return bindFeatureService(consumerUid);

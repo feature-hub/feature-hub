@@ -250,6 +250,33 @@ describe('FeatureServiceRegistry', () => {
       );
     });
 
+    it('does not fail to register the Feature Service "d" due to an unsupported optional dependency version', () => {
+      const stateProviderD = {
+        id: 'd',
+        optionalDependencies: {a: '1.0'},
+        create: jest.fn()
+      };
+
+      expect(() =>
+        featureServiceRegistry.registerFeatureServices(
+          [providerDefinitionA, stateProviderD],
+          'test'
+        )
+      ).not.toThrow();
+
+      expect(spyConsoleInfo.mock.calls).toEqual([
+        [
+          'The Feature Service "a" has been successfully registered by consumer "test".'
+        ],
+        [
+          'The optional Feature Service "a" in the unsupported version "1.0" could not be bound to consumer "d". The supported versions are ["1.1"].'
+        ],
+        [
+          'The Feature Service "d" has been successfully registered by consumer "test".'
+        ]
+      ]);
+    });
+
     it('fails to register the Feature Service "d" due to an invalid dependency version', () => {
       const stateProviderDefinitionD = {
         id: 'd',
