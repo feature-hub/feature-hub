@@ -1,4 +1,4 @@
-import {AsyncSsrManagerV1} from '@feature-hub/async-ssr-manager';
+import {AsyncSsrManagerV0} from '@feature-hub/async-ssr-manager';
 import {FeatureAppDefinition, FeatureAppManagerLike} from '@feature-hub/core';
 import * as React from 'react';
 import {FeatureAppContainer} from './feature-app-container';
@@ -14,7 +14,7 @@ export interface FeatureAppLoaderProps {
   readonly serverSrc?: string;
   readonly css?: Css[];
   readonly idSpecifier?: string;
-  readonly asyncSsrManager?: AsyncSsrManagerV1;
+  readonly asyncSsrManager?: AsyncSsrManagerV0;
 }
 
 interface FeatureAppLoaderState {

@@ -8,7 +8,7 @@ import {
 import mockConsole from 'jest-mock-console';
 import {
   AsyncSsrManagerConfig,
-  AsyncSsrManagerV1,
+  AsyncSsrManagerV0,
   ServerRequest,
   defineAsyncSsrManager
 } from '..';
@@ -41,10 +41,10 @@ describe('defineAsyncSsrManager', () => {
   });
 
   describe('#create', () => {
-    it('creates a shared Feature Service containing version 1.0', () => {
+    it('creates a shared Feature Service containing version 0.1', () => {
       const sharedAsyncSsrManager = asyncSsrManagerDefinition.create(mockEnv);
 
-      expect(sharedAsyncSsrManager['1.0']).toBeDefined();
+      expect(sharedAsyncSsrManager['0.1']).toBeDefined();
     });
 
     for (const invalidConfig of [null, {timeout: false}]) {
@@ -63,13 +63,13 @@ describe('defineAsyncSsrManager', () => {
     }
   });
 
-  describe('AsyncSsrManagerV1', () => {
-    let asyncSsrManagerBinder: FeatureServiceBinder<AsyncSsrManagerV1>;
+  describe('AsyncSsrManagerV0', () => {
+    let asyncSsrManagerBinder: FeatureServiceBinder<AsyncSsrManagerV0>;
 
     beforeEach(() => {
       asyncSsrManagerBinder = asyncSsrManagerDefinition.create(mockEnv)[
-        '1.0'
-      ] as FeatureServiceBinder<AsyncSsrManagerV1>;
+        '0.1'
+      ] as FeatureServiceBinder<AsyncSsrManagerV0>;
     });
 
     it('exposes a serverRequest', () => {
@@ -199,7 +199,7 @@ describe('defineAsyncSsrManager', () => {
           asyncSsrManagerBinder = asyncSsrManagerDefinition.create({
             config: undefined,
             featureServices: {}
-          })['1.0'] as FeatureServiceBinder<AsyncSsrManagerV1>;
+          })['0.1'] as FeatureServiceBinder<AsyncSsrManagerV0>;
         });
 
         it('logs a warning', async () => {

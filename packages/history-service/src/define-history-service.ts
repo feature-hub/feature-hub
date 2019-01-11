@@ -1,4 +1,4 @@
-import {AsyncSsrManagerV1} from '@feature-hub/async-ssr-manager';
+import {AsyncSsrManagerV0} from '@feature-hub/async-ssr-manager';
 import {
   FeatureServiceBinder,
   FeatureServiceProviderDefinition,
@@ -7,9 +7,9 @@ import {
 import * as history from 'history';
 import {RootLocationTransformer} from './create-root-location-transformer';
 import {createHistoryMultiplexers} from './internal/create-history-multiplexers';
-import {createHistoryServiceV1Binder} from './internal/create-history-service-v1-binder';
+import {createHistoryServiceV0Binder} from './internal/create-history-service-v0-binder';
 
-export interface HistoryServiceV1 {
+export interface HistoryServiceV0 {
   staticRootLocation: history.Location;
 
   createBrowserHistory(): history.History;
@@ -17,14 +17,14 @@ export interface HistoryServiceV1 {
 }
 
 interface SharedHistoryService extends SharedFeatureService {
-  readonly '1.1': FeatureServiceBinder<HistoryServiceV1>;
+  readonly '0.1': FeatureServiceBinder<HistoryServiceV0>;
 }
 
 export function defineHistoryService(
   rootLocationTransformer: RootLocationTransformer
 ): FeatureServiceProviderDefinition<
   undefined,
-  {'s2:async-ssr-manager': AsyncSsrManagerV1 | undefined}
+  {'s2:async-ssr-manager': AsyncSsrManagerV0 | undefined}
 > {
   return {
     id: 's2:history',
@@ -39,7 +39,7 @@ export function defineHistoryService(
       );
 
       return {
-        '1.1': createHistoryServiceV1Binder(historyMultiplexers)
+        '0.1': createHistoryServiceV0Binder(historyMultiplexers)
       };
     }
   };
