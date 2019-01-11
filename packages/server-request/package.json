@@ -1,0 +1,28 @@
+{
+  "name": "@feature-hub/server-request",
+  "version": "0.0.0",
+  "description": "A Feature Service that provides a server request to consumers that want to be server-side rendered.",
+  "homepage": "https://feature-hub.io/",
+  "bugs": {
+    "url": "https://github.com/sinnerschrader/feature-hub/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sinnerschrader/feature-hub.git"
+  },
+  "license": "MIT",
+  "author": "SinnerSchrader Deutschland GmbH",
+  "files": [
+    "lib",
+    "!__tests__"
+  ],
+  "main": "lib/cjs/index.js",
+  "module": "lib/esm/index.js",
+  "typings": "lib/cjs/index.d.ts",
+  "dependencies": {
+    "@feature-hub/core": "^0.11.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
