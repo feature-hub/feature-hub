@@ -27,8 +27,7 @@ the [MIT License][license].
 
 [api]: https://feature-hub.io/@feature-hub/server-request/
 [api-badge]:
-  https://img.shields.io/badge/API-%40feature--hub%2Fserver--request--provider-%23ea3458.svg
-[issue-25]: https://github.com/sinnerschrader/feature-hub/issues/25
+  https://img.shields.io/badge/API-%40feature--hub%2Fserver--request-%23ea3458.svg
 [license]: https://github.com/sinnerschrader/feature-hub/blob/master/LICENSE
 [package-badge]: https://img.shields.io/npm/v/@feature-hub/server-request.svg
 [package-npm]: https://www.npmjs.com/package/@feature-hub/server-request
