@@ -35,7 +35,7 @@ describe('defineServerRequest', () => {
     });
   });
 
-  describe('ServerRequestV1', () => {
+  describe('ServerRequestV0', () => {
     let serverRequestBinder: FeatureServiceBinder<ServerRequestV0>;
 
     beforeEach(() => {
