@@ -106,7 +106,6 @@ registers it at the Feature Service registry.
 In the browser:
 
 ```js
-import {defineAsyncSsrManager} from '@feature-hub/async-ssr-manager';
 import {FeatureServiceRegistry} from '@feature-hub/core';
 import {
   defineHistoryService,
@@ -122,7 +121,6 @@ const rootLocationTransformer = createRootLocationTransformer({
 });
 
 const featureServiceDefinitions = [
-  defineAsyncSsrManager(undefined),
   defineHistoryService(rootLocationTransformer)
 ];
 
