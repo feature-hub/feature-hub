@@ -90,7 +90,7 @@ export class FeatureAppManager implements FeatureAppManagerLike {
   >();
 
   public constructor(
-    private readonly registry: FeatureServiceRegistryLike,
+    private readonly featureServiceRegistry: FeatureServiceRegistryLike,
     private readonly options: FeatureAppManagerOptions = {}
   ) {}
 
@@ -187,7 +187,7 @@ export class FeatureAppManager implements FeatureAppManagerLike {
     }
 
     if (featureAppDefinition.ownFeatureServiceDefinitions) {
-      this.registry.registerFeatureServices(
+      this.featureServiceRegistry.registerFeatureServices(
         featureAppDefinition.ownFeatureServiceDefinitions,
         featureAppDefinition.id
       );
@@ -207,7 +207,7 @@ export class FeatureAppManager implements FeatureAppManagerLike {
     const config = configs && configs[featureAppDefinition.id];
     const featureAppUid = createUid(featureAppDefinition.id, idSpecifier);
 
-    const binding = this.registry.bindFeatureServices(
+    const binding = this.featureServiceRegistry.bindFeatureServices(
       featureAppDefinition,
       idSpecifier
     );
