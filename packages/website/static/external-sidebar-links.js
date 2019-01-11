@@ -56,7 +56,7 @@
   findNavGroups(navGroups =>
     renderNavGroup(
       navGroups,
-      'Packages',
+      'API',
       [
         'core',
         'react',
