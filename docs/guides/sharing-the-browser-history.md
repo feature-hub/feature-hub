@@ -71,6 +71,10 @@ const myFeatureAppDefinition = {
 On the server:
 
 ```js
+import {Router} from 'react-router';
+```
+
+```js
 const myFeatureAppDefinition = {
   id: 'acme:my-feature-app',
 
@@ -136,6 +140,11 @@ use it for the initial history location:
 
 ```js
 import {defineAsyncSsrManager} from '@feature-hub/async-ssr-manager';
+import {FeatureServiceRegistry} from '@feature-hub/core';
+import {
+  defineHistoryService,
+  createRootLocationTransformer
+} from '@feature-hub/history-service';
 ```
 
 ```js
