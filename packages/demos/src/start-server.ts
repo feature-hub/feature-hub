@@ -6,7 +6,22 @@ import devMiddleware from 'webpack-dev-middleware';
 
 export type MainHtmlRenderer = (port: number) => Promise<string>;
 
+function createDocumentHtml(body: string): string {
+  return `
+    <html>
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <script src="integrator.js"></script>
+      </head>
+      <body>
+        ${body}
+      </body>
+    </html>
+  `;
+}
+
 export async function startServer(
+  demoName: string,
   webpackConfigs: webpack.Configuration[],
   renderMainHtml: MainHtmlRenderer | undefined
 ): Promise<Server> {
@@ -14,19 +29,20 @@ export async function startServer(
   const app = express();
 
   app.get('/', async (_req, res) => {
-    const mainHtml = renderMainHtml ? await renderMainHtml(port) : '';
+    try {
+      const mainHtml = renderMainHtml ? await renderMainHtml(port) : '';
 
-    res.send(
-      `<html>
-        <head>
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
-        </head>
-        <body>
-          <main>${mainHtml}</main>
-          <script src="integrator.js"></script>
-        </body>
-      </html>`
-    );
+      res.send(createDocumentHtml(`<main>${mainHtml}</main>`));
+    } catch (error) {
+      const documentHtml = createDocumentHtml(`
+        <div class="bp3-callout bp3-intent-danger">
+          <h4 class="bp3-heading">Failed to render demo "${demoName}"</h4>
+          <pre>${error.stack}</pre>
+        </div>
+      `);
+
+      res.send(documentHtml).status(500);
+    }
   });
 
   app.use(devMiddleware(webpack(webpackConfigs), {publicPath: '/'}));

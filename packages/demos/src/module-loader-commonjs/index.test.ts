@@ -17,7 +17,7 @@ describe('integration test: "commonjs module loader"', () => {
   let server: Server;
 
   beforeAll(async () => {
-    server = await startServer(webpackConfigs, renderMainHtml);
+    server = await startServer(__dirname, webpackConfigs, renderMainHtml);
 
     const {port} = server.address() as AddressInfo;
 
