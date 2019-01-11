@@ -71,6 +71,10 @@ const myFeatureAppDefinition = {
 On the server:
 
 ```js
+import {Router} from 'react-router';
+```
+
+```js
 const myFeatureAppDefinition = {
   id: 'acme:my-feature-app',
 
@@ -133,6 +137,15 @@ featureServiceRegistry.registerFeatureServices(
 On the server, the integrator defines the Async SSR Manager using the request.
 The History Service depends on the Async SSR Manager to obtain its request and
 use it for the initial history location:
+
+```js
+import {defineAsyncSsrManager} from '@feature-hub/async-ssr-manager';
+import {FeatureServiceRegistry} from '@feature-hub/core';
+import {
+  defineHistoryService,
+  createRootLocationTransformer
+} from '@feature-hub/history-service';
+```
 
 ```js
 const featureServiceRegistry = new FeatureServiceRegistry();
