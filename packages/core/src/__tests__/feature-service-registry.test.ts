@@ -254,7 +254,7 @@ describe('FeatureServiceRegistry', () => {
       const stateProviderD = {
         id: 'd',
         optionalDependencies: {a: '1.0'},
-        create: jest.fn()
+        create: jest.fn(() => ({}))
       };
 
       expect(() =>
@@ -300,7 +300,7 @@ describe('FeatureServiceRegistry', () => {
       const stateProviderDefinitionD = {
         id: 'd',
         optionalDependencies: {a: ''},
-        create: jest.fn()
+        create: jest.fn(() => ({}))
       };
 
       expect(() =>
@@ -343,7 +343,7 @@ describe('FeatureServiceRegistry', () => {
         )
       ).toThrowError(
         new Error(
-          'The required Feature Service "d" in the unsupported version "1.0" could not be bound to consumer "e". The supported versions are ["foo"].'
+          'The Feature Service "d" could not be registered by consumer "test" because it contains an invalid version.'
         )
       );
     });
