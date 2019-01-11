@@ -17,7 +17,7 @@ describe('integration test: "Async SSR Manager"', () => {
   let server: Server;
 
   beforeAll(async () => {
-    server = await startServer(__dirname, webpackConfigs, renderMainHtml);
+    server = await startServer(webpackConfigs, renderMainHtml);
 
     const {port} = server.address() as AddressInfo;
 

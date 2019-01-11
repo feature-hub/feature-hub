@@ -21,9 +21,9 @@ function createDocumentHtml(body: string): string {
 }
 
 export async function startServer(
-  demoName: string,
   webpackConfigs: webpack.Configuration[],
-  renderMainHtml: MainHtmlRenderer | undefined
+  renderMainHtml: MainHtmlRenderer | undefined,
+  demoName?: string
 ): Promise<Server> {
   const port = await getPort({port: 3000});
   const app = express();
@@ -34,12 +34,14 @@ export async function startServer(
 
       res.send(createDocumentHtml(`<main>${mainHtml}</main>`));
     } catch (error) {
-      const documentHtml = createDocumentHtml(`
-        <div class="bp3-callout bp3-intent-danger">
-          <h4 class="bp3-heading">Failed to render demo "${demoName}"</h4>
-          <pre>${error.stack}</pre>
-        </div>
-      `);
+      const documentHtml = demoName
+        ? createDocumentHtml(`
+            <div class="bp3-callout bp3-intent-danger">
+              <h4 class="bp3-heading">Failed to render demo "${demoName}"</h4>
+              <pre>${error.stack}</pre>
+            </div>
+          `)
+        : error;
 
       res.send(documentHtml).status(500);
     }

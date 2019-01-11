@@ -71,7 +71,7 @@ describe('integration test: "history-service"', () => {
   let url: string;
 
   beforeAll(async () => {
-    server = await startServer(__dirname, webpackConfigs, undefined);
+    server = await startServer(webpackConfigs, undefined);
 
     const {port} = server.address() as AddressInfo;
 
