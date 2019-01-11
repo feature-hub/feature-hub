@@ -4,14 +4,19 @@ import {
   FeatureServiceProviderDefinition,
   SharedFeatureService
 } from '@feature-hub/core';
+import * as history from 'history';
 import {RootLocationTransformer} from './create-root-location-transformer';
-import {
-  HistoryServiceV1,
-  createHistoryServiceV1Binder
-} from './history-service-v1';
 import {createHistoryMultiplexers} from './internal/create-history-multiplexers';
+import {createHistoryServiceV1Binder} from './internal/create-history-service-v1-binder';
 
-export interface SharedHistoryService extends SharedFeatureService {
+export interface HistoryServiceV1 {
+  staticRootLocation: history.Location;
+
+  createBrowserHistory(): history.History;
+  createStaticHistory(): history.History;
+}
+
+interface SharedHistoryService extends SharedFeatureService {
   readonly '1.1': FeatureServiceBinder<HistoryServiceV1>;
 }
 

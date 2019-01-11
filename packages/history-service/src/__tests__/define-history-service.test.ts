@@ -7,7 +7,7 @@ import {
   FeatureServiceEnvironment
 } from '@feature-hub/core';
 import {History} from 'history';
-import {HistoryServiceV1, SharedHistoryService, defineHistoryService} from '..';
+import {HistoryServiceV1, defineHistoryService} from '..';
 import {testRootLocationTransformer} from '../internal/test-root-location-transformer';
 
 const simulateOnPopState = (state: unknown, url: string) => {
@@ -71,9 +71,11 @@ describe('defineHistoryService', () => {
       createHistoryServiceBinder = () => {
         const sharedHistoryService = defineHistoryService(
           testRootLocationTransformer
-        ).create(mockEnv) as SharedHistoryService;
+        ).create(mockEnv);
 
-        return sharedHistoryService['1.1'];
+        return sharedHistoryService['1.1'] as FeatureServiceBinder<
+          HistoryServiceV1
+        >;
       };
     });
 
