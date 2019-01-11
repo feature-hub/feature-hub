@@ -36,7 +36,7 @@ describe('FeatureAppContainer', () => {
     spyConsoleError.mockRestore();
   });
 
-  it('calls the feature app manager with the given Feature App definition and id specifier', () => {
+  it('calls the Feature App manager with the given Feature App definition and id specifier', () => {
     shallow(
       <FeatureAppContainer
         featureAppManager={mockManager}
