@@ -13,7 +13,7 @@ export default async function renderMainHtml(port: number): Promise<string> {
   const featureServiceRegistry = new FeatureServiceRegistry();
 
   const integratorDefinition = {
-    id: 'integrator',
+    id: 'demos:integrator',
     dependencies: {
       's2:async-ssr-manager': '1.0'
     }
