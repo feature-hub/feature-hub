@@ -144,10 +144,24 @@ export class FeatureServiceRegistry implements FeatureServiceRegistryLike {
         const config = configs && configs[providerId];
         const {featureServices} = this.bindFeatureServices(providerDefinition);
 
-        this.sharedFeatureServices.set(
-          providerId,
-          providerDefinition.create({config, featureServices})
-        );
+        const sharedFeatureService = providerDefinition.create({
+          config,
+          featureServices
+        });
+
+        for (const version of Object.keys(sharedFeatureService)) {
+          if (!coerce(version)) {
+            throw new Error(
+              `The Feature Service ${JSON.stringify(
+                providerId
+              )} could not be registered by consumer ${JSON.stringify(
+                consumerId
+              )} because it contains an invalid version.`
+            );
+          }
+        }
+
+        this.sharedFeatureServices.set(providerId, sharedFeatureService);
 
         console.info(
           `The Feature Service ${JSON.stringify(
@@ -304,19 +318,9 @@ export class FeatureServiceRegistry implements FeatureServiceRegistryLike {
     const version = supportedVersions.find(supportedVersion => {
       const actualVersion = coerce(supportedVersion);
 
-      if (!actualVersion) {
-        throw new Error(
-          createUnsupportedFeatureServiceMessage(
-            optional,
-            providerId,
-            consumerUid,
-            requiredVersion,
-            supportedVersions
-          )
-        );
-      }
-
-      return satisfies(actualVersion, requiredVersion);
+      // We already ensure coercebility at service registration time.
+      // tslint:disable-next-line: no-non-null-assertion
+      return satisfies(actualVersion!, requiredVersion);
     });
 
     const bindFeatureService = version && sharedFeatureService[version];
