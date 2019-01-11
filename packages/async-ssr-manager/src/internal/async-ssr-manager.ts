@@ -1,4 +1,4 @@
-import {AsyncSsrManagerV1, ServerRequest} from '../define-async-ssr-manager';
+import {AsyncSsrManagerV1, ServerRequest} from '..';
 import {setTimeoutAsync} from './set-timeout-async';
 
 async function renderingTimeout(timeout: number): Promise<never> {

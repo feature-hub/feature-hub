@@ -1,4 +1,4 @@
-import {AsyncSsrManagerConfig} from '../define-async-ssr-manager';
+import {AsyncSsrManagerConfig} from '..';
 
 function isValidConfig(
   config: unknown
