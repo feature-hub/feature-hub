@@ -2,6 +2,7 @@ import {AsyncSsrManagerV0} from '@feature-hub/async-ssr-manager';
 import {
   FeatureServiceBinder,
   FeatureServiceProviderDefinition,
+  FeatureServices,
   SharedFeatureService
 } from '@feature-hub/core';
 import * as history from 'history';
@@ -20,12 +21,13 @@ interface SharedHistoryService extends SharedFeatureService {
   readonly '0.1': FeatureServiceBinder<HistoryServiceV0>;
 }
 
+export interface HistoryServiceDependencies extends FeatureServices {
+  's2:async-ssr-manager': AsyncSsrManagerV0 | undefined;
+}
+
 export function defineHistoryService(
   rootLocationTransformer: RootLocationTransformer
-): FeatureServiceProviderDefinition<
-  undefined,
-  {'s2:async-ssr-manager': AsyncSsrManagerV0 | undefined}
-> {
+): FeatureServiceProviderDefinition<undefined, HistoryServiceDependencies> {
   return {
     id: 's2:history',
     optionalDependencies: {'s2:async-ssr-manager': '^1.0'},
