@@ -1,3 +1,4 @@
+import {AsyncSsrManagerV1} from '@feature-hub/async-ssr-manager';
 import {FeatureAppDefinition, FeatureAppManagerLike} from '@feature-hub/core';
 import * as React from 'react';
 import {FeatureAppContainer} from './feature-app-container';
@@ -13,6 +14,7 @@ export interface FeatureAppLoaderProps {
   readonly serverSrc?: string;
   readonly css?: Css[];
   readonly idSpecifier?: string;
+  readonly asyncSsrManager?: AsyncSsrManagerV1;
 }
 
 interface FeatureAppLoaderState {
@@ -37,7 +39,13 @@ export class FeatureAppLoader extends React.PureComponent<
   public constructor(props: FeatureAppLoaderProps) {
     super(props);
 
-    const {featureAppManager, src: browserSrc, serverSrc} = props;
+    const {
+      featureAppManager,
+      src: browserSrc,
+      serverSrc,
+      asyncSsrManager
+    } = props;
+
     const src = inBrowser ? browserSrc : serverSrc;
 
     if (!src) {
@@ -61,8 +69,10 @@ export class FeatureAppLoader extends React.PureComponent<
       }
 
       this.state = {hasError: true};
-    } else {
+    } else if (asyncFeatureAppDefinition.value) {
       this.state = {featureAppDefinition: asyncFeatureAppDefinition.value};
+    } else if (!inBrowser && asyncSsrManager) {
+      asyncSsrManager.rerenderAfter(asyncFeatureAppDefinition.promise);
     }
   }
 

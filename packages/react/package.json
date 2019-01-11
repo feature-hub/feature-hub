@@ -20,6 +20,7 @@
   "module": "lib/esm/index.js",
   "typings": "lib/cjs/index.d.ts",
   "dependencies": {
+    "@feature-hub/async-ssr-manager": "^0.0.0",
     "@feature-hub/core": "^0.11.0"
   },
   "devDependencies": {
