@@ -15,7 +15,7 @@ export default async function renderMainHtml(port: number): Promise<string> {
   const integratorDefinition = {
     id: 'demos:integrator',
     dependencies: {
-      's2:async-ssr-manager': '0.1'
+      's2:async-ssr-manager': '^0.1'
     }
   };
 
