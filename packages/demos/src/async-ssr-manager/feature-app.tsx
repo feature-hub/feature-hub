@@ -1,5 +1,5 @@
 import {Card, Label} from '@blueprintjs/core';
-import {AsyncSsrManagerV1} from '@feature-hub/async-ssr-manager';
+import {AsyncSsrManagerV0} from '@feature-hub/async-ssr-manager';
 import {FeatureAppDefinition} from '@feature-hub/core';
 import {ReactFeatureApp} from '@feature-hub/react';
 import * as React from 'react';
@@ -7,12 +7,12 @@ import * as React from 'react';
 const featureAppDefinition: FeatureAppDefinition<
   ReactFeatureApp,
   undefined,
-  {'s2:async-ssr-manager': AsyncSsrManagerV1}
+  {'s2:async-ssr-manager': AsyncSsrManagerV0}
 > = {
   id: 'test:hello-world',
 
   dependencies: {
-    's2:async-ssr-manager': '^1.0'
+    's2:async-ssr-manager': '^0.1'
   },
 
   create: env => {

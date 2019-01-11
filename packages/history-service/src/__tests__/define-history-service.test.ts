@@ -1,13 +1,13 @@
 // tslint:disable:no-non-null-assertion
 
-import {AsyncSsrManagerV1} from '@feature-hub/async-ssr-manager';
+import {AsyncSsrManagerV0} from '@feature-hub/async-ssr-manager';
 import {
   FeatureServiceBinder,
   FeatureServiceBinding,
   FeatureServiceEnvironment
 } from '@feature-hub/core';
 import {History} from 'history';
-import {HistoryServiceV1, defineHistoryService} from '..';
+import {HistoryServiceV0, defineHistoryService} from '..';
 import {testRootLocationTransformer} from '../internal/test-root-location-transformer';
 
 const simulateOnPopState = (state: unknown, url: string) => {
@@ -34,7 +34,7 @@ describe('defineHistoryService', () => {
 
   describe('#create', () => {
     let createHistoryServiceBinder: () => FeatureServiceBinder<
-      HistoryServiceV1
+      HistoryServiceV0
     >;
 
     let pushStateSpy: jest.SpyInstance;
@@ -50,7 +50,7 @@ describe('defineHistoryService', () => {
       consoleWarnSpy = jest.spyOn(console, 'warn');
       consoleWarnSpy.mockImplementation(jest.fn());
 
-      const mockAsyncSsrManager: Partial<AsyncSsrManagerV1> = {
+      const mockAsyncSsrManager: Partial<AsyncSsrManagerV0> = {
         serverRequest: {
           path: '/example',
           cookies: {},
@@ -60,11 +60,11 @@ describe('defineHistoryService', () => {
 
       const mockEnv: FeatureServiceEnvironment<
         undefined,
-        {'s2:async-ssr-manager': AsyncSsrManagerV1}
+        {'s2:async-ssr-manager': AsyncSsrManagerV0}
       > = {
         config: undefined,
         featureServices: {
-          's2:async-ssr-manager': mockAsyncSsrManager as AsyncSsrManagerV1
+          's2:async-ssr-manager': mockAsyncSsrManager as AsyncSsrManagerV0
         }
       };
 
@@ -73,8 +73,8 @@ describe('defineHistoryService', () => {
           testRootLocationTransformer
         ).create(mockEnv);
 
-        return sharedHistoryService['1.1'] as FeatureServiceBinder<
-          HistoryServiceV1
+        return sharedHistoryService['0.1'] as FeatureServiceBinder<
+          HistoryServiceV0
         >;
       };
     });
@@ -94,8 +94,8 @@ describe('defineHistoryService', () => {
     });
 
     describe('#createBrowserHistory()', () => {
-      let historyBinding1: FeatureServiceBinding<HistoryServiceV1>;
-      let historyBinding2: FeatureServiceBinding<HistoryServiceV1>;
+      let historyBinding1: FeatureServiceBinding<HistoryServiceV0>;
+      let historyBinding2: FeatureServiceBinding<HistoryServiceV0>;
       let history1: History;
       let history2: History;
 

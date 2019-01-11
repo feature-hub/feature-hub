@@ -4,7 +4,7 @@
 
 // tslint:disable:no-implicit-dependencies
 
-import {AsyncSsrManagerV1} from '@feature-hub/async-ssr-manager';
+import {AsyncSsrManagerV0} from '@feature-hub/async-ssr-manager';
 import {
   AsyncValue,
   FeatureAppDefinition,
@@ -14,7 +14,7 @@ import {shallow} from 'enzyme';
 import * as React from 'react';
 import {FeatureAppLoader} from '..';
 
-interface MockAsyncSsrManager extends AsyncSsrManagerV1 {
+interface MockAsyncSsrManager extends AsyncSsrManagerV0 {
   rerenderAfter: ((promise: Promise<unknown>) => void) & jest.Mock;
 }
 

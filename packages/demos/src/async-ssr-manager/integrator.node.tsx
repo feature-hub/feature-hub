@@ -1,5 +1,5 @@
 import {
-  AsyncSsrManagerV1,
+  AsyncSsrManagerV0,
   defineAsyncSsrManager
 } from '@feature-hub/async-ssr-manager';
 import {FeatureAppManager, FeatureServiceRegistry} from '@feature-hub/core';
@@ -15,7 +15,7 @@ export default async function renderMainHtml(port: number): Promise<string> {
   const integratorDefinition = {
     id: 'demos:integrator',
     dependencies: {
-      's2:async-ssr-manager': '1.0'
+      's2:async-ssr-manager': '^0.1'
     }
   };
 
@@ -30,7 +30,7 @@ export default async function renderMainHtml(port: number): Promise<string> {
 
   const asyncSsrManager = featureServices[
     's2:async-ssr-manager'
-  ] as AsyncSsrManagerV1;
+  ] as AsyncSsrManagerV0;
 
   const featureAppManager = new FeatureAppManager(featureServiceRegistry, {
     moduleLoader: loadCommonJsModule

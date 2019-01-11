@@ -16,7 +16,7 @@ export interface AsyncSsrManagerConfig {
   readonly timeout?: number;
 }
 
-export interface AsyncSsrManagerV1 {
+export interface AsyncSsrManagerV0 {
   readonly serverRequest: ServerRequest | undefined;
 
   renderUntilCompleted(render: () => string): Promise<string>;
@@ -24,7 +24,7 @@ export interface AsyncSsrManagerV1 {
 }
 
 interface SharedAsyncSsrManager extends SharedFeatureService {
-  readonly '1.0': FeatureServiceBinder<AsyncSsrManagerV1>;
+  readonly '0.1': FeatureServiceBinder<AsyncSsrManagerV0>;
 }
 
 export function defineAsyncSsrManager(
@@ -40,7 +40,7 @@ export function defineAsyncSsrManager(
       const asyncSsrManager = new AsyncSsrManager(serverRequest, timeout);
 
       return {
-        '1.0': () => ({featureService: asyncSsrManager})
+        '0.1': () => ({featureService: asyncSsrManager})
       };
     }
   };
