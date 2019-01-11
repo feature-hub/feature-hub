@@ -25,7 +25,7 @@ export async function startServer(
   renderMainHtml: MainHtmlRenderer | undefined,
   demoName?: string
 ): Promise<Server> {
-  const port = await getPort({port: 3000});
+  const port = await getPort(demoName ? {port: 3000} : undefined);
   const app = express();
 
   app.get('/', async (_req, res) => {
