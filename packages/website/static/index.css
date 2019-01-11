@@ -29,8 +29,14 @@ body:not(.sideNavVisible) .projectLogo {
 }
 
 body:not(.sideNavVisible) .projectLogo img {
-  height: 200px;
+  height: 100px;
   margin-bottom: 0px;
+}
+
+@media only screen and (min-width: 480px) {
+  body:not(.sideNavVisible) .projectLogo img {
+    height: 120px;
+  }
 }
 
 body:not(.sideNavVisible) .button:hover {
