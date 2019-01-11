@@ -25,7 +25,7 @@ function loadNodeIntegrator(): MainHtmlRenderer | undefined {
   }
 }
 
-startServer(loadWebpackConfigs(), loadNodeIntegrator())
+startServer(loadWebpackConfigs(), loadNodeIntegrator(), demoName)
   .then(server => {
     const {port} = server.address() as AddressInfo;
 
