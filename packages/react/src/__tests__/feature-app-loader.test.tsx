@@ -67,7 +67,7 @@ describe('FeatureAppLoader', () => {
     const wrapper = shallow(
       <FeatureAppLoader
         featureAppManager={mockFeatureAppManager}
-        src="/test.js"
+        src="example.js"
       />
     );
 
@@ -79,7 +79,7 @@ describe('FeatureAppLoader', () => {
       shallow(
         <FeatureAppLoader
           featureAppManager={mockFeatureAppManager}
-          src="/test.js"
+          src="example.js"
         />
       );
 
@@ -92,7 +92,7 @@ describe('FeatureAppLoader', () => {
       shallow(
         <FeatureAppLoader
           featureAppManager={mockFeatureAppManager}
-          src="/test.js"
+          src="example.js"
           css={[{href: 'foo.css'}, {href: 'bar.css', media: 'print'}]}
         />
       );
@@ -105,7 +105,7 @@ describe('FeatureAppLoader', () => {
         shallow(
           <FeatureAppLoader
             featureAppManager={mockFeatureAppManager}
-            src="/test.js"
+            src="example.js"
             css={[{href: 'foo.css'}]}
           />
         );
@@ -113,7 +113,7 @@ describe('FeatureAppLoader', () => {
         shallow(
           <FeatureAppLoader
             featureAppManager={mockFeatureAppManager}
-            src="/test.js"
+            src="example.js"
             css={[{href: 'foo.css'}]}
           />
         );
@@ -141,7 +141,7 @@ describe('FeatureAppLoader', () => {
       const wrapper = shallow(
         <FeatureAppLoader
           featureAppManager={mockFeatureAppManager}
-          src="/test.js"
+          src="example.js"
           idSpecifier="testIdSpecifier"
         />
       );
@@ -159,7 +159,8 @@ describe('FeatureAppLoader', () => {
       shallow(
         <FeatureAppLoader
           featureAppManager={mockFeatureAppManager}
-          src="/test.js"
+          src="example.js"
+          serverSrc="example-node.js"
           asyncSsrManager={mockAsyncSsrManager}
         />
       );
@@ -185,7 +186,7 @@ describe('FeatureAppLoader', () => {
       const wrapper = shallow(
         <FeatureAppLoader
           featureAppManager={mockFeatureAppManager}
-          src="/test.js"
+          src="example.js"
           idSpecifier="testIdSpecifier"
         />
       );
@@ -194,7 +195,7 @@ describe('FeatureAppLoader', () => {
 
       expect(spyConsoleError.mock.calls).toEqual([
         [
-          'The Feature App for the src "/test.js" and the ID specifier "testIdSpecifier" could not be rendered.',
+          'The Feature App for the src "example.js" and the ID specifier "testIdSpecifier" could not be rendered.',
           mockError
         ]
       ]);
@@ -222,7 +223,7 @@ describe('FeatureAppLoader', () => {
       const wrapper = shallow(
         <FeatureAppLoader
           featureAppManager={mockFeatureAppManager}
-          src="/test.js"
+          src="example.js"
         />
       );
 
@@ -233,7 +234,7 @@ describe('FeatureAppLoader', () => {
       const wrapper = shallow(
         <FeatureAppLoader
           featureAppManager={mockFeatureAppManager}
-          src="/test.js"
+          src="example.js"
           idSpecifier="testIdSpecifier"
         />
       );
@@ -249,18 +250,17 @@ describe('FeatureAppLoader', () => {
       );
     });
 
-    describe('with an Async SSR Manager', () => {
-      it('does not trigger a rerender on the Async SSR Manager', () => {
-        shallow(
-          <FeatureAppLoader
-            featureAppManager={mockFeatureAppManager}
-            src="/test.js"
-            asyncSsrManager={mockAsyncSsrManager}
-          />
-        );
+    it('does not trigger a rerender on the Async SSR Manager', () => {
+      shallow(
+        <FeatureAppLoader
+          featureAppManager={mockFeatureAppManager}
+          src="example.js"
+          serverSrc="example-node.js"
+          asyncSsrManager={mockAsyncSsrManager}
+        />
+      );
 
-        expect(mockAsyncSsrManager.rerenderAfter).not.toHaveBeenCalled();
-      });
+      expect(mockAsyncSsrManager.rerenderAfter).not.toHaveBeenCalled();
     });
 
     describe('when unmounted before loading has finished', () => {
@@ -268,7 +268,7 @@ describe('FeatureAppLoader', () => {
         const wrapper = shallow(
           <FeatureAppLoader
             featureAppManager={mockFeatureAppManager}
-            src="/test.js"
+            src="example.js"
           />
         );
 
@@ -299,7 +299,7 @@ describe('FeatureAppLoader', () => {
       const wrapper = shallow(
         <FeatureAppLoader
           featureAppManager={mockFeatureAppManager}
-          src="/test.js"
+          src="example.js"
           idSpecifier="testIdSpecifier"
         />
       );
@@ -316,7 +316,7 @@ describe('FeatureAppLoader', () => {
 
       expect(spyConsoleError.mock.calls).toEqual([
         [
-          'The Feature App for the src "/test.js" and the ID specifier "testIdSpecifier" could not be rendered.',
+          'The Feature App for the src "example.js" and the ID specifier "testIdSpecifier" could not be rendered.',
           mockError
         ]
       ]);
@@ -327,7 +327,7 @@ describe('FeatureAppLoader', () => {
         const wrapper = shallow(
           <FeatureAppLoader
             featureAppManager={mockFeatureAppManager}
-            src="/test.js"
+            src="example.js"
           />
         );
 
@@ -343,7 +343,7 @@ describe('FeatureAppLoader', () => {
 
         expect(spyConsoleError.mock.calls).toEqual([
           [
-            'The Feature App for the src "/test.js" could not be rendered.',
+            'The Feature App for the src "example.js" could not be rendered.',
             mockError
           ]
         ]);
