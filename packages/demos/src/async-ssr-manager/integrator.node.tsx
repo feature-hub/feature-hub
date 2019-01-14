@@ -9,15 +9,14 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom/server';
 
 export default async function renderMainHtml(port: number): Promise<string> {
-  const featureAppNodeUrl = `http://localhost:${port}/feature-app.commonjs.js`;
-  const featureServiceRegistry = new FeatureServiceRegistry();
-
   const integratorDefinition = {
     id: 'demos:integrator',
     dependencies: {
       's2:async-ssr-manager': '^0.1'
     }
   };
+
+  const featureServiceRegistry = new FeatureServiceRegistry();
 
   featureServiceRegistry.registerFeatureServices(
     [asyncSsrManagerDefinition],
@@ -36,15 +35,13 @@ export default async function renderMainHtml(port: number): Promise<string> {
     moduleLoader: loadCommonJsModule
   });
 
-  await featureAppManager.preloadFeatureApp(featureAppNodeUrl);
-
   return asyncSsrManager.renderUntilCompleted(() =>
     ReactDOM.renderToString(
       <FeatureAppLoader
         asyncSsrManager={asyncSsrManager}
         featureAppManager={featureAppManager}
         src=""
-        serverSrc={featureAppNodeUrl}
+        serverSrc={`http://localhost:${port}/feature-app.commonjs.js`}
       />
     )
   );
