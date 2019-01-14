@@ -15,6 +15,10 @@ const myFeatureServiceDefinition = {
     'acme:other-feature-service': '^2.0'
   },
 
+  optionalDependencies: {
+    'acme:optional-feature-service': '^1.3'
+  },
+
   create(env) {
     // ...
   }
@@ -29,10 +33,20 @@ config for a Feature Service. Furthermore, it is used as a consumer ID for
 [binding the required Feature Services][feature-service-binder] to the dependent
 Feature Service.
 
-## `dependencies`
+## `dependencies` & `optionalDependencies`
 
-Required Feature Services are declared with their ID and a [semver version
-string][semver], e.g. `{'acme:other-feature-service': '^2.0'}`.
+Feature Service dependencies are declared with their ID and a [semver version
+string][semver], e.g. `{'acme:other-feature-service': '^2.0'}`. There are two
+dependency maps.
+
+The `dependencies` map contains all required Feature Services. If one of those
+dependencies can't be fulfilled, Feature Service registration will fail. This
+means the Feature Service can be sure that those dependencies are always present
+when it is created.
+
+The `optionalDependencies` map contains all dependencies for which the Feature
+Service handles their absence gracefully. If one of those dependencies can't be
+fulfilled, the `FeatureServiceRegistry` will only log an info message.
 
 ## `create`
 
