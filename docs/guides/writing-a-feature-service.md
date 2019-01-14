@@ -37,7 +37,7 @@ Feature Service.
 
 Feature Service dependencies are declared with their ID and a [semver version
 string][semver], e.g. `{'acme:other-feature-service': '^2.0'}`. There are two
-dependency maps.
+dependency maps. Both are optional properties of the Feature Service definition.
 
 The `dependencies` map contains all required Feature Services. If one of those
 dependencies can't be fulfilled, Feature Service registration will fail. This
