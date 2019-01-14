@@ -10,17 +10,17 @@ export interface ServerRequestV0 {
   readonly headers: Record<string, string>;
 }
 
-interface SharedServerRequest extends SharedFeatureService {
+export interface SharedServerRequest extends SharedFeatureService {
   readonly '0.1': FeatureServiceBinder<ServerRequestV0>;
 }
 
 export function defineServerRequest(
   serverRequest: ServerRequestV0
-): FeatureServiceProviderDefinition {
+): FeatureServiceProviderDefinition<SharedServerRequest> {
   return {
     id: 's2:server-request',
 
-    create: (): SharedServerRequest => ({
+    create: () => ({
       '0.1': () => ({featureService: serverRequest})
     })
   };
