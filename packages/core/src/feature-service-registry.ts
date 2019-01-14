@@ -33,12 +33,13 @@ export interface FeatureServiceEnvironment<
 }
 
 export interface FeatureServiceProviderDefinition<
-  TConfig = unknown,
-  TFeatureServices extends FeatureServices = FeatureServices
+  TSharedFeatureService extends SharedFeatureService,
+  TFeatureServices extends FeatureServices = FeatureServices,
+  TConfig = unknown
 > extends FeatureServiceConsumerDefinition {
   create(
     env: FeatureServiceEnvironment<TConfig, TFeatureServices>
-  ): SharedFeatureService;
+  ): TSharedFeatureService;
 }
 
 export interface FeatureServiceBinding<TFeatureService> {
@@ -67,7 +68,9 @@ export interface FeatureServiceConfigs {
 
 export interface FeatureServiceRegistryLike {
   registerFeatureServices(
-    providerDefinitions: FeatureServiceProviderDefinition[],
+    providerDefinitions: FeatureServiceProviderDefinition<
+      SharedFeatureService
+    >[],
     consumerId: string
   ): void;
 
@@ -114,12 +117,14 @@ export class FeatureServiceRegistry implements FeatureServiceRegistryLike {
   ) {}
 
   public registerFeatureServices(
-    providerDefinitions: FeatureServiceProviderDefinition[],
+    providerDefinitions: FeatureServiceProviderDefinition<
+      SharedFeatureService
+    >[],
     consumerId: string
   ): void {
     const providerDefinitionsById = new Map<
       string,
-      FeatureServiceProviderDefinition
+      FeatureServiceProviderDefinition<SharedFeatureService>
     >();
 
     for (const providerDefinition of providerDefinitions) {

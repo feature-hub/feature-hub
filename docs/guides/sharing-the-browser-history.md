@@ -134,17 +134,17 @@ featureServiceRegistry.registerFeatureServices(
 );
 ```
 
-On the server, the integrator defines the Async SSR Manager using the request.
-The History Service depends on the Async SSR Manager to obtain its request and
-use it for the initial history location:
+On the server, the History Service needs the server request to compute the
+initial history location of the static history. The integrator therefor defines
+the server request Feature Service:
 
 ```js
-import {defineAsyncSsrManager} from '@feature-hub/async-ssr-manager';
 import {FeatureServiceRegistry} from '@feature-hub/core';
 import {
   defineHistoryService,
   createRootLocationTransformer
 } from '@feature-hub/history-service';
+import {defineServerRequest} from '@feature-hub/server-request';
 ```
 
 ```js
@@ -159,7 +159,7 @@ const request = {
 };
 
 const featureServiceDefinitions = [
-  defineAsyncSsrManager(request),
+  defineServerRequest(request),
   defineHistoryService(rootLocationTransformer)
 ];
 

@@ -1,10 +1,10 @@
-import {AsyncSsrManagerV0} from '@feature-hub/async-ssr-manager';
 import {
   FeatureServiceBinder,
   FeatureServiceProviderDefinition,
   FeatureServices,
   SharedFeatureService
 } from '@feature-hub/core';
+import {ServerRequestV0} from '@feature-hub/server-request';
 import * as history from 'history';
 import {RootLocationTransformer} from './create-root-location-transformer';
 import {createHistoryMultiplexers} from './internal/create-history-multiplexers';
@@ -17,27 +17,30 @@ export interface HistoryServiceV0 {
   createStaticHistory(): history.History;
 }
 
-interface SharedHistoryService extends SharedFeatureService {
+export interface SharedHistoryService extends SharedFeatureService {
   readonly '0.1': FeatureServiceBinder<HistoryServiceV0>;
 }
 
 export interface HistoryServiceDependencies extends FeatureServices {
-  's2:async-ssr-manager': AsyncSsrManagerV0 | undefined;
+  's2:server-request'?: ServerRequestV0;
 }
 
 export function defineHistoryService(
   rootLocationTransformer: RootLocationTransformer
-): FeatureServiceProviderDefinition<undefined, HistoryServiceDependencies> {
+): FeatureServiceProviderDefinition<
+  SharedHistoryService,
+  HistoryServiceDependencies
+> {
   return {
     id: 's2:history',
-    optionalDependencies: {'s2:async-ssr-manager': '^1.0'},
+    optionalDependencies: {'s2:server-request': '^0.1'},
 
-    create: (env): SharedHistoryService => {
-      const asyncSsrManager = env.featureServices['s2:async-ssr-manager'];
+    create: env => {
+      const serverRequest = env.featureServices['s2:server-request'];
 
       const historyMultiplexers = createHistoryMultiplexers(
         rootLocationTransformer,
-        asyncSsrManager && asyncSsrManager.serverRequest
+        serverRequest
       );
 
       return {

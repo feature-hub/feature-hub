@@ -1,4 +1,4 @@
-import {AsyncSsrManagerV0, ServerRequest} from '..';
+import {AsyncSsrManagerV0} from '..';
 import {setTimeoutAsync} from './set-timeout-async';
 
 async function renderingTimeout(timeout: number): Promise<never> {
@@ -10,10 +10,7 @@ async function renderingTimeout(timeout: number): Promise<never> {
 export class AsyncSsrManager implements AsyncSsrManagerV0 {
   private readonly rerenderPromises = new Set<Promise<unknown>>();
 
-  public constructor(
-    public readonly serverRequest: ServerRequest | undefined,
-    private readonly timeout?: number
-  ) {}
+  public constructor(private readonly timeout?: number) {}
 
   public async renderUntilCompleted(render: () => string): Promise<string> {
     const renderPromise = this.renderingLoop(render);

@@ -1,4 +1,4 @@
-import {ServerRequest} from '@feature-hub/async-ssr-manager';
+import {ServerRequestV0} from '@feature-hub/server-request';
 import * as history from 'history';
 import {RootLocationTransformer} from '../create-root-location-transformer';
 import {HistoryMultiplexer} from './history-multiplexer';
@@ -11,7 +11,7 @@ export interface HistoryMultiplexers {
 
 export function createHistoryMultiplexers(
   rootLocationTransformer: RootLocationTransformer,
-  serverRequest?: ServerRequest
+  serverRequest?: ServerRequestV0
 ): HistoryMultiplexers {
   let browserHistoryMultiplexer: HistoryMultiplexer | undefined;
   let staticHistoryMultiplexer: HistoryMultiplexer | undefined;

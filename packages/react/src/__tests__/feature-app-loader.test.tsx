@@ -43,8 +43,7 @@ describe('FeatureAppLoader', () => {
 
     mockAsyncSsrManager = {
       rerenderAfter: jest.fn(),
-      renderUntilCompleted: jest.fn(),
-      serverRequest: undefined
+      renderUntilCompleted: jest.fn()
     };
 
     spyConsoleError = jest.spyOn(console, 'error');
