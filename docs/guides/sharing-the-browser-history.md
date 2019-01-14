@@ -134,8 +134,9 @@ featureServiceRegistry.registerFeatureServices(
 );
 ```
 
-On the server, the integrator defines the server request Feature Service. The
-History Service uses the server request for the initial history location:
+On the server, the History Service needs the server request to compute the
+initial history location of the static history. The integrator therefor defines
+the server request Feature Service:
 
 ```js
 import {FeatureServiceRegistry} from '@feature-hub/core';
