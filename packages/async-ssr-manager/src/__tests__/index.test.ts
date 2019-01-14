@@ -26,6 +26,7 @@ describe('asyncSsrManagerDefinition', () => {
 
   it('has no dependencies', () => {
     expect(asyncSsrManagerDefinition.dependencies).toBeUndefined();
+    expect(asyncSsrManagerDefinition.optionalDependencies).toBeUndefined();
   });
 
   describe('#create', () => {
