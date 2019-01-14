@@ -3,11 +3,13 @@ import {
   FeatureServiceEnvironment,
   FeatureServiceProviderDefinition
 } from '@feature-hub/core';
-import {ServerRequestV0, defineServerRequest} from '..';
+import {ServerRequestV0, SharedServerRequest, defineServerRequest} from '..';
 
 describe('defineServerRequest', () => {
   let mockEnv: FeatureServiceEnvironment<undefined, {}>;
-  let serverRequestDefinition: FeatureServiceProviderDefinition;
+  let serverRequestDefinition: FeatureServiceProviderDefinition<
+    SharedServerRequest
+  >;
   let serverRequest: ServerRequestV0;
 
   beforeEach(() => {
@@ -39,9 +41,7 @@ describe('defineServerRequest', () => {
     let serverRequestBinder: FeatureServiceBinder<ServerRequestV0>;
 
     beforeEach(() => {
-      serverRequestBinder = serverRequestDefinition.create(mockEnv)[
-        '0.1'
-      ] as FeatureServiceBinder<ServerRequestV0>;
+      serverRequestBinder = serverRequestDefinition.create(mockEnv)['0.1'];
     });
 
     it('equals the defined serverRequest', () => {

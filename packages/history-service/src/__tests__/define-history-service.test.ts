@@ -1,13 +1,18 @@
 // tslint:disable:no-non-null-assertion
 
-import {AsyncSsrManagerV0} from '@feature-hub/async-ssr-manager';
 import {
   FeatureServiceBinder,
   FeatureServiceBinding,
-  FeatureServiceEnvironment
+  FeatureServiceEnvironment,
+  FeatureServiceProviderDefinition
 } from '@feature-hub/core';
 import {History} from 'history';
-import {HistoryServiceV0, defineHistoryService} from '..';
+import {
+  HistoryServiceDependencies,
+  HistoryServiceV0,
+  SharedHistoryService,
+  defineHistoryService
+} from '..';
 import {testRootLocationTransformer} from '../internal/test-root-location-transformer';
 
 const simulateOnPopState = (state: unknown, url: string) => {
@@ -18,21 +23,38 @@ const simulateOnPopState = (state: unknown, url: string) => {
 };
 
 describe('defineHistoryService', () => {
-  it('creates a history service definition', () => {
-    const historyServiceDefinition = defineHistoryService({
+  let historyServiceDefinition: FeatureServiceProviderDefinition<
+    SharedHistoryService
+  >;
+
+  beforeEach(() => {
+    historyServiceDefinition = defineHistoryService({
       createRootLocation: jest.fn(),
       getConsumerPathFromRootLocation: jest.fn()
     });
+  });
 
+  it('creates a history service definition', () => {
     expect(historyServiceDefinition.id).toBe('s2:history');
-
     expect(historyServiceDefinition.dependencies).toBeUndefined();
+
     expect(historyServiceDefinition.optionalDependencies).toEqual({
-      's2:async-ssr-manager': '^1.0'
+      's2:server-request': '^0.1'
     });
   });
 
   describe('#create', () => {
+    it('creates a shared Feature Service containing version 0.1', () => {
+      const sharedHistoryService = historyServiceDefinition.create({
+        config: undefined,
+        featureServices: {}
+      });
+
+      expect(sharedHistoryService['0.1']).toBeDefined();
+    });
+  });
+
+  describe('HistoryServiceV0', () => {
     let createHistoryServiceBinder: () => FeatureServiceBinder<
       HistoryServiceV0
     >;
@@ -50,22 +72,12 @@ describe('defineHistoryService', () => {
       consoleWarnSpy = jest.spyOn(console, 'warn');
       consoleWarnSpy.mockImplementation(jest.fn());
 
-      const mockAsyncSsrManager: Partial<AsyncSsrManagerV0> = {
-        serverRequest: {
-          path: '/example',
-          cookies: {},
-          headers: {}
-        }
-      };
-
       const mockEnv: FeatureServiceEnvironment<
         undefined,
-        {'s2:async-ssr-manager': AsyncSsrManagerV0}
+        HistoryServiceDependencies
       > = {
         config: undefined,
-        featureServices: {
-          's2:async-ssr-manager': mockAsyncSsrManager as AsyncSsrManagerV0
-        }
+        featureServices: {}
       };
 
       createHistoryServiceBinder = () => {
@@ -73,9 +85,7 @@ describe('defineHistoryService', () => {
           testRootLocationTransformer
         ).create(mockEnv);
 
-        return sharedHistoryService['0.1'] as FeatureServiceBinder<
-          HistoryServiceV0
-        >;
+        return sharedHistoryService['0.1'];
       };
     });
 

@@ -1,23 +1,16 @@
 // tslint:disable:no-implicit-dependencies
 
-import {
-  FeatureAppEnvironment,
-  FeatureServiceBinder,
-  FeatureServiceProviderDefinition
-} from '@feature-hub/core';
+import {FeatureAppEnvironment, FeatureServiceBinder} from '@feature-hub/core';
 import mockConsole from 'jest-mock-console';
 import {
   AsyncSsrManagerConfig,
   AsyncSsrManagerV0,
-  ServerRequest,
-  defineAsyncSsrManager
+  asyncSsrManagerDefinition
 } from '..';
 import {useFakeTimers} from './use-fake-timers';
 
-describe('defineAsyncSsrManager', () => {
+describe('asyncSsrManagerDefinition', () => {
   let mockEnv: FeatureAppEnvironment<AsyncSsrManagerConfig, {}>;
-  let asyncSsrManagerDefinition: FeatureServiceProviderDefinition;
-  let serverRequest: ServerRequest;
 
   beforeEach(() => {
     mockEnv = {
@@ -25,18 +18,13 @@ describe('defineAsyncSsrManager', () => {
       featureServices: {},
       idSpecifier: undefined
     };
-
-    serverRequest = {
-      path: '/app',
-      cookies: {},
-      headers: {}
-    };
-
-    asyncSsrManagerDefinition = defineAsyncSsrManager(serverRequest);
   });
 
-  it('creates an Async SSR Manager definition', () => {
+  it('defines an id', () => {
     expect(asyncSsrManagerDefinition.id).toBe('s2:async-ssr-manager');
+  });
+
+  it('has no dependencies', () => {
     expect(asyncSsrManagerDefinition.dependencies).toBeUndefined();
   });
 
@@ -67,15 +55,7 @@ describe('defineAsyncSsrManager', () => {
     let asyncSsrManagerBinder: FeatureServiceBinder<AsyncSsrManagerV0>;
 
     beforeEach(() => {
-      asyncSsrManagerBinder = asyncSsrManagerDefinition.create(mockEnv)[
-        '0.1'
-      ] as FeatureServiceBinder<AsyncSsrManagerV0>;
-    });
-
-    it('exposes a serverRequest', () => {
-      const asyncSsrManager = asyncSsrManagerBinder('test:1').featureService;
-
-      expect(asyncSsrManager.serverRequest).toEqual(serverRequest);
+      asyncSsrManagerBinder = asyncSsrManagerDefinition.create(mockEnv)['0.1'];
     });
 
     describe('rendering', () => {
@@ -199,7 +179,7 @@ describe('defineAsyncSsrManager', () => {
           asyncSsrManagerBinder = asyncSsrManagerDefinition.create({
             config: undefined,
             featureServices: {}
-          })['0.1'] as FeatureServiceBinder<AsyncSsrManagerV0>;
+          })['0.1'];
         });
 
         it('logs a warning', async () => {

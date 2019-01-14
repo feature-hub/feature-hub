@@ -1,4 +1,4 @@
-import {ServerRequest} from '@feature-hub/async-ssr-manager';
+import {ServerRequestV0} from '@feature-hub/server-request';
 import * as history from 'history';
 import {RootHistory, RootLocation} from './history-multiplexer';
 
@@ -6,7 +6,7 @@ export class StaticRootHistory implements RootHistory {
   public readonly length = 1;
   public location: history.Location;
 
-  public constructor(serverRequest: ServerRequest) {
+  public constructor(serverRequest: ServerRequestV0) {
     this.location = history.createLocation(serverRequest.path);
   }
 

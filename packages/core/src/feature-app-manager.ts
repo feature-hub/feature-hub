@@ -3,7 +3,8 @@ import {
   FeatureServiceConsumerDefinition,
   FeatureServiceProviderDefinition,
   FeatureServiceRegistryLike,
-  FeatureServices
+  FeatureServices,
+  SharedFeatureService
 } from './feature-service-registry';
 import {createUid} from './internal/create-uid';
 import {isFeatureAppModule} from './internal/is-feature-app-module';
@@ -35,7 +36,9 @@ export interface FeatureAppDefinition<
   TConfig = unknown,
   TFeatureServices extends FeatureServices = FeatureServices
 > extends FeatureServiceConsumerDefinition {
-  readonly ownFeatureServiceDefinitions?: FeatureServiceProviderDefinition[];
+  readonly ownFeatureServiceDefinitions?: FeatureServiceProviderDefinition<
+    SharedFeatureService
+  >[];
 
   create(env: FeatureAppEnvironment<TConfig, TFeatureServices>): TFeatureApp;
 }

@@ -4,23 +4,24 @@
 
 // tslint:disable:no-non-null-assertion
 
-import {AsyncSsrManagerV0, ServerRequest} from '@feature-hub/async-ssr-manager';
 import {
   FeatureServiceBinder,
   FeatureServiceBinding,
   FeatureServiceEnvironment
 } from '@feature-hub/core';
+import {ServerRequestV0} from '@feature-hub/server-request';
 import {History} from 'history';
 import {
+  HistoryServiceDependencies,
   HistoryServiceV0,
   RootLocationTransformer,
   defineHistoryService
 } from '..';
 import {testRootLocationTransformer} from '../internal/test-root-location-transformer';
 
-describe('HistoryService#create (on Node.js)', () => {
+describe('HistoryServiceV0 (on Node.js)', () => {
   let createHistoryServiceBinder: (
-    serverRequest: ServerRequest | undefined,
+    serverRequest: ServerRequestV0 | undefined,
     rootLocationTransformer?: RootLocationTransformer
   ) => FeatureServiceBinder<HistoryServiceV0>;
 
@@ -30,16 +31,16 @@ describe('HistoryService#create (on Node.js)', () => {
     consoleWarnSpy = jest.spyOn(console, 'warn');
     consoleWarnSpy.mockImplementation(jest.fn());
 
-    createHistoryServiceBinder = (serverRequest: ServerRequest | undefined) => {
-      const mockAsyncSsrManager: Partial<AsyncSsrManagerV0> = {serverRequest};
-
+    createHistoryServiceBinder = (
+      serverRequest: ServerRequestV0 | undefined
+    ) => {
       const mockEnv: FeatureServiceEnvironment<
         undefined,
-        {'s2:async-ssr-manager': AsyncSsrManagerV0}
+        HistoryServiceDependencies
       > = {
         config: undefined,
         featureServices: {
-          's2:async-ssr-manager': mockAsyncSsrManager as AsyncSsrManagerV0
+          's2:server-request': serverRequest
         }
       };
 
@@ -47,9 +48,7 @@ describe('HistoryService#create (on Node.js)', () => {
         testRootLocationTransformer
       ).create(mockEnv);
 
-      return sharedHistoryService['0.1'] as FeatureServiceBinder<
-        HistoryServiceV0
-      >;
+      return sharedHistoryService['0.1'];
     };
   });
 
@@ -65,7 +64,7 @@ describe('HistoryService#create (on Node.js)', () => {
     let history1: History;
     let history2: History;
 
-    const createHistories = (serverRequest: ServerRequest | undefined) => {
+    const createHistories = (serverRequest: ServerRequestV0 | undefined) => {
       const historyServiceBinder = createHistoryServiceBinder(serverRequest);
 
       historyBinding1 = historyServiceBinder('test:1');
@@ -92,7 +91,7 @@ describe('HistoryService#create (on Node.js)', () => {
 
     afterEach(destroyHistories);
 
-    describe('when the Async SSR Manager provides no server request', () => {
+    describe('when no server request is provided', () => {
       it('throws an error', () => {
         expect(() => createHistories(undefined)).toThrowError(
           new Error(
@@ -162,7 +161,7 @@ describe('HistoryService#create (on Node.js)', () => {
       it('retrieves consumer specific locations from the server request path', () => {
         destroyHistories();
 
-        const serverRequest: ServerRequest = {
+        const serverRequest: ServerRequestV0 = {
           path: '/?test:1=/foo&test:2=bar',
           cookies: {},
           headers: {}
