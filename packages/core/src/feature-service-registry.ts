@@ -112,10 +112,31 @@ export class FeatureServiceRegistry implements FeatureServiceRegistryLike {
 
   private readonly consumerUids = new Set<string>();
 
+  /**
+   * The FeatureServiceRegistry provides Feature Services to dependent
+   * consumers. The integrator should instantiate a singleton instance of the
+   * registry.
+   */
   public constructor(
     private readonly options: FeatureServiceRegistryOptions = {}
   ) {}
 
+  /**
+   * Register a set of Feature Services to make them available for binding to
+   * dependent consumers.
+   *
+   * @throws Throws an error if dependencies of a registered service can't be
+   * fulfilled.
+   * @throws Throws an error if one of the registered services contains an
+   * invalid version according to semver notation.
+   *
+   * @param providerDefinitions Feature Services that should be registered.
+   * While the registry takes care of registering the provided definitions in
+   * the correct order, a Feature Service and its dependencies together or
+   * registering the dependencies earlier. It is not possible to provide
+   * dependencies later.
+   * @param consumerId The consumerId of the integrator itself.
+   */
   public registerFeatureServices(
     providerDefinitions: FeatureServiceProviderDefinition<
       SharedFeatureService
@@ -179,6 +200,18 @@ export class FeatureServiceRegistry implements FeatureServiceRegistryLike {
     }
   }
 
+  /**
+   * Bind all dependencies to a consumer.
+   *
+   * @throws Throws an error if non-optional dependencies can't be fulfilled.
+   * @throws Throws an error if called with the same consumer definition and
+   * specifier more than once.
+   *
+   * @param consumerDefinition The definition of the consumer to which
+   * dependencies should be bound.
+   * @param consumerIdSpecifier A specifier that distinguishes the consumer
+   * from others with the same definition.
+   */
   public bindFeatureServices(
     consumerDefinition: FeatureServiceConsumerDefinition,
     consumerIdSpecifier?: string
