@@ -81,6 +81,10 @@ export interface FeatureServiceRegistryLike {
 }
 
 export interface FeatureServiceRegistryOptions {
+  /**
+   * Configurations for all Feature Services that will potentially be
+   * registered.
+   */
   readonly configs?: FeatureServiceConfigs;
 }
 
