@@ -42,6 +42,7 @@ describe('FeatureAppLoader', () => {
     };
 
     mockAsyncSsrManager = {
+      rerender: jest.fn(),
       rerenderAfter: jest.fn(),
       renderUntilCompleted: jest.fn()
     };

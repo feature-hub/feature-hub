@@ -87,18 +87,51 @@ describe('asyncSsrManagerDefinition', () => {
         });
       });
 
-      describe('with an integrator, and a consumer that triggers a rerender', () => {
+      describe('with an integrator, and a consumer that triggers a rerender (using the rerenderAfter method with a promise)', () => {
         it('resolves with an html string after the second render pass', async () => {
           const asyncSsrManagerIntegrator = asyncSsrManagerBinder(
             'test:integrator'
           ).featureService;
 
-          const asyncSsrManagerConsumer = createAsyncSsrManagerConsumer(
-            'test:consumer'
-          );
+          const asyncSsrManagerConsumer = asyncSsrManagerBinder('test:consumer')
+            .featureService;
+
+          let firstRender = true;
 
           const mockRender = jest.fn(() => {
-            asyncSsrManagerConsumer.render();
+            if (firstRender) {
+              firstRender = false;
+              asyncSsrManagerConsumer.rerenderAfter(Promise.resolve());
+            }
+
+            return 'testHtml';
+          });
+
+          const html = await asyncSsrManagerIntegrator.renderUntilCompleted(
+            mockRender
+          );
+
+          expect(html).toEqual('testHtml');
+          expect(mockRender).toHaveBeenCalledTimes(2);
+        });
+      });
+
+      describe('with an integrator, and a consumer that triggers a rerender (using the rerender method)', () => {
+        it('resolves with an html string after the second render pass', async () => {
+          const asyncSsrManagerIntegrator = asyncSsrManagerBinder(
+            'test:integrator'
+          ).featureService;
+
+          const asyncSsrManagerConsumer = asyncSsrManagerBinder('test:consumer')
+            .featureService;
+
+          let firstRender = true;
+
+          const mockRender = jest.fn(() => {
+            if (firstRender) {
+              firstRender = false;
+              asyncSsrManagerConsumer.rerender();
+            }
 
             return 'testHtml';
           });

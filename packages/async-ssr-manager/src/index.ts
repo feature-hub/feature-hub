@@ -12,6 +12,7 @@ export interface AsyncSsrManagerConfig {
 
 export interface AsyncSsrManagerV0 {
   renderUntilCompleted(render: () => string): Promise<string>;
+  rerender(): void;
   rerenderAfter(promise: Promise<unknown>): void;
 }
 
