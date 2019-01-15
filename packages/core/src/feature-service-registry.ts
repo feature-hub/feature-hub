@@ -104,6 +104,10 @@ function createUnsupportedFeatureServiceMessage(
   )}. The supported versions are ${JSON.stringify(supportedVersions)}.`;
 }
 
+/**
+ * The FeatureServiceRegistry provides Feature Services to dependent consumers.
+ * The integrator should instantiate a singleton instance of the registry.
+ */
 export class FeatureServiceRegistry implements FeatureServiceRegistryLike {
   private readonly sharedFeatureServices = new Map<
     ProviderId,
@@ -112,11 +116,6 @@ export class FeatureServiceRegistry implements FeatureServiceRegistryLike {
 
   private readonly consumerUids = new Set<string>();
 
-  /**
-   * The FeatureServiceRegistry provides Feature Services to dependent
-   * consumers. The integrator should instantiate a singleton instance of the
-   * registry.
-   */
   public constructor(
     private readonly options: FeatureServiceRegistryOptions = {}
   ) {}
