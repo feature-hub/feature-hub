@@ -2,6 +2,7 @@
  * @jest-environment node
  */
 
+// tslint:disable:no-implicit-dependencies
 // tslint:disable:no-non-null-assertion
 
 import {
@@ -11,6 +12,7 @@ import {
 } from '@feature-hub/core';
 import {ServerRequestV0} from '@feature-hub/server-request';
 import {History} from 'history';
+import {Stubbed, stubMethods} from 'jest-stub-methods';
 import {
   HistoryServiceDependencies,
   HistoryServiceV0,
@@ -25,11 +27,10 @@ describe('HistoryServiceV0 (on Node.js)', () => {
     rootLocationTransformer?: RootLocationTransformer
   ) => FeatureServiceBinder<HistoryServiceV0>;
 
-  let consoleWarnSpy: jest.SpyInstance;
+  let stubbedConsole: Stubbed<Console>;
 
   beforeEach(() => {
-    consoleWarnSpy = jest.spyOn(console, 'warn');
-    consoleWarnSpy.mockImplementation(jest.fn());
+    stubbedConsole = stubMethods(console);
 
     createHistoryServiceBinder = (
       serverRequest: ServerRequestV0 | undefined
@@ -53,7 +54,7 @@ describe('HistoryServiceV0 (on Node.js)', () => {
   });
 
   afterEach(() => {
-    consoleWarnSpy.mockRestore();
+    stubbedConsole.restore();
   });
 
   describe('#createStaticHistory()', () => {
@@ -107,7 +108,7 @@ describe('HistoryServiceV0 (on Node.js)', () => {
           history1
         );
 
-        expect(consoleWarnSpy).toHaveBeenCalledWith(
+        expect(stubbedConsole.stub.warn).toHaveBeenCalledWith(
           'createStaticHistory was called multiple times by consumer "test:1". Returning the same history instance as before.'
         );
       });
@@ -259,7 +260,7 @@ describe('HistoryServiceV0 (on Node.js)', () => {
 
         expect(historyService1.staticRootLocation).toBe(rootLocation);
 
-        expect(consoleWarnSpy).toHaveBeenCalledWith(
+        expect(stubbedConsole.stub.warn).toHaveBeenCalledWith(
           'history.go() is not supported.'
         );
       });
@@ -275,7 +276,7 @@ describe('HistoryServiceV0 (on Node.js)', () => {
 
         expect(historyService1.staticRootLocation).toBe(rootLocation);
 
-        expect(consoleWarnSpy).toHaveBeenCalledWith(
+        expect(stubbedConsole.stub.warn).toHaveBeenCalledWith(
           'history.goBack() is not supported.'
         );
       });
@@ -291,7 +292,7 @@ describe('HistoryServiceV0 (on Node.js)', () => {
 
         expect(historyService1.staticRootLocation).toBe(rootLocation);
 
-        expect(consoleWarnSpy).toHaveBeenCalledWith(
+        expect(stubbedConsole.stub.warn).toHaveBeenCalledWith(
           'history.goForward() is not supported.'
         );
       });
@@ -310,7 +311,7 @@ describe('HistoryServiceV0 (on Node.js)', () => {
 
         expect(promptHookSpy).not.toHaveBeenCalled();
 
-        expect(consoleWarnSpy).toHaveBeenCalledWith(
+        expect(stubbedConsole.stub.warn).toHaveBeenCalledWith(
           'history.block() is not supported.'
         );
       });
@@ -332,7 +333,7 @@ describe('HistoryServiceV0 (on Node.js)', () => {
 
         expect(listenSpy).not.toHaveBeenCalled();
 
-        expect(consoleWarnSpy).toHaveBeenCalledWith(
+        expect(stubbedConsole.stub.warn).toHaveBeenCalledWith(
           'history.listen() is not supported.'
         );
       });
