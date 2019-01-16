@@ -10,6 +10,7 @@ import {
   FeatureAppScope
 } from '@feature-hub/core';
 import {shallow} from 'enzyme';
+import {Stubbed, stubMethods} from 'jest-stub-methods';
 import * as React from 'react';
 import {FeatureAppContainer} from '..';
 
@@ -18,7 +19,7 @@ describe('FeatureAppContainer (on Node.js)', () => {
   let mockGetFeatureAppScope: jest.Mock;
   let mockFeatureAppDefinition: FeatureAppDefinition<unknown>;
   let mockFeatureAppScope: FeatureAppScope<unknown>;
-  let spyConsoleError: jest.SpyInstance;
+  let stubbedConsole: Stubbed<Console>;
 
   beforeEach(() => {
     mockFeatureAppDefinition = {id: 'testId', create: jest.fn()};
@@ -32,12 +33,11 @@ describe('FeatureAppContainer (on Node.js)', () => {
       destroy: jest.fn()
     };
 
-    spyConsoleError = jest.spyOn(console, 'error');
-    spyConsoleError.mockImplementation(jest.fn());
+    stubbedConsole = stubMethods(console);
   });
 
   afterEach(() => {
-    spyConsoleError.mockRestore();
+    stubbedConsole.restore();
   });
 
   for (const invalidFeatureApp of [
@@ -71,7 +71,7 @@ describe('FeatureAppContainer (on Node.js)', () => {
           )
         ).toThrowError(expectedError);
 
-        expect(spyConsoleError.mock.calls).toEqual([[expectedError]]);
+        expect(stubbedConsole.stub.error.mock.calls).toEqual([[expectedError]]);
       });
     });
   }
@@ -97,7 +97,7 @@ describe('FeatureAppContainer (on Node.js)', () => {
         )
       ).toThrowError(mockError);
 
-      expect(spyConsoleError.mock.calls).toEqual([[mockError]]);
+      expect(stubbedConsole.stub.error.mock.calls).toEqual([[mockError]]);
     });
   });
 });

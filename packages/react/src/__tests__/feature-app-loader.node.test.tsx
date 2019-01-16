@@ -11,6 +11,7 @@ import {
   FeatureAppManagerLike
 } from '@feature-hub/core';
 import {shallow} from 'enzyme';
+import {Stubbed, stubMethods} from 'jest-stub-methods';
 import * as React from 'react';
 import {FeatureAppLoader} from '..';
 
@@ -23,7 +24,7 @@ describe('FeatureAppLoader (on Node.js)', () => {
   let mockGetAsyncFeatureAppDefinition: jest.Mock;
   let mockAsyncFeatureAppDefinition: AsyncValue<FeatureAppDefinition<unknown>>;
   let mockAsyncSsrManager: MockAsyncSsrManager;
-  let spyConsoleError: jest.SpyInstance;
+  let stubbedConsole: Stubbed<Console>;
 
   beforeEach(() => {
     mockAsyncFeatureAppDefinition = new AsyncValue(
@@ -46,12 +47,11 @@ describe('FeatureAppLoader (on Node.js)', () => {
       renderUntilCompleted: jest.fn()
     };
 
-    spyConsoleError = jest.spyOn(console, 'error');
-    spyConsoleError.mockImplementation(jest.fn());
+    stubbedConsole = stubMethods(console);
   });
 
   afterEach(() => {
-    spyConsoleError.mockRestore();
+    stubbedConsole.restore();
   });
 
   describe('without a serverSrc', () => {
@@ -163,7 +163,7 @@ describe('FeatureAppLoader (on Node.js)', () => {
           )
         ).toThrowError(mockError);
 
-        expect(spyConsoleError.mock.calls).toEqual([
+        expect(stubbedConsole.stub.error.mock.calls).toEqual([
           [
             'The Feature App for the src "example-node.js" and the ID specifier "testIdSpecifier" could not be rendered.',
             mockError

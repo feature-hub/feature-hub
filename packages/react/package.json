@@ -24,6 +24,7 @@
     "@feature-hub/core": "^0.11.0"
   },
   "devDependencies": {
+    "jest-stub-methods": "^0.1.0",
     "react": "^16.6.3"
   },
   "peerDependencies": {
