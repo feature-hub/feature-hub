@@ -2,13 +2,25 @@ import {coerce, satisfies} from 'semver';
 import {createUid} from './internal/create-uid';
 import {toposortDependencies} from './internal/toposort-dependencies';
 
+/**
+ * A map of Feature Services with their ID as key and a semver-compatible
+ * version string as value.
+ */
 export interface FeatureServiceConsumerDependencies {
   readonly [providerId: string]: string | undefined;
 }
 
 export interface FeatureServiceConsumerDefinition {
   readonly id: string;
+  /**
+   * A map of required Feature Services with their ID as key and a
+   * semver-compatible version string as value.
+   */
   readonly dependencies?: FeatureServiceConsumerDependencies;
+  /**
+   * A map of optional Feature Services with their ID as key and a
+   * semver-compatible version string as value.
+   */
   readonly optionalDependencies?: FeatureServiceConsumerDependencies;
 }
 
@@ -81,6 +93,10 @@ export interface FeatureServiceRegistryLike {
 }
 
 export interface FeatureServiceRegistryOptions {
+  /**
+   * Configurations for all Feature Services that will potentially be
+   * registered.
+   */
   readonly configs?: FeatureServiceConfigs;
 }
 
@@ -104,6 +120,10 @@ function createUnsupportedFeatureServiceMessage(
   )}. The supported versions are ${JSON.stringify(supportedVersions)}.`;
 }
 
+/**
+ * The FeatureServiceRegistry provides Feature Services to dependent consumers.
+ * The integrator should instantiate a singleton instance of the registry.
+ */
 export class FeatureServiceRegistry implements FeatureServiceRegistryLike {
   private readonly sharedFeatureServices = new Map<
     ProviderId,
@@ -116,6 +136,24 @@ export class FeatureServiceRegistry implements FeatureServiceRegistryLike {
     private readonly options: FeatureServiceRegistryOptions = {}
   ) {}
 
+  /**
+   * Register a set of Feature Services to make them available for binding to
+   * dependent consumers.
+   *
+   * @throws Throws an error if the dependencies of one of the provider
+   * definitions can't be fulfilled.
+   * @throws Throws an error if one of the registered Feature Services contains
+   * an invalid version according to semver notation.
+   *
+   * @param providerDefinitions Feature Services that should be registered. A
+   * Feature Service and its dependencies must either be registered together,
+   * or the dependencies must have already been registered. It is not possible
+   * to provide dependencies later. Sorting the provided definitions is not
+   * necessary, since the registry takes care of registering the given
+   * definitions in the correct order.
+   * @param consumerId The ID of the consumer that provides the provider
+   * definitions.
+   */
   public registerFeatureServices(
     providerDefinitions: FeatureServiceProviderDefinition<
       SharedFeatureService
@@ -179,6 +217,18 @@ export class FeatureServiceRegistry implements FeatureServiceRegistryLike {
     }
   }
 
+  /**
+   * Bind all dependencies to a consumer.
+   *
+   * @throws Throws an error if non-optional dependencies can't be fulfilled.
+   * @throws Throws an error if called with the same consumer definition and
+   * specifier more than once.
+   *
+   * @param consumerDefinition The definition of the consumer to which
+   * dependencies should be bound.
+   * @param consumerIdSpecifier A specifier that distinguishes the consumer
+   * from others with the same definition.
+   */
   public bindFeatureServices(
     consumerDefinition: FeatureServiceConsumerDefinition,
     consumerIdSpecifier?: string
