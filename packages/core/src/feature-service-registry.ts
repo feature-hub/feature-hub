@@ -2,13 +2,25 @@ import {coerce, satisfies} from 'semver';
 import {createUid} from './internal/create-uid';
 import {toposortDependencies} from './internal/toposort-dependencies';
 
+/**
+ * A map of Feature Services with their ID as key and a semver-compatible
+ * version string as value.
+ */
 export interface FeatureServiceConsumerDependencies {
   readonly [providerId: string]: string | undefined;
 }
 
 export interface FeatureServiceConsumerDefinition {
   readonly id: string;
+  /**
+   * A map of required Feature Services with their ID as key and a
+   * semver-compatible version string as value.
+   */
   readonly dependencies?: FeatureServiceConsumerDependencies;
+  /**
+   * A map of optional Feature Services with their ID as key and a
+   * semver-compatible version string as value.
+   */
   readonly optionalDependencies?: FeatureServiceConsumerDependencies;
 }
 
