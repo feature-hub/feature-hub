@@ -128,17 +128,19 @@ export class FeatureServiceRegistry implements FeatureServiceRegistryLike {
    * Register a set of Feature Services to make them available for binding to
    * dependent consumers.
    *
-   * @throws Throws an error if dependencies of a registered service can't be
-   * fulfilled.
-   * @throws Throws an error if one of the registered services contains an
-   * invalid version according to semver notation.
+   * @throws Throws an error if the dependencies of one of the provider
+   * definitions can't be fulfilled.
+   * @throws Throws an error if one of the registered Feature Services contains
+   * an invalid version according to semver notation.
    *
-   * @param providerDefinitions Feature Services that should be registered.
-   * While the registry takes care of registering the provided definitions in
-   * the correct order, a Feature Service and its dependencies together or
-   * registering the dependencies earlier. It is not possible to provide
-   * dependencies later.
-   * @param consumerId The consumerId of the integrator itself.
+   * @param providerDefinitions Feature Services that should be registered. A
+   * Feature Service and its dependencies must either be registered together,
+   * or the dependencies must have already been registered. It is not possible
+   * to provide dependencies later. Sorting the provided definitions is not
+   * necessary, since the registry takes care of registering the given
+   * definitions in the correct order.
+   * @param consumerId The ID of the consumer that provides the provider
+   * definitions.
    */
   public registerFeatureServices(
     providerDefinitions: FeatureServiceProviderDefinition<
