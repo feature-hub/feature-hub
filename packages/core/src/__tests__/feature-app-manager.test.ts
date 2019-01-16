@@ -1,3 +1,6 @@
+// tslint:disable:no-implicit-dependencies
+
+import {Stubbed, stubMethods} from 'jest-stub-methods';
 import {
   FeatureAppDefinition,
   FeatureAppManager,
@@ -23,9 +26,11 @@ describe('FeatureAppManager', () => {
   let mockFeatureAppModule: FeatureAppModule | undefined;
   let mockFeatureAppCreate: jest.Mock;
   let mockFeatureApp: {};
-  let spyConsoleInfo: jest.SpyInstance;
+  let stubbedConsole: Stubbed<Console>;
 
   beforeEach(() => {
+    stubbedConsole = stubMethods(console);
+
     mockFeatureServicesBindingUnbind = jest.fn();
 
     mockFeatureServicesBinding = {
@@ -44,13 +49,10 @@ describe('FeatureAppManager', () => {
     mockFeatureAppModule = {default: mockFeatureAppDefinition};
     mockModuleLoader = jest.fn(async () => mockFeatureAppModule);
     featureAppManager = new FeatureAppManager(mockFeatureServiceRegistry);
-
-    spyConsoleInfo = jest.spyOn(console, 'info');
-    spyConsoleInfo.mockImplementation(jest.fn());
   });
 
   afterEach(() => {
-    spyConsoleInfo.mockRestore();
+    stubbedConsole.restore();
   });
 
   describe('#getAsyncFeatureAppDefinition', () => {
@@ -65,11 +67,11 @@ describe('FeatureAppManager', () => {
         '/example.js'
       );
 
-      expect(spyConsoleInfo.mock.calls).toEqual([]);
+      expect(stubbedConsole.stub.info.mock.calls).toEqual([]);
 
       await asyncFeatureAppDefinition.promise;
 
-      expect(spyConsoleInfo.mock.calls).toEqual([
+      expect(stubbedConsole.stub.info.mock.calls).toEqual([
         [
           'The Feature App module at the url "/example.js" has been successfully loaded.'
         ]
@@ -223,7 +225,7 @@ describe('FeatureAppManager', () => {
         it('logs an info message after creation', () => {
           featureAppManager.getFeatureAppScope(mockFeatureAppDefinition);
 
-          expect(spyConsoleInfo.mock.calls).toEqual([
+          expect(stubbedConsole.stub.info.mock.calls).toEqual([
             ['The Feature App "testId" has been successfully created.']
           ]);
         });
@@ -260,7 +262,7 @@ describe('FeatureAppManager', () => {
             'testIdSpecifier'
           );
 
-          expect(spyConsoleInfo.mock.calls).toEqual([
+          expect(stubbedConsole.stub.info.mock.calls).toEqual([
             [
               'The Feature App "testId:testIdSpecifier" has been successfully created.'
             ]

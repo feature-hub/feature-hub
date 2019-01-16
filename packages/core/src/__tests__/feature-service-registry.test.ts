@@ -1,3 +1,6 @@
+// tslint:disable:no-implicit-dependencies
+
+import {Stubbed, stubMethods} from 'jest-stub-methods';
 import {
   FeatureServiceBinding,
   FeatureServiceConfigs,
@@ -33,9 +36,7 @@ describe('FeatureServiceRegistry', () => {
   let featureServiceA: MockFeatureService;
   let featureServiceB: MockFeatureService;
   let featureServiceC: MockFeatureService;
-  let spyConsoleError: jest.SpyInstance;
-  let spyConsoleInfo: jest.SpyInstance;
-  let spyConsoleWarn: jest.SpyInstance;
+  let stubbedConsole: Stubbed<Console>;
 
   beforeEach(() => {
     featureServiceRegistry = new FeatureServiceRegistry();
@@ -69,20 +70,11 @@ describe('FeatureServiceRegistry', () => {
       create: jest.fn(() => ({'2.0': binderC}))
     };
 
-    spyConsoleError = jest.spyOn(console, 'error');
-    spyConsoleError.mockImplementation(jest.fn());
-
-    spyConsoleInfo = jest.spyOn(console, 'info');
-    spyConsoleInfo.mockImplementation(jest.fn());
-
-    spyConsoleWarn = jest.spyOn(console, 'warn');
-    spyConsoleWarn.mockImplementation(jest.fn());
+    stubbedConsole = stubMethods(console);
   });
 
   afterEach(() => {
-    spyConsoleError.mockRestore();
-    spyConsoleInfo.mockRestore();
-    spyConsoleWarn.mockRestore();
+    stubbedConsole.restore();
   });
 
   describe('#registerFeatureServices', () => {
@@ -112,7 +104,7 @@ describe('FeatureServiceRegistry', () => {
 
       expect(binderC.mock.calls).toEqual([]);
 
-      expect(spyConsoleInfo.mock.calls).toEqual([
+      expect(stubbedConsole.stub.info.mock.calls).toEqual([
         [
           'The Feature Service "a" has been successfully registered by consumer "test".'
         ],
@@ -181,13 +173,13 @@ describe('FeatureServiceRegistry', () => {
 
       expect(binderA.mock.calls).toEqual([]);
 
-      expect(spyConsoleInfo.mock.calls).toEqual([
+      expect(stubbedConsole.stub.info.mock.calls).toEqual([
         [
           'The Feature Service "a" has been successfully registered by consumer "test".'
         ]
       ]);
 
-      expect(spyConsoleWarn.mock.calls).toEqual([
+      expect(stubbedConsole.stub.warn.mock.calls).toEqual([
         [
           'The already registered Feature Service "a" could not be re-registered by consumer "test".'
         ]
@@ -221,7 +213,7 @@ describe('FeatureServiceRegistry', () => {
         )
       ).not.toThrow();
 
-      expect(spyConsoleInfo.mock.calls).toEqual([
+      expect(stubbedConsole.stub.info.mock.calls).toEqual([
         [
           'The optional Feature Service "a" is not registered and therefore could not be bound to consumer "b".'
         ],
@@ -264,7 +256,7 @@ describe('FeatureServiceRegistry', () => {
         )
       ).not.toThrow();
 
-      expect(spyConsoleInfo.mock.calls).toEqual([
+      expect(stubbedConsole.stub.info.mock.calls).toEqual([
         [
           'The Feature Service "a" has been successfully registered by consumer "test".'
         ],
@@ -310,7 +302,7 @@ describe('FeatureServiceRegistry', () => {
         )
       ).not.toThrow();
 
-      expect(spyConsoleInfo.mock.calls).toEqual([
+      expect(stubbedConsole.stub.info.mock.calls).toEqual([
         [
           'The Feature Service "a" has been successfully registered by consumer "test".'
         ],
@@ -542,7 +534,7 @@ describe('FeatureServiceRegistry', () => {
         expect(bindingA.unbind).toHaveBeenCalledTimes(1);
         expect(bindingC.unbind).toHaveBeenCalledTimes(1);
 
-        expect(spyConsoleInfo.mock.calls).toEqual([
+        expect(stubbedConsole.stub.info.mock.calls).toEqual([
           [
             'The Feature Service "a" has been successfully registered by consumer "test".'
           ],
@@ -578,7 +570,7 @@ describe('FeatureServiceRegistry', () => {
           ]
         ]);
 
-        expect(spyConsoleError.mock.calls).toEqual([
+        expect(stubbedConsole.stub.error.mock.calls).toEqual([
           [
             'The required Feature Service "a" could not be unbound from consumer "foo".',
             mockError
