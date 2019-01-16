@@ -26,7 +26,8 @@
   },
   "devDependencies": {
     "@types/history": "^4.7.2",
-    "history": "^4.7.2"
+    "history": "^4.7.2",
+    "jest-stub-methods": "^0.1.0"
   },
   "peerDependencies": {
     "history": "^4.7.2"

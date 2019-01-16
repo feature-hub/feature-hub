@@ -1,7 +1,7 @@
 // tslint:disable:no-implicit-dependencies
 
 import {FeatureAppEnvironment, FeatureServiceBinder} from '@feature-hub/core';
-import mockConsole from 'jest-mock-console';
+import {stubMethods} from 'jest-stub-methods';
 import {
   AsyncSsrManagerConfig,
   AsyncSsrManagerV0,
@@ -186,7 +186,7 @@ describe('asyncSsrManagerDefinition', () => {
         it('logs a warning', async () => {
           const asyncSsrManager = asyncSsrManagerBinder('test').featureService;
           const mockRender = jest.fn(() => 'testHtml');
-          const restoreConsole = mockConsole();
+          const stubbedConsole = stubMethods(console);
 
           await useFakeTimers(async () =>
             asyncSsrManager.renderUntilCompleted(mockRender)
@@ -196,7 +196,7 @@ describe('asyncSsrManagerDefinition', () => {
             'No timeout is configured for the Async SSR Manager. This could lead to unexpectedly long render times or, in the worst case, never resolving render calls!'
           );
 
-          restoreConsole();
+          stubbedConsole.restore();
         });
       });
     });

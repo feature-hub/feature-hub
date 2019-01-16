@@ -1,3 +1,4 @@
+// tslint:disable:no-implicit-dependencies
 // tslint:disable:no-non-null-assertion
 
 import {
@@ -7,6 +8,7 @@ import {
   FeatureServiceProviderDefinition
 } from '@feature-hub/core';
 import {History} from 'history';
+import {Stubbed, stubMethods} from 'jest-stub-methods';
 import {
   HistoryServiceDependencies,
   HistoryServiceV0,
@@ -61,7 +63,7 @@ describe('defineHistoryService', () => {
 
     let pushStateSpy: jest.SpyInstance;
     let replaceStateSpy: jest.SpyInstance;
-    let consoleWarnSpy: jest.SpyInstance;
+    let stubbedConsole: Stubbed<Console>;
 
     beforeEach(() => {
       // ensure the window.location.href is the same before each test
@@ -69,8 +71,7 @@ describe('defineHistoryService', () => {
 
       pushStateSpy = jest.spyOn(window.history, 'pushState');
       replaceStateSpy = jest.spyOn(window.history, 'replaceState');
-      consoleWarnSpy = jest.spyOn(console, 'warn');
-      consoleWarnSpy.mockImplementation(jest.fn());
+      stubbedConsole = stubMethods(console);
 
       const mockEnv: FeatureServiceEnvironment<
         undefined,
@@ -92,7 +93,7 @@ describe('defineHistoryService', () => {
     afterEach(() => {
       pushStateSpy.mockRestore();
       replaceStateSpy.mockRestore();
-      consoleWarnSpy.mockRestore();
+      stubbedConsole.restore();
     });
 
     describe('when the history service consumer is destroyed without having created a browser history', () => {
@@ -135,7 +136,7 @@ describe('defineHistoryService', () => {
             history1
           );
 
-          expect(consoleWarnSpy).toHaveBeenCalledWith(
+          expect(stubbedConsole.stub.warn).toHaveBeenCalledWith(
             'createBrowserHistory was called multiple times by consumer "test:1". Returning the same history instance as before.'
           );
         });
@@ -296,7 +297,7 @@ describe('defineHistoryService', () => {
 
           expect(window.location.href).toBe(href);
 
-          expect(consoleWarnSpy).toHaveBeenCalledWith(
+          expect(stubbedConsole.stub.warn).toHaveBeenCalledWith(
             'history.go() is not supported.'
           );
         });
@@ -312,7 +313,7 @@ describe('defineHistoryService', () => {
 
           expect(window.location.href).toBe(href);
 
-          expect(consoleWarnSpy).toHaveBeenCalledWith(
+          expect(stubbedConsole.stub.warn).toHaveBeenCalledWith(
             'history.goBack() is not supported.'
           );
         });
@@ -328,7 +329,7 @@ describe('defineHistoryService', () => {
 
           expect(window.location.href).toBe(href);
 
-          expect(consoleWarnSpy).toHaveBeenCalledWith(
+          expect(stubbedConsole.stub.warn).toHaveBeenCalledWith(
             'history.goForward() is not supported.'
           );
         });
@@ -347,7 +348,7 @@ describe('defineHistoryService', () => {
 
           expect(promptHookSpy).not.toHaveBeenCalled();
 
-          expect(consoleWarnSpy).toHaveBeenCalledWith(
+          expect(stubbedConsole.stub.warn).toHaveBeenCalledWith(
             'history.block() is not supported.'
           );
         });

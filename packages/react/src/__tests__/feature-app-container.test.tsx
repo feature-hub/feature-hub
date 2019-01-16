@@ -6,6 +6,7 @@ import {
   FeatureAppScope
 } from '@feature-hub/core';
 import {mount, shallow} from 'enzyme';
+import {Stubbed, stubMethods} from 'jest-stub-methods';
 import * as React from 'react';
 import {FeatureAppContainer} from '..';
 
@@ -14,7 +15,7 @@ describe('FeatureAppContainer', () => {
   let mockGetFeatureAppScope: jest.Mock;
   let mockFeatureAppDefinition: FeatureAppDefinition<unknown>;
   let mockFeatureAppScope: FeatureAppScope<unknown>;
-  let spyConsoleError: jest.SpyInstance;
+  let stubbedConsole: Stubbed<Console>;
 
   beforeEach(() => {
     mockFeatureAppDefinition = {id: 'testId', create: jest.fn()};
@@ -28,12 +29,11 @@ describe('FeatureAppContainer', () => {
       destroy: jest.fn()
     };
 
-    spyConsoleError = jest.spyOn(console, 'error');
-    spyConsoleError.mockImplementation(jest.fn());
+    stubbedConsole = stubMethods(console);
   });
 
   afterEach(() => {
-    spyConsoleError.mockRestore();
+    stubbedConsole.restore();
   });
 
   it('calls the Feature App manager with the given Feature App definition and id specifier', () => {
@@ -112,7 +112,7 @@ describe('FeatureAppContainer', () => {
 
           wrapper.unmount();
 
-          expect(spyConsoleError.mock.calls).toEqual([[mockError]]);
+          expect(stubbedConsole.stub.error.mock.calls).toEqual([[mockError]]);
         });
       });
     });
@@ -180,7 +180,7 @@ describe('FeatureAppContainer', () => {
 
           wrapper.unmount();
 
-          expect(spyConsoleError.mock.calls).toEqual([[mockError]]);
+          expect(stubbedConsole.stub.error.mock.calls).toEqual([[mockError]]);
         });
       });
     });
@@ -217,7 +217,7 @@ describe('FeatureAppContainer', () => {
           'Invalid Feature App found. The Feature App must be an object with either 1) a `render` method that returns a React element, or 2) an `attachTo` method that accepts a container DOM element.'
         );
 
-        expect(spyConsoleError.mock.calls).toEqual([[expectedError]]);
+        expect(stubbedConsole.stub.error.mock.calls).toEqual([[expectedError]]);
       });
     });
   }
@@ -243,7 +243,7 @@ describe('FeatureAppContainer', () => {
 
       expect(wrapper.isEmptyRender()).toBe(true);
 
-      expect(spyConsoleError.mock.calls).toEqual([[mockError]]);
+      expect(stubbedConsole.stub.error.mock.calls).toEqual([[mockError]]);
     });
 
     describe('when unmounted', () => {
