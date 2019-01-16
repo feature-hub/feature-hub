@@ -5,10 +5,10 @@ sidebar_label: Server-Side Rendering Using React
 ---
 
 Since React does not yet support asynchronous rendering on the server, the
-`@feature-hub/async-ssr-manager` package provides an Async SSR Manager that
-enables the integrator to render any given composition of React Feature Apps in
-multiple render passes until all Feature Apps and Feature Services have resolved
-their asynchronous dependencies.
+`@feature-hub/async-ssr-manager` package provides an Async SSR Manager Feature
+Service that enables the integrator to render any given composition of React
+Feature Apps in multiple render passes until all Feature Apps and Feature
+Services have finished their asynchronous operations.
 
 ## Usage
 
@@ -52,8 +52,8 @@ const asyncSsrManager = featureServices[asyncSsrManagerDefinition.id];
 > rendered on the server or on the client.
 
 Together with the Feature App manager and the React Feature App loader, the
-integrator can then render React Feature Apps that have asynchronous
-dependencies:
+integrator can then render React Feature Apps that depend on asynchronous
+operations to fully render their initial view:
 
 ```js
 const featureAppManager = new FeatureAppManager(featureServiceRegistry, {
@@ -76,9 +76,9 @@ const html = await asyncSsrManager.renderUntilCompleted(() =>
 
 A Feature App that, for example, needs to fetch data asynchronously when it is
 initially rendered, must define the Async SSR Manager as an optional dependency
-in its Feature App definition. It can then use the `rerenderAfter` method to
-tell the Async SSR Manager that another render pass is required after the data
-has been loaded.
+in its Feature App definition. It uses the `rerenderAfter` method to tell the
+Async SSR Manager that another render pass is required after the data has been
+loaded.
 
 ```js
 const myFeatureAppDefinition = {
@@ -124,7 +124,7 @@ const myFeatureAppDefinition = {
 ### As Feature Service
 
 If a Feature Service consumer changes shared state of a Feature Service during a
-render pass on the server, the Feature Service can trigger a rerender to give
+render pass on the server, the Feature Service should trigger a rerender to give
 its consumers a chance to update themselves based on the state change.
 
 ```js
