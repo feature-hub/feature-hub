@@ -12,7 +12,7 @@ export default async function renderMainHtml(port: number): Promise<string> {
   const integratorDefinition = {
     id: 'demos:integrator',
     dependencies: {
-      's2:async-ssr-manager': '^0.1'
+      [asyncSsrManagerDefinition.id]: '^0.1'
     }
   };
 
@@ -28,7 +28,7 @@ export default async function renderMainHtml(port: number): Promise<string> {
   );
 
   const asyncSsrManager = featureServices[
-    's2:async-ssr-manager'
+    asyncSsrManagerDefinition.id
   ] as AsyncSsrManagerV0;
 
   const featureAppManager = new FeatureAppManager(featureServiceRegistry, {

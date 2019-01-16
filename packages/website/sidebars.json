@@ -10,6 +10,7 @@
       "guides/writing-a-feature-app",
       "guides/writing-a-feature-service",
       "guides/sharing-the-browser-history",
+      "guides/server-side-rendering-using-react",
       "guides/sharing-npm-dependencies",
       "guides/reducing-the-bundle-size"
     ],
