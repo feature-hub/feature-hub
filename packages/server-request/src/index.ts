@@ -7,7 +7,7 @@ import {
 export interface ServerRequestV0 {
   readonly path: string;
   readonly cookies: Record<string, string>;
-  readonly headers: Record<string, string>;
+  readonly headers: Record<string, string | string[] | undefined>;
 }
 
 export interface SharedServerRequest extends SharedFeatureService {
