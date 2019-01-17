@@ -1,6 +1,6 @@
 {
   "name": "@feature-hub/async-ssr-manager",
-  "version": "0.0.0",
+  "version": "0.12.0",
   "description": "A Feature Service to manage asynchronous server-side rendering.",
   "homepage": "https://feature-hub.io/",
   "bugs": {
@@ -20,7 +20,7 @@
   "module": "lib/esm/index.js",
   "typings": "lib/cjs/index.d.ts",
   "dependencies": {
-    "@feature-hub/core": "^0.11.0"
+    "@feature-hub/core": "^0.12.0"
   },
   "devDependencies": {
     "jest-stub-methods": "^0.1.0"

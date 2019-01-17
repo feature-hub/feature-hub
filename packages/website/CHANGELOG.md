@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.12.0](https://github.com/sinnerschrader/feature-hub/compare/v0.11.0...v0.12.0) (2019-01-17)
+
+
+### Features
+
+* **async-ssr-manager:** rename from server-renderer ([#243](https://github.com/sinnerschrader/feature-hub/issues/243)) ([af946fa](https://github.com/sinnerschrader/feature-hub/commit/af946fa))
+* **server-request:** create new feature service ([#263](https://github.com/sinnerschrader/feature-hub/issues/263)) ([c69ccc2](https://github.com/sinnerschrader/feature-hub/commit/c69ccc2))
+* **website:** change size of website logo ([#253](https://github.com/sinnerschrader/feature-hub/issues/253)) ([894f709](https://github.com/sinnerschrader/feature-hub/commit/894f709))
+
+
+
+
+
 # [0.11.0](https://github.com/sinnerschrader/feature-hub/compare/v0.10.0...v0.11.0) (2019-01-04)
 
 

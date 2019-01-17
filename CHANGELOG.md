@@ -3,6 +3,37 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.12.0](https://github.com/sinnerschrader/feature-hub/compare/v0.11.0...v0.12.0) (2019-01-17)
+
+
+### Bug Fixes
+
+* **demos:** do not preload Feature App in SSR demo ([#269](https://github.com/sinnerschrader/feature-hub/issues/269)) ([661300e](https://github.com/sinnerschrader/feature-hub/commit/661300e))
+* **server-request:** align headers with the Request interface from express ([#275](https://github.com/sinnerschrader/feature-hub/issues/275)) ([f1b05c1](https://github.com/sinnerschrader/feature-hub/commit/f1b05c1))
+
+
+### Features
+
+* **all:** rename manager/registry to featureAppManager/featureServiceRegistry ([#247](https://github.com/sinnerschrader/feature-hub/issues/247)) ([f662c45](https://github.com/sinnerschrader/feature-hub/commit/f662c45)), closes [#25](https://github.com/sinnerschrader/feature-hub/issues/25)
+* **all:** reset Feature Service versions to 0.1 ([#262](https://github.com/sinnerschrader/feature-hub/issues/262)) ([78a145f](https://github.com/sinnerschrader/feature-hub/commit/78a145f))
+* **async-ssr-manager:** remove the serverRequest property ([#268](https://github.com/sinnerschrader/feature-hub/issues/268)) ([bef20d5](https://github.com/sinnerschrader/feature-hub/commit/bef20d5))
+* **async-ssr-manager:** rename from server-renderer ([#243](https://github.com/sinnerschrader/feature-hub/issues/243)) ([af946fa](https://github.com/sinnerschrader/feature-hub/commit/af946fa))
+* **core:** add support for optional dependencies ([#244](https://github.com/sinnerschrader/feature-hub/issues/244)) ([4e3c896](https://github.com/sinnerschrader/feature-hub/commit/4e3c896))
+* **core:** validate provided feature service versions on register ([#252](https://github.com/sinnerschrader/feature-hub/issues/252)) ([d6f89e8](https://github.com/sinnerschrader/feature-hub/commit/d6f89e8))
+* **demos:** add Async SSR Manager demo and integration test ([#251](https://github.com/sinnerschrader/feature-hub/issues/251)) ([b349021](https://github.com/sinnerschrader/feature-hub/commit/b349021))
+* **demos:** respond with error page for server errors in demos ([#257](https://github.com/sinnerschrader/feature-hub/issues/257)) ([97e0484](https://github.com/sinnerschrader/feature-hub/commit/97e0484))
+* **history-service:** make async-ssr-manager dependency optional ([#256](https://github.com/sinnerschrader/feature-hub/issues/256)) ([9e8be1e](https://github.com/sinnerschrader/feature-hub/commit/9e8be1e))
+* **history-service:** reduce public API surface ([#258](https://github.com/sinnerschrader/feature-hub/issues/258)) ([5f8b8ec](https://github.com/sinnerschrader/feature-hub/commit/5f8b8ec))
+* **react:** add asyncSsrManager prop to FeatureAppLoader ([#248](https://github.com/sinnerschrader/feature-hub/issues/248)) ([92579d9](https://github.com/sinnerschrader/feature-hub/commit/92579d9))
+* **server-renderer:** move and adapt old SSR code ([#135](https://github.com/sinnerschrader/feature-hub/issues/135)) ([b33f744](https://github.com/sinnerschrader/feature-hub/commit/b33f744))
+* **server-renderer:** replace register & rerender with rerenderAfter ([#241](https://github.com/sinnerschrader/feature-hub/issues/241)) ([5fbfcc6](https://github.com/sinnerschrader/feature-hub/commit/5fbfcc6))
+* **server-request:** create new feature service ([#263](https://github.com/sinnerschrader/feature-hub/issues/263)) ([c69ccc2](https://github.com/sinnerschrader/feature-hub/commit/c69ccc2))
+* **website:** change size of website logo ([#253](https://github.com/sinnerschrader/feature-hub/issues/253)) ([894f709](https://github.com/sinnerschrader/feature-hub/commit/894f709))
+
+
+
+
+
 # [0.11.0](https://github.com/sinnerschrader/feature-hub/compare/v0.10.0...v0.11.0) (2019-01-04)
 
 
