@@ -5,10 +5,6 @@
 
 A Feature Service to manage asynchronous server-side rendering.
 
-**Note:** This Feature Service is under active development (see
-[#25][issue-25]). It currently doesn't implement everything necessary for
-server-side rendering.
-
 ## Installation
 
 ### Using Yarn
