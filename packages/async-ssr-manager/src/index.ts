@@ -14,7 +14,7 @@ export interface AsyncSsrManagerConfig {
 }
 
 /**
- * The Async SSR Manager enables the integrator to render any given composition
+ * The Async SSR Manager enables the integrator to render a given composition
  * of React Feature Apps in multiple render passes until all Feature Apps and
  * Feature Services have finished their asynchronous operations.
  *
@@ -27,8 +27,11 @@ export interface AsyncSsrManagerConfig {
 export interface AsyncSsrManagerV0 {
   /**
    * This method is intended for the integrator. It calls the given render
-   * funtion in a loop as long as there are unresolved rerender promises, and
-   * resolves with the result of the last render call.
+   * function at least once. When {@link rerenderAfter} was called during a
+   * render pass, another render pass is triggered after the last provided
+   * promise has been resolved. This cycle is repeated until a render pass does
+   * not yield any more rerender promises. It resolves with the result of the
+   * last render call.
    *
    * @throws Throws an error when the configured timeout is reached
    * (see {@link AsyncSsrManagerConfig.timeout}).
