@@ -5,10 +5,10 @@ sidebar_label: Server-Side Rendering Using React
 ---
 
 Since React does not yet support asynchronous rendering on the server, the
-`@feature-hub/async-ssr-manager` package provides an Async SSR Manager Feature
-Service that enables the integrator to render any given composition of React
-Feature Apps in multiple render passes until all Feature Apps and Feature
-Services have finished their asynchronous operations.
+[`@feature-hub/async-ssr-manager`][async-ssr-manager-api] package provides an
+Async SSR Manager Feature Service that enables the integrator to render any
+given composition of React Feature Apps in multiple render passes until all
+Feature Apps and Feature Services have finished their asynchronous operations.
 
 ## Usage
 
@@ -159,3 +159,5 @@ const myFeatureServiceDefinition = {
   }
 };
 ```
+
+[async-ssr-manager-api]: /@feature-hub/async-ssr-manager/
