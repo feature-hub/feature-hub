@@ -1,0 +1,28 @@
+{
+  "name": "@feature-hub/serialized-state-manager",
+  "version": "0.0.0",
+  "description": "A Feature Service to manage handing over state to the client when server-side rendering.",
+  "homepage": "https://feature-hub.io/",
+  "bugs": {
+    "url": "https://github.com/sinnerschrader/feature-hub/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sinnerschrader/feature-hub.git"
+  },
+  "license": "MIT",
+  "author": "SinnerSchrader Deutschland GmbH",
+  "files": [
+    "lib",
+    "!__tests__"
+  ],
+  "main": "lib/cjs/index.js",
+  "module": "lib/esm/index.js",
+  "typings": "lib/cjs/index.d.ts",
+  "dependencies": {
+    "@feature-hub/core": "^0.12.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
