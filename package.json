@@ -21,7 +21,7 @@
     "verify:size-limit": "lerna exec --no-private --ignore @feature-hub/module-loader-commonjs --parallel -- size-limit",
     "preverify:sort-package-jsons": "yarn sort-package-jsons",
     "verify:sort-package-jsons": "git diff --exit-code package.json packages/*/package.json",
-    "watch:demo": "lerna exec --scope @feature-hub/demos -- ts-node src/watch-demo.ts",
+    "watch:demo": "lerna exec --scope @feature-hub/demos -- ts-node -r tsconfig-paths/register src/watch-demo.ts",
     "watch:test": "yarn test --watch --no-coverage --no-verbose",
     "watch:website": "lerna exec --scope @feature-hub/website -- docusaurus-start"
   },
