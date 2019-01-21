@@ -20,7 +20,7 @@ export default async function renderMainHtml({
 
   featureServiceRegistry.registerFeatureServices(
     featureServiceDefinitions,
-    'demos:integrator'
+    'test:integrator'
   );
 
   const featureAppManager = new FeatureAppManager(featureServiceRegistry);
