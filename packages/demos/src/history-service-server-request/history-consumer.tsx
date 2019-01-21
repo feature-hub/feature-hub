@@ -7,33 +7,22 @@ interface HistoryConsumerProps {
   readonly idSpecifier: string;
 }
 
-interface HistoryConsumerState {
-  readonly pathname: string;
-}
+export function HistoryConsumer({
+  history,
+  idSpecifier
+}: HistoryConsumerProps): React.ReactNode {
+  return (
+    <Card style={{margin: '20px'}}>
+      <H5>History Consumer {idSpecifier.toUpperCase()}</H5>
 
-export class HistoryConsumer extends React.Component<
-  HistoryConsumerProps,
-  HistoryConsumerState
-> {
-  public readonly state = {pathname: this.props.history.location.pathname};
-
-  public render(): React.ReactNode {
-    const {idSpecifier} = this.props;
-    const {pathname} = this.state;
-
-    return (
-      <Card style={{margin: '20px'}}>
-        <H5>History Consumer {idSpecifier.toUpperCase()}</H5>
-
-        <Label>
-          Pathname
-          <InputGroup
-            id={`pathname-${idSpecifier}`}
-            value={pathname}
-            disabled
-          />
-        </Label>
-      </Card>
-    );
-  }
+      <Label>
+        Pathname
+        <InputGroup
+          id={`pathname-${idSpecifier}`}
+          value={history.location.pathname}
+          disabled
+        />
+      </Label>
+    </Card>
+  );
 }
