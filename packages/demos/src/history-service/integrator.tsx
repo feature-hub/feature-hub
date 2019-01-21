@@ -3,8 +3,8 @@ import {defineHistoryService} from '@feature-hub/history-service';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import '../blueprint-css';
-import {rootLocationTransformer} from '../root-location-transformer';
 import {App} from './app';
+import {rootLocationTransformer} from './root-location-transformer';
 
 const featureServiceRegistry = new FeatureServiceRegistry();
 

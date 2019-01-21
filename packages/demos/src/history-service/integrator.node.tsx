@@ -3,9 +3,9 @@ import {defineHistoryService} from '@feature-hub/history-service';
 import {defineServerRequest} from '@feature-hub/server-request';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom/server';
-import {rootLocationTransformer} from '../root-location-transformer';
 import {MainHtmlRendererOptions} from '../start-server';
 import {App} from './app';
+import {rootLocationTransformer} from './root-location-transformer';
 
 export default async function renderMainHtml({
   req
