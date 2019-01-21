@@ -10,7 +10,7 @@ interface HistoryConsumerProps {
 export function HistoryConsumer({
   history,
   idSpecifier
-}: HistoryConsumerProps): React.ReactNode {
+}: HistoryConsumerProps): JSX.Element {
   return (
     <Card style={{margin: '20px'}}>
       <H5>History Consumer {idSpecifier.toUpperCase()}</H5>
