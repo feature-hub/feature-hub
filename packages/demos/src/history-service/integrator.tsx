@@ -11,7 +11,7 @@ const featureServiceRegistry = new FeatureServiceRegistry();
 
 featureServiceRegistry.registerFeatureServices(
   [defineHistoryService(rootLocationTransformer)],
-  'demo:integrator'
+  'test:integrator'
 );
 
 const featureAppManager = new FeatureAppManager(featureServiceRegistry);

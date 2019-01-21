@@ -10,7 +10,7 @@ import * as ReactDOM from 'react-dom/server';
 
 export default async function renderMainHtml(port: number): Promise<string> {
   const integratorDefinition = {
-    id: 'demos:integrator',
+    id: 'test:integrator',
     dependencies: {
       [asyncSsrManagerDefinition.id]: '^0.1'
     }
