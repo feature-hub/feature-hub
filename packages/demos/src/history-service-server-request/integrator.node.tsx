@@ -1,6 +1,5 @@
 import {FeatureAppManager, FeatureServiceRegistry} from '@feature-hub/core';
 import {defineHistoryService} from '@feature-hub/history-service';
-import {loadCommonJsModule} from '@feature-hub/module-loader-commonjs';
 import {FeatureAppContainer} from '@feature-hub/react';
 import {defineServerRequest} from '@feature-hub/server-request';
 import * as React from 'react';
@@ -24,9 +23,7 @@ export default async function renderMainHtml({
     'demos:integrator'
   );
 
-  const featureAppManager = new FeatureAppManager(featureServiceRegistry, {
-    moduleLoader: loadCommonJsModule
-  });
+  const featureAppManager = new FeatureAppManager(featureServiceRegistry);
 
   return ReactDOM.renderToString(
     <>
