@@ -16,7 +16,7 @@ describe('defineServerRequest', () => {
     mockEnv = {config: undefined, featureServices: {}};
 
     serverRequest = {
-      path: '/app',
+      url: '/app',
       cookies: {},
       headers: {}
     };

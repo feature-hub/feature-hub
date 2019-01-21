@@ -7,7 +7,7 @@ export class StaticRootHistory implements RootHistory {
   public location: history.Location;
 
   public constructor(serverRequest: ServerRequestV0) {
-    this.location = history.createLocation(serverRequest.path);
+    this.location = history.createLocation(serverRequest.url);
   }
 
   /* istanbul ignore next */
