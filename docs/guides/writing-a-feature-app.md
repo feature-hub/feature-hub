@@ -123,8 +123,8 @@ being dependent on the integrator. However, as soon as other teams need to use
 this Feature Service, it should be published and included in the global set of
 Feature Services by the integrator.
 
-**Note:** If the Feature Service to be registered has already been registered,
-the new Feature Service is ignored and a warning is emitted.
+> If the Feature Service to be registered has already been registered, the new
+> Feature Service is ignored and a warning is emitted.
 
 ## Implementing a Feature App Using React
 
@@ -153,9 +153,9 @@ const myFeatureAppDefinition = {
 };
 ```
 
-**Note:** Since this element is directly rendered by React, the standard React
-lifecyle methods can be used (if `render` returns an instance of a React
-`ComponentClass`).
+> Since this element is directly rendered by React, the standard React lifecyle
+> methods can be used (if `render` returns an instance of a React
+> `ComponentClass`).
 
 ### DOM Feature App
 
