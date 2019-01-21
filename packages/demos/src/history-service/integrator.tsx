@@ -4,8 +4,8 @@ import {FeatureAppContainer} from '@feature-hub/react';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import '../blueprint-css';
+import {rootLocationTransformer} from '../root-location-transformer';
 import {historyConsumerDefinition} from './history-consumer-definition';
-import {rootLocationTransformer} from './root-location-transformer';
 
 const featureServiceRegistry = new FeatureServiceRegistry();
 
