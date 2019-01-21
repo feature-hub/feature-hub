@@ -3,8 +3,11 @@ import {loadCommonJsModule} from '@feature-hub/module-loader-commonjs';
 import {FeatureAppLoader} from '@feature-hub/react';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom/server';
+import {MainHtmlRendererOptions} from '../start-server';
 
-export default async function renderMainHtml(port: number): Promise<string> {
+export default async function renderMainHtml({
+  port
+}: MainHtmlRendererOptions): Promise<string> {
   const featureAppNodeUrl = `http://localhost:${port}/feature-app.commonjs.js`;
   const featureServiceRegistry = new FeatureServiceRegistry();
 

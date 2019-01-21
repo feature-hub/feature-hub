@@ -4,7 +4,14 @@ import {Server} from 'http';
 import webpack from 'webpack';
 import devMiddleware from 'webpack-dev-middleware';
 
-export type MainHtmlRenderer = (port: number) => Promise<string>;
+export interface MainHtmlRendererOptions {
+  port: number;
+  req: express.Request;
+}
+
+export type MainHtmlRenderer = (
+  options: MainHtmlRendererOptions
+) => Promise<string>;
 
 function createDocumentHtml(bodyHtml: string): string {
   return `
@@ -28,9 +35,9 @@ export async function startServer(
   const port = await getPort(demoName ? {port: 3000} : undefined);
   const app = express();
 
-  app.get('/', async (_req, res) => {
+  app.get('/', async (req, res) => {
     try {
-      const mainHtml = renderMainHtml ? await renderMainHtml(port) : '';
+      const mainHtml = renderMainHtml ? await renderMainHtml({port, req}) : '';
 
       res.send(createDocumentHtml(`<main>${mainHtml}</main>`));
     } catch (error) {

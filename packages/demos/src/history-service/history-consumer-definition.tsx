@@ -4,6 +4,8 @@ import {ReactFeatureApp} from '@feature-hub/react';
 import * as React from 'react';
 import {HistoryConsumer} from './history-consumer';
 
+const inBrowser = typeof window !== 'undefined';
+
 export const historyConsumerDefinition: FeatureAppDefinition<
   ReactFeatureApp,
   undefined,
@@ -18,12 +20,13 @@ export const historyConsumerDefinition: FeatureAppDefinition<
   create: ({featureServices, idSpecifier}) => {
     const historyService = featureServices['s2:history'];
 
+    const history = inBrowser
+      ? historyService.createBrowserHistory()
+      : historyService.createStaticHistory();
+
     return {
       render: () => (
-        <HistoryConsumer
-          history={historyService.createBrowserHistory()}
-          idSpecifier={idSpecifier || ''}
-        />
+        <HistoryConsumer history={history} idSpecifier={idSpecifier || ''} />
       )
     };
   }

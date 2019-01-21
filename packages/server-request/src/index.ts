@@ -5,7 +5,7 @@ import {
 } from '@feature-hub/core';
 
 export interface ServerRequestV0 {
-  readonly path: string;
+  readonly url: string;
   readonly cookies: Record<string, string>;
   readonly headers: Record<string, string | string[] | undefined>;
 }

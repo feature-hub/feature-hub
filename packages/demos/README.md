@@ -15,6 +15,10 @@ yarn
 Now run one of the following demos:
 
 ```sh
+yarn watch:demo async-ssr-manager
+```
+
+```sh
 yarn watch:demo history-service
 ```
 

@@ -84,7 +84,7 @@ describe('HistoryServiceV0 (on Node.js)', () => {
 
     beforeEach(() =>
       createHistories({
-        path: '/example',
+        url: '/example',
         cookies: {},
         headers: {}
       })
@@ -163,7 +163,7 @@ describe('HistoryServiceV0 (on Node.js)', () => {
         destroyHistories();
 
         const serverRequest: ServerRequestV0 = {
-          path: '/?test:1=/foo&test:2=bar',
+          url: '/?test:1=/foo&test:2=bar',
           cookies: {},
           headers: {}
         };
