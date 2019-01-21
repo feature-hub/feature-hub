@@ -23,10 +23,6 @@ yarn watch:demo history-service
 ```
 
 ```sh
-yarn watch:demo history-service-server-request
-```
-
-```sh
 yarn watch:demo module-loader-amd
 ```
 

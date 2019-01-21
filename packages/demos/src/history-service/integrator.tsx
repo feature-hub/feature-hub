@@ -1,11 +1,10 @@
 import {FeatureAppManager, FeatureServiceRegistry} from '@feature-hub/core';
 import {defineHistoryService} from '@feature-hub/history-service';
-import {FeatureAppContainer} from '@feature-hub/react';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import '../blueprint-css';
 import {rootLocationTransformer} from '../root-location-transformer';
-import {historyConsumerDefinition} from './history-consumer-definition';
+import {App} from './app';
 
 const featureServiceRegistry = new FeatureServiceRegistry();
 
@@ -17,17 +16,6 @@ featureServiceRegistry.registerFeatureServices(
 const featureAppManager = new FeatureAppManager(featureServiceRegistry);
 
 ReactDOM.render(
-  <>
-    <FeatureAppContainer
-      featureAppManager={featureAppManager}
-      featureAppDefinition={historyConsumerDefinition}
-      idSpecifier="a"
-    />
-    <FeatureAppContainer
-      featureAppManager={featureAppManager}
-      featureAppDefinition={historyConsumerDefinition}
-      idSpecifier="b"
-    />
-  </>,
+  <App featureAppManager={featureAppManager} />,
   document.querySelector('main')
 );

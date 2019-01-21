@@ -1,12 +1,11 @@
 import {FeatureAppManager, FeatureServiceRegistry} from '@feature-hub/core';
 import {defineHistoryService} from '@feature-hub/history-service';
-import {FeatureAppContainer} from '@feature-hub/react';
 import {defineServerRequest} from '@feature-hub/server-request';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom/server';
 import {rootLocationTransformer} from '../root-location-transformer';
 import {MainHtmlRendererOptions} from '../start-server';
-import {historyConsumerDefinition} from './history-consumer-definition';
+import {App} from './app';
 
 export default async function renderMainHtml({
   req
@@ -25,18 +24,5 @@ export default async function renderMainHtml({
 
   const featureAppManager = new FeatureAppManager(featureServiceRegistry);
 
-  return ReactDOM.renderToString(
-    <>
-      <FeatureAppContainer
-        featureAppManager={featureAppManager}
-        featureAppDefinition={historyConsumerDefinition}
-        idSpecifier="a"
-      />
-      <FeatureAppContainer
-        featureAppManager={featureAppManager}
-        featureAppDefinition={historyConsumerDefinition}
-        idSpecifier="b"
-      />
-    </>
-  );
+  return ReactDOM.renderToString(<App featureAppManager={featureAppManager} />);
 }
