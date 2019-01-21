@@ -3,8 +3,8 @@
 [![Package Version][package-badge]][package-npm]
 [![Website][website-badge]][website] [![API][api-badge]][api]
 
-A Feature Service to manage handing over state to the client when server-side
-rendering.
+A Feature Service for managing the state transfer to the client when rendering
+on the server.
 
 **Note:** This Feature Service is under active development (see
 [#26][issue-26]).

@@ -1,7 +1,7 @@
 {
   "name": "@feature-hub/serialized-state-manager",
   "version": "0.0.0",
-  "description": "A Feature Service to manage handing over state to the client when server-side rendering.",
+  "description": "A Feature Service for managing the state transfer to the client when rendering on the server.",
   "homepage": "https://feature-hub.io/",
   "bugs": {
     "url": "https://github.com/sinnerschrader/feature-hub/issues"
