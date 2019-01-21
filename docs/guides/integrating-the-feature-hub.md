@@ -45,12 +45,12 @@ featureServiceRegistry.registerFeatureServices(
 const featureAppManager = new FeatureAppManager(featureServiceRegistry);
 ```
 
-**Note:** The integrator needs a self-selected but unique consumer ID to
-register or [consume Feature Services][consuming-feature-services] (in the
-example above it is `'acme:integrator'`). All [Feature Services registered
-together][faq-1] using the `registerFeatureServices` method of the
-`FeatureServiceRegistry` are automatically sorted topologically and therefore do
-not need to be registered in the correct order.
+> The integrator needs a self-selected but unique consumer ID to register or
+> [consume Feature Services][consuming-feature-services] (in the example above
+> it is `'acme:integrator'`). All [Feature Services registered together][faq-1]
+> using the `registerFeatureServices` method of the `FeatureServiceRegistry` are
+> automatically sorted topologically and therefore do not need to be registered
+> in the correct order.
 
 ## Module Loader
 
@@ -113,8 +113,8 @@ import {FeatureAppLoader} from '@feature-hub/react';
 />
 ```
 
-**Note:** If the integrator has configured the AMD module loader in the browser,
-the Feature App to be loaded via `src` must be provided as an [AMD module][amd].
+> If the integrator has configured the AMD module loader in the browser, the
+> Feature App to be loaded via `src` must be provided as an [AMD module][amd].
 
 #### `serverSrc`
 
@@ -129,9 +129,9 @@ Additionally, when a Feature App needs to be rendered on the server, its
 />
 ```
 
-**Note:** If the integrator has configured the CommonJS module loader on the
-server, the Feature App to be loaded via `serverSrc` must be provided as a
-CommonJS module.
+> If the integrator has configured the CommonJS module loader on the server, the
+> Feature App to be loaded via `serverSrc` must be provided as a CommonJS
+> module.
 
 #### `css`
 

@@ -271,8 +271,7 @@ consumers (A and B):
   | /?a=/&b=**/b1**       | ⬅️          |
   | /?a=/a1&b=/b1         |             |
 
-**Note:** The alternating background colors of the table rows don't have any
-meaning.
+> The alternating background colors of the table rows don't have any meaning.
 
 ### Push, Push, and Pop
 
