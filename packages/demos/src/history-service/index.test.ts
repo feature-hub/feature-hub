@@ -84,21 +84,6 @@ describe('integration test: "history-service"', () => {
 
   afterAll(done => server.close(done));
 
-  test('SSR: Server-side rendered Feature Apps receive correct consumer paths', async () => {
-    // We need to disable JavaScript for this test to ensure that the server-rendered HTML is observed.
-    await page.setJavaScriptEnabled(false);
-
-    await browser.goto(
-      `${url}?test:history-consumer:a=/a1&test:history-consumer:b=/b1`
-    );
-
-    expect(await a.getPathname()).toBe('/a1');
-    expect(await b.getPathname()).toBe('/b1');
-
-    // Re-enable JavaScript to restore the default behavior for all other tests.
-    await page.setJavaScriptEnabled(true);
-  });
-
   test('Scenario 1: The user loads a page without consumer-specific pathnames', async () => {
     await browser.goto(url);
 
@@ -212,5 +197,20 @@ describe('integration test: "history-service"', () => {
     expect(await browser.getPath()).toBe('/?test:history-consumer:a=/a1');
     expect(await a.getPathname()).toBe('/a1');
     expect(await b.getPathname()).toBe('/');
+  });
+
+  test('Scenario 10: Server-side rendered Feature Apps receive correct consumer paths', async () => {
+    // We need to disable JavaScript for this test to ensure that the server-rendered HTML is observed.
+    await page.setJavaScriptEnabled(false);
+
+    await browser.goto(
+      `${url}?test:history-consumer:a=/a1&test:history-consumer:b=/b1`
+    );
+
+    expect(await a.getPathname()).toBe('/a1');
+    expect(await b.getPathname()).toBe('/b1');
+
+    // Re-enable JavaScript to restore the default behavior for all other tests.
+    await page.setJavaScriptEnabled(true);
   });
 });
