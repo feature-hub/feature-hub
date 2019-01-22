@@ -1,7 +1,4 @@
-import {
-  FeatureServiceBinder,
-  FeatureServiceEnvironment
-} from '@feature-hub/core';
+import {FeatureServiceEnvironment} from '@feature-hub/core';
 import {SerializedStateManagerV0, serializedStateManagerDefinition} from '..';
 
 describe('serializedStateManagerDefinition', () => {
@@ -39,36 +36,85 @@ describe('serializedStateManagerDefinition', () => {
   });
 
   describe('SerializedStateManagerV0', () => {
-    let serializedStateManagerBinder: FeatureServiceBinder<
-      SerializedStateManagerV0
-    >;
+    let integratorSerializedStateManager: SerializedStateManagerV0;
+    let consumer1SerializedStateManager: SerializedStateManagerV0;
+    let consumer2SerializedStateManager: SerializedStateManagerV0;
 
     beforeEach(() => {
-      serializedStateManagerBinder = serializedStateManagerDefinition.create(
+      const serializedStateManagerBinder = serializedStateManagerDefinition.create(
         mockEnv
       )['0.1'];
-    });
 
-    it('does not implement anything yet', () => {
-      const serializedStateManager = serializedStateManagerBinder(
-        'test:consumer'
+      integratorSerializedStateManager = serializedStateManagerBinder(
+        'test:integrator'
       ).featureService;
 
-      expect(() =>
-        serializedStateManager.createSerializedStates()
-      ).toThrowError('Method not implemented.');
+      consumer1SerializedStateManager = serializedStateManagerBinder(
+        'test:consumer:1'
+      ).featureService;
 
-      expect(() => serializedStateManager.getSerializedState()).toThrowError(
-        'Method not implemented.'
-      );
+      consumer2SerializedStateManager = serializedStateManagerBinder(
+        'test:consumer:2'
+      ).featureService;
+    });
 
-      expect(() => serializedStateManager.register(jest.fn())).toThrowError(
-        'Method not implemented.'
-      );
+    describe('#serializeStates', () => {
+      describe('when no consumer has called #register', () => {
+        it('returns a stringified empty object', () => {
+          expect(integratorSerializedStateManager.serializeStates()).toBe(
+            encodeURI('{}')
+          );
+        });
+      });
 
-      expect(() => serializedStateManager.setSerializedStates('')).toThrowError(
-        'Method not implemented.'
-      );
+      describe('when consumers have called #register', () => {
+        beforeEach(() => {
+          consumer1SerializedStateManager.register(() => '{kind:"foo"}');
+          consumer2SerializedStateManager.register(() => '{kind:"bar"}');
+        });
+
+        it('returns a stringified and encoded object with all serialized consumer states', () => {
+          expect(integratorSerializedStateManager.serializeStates()).toBe(
+            encodeURI(
+              '{"test:consumer:1":"{kind:\\"foo\\"}","test:consumer:2":"{kind:\\"bar\\"}"}'
+            )
+          );
+        });
+      });
+    });
+
+    describe('#getSerializedState', () => {
+      describe('when the integrator has not called #setSerializedStates', () => {
+        it('returns undefined', () => {
+          expect(
+            consumer1SerializedStateManager.getSerializedState()
+          ).toBeUndefined();
+
+          expect(
+            consumer2SerializedStateManager.getSerializedState()
+          ).toBeUndefined();
+        });
+      });
+
+      describe('when the integrator has called #setSerializedStates with serialized state for only the first consumer', () => {
+        beforeEach(() => {
+          integratorSerializedStateManager.setSerializedStates(
+            encodeURI('{"test:consumer:1":"{kind:\\"foo\\"}"}')
+          );
+        });
+
+        it('returns the serialized state for the first consumer', () => {
+          expect(consumer1SerializedStateManager.getSerializedState()).toBe(
+            '{kind:"foo"}'
+          );
+        });
+
+        it('returns undefined for the second consumer', () => {
+          expect(
+            consumer2SerializedStateManager.getSerializedState()
+          ).toBeUndefined();
+        });
+      });
     });
   });
 });
