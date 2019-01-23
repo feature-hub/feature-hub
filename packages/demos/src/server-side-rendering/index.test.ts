@@ -11,7 +11,7 @@ import webpackConfigs from './webpack-config';
 
 jest.setTimeout(60000);
 
-describe('integration test: "Async SSR Manager"', () => {
+describe('integration test: "server-side rendering"', () => {
   const browser = new Browser(5000);
 
   let server: Server;
