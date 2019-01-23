@@ -37,6 +37,8 @@ const featureAppDefinition: FeatureAppDefinition<
     const serializedStateManager =
       env.featureServices['s2:serialized-state-manager'];
 
+    // We use the presence of the asyncSsrManager to determine whether we are
+    // rendered on the server or on the client.
     if (asyncSsrManager) {
       serializedStateManager.register(() => subject);
 
