@@ -37,16 +37,18 @@ const featureAppDefinition: FeatureAppDefinition<
     const serializedStateManager =
       env.featureServices['s2:serialized-state-manager'];
 
-    serializedStateManager.register(() => subject);
-
-    const serializedSubject = serializedStateManager.getSerializedState();
-
     if (asyncSsrManager) {
+      serializedStateManager.register(() => subject);
+
       asyncSsrManager.rerenderAfter(
         (async () => (subject = await fetchSubject()))()
       );
-    } else if (serializedSubject) {
-      subject = serializedSubject;
+    } else {
+      const serializedSubject = serializedStateManager.getSerializedState();
+
+      if (serializedSubject) {
+        subject = serializedSubject;
+      }
     }
 
     return {
