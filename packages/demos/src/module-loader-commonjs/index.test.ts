@@ -6,7 +6,7 @@ import {Server} from 'http';
 import {AddressInfo} from 'net';
 import {Browser} from '../browser';
 import {startServer} from '../start-server';
-import renderMainHtml from './integrator.node';
+import renderApp from './integrator.node';
 import webpackConfigs from './webpack-config';
 
 jest.setTimeout(60000);
@@ -17,7 +17,7 @@ describe('integration test: "commonjs module loader"', () => {
   let server: Server;
 
   beforeAll(async () => {
-    server = await startServer(webpackConfigs, renderMainHtml);
+    server = await startServer(webpackConfigs, renderApp);
 
     const {port} = server.address() as AddressInfo;
 

@@ -4,16 +4,28 @@ import {Server} from 'http';
 import webpack from 'webpack';
 import devMiddleware from 'webpack-dev-middleware';
 
-export interface MainHtmlRendererOptions {
+export interface AppRendererOptions {
   port: number;
   req: express.Request;
 }
 
-export type MainHtmlRenderer = (
-  options: MainHtmlRendererOptions
-) => Promise<string>;
+export interface AppRendererResult {
+  html: string;
+  serializedStates?: string;
+}
 
-function createDocumentHtml(bodyHtml: string): string {
+export type AppRenderer = (
+  options: AppRendererOptions
+) => Promise<AppRendererResult>;
+
+function createDocumentHtml(
+  bodyHtml: string,
+  serializedStates?: string
+): string {
+  const serializedStatesScript = serializedStates
+    ? `<script type="x-feature-hub/serialized-states">${serializedStates}</script>`
+    : '';
+
   return `
     <html>
       <head>
@@ -21,6 +33,7 @@ function createDocumentHtml(bodyHtml: string): string {
       </head>
       <body>
         ${bodyHtml}
+        ${serializedStatesScript}
         <script src="integrator.js"></script>
       </body>
     </html>
@@ -29,7 +42,7 @@ function createDocumentHtml(bodyHtml: string): string {
 
 export async function startServer(
   webpackConfigs: webpack.Configuration[],
-  renderMainHtml: MainHtmlRenderer | undefined,
+  renderApp: AppRenderer | undefined,
   demoName?: string
 ): Promise<Server> {
   const port = await getPort(demoName ? {port: 3000} : undefined);
@@ -37,9 +50,11 @@ export async function startServer(
 
   app.get('/', async (req, res) => {
     try {
-      const mainHtml = renderMainHtml ? await renderMainHtml({port, req}) : '';
+      const {html: appHtml = '', serializedStates = ''} = renderApp
+        ? await renderApp({port, req})
+        : {};
 
-      res.send(createDocumentHtml(`<main>${mainHtml}</main>`));
+      res.send(createDocumentHtml(`<main>${appHtml}</main>`, serializedStates));
     } catch (error) {
       const documentHtml = demoName
         ? createDocumentHtml(`

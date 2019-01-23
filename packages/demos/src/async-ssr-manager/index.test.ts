@@ -6,7 +6,7 @@ import {Server} from 'http';
 import {AddressInfo} from 'net';
 import {Browser} from '../browser';
 import {startServer} from '../start-server';
-import renderMainHtml from './integrator.node';
+import renderApp from './integrator.node';
 import webpackConfigs from './webpack-config';
 
 jest.setTimeout(60000);
@@ -15,18 +15,35 @@ describe('integration test: "Async SSR Manager"', () => {
   const browser = new Browser(5000);
 
   let server: Server;
+  let url: string;
 
   beforeAll(async () => {
-    server = await startServer(webpackConfigs, renderMainHtml);
+    server = await startServer(webpackConfigs, renderApp);
 
     const {port} = server.address() as AddressInfo;
 
-    await browser.goto(`http://localhost:${port}`, 60000);
+    url = `http://localhost:${port}/`;
+
+    await browser.goto(url, 60000);
   });
 
   afterAll(done => server.close(done));
 
   it('loads the server-side rendered Feature App HTML', async () => {
+    // We need to disable JavaScript for this test to ensure that the server-rendered HTML is observed.
+    await page.setJavaScriptEnabled(false);
+
+    await browser.goto(url);
+
+    await expect(page).toMatch('Hello, Universe!');
+
+    // Re-enable JavaScript to restore the default behavior for all other tests.
+    await page.setJavaScriptEnabled(true);
+  });
+
+  it('hydrates the server-side rendered Feature App HTML', async () => {
+    await browser.goto(url);
+
     await expect(page).toMatch('Hello, Universe!');
   });
 });

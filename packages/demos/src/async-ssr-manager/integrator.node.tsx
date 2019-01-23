@@ -5,24 +5,29 @@ import {
 import {FeatureAppManager, FeatureServiceRegistry} from '@feature-hub/core';
 import {loadCommonJsModule} from '@feature-hub/module-loader-commonjs';
 import {FeatureAppLoader} from '@feature-hub/react';
+import {
+  SerializedStateManagerV0,
+  serializedStateManagerDefinition
+} from '@feature-hub/serialized-state-manager';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom/server';
-import {MainHtmlRendererOptions} from '../start-server';
+import {AppRendererOptions, AppRendererResult} from '../start-server';
 
-export default async function renderMainHtml({
+export default async function renderApp({
   port
-}: MainHtmlRendererOptions): Promise<string> {
+}: AppRendererOptions): Promise<AppRendererResult> {
   const integratorDefinition = {
     id: 'test:integrator',
     dependencies: {
-      [asyncSsrManagerDefinition.id]: '^0.1'
+      [asyncSsrManagerDefinition.id]: '^0.1',
+      [serializedStateManagerDefinition.id]: '^0.1'
     }
   };
 
   const featureServiceRegistry = new FeatureServiceRegistry();
 
   featureServiceRegistry.registerFeatureServices(
-    [asyncSsrManagerDefinition],
+    [asyncSsrManagerDefinition, serializedStateManagerDefinition],
     integratorDefinition.id
   );
 
@@ -38,7 +43,7 @@ export default async function renderMainHtml({
     moduleLoader: loadCommonJsModule
   });
 
-  return asyncSsrManager.renderUntilCompleted(() =>
+  const html = await asyncSsrManager.renderUntilCompleted(() =>
     ReactDOM.renderToString(
       <FeatureAppLoader
         asyncSsrManager={asyncSsrManager}
@@ -48,4 +53,12 @@ export default async function renderMainHtml({
       />
     )
   );
+
+  const serializedStateManager = featureServices[
+    serializedStateManagerDefinition.id
+  ] as SerializedStateManagerV0;
+
+  const serializedStates = serializedStateManager.serializeStates();
+
+  return {html, serializedStates};
 }

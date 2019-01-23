@@ -3,13 +3,13 @@ import {defineHistoryService} from '@feature-hub/history-service';
 import {defineServerRequest} from '@feature-hub/server-request';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom/server';
-import {MainHtmlRendererOptions} from '../start-server';
+import {AppRendererOptions, AppRendererResult} from '../start-server';
 import {App} from './app';
 import {rootLocationTransformer} from './root-location-transformer';
 
-export default async function renderMainHtml({
+export default async function renderApp({
   req
-}: MainHtmlRendererOptions): Promise<string> {
+}: AppRendererOptions): Promise<AppRendererResult> {
   const featureServiceRegistry = new FeatureServiceRegistry();
 
   const featureServiceDefinitions = [
@@ -24,5 +24,9 @@ export default async function renderMainHtml({
 
   const featureAppManager = new FeatureAppManager(featureServiceRegistry);
 
-  return ReactDOM.renderToString(<App featureAppManager={featureAppManager} />);
+  const html = ReactDOM.renderToString(
+    <App featureAppManager={featureAppManager} />
+  );
+
+  return {html};
 }
