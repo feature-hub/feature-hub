@@ -15,10 +15,6 @@ yarn
 Now run one of the following demos:
 
 ```sh
-yarn watch:demo async-ssr-manager
-```
-
-```sh
 yarn watch:demo history-service
 ```
 
@@ -28,6 +24,10 @@ yarn watch:demo module-loader-amd
 
 ```sh
 yarn watch:demo module-loader-commonjs
+```
+
+```sh
+yarn watch:demo server-side-rendering
 ```
 
 ---
