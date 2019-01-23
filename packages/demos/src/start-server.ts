@@ -50,11 +50,15 @@ export async function startServer(
 
   app.get('/', async (req, res) => {
     try {
-      const {html: appHtml = '', serializedStates = ''} = renderApp
-        ? await renderApp({port, req})
-        : {};
+      if (renderApp) {
+        const {html: appHtml, serializedStates} = await renderApp({port, req});
 
-      res.send(createDocumentHtml(`<main>${appHtml}</main>`, serializedStates));
+        res.send(
+          createDocumentHtml(`<main>${appHtml}</main>`, serializedStates)
+        );
+      } else {
+        res.send(createDocumentHtml(`<main></main>`));
+      }
     } catch (error) {
       const documentHtml = demoName
         ? createDocumentHtml(`
