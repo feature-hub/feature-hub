@@ -6,16 +6,14 @@ export class ServerSideStateManager {
   }
 
   public serializeStates(): string {
-    const serializedStateByConsumerUid: Record<string, string> = {};
+    const serializedStatesByConsumerUid: Record<string, string> = {};
 
     this.serializeStateCallbacks.forEach(
-      (createSerializedState, currentConsumerUid) => {
-        serializedStateByConsumerUid[
-          currentConsumerUid
-        ] = createSerializedState();
+      (serializeState, currentConsumerUid) => {
+        serializedStatesByConsumerUid[currentConsumerUid] = serializeState();
       }
     );
 
-    return encodeURI(JSON.stringify(serializedStateByConsumerUid));
+    return encodeURI(JSON.stringify(serializedStatesByConsumerUid));
   }
 }

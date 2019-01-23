@@ -62,21 +62,29 @@ describe('serializedStateManagerDefinition', () => {
       describe('when no consumer has called #register', () => {
         it('returns a stringified empty object', () => {
           expect(integratorSerializedStateManager.serializeStates()).toBe(
-            encodeURI('{}')
+            encodeURI(JSON.stringify({}))
           );
         });
       });
 
       describe('when consumers have called #register', () => {
         beforeEach(() => {
-          consumer1SerializedStateManager.register(() => '{kind:"foo"}');
-          consumer2SerializedStateManager.register(() => '{kind:"bar"}');
+          consumer1SerializedStateManager.register(() =>
+            JSON.stringify({kind: 'foo'})
+          );
+
+          consumer2SerializedStateManager.register(() =>
+            JSON.stringify({kind: 'bar'})
+          );
         });
 
         it('returns a stringified and encoded object with all serialized consumer states', () => {
           expect(integratorSerializedStateManager.serializeStates()).toBe(
             encodeURI(
-              '{"test:consumer:1":"{kind:\\"foo\\"}","test:consumer:2":"{kind:\\"bar\\"}"}'
+              JSON.stringify({
+                'test:consumer:1': JSON.stringify({kind: 'foo'}),
+                'test:consumer:2': JSON.stringify({kind: 'bar'})
+              })
             )
           );
         });
@@ -99,13 +107,17 @@ describe('serializedStateManagerDefinition', () => {
       describe('when the integrator has called #setSerializedStates with serialized state for only the first consumer', () => {
         beforeEach(() => {
           integratorSerializedStateManager.setSerializedStates(
-            encodeURI('{"test:consumer:1":"{kind:\\"foo\\"}"}')
+            encodeURI(
+              JSON.stringify({
+                'test:consumer:1': JSON.stringify({kind: 'foo'})
+              })
+            )
           );
         });
 
         it('returns the serialized state for the first consumer', () => {
           expect(consumer1SerializedStateManager.getSerializedState()).toBe(
-            '{kind:"foo"}'
+            JSON.stringify({kind: 'foo'})
           );
         });
 

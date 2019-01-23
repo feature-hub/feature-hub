@@ -1,14 +1,16 @@
 export class ClientSideStateManager {
-  private serializedStateByConsumerUid?: Record<string, string | undefined>;
+  private serializedStatesByConsumerUid?: Record<string, string | undefined>;
 
   public setSerializedStates(serializedStates: string): void {
-    this.serializedStateByConsumerUid = JSON.parse(decodeURI(serializedStates));
+    this.serializedStatesByConsumerUid = JSON.parse(
+      decodeURI(serializedStates)
+    );
   }
 
   public getSerializedState(consumerUid: string): string | undefined {
     return (
-      this.serializedStateByConsumerUid &&
-      this.serializedStateByConsumerUid[consumerUid]
+      this.serializedStatesByConsumerUid &&
+      this.serializedStatesByConsumerUid[consumerUid]
     );
   }
 }
