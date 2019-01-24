@@ -56,7 +56,6 @@ export class FeatureAppContainer extends React.PureComponent<
       console.error(error);
 
       if (!inBrowser) {
-        // TODO: we should only throw for "mission critical" Feature Apps ...
         throw error;
       }
     }
