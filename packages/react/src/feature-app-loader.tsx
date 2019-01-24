@@ -64,7 +64,6 @@ export class FeatureAppLoader extends React.PureComponent<
       this.reportError(asyncFeatureAppDefinition.error);
 
       if (!inBrowser) {
-        // TODO: we should only throw for "mission critical" Feature Apps ...
         throw asyncFeatureAppDefinition.error;
       }
 
