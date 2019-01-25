@@ -17,7 +17,6 @@ const siteConfig = {
   onPageNav: 'separate',
   cleanUrl: true,
   customDocsPath: '../docs',
-  scripts: ['/external-sidebar-links.js'],
   headerIcon: 'img/logo.svg',
   favicon: 'img/favicon.png',
   editUrl: 'https://github.com/sinnerschrader/feature-hub/edit/master/docs/',
