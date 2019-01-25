@@ -92,7 +92,6 @@ element][demos-extract-serialized-states-script], and passed unmodified into the
 `setSerializedStates` method, where it will be decoded again:
 
 ```js
-// extract `serializedStates` from DOM
 serializedStateManager.setSerializedStates(serializedStates);
 ```
 
@@ -116,9 +115,15 @@ Feature Apps and Feature Services have finished their asynchronous operations.
 
 A Feature App that, for example, needs to fetch data asynchronously when it is
 initially rendered, must define the Async SSR Manager as an optional dependency
-in its Feature App definition. It uses the `rerenderAfter` method to tell the
+in its Feature App definition.
+
+> The dependency must be optional, since the integrator provides the Feature
+> Service only on the server. The Feature App can determine from its presence
+> whether it is currently rendered on the server or on the client.
+
+On the server, the Feature App can use the `rerenderAfter` method to tell the
 Async SSR Manager that another render pass is required after the data has been
-loaded.
+loaded:
 
 ```js
 const myFeatureAppDefinition = {
@@ -165,7 +170,7 @@ const myFeatureAppDefinition = {
 
 If a Feature Service consumer changes shared state of a Feature Service during a
 render pass on the server, the Feature Service should trigger a rerender to give
-its consumers a chance to update themselves based on the state change.
+its consumers a chance to update themselves based on the state change:
 
 ```js
 const myFeatureServiceDefinition = {
@@ -210,9 +215,10 @@ with an HTML string when all consumers have completed their asynchronous
 operations.
 
 On the server, [the integrator must first obtain the Feature
-Service][consuming-feature-services]. Together with the Feature App manager and
-the React Feature App loader, the integrator can then render React Feature Apps
-that depend on asynchronous operations to fully render their initial view:
+Service][consuming-feature-services]. Together with the `FeatureAppManager` and
+the React `FeatureAppLoader` (or `FeatureAppContainer`), the integrator can then
+render React Feature Apps that depend on asynchronous operations to fully render
+their initial view:
 
 ```js
 const html = await asyncSsrManager.renderUntilCompleted(() =>
