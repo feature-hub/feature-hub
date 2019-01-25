@@ -28,7 +28,7 @@ const myFeatureServiceDefinition = {
   },
 
   create(env) {
-    const count = 0;
+    let count = 0;
 
     const serializedStateManager =
       env.featureServices['s2:serialized-state-manager'];
@@ -176,7 +176,8 @@ const myFeatureServiceDefinition = {
   },
 
   create(env) {
-    const count = 0;
+    let count = 0;
+
     const asyncSsrManager = env.featureServices['s2:async-ssr-manager'];
 
     return {
