@@ -166,6 +166,11 @@ const myFeatureAppDefinition = {
 > whether there are rerender promises it needs to await, and then do another
 > render pass.
 
+> In more complex Feature Apps, it may be more difficult to determine the right
+> time after all asynchronous operations have been completed. However, this is a
+> common problem that needs to be solved when such web applications need to be
+> rendered on the server. It is not a special requirement of the Feature Hub.
+
 ### As a Feature Service
 
 If a Feature Service consumer changes shared state of a Feature Service during a
