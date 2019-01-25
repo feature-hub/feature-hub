@@ -3,7 +3,8 @@
     "Getting Started": [
       "getting-started/introduction",
       "getting-started/motivation",
-      "getting-started/demos"
+      "getting-started/demos",
+      "getting-started/api"
     ],
     "Guides": [
       "guides/integrating-the-feature-hub",
