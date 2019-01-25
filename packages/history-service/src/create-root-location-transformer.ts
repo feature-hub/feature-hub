@@ -4,6 +4,7 @@ import {
   getConsumerPath,
   removeConsumerPath
 } from './internal/consumer-paths';
+import URLSearchParams from './internal/url-search-params';
 
 export interface RootLocationOptions {
   readonly consumerPathsQueryParamName: string;
