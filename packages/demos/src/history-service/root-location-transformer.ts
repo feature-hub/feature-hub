@@ -1,5 +1,6 @@
 import {RootLocationTransformer} from '@feature-hub/history-service';
 import {createPath} from 'history';
+import {URLSearchParams} from './url-search-params';
 
 export const rootLocationTransformer: RootLocationTransformer = {
   getConsumerPathFromRootLocation: (rootLocation, consumerUid) => {

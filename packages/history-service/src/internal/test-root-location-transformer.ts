@@ -1,5 +1,6 @@
 import * as history from 'history';
 import {RootLocationTransformer} from '../create-root-location-transformer';
+import {URLSearchParams} from '../internal/url-search-params';
 
 export const testRootLocationTransformer: RootLocationTransformer = {
   getConsumerPathFromRootLocation: (rootLocation, consumerUid) => {
