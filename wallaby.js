@@ -1,15 +1,19 @@
 // @ts-check
 
-function setup({testFramework}) {
+function setup({projectCacheDir, testFramework}) {
   const jestConfig = require('./jest.config');
 
   delete jestConfig.globalSetup;
   delete jestConfig.globalTeardown;
 
+  jestConfig.moduleNameMapper = {
+    '^@feature-hub/([^/]+)$': projectCacheDir + '/packages/$1/src'
+  };
+
   testFramework.configure(jestConfig);
 }
 
-module.exports = () => ({
+module.exports = wallaby => ({
   files: [
     'jest.config.js',
     'scripts/setup-test-framework.js',
@@ -22,5 +26,8 @@ module.exports = () => ({
   ],
   env: {type: 'node', runner: 'node'},
   setup,
-  testFramework: 'jest'
+  testFramework: 'jest',
+  compilers: {
+    '**/*.ts?(x)': wallaby.compilers.babel()
+  }
 });
