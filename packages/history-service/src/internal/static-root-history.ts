@@ -11,7 +11,9 @@ export class StaticRootHistory implements RootHistory {
   }
 
   /* istanbul ignore next */
-  public listen = () => () => undefined;
+  public listen(): () => void {
+    return () => undefined;
+  }
 
   public push(location: RootLocation): void {
     this.location = history.createLocation(location);

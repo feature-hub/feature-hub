@@ -19,9 +19,8 @@ module.exports = {
     '^@feature-hub/([^/]+)$': '<rootDir>/packages/$1/src/index.ts'
   },
   modulePathIgnorePatterns: ['/lib'],
-  setupTestFrameworkScriptFile: '<rootDir>/scripts/setup-test-framework.js',
+  setupFilesAfterEnv: ['<rootDir>/scripts/setup-test-framework.js'],
   snapshotSerializers: ['enzyme-to-json/serializer'],
   testMatch: ['<rootDir>/packages/*/src/**/*.test.{ts,tsx}'],
-  testURL: 'http://example.com',
-  transform: {'\\.tsx?$': 'ts-jest'}
+  testURL: 'http://example.com'
 };
