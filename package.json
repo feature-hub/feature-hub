@@ -7,8 +7,7 @@
   ],
   "scripts": {
     "precompile": "lerna exec --parallel -- rimraf lib",
-    "compile": "yarn compile:cjs && yarn compile:esm",
-    "compile:cjs": "lerna exec -- tsc --project tsconfig.cjs.json",
+    "compile": "lerna exec -- tsc --project tsconfig.cjs.json",
     "compile:esm": "lerna exec --no-private -- tsc --project tsconfig.esm.json",
     "format": "prettier --write '**/*.{js,json,md,ts,tsx,yml}'",
     "lint": "lerna exec --parallel -- tslint --config tslint.json --project tsconfig.json --format verbose",
