@@ -11,8 +11,11 @@ export class Browser {
     return decodeURIComponent((await this.getUrl()).path || '');
   }
 
-  public async goto(url: string, timeout?: number): Promise<void> {
-    await this.waitForNavigation(page.goto(url), timeout);
+  public async goto(
+    url: string,
+    timeout: number = this.defaultNavigationTimeout
+  ): Promise<void> {
+    await page.goto(url, {timeout});
   }
 
   public async reload(): Promise<void> {

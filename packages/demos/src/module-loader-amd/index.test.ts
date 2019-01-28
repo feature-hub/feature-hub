@@ -8,7 +8,7 @@ import {Browser} from '../browser';
 import {startServer} from '../start-server';
 import webpackConfigs from './webpack-config';
 
-jest.setTimeout(120000);
+jest.setTimeout(60000);
 
 describe('integration test: "amd module loader"', () => {
   const browser = new Browser(5000);
@@ -20,7 +20,7 @@ describe('integration test: "amd module loader"', () => {
 
     const {port} = server.address() as AddressInfo;
 
-    await browser.goto(`http://localhost:${port}`, 120000);
+    await browser.goto(`http://localhost:${port}`, 60000);
   });
 
   afterAll(done => server.close(done));
