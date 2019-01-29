@@ -41,7 +41,7 @@ export function featureServiceDependencyVersionInvalid(
   )}.`;
 }
 
-export function featureServiceUnregistered(
+export function featureServiceNotRegistered(
   optional: boolean,
   providerId: string,
   consumerUid: string
@@ -92,7 +92,7 @@ export function featureServicesAlreadyBound(
   )}.`;
 }
 
-export function featureServiceUnbindingError(
+export function featureServiceCouldNotBeUnbound(
   providerId: string,
   consumerUid: string
 ): string {

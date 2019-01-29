@@ -265,7 +265,7 @@ export class FeatureServiceRegistry implements FeatureServiceRegistryLike {
           );
         } catch (error) {
           console.error(
-            Messages.featureServiceUnbindingError(providerId, consumerUid),
+            Messages.featureServiceCouldNotBeUnbound(providerId, consumerUid),
             error
           );
         }
@@ -300,7 +300,7 @@ export class FeatureServiceRegistry implements FeatureServiceRegistryLike {
     const sharedFeatureService = this.sharedFeatureServices.get(providerId);
 
     if (!sharedFeatureService) {
-      const message = Messages.featureServiceUnregistered(
+      const message = Messages.featureServiceNotRegistered(
         optional,
         providerId,
         consumerUid
