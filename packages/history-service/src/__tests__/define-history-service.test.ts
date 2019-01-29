@@ -41,7 +41,7 @@ describe('defineHistoryService', () => {
     expect(historyServiceDefinition.dependencies).toBeUndefined();
 
     expect(historyServiceDefinition.optionalDependencies).toEqual({
-      's2:server-request': '^0.1'
+      featureServices: {'s2:server-request': '^0.1'}
     });
   });
 

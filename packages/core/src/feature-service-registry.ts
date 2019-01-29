@@ -2,6 +2,7 @@ import {coerce, satisfies} from 'semver';
 import {createUid} from './internal/create-uid';
 import * as Messages from './internal/feature-service-registry-messages';
 import {
+  Dependencies,
   DependencyGraph,
   toposortDependencies
 } from './internal/toposort-dependencies';
@@ -16,16 +17,20 @@ export interface FeatureServiceConsumerDependencies {
 
 export interface FeatureServiceConsumerDefinition {
   readonly id: string;
-  /**
-   * A map of required Feature Services with their ID as key and a
-   * semver-compatible version string as value.
-   */
-  readonly dependencies?: FeatureServiceConsumerDependencies;
-  /**
-   * A map of optional Feature Services with their ID as key and a
-   * semver-compatible version string as value.
-   */
-  readonly optionalDependencies?: FeatureServiceConsumerDependencies;
+  readonly dependencies?: {
+    /**
+     * A map of required Feature Services with their ID as key and a
+     * semver-compatible version string as value.
+     */
+    readonly featureServices: FeatureServiceConsumerDependencies;
+  };
+  readonly optionalDependencies?: {
+    /**
+     * A map of optional Feature Services with their ID as key and a
+     * semver-compatible version string as value.
+     */
+    readonly featureServices: FeatureServiceConsumerDependencies;
+  };
 }
 
 export interface FeatureServices {
@@ -111,22 +116,43 @@ type ProviderDefinitionsById = Map<
   FeatureServiceProviderDefinition<SharedFeatureService>
 >;
 
+function mergeFeatureServiceDependencies({
+  dependencies,
+  optionalDependencies
+}: FeatureServiceConsumerDefinition): Dependencies {
+  return {
+    ...(dependencies && dependencies.featureServices),
+    ...(optionalDependencies && optionalDependencies.featureServices)
+  };
+}
+
 function createDependencyGraph(
   definitions: FeatureServiceProviderDefinition<SharedFeatureService>[]
 ): DependencyGraph {
   const dependencyGraph: DependencyGraph = new Map();
 
   for (const definition of definitions) {
-    dependencyGraph.set(definition.id, {
-      ...definition.dependencies,
-      ...definition.optionalDependencies
-    });
+    dependencyGraph.set(
+      definition.id,
+      mergeFeatureServiceDependencies(definition)
+    );
   }
 
   return dependencyGraph;
 }
 
-function createProviderDefinitionById(
+function isOptionalFeatureServiceDependency(
+  {optionalDependencies}: FeatureServiceConsumerDefinition,
+  providerId: ProviderId
+): boolean {
+  return Boolean(
+    optionalDependencies &&
+      optionalDependencies.featureServices &&
+      optionalDependencies.featureServices.hasOwnProperty(providerId)
+  );
+}
+
+function createProviderDefinitionsById(
   definitions: FeatureServiceProviderDefinition<SharedFeatureService>[]
 ): ProviderDefinitionsById {
   const providerDefinitionsById: ProviderDefinitionsById = new Map();
@@ -178,7 +204,7 @@ export class FeatureServiceRegistry implements FeatureServiceRegistryLike {
     >[],
     consumerId: string
   ): void {
-    const providerDefinitionsById = createProviderDefinitionById(
+    const providerDefinitionsById = createProviderDefinitionsById(
       providerDefinitions
     );
 
@@ -236,11 +262,7 @@ export class FeatureServiceRegistry implements FeatureServiceRegistryLike {
     consumerDefinition: FeatureServiceConsumerDefinition,
     consumerIdSpecifier?: string
   ): FeatureServicesBinding {
-    const {
-      id: consumerId,
-      dependencies = {},
-      optionalDependencies = {}
-    } = consumerDefinition;
+    const {id: consumerId} = consumerDefinition;
 
     const consumerUid = createUid(consumerId, consumerIdSpecifier);
 
@@ -250,14 +272,19 @@ export class FeatureServiceRegistry implements FeatureServiceRegistryLike {
 
     const bindings = new Map<string, FeatureServiceBinding<unknown>>();
     const featureServices: FeatureServices = Object.create(null);
-    const allDependencies = {...optionalDependencies, ...dependencies};
+    const allDependencies = mergeFeatureServiceDependencies(consumerDefinition);
 
     for (const providerId of Object.keys(allDependencies)) {
+      const optional = isOptionalFeatureServiceDependency(
+        consumerDefinition,
+        providerId
+      );
+
       const binding = this.bindFeatureService(
         providerId,
         consumerUid,
         allDependencies[providerId],
-        {optional: !dependencies.hasOwnProperty(providerId)}
+        {optional}
       );
 
       if (!binding) {
