@@ -3,7 +3,13 @@ import {FeatureAppManagerLike} from '@feature-hub/core';
 import * as React from 'react';
 
 export interface FeatureHubContextValue {
+  /**
+   * The `FeatureAppManager` singleton instance.
+   */
   featureAppManager: FeatureAppManagerLike;
+  /**
+   * The Async SSR Manager Feature Service that is bound to the integrator.
+   */
   asyncSsrManager?: AsyncSsrManagerV0;
 }
 
@@ -16,8 +22,20 @@ const FeatureHubContext = React.createContext(
   dummyDefaultFeatureHubContextValue as FeatureHubContextValue
 );
 
+/**
+ * The integrator must render a `FeatureHubContextProvider` to provide the
+ * `FeatureAppManager` singleton instance, as well as the Async SSR Manager
+ * Feature Service (optionally), to Feature Hub context consumers, e.g. the
+ * {@link FeatureAppLoader} or {@link FeatureAppContainer}.
+ */
 export const FeatureHubContextProvider = FeatureHubContext.Provider;
 
+/**
+ * A `FeatureHubContextConsumer` can be used to retrieve the `FeatureAppManager`
+ * singleton instance, as well as the Async SSR Manager Feature Service (if it
+ * is provided by the integrator). Its main purpose is to be used inside the
+ * {@link FeatureAppLoader} and {@link FeatureAppContainer}.
+ */
 export const FeatureHubContextConsumer = (
   props: React.ConsumerProps<FeatureHubContextValue>
 ) => (

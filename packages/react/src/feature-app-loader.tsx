@@ -12,9 +12,26 @@ export interface Css {
 }
 
 export interface FeatureAppLoaderProps {
+  /**
+   * The URL of the Feature App's browser module bundle.
+   */
   readonly src: string;
+
+  /**
+   * The URL of the Feature App's server module bundle.
+   */
   readonly serverSrc?: string;
+
+  /**
+   * A list of stylesheets that should be added to the document.
+   */
   readonly css?: Css[];
+
+  /**
+   * If multiple instances of the same Feature App are placed on a single web
+   * page, an `idSpecifier` that is unique for the Feature App ID must be
+   * defined.
+   */
   readonly idSpecifier?: string;
 }
 
@@ -177,6 +194,11 @@ class InternalFeatureAppLoader extends React.PureComponent<
   }
 }
 
+/**
+ * The `FeatureAppLoader` component allows the integrator to load Feature Apps
+ * from a remote location. It can also be used by a Feature App to render
+ * another Feature App as a child.
+ */
 export function FeatureAppLoader(props: FeatureAppLoaderProps): JSX.Element {
   return (
     <FeatureHubContextConsumer>
