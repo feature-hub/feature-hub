@@ -141,6 +141,17 @@ function createDependencyGraph(
   return dependencyGraph;
 }
 
+function isOptionalFeatureServiceDependency(
+  definition: FeatureServiceConsumerDefinition,
+  providerId: ProviderId
+): boolean {
+  return Boolean(
+    definition.optionalDependencies &&
+      definition.optionalDependencies.featureServices &&
+      definition.optionalDependencies.featureServices[providerId]
+  );
+}
+
 function createProviderDefinitionById(
   definitions: FeatureServiceProviderDefinition<SharedFeatureService>[]
 ): ProviderDefinitionsById {
@@ -251,12 +262,7 @@ export class FeatureServiceRegistry implements FeatureServiceRegistryLike {
     consumerDefinition: FeatureServiceConsumerDefinition,
     consumerIdSpecifier?: string
   ): FeatureServicesBinding {
-    const {
-      id: consumerId,
-      dependencies = {
-        featureServices: {}
-      }
-    } = consumerDefinition;
+    const {id: consumerId} = consumerDefinition;
 
     const consumerUid = createUid(consumerId, consumerIdSpecifier);
 
@@ -273,7 +279,12 @@ export class FeatureServiceRegistry implements FeatureServiceRegistryLike {
         providerId,
         consumerUid,
         allDependencies[providerId],
-        {optional: !dependencies.featureServices.hasOwnProperty(providerId)}
+        {
+          optional: isOptionalFeatureServiceDependency(
+            consumerDefinition,
+            providerId
+          )
+        }
       );
 
       if (!binding) {
