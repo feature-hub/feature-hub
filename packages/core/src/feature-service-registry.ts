@@ -275,16 +275,16 @@ export class FeatureServiceRegistry implements FeatureServiceRegistryLike {
     const allDependencies = mergeFeatureServiceDependencies(consumerDefinition);
 
     for (const providerId of Object.keys(allDependencies)) {
+      const optional = isOptionalFeatureServiceDependency(
+        consumerDefinition,
+        providerId
+      );
+
       const binding = this.bindFeatureService(
         providerId,
         consumerUid,
         allDependencies[providerId],
-        {
-          optional: isOptionalFeatureServiceDependency(
-            consumerDefinition,
-            providerId
-          )
-        }
+        {optional}
       );
 
       if (!binding) {
