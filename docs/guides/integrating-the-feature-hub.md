@@ -100,7 +100,7 @@ a remote location.
 #### `src`
 
 A Feature App can be loaded and integrated by defining a `src` which is the URL
-to its browser module bundle:
+of its browser module bundle:
 
 ```js
 import {FeatureAppLoader} from '@feature-hub/react';
@@ -119,7 +119,7 @@ import {FeatureAppLoader} from '@feature-hub/react';
 #### `serverSrc`
 
 Additionally, when a Feature App needs to be rendered on the server, its
-`serverSrc` must be specified, which is the URL to its server module bundle:
+`serverSrc` must be specified, which is the URL of its server module bundle:
 
 ```jsx
 <FeatureAppLoader
