@@ -6,14 +6,19 @@ import {
   FeatureAppDefinition,
   FeatureAppManagerLike
 } from '@feature-hub/core';
-import {shallow} from 'enzyme';
 import stubMethods, {Stubbed} from 'jest-stub-methods';
 import * as React from 'react';
+import TestRenderer from 'react-test-renderer';
 import {FeatureAppContainer, FeatureAppLoader} from '..';
+import {FeatureHubContextProvider} from '../feature-hub-context';
 
 interface MockAsyncSsrManager extends AsyncSsrManagerV0 {
   rerenderAfter: ((promise: Promise<unknown>) => void) & jest.Mock;
 }
+
+jest.mock('../feature-app-container', () => ({
+  FeatureAppContainer: jest.fn(() => 'mocked FeatureAppContainer')
+}));
 
 describe('FeatureAppLoader', () => {
   let mockFeatureAppManager: FeatureAppManagerLike;
@@ -54,33 +59,45 @@ describe('FeatureAppLoader', () => {
     stubbedConsole.restore();
   });
 
+  it('throws an error when rendered without a FeatureHubContextProvider', () => {
+    expect(() =>
+      TestRenderer.create(<FeatureAppLoader src="example.js" />)
+    ).toThrowError(
+      new Error(
+        'No Feature Hub context was provided! There are two possible causes: 1.) No FeatureHubContextProvider was rendered in the React tree. 2.) A Feature App that renders itself a FeatureAppLoader or a FeatureAppContainer did not declare @feature-hub/react as an external package.'
+      )
+    );
+  });
+
+  const renderWithFeatureHubContext = (node: React.ReactNode) =>
+    TestRenderer.create(
+      <FeatureHubContextProvider
+        value={{
+          featureAppManager: mockFeatureAppManager,
+          asyncSsrManager: mockAsyncSsrManager
+        }}
+      >
+        {node}
+      </FeatureHubContextProvider>
+    );
+
   it('throws an error if no src is provided', () => {
     expect(() =>
-      shallow(
-        <FeatureAppLoader featureAppManager={mockFeatureAppManager} src="" />
-      )
+      renderWithFeatureHubContext(<FeatureAppLoader src="" />)
     ).toThrowError(new Error('No src provided.'));
   });
 
   it('initially renders nothing', () => {
-    const wrapper = shallow(
-      <FeatureAppLoader
-        featureAppManager={mockFeatureAppManager}
-        src="example.js"
-      />
+    const testRenderer = renderWithFeatureHubContext(
+      <FeatureAppLoader src="example.js" />
     );
 
-    expect(wrapper.isEmptyRender()).toBe(true);
+    expect(testRenderer.toJSON()).toBeNull();
   });
 
   describe('without a css prop', () => {
     it('does not change the document head', () => {
-      shallow(
-        <FeatureAppLoader
-          featureAppManager={mockFeatureAppManager}
-          src="example.js"
-        />
-      );
+      renderWithFeatureHubContext(<FeatureAppLoader src="example.js" />);
 
       expect(document.head).toMatchSnapshot();
     });
@@ -88,9 +105,8 @@ describe('FeatureAppLoader', () => {
 
   describe('with a css prop', () => {
     it('appends link elements to the document head', () => {
-      shallow(
+      renderWithFeatureHubContext(
         <FeatureAppLoader
-          featureAppManager={mockFeatureAppManager}
           src="example.js"
           css={[{href: 'foo.css'}, {href: 'bar.css', media: 'print'}]}
         />
@@ -101,20 +117,12 @@ describe('FeatureAppLoader', () => {
 
     describe('when the css has already been appended', () => {
       it('does not append the css a second time', () => {
-        shallow(
-          <FeatureAppLoader
-            featureAppManager={mockFeatureAppManager}
-            src="example.js"
-            css={[{href: 'foo.css'}]}
-          />
+        renderWithFeatureHubContext(
+          <FeatureAppLoader src="example.js" css={[{href: 'foo.css'}]} />
         );
 
-        shallow(
-          <FeatureAppLoader
-            featureAppManager={mockFeatureAppManager}
-            src="example.js"
-            css={[{href: 'foo.css'}]}
-          />
+        renderWithFeatureHubContext(
+          <FeatureAppLoader src="example.js" css={[{href: 'foo.css'}]} />
         );
 
         expect(document.head).toMatchSnapshot();
@@ -137,31 +145,23 @@ describe('FeatureAppLoader', () => {
     });
 
     it('renders a FeatureAppContainer', () => {
-      const wrapper = shallow(
-        <FeatureAppLoader
-          featureAppManager={mockFeatureAppManager}
-          src="example.js"
-          idSpecifier="testIdSpecifier"
-        />
+      const testRenderer = renderWithFeatureHubContext(
+        <FeatureAppLoader src="example.js" idSpecifier="testIdSpecifier" />
       );
 
-      expect(wrapper.getElement()).toEqual(
-        <FeatureAppContainer
-          featureAppManager={mockFeatureAppManager}
-          featureAppDefinition={mockFeatureAppDefinition}
-          idSpecifier="testIdSpecifier"
-        />
-      );
+      expect(testRenderer.toJSON()).toBe('mocked FeatureAppContainer');
+
+      const expectedProps = {
+        featureAppDefinition: mockFeatureAppDefinition,
+        idSpecifier: 'testIdSpecifier'
+      };
+
+      expect(FeatureAppContainer).toHaveBeenCalledWith(expectedProps, {});
     });
 
     it('does not trigger a rerender on the Async SSR Manager', () => {
-      shallow(
-        <FeatureAppLoader
-          featureAppManager={mockFeatureAppManager}
-          src="example.js"
-          serverSrc="example-node.js"
-          asyncSsrManager={mockAsyncSsrManager}
-        />
+      renderWithFeatureHubContext(
+        <FeatureAppLoader src="example.js" serverSrc="example-node.js" />
       );
 
       expect(mockAsyncSsrManager.rerenderAfter).not.toHaveBeenCalled();
@@ -182,15 +182,11 @@ describe('FeatureAppLoader', () => {
     });
 
     it('renders nothing and logs an error', () => {
-      const wrapper = shallow(
-        <FeatureAppLoader
-          featureAppManager={mockFeatureAppManager}
-          src="example.js"
-          idSpecifier="testIdSpecifier"
-        />
+      const testRenderer = renderWithFeatureHubContext(
+        <FeatureAppLoader src="example.js" idSpecifier="testIdSpecifier" />
       );
 
-      expect(wrapper.isEmptyRender()).toBe(true);
+      expect(testRenderer.toJSON()).toBeNull();
 
       expect(stubbedConsole.stub.error.mock.calls).toEqual([
         [
@@ -219,44 +215,26 @@ describe('FeatureAppLoader', () => {
     });
 
     it('initially renders nothing', () => {
-      const wrapper = shallow(
-        <FeatureAppLoader
-          featureAppManager={mockFeatureAppManager}
-          src="example.js"
-        />
+      const testRenderer = renderWithFeatureHubContext(
+        <FeatureAppLoader src="example.js" />
       );
 
-      expect(wrapper.isEmptyRender()).toBe(true);
+      expect(testRenderer.toJSON()).toBeNull();
     });
 
     it('renders a FeatureAppContainer when loaded', async () => {
-      const wrapper = shallow(
-        <FeatureAppLoader
-          featureAppManager={mockFeatureAppManager}
-          src="example.js"
-          idSpecifier="testIdSpecifier"
-        />
+      const testRenderer = renderWithFeatureHubContext(
+        <FeatureAppLoader src="example.js" idSpecifier="testIdSpecifier" />
       );
 
       await mockAsyncFeatureAppDefinition.promise;
 
-      expect(wrapper.getElement()).toEqual(
-        <FeatureAppContainer
-          featureAppManager={mockFeatureAppManager}
-          featureAppDefinition={mockFeatureAppDefinition}
-          idSpecifier="testIdSpecifier"
-        />
-      );
+      expect(testRenderer.toJSON()).toBe('mocked FeatureAppContainer');
     });
 
     it('does not trigger a rerender on the Async SSR Manager', () => {
-      shallow(
-        <FeatureAppLoader
-          featureAppManager={mockFeatureAppManager}
-          src="example.js"
-          serverSrc="example-node.js"
-          asyncSsrManager={mockAsyncSsrManager}
-        />
+      renderWithFeatureHubContext(
+        <FeatureAppLoader src="example.js" serverSrc="example-node.js" />
       );
 
       expect(mockAsyncSsrManager.rerenderAfter).not.toHaveBeenCalled();
@@ -264,18 +242,15 @@ describe('FeatureAppLoader', () => {
 
     describe('when unmounted before loading has finished', () => {
       it('renders nothing', async () => {
-        const wrapper = shallow(
-          <FeatureAppLoader
-            featureAppManager={mockFeatureAppManager}
-            src="example.js"
-          />
+        const testRenderer = renderWithFeatureHubContext(
+          <FeatureAppLoader src="example.js" />
         );
 
-        wrapper.unmount();
+        testRenderer.unmount();
 
         await mockAsyncFeatureAppDefinition.promise;
 
-        expect(wrapper.isEmptyRender()).toBe(true);
+        expect(testRenderer.toJSON()).toBeNull();
       });
     });
   });
@@ -295,12 +270,8 @@ describe('FeatureAppLoader', () => {
     });
 
     it('renders nothing and logs an error', async () => {
-      const wrapper = shallow(
-        <FeatureAppLoader
-          featureAppManager={mockFeatureAppManager}
-          src="example.js"
-          idSpecifier="testIdSpecifier"
-        />
+      const testRenderer = renderWithFeatureHubContext(
+        <FeatureAppLoader src="example.js" idSpecifier="testIdSpecifier" />
       );
 
       expect.assertions(3);
@@ -311,7 +282,7 @@ describe('FeatureAppLoader', () => {
         expect(error).toBe(mockError);
       }
 
-      expect(wrapper.isEmptyRender()).toBe(true);
+      expect(testRenderer.toJSON()).toBeNull();
 
       expect(stubbedConsole.stub.error.mock.calls).toEqual([
         [
@@ -323,14 +294,11 @@ describe('FeatureAppLoader', () => {
 
     describe('when unmounted before loading has finished', () => {
       it('logs an error', async () => {
-        const wrapper = shallow(
-          <FeatureAppLoader
-            featureAppManager={mockFeatureAppManager}
-            src="example.js"
-          />
+        const testRenderer = renderWithFeatureHubContext(
+          <FeatureAppLoader src="example.js" />
         );
 
-        wrapper.unmount();
+        testRenderer.unmount();
 
         expect.assertions(2);
 

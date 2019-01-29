@@ -24,8 +24,10 @@
     "@feature-hub/core": "^0.12.0"
   },
   "devDependencies": {
+    "@types/react-test-renderer": "^16.0.3",
     "jest-stub-methods": "^0.1.0",
-    "react": "^16.6.3"
+    "react": "^16.6.3",
+    "react-test-renderer": "^16.7.0"
   },
   "peerDependencies": {
     "react": "^16.3.0"

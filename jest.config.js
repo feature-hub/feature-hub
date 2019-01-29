@@ -20,7 +20,6 @@ module.exports = {
   },
   modulePathIgnorePatterns: ['/lib'],
   setupFilesAfterEnv: ['<rootDir>/scripts/setup-test-framework.js'],
-  snapshotSerializers: ['enzyme-to-json/serializer'],
   testMatch: ['<rootDir>/packages/*/src/**/*.test.{ts,tsx}'],
   testURL: 'http://example.com'
 };

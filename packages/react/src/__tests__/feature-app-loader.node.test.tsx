@@ -10,10 +10,10 @@ import {
   FeatureAppDefinition,
   FeatureAppManagerLike
 } from '@feature-hub/core';
-import {shallow} from 'enzyme';
 import {Stubbed, stubMethods} from 'jest-stub-methods';
 import * as React from 'react';
-import {FeatureAppLoader} from '..';
+import * as ReactDOM from 'react-dom/server';
+import {FeatureAppLoader, FeatureHubContextProvider} from '..';
 
 interface MockAsyncSsrManager extends AsyncSsrManagerV0 {
   rerenderAfter: ((promise: Promise<unknown>) => void) & jest.Mock;
@@ -37,7 +37,10 @@ describe('FeatureAppLoader (on Node.js)', () => {
 
     mockFeatureAppManager = {
       getAsyncFeatureAppDefinition: mockGetAsyncFeatureAppDefinition,
-      getFeatureAppScope: jest.fn(),
+      getFeatureAppScope: jest.fn(() => ({
+        featureApp: {render: () => null},
+        destroy: jest.fn()
+      })),
       preloadFeatureApp: jest.fn(),
       destroy: jest.fn()
     };
@@ -54,28 +57,27 @@ describe('FeatureAppLoader (on Node.js)', () => {
     stubbedConsole.restore();
   });
 
+  const renderWithFeatureHubContext = (node: React.ReactNode) =>
+    ReactDOM.renderToString(
+      <FeatureHubContextProvider
+        value={{
+          featureAppManager: mockFeatureAppManager,
+          asyncSsrManager: mockAsyncSsrManager
+        }}
+      >
+        {node}
+      </FeatureHubContextProvider>
+    );
+
   describe('without a serverSrc', () => {
     it('does not try to load a Feature App definition', () => {
-      shallow(
-        <FeatureAppLoader
-          featureAppManager={mockFeatureAppManager}
-          src="example.js"
-        />,
-        {disableLifecycleMethods: true}
-      );
+      renderWithFeatureHubContext(<FeatureAppLoader src="example.js" />);
 
       expect(mockGetAsyncFeatureAppDefinition).not.toHaveBeenCalled();
     });
 
     it('does not trigger a rerender on the Async SSR Manager', () => {
-      shallow(
-        <FeatureAppLoader
-          featureAppManager={mockFeatureAppManager}
-          src="example.js"
-          asyncSsrManager={mockAsyncSsrManager}
-        />,
-        {disableLifecycleMethods: true}
-      );
+      renderWithFeatureHubContext(<FeatureAppLoader src="example.js" />);
 
       expect(mockAsyncSsrManager.rerenderAfter).not.toHaveBeenCalled();
     });
@@ -83,13 +85,8 @@ describe('FeatureAppLoader (on Node.js)', () => {
 
   describe('with a serverSrc', () => {
     it('loads a Feature App definition for the serverSrc', () => {
-      shallow(
-        <FeatureAppLoader
-          featureAppManager={mockFeatureAppManager}
-          src="example.js"
-          serverSrc="example-node.js"
-        />,
-        {disableLifecycleMethods: true}
+      renderWithFeatureHubContext(
+        <FeatureAppLoader src="example.js" serverSrc="example-node.js" />
       );
 
       expect(mockGetAsyncFeatureAppDefinition.mock.calls).toEqual([
@@ -98,14 +95,8 @@ describe('FeatureAppLoader (on Node.js)', () => {
     });
 
     it('triggers a rerender on the Async SSR Manager with the feature app definition promise', () => {
-      shallow(
-        <FeatureAppLoader
-          featureAppManager={mockFeatureAppManager}
-          src="example.js"
-          serverSrc="example-node.js"
-          asyncSsrManager={mockAsyncSsrManager}
-        />,
-        {disableLifecycleMethods: true}
+      renderWithFeatureHubContext(
+        <FeatureAppLoader src="example.js" serverSrc="example-node.js" />
       );
 
       expect(mockAsyncSsrManager.rerenderAfter.mock.calls).toEqual([
@@ -128,14 +119,8 @@ describe('FeatureAppLoader (on Node.js)', () => {
       });
 
       it('does not trigger a rerender on the Async SSR Manager', () => {
-        shallow(
-          <FeatureAppLoader
-            featureAppManager={mockFeatureAppManager}
-            src="example.js"
-            serverSrc="example-node.js"
-            asyncSsrManager={mockAsyncSsrManager}
-          />,
-          {disableLifecycleMethods: true}
+        renderWithFeatureHubContext(
+          <FeatureAppLoader src="example.js" serverSrc="example-node.js" />
         );
 
         expect(mockAsyncSsrManager.rerenderAfter).not.toHaveBeenCalled();
@@ -152,14 +137,12 @@ describe('FeatureAppLoader (on Node.js)', () => {
 
       it('logs and re-throws the error', () => {
         expect(() =>
-          shallow(
+          renderWithFeatureHubContext(
             <FeatureAppLoader
-              featureAppManager={mockFeatureAppManager}
               src="example.js"
               serverSrc="example-node.js"
               idSpecifier="testIdSpecifier"
-            />,
-            {disableLifecycleMethods: true}
+            />
           )
         ).toThrowError(mockError);
 
@@ -173,14 +156,8 @@ describe('FeatureAppLoader (on Node.js)', () => {
 
       it('does not trigger a rerender on the Async SSR Manager', () => {
         try {
-          shallow(
-            <FeatureAppLoader
-              featureAppManager={mockFeatureAppManager}
-              src="example.js"
-              serverSrc="example-node.js"
-              asyncSsrManager={mockAsyncSsrManager}
-            />,
-            {disableLifecycleMethods: true}
+          renderWithFeatureHubContext(
+            <FeatureAppLoader src="example.js" serverSrc="example-node.js" />
           );
         } catch {}
 
