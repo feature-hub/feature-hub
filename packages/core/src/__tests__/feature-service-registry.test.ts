@@ -56,7 +56,7 @@ describe('FeatureServiceRegistry', () => {
 
     providerDefinitionB = {
       id: 'b',
-      optionalDependencies: {a: '^1.0'},
+      optionalDependencies: {featureServices: {a: '^1.0'}},
       create: jest.fn(() => ({'1.0': binderB}))
     };
 
@@ -66,7 +66,7 @@ describe('FeatureServiceRegistry', () => {
 
     providerDefinitionC = {
       id: 'c',
-      dependencies: {a: '^1.0', b: '1.0'},
+      dependencies: {featureServices: {a: '^1.0', b: '1.0'}},
       create: jest.fn(() => ({'2.0': binderC}))
     };
 
@@ -202,7 +202,7 @@ describe('FeatureServiceRegistry', () => {
     it('doesnt fail to register the Feature Service "b" due to the lack of optional dependency "a"', () => {
       providerDefinitionB = {
         id: 'b',
-        optionalDependencies: {a: '^1.0'},
+        optionalDependencies: {featureServices: {a: '^1.0'}},
         create: jest.fn(() => ({'1.0': jest.fn()}))
       };
 
@@ -226,7 +226,7 @@ describe('FeatureServiceRegistry', () => {
     it('fails to register the Feature Service "d" due to an unsupported dependency version', () => {
       const stateProviderD = {
         id: 'd',
-        dependencies: {a: '1.0'},
+        dependencies: {featureServices: {a: '1.0'}},
         create: jest.fn()
       };
 
@@ -245,7 +245,7 @@ describe('FeatureServiceRegistry', () => {
     it('does not fail to register the Feature Service "d" due to an unsupported optional dependency version', () => {
       const stateProviderD = {
         id: 'd',
-        optionalDependencies: {a: '1.0'},
+        optionalDependencies: {featureServices: {a: '1.0'}},
         create: jest.fn(() => ({}))
       };
 
@@ -272,7 +272,7 @@ describe('FeatureServiceRegistry', () => {
     it('fails to register the Feature Service "d" due to an invalid dependency version', () => {
       const stateProviderDefinitionD = {
         id: 'd',
-        dependencies: {a: ''},
+        dependencies: {featureServices: {a: ''}},
         create: jest.fn()
       };
 
@@ -291,7 +291,7 @@ describe('FeatureServiceRegistry', () => {
     it('does not fail to register the Feature Service "d" due to an invalid optional dependency version', () => {
       const stateProviderDefinitionD = {
         id: 'd',
-        optionalDependencies: {a: ''},
+        optionalDependencies: {featureServices: {a: ''}},
         create: jest.fn(() => ({}))
       };
 
@@ -318,13 +318,13 @@ describe('FeatureServiceRegistry', () => {
     it('fails to register the Feature Service "e" due to a dependency with an invalid version', () => {
       const stateProviderDefinitionD = {
         id: 'd',
-        dependencies: {},
+        dependencies: {featureServices: {}},
         create: () => ({foo: jest.fn()})
       };
 
       const stateProviderDefinitionE = {
         id: 'e',
-        dependencies: {d: '1.0'},
+        dependencies: {featureServices: {d: '1.0'}},
         create: jest.fn()
       };
 
@@ -366,7 +366,7 @@ describe('FeatureServiceRegistry', () => {
 
         expect(
           featureServiceRegistry.bindFeatureServices(
-            {id: 'foo', dependencies: {a: '1.1'}},
+            {id: 'foo', dependencies: {featureServices: {a: '1.1'}}},
             'bar'
           )
         ).toEqual({
@@ -392,7 +392,7 @@ describe('FeatureServiceRegistry', () => {
         expect(
           featureServiceRegistry.bindFeatureServices({
             id: 'foo',
-            dependencies: {a: '1.1'}
+            dependencies: {featureServices: {a: '1.1'}}
           })
         ).toEqual({
           featureServices: {a: featureServiceA},
@@ -418,7 +418,7 @@ describe('FeatureServiceRegistry', () => {
           expect(
             featureServiceRegistry.bindFeatureServices({
               id: 'foo',
-              optionalDependencies: {b: '1.0', a: '1.1'}
+              optionalDependencies: {featureServices: {b: '1.0', a: '1.1'}}
             })
           ).toEqual({
             featureServices: {a: featureServiceA},
@@ -443,7 +443,7 @@ describe('FeatureServiceRegistry', () => {
           expect(
             featureServiceRegistry.bindFeatureServices({
               id: 'foo',
-              optionalDependencies: {a: '1.1', b: '1.0'}
+              optionalDependencies: {featureServices: {a: '1.1', b: '1.0'}}
             })
           ).toEqual({
             featureServices: {a: featureServiceA},
@@ -468,7 +468,7 @@ describe('FeatureServiceRegistry', () => {
           expect(
             featureServiceRegistry.bindFeatureServices({
               id: 'foo',
-              optionalDependencies: {a: '1.1', b: '^1.0'}
+              optionalDependencies: {featureServices: {a: '1.1', b: '^1.0'}}
             })
           ).toEqual({
             featureServices: {a: featureServiceA, b: featureServiceB},
@@ -526,7 +526,7 @@ describe('FeatureServiceRegistry', () => {
 
         const bindings = featureServiceRegistry.bindFeatureServices({
           id: 'foo',
-          dependencies: {a: '1.1', b: '1.0', c: '2.0'}
+          dependencies: {featureServices: {a: '1.1', b: '1.0', c: '2.0'}}
         });
 
         bindings.unbind();
