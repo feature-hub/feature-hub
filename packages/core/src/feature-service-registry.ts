@@ -142,13 +142,13 @@ function createDependencyGraph(
 }
 
 function isOptionalFeatureServiceDependency(
-  definition: FeatureServiceConsumerDefinition,
+  {optionalDependencies}: FeatureServiceConsumerDefinition,
   providerId: ProviderId
 ): boolean {
   return Boolean(
-    definition.optionalDependencies &&
-      definition.optionalDependencies.featureServices &&
-      definition.optionalDependencies.featureServices[providerId]
+    optionalDependencies &&
+      optionalDependencies.featureServices &&
+      optionalDependencies.featureServices.hasOwnProperty(providerId)
   );
 }
 
