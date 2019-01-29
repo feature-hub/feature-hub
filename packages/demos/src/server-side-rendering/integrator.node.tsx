@@ -19,8 +19,10 @@ export default async function renderApp({
   const integratorDefinition = {
     id: 'test:integrator',
     dependencies: {
-      [asyncSsrManagerDefinition.id]: '^0.1',
-      [serializedStateManagerDefinition.id]: '^0.1'
+      featureServices: {
+        [asyncSsrManagerDefinition.id]: '^0.1',
+        [serializedStateManagerDefinition.id]: '^0.1'
+      }
     }
   };
 

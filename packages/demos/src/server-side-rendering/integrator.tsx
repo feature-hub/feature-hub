@@ -23,7 +23,9 @@ function getSerializedStatesFromDom(): string | undefined {
   const integratorDefinition = {
     id: 'test:integrator',
     dependencies: {
-      [serializedStateManagerDefinition.id]: '^0.1'
+      featureServices: {
+        [serializedStateManagerDefinition.id]: '^0.1'
+      }
     }
   };
 

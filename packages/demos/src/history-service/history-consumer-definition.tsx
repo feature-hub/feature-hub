@@ -14,7 +14,9 @@ export const historyConsumerDefinition: FeatureAppDefinition<
   id: 'test:history-consumer',
 
   dependencies: {
-    's2:history': '^0.1'
+    featureServices: {
+      's2:history': '^0.1'
+    }
   },
 
   create: ({featureServices, idSpecifier}) => {

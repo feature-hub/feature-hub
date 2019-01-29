@@ -22,11 +22,15 @@ const featureAppDefinition: FeatureAppDefinition<
   id: 'test:hello-world',
 
   dependencies: {
-    's2:serialized-state-manager': '^0.1'
+    featureServices: {
+      's2:serialized-state-manager': '^0.1'
+    }
   },
 
   optionalDependencies: {
-    's2:async-ssr-manager': '^0.1'
+    featureServices: {
+      's2:async-ssr-manager': '^0.1'
+    }
   },
 
   create: env => {
