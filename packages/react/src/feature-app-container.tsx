@@ -6,18 +6,49 @@ import {
 } from './feature-hub-context';
 import {isDomFeatureApp, isFeatureApp} from './internal/type-guards';
 
-export interface DomFeatureApp {
-  attachTo(container: Element): void;
-}
-
+/**
+ * The recommended way of writing a Feature App for a React integrator.
+ */
 export interface ReactFeatureApp {
+  /**
+   * A React Feature App must define a `render` method that returns a React
+   * element. Since this element is directly rendered by React, the standard
+   * React lifecyle methods can be used (if `render` returns an instance of a
+   * React `ComponentClass`).
+   */
   render(): React.ReactNode;
 }
 
-export type FeatureApp = DomFeatureApp | ReactFeatureApp;
+/**
+ * A DOM Feature App allows the use of other frontend technologies such as
+ * Vue.js or Angular, although it is placed on a web page using React.
+ */
+export interface DomFeatureApp {
+  /**
+   * @param container The container element to which the Feature App can attach
+   * itself.
+   */
+  attachTo(container: Element): void;
+}
+
+/**
+ * A Feature App that can be rendered by the {@link FeatureAppLoader} or
+ * {@link FeatureAppContainer} must be either a {@link ReactFeatureApp}
+ * (recommended) or a {@link DomFeatureApp}.
+ */
+export type FeatureApp = ReactFeatureApp | DomFeatureApp;
 
 export interface FeatureAppContainerProps {
+  /**
+   * The consumer definition of the Feature App.
+   */
   readonly featureAppDefinition: FeatureAppDefinition<unknown>;
+
+  /**
+   * If multiple instances of the same Feature App are placed on a single web
+   * page, an `idSpecifier` that is unique for the Feature App ID must be
+   * defined.
+   */
   readonly idSpecifier?: string;
 }
 
@@ -94,6 +125,11 @@ class InternalFeatureAppContainer extends React.PureComponent<
   }
 }
 
+/**
+ * The `FeatureAppContainer` component allows the integrator to bundle Feature
+ * Apps instead of loading them from a remote location. It can also be used by
+ * a Feature App to render another Feature App as a child.
+ */
 export function FeatureAppContainer(
   props: FeatureAppContainerProps
 ): JSX.Element {
