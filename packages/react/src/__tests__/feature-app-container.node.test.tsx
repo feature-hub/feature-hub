@@ -9,10 +9,10 @@ import {
   FeatureAppManagerLike,
   FeatureAppScope
 } from '@feature-hub/core';
-import {shallow} from 'enzyme';
 import {Stubbed, stubMethods} from 'jest-stub-methods';
 import * as React from 'react';
-import {FeatureAppContainer} from '..';
+import TestRenderer from 'react-test-renderer';
+import {FeatureAppContainer, FeatureHubContextProvider} from '..';
 
 describe('FeatureAppContainer (on Node.js)', () => {
   let mockFeatureAppManager: FeatureAppManagerLike;
@@ -40,6 +40,19 @@ describe('FeatureAppContainer (on Node.js)', () => {
     stubbedConsole.restore();
   });
 
+  const expectedErrorBoundaryMessage = expect.stringMatching(
+    '^The above error occurred in'
+  );
+
+  const renderWithFeatureHubContext = (node: React.ReactNode) =>
+    TestRenderer.create(
+      <FeatureHubContextProvider
+        value={{featureAppManager: mockFeatureAppManager}}
+      >
+        {node}
+      </FeatureHubContextProvider>
+    );
+
   for (const invalidFeatureApp of [
     undefined,
     null,
@@ -63,15 +76,17 @@ describe('FeatureAppContainer (on Node.js)', () => {
         );
 
         expect(() =>
-          shallow(
+          renderWithFeatureHubContext(
             <FeatureAppContainer
-              featureAppManager={mockFeatureAppManager}
               featureAppDefinition={mockFeatureAppDefinition}
             />
           )
         ).toThrowError(expectedError);
 
-        expect(stubbedConsole.stub.error.mock.calls).toEqual([[expectedError]]);
+        expect(stubbedConsole.stub.error.mock.calls).toEqual([
+          [expectedError],
+          [expectedErrorBoundaryMessage]
+        ]);
       });
     });
   }
@@ -89,15 +104,17 @@ describe('FeatureAppContainer (on Node.js)', () => {
 
     it('logs and throws an error', () => {
       expect(() =>
-        shallow(
+        renderWithFeatureHubContext(
           <FeatureAppContainer
-            featureAppManager={mockFeatureAppManager}
             featureAppDefinition={mockFeatureAppDefinition}
           />
         )
       ).toThrowError(mockError);
 
-      expect(stubbedConsole.stub.error.mock.calls).toEqual([[mockError]]);
+      expect(stubbedConsole.stub.error.mock.calls).toEqual([
+        [mockError],
+        [expectedErrorBoundaryMessage]
+      ]);
     });
   });
 });

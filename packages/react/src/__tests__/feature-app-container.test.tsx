@@ -5,13 +5,13 @@ import {
   FeatureAppManagerLike,
   FeatureAppScope
 } from '@feature-hub/core';
-import {mount, shallow} from 'enzyme';
 import {Stubbed, stubMethods} from 'jest-stub-methods';
 import * as React from 'react';
-import {FeatureAppContainer} from '..';
+import TestRenderer from 'react-test-renderer';
+import {FeatureAppContainer, FeatureHubContextProvider} from '..';
 
 describe('FeatureAppContainer', () => {
-  let mockManager: FeatureAppManagerLike;
+  let mockFeatureAppManager: FeatureAppManagerLike;
   let mockGetFeatureAppScope: jest.Mock;
   let mockFeatureAppDefinition: FeatureAppDefinition<unknown>;
   let mockFeatureAppScope: FeatureAppScope<unknown>;
@@ -22,7 +22,7 @@ describe('FeatureAppContainer', () => {
     mockFeatureAppScope = {featureApp: {}, destroy: jest.fn()};
     mockGetFeatureAppScope = jest.fn(() => mockFeatureAppScope);
 
-    mockManager = {
+    mockFeatureAppManager = {
       getAsyncFeatureAppDefinition: jest.fn(),
       getFeatureAppScope: mockGetFeatureAppScope,
       preloadFeatureApp: jest.fn(),
@@ -36,10 +36,34 @@ describe('FeatureAppContainer', () => {
     stubbedConsole.restore();
   });
 
+  it('throws an error when rendered without a FeatureHubContextProvider', () => {
+    expect(() =>
+      TestRenderer.create(
+        <FeatureAppContainer featureAppDefinition={mockFeatureAppDefinition} />
+      )
+    ).toThrowError(
+      new Error(
+        'No Feature Hub context was provided! There are two possible causes: 1.) No FeatureHubContextProvider was rendered in the React tree. 2.) A Feature App that renders itself a FeatureAppLoader or a FeatureAppContainer did not declare @feature-hub/react as an external package.'
+      )
+    );
+  });
+
+  const renderWithFeatureHubContext = (
+    node: React.ReactNode,
+    options?: TestRenderer.TestRendererOptions
+  ) =>
+    TestRenderer.create(
+      <FeatureHubContextProvider
+        value={{featureAppManager: mockFeatureAppManager}}
+      >
+        {node}
+      </FeatureHubContextProvider>,
+      options
+    );
+
   it('calls the Feature App manager with the given Feature App definition and id specifier', () => {
-    shallow(
+    renderWithFeatureHubContext(
       <FeatureAppContainer
-        featureAppManager={mockManager}
         featureAppDefinition={mockFeatureAppDefinition}
         idSpecifier="testIdSpecifier"
       />
@@ -61,14 +85,11 @@ describe('FeatureAppContainer', () => {
     });
 
     it('renders the React element', () => {
-      const wrapper = shallow(
-        <FeatureAppContainer
-          featureAppManager={mockManager}
-          featureAppDefinition={mockFeatureAppDefinition}
-        />
+      const testRenderer = renderWithFeatureHubContext(
+        <FeatureAppContainer featureAppDefinition={mockFeatureAppDefinition} />
       );
 
-      expect(wrapper).toMatchInlineSnapshot(`
+      expect(testRenderer.toJSON()).toMatchInlineSnapshot(`
 <div>
   This is the React Feature App.
 </div>
@@ -77,16 +98,15 @@ describe('FeatureAppContainer', () => {
 
     describe('when unmounted', () => {
       it('calls destroy() on the Feature App scope', () => {
-        const wrapper = shallow(
+        const testRenderer = renderWithFeatureHubContext(
           <FeatureAppContainer
-            featureAppManager={mockManager}
             featureAppDefinition={mockFeatureAppDefinition}
           />
         );
 
         expect(mockFeatureAppScope.destroy).not.toHaveBeenCalled();
 
-        wrapper.unmount();
+        testRenderer.unmount();
 
         expect(mockFeatureAppScope.destroy).toHaveBeenCalledTimes(1);
       });
@@ -103,14 +123,13 @@ describe('FeatureAppContainer', () => {
         });
 
         it('logs the error', () => {
-          const wrapper = shallow(
+          const testRenderer = renderWithFeatureHubContext(
             <FeatureAppContainer
-              featureAppManager={mockManager}
               featureAppDefinition={mockFeatureAppDefinition}
             />
           );
 
-          wrapper.unmount();
+          testRenderer.unmount();
 
           expect(stubbedConsole.stub.error.mock.calls).toEqual([[mockError]]);
         });
@@ -131,30 +150,37 @@ describe('FeatureAppContainer', () => {
     });
 
     it("renders a container and passes it to the Feature App's render method", () => {
-      const wrapper = mount(
-        <FeatureAppContainer
-          featureAppManager={mockManager}
-          featureAppDefinition={mockFeatureAppDefinition}
-        />
+      const mockSetInnerHtml = jest.fn();
+
+      const testRenderer = renderWithFeatureHubContext(
+        <FeatureAppContainer featureAppDefinition={mockFeatureAppDefinition} />,
+        {
+          createNodeMock: () => ({
+            set innerHTML(html: string) {
+              mockSetInnerHtml(html);
+            }
+          })
+        }
       );
 
-      expect(wrapper.html()).toMatchInlineSnapshot(
-        '"<div>This is the DOM Feature App.</div>"'
+      expect(testRenderer.toJSON()).toMatchInlineSnapshot(`<div />`);
+
+      expect(mockSetInnerHtml).toHaveBeenCalledWith(
+        'This is the DOM Feature App.'
       );
     });
 
     describe('when unmounted', () => {
       it('calls destroy() on the Feature App scope', () => {
-        const wrapper = shallow(
+        const testRenderer = renderWithFeatureHubContext(
           <FeatureAppContainer
-            featureAppManager={mockManager}
             featureAppDefinition={mockFeatureAppDefinition}
           />
         );
 
         expect(mockFeatureAppScope.destroy).not.toHaveBeenCalled();
 
-        wrapper.unmount();
+        testRenderer.unmount();
 
         expect(mockFeatureAppScope.destroy).toHaveBeenCalledTimes(1);
       });
@@ -171,14 +197,13 @@ describe('FeatureAppContainer', () => {
         });
 
         it('logs the error', () => {
-          const wrapper = shallow(
+          const testRenderer = renderWithFeatureHubContext(
             <FeatureAppContainer
-              featureAppManager={mockManager}
               featureAppDefinition={mockFeatureAppDefinition}
             />
           );
 
-          wrapper.unmount();
+          testRenderer.unmount();
 
           expect(stubbedConsole.stub.error.mock.calls).toEqual([[mockError]]);
         });
@@ -204,14 +229,13 @@ describe('FeatureAppContainer', () => {
       });
 
       it('renders nothing and logs an error', () => {
-        const wrapper = shallow(
+        const testRenderer = renderWithFeatureHubContext(
           <FeatureAppContainer
-            featureAppManager={mockManager}
             featureAppDefinition={mockFeatureAppDefinition}
           />
         );
 
-        expect(wrapper.isEmptyRender()).toBe(true);
+        expect(testRenderer.toJSON()).toBeNull();
 
         const expectedError = new Error(
           'Invalid Feature App found. The Feature App must be an object with either 1) a `render` method that returns a React element, or 2) an `attachTo` method that accepts a container DOM element.'
@@ -234,28 +258,24 @@ describe('FeatureAppContainer', () => {
     });
 
     it('renders nothing and logs an error', () => {
-      const wrapper = shallow(
-        <FeatureAppContainer
-          featureAppManager={mockManager}
-          featureAppDefinition={mockFeatureAppDefinition}
-        />
+      const testRenderer = renderWithFeatureHubContext(
+        <FeatureAppContainer featureAppDefinition={mockFeatureAppDefinition} />
       );
 
-      expect(wrapper.isEmptyRender()).toBe(true);
+      expect(testRenderer.toJSON()).toBeNull();
 
       expect(stubbedConsole.stub.error.mock.calls).toEqual([[mockError]]);
     });
 
     describe('when unmounted', () => {
       it('does nothing', () => {
-        const wrapper = shallow(
+        const testRenderer = renderWithFeatureHubContext(
           <FeatureAppContainer
-            featureAppManager={mockManager}
             featureAppDefinition={mockFeatureAppDefinition}
           />
         );
 
-        wrapper.unmount();
+        testRenderer.unmount();
       });
     });
   });

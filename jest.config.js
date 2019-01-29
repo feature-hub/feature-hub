@@ -19,8 +19,7 @@ module.exports = {
     '^@feature-hub/([^/]+)$': '<rootDir>/packages/$1/src/index.ts'
   },
   modulePathIgnorePatterns: ['/lib'],
-  setupFilesAfterEnv: ['<rootDir>/scripts/setup-test-framework.js'],
-  snapshotSerializers: ['enzyme-to-json/serializer'],
+  setupFilesAfterEnv: ['expect-puppeteer'],
   testMatch: ['<rootDir>/packages/*/src/**/*.test.{ts,tsx}'],
   testURL: 'http://example.com'
 };

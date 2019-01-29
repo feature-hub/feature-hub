@@ -1,9 +1,9 @@
-import {
-  FeatureAppDefinition,
-  FeatureAppManagerLike,
-  FeatureAppScope
-} from '@feature-hub/core';
+import {FeatureAppDefinition, FeatureAppScope} from '@feature-hub/core';
 import * as React from 'react';
+import {
+  FeatureHubContextConsumer,
+  FeatureHubContextValue
+} from './feature-hub-context';
 import {isDomFeatureApp, isFeatureApp} from './internal/type-guards';
 
 export interface DomFeatureApp {
@@ -17,24 +17,26 @@ export interface ReactFeatureApp {
 export type FeatureApp = DomFeatureApp | ReactFeatureApp;
 
 export interface FeatureAppContainerProps {
-  readonly featureAppManager: FeatureAppManagerLike;
   readonly featureAppDefinition: FeatureAppDefinition<unknown>;
   readonly idSpecifier?: string;
 }
+
+type InternalFeatureAppContainerProps = FeatureAppContainerProps &
+  FeatureHubContextValue;
 
 const inBrowser =
   typeof window === 'object' &&
   typeof document === 'object' &&
   document.nodeType === 9;
 
-export class FeatureAppContainer extends React.PureComponent<
-  FeatureAppContainerProps
+class InternalFeatureAppContainer extends React.PureComponent<
+  InternalFeatureAppContainerProps
 > {
   private readonly featureAppScope?: FeatureAppScope<unknown>;
   private readonly featureApp?: FeatureApp;
   private readonly containerRef = React.createRef<HTMLDivElement>();
 
-  public constructor(props: FeatureAppContainerProps) {
+  public constructor(props: InternalFeatureAppContainerProps) {
     super(props);
 
     const {featureAppManager, featureAppDefinition, idSpecifier} = props;
@@ -90,4 +92,19 @@ export class FeatureAppContainer extends React.PureComponent<
 
     return this.featureApp.render();
   }
+}
+
+export function FeatureAppContainer(
+  props: FeatureAppContainerProps
+): JSX.Element {
+  return (
+    <FeatureHubContextConsumer>
+      {({featureAppManager}) => (
+        <InternalFeatureAppContainer
+          featureAppManager={featureAppManager}
+          {...props}
+        />
+      )}
+    </FeatureHubContextConsumer>
+  );
 }

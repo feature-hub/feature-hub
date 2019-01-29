@@ -1,6 +1,6 @@
 import {FeatureAppManager, FeatureServiceRegistry} from '@feature-hub/core';
 import {loadCommonJsModule} from '@feature-hub/module-loader-commonjs';
-import {FeatureAppLoader} from '@feature-hub/react';
+import {FeatureAppLoader, FeatureHubContextProvider} from '@feature-hub/react';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom/server';
 import {AppRendererOptions, AppRendererResult} from '../start-server';
@@ -18,11 +18,9 @@ export default async function renderApp({
   await featureAppManager.preloadFeatureApp(featureAppNodeUrl);
 
   const html = ReactDOM.renderToString(
-    <FeatureAppLoader
-      featureAppManager={featureAppManager}
-      src=""
-      serverSrc={featureAppNodeUrl}
-    />
+    <FeatureHubContextProvider value={{featureAppManager}}>
+      <FeatureAppLoader src="" serverSrc={featureAppNodeUrl} />
+    </FeatureHubContextProvider>
   );
 
   return {html};

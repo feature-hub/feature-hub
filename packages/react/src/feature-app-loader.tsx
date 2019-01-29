@@ -1,7 +1,10 @@
-import {AsyncSsrManagerV0} from '@feature-hub/async-ssr-manager';
-import {FeatureAppDefinition, FeatureAppManagerLike} from '@feature-hub/core';
+import {FeatureAppDefinition} from '@feature-hub/core';
 import * as React from 'react';
 import {FeatureAppContainer} from './feature-app-container';
+import {
+  FeatureHubContextConsumer,
+  FeatureHubContextValue
+} from './feature-hub-context';
 
 export interface Css {
   readonly href: string;
@@ -9,15 +12,16 @@ export interface Css {
 }
 
 export interface FeatureAppLoaderProps {
-  readonly featureAppManager: FeatureAppManagerLike;
   readonly src: string;
   readonly serverSrc?: string;
   readonly css?: Css[];
   readonly idSpecifier?: string;
-  readonly asyncSsrManager?: AsyncSsrManagerV0;
 }
 
-interface FeatureAppLoaderState {
+type InternalFeatureAppLoaderProps = FeatureAppLoaderProps &
+  FeatureHubContextValue;
+
+interface InternalFeatureAppLoaderState {
   readonly featureAppDefinition?: FeatureAppDefinition<unknown>;
   readonly hasError?: boolean;
 }
@@ -27,16 +31,16 @@ const inBrowser =
   typeof document === 'object' &&
   document.nodeType === 9;
 
-export class FeatureAppLoader extends React.PureComponent<
-  FeatureAppLoaderProps,
-  FeatureAppLoaderState
+class InternalFeatureAppLoader extends React.PureComponent<
+  InternalFeatureAppLoaderProps,
+  InternalFeatureAppLoaderState
 > {
-  public readonly state: FeatureAppLoaderState = {};
+  public readonly state: InternalFeatureAppLoaderState = {};
 
   private errorReported = false;
   private mounted = false;
 
-  public constructor(props: FeatureAppLoaderProps) {
+  public constructor(props: InternalFeatureAppLoaderProps) {
     super(props);
 
     const {
@@ -111,7 +115,6 @@ export class FeatureAppLoader extends React.PureComponent<
 
   public render(): React.ReactNode {
     const {featureAppDefinition, hasError} = this.state;
-    const {featureAppManager, idSpecifier} = this.props;
 
     if (hasError) {
       // An error UI could be rendered here.
@@ -125,9 +128,8 @@ export class FeatureAppLoader extends React.PureComponent<
 
     return (
       <FeatureAppContainer
-        featureAppManager={featureAppManager}
         featureAppDefinition={featureAppDefinition}
-        idSpecifier={idSpecifier}
+        idSpecifier={this.props.idSpecifier}
       />
     );
   }
@@ -173,4 +175,18 @@ export class FeatureAppLoader extends React.PureComponent<
       error
     );
   }
+}
+
+export function FeatureAppLoader(props: FeatureAppLoaderProps): JSX.Element {
+  return (
+    <FeatureHubContextConsumer>
+      {({featureAppManager, asyncSsrManager}) => (
+        <InternalFeatureAppLoader
+          featureAppManager={featureAppManager}
+          asyncSsrManager={asyncSsrManager}
+          {...props}
+        />
+      )}
+    </FeatureHubContextConsumer>
+  );
 }

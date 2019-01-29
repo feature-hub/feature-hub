@@ -1,6 +1,6 @@
 import {FeatureAppManager, FeatureServiceRegistry} from '@feature-hub/core';
 import {defineExternals, loadAmdModule} from '@feature-hub/module-loader-amd';
-import {FeatureAppLoader} from '@feature-hub/react';
+import {FeatureAppLoader, FeatureHubContextProvider} from '@feature-hub/react';
 import {
   SerializedStateManagerV0,
   serializedStateManagerDefinition
@@ -57,10 +57,9 @@ function getSerializedStatesFromDom(): string | undefined {
   }
 
   ReactDOM.hydrate(
-    <FeatureAppLoader
-      featureAppManager={featureAppManager}
-      src={featureAppUrl}
-    />,
+    <FeatureHubContextProvider value={{featureAppManager}}>
+      <FeatureAppLoader src={featureAppUrl} />
+    </FeatureHubContextProvider>,
     document.querySelector('main')
   );
 })().catch(console.error);

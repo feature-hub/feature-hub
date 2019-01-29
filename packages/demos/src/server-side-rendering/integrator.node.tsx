@@ -4,7 +4,7 @@ import {
 } from '@feature-hub/async-ssr-manager';
 import {FeatureAppManager, FeatureServiceRegistry} from '@feature-hub/core';
 import {loadCommonJsModule} from '@feature-hub/module-loader-commonjs';
-import {FeatureAppLoader} from '@feature-hub/react';
+import {FeatureAppLoader, FeatureHubContextProvider} from '@feature-hub/react';
 import {
   SerializedStateManagerV0,
   serializedStateManagerDefinition
@@ -45,12 +45,12 @@ export default async function renderApp({
 
   const html = await asyncSsrManager.renderUntilCompleted(() =>
     ReactDOM.renderToString(
-      <FeatureAppLoader
-        asyncSsrManager={asyncSsrManager}
-        featureAppManager={featureAppManager}
-        src=""
-        serverSrc={`http://localhost:${port}/feature-app.commonjs.js`}
-      />
+      <FeatureHubContextProvider value={{featureAppManager, asyncSsrManager}}>
+        <FeatureAppLoader
+          src=""
+          serverSrc={`http://localhost:${port}/feature-app.commonjs.js`}
+        />
+      </FeatureHubContextProvider>
     )
   );
 
