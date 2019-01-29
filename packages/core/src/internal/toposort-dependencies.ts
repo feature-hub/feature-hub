@@ -4,15 +4,7 @@ export interface Dependencies {
   readonly [dependencyName: string]: string | undefined;
 }
 
-export interface Dependant {
-  readonly dependencies?: Dependencies;
-  readonly optionalDependencies?: Dependencies;
-}
-
-export type DependencyGraph<TDependant extends Dependant = Dependant> = Map<
-  string,
-  TDependant
->;
+export type DependencyGraph = Map<string, Dependencies>;
 
 type DependencyEdges = [string, string][];
 
@@ -34,17 +26,17 @@ function createAllDependencyEdges(
 ): DependencyEdges {
   return Array.from(dependencyGraph.keys()).reduce(
     (allDependencyEdges, dependencyName) => {
-      const dependant = dependencyGraph.get(dependencyName);
+      const dependencies = dependencyGraph.get(dependencyName);
 
       /* istanbul ignore next */
-      if (!dependant) {
+      if (!dependencies) {
         return allDependencyEdges;
       }
 
-      const dependencyEdges = createDependencyEdges(dependencyName, {
-        ...dependant.dependencies,
-        ...dependant.optionalDependencies
-      });
+      const dependencyEdges = createDependencyEdges(
+        dependencyName,
+        dependencies
+      );
 
       return [...allDependencyEdges, ...dependencyEdges];
     },

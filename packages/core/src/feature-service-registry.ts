@@ -1,7 +1,10 @@
 import {coerce, satisfies} from 'semver';
 import {createUid} from './internal/create-uid';
 import * as Messages from './internal/feature-service-registry-messages';
-import {toposortDependencies} from './internal/toposort-dependencies';
+import {
+  DependencyGraph,
+  toposortDependencies
+} from './internal/toposort-dependencies';
 
 /**
  * A map of Feature Services with their ID as key and a semver-compatible
@@ -103,6 +106,38 @@ export interface FeatureServiceRegistryOptions {
 
 type ProviderId = string;
 
+type ProviderDefinitionsById = Map<
+  ProviderId,
+  FeatureServiceProviderDefinition<SharedFeatureService>
+>;
+
+function createDependencyGraph(
+  definitions: FeatureServiceProviderDefinition<SharedFeatureService>[]
+): DependencyGraph {
+  const dependencyGraph: DependencyGraph = new Map();
+
+  for (const definition of definitions) {
+    dependencyGraph.set(definition.id, {
+      ...definition.dependencies,
+      ...definition.optionalDependencies
+    });
+  }
+
+  return dependencyGraph;
+}
+
+function createProviderDefinitionById(
+  definitions: FeatureServiceProviderDefinition<SharedFeatureService>[]
+): ProviderDefinitionsById {
+  const providerDefinitionsById: ProviderDefinitionsById = new Map();
+
+  for (const definition of definitions) {
+    providerDefinitionsById.set(definition.id, definition);
+  }
+
+  return providerDefinitionsById;
+}
+
 /**
  * The FeatureServiceRegistry provides Feature Services to dependent consumers.
  * The integrator should instantiate a singleton instance of the registry.
@@ -143,16 +178,13 @@ export class FeatureServiceRegistry implements FeatureServiceRegistryLike {
     >[],
     consumerId: string
   ): void {
-    const providerDefinitionsById = new Map<
-      string,
-      FeatureServiceProviderDefinition<SharedFeatureService>
-    >();
+    const providerDefinitionsById = createProviderDefinitionById(
+      providerDefinitions
+    );
 
-    for (const providerDefinition of providerDefinitions) {
-      providerDefinitionsById.set(providerDefinition.id, providerDefinition);
-    }
+    const dependencyGraph = createDependencyGraph(providerDefinitions);
 
-    for (const providerId of toposortDependencies(providerDefinitionsById)) {
+    for (const providerId of toposortDependencies(dependencyGraph)) {
       const providerDefinition = providerDefinitionsById.get(providerId);
 
       if (this.sharedFeatureServices.has(providerId)) {
