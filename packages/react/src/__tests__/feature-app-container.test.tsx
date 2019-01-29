@@ -77,7 +77,7 @@ describe('FeatureAppContainer', () => {
         <FeatureAppContainer featureAppDefinition={mockFeatureAppDefinition} />
       );
 
-      expect(testRenderer).toMatchInlineSnapshot(`
+      expect(testRenderer.toJSON()).toMatchInlineSnapshot(`
 <div>
   This is the React Feature App.
 </div>
