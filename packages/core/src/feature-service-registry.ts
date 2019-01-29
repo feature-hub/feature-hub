@@ -102,7 +102,7 @@ export interface FeatureServiceRegistryOptions {
 
 type ProviderId = string;
 
-function createUnsupportedFeatureServiceMessage(
+function unsupportedFeatureServiceMessage(
   optional: boolean,
   providerId: string,
   consumerUid: string,
@@ -118,6 +118,108 @@ function createUnsupportedFeatureServiceMessage(
   )} could not be bound to consumer ${JSON.stringify(
     consumerUid
   )}. The supported versions are ${JSON.stringify(supportedVersions)}.`;
+}
+
+function invalidFeatureServiceVersionMessage(
+  providerId: string,
+  consumerId: string
+): string | undefined {
+  return `The Feature Service ${JSON.stringify(
+    providerId
+  )} could not be registered by consumer ${JSON.stringify(
+    consumerId
+  )} because it contains an invalid version.`;
+}
+
+function invalidFeatureServiceDependencyVersionMessage(
+  optional: boolean,
+  providerId: string,
+  consumerUid: string
+): string {
+  return `The ${
+    optional ? 'optional' : 'required'
+  } Feature Service ${JSON.stringify(
+    providerId
+  )} in an invalid version could not be bound to consumer ${JSON.stringify(
+    consumerUid
+  )}.`;
+}
+
+function unregisteredFeatureServiceMessage(
+  optional: boolean,
+  providerId: string,
+  consumerUid: string
+): string {
+  return `The ${
+    optional ? 'optional' : 'required'
+  } Feature Service ${JSON.stringify(
+    providerId
+  )} is not registered and therefore could not be bound to consumer ${JSON.stringify(
+    consumerUid
+  )}.`;
+}
+
+function successfullyRegisteredFeatureServiceMessage(
+  providerId: string,
+  consumerId: string
+): string {
+  return `The Feature Service ${JSON.stringify(
+    providerId
+  )} has been successfully registered by consumer ${JSON.stringify(
+    consumerId
+  )}.`;
+}
+
+function alreadyRegisteredFeatureServiceMessage(
+  providerId: string,
+  consumerId: string
+): string {
+  return `The already registered Feature Service ${JSON.stringify(
+    providerId
+  )} could not be re-registered by consumer ${JSON.stringify(consumerId)}.`;
+}
+
+function successfullyBoundFeatureServiceMessage(
+  providerId: string,
+  consumerUid: string
+): string {
+  return `The required Feature Service ${JSON.stringify(
+    providerId
+  )} has been successfully bound to consumer ${JSON.stringify(consumerUid)}.`;
+}
+
+function featureServicesAlreadyBoundMessage(
+  consumerUid: string
+): string | undefined {
+  return `All required Feature Services are already bound to consumer ${JSON.stringify(
+    consumerUid
+  )}.`;
+}
+
+function featureServiceUnbindingErrorMessage(
+  providerId: string,
+  consumerUid: string
+): string {
+  return `The required Feature Service ${JSON.stringify(
+    providerId
+  )} could not be unbound from consumer ${JSON.stringify(consumerUid)}.`;
+}
+
+function successfullyUnboundFeatureServiceMessage(
+  providerId: string,
+  consumerUid: string
+): string {
+  return `The required Feature Service ${JSON.stringify(
+    providerId
+  )} has been successfully unbound from consumer ${JSON.stringify(
+    consumerUid
+  )}.`;
+}
+
+function featureServicesAlreadyUnboundMessage(consumerUid: string): string {
+  return `All required Feature Services are already unbound from consumer ${JSON.stringify(
+    consumerUid
+  )}.`;
 }
 
 /**
@@ -175,11 +277,7 @@ export class FeatureServiceRegistry implements FeatureServiceRegistryLike {
       if (this.sharedFeatureServices.has(providerId)) {
         if (providerDefinitionsById.has(providerId)) {
           console.warn(
-            `The already registered Feature Service ${JSON.stringify(
-              providerId
-            )} could not be re-registered by consumer ${JSON.stringify(
-              consumerId
-            )}.`
+            alreadyRegisteredFeatureServiceMessage(providerId, consumerId)
           );
         }
       } else if (providerDefinition) {
@@ -195,11 +293,7 @@ export class FeatureServiceRegistry implements FeatureServiceRegistryLike {
         for (const version of Object.keys(sharedFeatureService)) {
           if (!coerce(version)) {
             throw new Error(
-              `The Feature Service ${JSON.stringify(
-                providerId
-              )} could not be registered by consumer ${JSON.stringify(
-                consumerId
-              )} because it contains an invalid version.`
+              invalidFeatureServiceVersionMessage(providerId, consumerId)
             );
           }
         }
@@ -207,11 +301,7 @@ export class FeatureServiceRegistry implements FeatureServiceRegistryLike {
         this.sharedFeatureServices.set(providerId, sharedFeatureService);
 
         console.info(
-          `The Feature Service ${JSON.stringify(
-            providerId
-          )} has been successfully registered by consumer ${JSON.stringify(
-            consumerId
-          )}.`
+          successfullyRegisteredFeatureServiceMessage(providerId, consumerId)
         );
       }
     }
@@ -242,11 +332,7 @@ export class FeatureServiceRegistry implements FeatureServiceRegistryLike {
     const consumerUid = createUid(consumerId, consumerIdSpecifier);
 
     if (this.consumerUids.has(consumerUid)) {
-      throw new Error(
-        `All required Feature Services are already bound to consumer ${JSON.stringify(
-          consumerUid
-        )}.`
-      );
+      throw new Error(featureServicesAlreadyBoundMessage(consumerUid));
     }
 
     const bindings = new Map<string, FeatureServiceBinding<unknown>>();
@@ -266,11 +352,7 @@ export class FeatureServiceRegistry implements FeatureServiceRegistryLike {
       }
 
       console.info(
-        `The required Feature Service ${JSON.stringify(
-          providerId
-        )} has been successfully bound to consumer ${JSON.stringify(
-          consumerUid
-        )}.`
+        successfullyBoundFeatureServiceMessage(providerId, consumerUid)
       );
 
       bindings.set(providerId, binding);
@@ -284,11 +366,7 @@ export class FeatureServiceRegistry implements FeatureServiceRegistryLike {
 
     const unbind = () => {
       if (unbound) {
-        throw new Error(
-          `All required Feature Services are already unbound from consumer ${JSON.stringify(
-            consumerUid
-          )}.`
-        );
+        throw new Error(featureServicesAlreadyUnboundMessage(consumerUid));
       }
 
       unbound = true;
@@ -302,19 +380,11 @@ export class FeatureServiceRegistry implements FeatureServiceRegistryLike {
           }
 
           console.info(
-            `The required Feature Service ${JSON.stringify(
-              providerId
-            )} has been successfully unbound from consumer ${JSON.stringify(
-              consumerUid
-            )}.`
+            successfullyUnboundFeatureServiceMessage(providerId, consumerUid)
           );
         } catch (error) {
           console.error(
-            `The required Feature Service ${JSON.stringify(
-              providerId
-            )} could not be unbound from consumer ${JSON.stringify(
-              consumerUid
-            )}.`,
+            featureServiceUnbindingErrorMessage(providerId, consumerUid),
             error
           );
         }
@@ -331,13 +401,11 @@ export class FeatureServiceRegistry implements FeatureServiceRegistryLike {
     {optional}: {optional: boolean}
   ): FeatureServiceBinding<unknown> | undefined {
     if (!requiredVersion) {
-      const message = `The ${
-        optional ? 'optional' : 'required'
-      } Feature Service ${JSON.stringify(
-        providerId
-      )} in an invalid version could not be bound to consumer ${JSON.stringify(
+      const message = invalidFeatureServiceDependencyVersionMessage(
+        optional,
+        providerId,
         consumerUid
-      )}.`;
+      );
 
       if (optional) {
         console.info(message);
@@ -351,13 +419,11 @@ export class FeatureServiceRegistry implements FeatureServiceRegistryLike {
     const sharedFeatureService = this.sharedFeatureServices.get(providerId);
 
     if (!sharedFeatureService) {
-      const message = `The ${
-        optional ? 'optional' : 'required'
-      } Feature Service ${JSON.stringify(
-        providerId
-      )} is not registered and therefore could not be bound to consumer ${JSON.stringify(
+      const message = unregisteredFeatureServiceMessage(
+        optional,
+        providerId,
         consumerUid
-      )}.`;
+      );
 
       if (optional) {
         console.info(message);
@@ -381,7 +447,7 @@ export class FeatureServiceRegistry implements FeatureServiceRegistryLike {
     const bindFeatureService = version && sharedFeatureService[version];
 
     if (!bindFeatureService) {
-      const message = createUnsupportedFeatureServiceMessage(
+      const message = unsupportedFeatureServiceMessage(
         optional,
         providerId,
         consumerUid,
