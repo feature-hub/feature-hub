@@ -1,20 +1,26 @@
 import {FeatureAppManager, FeatureServiceRegistry} from '@feature-hub/core';
-import {
-  FeatureAppContainer,
-  FeatureHubContextProvider
-} from '@feature-hub/react';
+import {defineExternals, loadAmdModule} from '@feature-hub/module-loader-amd';
+import * as FeatureHubReact from '@feature-hub/react';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import '../blueprint-css';
-import featureAppDefinition from './feature-app-outer';
 
 const featureServiceRegistry = new FeatureServiceRegistry();
 
-const featureAppManager = new FeatureAppManager(featureServiceRegistry);
+const featureAppManager = new FeatureAppManager(featureServiceRegistry, {
+  moduleLoader: loadAmdModule
+});
+
+defineExternals({
+  react: React,
+  '@feature-hub/react': FeatureHubReact
+});
+
+const {FeatureHubContextProvider, FeatureAppLoader} = FeatureHubReact;
 
 ReactDOM.render(
   <FeatureHubContextProvider value={{featureAppManager}}>
-    <FeatureAppContainer featureAppDefinition={featureAppDefinition} />
+    <FeatureAppLoader src="feature-app.umd.js" />
   </FeatureHubContextProvider>,
 
   document.querySelector('main')
