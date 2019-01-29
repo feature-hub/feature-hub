@@ -15,6 +15,10 @@ yarn
 Now run one of the following demos:
 
 ```sh
+yarn watch:demo feature-app-in-feature-app
+```
+
+```sh
 yarn watch:demo history-service
 ```
 
