@@ -22,14 +22,14 @@ export interface FeatureServiceConsumerDefinition {
      * A map of required Feature Services with their ID as key and a
      * semver-compatible version string as value.
      */
-    featureServices: FeatureServiceConsumerDependencies;
+    readonly featureServices: FeatureServiceConsumerDependencies;
   };
   readonly optionalDependencies?: {
     /**
      * A map of optional Feature Services with their ID as key and a
      * semver-compatible version string as value.
      */
-    featureServices: FeatureServiceConsumerDependencies;
+    readonly featureServices: FeatureServiceConsumerDependencies;
   };
 }
 
