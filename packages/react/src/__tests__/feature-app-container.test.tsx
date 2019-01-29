@@ -36,6 +36,18 @@ describe('FeatureAppContainer', () => {
     stubbedConsole.restore();
   });
 
+  it('throws an error when rendered without a FeatureHubContextProvider', () => {
+    expect(() =>
+      TestRenderer.create(
+        <FeatureAppContainer featureAppDefinition={mockFeatureAppDefinition} />
+      )
+    ).toThrowError(
+      new Error(
+        'No Feature Hub context was provided! There are two possible causes: 1.) No FeatureHubContextProvider was rendered in the React tree. 2.) A Feature App that renders itself a FeatureAppLoader or a FeatureAppContainer did not declare @feature-hub/react as an external package.'
+      )
+    );
+  });
+
   const renderWithFeatureHubContext = (
     node: React.ReactNode,
     options?: TestRenderer.TestRendererOptions
