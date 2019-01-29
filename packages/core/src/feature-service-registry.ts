@@ -152,7 +152,7 @@ function isOptionalFeatureServiceDependency(
   );
 }
 
-function createProviderDefinitionById(
+function createProviderDefinitionsById(
   definitions: FeatureServiceProviderDefinition<SharedFeatureService>[]
 ): ProviderDefinitionsById {
   const providerDefinitionsById: ProviderDefinitionsById = new Map();
@@ -204,7 +204,7 @@ export class FeatureServiceRegistry implements FeatureServiceRegistryLike {
     >[],
     consumerId: string
   ): void {
-    const providerDefinitionsById = createProviderDefinitionById(
+    const providerDefinitionsById = createProviderDefinitionsById(
       providerDefinitions
     );
 
