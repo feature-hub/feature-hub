@@ -18,16 +18,16 @@ const FeatureHubContext = React.createContext(
 
 export const FeatureHubContextProvider = FeatureHubContext.Provider;
 
-export const FeatureHubContextConsumer = ({
-  children
-}: React.ConsumerProps<FeatureHubContextValue>) => (
+export const FeatureHubContextConsumer = (
+  props: React.ConsumerProps<FeatureHubContextValue>
+) => (
   <FeatureHubContext.Consumer>
     {value => {
       if (value === dummyDefaultFeatureHubContextValue) {
         throw new Error(noFeatureHubContextValueErrorMessage);
       }
 
-      return children(value);
+      return props.children(value);
     }}
   </FeatureHubContext.Consumer>
 );
