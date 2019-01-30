@@ -16,9 +16,22 @@ The `FeatureAppContainer` and `FeatureAppLoader` both access the
 integrator provides with the
 `FeatureHubContextProvider`][placing-feature-apps-on-a-web-page-using-react]
 from the [`@feature-hub/react`][react-api] package. Therefore the parent Feature
-App must define `@feature-hub/react` (as well as `react` itself) as an external
-dependency, and the integrator must provide it as a shared dependency (see the
-["Sharing NPM Dependencies" guide][sharing-npm-dependencies] for more details).
+App must define `@feature-hub/react` and `react` as [external
+dependencies][sharing-npm-dependencies], and the integrator must provide them as
+shared dependencies:
+
+```js
+import {defineExternals} from '@feature-hub/module-loader-amd';
+import * as FeatureHubReact from '@feature-hub/react';
+import * as React from 'react';
+```
+
+```js
+defineExternals({
+  react: React,
+  '@feature-hub/react': FeatureHubReact
+});
+```
 
 [react-feature-app-container]:
   /docs/guides/integrating-the-feature-hub#react-feature-app-container
