@@ -25,7 +25,7 @@
   },
   "devDependencies": {
     "@types/react-test-renderer": "^16.0.3",
-    "jest-stub-methods": "^0.1.0",
+    "jest-stub-methods": "^0.2.0",
     "react": "^16.6.3",
     "react-test-renderer": "^16.7.0"
   },

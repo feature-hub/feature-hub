@@ -7443,10 +7443,10 @@ jest-snapshot@^24.0.0:
     pretty-format "^24.0.0"
     semver "^5.5.0"
 
-jest-stub-methods@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/jest-stub-methods/-/jest-stub-methods-0.1.0.tgz#d500890080f7f5f0319a2952967696aeb2ce12eb"
-  integrity sha512-bdTCgY35crteD01U2oJkZ6jZiaQuC61akpK+b2EwxS1jgjBp+GjlVeqteQ6GeQR9OMIgMma8er9MZGkC6sZpUA==
+jest-stub-methods@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/jest-stub-methods/-/jest-stub-methods-0.2.0.tgz#b20622338315ecc2e0a3f1146195fc9556577f35"
+  integrity sha512-Yaj1j7ZoLUxcnPLx9n86Sr3dzrnBcJ6lYRda2C3sGgk2T/1X+zp3VQ4bPOnOkF/tZxg+tpFcw7HkoR4WfxqddQ==
 
 jest-util@^24.0.0:
   version "24.0.0"
