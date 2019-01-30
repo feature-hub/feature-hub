@@ -24,6 +24,7 @@ describe('FeatureAppLoader (on Node.js)', () => {
   let mockGetAsyncFeatureAppDefinition: jest.Mock;
   let mockAsyncFeatureAppDefinition: AsyncValue<FeatureAppDefinition<unknown>>;
   let mockAsyncSsrManager: MockAsyncSsrManager;
+  let mockAddUrlForHydration: jest.Mock;
   let stubbedConsole: Stubbed<Console>;
 
   beforeEach(() => {
@@ -50,6 +51,8 @@ describe('FeatureAppLoader (on Node.js)', () => {
       renderUntilCompleted: jest.fn()
     };
 
+    mockAddUrlForHydration = jest.fn();
+
     stubbedConsole = stubMethods(console);
   });
 
@@ -62,7 +65,8 @@ describe('FeatureAppLoader (on Node.js)', () => {
       <FeatureHubContextProvider
         value={{
           featureAppManager: mockFeatureAppManager,
-          asyncSsrManager: mockAsyncSsrManager
+          asyncSsrManager: mockAsyncSsrManager,
+          addUrlForHydration: mockAddUrlForHydration
         }}
       >
         {node}
@@ -80,6 +84,12 @@ describe('FeatureAppLoader (on Node.js)', () => {
       renderWithFeatureHubContext(<FeatureAppLoader src="example.js" />);
 
       expect(mockAsyncSsrManager.rerenderAfter).not.toHaveBeenCalled();
+    });
+
+    it('does not add a URL for hydration', () => {
+      renderWithFeatureHubContext(<FeatureAppLoader src="example.js" />);
+
+      expect(mockAddUrlForHydration).not.toHaveBeenCalled();
     });
   });
 
@@ -102,6 +112,14 @@ describe('FeatureAppLoader (on Node.js)', () => {
       expect(mockAsyncSsrManager.rerenderAfter.mock.calls).toEqual([
         [mockAsyncFeatureAppDefinition.promise]
       ]);
+    });
+
+    it('adds the src URL for hydration', () => {
+      renderWithFeatureHubContext(
+        <FeatureAppLoader src="example.js" serverSrc="example-node.js" />
+      );
+
+      expect(mockAddUrlForHydration).toHaveBeenCalledWith('example.js');
     });
 
     describe('when a Feature App definition is synchronously available', () => {
@@ -162,6 +180,16 @@ describe('FeatureAppLoader (on Node.js)', () => {
         } catch {}
 
         expect(mockAsyncSsrManager.rerenderAfter).not.toHaveBeenCalled();
+      });
+
+      it('adds the src URL for hydration', () => {
+        try {
+          renderWithFeatureHubContext(
+            <FeatureAppLoader src="example.js" serverSrc="example-node.js" />
+          );
+        } catch {}
+
+        expect(mockAddUrlForHydration).toHaveBeenCalledWith('example.js');
       });
     });
   });

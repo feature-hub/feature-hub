@@ -25,6 +25,7 @@ describe('FeatureAppLoader', () => {
   let mockGetAsyncFeatureAppDefinition: jest.Mock;
   let mockAsyncFeatureAppDefinition: AsyncValue<FeatureAppDefinition<unknown>>;
   let mockAsyncSsrManager: MockAsyncSsrManager;
+  let mockAddUrlForHydration: jest.Mock;
   let stubbedConsole: Stubbed<Console>;
 
   beforeEach(() => {
@@ -52,6 +53,8 @@ describe('FeatureAppLoader', () => {
       renderUntilCompleted: jest.fn()
     };
 
+    mockAddUrlForHydration = jest.fn();
+
     stubbedConsole = stubMethods(console);
   });
 
@@ -74,7 +77,8 @@ describe('FeatureAppLoader', () => {
       <FeatureHubContextProvider
         value={{
           featureAppManager: mockFeatureAppManager,
-          asyncSsrManager: mockAsyncSsrManager
+          asyncSsrManager: mockAsyncSsrManager,
+          addUrlForHydration: mockAddUrlForHydration
         }}
       >
         {node}
@@ -166,6 +170,14 @@ describe('FeatureAppLoader', () => {
 
       expect(mockAsyncSsrManager.rerenderAfter).not.toHaveBeenCalled();
     });
+
+    it('does not add a URL for hydration', () => {
+      renderWithFeatureHubContext(
+        <FeatureAppLoader src="example.js" serverSrc="example-node.js" />
+      );
+
+      expect(mockAddUrlForHydration).not.toHaveBeenCalled();
+    });
   });
 
   describe('when the async Feature App definition synchronously has an error', () => {
@@ -238,6 +250,14 @@ describe('FeatureAppLoader', () => {
       );
 
       expect(mockAsyncSsrManager.rerenderAfter).not.toHaveBeenCalled();
+    });
+
+    it('does not add a URL for hydration', () => {
+      renderWithFeatureHubContext(
+        <FeatureAppLoader src="example.js" serverSrc="example-node.js" />
+      );
+
+      expect(mockAddUrlForHydration).not.toHaveBeenCalled();
     });
 
     describe('when unmounted before loading has finished', () => {
