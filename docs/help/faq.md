@@ -22,6 +22,11 @@ Alternatively, a Feature Service could be implemented using [dynamic code
 splitting][dynamic-code-splitting]. The relevant code components would only be
 dynamically loaded when the Feature Service is used.
 
+## Can a Feature App render another Feature App?
+
+Yes, [a React Feature App can render another Feature
+App][feature-app-in-feature-app].
+
 ## Can we integrate an existing Angular 2.0 application into the Feature Hub?
 
 Yes, but the application must first be [converted to a Feature
@@ -37,3 +42,4 @@ should build a Feature Hub Integrator without React.
   /docs/guides/reducing-the-bundle-size#dynamic-code-splitting-with-webpack
 [react-api]: /@feature-hub/react/
 [writing-a-feature-app]: /docs/guides/writing-a-feature-app
+[feature-app-in-feature-app]: /docs/guides/feature-app-in-feature-app
