@@ -7,10 +7,23 @@ export interface FeatureHubContextValue {
    * The `FeatureAppManager` singleton instance.
    */
   featureAppManager: FeatureAppManagerLike;
+
   /**
-   * The Async SSR Manager Feature Service that is bound to the integrator.
+   * The Async SSR Manager Feature Service that is bound to the integrator. It
+   * is only provided on the server.
    */
   asyncSsrManager?: AsyncSsrManagerV0;
+
+  /**
+   * A callback that the integrator provides on the server, mainly for the
+   * {@link FeatureAppLoader}, to add browser URLs of those Feature Apps that
+   * are rendered on the server, so that they can be preloaded in the browser
+   * before hydration. Calling it more than once with the same URL must not have
+   * any impact.
+   *
+   * @param url The browser URL of a Feature App that is rendered on the server.
+   */
+  addUrlForHydration?(url: string): void;
 }
 
 const dummyDefaultFeatureHubContextValue = {};

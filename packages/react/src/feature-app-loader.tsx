@@ -64,7 +64,8 @@ class InternalFeatureAppLoader extends React.PureComponent<
       featureAppManager,
       src: browserSrc,
       serverSrc,
-      asyncSsrManager
+      asyncSsrManager,
+      addUrlForHydration
     } = props;
 
     const src = inBrowser ? browserSrc : serverSrc;
@@ -75,6 +76,10 @@ class InternalFeatureAppLoader extends React.PureComponent<
       }
 
       return;
+    }
+
+    if (!inBrowser && addUrlForHydration) {
+      addUrlForHydration(browserSrc);
     }
 
     const asyncFeatureAppDefinition = featureAppManager.getAsyncFeatureAppDefinition(
@@ -202,10 +207,11 @@ class InternalFeatureAppLoader extends React.PureComponent<
 export function FeatureAppLoader(props: FeatureAppLoaderProps): JSX.Element {
   return (
     <FeatureHubContextConsumer>
-      {({featureAppManager, asyncSsrManager}) => (
+      {({featureAppManager, asyncSsrManager, addUrlForHydration}) => (
         <InternalFeatureAppLoader
           featureAppManager={featureAppManager}
           asyncSsrManager={asyncSsrManager}
+          addUrlForHydration={addUrlForHydration}
           {...props}
         />
       )}
