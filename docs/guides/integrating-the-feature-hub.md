@@ -89,8 +89,19 @@ const featureAppManager = new FeatureAppManager(featureServiceRegistry, {
 An integrator can use the `FeatureAppLoader` or the `FeatureAppContainer` (both
 from the [`@feature-hub/react`][react-api] package) to place Feature Apps on a
 web page that have been [implemented using
-React][implementing-a-feature-app-using-react]. Each of them need the
-`FeatureAppManager` singleton instance.
+React][implementing-a-feature-app-using-react]. Each of them access the
+`FeatureAppManager` singleton instance through React context. To provide the
+context, the integrator must render a `FeatureHubContextProvider`:
+
+```js
+import {FeatureHubContextProvider} from '@feature-hub/react';
+```
+
+```jsx
+<FeatureHubContextProvider value={{featureAppManager}}>
+  {/* ... */}
+</FeatureHubContextProvider>
+```
 
 ### React Feature App Loader
 
@@ -107,10 +118,7 @@ import {FeatureAppLoader} from '@feature-hub/react';
 ```
 
 ```jsx
-<FeatureAppLoader
-  featureAppManager={featureAppManager}
-  src="https://example.com/some-feature-app.js"
-/>
+<FeatureAppLoader src="https://example.com/some-feature-app.js" />
 ```
 
 > If the integrator has configured the AMD module loader in the browser, the
@@ -123,7 +131,6 @@ Additionally, when a Feature App needs to be rendered on the server, its
 
 ```jsx
 <FeatureAppLoader
-  featureAppManager={featureAppManager}
   src="https://example.com/some-feature-app.js"
   serverSrc="https://example.com/some-feature-app-node.js"
 />
@@ -139,7 +146,6 @@ You can also define a `css` prop to add stylesheets to the document:
 
 ```jsx
 <FeatureAppLoader
-  featureAppManager={featureAppManager}
   src="https://example.com/some-feature-app.js"
   css={[
     {href: 'https://example.com/some-feature-app.css'},
@@ -158,14 +164,12 @@ integrator:
 <section>
   <div>
     <FeatureAppLoader
-      featureAppManager={featureAppManager}
       src="https://example.com/some-feature-app.js"
       idSpecifier="main"
     />
   </div>
   <aside>
     <FeatureAppLoader
-      featureAppManager={featureAppManager}
       src="https://example.com/some-feature-app.js"
       idSpecifier="aside"
     />
@@ -189,10 +193,7 @@ import {someFeatureAppDefinition} from './some-feature-app';
 ```
 
 ```jsx
-<FeatureAppContainer
-  featureAppManager={featureAppManager}
-  featureAppDefinition={someFeatureAppDefinition}
-/>
+<FeatureAppContainer featureAppDefinition={someFeatureAppDefinition} />
 ```
 
 #### `idSpecifier`
@@ -205,14 +206,12 @@ integrator:
 <section>
   <div>
     <FeatureAppContainer
-      featureAppManager={featureAppManager}
       featureAppDefinition={someFeatureAppDefinition}
       idSpecifier="main"
     />
   </div>
   <aside>
     <FeatureAppContainer
-      featureAppManager={featureAppManager}
       featureAppDefinition={someFeatureAppDefinition}
       idSpecifier="aside"
     />
