@@ -229,12 +229,12 @@ their initial view:
 ```js
 const html = await asyncSsrManager.renderUntilCompleted(() =>
   ReactDOM.renderToString(
-    <FeatureAppLoader
-      asyncSsrManager={asyncSsrManager}
-      featureAppManager={featureAppManager}
-      src="https://example.com/some-feature-app.js"
-      serverSrc="https://example.com/some-feature-app-node.js"
-    />
+    <FeatureHubContextProvider value={{featureAppManager, asyncSsrManager}}>
+      <FeatureAppLoader
+        src="https://example.com/some-feature-app.js"
+        serverSrc="https://example.com/some-feature-app-node.js"
+      />
+    </FeatureHubContextProvider>
   )
 );
 ```
