@@ -13,6 +13,7 @@
       "guides/sharing-the-browser-history",
       "guides/server-side-rendering",
       "guides/sharing-npm-dependencies",
+      "guides/feature-app-in-feature-app",
       "guides/reducing-the-bundle-size"
     ],
     "Help": ["help/faq"]
