@@ -1,15 +1,15 @@
 import {coerce, satisfies} from 'semver';
 
-export interface Externals {
+export interface ProvidedExternals {
   readonly [moduleName: string]: string;
 }
 
-export interface ExternalDependencies {
+export interface RequiredExternals {
   readonly [moduleName: string]: string;
 }
 
 export class ExternalsValidator {
-  public constructor(private readonly providedExternals: Externals) {
+  public constructor(private readonly providedExternals: ProvidedExternals) {
     for (const [moduleName, providedVersion] of Object.entries(
       providedExternals
     )) {
@@ -23,7 +23,7 @@ export class ExternalsValidator {
     }
   }
 
-  public validate(requiredExternals: ExternalDependencies): void {
+  public validate(requiredExternals: RequiredExternals): void {
     for (const [moduleName, versionRange] of Object.entries(
       requiredExternals
     )) {
