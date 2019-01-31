@@ -2,15 +2,15 @@ export function featureServiceUnsupported(
   optional: boolean,
   providerId: string,
   consumerUid: string,
-  requiredVersion: string,
+  versionRange: string,
   supportedVersions: string[]
 ): string {
   return `The ${
     optional ? 'optional' : 'required'
   } Feature Service ${JSON.stringify(
     providerId
-  )} in the unsupported version ${JSON.stringify(
-    requiredVersion
+  )} in the unsupported version range ${JSON.stringify(
+    versionRange
   )} could not be bound to consumer ${JSON.stringify(
     consumerUid
   )}. The supported versions are ${JSON.stringify(supportedVersions)}.`;

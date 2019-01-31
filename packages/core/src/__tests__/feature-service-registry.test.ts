@@ -226,7 +226,7 @@ describe('FeatureServiceRegistry', () => {
     it('fails to register the Feature Service "d" due to an unsupported dependency version', () => {
       const stateProviderD = {
         id: 'd',
-        dependencies: {featureServices: {a: '1.0'}},
+        dependencies: {featureServices: {a: '~1.0'}},
         create: jest.fn()
       };
 
@@ -237,7 +237,7 @@ describe('FeatureServiceRegistry', () => {
         )
       ).toThrowError(
         new Error(
-          'The required Feature Service "a" in the unsupported version "1.0" could not be bound to consumer "d". The supported versions are ["1.1"].'
+          'The required Feature Service "a" in the unsupported version range "~1.0" could not be bound to consumer "d". The supported versions are ["1.1"].'
         )
       );
     });
@@ -245,7 +245,7 @@ describe('FeatureServiceRegistry', () => {
     it('does not fail to register the Feature Service "d" due to an unsupported optional dependency version', () => {
       const stateProviderD = {
         id: 'd',
-        optionalDependencies: {featureServices: {a: '1.0'}},
+        optionalDependencies: {featureServices: {a: '~1.0'}},
         create: jest.fn(() => ({}))
       };
 
@@ -261,7 +261,7 @@ describe('FeatureServiceRegistry', () => {
           'The Feature Service "a" has been successfully registered by consumer "test".'
         ],
         [
-          'The optional Feature Service "a" in the unsupported version "1.0" could not be bound to consumer "d". The supported versions are ["1.1"].'
+          'The optional Feature Service "a" in the unsupported version range "~1.0" could not be bound to consumer "d". The supported versions are ["1.1"].'
         ],
         [
           'The Feature Service "d" has been successfully registered by consumer "test".'

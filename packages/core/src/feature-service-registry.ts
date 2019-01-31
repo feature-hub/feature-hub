@@ -280,10 +280,12 @@ export class FeatureServiceRegistry implements FeatureServiceRegistryLike {
         providerId
       );
 
+      const versionRange = allDependencies[providerId];
+
       const binding = this.bindFeatureService(
         providerId,
         consumerUid,
-        allDependencies[providerId],
+        versionRange,
         {optional}
       );
 
@@ -337,10 +339,10 @@ export class FeatureServiceRegistry implements FeatureServiceRegistryLike {
   private bindFeatureService(
     providerId: string,
     consumerUid: string,
-    requiredVersion: string | undefined,
+    versionRange: string | undefined,
     {optional}: {optional: boolean}
   ): FeatureServiceBinding<unknown> | undefined {
-    if (!requiredVersion) {
+    if (!versionRange) {
       const message = Messages.featureServiceDependencyVersionInvalid(
         optional,
         providerId,
@@ -381,7 +383,7 @@ export class FeatureServiceRegistry implements FeatureServiceRegistryLike {
 
       // We already ensure coercebility at service registration time.
       // tslint:disable-next-line: no-non-null-assertion
-      return satisfies(actualVersion!, requiredVersion);
+      return satisfies(actualVersion!, versionRange);
     });
 
     const bindFeatureService = version && sharedFeatureService[version];
@@ -391,7 +393,7 @@ export class FeatureServiceRegistry implements FeatureServiceRegistryLike {
         optional,
         providerId,
         consumerUid,
-        requiredVersion,
+        versionRange,
         supportedVersions
       );
 
