@@ -12,6 +12,7 @@ export interface AppRendererOptions {
 export interface AppRendererResult {
   html: string;
   serializedStates?: string;
+  urlsForHydration?: Set<string>;
 }
 
 export type AppRenderer = (
@@ -20,11 +21,19 @@ export type AppRenderer = (
 
 function createDocumentHtml(
   bodyHtml: string,
-  serializedStates?: string
+  serializedStates?: string,
+  urlsForHydration?: Set<string>
 ): string {
   const serializedStatesScript = serializedStates
     ? `<script type="x-feature-hub/serialized-states">${serializedStates}</script>`
     : '';
+
+  const urlsForHydrationScript =
+    urlsForHydration && urlsForHydration.size
+      ? `<script type="x-feature-hub/urls-for-hydration">${JSON.stringify(
+          Array.from(urlsForHydration)
+        )}</script>`
+      : '';
 
   return `
     <html>
@@ -34,6 +43,7 @@ function createDocumentHtml(
       <body>
         ${bodyHtml}
         ${serializedStatesScript}
+        ${urlsForHydrationScript}
         <script src="integrator.js"></script>
       </body>
     </html>
@@ -51,10 +61,18 @@ export async function startServer(
   app.get('/', async (req, res) => {
     try {
       if (renderApp) {
-        const {html: appHtml, serializedStates} = await renderApp({port, req});
+        const {
+          html: appHtml,
+          serializedStates,
+          urlsForHydration
+        } = await renderApp({port, req});
 
         res.send(
-          createDocumentHtml(`<main>${appHtml}</main>`, serializedStates)
+          createDocumentHtml(
+            `<main>${appHtml}</main>`,
+            serializedStates,
+            urlsForHydration
+          )
         );
       } else {
         res.send(createDocumentHtml(`<main></main>`));

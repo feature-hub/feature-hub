@@ -1,6 +1,6 @@
 import {FeatureAppManager, FeatureServiceRegistry} from '@feature-hub/core';
 import {defineExternals, loadAmdModule} from '@feature-hub/module-loader-amd';
-import {FeatureAppLoader, FeatureHubContextProvider} from '@feature-hub/react';
+import {FeatureHubContextProvider} from '@feature-hub/react';
 import {
   SerializedStateManagerV0,
   serializedStateManagerDefinition
@@ -8,8 +8,7 @@ import {
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import '../blueprint-css';
-
-const featureAppUrl = 'feature-app.umd.js';
+import {App} from './app';
 
 function getSerializedStatesFromDom(): string | undefined {
   const scriptElement = document.querySelector(
@@ -17,6 +16,18 @@ function getSerializedStatesFromDom(): string | undefined {
   );
 
   return (scriptElement && scriptElement.textContent) || undefined;
+}
+
+function getUrlsForHydrationFromDom(): string[] {
+  const scriptElement = document.querySelector(
+    'script[type="x-feature-hub/urls-for-hydration"]'
+  );
+
+  if (!scriptElement || !scriptElement.textContent) {
+    return [];
+  }
+
+  return JSON.parse(scriptElement.textContent);
 }
 
 (async () => {
@@ -46,8 +57,6 @@ function getSerializedStatesFromDom(): string | undefined {
 
   defineExternals({react: React});
 
-  await featureAppManager.preloadFeatureApp(featureAppUrl);
-
   const serializedStateManager = featureServices[
     serializedStateManagerDefinition.id
   ] as SerializedStateManagerV0;
@@ -58,9 +67,15 @@ function getSerializedStatesFromDom(): string | undefined {
     serializedStateManager.setSerializedStates(serializedStates);
   }
 
+  await Promise.all(
+    getUrlsForHydrationFromDom().map(async url =>
+      featureAppManager.preloadFeatureApp(url)
+    )
+  );
+
   ReactDOM.hydrate(
     <FeatureHubContextProvider value={{featureAppManager}}>
-      <FeatureAppLoader src={featureAppUrl} />
+      <App />
     </FeatureHubContextProvider>,
     document.querySelector('main')
   );

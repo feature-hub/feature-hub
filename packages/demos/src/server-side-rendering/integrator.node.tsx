@@ -4,7 +4,10 @@ import {
 } from '@feature-hub/async-ssr-manager';
 import {FeatureAppManager, FeatureServiceRegistry} from '@feature-hub/core';
 import {loadCommonJsModule} from '@feature-hub/module-loader-commonjs';
-import {FeatureAppLoader, FeatureHubContextProvider} from '@feature-hub/react';
+import {
+  FeatureHubContextProvider,
+  FeatureHubContextValue
+} from '@feature-hub/react';
 import {
   SerializedStateManagerV0,
   serializedStateManagerDefinition
@@ -12,6 +15,7 @@ import {
 import * as React from 'react';
 import * as ReactDOM from 'react-dom/server';
 import {AppRendererOptions, AppRendererResult} from '../start-server';
+import {App} from './app';
 
 export default async function renderApp({
   port
@@ -45,13 +49,21 @@ export default async function renderApp({
     moduleLoader: loadCommonJsModule
   });
 
+  const urlsForHydration = new Set<string>();
+
+  const featureHubContextValue: FeatureHubContextValue = {
+    featureAppManager,
+    asyncSsrManager,
+
+    addUrlForHydration(url: string): void {
+      urlsForHydration.add(url);
+    }
+  };
+
   const html = await asyncSsrManager.renderUntilCompleted(() =>
     ReactDOM.renderToString(
-      <FeatureHubContextProvider value={{featureAppManager, asyncSsrManager}}>
-        <FeatureAppLoader
-          src=""
-          serverSrc={`http://localhost:${port}/feature-app.commonjs.js`}
-        />
+      <FeatureHubContextProvider value={featureHubContextValue}>
+        <App port={port} />
       </FeatureHubContextProvider>
     )
   );
@@ -62,5 +74,5 @@ export default async function renderApp({
 
   const serializedStates = serializedStateManager.serializeStates();
 
-  return {html, serializedStates};
+  return {html, serializedStates, urlsForHydration};
 }
