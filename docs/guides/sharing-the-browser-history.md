@@ -4,6 +4,9 @@ title: Sharing the Browser History
 sidebar_label: Sharing the Browser History
 ---
 
+> The feature described in this guide is also demonstrated in the ["History
+> Service" demo][history-service-demo].
+
 When multiple Feature Apps coexist on the same page, they shouldn't access the
 [browser history API][browser-history-api] directly. Otherwise, they would
 potentially overwrite their respective history and location changes. To enable
@@ -282,3 +285,5 @@ unchanged location of this consumer.
 [browser-history-api]: https://developer.mozilla.org/en-US/docs/Web/API/History
 [history-npm]: https://www.npmjs.com/package/history
 [history-service-api]: /@feature-hub/history-service/
+[history-service-demo]:
+  https://github.com/sinnerschrader/feature-hub/tree/master/packages/demos/src/history-service

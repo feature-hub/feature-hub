@@ -14,21 +14,63 @@ yarn
 
 Now run one of the following demos:
 
-```sh
-yarn watch:demo feature-app-in-feature-app
-```
+### [AMD Module Loader](src/module-loader-amd)
 
-```sh
-yarn watch:demo history-service
-```
+Demonstrates:
+
+- how the AMD module loader can be provided to the `FeatureAppManager` so that
+  Feature Apps that are deployed as AMD bundles can be loaded on the client
 
 ```sh
 yarn watch:demo module-loader-amd
 ```
 
+### [CommonJS Module Loader](src/module-loader-commonjs)
+
+Demonstrates:
+
+- how the CommonJS module loader can be provided to the `FeatureAppManager` so
+  that Feature Apps that are deployed as CommonJS bundles can be loaded on the
+  server
+
 ```sh
 yarn watch:demo module-loader-commonjs
 ```
+
+### [Feature App in Feature App](src/feature-app-in-feature-app)
+
+Demonstrates:
+
+- how a React Feature App can render another Feature App
+- how externals must be configured to make the feature work
+- how the AMD module loader can be used to provide externals
+
+```sh
+yarn watch:demo feature-app-in-feature-app
+```
+
+### [History Service](src/history-service)
+
+Demonstrates:
+
+- how multiple consumers can share the browser URL through the History Service
+- how the integrator can propagate the server request URL to the History Service
+  (via the Server Request Provider)
+
+```sh
+yarn watch:demo history-service
+```
+
+### [Server-Side Rendering](src/server-side-rendering)
+
+Demonstrates:
+
+- how the Async SSR Manager can be used to manage aysnchronous server-side
+  rendering with React
+- how the Serialized State Manager can be used to transfer the state of
+  server-rendered Feature Apps to the client
+- how the Feature Hub context can be used to transfer Feature App client URLs to
+  the client for hydration
 
 ```sh
 yarn watch:demo server-side-rendering
