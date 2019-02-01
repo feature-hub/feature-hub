@@ -13,6 +13,7 @@ const siteConfig = {
   ],
   colors: {primaryColor: '#500dc5', secondaryColor: '#ea3458'},
   copyright: `Copyright (c) 2018-${new Date().getFullYear()} SinnerSchrader Deutschland GmbH`,
+  usePrism: ['js', 'jsx'],
   highlight: {theme: 'default'},
   onPageNav: 'separate',
   cleanUrl: true,
