@@ -39,7 +39,7 @@ JSON string which will be assigned to a single configurable query parameter.
 
 ### As a Feature App
 
-In the browser:
+On the client:
 
 ```js
 import {Router} from 'react-router';
@@ -107,7 +107,7 @@ the history package. Note, however, that the `go`, `goBack`, `goForward` and
 The integrator defines the History Service using a root location transformer and
 registers it at the Feature Service registry.
 
-In the browser:
+On the client:
 
 ```js
 import {FeatureServiceRegistry} from '@feature-hub/core';

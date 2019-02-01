@@ -13,7 +13,7 @@ export interface Css {
 
 export interface FeatureAppLoaderProps {
   /**
-   * The URL of the Feature App's browser module bundle.
+   * The URL of the Feature App's client module bundle.
    */
   readonly src: string;
 
@@ -62,13 +62,13 @@ class InternalFeatureAppLoader extends React.PureComponent<
 
     const {
       featureAppManager,
-      src: browserSrc,
+      src: clientSrc,
       serverSrc,
       asyncSsrManager,
       addUrlForHydration
     } = props;
 
-    const src = inBrowser ? browserSrc : serverSrc;
+    const src = inBrowser ? clientSrc : serverSrc;
 
     if (!src) {
       if (inBrowser) {
@@ -79,7 +79,7 @@ class InternalFeatureAppLoader extends React.PureComponent<
     }
 
     if (!inBrowser && addUrlForHydration) {
-      addUrlForHydration(browserSrc);
+      addUrlForHydration(clientSrc);
     }
 
     const asyncFeatureAppDefinition = featureAppManager.getAsyncFeatureAppDefinition(
@@ -181,8 +181,8 @@ class InternalFeatureAppLoader extends React.PureComponent<
 
     this.errorReported = true;
 
-    const {idSpecifier, src: browserSrc, serverSrc} = this.props;
-    const src = inBrowser ? browserSrc : serverSrc;
+    const {idSpecifier, src: clientSrc, serverSrc} = this.props;
+    const src = inBrowser ? clientSrc : serverSrc;
 
     console.error(
       idSpecifier

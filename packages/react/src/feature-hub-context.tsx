@@ -16,12 +16,12 @@ export interface FeatureHubContextValue {
 
   /**
    * A callback that the integrator provides on the server, mainly for the
-   * {@link FeatureAppLoader}, to add browser URLs of those Feature Apps that
-   * are rendered on the server, so that they can be preloaded in the browser
+   * {@link FeatureAppLoader}, to add client URLs of those Feature Apps that
+   * are rendered on the server, so that they can be preloaded on the client
    * before hydration. Calling it more than once with the same URL must not have
    * any impact.
    *
-   * @param url The browser URL of a Feature App that is rendered on the server.
+   * @param url The client URL of a Feature App that is rendered on the server.
    */
   addUrlForHydration?(url: string): void;
 }

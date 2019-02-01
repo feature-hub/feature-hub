@@ -86,7 +86,7 @@ The `serializedStates` string is encoded so that it can be safely injected into
 the HTML document, e.g. [as text content of a custom script
 element][demos-inject-serialized-states-script].
 
-On the client before hydrating, this string must be extracted from the HTML
+On the client, before hydrating, this string must be extracted from the HTML
 document, e.g. [from the text content of the custom script
 element][demos-extract-serialized-states-script], and passed unmodified into the
 `setSerializedStates` method, where it will be decoded again:
@@ -100,10 +100,46 @@ Now the hydration can be started, and consumers will be able to
 
 ## Preloading Feature Apps on the Client
 
-**Note:** This feature is currently in development, see [#27][issue-27] for
-details.
+Before hydrating server-rendered Feature Apps, their source code for the client
+must be preloaded, so that on the client the same UI is rendered as on the
+server.
 
-## Server-Side Rendering Using React
+On the server, the integrator must gather a list of all client module bundle
+URLs for the server-rendered Feature Apps, and transfer those URLs to the
+client, e.g. via the HTML document [as text content of a custom script
+element][demos-inject-serialized-states-script].
+
+On the client, before hydrating, the URLs must be extracted from the HTML
+document, e.g. [from the text content of the custom script
+element][demos-extract-serialized-states-script], and then preloaded using the
+`FeatureAppManager`'s `preloadFeatureApp` method:
+
+```js
+const urlsForHydration = getUrlsForHydrationFromDom();
+
+await Promise.all(
+  urlsForHydration.map(async url => featureAppManager.preloadFeatureApp(url))
+);
+```
+
+### Using React
+
+A React integrator can use the `FeatureHubContextProvider` to provide a callback
+that is called by the `FeatureAppLoader` for server-rendered Feature Apps to
+populate a set of URLs on the server for hydration on the client:
+
+```js
+const urlsForHydration = new Set();
+const addUrlForHydration = url => urlsForHydration.add(url);
+```
+
+```jsx
+<FeatureHubContextProvider value={{featureAppManager, addUrlForHydration}}>
+  {/* render Feature Apps here */}
+</FeatureHubContextProvider>
+```
+
+## Asynchronous Server-Side Rendering Using React
 
 Since React does not yet support asynchronous rendering on the server, the
 [`@feature-hub/async-ssr-manager`][async-ssr-manager-api] package provides the
@@ -245,7 +281,6 @@ const html = await asyncSsrManager.renderUntilCompleted(() =>
 
 [async-ssr-manager-api]: /@feature-hub/async-ssr-manager/
 [serialized-state-manager-api]: /@feature-hub/serialized-state-manager/
-[issue-27]: https://github.com/sinnerschrader/feature-hub/issues/27
 [demos-inject-serialized-states-script]:
   https://github.com/sinnerschrader/feature-hub/blob/50a883a744d69f28980e46130bf2a1bdda415216/packages/demos/src/start-server.ts#L26
 [demos-extract-serialized-states-script]:
