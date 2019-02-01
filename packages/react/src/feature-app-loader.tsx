@@ -13,7 +13,7 @@ export interface Css {
 
 export interface FeatureAppLoaderProps {
   /**
-   * The URL of the Feature App's browser module bundle.
+   * The URL of the Feature App's client module bundle.
    */
   readonly src: string;
 
