@@ -60,7 +60,7 @@ interface of the [`@feature-hub/core`][core-api] package by the integrator (e.g.
 the [`@feature-hub/module-loader-amd`][module-loader-amd-api] package or the
 [`@feature-hub/module-loader-commonjs`][module-loader-commonjs-api] package).
 
-In the browser:
+On the client:
 
 ```js
 import {loadAmdModule} from '@feature-hub/module-loader-amd';
@@ -111,7 +111,7 @@ a remote location.
 #### `src`
 
 A Feature App can be loaded and integrated by defining a `src` which is the URL
-of its browser module bundle:
+of its client module bundle:
 
 ```js
 import {FeatureAppLoader} from '@feature-hub/react';
@@ -121,7 +121,7 @@ import {FeatureAppLoader} from '@feature-hub/react';
 <FeatureAppLoader src="https://example.com/some-feature-app.js" />
 ```
 
-> If the integrator has configured the AMD module loader in the browser, the
+> If the integrator has configured the AMD module loader on the client, the
 > Feature App to be loaded via `src` must be provided as an [AMD module][amd].
 
 #### `serverSrc`

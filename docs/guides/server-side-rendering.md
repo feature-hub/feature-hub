@@ -104,7 +104,7 @@ Before hydrating server-rendered Feature Apps, their source code for the client
 must be preloaded, so that on the client the same UI is rendered as on the
 server.
 
-On the server, the integrator must gather a list of all browser module bundle
+On the server, the integrator must gather a list of all client module bundle
 URLs for the server-rendered Feature Apps, and transfer those URLs to the
 client, e.g. via the HTML document [as text content of a custom script
 element][demos-inject-serialized-states-script].
