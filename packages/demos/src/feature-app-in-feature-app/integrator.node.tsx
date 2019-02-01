@@ -22,7 +22,10 @@ export default async function renderApp({
 
   const html = ReactDOM.renderToString(
     <FeatureHubContextProvider value={{featureAppManager}}>
-      <FeatureAppLoader src="" serverSrc={featureAppNodeUrl} />
+      <FeatureAppLoader
+        src="feature-app.umd.js"
+        serverSrc={featureAppNodeUrl}
+      />
     </FeatureHubContextProvider>
   );
 

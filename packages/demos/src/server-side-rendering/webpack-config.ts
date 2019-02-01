@@ -2,13 +2,17 @@ import {join} from 'path';
 import {Configuration} from 'webpack';
 import {webpackBaseConfig} from '../webpack-base-config';
 
+const featureAppConfig: Configuration = {
+  ...webpackBaseConfig,
+  entry: join(__dirname, './feature-app.tsx'),
+  externals: {
+    react: 'react'
+  }
+};
+
 export default [
   {
-    ...webpackBaseConfig,
-    entry: join(__dirname, './feature-app.tsx'),
-    externals: {
-      react: 'react'
-    },
+    ...featureAppConfig,
     output: {
       filename: 'feature-app.umd.js',
       libraryTarget: 'umd',
@@ -16,8 +20,7 @@ export default [
     }
   },
   {
-    ...webpackBaseConfig,
-    entry: join(__dirname, './feature-app.tsx'),
+    ...featureAppConfig,
     output: {
       filename: 'feature-app.commonjs.js',
       libraryTarget: 'commonjs2',
