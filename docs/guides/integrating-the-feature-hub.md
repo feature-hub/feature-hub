@@ -99,7 +99,7 @@ import {FeatureHubContextProvider} from '@feature-hub/react';
 
 ```jsx
 <FeatureHubContextProvider value={{featureAppManager}}>
-  {/* ... */}
+  {/* render Feature Apps here */}
 </FeatureHubContextProvider>
 ```
 
