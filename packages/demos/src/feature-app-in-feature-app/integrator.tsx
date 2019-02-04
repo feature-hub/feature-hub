@@ -24,9 +24,7 @@ const featureServiceRegistry = new FeatureServiceRegistry(externalsValidator);
 const featureAppManager = new FeatureAppManager(
   featureServiceRegistry,
   externalsValidator,
-  {
-    moduleLoader: loadAmdModule
-  }
+  {moduleLoader: loadAmdModule}
 );
 
 const {FeatureHubContextProvider, FeatureAppLoader} = FeatureHubReact;

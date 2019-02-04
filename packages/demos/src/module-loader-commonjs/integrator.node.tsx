@@ -13,9 +13,7 @@ export default async function renderApp({
   port
 }: AppRendererOptions): Promise<AppRendererResult> {
   const featureAppNodeUrl = `http://localhost:${port}/feature-app.commonjs.js`;
-
   const externalsValidator = new ExternalsValidator({});
-
   const featureServiceRegistry = new FeatureServiceRegistry(externalsValidator);
 
   const featureAppManager = new FeatureAppManager(

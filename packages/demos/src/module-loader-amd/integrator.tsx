@@ -20,9 +20,7 @@ const featureServiceRegistry = new FeatureServiceRegistry(externalsValidator);
 const featureAppManager = new FeatureAppManager(
   featureServiceRegistry,
   externalsValidator,
-  {
-    moduleLoader: loadAmdModule
-  }
+  {moduleLoader: loadAmdModule}
 );
 
 ReactDOM.render(

@@ -338,7 +338,6 @@ export class FeatureServiceRegistry implements FeatureServiceRegistryLike {
 
       const {configs} = this.options;
       const config = configs && configs[providerId];
-
       const {featureServices} = this.bindFeatureServices(providerDefinition);
 
       const sharedFeatureService = providerDefinition.create({
