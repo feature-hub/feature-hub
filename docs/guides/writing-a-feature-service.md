@@ -12,11 +12,11 @@ const myFeatureServiceDefinition = {
   id: 'acme:my-feature-service',
 
   dependencies: {
-    'acme:other-feature-service': '^2.0'
+    'acme:other-feature-service': '^2.0.0'
   },
 
   optionalDependencies: {
-    'acme:optional-feature-service': '^1.3'
+    'acme:optional-feature-service': '^1.3.0'
   },
 
   create(env) {
@@ -36,7 +36,7 @@ Feature Service.
 ## `dependencies` & `optionalDependencies`
 
 Feature Service dependencies are declared with their ID and a [semver version
-string][semver], e.g. `{'acme:other-feature-service': '^2.0'}`. There are two
+range][semver], e.g. `{'acme:other-feature-service': '^2.0.0'}`. There are two
 dependency maps. Both are optional properties of the Feature Service definition.
 
 The `dependencies` map contains all required Feature Services. If one of those
@@ -79,7 +79,7 @@ following properties:
      id: 'acme:my-feature-service',
 
      dependencies: {
-       'acme:other-feature-service': '^2.0'
+       'acme:other-feature-service': '^2.0.0'
      },
 
      create(env) {
@@ -129,7 +129,7 @@ const myFeatureServiceDefinition = {
       }
     });
 
-    return {'1.0': v1};
+    return {'1.0.0': v1};
   }
 };
 ```
@@ -161,14 +161,13 @@ const myFeatureServiceDefinition = {
       }
     });
 
-    return {'1.1': v1};
+    return {'1.1.0': v1};
   }
 };
 ```
 
 The version of a Feature Service needs to be incremented in a semver-compatible
-manner (without the need for a patch version). In this case, a method is added,
-leading to a minor version bump.
+manner. In this case, a method is added, leading to a minor version bump.
 
 In general, breaking changes should be avoided. If a Feature Service provider
 still needs to make breaking changes, a new Feature Service implementation for
@@ -212,7 +211,7 @@ const myFeatureServiceDefinition = {
       featureService: {getCount, increment, decrement}
     });
 
-    return {'1.1': v1, '2.0': v2};
+    return {'1.1.0': v1, '2.0.0': v2};
   }
 };
 ```
@@ -269,7 +268,7 @@ const myFeatureServiceDefinition = {
       return {featureService, unbind};
     };
 
-    return {'1.0': v1};
+    return {'1.0.0': v1};
   }
 };
 ```

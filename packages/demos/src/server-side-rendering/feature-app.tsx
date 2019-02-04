@@ -23,13 +23,13 @@ const featureAppDefinition: FeatureAppDefinition<
 
   dependencies: {
     featureServices: {
-      's2:serialized-state-manager': '^0.1'
+      's2:serialized-state-manager': '^0.1.0'
     }
   },
 
   optionalDependencies: {
     featureServices: {
-      's2:async-ssr-manager': '^0.1'
+      's2:async-ssr-manager': '^0.1.0'
     }
   },
 

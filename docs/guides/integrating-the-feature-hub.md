@@ -284,7 +284,7 @@ import {someFeatureServiceDefinition2} from './some-feature-service-2';
 const integratorDefinition = {
   id: 'acme:integrator',
   dependencies: {
-    [someFeatureServiceDefinition2.id]: '^1.0'
+    [someFeatureServiceDefinition2.id]: '^1.0.0'
   }
 };
 

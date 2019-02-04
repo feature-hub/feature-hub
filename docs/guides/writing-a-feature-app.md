@@ -12,7 +12,7 @@ const myFeatureAppDefinition = {
   id: 'acme:my-feature-app',
 
   dependencies: {
-    'acme:some-feature-service': '^2.0'
+    'acme:some-feature-service': '^2.0.0'
   },
 
   create(env) {
@@ -38,7 +38,7 @@ required Feature Services][feature-service-binder] to the dependent Feature App.
 ## `dependencies`
 
 Required Feature Services are declared with their ID and a [semver version
-string][semver], e.g. `{'acme:some-feature-service': '^2.0'}`.
+range][semver], e.g. `{'acme:some-feature-service': '^2.0.0'}`.
 
 ## `create`
 
@@ -69,7 +69,7 @@ properties:
      id: 'acme:my-feature-app',
 
      dependencies: {
-       'acme:some-feature-service': '^2.0'
+       'acme:some-feature-service': '^2.0.0'
      },
 
      create(env) {
@@ -105,7 +105,7 @@ const myFeatureAppDefinition = {
   id: 'acme:my-feature-app',
 
   dependencies: {
-    'acme:my-feature-service': '^1.0'
+    'acme:my-feature-service': '^1.0.0'
   },
 
   ownFeatureServiceDefinitions: [myFeatureServiceDefinition],

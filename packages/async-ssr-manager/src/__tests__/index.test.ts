@@ -30,10 +30,10 @@ describe('asyncSsrManagerDefinition', () => {
   });
 
   describe('#create', () => {
-    it('creates a shared Feature Service containing version 0.1', () => {
+    it('creates a shared Feature Service containing version 0.1.0', () => {
       const sharedAsyncSsrManager = asyncSsrManagerDefinition.create(mockEnv);
 
-      expect(sharedAsyncSsrManager['0.1']).toBeDefined();
+      expect(sharedAsyncSsrManager['0.1.0']).toBeDefined();
     });
 
     for (const invalidConfig of [null, {timeout: false}]) {
@@ -56,7 +56,9 @@ describe('asyncSsrManagerDefinition', () => {
     let asyncSsrManagerBinder: FeatureServiceBinder<AsyncSsrManagerV0>;
 
     beforeEach(() => {
-      asyncSsrManagerBinder = asyncSsrManagerDefinition.create(mockEnv)['0.1'];
+      asyncSsrManagerBinder = asyncSsrManagerDefinition.create(mockEnv)[
+        '0.1.0'
+      ];
     });
 
     describe('rendering', () => {
@@ -180,7 +182,7 @@ describe('asyncSsrManagerDefinition', () => {
           asyncSsrManagerBinder = asyncSsrManagerDefinition.create({
             config: undefined,
             featureServices: {}
-          })['0.1'];
+          })['0.1.0'];
         });
 
         it('logs a warning', async () => {

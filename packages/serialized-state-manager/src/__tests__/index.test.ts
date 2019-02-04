@@ -31,7 +31,7 @@ describe('serializedStateManagerDefinition', () => {
         mockEnv
       );
 
-      expect(sharedSerializedStateManager['0.1']).toBeDefined();
+      expect(sharedSerializedStateManager['0.1.0']).toBeDefined();
     });
   });
 
@@ -43,7 +43,7 @@ describe('serializedStateManagerDefinition', () => {
     beforeEach(() => {
       const serializedStateManagerBinder = serializedStateManagerDefinition.create(
         mockEnv
-      )['0.1'];
+      )['0.1.0'];
 
       integratorSerializedStateManager = serializedStateManagerBinder(
         'test:integrator'

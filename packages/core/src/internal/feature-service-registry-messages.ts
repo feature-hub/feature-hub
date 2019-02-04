@@ -18,13 +18,14 @@ export function featureServiceUnsupported(
 
 export function featureServiceVersionInvalid(
   providerId: string,
-  consumerId: string
+  consumerId: string,
+  version: string
 ): string | undefined {
   return `The Feature Service ${JSON.stringify(
     providerId
   )} could not be registered by consumer ${JSON.stringify(
     consumerId
-  )} because it contains an invalid version.`;
+  )} because it defines the invalid version ${JSON.stringify(version)}.`;
 }
 
 export function featureServiceDependencyVersionInvalid(
