@@ -1,4 +1,4 @@
-import {coerce, satisfies} from 'semver';
+import {satisfies, valid} from 'semver';
 
 export interface ProvidedExternals {
   readonly [moduleName: string]: string;
@@ -8,16 +8,20 @@ export interface RequiredExternals {
   readonly [moduleName: string]: string;
 }
 
-export class ExternalsValidator {
+export interface ExternalsValidatorLike {
+  validate(requiredExternals: RequiredExternals): void;
+}
+
+export class ExternalsValidator implements ExternalsValidatorLike {
   public constructor(private readonly providedExternals: ProvidedExternals) {
     for (const [moduleName, providedVersion] of Object.entries(
       providedExternals
     )) {
-      if (!coerce(providedVersion)) {
+      if (!valid(providedVersion)) {
         throw new Error(
-          `The provided external ${JSON.stringify(
-            moduleName
-          )} has an invalid version ${JSON.stringify(providedVersion)}.`
+          `The provided version ${JSON.stringify(
+            providedVersion
+          )} for the external ${JSON.stringify(moduleName)} is invalid.`
         );
       }
     }

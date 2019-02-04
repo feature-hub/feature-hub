@@ -2,7 +2,11 @@ import {
   AsyncSsrManagerV0,
   asyncSsrManagerDefinition
 } from '@feature-hub/async-ssr-manager';
-import {FeatureAppManager, FeatureServiceRegistry} from '@feature-hub/core';
+import {
+  ExternalsValidator,
+  FeatureAppManager,
+  FeatureServiceRegistry
+} from '@feature-hub/core';
 import {loadCommonJsModule} from '@feature-hub/module-loader-commonjs';
 import {
   FeatureHubContextProvider,
@@ -30,7 +34,11 @@ export default async function renderApp({
     }
   };
 
-  const featureServiceRegistry = new FeatureServiceRegistry();
+  const externalsValidator = new ExternalsValidator({
+    react: '16.7.0'
+  });
+
+  const featureServiceRegistry = new FeatureServiceRegistry(externalsValidator);
 
   featureServiceRegistry.registerFeatureServices(
     [asyncSsrManagerDefinition, serializedStateManagerDefinition],
@@ -45,9 +53,11 @@ export default async function renderApp({
     asyncSsrManagerDefinition.id
   ] as AsyncSsrManagerV0;
 
-  const featureAppManager = new FeatureAppManager(featureServiceRegistry, {
-    moduleLoader: loadCommonJsModule
-  });
+  const featureAppManager = new FeatureAppManager(
+    featureServiceRegistry,
+    externalsValidator,
+    {moduleLoader: loadCommonJsModule}
+  );
 
   const urlsForHydration = new Set<string>();
 

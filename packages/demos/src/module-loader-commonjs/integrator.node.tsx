@@ -1,4 +1,8 @@
-import {FeatureAppManager, FeatureServiceRegistry} from '@feature-hub/core';
+import {
+  ExternalsValidator,
+  FeatureAppManager,
+  FeatureServiceRegistry
+} from '@feature-hub/core';
 import {loadCommonJsModule} from '@feature-hub/module-loader-commonjs';
 import {FeatureAppLoader, FeatureHubContextProvider} from '@feature-hub/react';
 import * as React from 'react';
@@ -9,11 +13,14 @@ export default async function renderApp({
   port
 }: AppRendererOptions): Promise<AppRendererResult> {
   const featureAppNodeUrl = `http://localhost:${port}/feature-app.commonjs.js`;
-  const featureServiceRegistry = new FeatureServiceRegistry();
+  const externalsValidator = new ExternalsValidator({});
+  const featureServiceRegistry = new FeatureServiceRegistry(externalsValidator);
 
-  const featureAppManager = new FeatureAppManager(featureServiceRegistry, {
-    moduleLoader: loadCommonJsModule
-  });
+  const featureAppManager = new FeatureAppManager(
+    featureServiceRegistry,
+    externalsValidator,
+    {moduleLoader: loadCommonJsModule}
+  );
 
   // In a real-world integrator, instead of preloading a Feature App manually
   // before rendering, the Async SSR Manager would be used to handle the

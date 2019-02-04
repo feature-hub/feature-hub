@@ -8,6 +8,7 @@ import {
   FeatureServiceRegistry,
   FeatureServiceRegistryLike
 } from '..';
+import {ExternalsValidatorLike} from '../externals-validator';
 
 interface MockProviderDefinition extends FeatureServiceConsumerDefinition {
   create: jest.Mock;
@@ -24,6 +25,7 @@ interface MockFeatureServiceBinding
 
 describe('FeatureServiceRegistry', () => {
   let featureServiceRegistry: FeatureServiceRegistryLike;
+  let mockExternalsValidator: ExternalsValidatorLike;
   let providerDefinitionA: MockProviderDefinition;
   let providerDefinitionB: MockProviderDefinition;
   let providerDefinitionC: MockProviderDefinition;
@@ -39,7 +41,9 @@ describe('FeatureServiceRegistry', () => {
   let stubbedConsole: Stubbed<Console>;
 
   beforeEach(() => {
-    featureServiceRegistry = new FeatureServiceRegistry();
+    mockExternalsValidator = {validate: jest.fn()};
+
+    featureServiceRegistry = new FeatureServiceRegistry(mockExternalsValidator);
 
     featureServiceA = {kind: 'featureServiceA'};
     bindingA = {featureService: featureServiceA};
@@ -125,10 +129,12 @@ describe('FeatureServiceRegistry', () => {
         ]
       ]);
     }
-
     beforeEach(() => {
       configs = {a: {kind: 'a'}, c: {kind: 'c'}};
-      featureServiceRegistry = new FeatureServiceRegistry({configs});
+      featureServiceRegistry = new FeatureServiceRegistry(
+        mockExternalsValidator,
+        {configs}
+      );
     });
 
     it('registers the Feature Services "a", "b", "c" one after the other', () => {
@@ -211,7 +217,7 @@ describe('FeatureServiceRegistry', () => {
           [providerDefinitionB],
           'test'
         )
-      ).not.toThrow();
+      ).not.toThrowError();
 
       expect(stubbedConsole.stub.info.mock.calls).toEqual([
         [
@@ -254,7 +260,7 @@ describe('FeatureServiceRegistry', () => {
           [providerDefinitionA, stateProviderD],
           'test'
         )
-      ).not.toThrow();
+      ).not.toThrowError();
 
       expect(stubbedConsole.stub.info.mock.calls).toEqual([
         [
@@ -300,7 +306,7 @@ describe('FeatureServiceRegistry', () => {
           [providerDefinitionA, stateProviderDefinitionD],
           'test'
         )
-      ).not.toThrow();
+      ).not.toThrowError();
 
       expect(stubbedConsole.stub.info.mock.calls).toEqual([
         [
@@ -332,6 +338,68 @@ describe('FeatureServiceRegistry', () => {
         )
       );
     });
+
+    it('fails to register a Feature Service due to failing externals validation', () => {
+      const mockError = new Error('mockError');
+
+      mockExternalsValidator.validate = jest.fn(() => {
+        throw mockError;
+      });
+
+      featureServiceRegistry = new FeatureServiceRegistry(
+        mockExternalsValidator
+      );
+
+      expect(() => {
+        featureServiceRegistry.registerFeatureServices(
+          [
+            {
+              id: 'failing-externals',
+              create: jest.fn(),
+              dependencies: {
+                externals: {
+                  react: '^16.0.0'
+                }
+              }
+            }
+          ],
+          'test'
+        );
+      }).toThrowError(mockError);
+
+      expect(mockExternalsValidator.validate).toHaveBeenCalledWith({
+        react: '^16.0.0'
+      });
+    });
+
+    it('does not fail to register a Feature Service with valid externals', () => {
+      mockExternalsValidator.validate = jest.fn();
+
+      featureServiceRegistry = new FeatureServiceRegistry(
+        mockExternalsValidator
+      );
+
+      expect(() => {
+        featureServiceRegistry.registerFeatureServices(
+          [
+            {
+              id: 'with-externals',
+              create: jest.fn(() => ({})),
+              dependencies: {
+                externals: {
+                  react: '^16.0.0'
+                }
+              }
+            }
+          ],
+          'test'
+        );
+      }).not.toThrowError();
+
+      expect(mockExternalsValidator.validate).toHaveBeenCalledWith({
+        react: '^16.0.0'
+      });
+    });
   });
 
   describe('#bindFeatureServices', () => {
@@ -348,7 +416,9 @@ describe('FeatureServiceRegistry', () => {
 
     describe('for a Feature Service consumer with an id specifier and dependencies', () => {
       it('creates a bindings object with Feature Services', () => {
-        featureServiceRegistry = new FeatureServiceRegistry();
+        featureServiceRegistry = new FeatureServiceRegistry(
+          mockExternalsValidator
+        );
 
         featureServiceRegistry.registerFeatureServices(
           [providerDefinitionA],
@@ -373,7 +443,9 @@ describe('FeatureServiceRegistry', () => {
 
     describe('for a Feature Service consumer without an id specifier and dependencies', () => {
       it('creates a bindings object with Feature Services', () => {
-        featureServiceRegistry = new FeatureServiceRegistry();
+        featureServiceRegistry = new FeatureServiceRegistry(
+          mockExternalsValidator
+        );
 
         featureServiceRegistry.registerFeatureServices(
           [providerDefinitionA],
@@ -399,7 +471,9 @@ describe('FeatureServiceRegistry', () => {
     describe('for a Feature Service consumer and two optional dependencies', () => {
       describe('with the first dependency missing', () => {
         it('creates a bindings object with Feature Services', () => {
-          featureServiceRegistry = new FeatureServiceRegistry();
+          featureServiceRegistry = new FeatureServiceRegistry(
+            mockExternalsValidator
+          );
 
           featureServiceRegistry.registerFeatureServices(
             [providerDefinitionA],
@@ -424,7 +498,9 @@ describe('FeatureServiceRegistry', () => {
 
       describe('with the second dependency missing', () => {
         it('creates a bindings object with Feature Services', () => {
-          featureServiceRegistry = new FeatureServiceRegistry();
+          featureServiceRegistry = new FeatureServiceRegistry(
+            mockExternalsValidator
+          );
 
           featureServiceRegistry.registerFeatureServices(
             [providerDefinitionA],
@@ -449,7 +525,9 @@ describe('FeatureServiceRegistry', () => {
 
       describe('with no dependency missing', () => {
         it('creates a bindings object with Feature Services', () => {
-          featureServiceRegistry = new FeatureServiceRegistry();
+          featureServiceRegistry = new FeatureServiceRegistry(
+            mockExternalsValidator
+          );
 
           featureServiceRegistry.registerFeatureServices(
             [providerDefinitionA, providerDefinitionB],

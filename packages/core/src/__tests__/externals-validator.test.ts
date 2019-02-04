@@ -5,7 +5,15 @@ describe('ExternalsValidator', () => {
     it('throws an error for provided externals containing an invalid version', () => {
       expect(() => new ExternalsValidator({react: 'invalid'})).toThrowError(
         new Error(
-          'The provided external "react" has an invalid version "invalid".'
+          'The provided version "invalid" for the external "react" is invalid.'
+        )
+      );
+    });
+
+    it('throws an error for provided externals containing a coercable version', () => {
+      expect(() => new ExternalsValidator({react: '2.0'})).toThrowError(
+        new Error(
+          'The provided version "2.0" for the external "react" is invalid.'
         )
       );
     });
@@ -17,7 +25,7 @@ describe('ExternalsValidator', () => {
 
       expect(() => {
         validator.validate({react: '^16.2.0'});
-      }).not.toThrow();
+      }).not.toThrowError();
     });
 
     it('throws an error for an unsatisfied required external (wrong version)', () => {

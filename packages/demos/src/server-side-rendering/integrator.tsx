@@ -1,4 +1,8 @@
-import {FeatureAppManager, FeatureServiceRegistry} from '@feature-hub/core';
+import {
+  ExternalsValidator,
+  FeatureAppManager,
+  FeatureServiceRegistry
+} from '@feature-hub/core';
 import {defineExternals, loadAmdModule} from '@feature-hub/module-loader-amd';
 import {FeatureHubContextProvider} from '@feature-hub/react';
 import {
@@ -40,7 +44,13 @@ function getUrlsForHydrationFromDom(): string[] {
     }
   };
 
-  const featureServiceRegistry = new FeatureServiceRegistry();
+  defineExternals({react: React});
+
+  const externalsValidator = new ExternalsValidator({
+    react: '16.7.0'
+  });
+
+  const featureServiceRegistry = new FeatureServiceRegistry(externalsValidator);
 
   featureServiceRegistry.registerFeatureServices(
     [serializedStateManagerDefinition],
@@ -51,11 +61,11 @@ function getUrlsForHydrationFromDom(): string[] {
     integratorDefinition
   );
 
-  const featureAppManager = new FeatureAppManager(featureServiceRegistry, {
-    moduleLoader: loadAmdModule
-  });
-
-  defineExternals({react: React});
+  const featureAppManager = new FeatureAppManager(
+    featureServiceRegistry,
+    externalsValidator,
+    {moduleLoader: loadAmdModule}
+  );
 
   const serializedStateManager = featureServices[
     serializedStateManagerDefinition.id

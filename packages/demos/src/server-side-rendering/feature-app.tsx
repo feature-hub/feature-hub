@@ -22,6 +22,9 @@ const featureAppDefinition: FeatureAppDefinition<
   id: 'test:hello-world',
 
   dependencies: {
+    externals: {
+      react: '^16.7.0'
+    },
     featureServices: {
       's2:serialized-state-manager': '^0.1.0'
     }
