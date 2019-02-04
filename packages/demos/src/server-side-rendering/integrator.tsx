@@ -64,9 +64,7 @@ function getUrlsForHydrationFromDom(): string[] {
   const featureAppManager = new FeatureAppManager(
     featureServiceRegistry,
     externalsValidator,
-    {
-      moduleLoader: loadAmdModule
-    }
+    {moduleLoader: loadAmdModule}
   );
 
   const serializedStateManager = featureServices[

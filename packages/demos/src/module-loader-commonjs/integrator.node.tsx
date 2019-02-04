@@ -21,9 +21,7 @@ export default async function renderApp({
   const featureAppManager = new FeatureAppManager(
     featureServiceRegistry,
     externalsValidator,
-    {
-      moduleLoader: loadCommonJsModule
-    }
+    {moduleLoader: loadCommonJsModule}
   );
 
   // In a real-world integrator, instead of preloading a Feature App manually
