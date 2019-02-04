@@ -1,4 +1,5 @@
 import {Label} from '@blueprintjs/core';
+import {FeatureAppDefinition} from '@feature-hub/core';
 import {ReactFeatureApp} from '@feature-hub/react';
 import * as React from 'react';
 
@@ -12,9 +13,7 @@ export default {
     }
   },
 
-  create(): ReactFeatureApp {
-    return {
-      render: () => <Label>Hello, World!</Label>
-    };
-  }
-};
+  create: () => ({
+    render: () => <Label>Hello, World!</Label>
+  })
+} as FeatureAppDefinition<ReactFeatureApp>;
