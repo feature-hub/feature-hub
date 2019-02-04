@@ -9,6 +9,12 @@ describe('ExternalsValidator', () => {
         )
       );
     });
+
+    it('throws an error for provided externals containing a coercable version', () => {
+      expect(() => new ExternalsValidator({react: '2.0'})).toThrowError(
+        new Error('The provided external "react" has an invalid version "2.0".')
+      );
+    });
   });
 
   describe('#validate', () => {

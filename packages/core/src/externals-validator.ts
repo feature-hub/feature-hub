@@ -1,4 +1,4 @@
-import {coerce, satisfies} from 'semver';
+import {satisfies, valid} from 'semver';
 
 export interface ProvidedExternals {
   readonly [moduleName: string]: string;
@@ -17,7 +17,7 @@ export class ExternalsValidator {
     for (const [moduleName, providedVersion] of Object.entries(
       providedExternals
     )) {
-      if (!coerce(providedVersion)) {
+      if (!valid(providedVersion)) {
         throw new Error(
           `The provided external ${JSON.stringify(
             moduleName
