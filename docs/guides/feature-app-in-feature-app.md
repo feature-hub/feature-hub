@@ -4,6 +4,9 @@ title: Feature App in Feature App
 sidebar_label: Feature App in Feature App
 ---
 
+> The feature described in this guide is also demonstrated in the ["Feature App
+> in Feature App" demo][feature-app-in-feature-demo].
+
 It is possible that a [React Feature App][react-feature-app] renders another
 Feature App within itself. To do that, the parent Feature App can either [use
 the `FeatureAppContainer`][react-feature-app-container] to render another
@@ -42,3 +45,5 @@ defineExternals({
 [react-feature-app]: /docs/guides/writing-a-feature-app#react-feature-app
 [react-api]: /@feature-hub/react/
 [sharing-npm-dependencies]: /docs/guides/sharing-npm-dependencies
+[feature-app-in-feature-demo]:
+  https://github.com/sinnerschrader/feature-hub/tree/master/packages/demos/src/feature-app-in-feature-app
