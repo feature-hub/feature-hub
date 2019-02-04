@@ -67,9 +67,7 @@ describe('FeatureAppManager', () => {
       featureAppManager = new FeatureAppManager(
         mockFeatureServiceRegistry,
         mockExternalsValidator,
-        {
-          moduleLoader: mockModuleLoader
-        }
+        {moduleLoader: mockModuleLoader}
       );
     });
 
@@ -168,9 +166,7 @@ describe('FeatureAppManager', () => {
       featureAppManager = new FeatureAppManager(
         mockFeatureServiceRegistry,
         mockExternalsValidator,
-        {
-          configs: {[mockFeatureAppDefinition.id]: mockConfig}
-        }
+        {configs: {[mockFeatureAppDefinition.id]: mockConfig}}
       );
 
       featureAppManager.getFeatureAppScope(
@@ -504,9 +500,7 @@ describe('FeatureAppManager', () => {
       featureAppManager = new FeatureAppManager(
         mockFeatureServiceRegistry,
         mockExternalsValidator,
-        {
-          moduleLoader: mockModuleLoader
-        }
+        {moduleLoader: mockModuleLoader}
       );
     });
 

@@ -377,8 +377,7 @@ describe('FeatureServiceRegistry', () => {
       mockExternalsValidator.validate = jest.fn();
 
       featureServiceRegistry = new FeatureServiceRegistry(
-        mockExternalsValidator,
-        {}
+        mockExternalsValidator
       );
 
       expect(() => {
