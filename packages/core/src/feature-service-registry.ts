@@ -1,4 +1,4 @@
-import {coerce, satisfies} from 'semver';
+import {satisfies, valid} from 'semver';
 import {createUid} from './internal/create-uid';
 import * as Messages from './internal/feature-service-registry-messages';
 import {
@@ -230,9 +230,13 @@ export class FeatureServiceRegistry implements FeatureServiceRegistryLike {
         });
 
         for (const version of Object.keys(sharedFeatureService)) {
-          if (!coerce(version)) {
+          if (!valid(version)) {
             throw new Error(
-              Messages.featureServiceVersionInvalid(providerId, consumerId)
+              Messages.featureServiceVersionInvalid(
+                providerId,
+                consumerId,
+                version
+              )
             );
           }
         }
@@ -378,13 +382,9 @@ export class FeatureServiceRegistry implements FeatureServiceRegistryLike {
 
     const supportedVersions = Object.keys(sharedFeatureService);
 
-    const version = supportedVersions.find(supportedVersion => {
-      const actualVersion = coerce(supportedVersion);
-
-      // We already ensure coercebility at service registration time.
-      // tslint:disable-next-line: no-non-null-assertion
-      return satisfies(actualVersion!, versionRange);
-    });
+    const version = supportedVersions.find(supportedVersion =>
+      satisfies(supportedVersion, versionRange)
+    );
 
     const bindFeatureService = version && sharedFeatureService[version];
 

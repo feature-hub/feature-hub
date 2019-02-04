@@ -35,7 +35,7 @@ function getUrlsForHydrationFromDom(): string[] {
     id: 'test:integrator',
     dependencies: {
       featureServices: {
-        [serializedStateManagerDefinition.id]: '^0.1'
+        [serializedStateManagerDefinition.id]: '^0.1.0'
       }
     }
   };

@@ -49,7 +49,7 @@ describe('HistoryServiceV0 (on Node.js)', () => {
         testRootLocationTransformer
       ).create(mockEnv);
 
-      return sharedHistoryService['0.1'];
+      return sharedHistoryService['0.1.0'];
     };
   });
 

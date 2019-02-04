@@ -41,7 +41,7 @@ describe('defineHistoryService', () => {
     expect(historyServiceDefinition.dependencies).toBeUndefined();
 
     expect(historyServiceDefinition.optionalDependencies).toEqual({
-      featureServices: {'s2:server-request': '^0.1'}
+      featureServices: {'s2:server-request': '^0.1.0'}
     });
   });
 
@@ -52,7 +52,7 @@ describe('defineHistoryService', () => {
         featureServices: {}
       });
 
-      expect(sharedHistoryService['0.1']).toBeDefined();
+      expect(sharedHistoryService['0.1.0']).toBeDefined();
     });
   });
 
@@ -86,7 +86,7 @@ describe('defineHistoryService', () => {
           testRootLocationTransformer
         ).create(mockEnv);
 
-        return sharedHistoryService['0.1'];
+        return sharedHistoryService['0.1.0'];
       };
     });
 

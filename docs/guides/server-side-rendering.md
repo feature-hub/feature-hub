@@ -27,7 +27,7 @@ const myFeatureServiceDefinition = {
   id: 'acme:my-feature-service',
 
   dependencies: {
-    's2:serialized-state-manager': '^0.1'
+    's2:serialized-state-manager': '^0.1.0'
   },
 
   create(env) {
@@ -45,7 +45,7 @@ const myFeatureServiceDefinition = {
     }
 
     return {
-      '1.0': () => ({
+      '1.0.0': () => ({
         featureService: {
           // We assume the setCount method is called by consumers while they are
           // rendered on the server.
@@ -169,7 +169,7 @@ const myFeatureAppDefinition = {
   id: 'acme:my-feature-app',
 
   optionalDependencies: {
-    's2:async-ssr-manager': '^0.1'
+    's2:async-ssr-manager': '^0.1.0'
   },
 
   create(env) {
@@ -222,7 +222,7 @@ const myFeatureServiceDefinition = {
   id: 'acme:my-feature-service',
 
   optionalDependencies: {
-    's2:async-ssr-manager': '^0.1'
+    's2:async-ssr-manager': '^0.1.0'
   },
 
   create(env) {
@@ -231,7 +231,7 @@ const myFeatureServiceDefinition = {
     const asyncSsrManager = env.featureServices['s2:async-ssr-manager'];
 
     return {
-      '1.0': () => ({
+      '1.0.0': () => ({
         featureService: {
           // We assume the setCount method is called by consumers while they are
           // rendered on the server.

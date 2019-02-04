@@ -11,7 +11,7 @@ export interface ServerRequestV0 {
 }
 
 export interface SharedServerRequest extends SharedFeatureService {
-  readonly '0.1': FeatureServiceBinder<ServerRequestV0>;
+  readonly '0.1.0': FeatureServiceBinder<ServerRequestV0>;
 }
 
 export function defineServerRequest(
@@ -21,7 +21,7 @@ export function defineServerRequest(
     id: 's2:server-request',
 
     create: () => ({
-      '0.1': () => ({featureService: serverRequest})
+      '0.1.0': () => ({featureService: serverRequest})
     })
   };
 }
