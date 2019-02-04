@@ -69,8 +69,8 @@ Demonstrates:
   rendering with React
 - how the Serialized State Manager can be used to transfer the state of
   server-rendered Feature Apps to the client
-- how the Feature Hub context can be used to transfer Feature App client URLs to
-  the client for hydration
+- how server-rendered Feature Apps can be preloaded in the client before
+  hydration
 
 ```sh
 yarn watch:demo server-side-rendering
