@@ -251,9 +251,11 @@ export class FeatureAppManager implements FeatureAppManagerLike {
     return {featureApp, destroy};
   }
 
-  private validateExternals({
-    dependencies
-  }: FeatureServiceConsumerDefinition): void {
+  private validateExternals(
+    featureAppDefinition: FeatureServiceConsumerDefinition
+  ): void {
+    const {dependencies} = featureAppDefinition;
+
     if (dependencies && dependencies.externals) {
       this.externalsValidator.validate(dependencies.externals);
     }
