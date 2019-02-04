@@ -27,6 +27,8 @@ provide a full-fledged solution for composing micro frontends:
   React][placing-feature-apps-on-a-web-page-using-react], but also allows the
   integration of micro frontends that are [built with any other frontend
   technology][dom-feature-app] (e.g. Vue.js, Angular, Web Components).
+- [`@feature-hub/dom`][dom-api] – A library for building a Feature Hub
+  integrator using Web Components.
 
 The use of the [`@feature-hub/core`][core-api] package without React is
 possible, but requires a custom implementation of the ability to place micro
@@ -63,6 +65,7 @@ There are three different personas in a Feature Hub environment:
     Feature App, other Feature Services, or even the integrator.
 
 [core-api]: /@feature-hub/core/
+[dom-api]: /@feature-hub/dom/
 [dom-feature-app]: /docs/guides/writing-a-feature-app#dom-feature-app
 [our-requirements-for-micro-frontends]:
   /docs/getting-started/motivation#our-requirements-for-micro-frontends
