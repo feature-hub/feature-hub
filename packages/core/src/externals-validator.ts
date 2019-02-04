@@ -19,9 +19,9 @@ export class ExternalsValidator implements ExternalsValidatorLike {
     )) {
       if (!valid(providedVersion)) {
         throw new Error(
-          `The provided external ${JSON.stringify(
-            moduleName
-          )} has an invalid version ${JSON.stringify(providedVersion)}.`
+          `The provided version ${JSON.stringify(
+            providedVersion
+          )} for the external ${JSON.stringify(moduleName)} is invalid.`
         );
       }
     }
