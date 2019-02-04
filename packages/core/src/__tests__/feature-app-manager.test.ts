@@ -218,7 +218,7 @@ describe('FeatureAppManager', () => {
         });
       });
 
-      it('throws an error', () => {
+      it('throws the validation error', () => {
         expect(() => {
           featureAppManager.getFeatureAppScope(
             mockFeatureAppDefinition,
