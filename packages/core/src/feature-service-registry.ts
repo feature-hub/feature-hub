@@ -166,6 +166,27 @@ function createProviderDefinitionsById(
   return providerDefinitionsById;
 }
 
+function unbindBinding(
+  binding: FeatureServiceBinding<unknown>,
+  providerId: string,
+  consumerUid: string
+): void {
+  try {
+    if (binding.unbind) {
+      binding.unbind();
+    }
+
+    console.info(
+      Messages.featureServiceSuccessfullyUnbound(providerId, consumerUid)
+    );
+  } catch (error) {
+    console.error(
+      Messages.featureServiceCouldNotBeUnbound(providerId, consumerUid),
+      error
+    );
+  }
+}
+
 /**
  * The FeatureServiceRegistry provides Feature Services to dependent consumers.
  * The integrator should instantiate a singleton instance of the registry.
@@ -214,45 +235,11 @@ export class FeatureServiceRegistry implements FeatureServiceRegistryLike {
     const dependencyGraph = createDependencyGraph(providerDefinitions);
 
     for (const providerId of toposortDependencies(dependencyGraph)) {
-      const providerDefinition = providerDefinitionsById.get(providerId);
-
-      if (this.sharedFeatureServices.has(providerId)) {
-        if (providerDefinitionsById.has(providerId)) {
-          console.warn(
-            Messages.featureServiceAlreadyRegistered(providerId, consumerId)
-          );
-        }
-      } else if (providerDefinition) {
-        this.validateExternals(providerDefinition);
-
-        const {configs} = this.options;
-        const config = configs && configs[providerId];
-
-        const {featureServices} = this.bindFeatureServices(providerDefinition);
-
-        const sharedFeatureService = providerDefinition.create({
-          config,
-          featureServices
-        });
-
-        for (const version of Object.keys(sharedFeatureService)) {
-          if (!valid(version)) {
-            throw new Error(
-              Messages.featureServiceVersionInvalid(
-                providerId,
-                consumerId,
-                version
-              )
-            );
-          }
-        }
-
-        this.sharedFeatureServices.set(providerId, sharedFeatureService);
-
-        console.info(
-          Messages.featureServiceSuccessfullyRegistered(providerId, consumerId)
-        );
-      }
+      this.registerFeatureService(
+        providerDefinitionsById,
+        providerId,
+        consumerId
+      );
     }
   }
 
@@ -326,24 +313,51 @@ export class FeatureServiceRegistry implements FeatureServiceRegistryLike {
       this.consumerUids.delete(consumerUid);
 
       for (const [providerId, binding] of bindings.entries()) {
-        try {
-          if (binding.unbind) {
-            binding.unbind();
-          }
-
-          console.info(
-            Messages.featureServiceSuccessfullyUnbound(providerId, consumerUid)
-          );
-        } catch (error) {
-          console.error(
-            Messages.featureServiceCouldNotBeUnbound(providerId, consumerUid),
-            error
-          );
-        }
+        unbindBinding(binding, providerId, consumerUid);
       }
     };
 
     return {featureServices, unbind};
+  }
+
+  private registerFeatureService(
+    providerDefinitionsById: ProviderDefinitionsById,
+    providerId: string,
+    consumerId: string
+  ): void {
+    const providerDefinition = providerDefinitionsById.get(providerId);
+
+    if (this.sharedFeatureServices.has(providerId)) {
+      if (providerDefinitionsById.has(providerId)) {
+        console.warn(
+          Messages.featureServiceAlreadyRegistered(providerId, consumerId)
+        );
+      }
+    } else if (providerDefinition) {
+      this.validateExternals(providerDefinition);
+
+      const {configs} = this.options;
+      const config = configs && configs[providerId];
+
+      const {featureServices} = this.bindFeatureServices(providerDefinition);
+
+      const sharedFeatureService = providerDefinition.create({
+        config,
+        featureServices
+      });
+
+      this.validateFeatureServiceVersions(
+        sharedFeatureService,
+        providerId,
+        consumerId
+      );
+
+      this.sharedFeatureServices.set(providerId, sharedFeatureService);
+
+      console.info(
+        Messages.featureServiceSuccessfullyRegistered(providerId, consumerId)
+      );
+    }
   }
 
   private bindFeatureService(
@@ -415,11 +429,27 @@ export class FeatureServiceRegistry implements FeatureServiceRegistryLike {
     return bindFeatureService(consumerUid);
   }
 
-  private validateExternals({
-    dependencies
-  }: FeatureServiceConsumerDefinition): void {
+  private validateExternals(
+    consumerDefinition: FeatureServiceConsumerDefinition
+  ): void {
+    const {dependencies} = consumerDefinition;
+
     if (dependencies && dependencies.externals) {
       this.externalsValidator.validate(dependencies.externals);
+    }
+  }
+
+  private validateFeatureServiceVersions(
+    sharedFeatureService: SharedFeatureService,
+    providerId: string,
+    consumerId: string
+  ): void {
+    for (const version of Object.keys(sharedFeatureService)) {
+      if (!valid(version)) {
+        throw new Error(
+          Messages.featureServiceVersionInvalid(providerId, consumerId, version)
+        );
+      }
     }
   }
 }
