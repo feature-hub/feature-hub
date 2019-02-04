@@ -190,9 +190,13 @@ describe('FeatureAppManager', () => {
     });
 
     describe('with a Feature App definition that is failing the externals validation', () => {
+      let mockError: Error;
+
       beforeEach(() => {
+        mockError = new Error('mockError');
+
         mockExternalsValidator.validate = jest.fn(() => {
-          throw new Error();
+          throw mockError;
         });
 
         mockFeatureAppDefinition = {
@@ -205,24 +209,31 @@ describe('FeatureAppManager', () => {
         };
       });
 
+      it('calls the provided ExternalsValidator with the defined externals', () => {
+        try {
+          featureAppManager.getFeatureAppScope(
+            mockFeatureAppDefinition,
+            'testIdSpecifier'
+          );
+        } catch {}
+
+        expect(mockExternalsValidator.validate).toHaveBeenCalledWith({
+          react: '^16.0.0'
+        });
+      });
+
       it('throws an error', () => {
         expect(() => {
           featureAppManager.getFeatureAppScope(
             mockFeatureAppDefinition,
             'testIdSpecifier'
           );
-        }).toThrow();
-
-        expect(mockExternalsValidator.validate).toHaveBeenCalledWith({
-          react: '^16.0.0'
-        });
+        }).toThrowError(mockError);
       });
     });
 
     describe('with a Feature App definition not is not failing the externals validation', () => {
       beforeEach(() => {
-        mockExternalsValidator.validate = jest.fn();
-
         mockFeatureAppDefinition = {
           ...mockFeatureAppDefinition,
           dependencies: {
@@ -233,24 +244,32 @@ describe('FeatureAppManager', () => {
         };
       });
 
-      it('throws an error', () => {
-        expect(() => {
-          featureAppManager.getFeatureAppScope(
-            mockFeatureAppDefinition,
-            'testIdSpecifier'
-          );
-        }).not.toThrow();
+      it('calls the provided ExternalsValidator with the defined externals', () => {
+        featureAppManager.getFeatureAppScope(
+          mockFeatureAppDefinition,
+          'testIdSpecifier'
+        );
 
         expect(mockExternalsValidator.validate).toHaveBeenCalledWith({
           react: '^16.0.0'
         });
       });
+
+      it("doesn't throw an error", () => {
+        expect(() => {
+          featureAppManager.getFeatureAppScope(
+            mockFeatureAppDefinition,
+            'testIdSpecifier'
+          );
+        }).not.toThrowError();
+      });
     });
 
     describe('when bindFeatureServices throws an error', () => {
       let mockError: Error;
+
       beforeEach(() => {
-        mockError = new Error('mockerror');
+        mockError = new Error('mockError');
 
         mockFeatureServiceRegistry.bindFeatureServices.mockImplementation(
           () => {
