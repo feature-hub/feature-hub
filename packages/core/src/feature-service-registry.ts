@@ -1,4 +1,5 @@
 import {satisfies, valid} from 'semver';
+import {ExternalsValidatorLike, RequiredExternals} from './externals-validator';
 import {createUid} from './internal/create-uid';
 import * as Messages from './internal/feature-service-registry-messages';
 import {
@@ -22,14 +23,15 @@ export interface FeatureServiceConsumerDefinition {
      * A map of required Feature Services with their ID as key and a
      * semver-compatible version string as value.
      */
-    readonly featureServices: FeatureServiceConsumerDependencies;
+    readonly featureServices?: FeatureServiceConsumerDependencies;
+    readonly externals?: RequiredExternals;
   };
   readonly optionalDependencies?: {
     /**
      * A map of optional Feature Services with their ID as key and a
      * semver-compatible version string as value.
      */
-    readonly featureServices: FeatureServiceConsumerDependencies;
+    readonly featureServices?: FeatureServiceConsumerDependencies;
   };
 }
 
@@ -177,6 +179,7 @@ export class FeatureServiceRegistry implements FeatureServiceRegistryLike {
   private readonly consumerUids = new Set<string>();
 
   public constructor(
+    private readonly externalsValidator: ExternalsValidatorLike,
     private readonly options: FeatureServiceRegistryOptions = {}
   ) {}
 
@@ -220,8 +223,11 @@ export class FeatureServiceRegistry implements FeatureServiceRegistryLike {
           );
         }
       } else if (providerDefinition) {
+        this.validateExternals(providerDefinition);
+
         const {configs} = this.options;
         const config = configs && configs[providerId];
+
         const {featureServices} = this.bindFeatureServices(providerDefinition);
 
         const sharedFeatureService = providerDefinition.create({
@@ -407,5 +413,13 @@ export class FeatureServiceRegistry implements FeatureServiceRegistryLike {
     }
 
     return bindFeatureService(consumerUid);
+  }
+
+  private validateExternals({
+    dependencies
+  }: FeatureServiceConsumerDefinition): void {
+    if (dependencies && dependencies.externals) {
+      this.externalsValidator.validate(dependencies.externals);
+    }
   }
 }

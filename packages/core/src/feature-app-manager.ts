@@ -1,4 +1,5 @@
 import {AsyncValue} from './async-value';
+import {ExternalsValidatorLike} from './externals-validator';
 import {
   FeatureServiceConsumerDefinition,
   FeatureServiceProviderDefinition,
@@ -94,6 +95,7 @@ export class FeatureAppManager implements FeatureAppManagerLike {
 
   public constructor(
     private readonly featureServiceRegistry: FeatureServiceRegistryLike,
+    private readonly externalsValidator: ExternalsValidatorLike,
     private readonly options: FeatureAppManagerOptions = {}
   ) {}
 
@@ -206,6 +208,8 @@ export class FeatureAppManager implements FeatureAppManagerLike {
     idSpecifier: string | undefined,
     deleteFeatureAppScope: () => void
   ): FeatureAppScope<TFeatureApp> {
+    this.validateExternals(featureAppDefinition);
+
     const {configs} = this.options;
     const config = configs && configs[featureAppDefinition.id];
     const featureAppUid = createUid(featureAppDefinition.id, idSpecifier);
@@ -245,5 +249,13 @@ export class FeatureAppManager implements FeatureAppManagerLike {
     };
 
     return {featureApp, destroy};
+  }
+
+  private validateExternals({
+    dependencies
+  }: FeatureServiceConsumerDefinition): void {
+    if (dependencies && dependencies.externals) {
+      this.externalsValidator.validate(dependencies.externals);
+    }
   }
 }

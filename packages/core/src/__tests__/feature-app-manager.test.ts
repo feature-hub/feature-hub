@@ -9,6 +9,7 @@ import {
   FeatureServicesBinding,
   ModuleLoader
 } from '..';
+import {ExternalsValidatorLike} from '../externals-validator';
 import {FeatureAppModule} from '../internal/is-feature-app-module';
 
 interface MockFeatureServiceRegistry extends FeatureServiceRegistryLike {
@@ -20,6 +21,7 @@ describe('FeatureAppManager', () => {
   let featureAppManager: FeatureAppManagerLike;
   let mockFeatureServiceRegistry: MockFeatureServiceRegistry;
   let mockFeatureServicesBinding: FeatureServicesBinding;
+  let mockExternalsValidator: ExternalsValidatorLike;
   let mockFeatureServicesBindingUnbind: () => void;
   let mockModuleLoader: ModuleLoader;
   let mockFeatureAppDefinition: FeatureAppDefinition<unknown>;
@@ -48,7 +50,12 @@ describe('FeatureAppManager', () => {
     mockFeatureAppDefinition = {create: mockFeatureAppCreate, id: 'testId'};
     mockFeatureAppModule = {default: mockFeatureAppDefinition};
     mockModuleLoader = jest.fn(async () => mockFeatureAppModule);
-    featureAppManager = new FeatureAppManager(mockFeatureServiceRegistry);
+    mockExternalsValidator = {validate: jest.fn()};
+
+    featureAppManager = new FeatureAppManager(
+      mockFeatureServiceRegistry,
+      mockExternalsValidator
+    );
   });
 
   afterEach(() => {
@@ -57,9 +64,13 @@ describe('FeatureAppManager', () => {
 
   describe('#getAsyncFeatureAppDefinition', () => {
     beforeEach(() => {
-      featureAppManager = new FeatureAppManager(mockFeatureServiceRegistry, {
-        moduleLoader: mockModuleLoader
-      });
+      featureAppManager = new FeatureAppManager(
+        mockFeatureServiceRegistry,
+        mockExternalsValidator,
+        {
+          moduleLoader: mockModuleLoader
+        }
+      );
     });
 
     it('logs an info message when the Feature App module was loaded', async () => {
@@ -125,7 +136,10 @@ describe('FeatureAppManager', () => {
       });
 
       it('throws an error if no module loader was provided', () => {
-        featureAppManager = new FeatureAppManager(mockFeatureServiceRegistry);
+        featureAppManager = new FeatureAppManager(
+          mockFeatureServiceRegistry,
+          mockExternalsValidator
+        );
 
         expect(() =>
           featureAppManager.getAsyncFeatureAppDefinition('/example.js')
@@ -151,9 +165,13 @@ describe('FeatureAppManager', () => {
       const mockConfig = {kind: 'test'};
       const idSpecifier = 'testIdSpecifier';
 
-      featureAppManager = new FeatureAppManager(mockFeatureServiceRegistry, {
-        configs: {[mockFeatureAppDefinition.id]: mockConfig}
-      });
+      featureAppManager = new FeatureAppManager(
+        mockFeatureServiceRegistry,
+        mockExternalsValidator,
+        {
+          configs: {[mockFeatureAppDefinition.id]: mockConfig}
+        }
+      );
 
       featureAppManager.getFeatureAppScope(
         mockFeatureAppDefinition,
@@ -169,6 +187,83 @@ describe('FeatureAppManager', () => {
       expect(mockFeatureAppCreate.mock.calls).toEqual([
         [{config: mockConfig, featureServices, idSpecifier}]
       ]);
+    });
+
+    describe('with a Feature App definition failing externals validation', () => {
+      beforeEach(() => {
+        mockExternalsValidator.validate = jest.fn(() => {
+          throw new Error();
+        });
+
+        mockFeatureAppDefinition = {
+          ...mockFeatureAppDefinition,
+          dependencies: {
+            externals: {
+              react: '^16.0.0'
+            }
+          }
+        };
+      });
+
+      it('throws an error', () => {
+        expect(() => {
+          featureAppManager.getFeatureAppScope(
+            mockFeatureAppDefinition,
+            'testIdSpecifier'
+          );
+        }).toThrow();
+
+        expect(mockExternalsValidator.validate).toHaveBeenCalledWith({
+          react: '^16.0.0'
+        });
+      });
+    });
+
+    describe('with a Feature App definition not failing externals validation', () => {
+      beforeEach(() => {
+        mockExternalsValidator.validate = jest.fn();
+
+        mockFeatureAppDefinition = {
+          ...mockFeatureAppDefinition,
+          dependencies: {
+            externals: {
+              react: '^16.0.0'
+            }
+          }
+        };
+      });
+
+      it('throws an error', () => {
+        expect(() => {
+          featureAppManager.getFeatureAppScope(
+            mockFeatureAppDefinition,
+            'testIdSpecifier'
+          );
+        }).not.toThrow();
+
+        expect(mockExternalsValidator.validate).toHaveBeenCalledWith({
+          react: '^16.0.0'
+        });
+      });
+    });
+
+    describe('when bindFeatureServices throws an error', () => {
+      let mockError: Error;
+      beforeEach(() => {
+        mockError = new Error('mockerror');
+
+        mockFeatureServiceRegistry.bindFeatureServices.mockImplementation(
+          () => {
+            throw mockError;
+          }
+        );
+      });
+
+      it('throws the same error', () => {
+        expect(() =>
+          featureAppManager.getFeatureAppScope(mockFeatureAppDefinition)
+        ).toThrowError(mockError);
+      });
     });
 
     describe('with a Feature App definition with own Feature Service definitions', () => {
@@ -387,9 +482,13 @@ describe('FeatureAppManager', () => {
 
   describe('#preloadFeatureApp', () => {
     beforeEach(() => {
-      featureAppManager = new FeatureAppManager(mockFeatureServiceRegistry, {
-        moduleLoader: mockModuleLoader
-      });
+      featureAppManager = new FeatureAppManager(
+        mockFeatureServiceRegistry,
+        mockExternalsValidator,
+        {
+          moduleLoader: mockModuleLoader
+        }
+      );
     });
 
     it('preloads a Feature App definition so that the scope is synchronously available', async () => {
@@ -403,7 +502,10 @@ describe('FeatureAppManager', () => {
     });
 
     it('throws an error if no module loader was provided', () => {
-      featureAppManager = new FeatureAppManager(mockFeatureServiceRegistry);
+      featureAppManager = new FeatureAppManager(
+        mockFeatureServiceRegistry,
+        mockExternalsValidator
+      );
 
       expect(() =>
         featureAppManager.getAsyncFeatureAppDefinition('/example.js')

@@ -8,6 +8,10 @@ export interface RequiredExternals {
   readonly [moduleName: string]: string;
 }
 
+export interface ExternalsValidatorLike {
+  validate(requiredExternals: RequiredExternals): void;
+}
+
 export class ExternalsValidator {
   public constructor(private readonly providedExternals: ProvidedExternals) {
     for (const [moduleName, providedVersion] of Object.entries(
