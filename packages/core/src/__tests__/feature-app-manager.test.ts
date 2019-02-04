@@ -228,7 +228,7 @@ describe('FeatureAppManager', () => {
       });
     });
 
-    describe('with a Feature App definition not is not failing the externals validation', () => {
+    describe('with a Feature App definition that is not failing the externals validation', () => {
       beforeEach(() => {
         mockFeatureAppDefinition = {
           ...mockFeatureAppDefinition,

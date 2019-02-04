@@ -23,7 +23,7 @@ describe('ExternalsValidator', () => {
 
       expect(() => {
         validator.validate({react: '^16.2.0'});
-      }).not.toThrow();
+      }).not.toThrowError();
     });
 
     it('throws an error for an unsatisfied required external (wrong version)', () => {

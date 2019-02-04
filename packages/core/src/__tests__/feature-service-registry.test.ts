@@ -41,9 +41,7 @@ describe('FeatureServiceRegistry', () => {
   let stubbedConsole: Stubbed<Console>;
 
   beforeEach(() => {
-    mockExternalsValidator = {
-      validate: jest.fn()
-    };
+    mockExternalsValidator = {validate: jest.fn()};
 
     featureServiceRegistry = new FeatureServiceRegistry(mockExternalsValidator);
 
@@ -219,7 +217,7 @@ describe('FeatureServiceRegistry', () => {
           [providerDefinitionB],
           'test'
         )
-      ).not.toThrow();
+      ).not.toThrowError();
 
       expect(stubbedConsole.stub.info.mock.calls).toEqual([
         [
@@ -262,7 +260,7 @@ describe('FeatureServiceRegistry', () => {
           [providerDefinitionA, stateProviderD],
           'test'
         )
-      ).not.toThrow();
+      ).not.toThrowError();
 
       expect(stubbedConsole.stub.info.mock.calls).toEqual([
         [
@@ -308,7 +306,7 @@ describe('FeatureServiceRegistry', () => {
           [providerDefinitionA, stateProviderDefinitionD],
           'test'
         )
-      ).not.toThrow();
+      ).not.toThrowError();
 
       expect(stubbedConsole.stub.info.mock.calls).toEqual([
         [
@@ -342,13 +340,14 @@ describe('FeatureServiceRegistry', () => {
     });
 
     it('fails to register a Feature Service due to failing externals validation', () => {
+      const mockError = new Error('mockError');
+
       mockExternalsValidator.validate = jest.fn(() => {
-        throw new Error();
+        throw mockError;
       });
 
       featureServiceRegistry = new FeatureServiceRegistry(
-        mockExternalsValidator,
-        {}
+        mockExternalsValidator
       );
 
       expect(() => {
@@ -366,7 +365,7 @@ describe('FeatureServiceRegistry', () => {
           ],
           'test'
         );
-      }).toThrow();
+      }).toThrowError(mockError);
 
       expect(mockExternalsValidator.validate).toHaveBeenCalledWith({
         react: '^16.0.0'
@@ -395,7 +394,7 @@ describe('FeatureServiceRegistry', () => {
           ],
           'test'
         );
-      }).not.toThrow();
+      }).not.toThrowError();
 
       expect(mockExternalsValidator.validate).toHaveBeenCalledWith({
         react: '^16.0.0'
