@@ -17,8 +17,7 @@
     "jsx": "react",
     "experimentalDecorators": true,
     "baseUrl": ".",
-    "paths": {
-      "@feature-hub/*": ["packages/*/src/index.ts"]
-    }
+    "paths": {"@feature-hub/*": ["packages/*/src/index.ts"]},
+    "plugins": [{"name": "typescript-tslint-plugin"}]
   }
 }
