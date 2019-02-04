@@ -4,6 +4,9 @@ title: Server-Side Rendering
 sidebar_label: Server-Side Rendering
 ---
 
+> The features described in this guide are also demonstrated in the
+> ["Server-Side Rendering" demo][server-side-rendering-demo].
+
 ## State Serialization
 
 When rendering on the server, there usually is the need to hydrate the
@@ -287,3 +290,5 @@ const html = await asyncSsrManager.renderUntilCompleted(() =>
   https://github.com/sinnerschrader/feature-hub/blob/70cdf840eafd5ae7e189758bd5d70003da2fd392/packages/demos/src/server-side-rendering/integrator.tsx#L14-L20
 [consuming-feature-services]:
   /docs/guides/integrating-the-feature-hub#consuming-feature-services
+[server-side-rendering-demo]:
+  https://github.com/sinnerschrader/feature-hub/tree/master/packages/demos/src/server-side-rendering

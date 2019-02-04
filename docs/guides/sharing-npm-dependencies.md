@@ -4,6 +4,9 @@ title: Sharing NPM Dependencies
 sidebar_label: Sharing NPM Dependencies
 ---
 
+> The feature described in this guide is also demonstrated in the ["AMD Module
+> Loader" demo][amd-module-loader-demo].
+
 When using the [`@feature-hub/module-loader-amd`][module-loader-amd-api]
 package, the integrator can provide shared npm dependencies to Feature Apps
 using the `defineExternals` function:
@@ -34,3 +37,5 @@ defining `react` as external in a webpack config would look like this:
 ```
 
 [module-loader-amd-api]: /@feature-hub/module-loader-amd/
+[amd-module-loader-demo]:
+  https://github.com/sinnerschrader/feature-hub/tree/master/packages/demos/src/module-loader-amd
