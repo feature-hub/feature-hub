@@ -12,7 +12,7 @@ export interface ExternalsValidatorLike {
   validate(requiredExternals: RequiredExternals): void;
 }
 
-export class ExternalsValidator {
+export class ExternalsValidator implements ExternalsValidatorLike {
   public constructor(private readonly providedExternals: ProvidedExternals) {
     for (const [moduleName, providedVersion] of Object.entries(
       providedExternals
