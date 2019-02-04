@@ -223,7 +223,7 @@ describe('FeatureServiceRegistry', () => {
       ]);
     });
 
-    it('fails to register the Feature Service "d" due to an unsupported dependency version', () => {
+    it('fails to register a Feature Service due to an unsupported dependency version', () => {
       const stateProviderD = {
         id: 'd',
         dependencies: {featureServices: {a: '~1.0'}},
@@ -242,7 +242,7 @@ describe('FeatureServiceRegistry', () => {
       );
     });
 
-    it('does not fail to register the Feature Service "d" due to an unsupported optional dependency version', () => {
+    it('does not fail to register a Feature Service due to an unsupported optional dependency version', () => {
       const stateProviderD = {
         id: 'd',
         optionalDependencies: {featureServices: {a: '~1.0'}},
@@ -269,7 +269,7 @@ describe('FeatureServiceRegistry', () => {
       ]);
     });
 
-    it('fails to register the Feature Service "d" due to an invalid dependency version', () => {
+    it('fails to register a Feature Service due to an invalid dependency version', () => {
       const stateProviderDefinitionD = {
         id: 'd',
         dependencies: {featureServices: {a: ''}},
@@ -288,7 +288,7 @@ describe('FeatureServiceRegistry', () => {
       );
     });
 
-    it('does not fail to register the Feature Service "d" due to an invalid optional dependency version', () => {
+    it('does not fail to register a Feature Service due to an invalid optional dependency version', () => {
       const stateProviderDefinitionD = {
         id: 'd',
         optionalDependencies: {featureServices: {a: ''}},
