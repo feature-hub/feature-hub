@@ -189,7 +189,7 @@ describe('FeatureAppManager', () => {
       ]);
     });
 
-    describe('with a Feature App definition failing externals validation', () => {
+    describe('with a Feature App definition that is failing the externals validation', () => {
       beforeEach(() => {
         mockExternalsValidator.validate = jest.fn(() => {
           throw new Error();
@@ -219,7 +219,7 @@ describe('FeatureAppManager', () => {
       });
     });
 
-    describe('with a Feature App definition not failing externals validation', () => {
+    describe('with a Feature App definition not is not failing the externals validation', () => {
       beforeEach(() => {
         mockExternalsValidator.validate = jest.fn();
 
