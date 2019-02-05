@@ -27,11 +27,8 @@ export interface AsyncSsrManagerConfig {
 export interface AsyncSsrManagerV0 {
   /**
    * This method is intended for the integrator. It calls the given render
-   * function at least once. When {@link scheduleRerender} was called during a
-   * render pass, another render pass is triggered after the last provided
-   * promise has been resolved. This cycle is repeated until a render pass does
-   * not yield any more rerender promises. It resolves with the result of the
-   * last render call.
+   * function at least once. With {@link scheduleRerender} further render passes
+   * can be triggered. It resolves with the result of the last render call.
    *
    * @throws Throws an error when the configured timeout is reached
    * (see {@link AsyncSsrManagerConfig.timeout}).
@@ -42,14 +39,20 @@ export interface AsyncSsrManagerV0 {
 
   /**
    * This method is intended for consumers, i.e. Feature Apps and Feature
-   * Services. It schedules a rerender with a promise. The method must be called
-   * synchronously during a render pass, since the Async SSR Manager
-   * synchronously checks after every render pass whether there are rerender
-   * promises it needs to await, and then do another render pass.
+   * Services. It schedules a rerender with an optional promise representing an
+   * asynchronous operation. The method must be called synchronously during a
+   * render pass, or while already scheduled asynchronous operations are
+   * running.
    *
-   * @param promise When this promise resolves, a rerender should be triggered.
+   * Calling it while already scheduled asynchronous operations are running,
+   * does not lead to multiple render passes, but instead the already scheduled
+   * rerender is deferred until every registered asynchronous operation has
+   * finished.
+   *
+   * @param asyncOperation The scheduled rerender shall be deferred at least
+   * until after this asynchronous operation has finished.
    */
-  scheduleRerender(promise?: Promise<unknown>): void;
+  scheduleRerender(asyncOperation?: Promise<unknown>): void;
 }
 
 export interface SharedAsyncSsrManager extends SharedFeatureService {

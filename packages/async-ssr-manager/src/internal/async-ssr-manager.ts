@@ -8,7 +8,7 @@ async function renderingTimeout(timeout: number): Promise<never> {
 }
 
 export class AsyncSsrManager implements AsyncSsrManagerV0 {
-  private readonly rerenderPromises = new Set<Promise<unknown>>();
+  private readonly asyncOperations = new Set<Promise<unknown>>();
 
   public constructor(private readonly timeout?: number) {}
 
@@ -26,26 +26,28 @@ export class AsyncSsrManager implements AsyncSsrManagerV0 {
     return Promise.race([renderPromise, renderingTimeout(this.timeout)]);
   }
 
-  public scheduleRerender(promise: Promise<unknown> = Promise.resolve()): void {
-    this.rerenderPromises.add(promise);
+  public scheduleRerender(
+    asyncOperation: Promise<unknown> = Promise.resolve()
+  ): void {
+    this.asyncOperations.add(asyncOperation);
   }
 
   private async renderingLoop(render: () => string): Promise<string> {
     let html = render();
 
-    while (this.rerenderPromises.size > 0) {
-      while (this.rerenderPromises.size > 0) {
-        // Storing a snapshot of the rerender promises and clearing them
+    while (this.asyncOperations.size > 0) {
+      while (this.asyncOperations.size > 0) {
+        // Storing a snapshot of the asynchronous operations and clearing them
         // afterwards allows that consecutive promises can be added while the
         // current asynchronous operations are running.
 
-        const rerenderPromisesSnapshot = Array.from(
-          this.rerenderPromises.values()
+        const asyncOperationsSnapshot = Array.from(
+          this.asyncOperations.values()
         );
 
-        this.rerenderPromises.clear();
+        this.asyncOperations.clear();
 
-        await Promise.all(rerenderPromisesSnapshot);
+        await Promise.all(asyncOperationsSnapshot);
       }
 
       html = render();
