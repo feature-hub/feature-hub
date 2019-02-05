@@ -62,22 +62,6 @@ describe('asyncSsrManagerDefinition', () => {
     });
 
     describe('rendering', () => {
-      const createAsyncSsrManagerConsumer = (consumerUid: string) => {
-        const asyncSsrManager = asyncSsrManagerBinder(consumerUid)
-          .featureService;
-
-        let firstRender = true;
-
-        const render = () => {
-          if (firstRender) {
-            firstRender = false;
-            asyncSsrManager.rerenderAfter(Promise.resolve());
-          }
-        };
-
-        return {render};
-      };
-
       describe('with an integrator as the only consumer', () => {
         it('resolves with the result of the given render function after the first render pass', async () => {
           const asyncSsrManager = asyncSsrManagerBinder('test').featureService;
@@ -89,57 +73,98 @@ describe('asyncSsrManagerDefinition', () => {
         });
       });
 
-      describe('with an integrator, and a consumer that triggers a rerender', () => {
+      describe('with an integrator, and a consumer that schedules a rerender with a custom promise', () => {
         it('resolves with an html string after the second render pass', async () => {
           const asyncSsrManagerIntegrator = asyncSsrManagerBinder(
             'test:integrator'
           ).featureService;
 
-          const asyncSsrManagerConsumer = createAsyncSsrManagerConsumer(
-            'test:consumer'
-          );
+          const asyncSsrManagerConsumer = asyncSsrManagerBinder('test:consumer')
+            .featureService;
+
+          let renderPass = 0;
 
           const mockRender = jest.fn(() => {
-            asyncSsrManagerConsumer.render();
+            renderPass += 1;
 
-            return 'testHtml';
+            if (renderPass === 1) {
+              asyncSsrManagerConsumer.scheduleRerender(Promise.resolve());
+            }
+
+            return `render pass ${renderPass}`;
           });
 
           const html = await asyncSsrManagerIntegrator.renderUntilCompleted(
             mockRender
           );
 
-          expect(html).toEqual('testHtml');
+          expect(html).toEqual('render pass 2');
           expect(mockRender).toHaveBeenCalledTimes(2);
         });
       });
 
-      describe('with an integrator, and two consumers that both trigger a rerender in the first render pass', () => {
+      describe('with an integrator, and a consumer that schedules a rerender without a custom promise', () => {
         it('resolves with an html string after the second render pass', async () => {
           const asyncSsrManagerIntegrator = asyncSsrManagerBinder(
             'test:integrator'
           ).featureService;
 
-          const asyncSsrManagerConsumer1 = createAsyncSsrManagerConsumer(
-            'test:consumer:1'
-          );
+          const asyncSsrManagerConsumer = asyncSsrManagerBinder('test:consumer')
+            .featureService;
 
-          const asyncSsrManagerConsumer2 = createAsyncSsrManagerConsumer(
-            'test:consumer:2'
-          );
+          let renderPass = 0;
 
           const mockRender = jest.fn(() => {
-            asyncSsrManagerConsumer1.render();
-            asyncSsrManagerConsumer2.render();
+            renderPass += 1;
 
-            return 'testHtml';
+            if (renderPass === 1) {
+              asyncSsrManagerConsumer.scheduleRerender();
+            }
+
+            return `render pass ${renderPass}`;
           });
 
           const html = await asyncSsrManagerIntegrator.renderUntilCompleted(
             mockRender
           );
 
-          expect(html).toEqual('testHtml');
+          expect(html).toEqual('render pass 2');
+          expect(mockRender).toHaveBeenCalledTimes(2);
+        });
+      });
+
+      describe('with an integrator, and two consumers that both schedule a rerender in the first render pass', () => {
+        it('resolves with an html string after the second render pass', async () => {
+          const asyncSsrManagerIntegrator = asyncSsrManagerBinder(
+            'test:integrator'
+          ).featureService;
+
+          const asyncSsrManagerConsumer1 = asyncSsrManagerBinder(
+            'test:consumer:1'
+          ).featureService;
+
+          const asyncSsrManagerConsumer2 = asyncSsrManagerBinder(
+            'test:consumer:2'
+          ).featureService;
+
+          let renderPass = 0;
+
+          const mockRender = jest.fn(() => {
+            renderPass += 1;
+
+            if (renderPass === 1) {
+              asyncSsrManagerConsumer1.scheduleRerender();
+              asyncSsrManagerConsumer2.scheduleRerender();
+            }
+
+            return `render pass ${renderPass}`;
+          });
+
+          const html = await asyncSsrManagerIntegrator.renderUntilCompleted(
+            mockRender
+          );
+
+          expect(html).toEqual('render pass 2');
           expect(mockRender).toHaveBeenCalledTimes(2);
         });
       });
@@ -163,7 +188,9 @@ describe('asyncSsrManagerDefinition', () => {
         it('rejects with an error after the configured timeout', async () => {
           const asyncSsrManager = asyncSsrManagerBinder('test').featureService;
           const mockRender = jest.fn(() => {
-            asyncSsrManager.rerenderAfter(new Promise<void>(() => undefined));
+            asyncSsrManager.scheduleRerender(
+              new Promise<never>(() => undefined)
+            );
 
             return 'testHtml';
           });

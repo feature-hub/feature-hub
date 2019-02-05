@@ -97,7 +97,7 @@ class InternalFeatureAppLoader extends React.PureComponent<
     } else if (asyncFeatureAppDefinition.value) {
       this.state = {featureAppDefinition: asyncFeatureAppDefinition.value};
     } else if (!inBrowser && asyncSsrManager) {
-      asyncSsrManager.rerenderAfter(asyncFeatureAppDefinition.promise);
+      asyncSsrManager.scheduleRerender(asyncFeatureAppDefinition.promise);
     }
   }
 

@@ -160,7 +160,7 @@ in its Feature App definition.
 > Service only on the server. The Feature App can determine from its presence
 > whether it is currently rendered on the server or on the client.
 
-On the server, the Feature App can use the `rerenderAfter` method to tell the
+On the server, the Feature App can use the `scheduleRerender` method to tell the
 Async SSR Manager that another render pass is required after the data has been
 loaded:
 
@@ -188,7 +188,7 @@ const myFeatureAppDefinition = {
     const asyncSsrManager = env.featureServices['s2:async-ssr-manager'];
 
     if (asyncSsrManager) {
-      asyncSsrManager.rerenderAfter(dataPromise);
+      asyncSsrManager.scheduleRerender(dataPromise);
     }
 
     return {
@@ -200,8 +200,8 @@ const myFeatureAppDefinition = {
 };
 ```
 
-> The `rerenderAfter` method must be called synchronously during a render pass,
-> since the Async SSR Manager synchronously checks after every render pass
+> The `scheduleRerender` method must be called synchronously during a render
+> pass, since the Async SSR Manager synchronously checks after every render pass
 > whether there are rerender promises it needs to await, and then do another
 > render pass.
 
@@ -214,8 +214,8 @@ const myFeatureAppDefinition = {
 ### As a Feature Service
 
 If a Feature Service consumer changes shared state of a Feature Service during a
-render pass on the server, the Feature Service should trigger a rerender to give
-its consumers a chance to update themselves based on the state change:
+render pass on the server, the Feature Service should schedule a rerender to
+give its consumers a chance to update themselves based on the state change:
 
 ```js
 const myFeatureServiceDefinition = {
@@ -239,7 +239,7 @@ const myFeatureServiceDefinition = {
             count = newCount;
 
             if (asyncSsrManager) {
-              asyncSsrManager.rerenderAfter(Promise.resolve());
+              asyncSsrManager.scheduleRerender(Promise.resolve());
             }
           },
 

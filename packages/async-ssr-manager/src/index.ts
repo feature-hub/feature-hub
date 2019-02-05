@@ -27,7 +27,7 @@ export interface AsyncSsrManagerConfig {
 export interface AsyncSsrManagerV0 {
   /**
    * This method is intended for the integrator. It calls the given render
-   * function at least once. When {@link rerenderAfter} was called during a
+   * function at least once. When {@link scheduleRerender} was called during a
    * render pass, another render pass is triggered after the last provided
    * promise has been resolved. This cycle is repeated until a render pass does
    * not yield any more rerender promises. It resolves with the result of the
@@ -49,7 +49,7 @@ export interface AsyncSsrManagerV0 {
    *
    * @param promise When this promise resolves, a rerender should be triggered.
    */
-  rerenderAfter(promise: Promise<unknown>): void;
+  scheduleRerender(promise?: Promise<unknown>): void;
 }
 
 export interface SharedAsyncSsrManager extends SharedFeatureService {

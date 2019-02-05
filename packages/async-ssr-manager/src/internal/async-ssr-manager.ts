@@ -26,7 +26,7 @@ export class AsyncSsrManager implements AsyncSsrManagerV0 {
     return Promise.race([renderPromise, renderingTimeout(this.timeout)]);
   }
 
-  public rerenderAfter(promise: Promise<unknown>): void {
+  public scheduleRerender(promise: Promise<unknown> = Promise.resolve()): void {
     this.rerenderPromises.add(promise);
   }
 
@@ -34,7 +34,7 @@ export class AsyncSsrManager implements AsyncSsrManagerV0 {
     let html = render();
 
     // During a render pass, rerender promises might be added via the
-    // rerenderAfter method.
+    // scheduleRerender method.
     while (this.rerenderPromises.size > 0) {
       await Promise.all(this.rerenderPromises.values());
       this.rerenderPromises.clear();

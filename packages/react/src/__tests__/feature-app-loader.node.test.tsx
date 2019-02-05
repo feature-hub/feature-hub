@@ -16,7 +16,7 @@ import * as ReactDOM from 'react-dom/server';
 import {FeatureAppLoader, FeatureHubContextProvider} from '..';
 
 interface MockAsyncSsrManager extends AsyncSsrManagerV0 {
-  rerenderAfter: ((promise: Promise<unknown>) => void) & jest.Mock;
+  scheduleRerender: ((promise: Promise<unknown>) => void) & jest.Mock;
 }
 
 jest.mock('../feature-app-container', () => ({
@@ -48,7 +48,7 @@ describe('FeatureAppLoader (on Node.js)', () => {
     };
 
     mockAsyncSsrManager = {
-      rerenderAfter: jest.fn(),
+      scheduleRerender: jest.fn(),
       renderUntilCompleted: jest.fn()
     };
 
@@ -81,10 +81,10 @@ describe('FeatureAppLoader (on Node.js)', () => {
       expect(mockGetAsyncFeatureAppDefinition).not.toHaveBeenCalled();
     });
 
-    it('does not trigger a rerender on the Async SSR Manager', () => {
+    it('does not schedule a rerender on the Async SSR Manager', () => {
       renderWithFeatureHubContext(<FeatureAppLoader src="example.js" />);
 
-      expect(mockAsyncSsrManager.rerenderAfter).not.toHaveBeenCalled();
+      expect(mockAsyncSsrManager.scheduleRerender).not.toHaveBeenCalled();
     });
 
     it('does not add a URL for hydration', () => {
@@ -105,12 +105,12 @@ describe('FeatureAppLoader (on Node.js)', () => {
       ]);
     });
 
-    it('triggers a rerender on the Async SSR Manager with the feature app definition promise', () => {
+    it('schedules a rerender on the Async SSR Manager with the feature app definition promise', () => {
       renderWithFeatureHubContext(
         <FeatureAppLoader src="example.js" serverSrc="example-node.js" />
       );
 
-      expect(mockAsyncSsrManager.rerenderAfter.mock.calls).toEqual([
+      expect(mockAsyncSsrManager.scheduleRerender.mock.calls).toEqual([
         [mockAsyncFeatureAppDefinition.promise]
       ]);
     });
@@ -137,12 +137,12 @@ describe('FeatureAppLoader (on Node.js)', () => {
         );
       });
 
-      it('does not trigger a rerender on the Async SSR Manager', () => {
+      it('does not schedule a rerender on the Async SSR Manager', () => {
         renderWithFeatureHubContext(
           <FeatureAppLoader src="example.js" serverSrc="example-node.js" />
         );
 
-        expect(mockAsyncSsrManager.rerenderAfter).not.toHaveBeenCalled();
+        expect(mockAsyncSsrManager.scheduleRerender).not.toHaveBeenCalled();
       });
     });
 
@@ -173,14 +173,14 @@ describe('FeatureAppLoader (on Node.js)', () => {
         ]);
       });
 
-      it('does not trigger a rerender on the Async SSR Manager', () => {
+      it('does not schedule a rerender on the Async SSR Manager', () => {
         try {
           renderWithFeatureHubContext(
             <FeatureAppLoader src="example.js" serverSrc="example-node.js" />
           );
         } catch {}
 
-        expect(mockAsyncSsrManager.rerenderAfter).not.toHaveBeenCalled();
+        expect(mockAsyncSsrManager.scheduleRerender).not.toHaveBeenCalled();
       });
 
       it('adds the src URL for hydration', () => {
