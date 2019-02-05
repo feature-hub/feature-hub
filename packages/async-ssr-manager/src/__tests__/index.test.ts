@@ -9,6 +9,13 @@ import {
 } from '..';
 import {useFakeTimers} from './use-fake-timers';
 
+async function simulateAsyncOperation(result: number): Promise<number> {
+  return new Promise<number>(
+    // schedule new macro task
+    resolve => setImmediate(() => resolve(result))
+  );
+}
+
 describe('asyncSsrManagerDefinition', () => {
   let mockEnv: FeatureAppEnvironment<AsyncSsrManagerConfig, {}>;
 
@@ -180,16 +187,11 @@ describe('asyncSsrManagerDefinition', () => {
 
             if (renderPass === 1) {
               (async () => {
-                const promise1 = new Promise<number>(
-                  // simulate IO (i.e. schedule new macro task)
-                  resolve => setImmediate(() => resolve(1))
-                );
-
+                const promise1 = simulateAsyncOperation(1);
                 asyncSsrManagerConsumer.scheduleRerender(promise1);
                 consumerResult = await promise1;
 
-                const promise2 = Promise.resolve(2);
-
+                const promise2 = simulateAsyncOperation(2);
                 asyncSsrManagerConsumer.scheduleRerender(promise2);
                 consumerResult = await promise2;
               })().catch(done.fail);

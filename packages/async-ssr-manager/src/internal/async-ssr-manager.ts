@@ -35,9 +35,17 @@ export class AsyncSsrManager implements AsyncSsrManagerV0 {
 
     while (this.rerenderPromises.size > 0) {
       while (this.rerenderPromises.size > 0) {
-        const rerenderPromises = Array.from(this.rerenderPromises.values());
+        // Storing a snapshot of the rerender promises and clearing them
+        // afterwards allows that consecutive promises can be added while the
+        // current asynchronous operations are running.
+
+        const rerenderPromisesSnapshot = Array.from(
+          this.rerenderPromises.values()
+        );
+
         this.rerenderPromises.clear();
-        await Promise.all(rerenderPromises);
+
+        await Promise.all(rerenderPromisesSnapshot);
       }
 
       html = render();
