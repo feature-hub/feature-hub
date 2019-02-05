@@ -19,6 +19,10 @@ interface MockAsyncSsrManager extends AsyncSsrManagerV0 {
   rerenderAfter: ((promise: Promise<unknown>) => void) & jest.Mock;
 }
 
+jest.mock('../feature-app-container', () => ({
+  FeatureAppContainer: jest.fn(() => 'mocked FeatureAppContainer')
+}));
+
 describe('FeatureAppLoader (on Node.js)', () => {
   let mockFeatureAppManager: FeatureAppManagerLike;
   let mockGetAsyncFeatureAppDefinition: jest.Mock;
@@ -38,10 +42,7 @@ describe('FeatureAppLoader (on Node.js)', () => {
 
     mockFeatureAppManager = {
       getAsyncFeatureAppDefinition: mockGetAsyncFeatureAppDefinition,
-      getFeatureAppScope: jest.fn(() => ({
-        featureApp: {render: () => null},
-        destroy: jest.fn()
-      })),
+      getFeatureAppScope: jest.fn(),
       preloadFeatureApp: jest.fn(),
       destroy: jest.fn()
     };
