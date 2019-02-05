@@ -67,7 +67,6 @@ export interface FeatureAppManagerLike {
   ): FeatureAppScope<TFeatureApp>;
 
   preloadFeatureApp(url: string): Promise<void>;
-  destroy(): void;
 }
 
 export interface FeatureAppManagerOptions {
@@ -142,12 +141,6 @@ export class FeatureAppManager implements FeatureAppManagerLike {
 
   public async preloadFeatureApp(url: string): Promise<void> {
     await this.getAsyncFeatureAppDefinition(url).promise;
-  }
-
-  public destroy(): void {
-    for (const featureAppScope of this.featureAppScopes.values()) {
-      featureAppScope.destroy();
-    }
   }
 
   private createAsyncFeatureAppDefinition(

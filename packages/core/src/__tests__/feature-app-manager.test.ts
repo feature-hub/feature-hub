@@ -485,16 +485,6 @@ describe('FeatureAppManager', () => {
     });
   });
 
-  describe('#destroy', () => {
-    it('unbinds the bound Feature Services for all Feature Apps', () => {
-      featureAppManager.getFeatureAppScope(mockFeatureAppDefinition, 'test1');
-      featureAppManager.getFeatureAppScope(mockFeatureAppDefinition, 'test2');
-      featureAppManager.destroy();
-
-      expect(mockFeatureServicesBindingUnbind).toHaveBeenCalledTimes(2);
-    });
-  });
-
   describe('#preloadFeatureApp', () => {
     beforeEach(() => {
       featureAppManager = new FeatureAppManager(
