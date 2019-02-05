@@ -133,6 +133,82 @@ describe('asyncSsrManagerDefinition', () => {
         });
       });
 
+      describe('with an integrator, and a consumer that schedules a rerender in two consecutive render passes', () => {
+        it('resolves with an html string after the third render pass', async () => {
+          const asyncSsrManagerIntegrator = asyncSsrManagerBinder(
+            'test:integrator'
+          ).featureService;
+
+          const asyncSsrManagerConsumer = asyncSsrManagerBinder('test:consumer')
+            .featureService;
+
+          let renderPass = 0;
+
+          const mockRender = jest.fn(() => {
+            renderPass += 1;
+
+            if (renderPass < 3) {
+              asyncSsrManagerConsumer.scheduleRerender();
+            }
+
+            return `render pass ${renderPass}`;
+          });
+
+          const html = await asyncSsrManagerIntegrator.renderUntilCompleted(
+            mockRender
+          );
+
+          expect(html).toEqual('render pass 3');
+          expect(mockRender).toHaveBeenCalledTimes(3);
+        });
+      });
+
+      describe('with an integrator, and a consumer that first schedules a rerender with a custom promise, awaits the promise, and then schedules a rerender with another promise', () => {
+        it('resolves with an html string after the second render pass', async done => {
+          const asyncSsrManagerIntegrator = asyncSsrManagerBinder(
+            'test:integrator'
+          ).featureService;
+
+          const asyncSsrManagerConsumer = asyncSsrManagerBinder('test:consumer')
+            .featureService;
+
+          let renderPass = 0;
+          let consumerResult = 0;
+
+          const mockRender = jest.fn(() => {
+            renderPass += 1;
+
+            if (renderPass === 1) {
+              (async () => {
+                const promise1 = new Promise<number>(
+                  // simulate IO (i.e. schedule new macro task)
+                  resolve => setImmediate(() => resolve(1))
+                );
+
+                asyncSsrManagerConsumer.scheduleRerender(promise1);
+                consumerResult = await promise1;
+
+                const promise2 = Promise.resolve(2);
+
+                asyncSsrManagerConsumer.scheduleRerender(promise2);
+                consumerResult = await promise2;
+              })().catch(done.fail);
+            }
+
+            return `render pass ${renderPass}, consumer result ${consumerResult}`;
+          });
+
+          const html = await asyncSsrManagerIntegrator.renderUntilCompleted(
+            mockRender
+          );
+
+          expect(html).toEqual('render pass 2, consumer result 2');
+          expect(mockRender).toHaveBeenCalledTimes(2);
+
+          done();
+        });
+      });
+
       describe('with an integrator, and two consumers that both schedule a rerender in the first render pass', () => {
         it('resolves with an html string after the second render pass', async () => {
           const asyncSsrManagerIntegrator = asyncSsrManagerBinder(

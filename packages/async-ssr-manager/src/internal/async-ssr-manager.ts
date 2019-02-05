@@ -33,11 +33,12 @@ export class AsyncSsrManager implements AsyncSsrManagerV0 {
   private async renderingLoop(render: () => string): Promise<string> {
     let html = render();
 
-    // During a render pass, rerender promises might be added via the
-    // scheduleRerender method.
     while (this.rerenderPromises.size > 0) {
-      await Promise.all(this.rerenderPromises.values());
-      this.rerenderPromises.clear();
+      while (this.rerenderPromises.size > 0) {
+        const rerenderPromises = Array.from(this.rerenderPromises.values());
+        this.rerenderPromises.clear();
+        await Promise.all(rerenderPromises);
+      }
 
       html = render();
     }
