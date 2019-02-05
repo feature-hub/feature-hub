@@ -49,7 +49,7 @@ const featureAppDefinition: FeatureAppDefinition<
     if (asyncSsrManager) {
       serializedStateManager.register(() => subject);
 
-      asyncSsrManager.rerenderAfter(
+      asyncSsrManager.scheduleRerender(
         (async () => (subject = await fetchSubject()))()
       );
     } else {

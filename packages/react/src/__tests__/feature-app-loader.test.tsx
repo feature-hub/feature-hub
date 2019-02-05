@@ -13,7 +13,7 @@ import {FeatureAppContainer, FeatureAppLoader} from '..';
 import {FeatureHubContextProvider} from '../feature-hub-context';
 
 interface MockAsyncSsrManager extends AsyncSsrManagerV0 {
-  rerenderAfter: ((promise: Promise<unknown>) => void) & jest.Mock;
+  scheduleRerender: ((promise: Promise<unknown>) => void) & jest.Mock;
 }
 
 jest.mock('../feature-app-container', () => ({
@@ -49,7 +49,7 @@ describe('FeatureAppLoader', () => {
     };
 
     mockAsyncSsrManager = {
-      rerenderAfter: jest.fn(),
+      scheduleRerender: jest.fn(),
       renderUntilCompleted: jest.fn()
     };
 
@@ -163,12 +163,12 @@ describe('FeatureAppLoader', () => {
       expect(FeatureAppContainer).toHaveBeenCalledWith(expectedProps, {});
     });
 
-    it('does not trigger a rerender on the Async SSR Manager', () => {
+    it('does not schedule a rerender on the Async SSR Manager', () => {
       renderWithFeatureHubContext(
         <FeatureAppLoader src="example.js" serverSrc="example-node.js" />
       );
 
-      expect(mockAsyncSsrManager.rerenderAfter).not.toHaveBeenCalled();
+      expect(mockAsyncSsrManager.scheduleRerender).not.toHaveBeenCalled();
     });
 
     it('does not add a URL for hydration', () => {
@@ -244,12 +244,12 @@ describe('FeatureAppLoader', () => {
       expect(testRenderer.toJSON()).toBe('mocked FeatureAppContainer');
     });
 
-    it('does not trigger a rerender on the Async SSR Manager', () => {
+    it('does not schedule a rerender on the Async SSR Manager', () => {
       renderWithFeatureHubContext(
         <FeatureAppLoader src="example.js" serverSrc="example-node.js" />
       );
 
-      expect(mockAsyncSsrManager.rerenderAfter).not.toHaveBeenCalled();
+      expect(mockAsyncSsrManager.scheduleRerender).not.toHaveBeenCalled();
     });
 
     it('does not add a URL for hydration', () => {
