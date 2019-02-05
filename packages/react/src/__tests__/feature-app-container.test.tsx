@@ -25,8 +25,7 @@ describe('FeatureAppContainer', () => {
     mockFeatureAppManager = {
       getAsyncFeatureAppDefinition: jest.fn(),
       getFeatureAppScope: mockGetFeatureAppScope,
-      preloadFeatureApp: jest.fn(),
-      destroy: jest.fn()
+      preloadFeatureApp: jest.fn()
     };
 
     stubbedConsole = stubMethods(console);
