@@ -49,7 +49,7 @@ export interface AsyncSsrManagerV0 {
    *
    * @param promise When this promise resolves, a rerender should be triggered.
    */
-  scheduleRerender(promise: Promise<unknown>): void;
+  scheduleRerender(promise?: Promise<unknown>): void;
 }
 
 export interface SharedAsyncSsrManager extends SharedFeatureService {

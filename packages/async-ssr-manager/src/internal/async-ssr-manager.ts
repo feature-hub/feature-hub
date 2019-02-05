@@ -26,7 +26,7 @@ export class AsyncSsrManager implements AsyncSsrManagerV0 {
     return Promise.race([renderPromise, renderingTimeout(this.timeout)]);
   }
 
-  public scheduleRerender(promise: Promise<unknown>): void {
+  public scheduleRerender(promise: Promise<unknown> = Promise.resolve()): void {
     this.rerenderPromises.add(promise);
   }
 
