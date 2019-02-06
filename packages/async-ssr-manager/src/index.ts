@@ -44,6 +44,22 @@ export interface AsyncSsrManagerV0 {
    * render pass, or while already scheduled asynchronous operations are
    * running.
    *
+   * When no asynchronous operation is given, the method must be called
+   * synchronously during a render pass. So this will not work:
+   *
+   * ```js
+   * const data = await fetch('example.com').then(res => res.json());
+   * asyncSsrManager.scheduleRerender();
+   * ```
+   *
+   * Instead do this:
+   *
+   * ```js
+   * const dataPromise = fetch('example.com').then(res => res.json());
+   * asyncSsrManager.scheduleRerender(dataPromise);
+   * const data = await dataPromise;
+   * ```
+   *
    * Calling it while already scheduled asynchronous operations are running,
    * does not lead to multiple render passes, but instead the already scheduled
    * rerender is deferred until every registered asynchronous operation has
