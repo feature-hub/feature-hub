@@ -201,9 +201,8 @@ const myFeatureAppDefinition = {
 ```
 
 > The `scheduleRerender` method must be called synchronously during a render
-> pass, since the Async SSR Manager synchronously checks after every render pass
-> whether there are rerender promises it needs to await, and then do another
-> render pass.
+> pass, or while already scheduled asynchronous operations are running. For more
+> information see the [API docs][async-ssr-manager-api-schedule-rerender].
 
 > In more complex Feature Apps, it may be more difficult to determine the right
 > point in time where all asynchronous operations have been completed. However,
@@ -239,7 +238,7 @@ const myFeatureServiceDefinition = {
             count = newCount;
 
             if (asyncSsrManager) {
-              asyncSsrManager.scheduleRerender(Promise.resolve());
+              asyncSsrManager.scheduleRerender();
             }
           },
 
@@ -283,6 +282,8 @@ const html = await asyncSsrManager.renderUntilCompleted(() =>
 > rendered on the server or on the client.
 
 [async-ssr-manager-api]: /@feature-hub/async-ssr-manager/
+[async-ssr-manager-api-schedule-rerender]:
+  /@feature-hub/async-ssr-manager/interfaces/asyncssrmanagerv0.html#schedulererender
 [serialized-state-manager-api]: /@feature-hub/serialized-state-manager/
 [demos-inject-serialized-states-script]:
   https://github.com/sinnerschrader/feature-hub/blob/50a883a744d69f28980e46130bf2a1bdda415216/packages/demos/src/start-server.ts#L26
