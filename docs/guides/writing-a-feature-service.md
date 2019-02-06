@@ -5,18 +5,26 @@ sidebar_label: Writing a Feature Service
 ---
 
 A Feature Service is described by a provider definition object. It consists of
-an `id`, an optional `dependencies` object, and a `create` method:
+an `id`, `dependencies` and/or `optionalDependencies` objects, and a `create`
+method:
 
 ```js
 const myFeatureServiceDefinition = {
   id: 'acme:my-feature-service',
 
   dependencies: {
-    'acme:other-feature-service': '^2.0.0'
+    featureServices: {
+      'acme:other-feature-service': '^2.0.0'
+    },
+    externals: {
+      rxjs: '^6.4.0'
+    }
   },
 
   optionalDependencies: {
-    'acme:optional-feature-service': '^1.3.0'
+    featureServices: {
+      'acme:optional-feature-service': '^1.3.0'
+    }
   },
 
   create(env) {
@@ -33,20 +41,39 @@ config for a Feature Service. Furthermore, it is used as a consumer ID for
 [binding the required Feature Services][feature-service-binder] to the dependent
 Feature Service.
 
-## `dependencies` & `optionalDependencies`
+## `dependencies`
 
-Feature Service dependencies are declared with their ID and a [semver version
-range][semver], e.g. `{'acme:other-feature-service': '^2.0.0'}`. There are two
-dependency maps. Both are optional properties of the Feature Service definition.
+The `dependencies` map can contain two types of required dependencies:
 
-The `dependencies` map contains all required Feature Services. If one of those
-dependencies can't be fulfilled, Feature Service registration will fail. This
-means the Feature Service can be sure that those dependencies are always present
-when it is created.
+1. With `dependencies.featureServices` all required Feature Services are
+   declared. If one of those dependencies can't be fulfilled, Feature Service
+   registration will fail. This means the Feature Service can be sure that those
+   dependencies are always present when it is created.
 
-The `optionalDependencies` map contains all dependencies for which the Feature
-Service handles their absence gracefully. If one of those dependencies can't be
-fulfilled, the `FeatureServiceRegistry` will only log an info message.
+   Feature Service dependencies are declared with their ID as key, and a [semver
+   version range][semver] as value, e.g.
+   `{'acme:other-feature-service': '^2.0.0'}`.
+
+1. With `dependencies.externals` all required external dependencies are
+   declared. This may include [shared npm
+   dependencies][sharing-npm-dependencies] that are provided by the integrator
+   in the case where the [Feature Service is provided by a Feature
+   App][own-feature-service-definitions] instead of the integrator, i.e. the
+   Feature Service is included in a different bundle than the integrator bundle.
+
+   External dependencies are declared with their module name as key, and a
+   [semver version range][semver] as value, e.g. `{rxjs: '^6.4.0'}`.
+
+## `optionalDependencies`
+
+The `optionalDependencies.featureServices` map contains all Feature Service
+dependencies for which the depending Feature Service handles their absence
+gracefully. If one of those dependencies can't be fulfilled, the
+`FeatureServiceRegistry` will only log an info message.
+
+Feature Service dependencies are declared with their ID as key, and a [semver
+version range][semver] as value, e.g.
+`{'acme:other-feature-service': '^2.0.0'}`.
 
 ## `create`
 
@@ -79,7 +106,9 @@ following properties:
      id: 'acme:my-feature-service',
 
      dependencies: {
-       'acme:other-feature-service': '^2.0.0'
+       featureServices: {
+         'acme:other-feature-service': '^2.0.0'
+       }
      },
 
      create(env) {
@@ -277,4 +306,7 @@ const myFeatureServiceDefinition = {
 [feature-service-binder]:
   /docs/guides/writing-a-feature-service#feature-service-binder
 [providing-configs]: /docs/guides/integrating-the-feature-hub#providing-configs
+[sharing-npm-dependencies]: /docs/guides/sharing-npm-dependencies
 [semver]: https://semver.org
+[own-feature-service-definitions]:
+  /docs/guides/writing-a-feature-app#ownfeatureservicedefinitions

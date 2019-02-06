@@ -27,7 +27,9 @@ const myFeatureServiceDefinition = {
   id: 'acme:my-feature-service',
 
   dependencies: {
-    's2:serialized-state-manager': '^0.1.0'
+    featureServices: {
+      's2:serialized-state-manager': '^0.1.0'
+    }
   },
 
   create(env) {
@@ -169,7 +171,9 @@ const myFeatureAppDefinition = {
   id: 'acme:my-feature-app',
 
   optionalDependencies: {
-    's2:async-ssr-manager': '^0.1.0'
+    featureServices: {
+      's2:async-ssr-manager': '^0.1.0'
+    }
   },
 
   create(env) {
@@ -221,7 +225,9 @@ const myFeatureServiceDefinition = {
   id: 'acme:my-feature-service',
 
   optionalDependencies: {
-    's2:async-ssr-manager': '^0.1.0'
+    featureServices: {
+      's2:async-ssr-manager': '^0.1.0'
+    }
   },
 
   create(env) {
