@@ -108,12 +108,13 @@ export class FeatureAppManager implements FeatureAppManagerLike {
    * @throws Throws an error if no module loader was provided on initilization.
    *
    * @param url A URL pointing to a {@link FeatureAppDefinition} bundle in a
-   * module format compatible with the module loader or when the loaded bundle
-   * doesn't export {@link FeatureAppDefinition} as default.
+   * module format compatible with the module loader.
    *
    * @returns An {@link AsyncValue} containing a promise that resolves with the
    * loaded {@link FeatureAppDefinition}. If called again with the same URL it
-   * returns the same {@link AsyncValue}. The promise rejects when loading fails, or
+   * returns the same {@link AsyncValue}. The promise rejects when loading
+   * fails, or when the loaded bundle doesn't export a {@link
+   * FeatureAppDefinition} as default.
    */
   public getAsyncFeatureAppDefinition(
     url: string
@@ -140,7 +141,7 @@ export class FeatureAppManager implements FeatureAppManagerLike {
    * @throws Throws an error if the required externals can't be satisfied.
    * @throws Throws an error if the required Feature Services can't be
    * satisfied.
-   * @throws Throws an error the {@link FeatureAppDefinition}'s create method
+   * @throws Throws an error the {@link FeatureAppDefinition}'s `create` method
    * throws.
    *
    * @param featureAppDefinition The definition of the Feature App to create a
