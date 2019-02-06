@@ -18,10 +18,7 @@ featureServiceRegistry.registerFeatureServices(
   'test:integrator'
 );
 
-const featureAppManager = new FeatureAppManager(
-  featureServiceRegistry,
-  externalsValidator
-);
+const featureAppManager = new FeatureAppManager(featureServiceRegistry);
 
 ReactDOM.render(
   <App featureAppManager={featureAppManager} />,

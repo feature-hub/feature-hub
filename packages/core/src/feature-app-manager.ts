@@ -72,6 +72,7 @@ export interface FeatureAppManagerLike {
 export interface FeatureAppManagerOptions {
   readonly configs?: FeatureAppConfigs;
   readonly moduleLoader?: ModuleLoader;
+  readonly externalsValidator?: ExternalsValidatorLike;
 }
 
 type FeatureAppModuleUrl = string;
@@ -97,7 +98,6 @@ export class FeatureAppManager implements FeatureAppManagerLike {
 
   public constructor(
     private readonly featureServiceRegistry: FeatureServiceRegistryLike,
-    private readonly externalsValidator: ExternalsValidatorLike,
     private readonly options: FeatureAppManagerOptions = {}
   ) {}
 
@@ -299,10 +299,16 @@ export class FeatureAppManager implements FeatureAppManagerLike {
   private validateExternals(
     featureAppDefinition: FeatureServiceConsumerDefinition
   ): void {
+    const {externalsValidator} = this.options;
+
+    if (!externalsValidator) {
+      return;
+    }
+
     const {dependencies} = featureAppDefinition;
 
     if (dependencies && dependencies.externals) {
-      this.externalsValidator.validate(dependencies.externals);
+      externalsValidator.validate(dependencies.externals);
     }
   }
 }

@@ -53,11 +53,10 @@ export default async function renderApp({
     asyncSsrManagerDefinition.id
   ] as AsyncSsrManagerV0;
 
-  const featureAppManager = new FeatureAppManager(
-    featureServiceRegistry,
-    externalsValidator,
-    {moduleLoader: loadCommonJsModule}
-  );
+  const featureAppManager = new FeatureAppManager(featureServiceRegistry, {
+    moduleLoader: loadCommonJsModule,
+    externalsValidator
+  });
 
   const urlsForHydration = new Set<string>();
 
