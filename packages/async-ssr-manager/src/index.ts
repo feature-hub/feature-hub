@@ -45,10 +45,11 @@ export interface AsyncSsrManagerV0 {
    * running.
    *
    * When no asynchronous operation is given, the method must be called
-   * synchronously during a render pass. So this will not work:
+   * synchronously during a render pass. This means that **this will not work**:
    *
    * ```js
    * const data = await fetch('example.com').then(res => res.json());
+   * // this will not work:
    * asyncSsrManager.scheduleRerender();
    * ```
    *
@@ -65,8 +66,8 @@ export interface AsyncSsrManagerV0 {
    * rerender is deferred until every registered asynchronous operation has
    * finished.
    *
-   * @param asyncOperation The scheduled rerender shall be deferred at least
-   * until after this asynchronous operation has finished.
+   * @param asyncOperation A promise representing an asynchronous operation that
+   * shall defer the scheduled rerender at least until after its completion.
    */
   scheduleRerender(asyncOperation?: Promise<unknown>): void;
 }
