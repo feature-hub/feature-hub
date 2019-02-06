@@ -77,6 +77,9 @@ export interface FeatureAppManagerOptions {
 type FeatureAppModuleUrl = string;
 type FeatureAppUid = string;
 
+/**
+ * The `FeatureAppManager` manages the lifecycle of Feature Apps.
+ */
 export class FeatureAppManager implements FeatureAppManagerLike {
   private readonly asyncFeatureAppDefinitions = new Map<
     FeatureAppModuleUrl,
@@ -98,6 +101,20 @@ export class FeatureAppManager implements FeatureAppManagerLike {
     private readonly options: FeatureAppManagerOptions = {}
   ) {}
 
+  /**
+   * Load a {@link FeatureAppDefinition} using the module loader the
+   * {@link FeatureAppManager} was initilized with.
+   *
+   * @throws Throws an error if no module loader was provided on initilization.
+   *
+   * @param url A URL pointing to a {@link FeatureAppDefinition} bundle in a
+   * module format compatible with the module loader or when the loaded bundle
+   * doesn't export {@link FeatureAppDefinition} as default.
+   *
+   * @returns An {@link AsyncValue} containing a promise that resolves with the
+   * loaded {@link FeatureAppDefinition}. If called again with the same URL it
+   * returns the same {@link AsyncValue}. The promise rejects when loading fails, or
+   */
   public getAsyncFeatureAppDefinition(
     url: string
   ): AsyncValue<FeatureAppDefinition<unknown>> {
@@ -112,6 +129,30 @@ export class FeatureAppManager implements FeatureAppManagerLike {
     return asyncFeatureAppDefinition;
   }
 
+  /**
+   * Create a {@link FeatureAppScope} which includes validating externals,
+   * binding all available Feature Service dependencies, and calling the
+   * `create` method of the {@link FeatureAppDefinition}.
+   *
+   * @throws Throws an error if Feature Services that the {@link
+   * FeatureAppDefinition} provides with its `ownFeatureServices` key fail to
+   * be registered.
+   * @throws Throws an error if the required externals can't be satisfied.
+   * @throws Throws an error if the required Feature Services can't be
+   * satisfied.
+   * @throws Throws an error the {@link FeatureAppDefinition}'s create method
+   * throws.
+   *
+   * @param featureAppDefinition The definition of the Feature App to create a
+   * scope for.
+   * @param idSpecifier A specifier to distinguish the Feature App instances
+   * from others created from the same definition.
+   *
+   * @returns A {@link FeatureAppScope} for the provided {@link
+   * FeatureAppDefinition} and ID specifier. If `getFeatureAppScope` is called
+   * multiple times with the same arguments, it returns the {@link
+   * FeatureAppScope} it created on the first call.
+   */
   public getFeatureAppScope<TFeatureApp>(
     featureAppDefinition: FeatureAppDefinition<TFeatureApp>,
     idSpecifier?: string
@@ -139,6 +180,16 @@ export class FeatureAppManager implements FeatureAppManagerLike {
     return featureAppScope as FeatureAppScope<TFeatureApp>;
   }
 
+  /**
+   * Preload a {@link FeatureAppDefinition} using the module loader the {@link
+   * FeatureAppManager} was initilized with. Useful before hydration of a
+   * server rendered page to avoid render result mismatch between client and
+   * server due missing {@link FeatureAppDefinition}s.
+   *
+   * @throws Throws an error if no module loader was provided on initilization.
+   *
+   * @see {@link getAsyncFeatureAppDefinition} for further information.
+   */
   public async preloadFeatureApp(url: string): Promise<void> {
     await this.getAsyncFeatureAppDefinition(url).promise;
   }
