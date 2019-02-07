@@ -75,6 +75,9 @@ Feature Service dependencies are declared with their ID as key, and a [semver
 version range][semver] as value, e.g.
 `{'acme:other-feature-service': '^2.0.0'}`.
 
+> Optional external dependencies (i.e. `optionalDependencies.externals`) are not
+> yet supported (see [#245][issue-245]).
+
 ## `create`
 
 The `create` method of a Feature Service definition is called exactly once by
@@ -310,3 +313,4 @@ const myFeatureServiceDefinition = {
 [semver]: https://semver.org
 [own-feature-service-definitions]:
   /docs/guides/writing-a-feature-app#ownfeatureservicedefinitions
+[issue-245]: https://github.com/sinnerschrader/feature-hub/issues/245

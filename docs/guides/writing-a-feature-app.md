@@ -77,6 +77,9 @@ log an info message.
 Feature Service dependencies are declared with their ID as key, and a [semver
 version range][semver] as value, e.g. `{'acme:some-feature-service': '^2.0.0'}`.
 
+> Optional external dependencies (i.e. `optionalDependencies.externals`) are not
+> yet supported (see [#245][issue-245]).
+
 ## `create`
 
 The `create` method takes the single argument `env`, which has the following
@@ -230,3 +233,4 @@ const myFeatureAppDefinition = {
 [react-feature-app]: /docs/guides/writing-a-feature-app#react-feature-app
 [sharing-npm-dependencies]: /docs/guides/sharing-npm-dependencies
 [semver]: https://semver.org
+[issue-245]: https://github.com/sinnerschrader/feature-hub/issues/245
