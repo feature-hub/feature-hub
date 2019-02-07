@@ -111,7 +111,7 @@ export interface FeatureServiceRegistryOptions {
   readonly configs?: FeatureServiceConfigs;
 
   /**
-   * When the {@link FeatureAppManager} is configured with a
+   * If the {@link FeatureAppManager} is configured with a
    * {@link FeatureAppManager#moduleLoader}, to load Feature Apps from a remote
    * location that also provide their own Feature Services, i.e. the Feature
    * Services are included in a different bundle than the integrator bundle, it
