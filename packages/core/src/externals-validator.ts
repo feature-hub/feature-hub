@@ -1,19 +1,19 @@
 import {satisfies, valid} from 'semver';
 
 /**
- * A map of provided node module names as keys and strict semver versions as
+ * A map of provided node external names as keys and strict semver versions as
  * values.
  */
 export interface ProvidedExternals {
-  readonly [moduleName: string]: string;
+  readonly [externalName: string]: string;
 }
 
 /**
- * A map of required node module names as keys and semver version ranges as
+ * A map of required node external names as keys and semver version ranges as
  * values.
  */
 export interface RequiredExternals {
-  readonly [moduleName: string]: string;
+  readonly [externalName: string]: string;
 }
 
 export interface ExternalsValidatorLike {
@@ -30,14 +30,14 @@ export class ExternalsValidator implements ExternalsValidatorLike {
    * version.
    */
   public constructor(private readonly providedExternals: ProvidedExternals) {
-    for (const [moduleName, providedVersion] of Object.entries(
+    for (const [externalName, providedVersion] of Object.entries(
       providedExternals
     )) {
       if (!valid(providedVersion)) {
         throw new Error(
           `The provided version ${JSON.stringify(
             providedVersion
-          )} for the external ${JSON.stringify(moduleName)} is invalid.`
+          )} for the external ${JSON.stringify(externalName)} is invalid.`
         );
       }
     }
@@ -49,15 +49,15 @@ export class ExternalsValidator implements ExternalsValidatorLike {
    * @throws Throws an error if the required externals can't be satisfied.
    */
   public validate(requiredExternals: RequiredExternals): void {
-    for (const [moduleName, versionRange] of Object.entries(
+    for (const [externalName, versionRange] of Object.entries(
       requiredExternals
     )) {
-      const providedVersion = this.providedExternals[moduleName];
+      const providedVersion = this.providedExternals[externalName];
 
       if (!providedVersion) {
         throw new Error(
           `The external dependency ${JSON.stringify(
-            moduleName
+            externalName
           )} is not provided.`
         );
       }
@@ -65,7 +65,7 @@ export class ExternalsValidator implements ExternalsValidatorLike {
       if (!satisfies(providedVersion, versionRange)) {
         throw new Error(
           `The external dependency ${JSON.stringify(
-            moduleName
+            externalName
           )} in the required version range ${JSON.stringify(
             versionRange
           )} is not satisfied. The provided version is ${JSON.stringify(
