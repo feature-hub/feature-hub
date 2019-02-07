@@ -9,11 +9,12 @@ import {
 } from '..';
 import {useFakeTimers} from './use-fake-timers';
 
+const queueMacroTask = setImmediate;
+
 async function simulateAsyncOperation(result: number): Promise<number> {
-  return new Promise<number>(
-    // schedule new macro task
-    resolve => setImmediate(() => resolve(result))
-  );
+  await new Promise(queueMacroTask);
+
+  return result;
 }
 
 describe('asyncSsrManagerDefinition', () => {

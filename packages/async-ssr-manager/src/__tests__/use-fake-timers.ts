@@ -18,8 +18,6 @@ export async function useFakeTimers<TResult>(
     await new Promise(queueMacroTask);
 
     while (pending) {
-      jest.runAllTicks();
-      jest.runAllImmediates();
       jest.advanceTimersByTime(1);
 
       actualTimeout += 1;
