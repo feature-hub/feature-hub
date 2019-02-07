@@ -53,7 +53,9 @@ const myFeatureAppDefinition = {
   id: 'acme:my-feature-app',
 
   dependencies: {
-    's2:history': '^1.0.0'
+    featureServices: {
+      's2:history': '^1.0.0'
+    }
   },
 
   create(env) {
@@ -82,7 +84,9 @@ const myFeatureAppDefinition = {
   id: 'acme:my-feature-app',
 
   dependencies: {
-    's2:history': '^1.0.0'
+    featureServices: {
+      's2:history': '^1.0.0'
+    }
   },
 
   create(env) {

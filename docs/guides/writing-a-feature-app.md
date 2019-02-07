@@ -5,14 +5,26 @@ sidebar_label: Writing a Feature App
 ---
 
 A Feature App is described by a consumer definition object. It consists of an
-`id`, an optional `dependencies` object, and a `create` method:
+`id`, `dependencies` and/or `optionalDependencies` objects, and a `create`
+method:
 
 ```js
 const myFeatureAppDefinition = {
   id: 'acme:my-feature-app',
 
   dependencies: {
-    'acme:some-feature-service': '^2.0.0'
+    featureServices: {
+      'acme:some-feature-service': '^2.0.0'
+    },
+    externals: {
+      react: '^16.7.0'
+    }
+  },
+
+  optionalDependencies: {
+    featureServices: {
+      'acme:optional-feature-service': '^1.3.0'
+    }
   },
 
   create(env) {
@@ -37,8 +49,36 @@ required Feature Services][feature-service-binder] to the dependent Feature App.
 
 ## `dependencies`
 
-Required Feature Services are declared with their ID and a [semver version
-range][semver], e.g. `{'acme:some-feature-service': '^2.0.0'}`.
+The `dependencies` map can contain two types of required dependencies:
+
+1. With `dependencies.featureServices` all required Feature Services are
+   declared. If one of those dependencies can't be fulfilled, the Feature App
+   won't be created. This means the Feature App can be sure that those
+   dependencies are always present when it is created.
+
+   Feature Service dependencies are declared with their ID as key, and a [semver
+   version range][semver] as value, e.g.
+   `{'acme:some-feature-service': '^2.0.0'}`.
+
+1. With `dependencies.externals` all required external dependencies are
+   declared. This may include [shared npm
+   dependencies][sharing-npm-dependencies] that are provided by the integrator.
+
+   External dependencies are declared with their module name as key, and a
+   [semver version range][semver] as value, e.g. `{react: '^16.7.0'}`.
+
+## `optionalDependencies`
+
+The `optionalDependencies.featureServices` map contains all Feature Service
+dependencies for which the Feature App handles their absence gracefully. If one
+of those dependencies can't be fulfilled, the `FeatureServiceRegistry` will only
+log an info message.
+
+Feature Service dependencies are declared with their ID as key, and a [semver
+version range][semver] as value, e.g. `{'acme:some-feature-service': '^2.0.0'}`.
+
+> Optional external dependencies (i.e. `optionalDependencies.externals`) are not
+> yet supported (see [#245][issue-245]).
 
 ## `create`
 
@@ -69,7 +109,9 @@ properties:
      id: 'acme:my-feature-app',
 
      dependencies: {
-       'acme:some-feature-service': '^2.0.0'
+       featureServices: {
+         'acme:some-feature-service': '^2.0.0'
+       }
      },
 
      create(env) {
@@ -105,7 +147,9 @@ const myFeatureAppDefinition = {
   id: 'acme:my-feature-app',
 
   dependencies: {
-    'acme:my-feature-service': '^1.0.0'
+    featureServices: {
+      'acme:my-feature-service': '^1.0.0'
+    }
   },
 
   ownFeatureServiceDefinitions: [myFeatureServiceDefinition],
@@ -187,4 +231,6 @@ const myFeatureAppDefinition = {
 [providing-configs]: /docs/guides/integrating-the-feature-hub#providing-configs
 [react-api]: /@feature-hub/react/
 [react-feature-app]: /docs/guides/writing-a-feature-app#react-feature-app
+[sharing-npm-dependencies]: /docs/guides/sharing-npm-dependencies
 [semver]: https://semver.org
+[issue-245]: https://github.com/sinnerschrader/feature-hub/issues/245
