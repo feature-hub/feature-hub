@@ -70,8 +70,27 @@ export interface FeatureAppManagerLike {
 }
 
 export interface FeatureAppManagerOptions {
+  /**
+   * Configurations for all Feature Apps that will potentially be created.
+   */
   readonly configs?: FeatureAppConfigs;
+
+  /**
+   * For the `FeatureAppManager` to be able to load Feature Apps from a remote
+   * location, a module loader must be provided, (e.g. the
+   * `@feature-hub/module-loader-amd` package or the
+   * `@feature-hub/module-loader-commonjs` package).
+   */
   readonly moduleLoader?: ModuleLoader;
+
+  /**
+   * When using a {@link #moduleLoader}, it might make sense to validate
+   * external dependencies that are required by Feature Apps against the
+   * shared dependencies that are provided by the integrator. This makes it
+   * possible that an error is already thrown when creating a Feature App with
+   * incompatible external dependencies. This gives the author early feedback as
+   * to whether a Feature App can run in the integration environment.
+   */
   readonly externalsValidator?: ExternalsValidatorLike;
 }
 
