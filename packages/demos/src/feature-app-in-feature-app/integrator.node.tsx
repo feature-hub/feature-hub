@@ -20,11 +20,10 @@ export default async function renderApp({
   const featureAppNodeUrl = `http://localhost:${port}/feature-app.commonjs.js`;
   const featureServiceRegistry = new FeatureServiceRegistry(externalsValidator);
 
-  const featureAppManager = new FeatureAppManager(
-    featureServiceRegistry,
-    externalsValidator,
-    {moduleLoader: loadCommonJsModule}
-  );
+  const featureAppManager = new FeatureAppManager(featureServiceRegistry, {
+    moduleLoader: loadCommonJsModule,
+    externalsValidator
+  });
 
   // In a real-world integrator, instead of preloading a Feature App manually
   // before rendering, the Async SSR Manager would be used to handle the

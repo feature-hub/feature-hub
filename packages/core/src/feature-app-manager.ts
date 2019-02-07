@@ -70,8 +70,28 @@ export interface FeatureAppManagerLike {
 }
 
 export interface FeatureAppManagerOptions {
+  /**
+   * Configurations for all Feature Apps that will potentially be created.
+   */
   readonly configs?: FeatureAppConfigs;
+
+  /**
+   * For the `FeatureAppManager` to be able to load Feature Apps from a remote
+   * location, a module loader must be provided, (e.g. the
+   * `@feature-hub/module-loader-amd` package or the
+   * `@feature-hub/module-loader-commonjs` package).
+   */
   readonly moduleLoader?: ModuleLoader;
+
+  /**
+   * When using a {@link #moduleLoader}, it might make sense to validate
+   * external dependencies that are required by Feature Apps against the
+   * shared dependencies that are provided by the integrator. This makes it
+   * possible that an error is already thrown when creating a Feature App with
+   * incompatible external dependencies, and thus enables early feedback as to
+   * whether a Feature App is compatible with the integration environment.
+   */
+  readonly externalsValidator?: ExternalsValidatorLike;
 }
 
 type FeatureAppModuleUrl = string;
@@ -97,7 +117,6 @@ export class FeatureAppManager implements FeatureAppManagerLike {
 
   public constructor(
     private readonly featureServiceRegistry: FeatureServiceRegistryLike,
-    private readonly externalsValidator: ExternalsValidatorLike,
     private readonly options: FeatureAppManagerOptions = {}
   ) {}
 
@@ -299,10 +318,16 @@ export class FeatureAppManager implements FeatureAppManagerLike {
   private validateExternals(
     featureAppDefinition: FeatureServiceConsumerDefinition
   ): void {
+    const {externalsValidator} = this.options;
+
+    if (!externalsValidator) {
+      return;
+    }
+
     const {dependencies} = featureAppDefinition;
 
     if (dependencies && dependencies.externals) {
-      this.externalsValidator.validate(dependencies.externals);
+      externalsValidator.validate(dependencies.externals);
     }
   }
 }

@@ -27,10 +27,7 @@ export default async function renderApp({
     'test:integrator'
   );
 
-  const featureAppManager = new FeatureAppManager(
-    featureServiceRegistry,
-    externalsValidator
-  );
+  const featureAppManager = new FeatureAppManager(featureServiceRegistry);
 
   const html = ReactDOM.renderToString(
     <App featureAppManager={featureAppManager} />
