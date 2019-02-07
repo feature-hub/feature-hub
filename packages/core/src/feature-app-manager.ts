@@ -88,8 +88,8 @@ export interface FeatureAppManagerOptions {
    * external dependencies that are required by Feature Apps against the
    * shared dependencies that are provided by the integrator. This makes it
    * possible that an error is already thrown when creating a Feature App with
-   * incompatible external dependencies. This gives the author early feedback as
-   * to whether a Feature App can run in the integration environment.
+   * incompatible external dependencies. This enables early feedback as to
+   * whether a Feature App is compatible with the integration environment.
    */
   readonly externalsValidator?: ExternalsValidatorLike;
 }
