@@ -64,7 +64,7 @@ The `dependencies` map can contain two types of required dependencies:
    declared. This may include [shared npm
    dependencies][sharing-npm-dependencies] that are provided by the integrator.
 
-   External dependencies are declared with their module name as key, and a
+   External dependencies are declared with their external name as key, and a
    [semver version range][semver] as value, e.g. `{react: '^16.7.0'}`.
 
 ## `optionalDependencies`

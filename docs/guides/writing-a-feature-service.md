@@ -61,7 +61,7 @@ The `dependencies` map can contain two types of required dependencies:
    App][own-feature-service-definitions] instead of the integrator, i.e. the
    Feature Service is included in a different bundle than the integrator bundle.
 
-   External dependencies are declared with their module name as key, and a
+   External dependencies are declared with their external name as key, and a
    [semver version range][semver] as value, e.g. `{rxjs: '^6.4.0'}`.
 
 ## `optionalDependencies`

@@ -2,14 +2,14 @@ import {ModuleLoader} from '@feature-hub/core';
 import 'systemjs/dist/system-production';
 
 export interface Externals {
-  readonly [moduleName: string]: unknown;
+  readonly [externalName: string]: unknown;
 }
 
 export function defineExternals(externals: Externals): void {
-  for (const moduleName of Object.keys(externals)) {
-    const external = externals[moduleName];
+  for (const externalName of Object.keys(externals)) {
+    const external = externals[externalName];
 
-    SystemJS.amdDefine(moduleName, () => external);
+    SystemJS.amdDefine(externalName, () => external);
   }
 }
 
