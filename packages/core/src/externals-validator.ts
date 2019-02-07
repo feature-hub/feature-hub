@@ -1,7 +1,7 @@
 import {satisfies, valid} from 'semver';
 
 /**
- * A map of provided node external names as keys and strict semver versions as
+ * A map of provided external names as keys and strict semver versions as
  * values.
  */
 export interface ProvidedExternals {
@@ -9,8 +9,7 @@ export interface ProvidedExternals {
 }
 
 /**
- * A map of required node external names as keys and semver version ranges as
- * values.
+ * A map of required external names as keys and semver version ranges as values.
  */
 export interface RequiredExternals {
   readonly [externalName: string]: string;
