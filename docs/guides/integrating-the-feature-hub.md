@@ -99,7 +99,11 @@ To accomplish that the integrator can configure an `ExternalsValidator`.
 On the client:
 
 ```js
-import {ExternalsValidator, FeatureAppManager} from '@feature-hub/core';
+import {
+  ExternalsValidator,
+  FeatureAppManager,
+  FeatureServiceRegistry
+} from '@feature-hub/core';
 import {defineExternals, loadAmdModule} from '@feature-hub/module-loader-amd';
 import * as React from 'react';
 ```
@@ -108,6 +112,7 @@ import * as React from 'react';
 defineExternals({react: React});
 
 const externalsValidator = new ExternalsValidator({react: '16.7.0'});
+const featureServiceRegistry = new FeatureServiceRegistry();
 
 const featureAppManager = new FeatureAppManager(featureServiceRegistry, {
   moduleLoader: loadAmdModule,
@@ -118,12 +123,17 @@ const featureAppManager = new FeatureAppManager(featureServiceRegistry, {
 On the server:
 
 ```js
-import {ExternalsValidator, FeatureAppManager} from '@feature-hub/core';
+import {
+  ExternalsValidator,
+  FeatureAppManager,
+  FeatureServiceRegistry
+} from '@feature-hub/core';
 import {loadCommonJsModule} from '@feature-hub/module-loader-commonjs';
 ```
 
 ```js
 const externalsValidator = new ExternalsValidator({react: '16.7.0'});
+const featureServiceRegistry = new FeatureServiceRegistry();
 
 const featureAppManager = new FeatureAppManager(featureServiceRegistry, {
   moduleLoader: loadCommonJsModule,
