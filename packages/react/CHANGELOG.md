@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 0.13.0 (2019-02-07)
+
+
+### Bug Fixes
+
+* **react:** remove mission critical feature app todos ([#297](https://github.com/sinnerschrader/feature-hub/issues/297)) ([da651bc](https://github.com/sinnerschrader/feature-hub/commit/da651bc))
+
+
+### Features
+
+* **async-ssr-manager:** rename rerenderAfter to scheduleRerender ([#335](https://github.com/sinnerschrader/feature-hub/issues/335)) ([4477934](https://github.com/sinnerschrader/feature-hub/commit/4477934))
+* **core:** remove FeatureAppManager#destroy ([#336](https://github.com/sinnerschrader/feature-hub/issues/336)) ([04bc770](https://github.com/sinnerschrader/feature-hub/commit/04bc770))
+* **react:** add addUrlForHydration and integrate into FeatureAppLoader ([#320](https://github.com/sinnerschrader/feature-hub/issues/320)) ([9de6cf2](https://github.com/sinnerschrader/feature-hub/commit/9de6cf2))
+* **react:** add FeatureHubContext ([#312](https://github.com/sinnerschrader/feature-hub/issues/312)) ([793bf05](https://github.com/sinnerschrader/feature-hub/commit/793bf05))
+* **serialized-state-manager:** create package ([#287](https://github.com/sinnerschrader/feature-hub/issues/287)) ([8cadcb9](https://github.com/sinnerschrader/feature-hub/commit/8cadcb9))
+
+
+
+
+
 # [0.12.0](https://github.com/sinnerschrader/feature-hub/compare/v0.11.0...v0.12.0) (2019-01-17)
 
 
