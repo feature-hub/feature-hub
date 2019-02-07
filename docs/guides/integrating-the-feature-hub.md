@@ -91,19 +91,15 @@ dependencies that are [required by Feature Apps][feature-app-dependencies]
 against the externals, e.g. [shared npm dependencies][sharing-npm-dependencies],
 that are provided by the integrator. This makes it possible that an error is
 already thrown when creating a Feature App with incompatible external
-dependencies. This gives the author early feedback as to whether a Feature App
-can run in the integration environment.
+dependencies, and thus enables early feedback as to whether a Feature App is
+compatible with the integration environment.
 
 To accomplish that the integrator can configure an `ExternalsValidator`.
 
 On the client:
 
 ```js
-import {
-  ExternalsValidator,
-  FeatureAppManager,
-  FeatureServiceRegistry
-} from '@feature-hub/core';
+import {ExternalsValidator, FeatureAppManager} from '@feature-hub/core';
 import {defineExternals, loadAmdModule} from '@feature-hub/module-loader-amd';
 import * as React from 'react';
 ```
@@ -112,8 +108,6 @@ import * as React from 'react';
 defineExternals({react: React});
 
 const externalsValidator = new ExternalsValidator({react: '16.7.0'});
-
-const featureServiceRegistry = new FeatureServiceRegistry({externalsValidator});
 
 const featureAppManager = new FeatureAppManager(featureServiceRegistry, {
   moduleLoader: loadAmdModule,
@@ -124,19 +118,12 @@ const featureAppManager = new FeatureAppManager(featureServiceRegistry, {
 On the server:
 
 ```js
-import {
-  ExternalsValidator,
-  FeatureAppManager,
-  FeatureServiceRegistry
-} from '@feature-hub/core';
+import {ExternalsValidator, FeatureAppManager} from '@feature-hub/core';
 import {loadCommonJsModule} from '@feature-hub/module-loader-commonjs';
-import * as React from 'react';
 ```
 
 ```js
 const externalsValidator = new ExternalsValidator({react: '16.7.0'});
-
-const featureServiceRegistry = new FeatureServiceRegistry({externalsValidator});
 
 const featureAppManager = new FeatureAppManager(featureServiceRegistry, {
   moduleLoader: loadCommonJsModule,
@@ -144,11 +131,15 @@ const featureAppManager = new FeatureAppManager(featureServiceRegistry, {
 });
 ```
 
-The `ExternalsValidator` can also be passed to the `FeatureServiceRegistry` (see
-examples above) to validate the [external dependencies of Feature
+The `ExternalsValidator` can also be passed to the `FeatureServiceRegistry` to
+validate the [external dependencies of Feature
 Services][feature-service-dependencies] that are [provided by Feature
 Apps][own-feature-service-definitions] that are loaded from a remote location,
-instead of being provided by the integrator.
+instead of being provided by the integrator:
+
+```js
+const featureServiceRegistry = new FeatureServiceRegistry({externalsValidator});
+```
 
 ## Placing Feature Apps on a Web Page Using React
 
