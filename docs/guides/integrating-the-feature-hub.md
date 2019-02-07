@@ -145,7 +145,9 @@ The `ExternalsValidator` can also be passed to the `FeatureServiceRegistry` to
 validate the [external dependencies of Feature
 Services][feature-service-dependencies] that are [provided by Feature
 Apps][own-feature-service-definitions] that are loaded from a remote location,
-instead of being provided by the integrator:
+instead of being provided by the integrator.
+
+On the client/server:
 
 ```js
 const featureServiceRegistry = new FeatureServiceRegistry({externalsValidator});
