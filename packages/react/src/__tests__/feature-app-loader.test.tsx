@@ -149,14 +149,19 @@ describe('FeatureAppLoader', () => {
 
     it('renders a FeatureAppContainer', () => {
       const testRenderer = renderWithFeatureHubContext(
-        <FeatureAppLoader src="example.js" idSpecifier="testIdSpecifier" />
+        <FeatureAppLoader
+          src="example.js"
+          idSpecifier="testIdSpecifier"
+          instanceConfig="testInstanceConfig"
+        />
       );
 
       expect(testRenderer.toJSON()).toBe('mocked FeatureAppContainer');
 
       const expectedProps = {
         featureAppDefinition: mockFeatureAppDefinition,
-        idSpecifier: 'testIdSpecifier'
+        idSpecifier: 'testIdSpecifier',
+        instanceConfig: 'testInstanceConfig'
       };
 
       expect(FeatureAppContainer).toHaveBeenCalledWith(expectedProps, {});

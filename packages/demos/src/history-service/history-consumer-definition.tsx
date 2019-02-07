@@ -9,6 +9,7 @@ const inBrowser = typeof window !== 'undefined';
 export const historyConsumerDefinition: FeatureAppDefinition<
   ReactFeatureApp,
   undefined,
+  undefined,
   {'s2:history': HistoryServiceV0}
 > = {
   id: 'test:history-consumer',

@@ -60,16 +60,17 @@ describe('FeatureAppContainer', () => {
       options
     );
 
-  it('calls the Feature App manager with the given Feature App definition and id specifier', () => {
+  it('calls the Feature App manager with the given Feature App definition, id specifier and instance config', () => {
     renderWithFeatureHubContext(
       <FeatureAppContainer
         featureAppDefinition={mockFeatureAppDefinition}
         idSpecifier="testIdSpecifier"
+        instanceConfig="testInstanceConfig"
       />
     );
 
     expect(mockGetFeatureAppScope.mock.calls).toEqual([
-      [mockFeatureAppDefinition, 'testIdSpecifier']
+      [mockFeatureAppDefinition, 'testIdSpecifier', 'testInstanceConfig']
     ]);
   });
 

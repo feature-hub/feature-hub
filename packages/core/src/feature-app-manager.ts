@@ -12,12 +12,21 @@ import {isFeatureAppModule} from './internal/is-feature-app-module';
 
 export interface FeatureAppEnvironment<
   TConfig,
+  TInstanceConfig,
   TFeatureServices extends FeatureServices
 > {
   /**
-   * A Feature App config object that is provided by the integrator.
+   * A Feature App config object that is provided by the integrator. The same
+   * config object is used for all Feature App instances with the same ID, which
+   * is defined in their {@link FeatureAppDefinition}.
    */
   readonly config: TConfig;
+
+  /**
+   * An optional Feature App config object that is intended for a specific
+   * Feature App instance.
+   */
+  readonly instanceConfig?: TInstanceConfig;
 
   /**
    * An object of required Feature Services that are semver-compatible with the
@@ -35,13 +44,16 @@ export interface FeatureAppEnvironment<
 export interface FeatureAppDefinition<
   TFeatureApp,
   TConfig = unknown,
+  TInstanceConfig = unknown,
   TFeatureServices extends FeatureServices = FeatureServices
 > extends FeatureServiceConsumerDefinition {
   readonly ownFeatureServiceDefinitions?: FeatureServiceProviderDefinition<
     SharedFeatureService
   >[];
 
-  create(env: FeatureAppEnvironment<TConfig, TFeatureServices>): TFeatureApp;
+  create(
+    env: FeatureAppEnvironment<TConfig, TInstanceConfig, TFeatureServices>
+  ): TFeatureApp;
 }
 
 export type ModuleLoader = (url: string) => Promise<unknown>;
@@ -63,7 +75,8 @@ export interface FeatureAppManagerLike {
 
   getFeatureAppScope<TFeatureApp>(
     featureAppDefinition: FeatureAppDefinition<TFeatureApp>,
-    idSpecifier?: string
+    idSpecifier?: string,
+    instanceConfig?: unknown
   ): FeatureAppScope<TFeatureApp>;
 
   preloadFeatureApp(url: string): Promise<void>;
@@ -167,6 +180,8 @@ export class FeatureAppManager implements FeatureAppManagerLike {
    * scope for.
    * @param idSpecifier A specifier to distinguish the Feature App instances
    * from others created from the same definition.
+   * @param instanceConfig An optional Feature App config object that is
+   * intended for the specific Feature App instance.
    *
    * @returns A {@link FeatureAppScope} for the provided {@link
    * FeatureAppDefinition} and ID specifier. If `getFeatureAppScope` is called
@@ -175,7 +190,8 @@ export class FeatureAppManager implements FeatureAppManagerLike {
    */
   public getFeatureAppScope<TFeatureApp>(
     featureAppDefinition: FeatureAppDefinition<TFeatureApp>,
-    idSpecifier?: string
+    idSpecifier?: string,
+    instanceConfig?: unknown
   ): FeatureAppScope<TFeatureApp> {
     const {id: featureAppId} = featureAppDefinition;
     const featureAppUid = createUid(featureAppId, idSpecifier);
@@ -191,6 +207,7 @@ export class FeatureAppManager implements FeatureAppManagerLike {
       featureAppScope = this.createFeatureAppScope(
         featureAppDefinition,
         idSpecifier,
+        instanceConfig,
         deleteFeatureAppScope
       );
 
@@ -270,6 +287,7 @@ export class FeatureAppManager implements FeatureAppManagerLike {
   private createFeatureAppScope<TFeatureApp>(
     featureAppDefinition: FeatureAppDefinition<TFeatureApp>,
     idSpecifier: string | undefined,
+    instanceConfig: unknown,
     deleteFeatureAppScope: () => void
   ): FeatureAppScope<TFeatureApp> {
     this.validateExternals(featureAppDefinition);
@@ -285,6 +303,7 @@ export class FeatureAppManager implements FeatureAppManagerLike {
 
     const featureApp = featureAppDefinition.create({
       config,
+      instanceConfig,
       featureServices: binding.featureServices,
       idSpecifier
     });

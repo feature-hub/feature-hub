@@ -50,6 +50,12 @@ export interface FeatureAppContainerProps {
    * defined.
    */
   readonly idSpecifier?: string;
+
+  /**
+   * A Feature App config object that is intended for the specific Feature App
+   * instance that the `FeatureAppContainer` renders.
+   */
+  readonly instanceConfig?: unknown;
 }
 
 type InternalFeatureAppContainerProps = FeatureAppContainerProps &
@@ -70,12 +76,18 @@ class InternalFeatureAppContainer extends React.PureComponent<
   public constructor(props: InternalFeatureAppContainerProps) {
     super(props);
 
-    const {featureAppManager, featureAppDefinition, idSpecifier} = props;
+    const {
+      featureAppManager,
+      featureAppDefinition,
+      idSpecifier,
+      instanceConfig
+    } = props;
 
     try {
       this.featureAppScope = featureAppManager.getFeatureAppScope(
         featureAppDefinition,
-        idSpecifier
+        idSpecifier,
+        instanceConfig
       );
 
       if (!isFeatureApp(this.featureAppScope.featureApp)) {

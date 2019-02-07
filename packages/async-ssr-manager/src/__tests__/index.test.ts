@@ -18,7 +18,7 @@ async function simulateAsyncOperation(result: number): Promise<number> {
 }
 
 describe('asyncSsrManagerDefinition', () => {
-  let mockEnv: FeatureAppEnvironment<AsyncSsrManagerConfig, {}>;
+  let mockEnv: FeatureAppEnvironment<AsyncSsrManagerConfig, undefined, {}>;
 
   beforeEach(() => {
     mockEnv = {
