@@ -44,16 +44,18 @@ export interface AsyncSsrManagerV0 {
    * render pass, or while already scheduled asynchronous operations are
    * running.
    *
-   * When no asynchronous operation is given, the method must be called
-   * synchronously during a render pass. This means that **this will not work**:
+   * If no asynchronous operation is running, the method must be called
+   * synchronously during a render pass. This means that the following will
+   * **not** work:
    *
    * ```js
    * const data = await fetch('example.com').then(res => res.json());
-   * // this will not work:
+   * // the rerender scheduled in the next line is not taken into account
    * asyncSsrManager.scheduleRerender();
    * ```
    *
-   * Instead do this:
+   * Instead, the rerender should be scheduled before awaiting the asynchronous
+   * operation:
    *
    * ```js
    * const dataPromise = fetch('example.com').then(res => res.json());
