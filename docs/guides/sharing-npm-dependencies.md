@@ -36,6 +36,19 @@ defining `react` as external in a webpack config would look like this:
 }
 ```
 
+On the server, when Feature Apps are [bundled as CommonJS modules][serversrc],
+the integrator needs to make sure that the externals are provided as node
+modules that can be loaded with `require()`.
+
+To validate the external dependencies that are [required by Feature
+Apps][feature-app-dependencies] against the shared npm dependencies that are
+provided by the integrator, [the `ExternalsValidator` can be
+used][validating-externals].
+
 [module-loader-amd-api]: /@feature-hub/module-loader-amd/
 [amd-module-loader-demo]:
   https://github.com/sinnerschrader/feature-hub/tree/master/packages/demos/src/module-loader-amd
+[serversrc]: /docs/guides/integrating-the-feature-hub#serversrc
+[feature-app-dependencies]: /docs/guides/writing-a-feature-app#dependencies
+[validating-externals]:
+  /docs/guides/integrating-the-feature-hub#validating-externals

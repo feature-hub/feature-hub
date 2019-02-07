@@ -84,6 +84,75 @@ const featureAppManager = new FeatureAppManager(featureServiceRegistry, {
 });
 ```
 
+### Validating Externals
+
+When using a module loader, it might make sense to validate external
+dependencies that are [required by Feature Apps][feature-app-dependencies]
+against the externals, e.g. [shared npm dependencies][sharing-npm-dependencies],
+that are provided by the integrator. This makes it possible that an error is
+already thrown when creating a Feature App with incompatible external
+dependencies, and thus enables early feedback as to whether a Feature App is
+compatible with the integration environment.
+
+To accomplish that the integrator can configure an `ExternalsValidator`.
+
+On the client:
+
+```js
+import {
+  ExternalsValidator,
+  FeatureAppManager,
+  FeatureServiceRegistry
+} from '@feature-hub/core';
+import {defineExternals, loadAmdModule} from '@feature-hub/module-loader-amd';
+import * as React from 'react';
+```
+
+```js
+defineExternals({react: React});
+
+const externalsValidator = new ExternalsValidator({react: '16.7.0'});
+const featureServiceRegistry = new FeatureServiceRegistry();
+
+const featureAppManager = new FeatureAppManager(featureServiceRegistry, {
+  moduleLoader: loadAmdModule,
+  externalsValidator
+});
+```
+
+On the server:
+
+```js
+import {
+  ExternalsValidator,
+  FeatureAppManager,
+  FeatureServiceRegistry
+} from '@feature-hub/core';
+import {loadCommonJsModule} from '@feature-hub/module-loader-commonjs';
+```
+
+```js
+const externalsValidator = new ExternalsValidator({react: '16.7.0'});
+const featureServiceRegistry = new FeatureServiceRegistry();
+
+const featureAppManager = new FeatureAppManager(featureServiceRegistry, {
+  moduleLoader: loadCommonJsModule,
+  externalsValidator
+});
+```
+
+The `ExternalsValidator` can also be passed to the `FeatureServiceRegistry` to
+validate the [external dependencies of Feature
+Services][feature-service-dependencies] that are [provided by Feature
+Apps][own-feature-service-definitions] that are loaded from a remote location,
+instead of being provided by the integrator.
+
+On the client/server:
+
+```js
+const featureServiceRegistry = new FeatureServiceRegistry({externalsValidator});
+```
+
 ## Placing Feature Apps on a Web Page Using React
 
 An integrator can use the `FeatureAppLoader` or the `FeatureAppContainer` (both
@@ -312,14 +381,20 @@ someFeatureService2.foo(42);
 ```
 
 [amd]: https://github.com/amdjs/amdjs-api/blob/master/AMD.md
+[core-api]: /@feature-hub/core/
+[react-api]: /@feature-hub/react/
 [consuming-feature-services]:
   /docs/guides/integrating-the-feature-hub#consuming-feature-services
-[core-api]: /@feature-hub/core/
 [faq-1]: /docs/help/faq#can-the-integrator-register-feature-services-one-by-one
 [implementing-a-feature-app-using-react]:
   /docs/guides/writing-a-feature-app#implementing-a-feature-app-using-react
+[sharing-npm-dependencies]: /docs/guides/sharing-npm-dependencies
 [module-loader-amd-api]: /@feature-hub/module-loader-amd/
 [module-loader-commonjs-api]: /@feature-hub/module-loader-commonjs/
 [placing-feature-apps-on-a-web-page-using-react]:
   /docs/guides/integrating-the-feature-hub#placing-feature-apps-on-a-web-page-using-react
-[react-api]: /@feature-hub/react/
+[own-feature-service-definitions]:
+  /docs/guides/writing-a-feature-app#ownfeatureservicedefinitions
+[feature-app-dependencies]: /docs/guides/writing-a-feature-app#dependencies
+[feature-service-dependencies]:
+  /docs/guides/writing-a-feature-service#dependencies
