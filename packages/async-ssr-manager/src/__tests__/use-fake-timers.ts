@@ -1,28 +1,23 @@
 export type Effect<TResult> = () => Promise<TResult>;
 
-class ObservablePromise<TResult> {
+class MonitorablePromise<TResult> {
   public readonly promise: Promise<TResult>;
 
-  private _pending = true;
+  public pending = true;
 
   public constructor(promise: Promise<TResult>) {
     this.promise = (async () => {
       try {
         return await promise;
       } finally {
-        this._pending = false;
+        this.pending = false;
       }
     })();
   }
-
-  public async isPending(): Promise<boolean> {
-    for (let i = 0; i < 25; i += 1) {
-      await Promise.resolve();
-    }
-
-    return this._pending;
-  }
 }
+
+const queueMicroTask = process.nextTick.bind(process);
+const queueMacroTask = setImmediate;
 
 export async function useFakeTimers<TResult>(
   effect: Effect<TResult>,
@@ -31,16 +26,20 @@ export async function useFakeTimers<TResult>(
   jest.useFakeTimers();
 
   try {
-    const result = new ObservablePromise(effect());
+    const result = new MonitorablePromise(effect());
 
     let actualTimeoutInMilliseconds = 0;
 
-    while (await result.isPending()) {
+    while (result.pending) {
+      await new Promise<void>(resolve => queueMacroTask(resolve));
+
       jest.runAllTicks();
       jest.runAllImmediates();
       jest.advanceTimersByTime(1);
 
       actualTimeoutInMilliseconds += 1;
+
+      await new Promise<void>(resolve => queueMicroTask(resolve));
     }
 
     if (typeof expectedTimeoutInMilliseconds === 'number') {

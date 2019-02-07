@@ -268,6 +268,7 @@ describe('asyncSsrManagerDefinition', () => {
       describe('when rendering takes longer than the configured timeout', () => {
         it('rejects with an error after the configured timeout', async () => {
           const asyncSsrManager = asyncSsrManagerBinder('test').featureService;
+
           const mockRender = jest.fn(() => {
             asyncSsrManager.scheduleRerender(
               new Promise<never>(() => undefined)
