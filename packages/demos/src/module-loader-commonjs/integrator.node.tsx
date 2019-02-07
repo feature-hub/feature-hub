@@ -1,8 +1,4 @@
-import {
-  ExternalsValidator,
-  FeatureAppManager,
-  FeatureServiceRegistry
-} from '@feature-hub/core';
+import {FeatureAppManager, FeatureServiceRegistry} from '@feature-hub/core';
 import {loadCommonJsModule} from '@feature-hub/module-loader-commonjs';
 import {FeatureAppLoader, FeatureHubContextProvider} from '@feature-hub/react';
 import * as React from 'react';
@@ -13,8 +9,7 @@ export default async function renderApp({
   port
 }: AppRendererOptions): Promise<AppRendererResult> {
   const featureAppNodeUrl = `http://localhost:${port}/feature-app.commonjs.js`;
-  const externalsValidator = new ExternalsValidator({});
-  const featureServiceRegistry = new FeatureServiceRegistry(externalsValidator);
+  const featureServiceRegistry = new FeatureServiceRegistry();
 
   const featureAppManager = new FeatureAppManager(featureServiceRegistry, {
     moduleLoader: loadCommonJsModule

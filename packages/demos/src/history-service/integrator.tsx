@@ -1,8 +1,4 @@
-import {
-  ExternalsValidator,
-  FeatureAppManager,
-  FeatureServiceRegistry
-} from '@feature-hub/core';
+import {FeatureAppManager, FeatureServiceRegistry} from '@feature-hub/core';
 import {defineHistoryService} from '@feature-hub/history-service';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
@@ -10,8 +6,7 @@ import '../blueprint-css';
 import {App} from './app';
 import {rootLocationTransformer} from './root-location-transformer';
 
-const externalsValidator = new ExternalsValidator({});
-const featureServiceRegistry = new FeatureServiceRegistry(externalsValidator);
+const featureServiceRegistry = new FeatureServiceRegistry();
 
 featureServiceRegistry.registerFeatureServices(
   [defineHistoryService(rootLocationTransformer)],

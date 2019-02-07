@@ -109,6 +109,20 @@ export interface FeatureServiceRegistryOptions {
    * registered.
    */
   readonly configs?: FeatureServiceConfigs;
+
+  /**
+   * When the {@link FeatureAppManager} is configured with a
+   * {@link FeatureAppManager#moduleLoader}, to load Feature Apps from a remote
+   * location that also provide their own Feature Services, i.e. the Feature
+   * Services are included in a different bundle than the integrator bundle, it
+   * might make sense to validate external dependencies that are required by
+   * those Feature Services against the shared dependencies that are provided by
+   * the integrator. This makes it possible that an error is already thrown when
+   * registering a Feature Service with incompatible external dependencies. This
+   * gives the author early feedback as to whether a Feature Service is
+   * compatible with the integration environment.
+   */
+  readonly externalsValidator?: ExternalsValidatorLike;
 }
 
 type ProviderId = string;
@@ -200,7 +214,6 @@ export class FeatureServiceRegistry implements FeatureServiceRegistryLike {
   private readonly consumerUids = new Set<string>();
 
   public constructor(
-    private readonly externalsValidator: ExternalsValidatorLike,
     private readonly options: FeatureServiceRegistryOptions = {}
   ) {}
 
@@ -429,12 +442,18 @@ export class FeatureServiceRegistry implements FeatureServiceRegistryLike {
   }
 
   private validateExternals(
-    consumerDefinition: FeatureServiceConsumerDefinition
+    featureAppDefinition: FeatureServiceConsumerDefinition
   ): void {
-    const {dependencies} = consumerDefinition;
+    const {externalsValidator} = this.options;
+
+    if (!externalsValidator) {
+      return;
+    }
+
+    const {dependencies} = featureAppDefinition;
 
     if (dependencies && dependencies.externals) {
-      this.externalsValidator.validate(dependencies.externals);
+      externalsValidator.validate(dependencies.externals);
     }
   }
 
