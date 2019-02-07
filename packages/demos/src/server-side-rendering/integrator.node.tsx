@@ -38,7 +38,9 @@ export default async function renderApp({
     react: '16.7.0'
   });
 
-  const featureServiceRegistry = new FeatureServiceRegistry(externalsValidator);
+  const featureServiceRegistry = new FeatureServiceRegistry({
+    externalsValidator
+  });
 
   featureServiceRegistry.registerFeatureServices(
     [asyncSsrManagerDefinition, serializedStateManagerDefinition],

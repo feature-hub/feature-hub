@@ -18,7 +18,10 @@ export default async function renderApp({
   });
 
   const featureAppNodeUrl = `http://localhost:${port}/feature-app.commonjs.js`;
-  const featureServiceRegistry = new FeatureServiceRegistry(externalsValidator);
+
+  const featureServiceRegistry = new FeatureServiceRegistry({
+    externalsValidator
+  });
 
   const featureAppManager = new FeatureAppManager(featureServiceRegistry, {
     moduleLoader: loadCommonJsModule,

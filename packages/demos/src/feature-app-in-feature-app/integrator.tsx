@@ -19,7 +19,7 @@ const externalsValidator = new ExternalsValidator({
   '@feature-hub/react': '0.12.0'
 });
 
-const featureServiceRegistry = new FeatureServiceRegistry(externalsValidator);
+const featureServiceRegistry = new FeatureServiceRegistry({externalsValidator});
 
 const featureAppManager = new FeatureAppManager(featureServiceRegistry, {
   moduleLoader: loadAmdModule,

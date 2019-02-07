@@ -50,7 +50,9 @@ function getUrlsForHydrationFromDom(): string[] {
     react: '16.7.0'
   });
 
-  const featureServiceRegistry = new FeatureServiceRegistry(externalsValidator);
+  const featureServiceRegistry = new FeatureServiceRegistry({
+    externalsValidator
+  });
 
   featureServiceRegistry.registerFeatureServices(
     [serializedStateManagerDefinition],
