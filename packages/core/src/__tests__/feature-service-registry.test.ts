@@ -336,6 +336,30 @@ describe('FeatureServiceRegistry', () => {
       );
     });
 
+    describe('without an ExternalsValidator provided to the FeatureServiceRegistry', () => {
+      describe('with a Feature Service definition that is declaring external dependencies', () => {
+        beforeEach(() => {
+          providerDefinitionA = {
+            ...providerDefinitionA,
+            dependencies: {
+              externals: {
+                react: '^16.0.0'
+              }
+            }
+          };
+        });
+
+        it("doesn't throw an error", () => {
+          expect(() => {
+            featureServiceRegistry.registerFeatureServices(
+              [providerDefinitionA],
+              'test'
+            );
+          }).not.toThrowError();
+        });
+      });
+    });
+
     describe('with an ExternalsValidator provided to the FeatureServiceRegistry', () => {
       beforeEach(() => {
         featureServiceRegistry = new FeatureServiceRegistry({
