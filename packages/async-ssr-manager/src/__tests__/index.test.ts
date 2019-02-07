@@ -73,7 +73,10 @@ describe('asyncSsrManagerDefinition', () => {
         it('resolves with the result of the given render function after the first render pass', async () => {
           const asyncSsrManager = asyncSsrManagerBinder('test').featureService;
           const mockRender = jest.fn(() => 'testHtml');
-          const html = await asyncSsrManager.renderUntilCompleted(mockRender);
+
+          const html = await useFakeTimers(async () =>
+            asyncSsrManager.renderUntilCompleted(mockRender)
+          );
 
           expect(html).toEqual('testHtml');
           expect(mockRender).toHaveBeenCalledTimes(1);
@@ -101,8 +104,8 @@ describe('asyncSsrManagerDefinition', () => {
             return `render pass ${renderPass}`;
           });
 
-          const html = await asyncSsrManagerIntegrator.renderUntilCompleted(
-            mockRender
+          const html = await useFakeTimers(async () =>
+            asyncSsrManagerIntegrator.renderUntilCompleted(mockRender)
           );
 
           expect(html).toEqual('render pass 2');
@@ -131,8 +134,8 @@ describe('asyncSsrManagerDefinition', () => {
             return `render pass ${renderPass}`;
           });
 
-          const html = await asyncSsrManagerIntegrator.renderUntilCompleted(
-            mockRender
+          const html = await useFakeTimers(async () =>
+            asyncSsrManagerIntegrator.renderUntilCompleted(mockRender)
           );
 
           expect(html).toEqual('render pass 2');
@@ -161,8 +164,8 @@ describe('asyncSsrManagerDefinition', () => {
             return `render pass ${renderPass}`;
           });
 
-          const html = await asyncSsrManagerIntegrator.renderUntilCompleted(
-            mockRender
+          const html = await useFakeTimers(async () =>
+            asyncSsrManagerIntegrator.renderUntilCompleted(mockRender)
           );
 
           expect(html).toEqual('render pass 3');
@@ -200,8 +203,8 @@ describe('asyncSsrManagerDefinition', () => {
             return `render pass ${renderPass}, consumer result ${consumerResult}`;
           });
 
-          const html = await asyncSsrManagerIntegrator.renderUntilCompleted(
-            mockRender
+          const html = await useFakeTimers(async () =>
+            asyncSsrManagerIntegrator.renderUntilCompleted(mockRender)
           );
 
           expect(html).toEqual('render pass 2, consumer result 2');
@@ -238,8 +241,8 @@ describe('asyncSsrManagerDefinition', () => {
             return `render pass ${renderPass}`;
           });
 
-          const html = await asyncSsrManagerIntegrator.renderUntilCompleted(
-            mockRender
+          const html = await useFakeTimers(async () =>
+            asyncSsrManagerIntegrator.renderUntilCompleted(mockRender)
           );
 
           expect(html).toEqual('render pass 2');
