@@ -118,9 +118,9 @@ export interface FeatureServiceRegistryOptions {
    * might make sense to validate external dependencies that are required by
    * those Feature Services against the shared dependencies that are provided by
    * the integrator. This makes it possible that an error is already thrown when
-   * registering a Feature Service with incompatible external dependencies. This
-   * enables early feedback as to whether a Feature Service is compatible with
-   * the integration environment.
+   * registering a Feature Service with incompatible external dependencies, and
+   * thus enables early feedback as to whether a Feature Service is compatible
+   * with the integration environment.
    */
   readonly externalsValidator?: ExternalsValidatorLike;
 }
