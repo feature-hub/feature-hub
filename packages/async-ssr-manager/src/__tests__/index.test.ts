@@ -9,11 +9,12 @@ import {
 } from '..';
 import {useFakeTimers} from './use-fake-timers';
 
+const queueMacroTask = setImmediate;
+
 async function simulateAsyncOperation(result: number): Promise<number> {
-  return new Promise<number>(
-    // schedule new macro task
-    resolve => setImmediate(() => resolve(result))
-  );
+  await new Promise(queueMacroTask);
+
+  return result;
 }
 
 describe('asyncSsrManagerDefinition', () => {
@@ -268,6 +269,7 @@ describe('asyncSsrManagerDefinition', () => {
       describe('when rendering takes longer than the configured timeout', () => {
         it('rejects with an error after the configured timeout', async () => {
           const asyncSsrManager = asyncSsrManagerBinder('test').featureService;
+
           const mockRender = jest.fn(() => {
             asyncSsrManager.scheduleRerender(
               new Promise<never>(() => undefined)

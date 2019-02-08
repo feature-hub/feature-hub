@@ -1,53 +1,35 @@
-export type Effect<TResult> = () => Promise<TResult>;
-
-class ObservablePromise<TResult> {
-  public readonly promise: Promise<TResult>;
-
-  private _pending = true;
-
-  public constructor(promise: Promise<TResult>) {
-    this.promise = (async () => {
-      try {
-        return await promise;
-      } finally {
-        this._pending = false;
-      }
-    })();
-  }
-
-  public async isPending(): Promise<boolean> {
-    for (let i = 0; i < 25; i += 1) {
-      await Promise.resolve();
-    }
-
-    return this._pending;
-  }
-}
+const queueMacroTask = setImmediate;
 
 export async function useFakeTimers<TResult>(
-  effect: Effect<TResult>,
-  expectedTimeoutInMilliseconds?: number
+  createPromise: () => Promise<TResult>,
+  expectedTimeout?: number
 ): Promise<TResult> {
   jest.useFakeTimers();
 
   try {
-    const result = new ObservablePromise(effect());
+    const promise = createPromise();
 
-    let actualTimeoutInMilliseconds = 0;
+    let pending = true;
 
-    while (await result.isPending()) {
-      jest.runAllTicks();
-      jest.runAllImmediates();
+    promise.then(() => (pending = false), () => (pending = false));
+
+    await new Promise(queueMacroTask);
+
+    let actualTimeout = 0;
+
+    while (pending) {
       jest.advanceTimersByTime(1);
 
-      actualTimeoutInMilliseconds += 1;
+      actualTimeout += 1;
+
+      await new Promise(queueMacroTask);
     }
 
-    if (typeof expectedTimeoutInMilliseconds === 'number') {
-      expect(actualTimeoutInMilliseconds).toBe(expectedTimeoutInMilliseconds);
+    if (typeof expectedTimeout === 'number') {
+      expect(actualTimeout).toBe(expectedTimeout);
     }
 
-    return result.promise;
+    return promise;
   } finally {
     jest.useRealTimers();
   }
