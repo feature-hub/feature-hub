@@ -55,14 +55,23 @@ export interface FeatureAppContainerProps {
 type InternalFeatureAppContainerProps = FeatureAppContainerProps &
   FeatureHubContextValue;
 
+interface InternalFeatureAppContainerState {
+  hasError: boolean;
+}
+
 const inBrowser =
   typeof window === 'object' &&
   typeof document === 'object' &&
   document.nodeType === 9;
 
 class InternalFeatureAppContainer extends React.PureComponent<
-  InternalFeatureAppContainerProps
+  InternalFeatureAppContainerProps,
+  InternalFeatureAppContainerState
 > {
+  public readonly state: InternalFeatureAppContainerState = {
+    hasError: false
+  };
+
   private readonly featureAppScope?: FeatureAppScope<unknown>;
   private readonly featureApp?: FeatureApp;
   private readonly containerRef = React.createRef<HTMLDivElement>();
@@ -94,11 +103,20 @@ class InternalFeatureAppContainer extends React.PureComponent<
     }
   }
 
+  public componentDidCatch(): void {
+    this.setState({hasError: true});
+  }
+
   public componentDidMount(): void {
     const container = this.containerRef.current;
 
     if (container && this.featureApp && isDomFeatureApp(this.featureApp)) {
-      this.featureApp.attachTo(container);
+      try {
+        this.featureApp.attachTo(container);
+      } catch (error) {
+        console.error(error);
+        this.setState({hasError: true});
+      }
     }
   }
 
@@ -113,7 +131,7 @@ class InternalFeatureAppContainer extends React.PureComponent<
   }
 
   public render(): React.ReactNode {
-    if (!this.featureApp) {
+    if (!this.featureApp || this.state.hasError) {
       return null;
     }
 
@@ -121,7 +139,17 @@ class InternalFeatureAppContainer extends React.PureComponent<
       return <div ref={this.containerRef} />;
     }
 
-    return this.featureApp.render();
+    try {
+      return this.featureApp.render();
+    } catch (error) {
+      if (!inBrowser) {
+        throw error;
+      }
+
+      console.error(error);
+
+      return null;
+    }
   }
 }
 
@@ -129,6 +157,11 @@ class InternalFeatureAppContainer extends React.PureComponent<
  * The `FeatureAppContainer` component allows the integrator to bundle Feature
  * Apps instead of loading them from a remote location. It can also be used by
  * a Feature App to render another Feature App as a child.
+ *
+ * If a Feature App throws an error while rendering or, in the case of a {@link
+ * ReactFeatureApp}, in a lifecycle method, the `FeatureAppContainer` will
+ * resort to rendering `null`. Except for on the server where rendering errors
+ * won't be catched and therefore have to handled by the integrator.
  */
 export function FeatureAppContainer(
   props: FeatureAppContainerProps
