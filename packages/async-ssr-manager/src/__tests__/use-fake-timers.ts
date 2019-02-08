@@ -13,9 +13,9 @@ export async function useFakeTimers<TResult>(
 
     promise.then(() => (pending = false), () => (pending = false));
 
-    let actualTimeout = 0;
-
     await new Promise(queueMacroTask);
+
+    let actualTimeout = 0;
 
     while (pending) {
       jest.advanceTimersByTime(1);
