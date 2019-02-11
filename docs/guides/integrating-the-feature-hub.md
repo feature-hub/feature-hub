@@ -288,10 +288,10 @@ integrator:
 </section>
 ```
 
-If a Feature App throws an error while rendering or, in the case of a
-`ReactFeatureApp`, in a lifecycle method, the `FeatureAppContainer` will resort
-to rendering `null`. Except for on the server where rendering errors won't be
-catched and therefore have to handled by the integrator.
+When a Feature App throws an error while rendering or, in the case of a
+`ReactFeatureApp`, throws an error in a lifecycle method, the
+`FeatureAppContainer` renders `null`. Except on the server, where rendering
+errors are not caught and must, therefore, be handled by the integrator.
 
 ## Providing Configs
 
