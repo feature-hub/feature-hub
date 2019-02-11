@@ -56,6 +56,13 @@ type InternalFeatureAppContainerProps = FeatureAppContainerProps &
   FeatureHubContextValue;
 
 interface InternalFeatureAppContainerState {
+  /**
+   * Will be set to true if a DOM Feature App throws in #attachTo or if the
+   * error boundary catches an error a React Feature app throws in a lifecycle
+   * method. Since DOM Feature Apps aren't server-side-rendered and error
+   * boundaries only work on the client, this flag will only ever be true on
+   * the client.
+   */
   hasFeatureAppError: boolean;
 }
 
