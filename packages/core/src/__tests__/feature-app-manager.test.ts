@@ -402,9 +402,7 @@ describe('FeatureAppManager', () => {
         it('returns the same Feature App scope', () => {
           const featureAppScope = featureAppManager.getFeatureAppScope(
             mockFeatureAppDefinition,
-            {
-              idSpecifier: 'testIdSpecifier'
-            }
+            {idSpecifier: 'testIdSpecifier'}
           );
 
           expect(
@@ -418,9 +416,7 @@ describe('FeatureAppManager', () => {
           it('returns another Feature App scope', () => {
             const featureAppScope = featureAppManager.getFeatureAppScope(
               mockFeatureAppDefinition,
-              {
-                idSpecifier: 'testIdSpecifier'
-              }
+              {idSpecifier: 'testIdSpecifier'}
             );
 
             featureAppScope.destroy();
@@ -473,9 +469,7 @@ describe('FeatureAppManager', () => {
       it('throws an error when destroy is called multiple times', () => {
         const featureAppScope = featureAppManager.getFeatureAppScope(
           mockFeatureAppDefinition,
-          {
-            idSpecifier: 'testIdSpecifier'
-          }
+          {idSpecifier: 'testIdSpecifier'}
         );
 
         featureAppScope.destroy();
