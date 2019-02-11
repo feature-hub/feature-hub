@@ -68,6 +68,11 @@ export interface FeatureAppConfigs {
   readonly [featureAppId: string]: unknown;
 }
 
+export interface GetFeatureAppScopeOptions {
+  idSpecifier?: string;
+  instanceConfig?: unknown;
+}
+
 export interface FeatureAppManagerLike {
   getAsyncFeatureAppDefinition(
     url: string
@@ -75,8 +80,7 @@ export interface FeatureAppManagerLike {
 
   getFeatureAppScope<TFeatureApp>(
     featureAppDefinition: FeatureAppDefinition<TFeatureApp>,
-    idSpecifier?: string,
-    instanceConfig?: unknown
+    options?: GetFeatureAppScopeOptions
   ): FeatureAppScope<TFeatureApp>;
 
   preloadFeatureApp(url: string): Promise<void>;
@@ -190,9 +194,9 @@ export class FeatureAppManager implements FeatureAppManagerLike {
    */
   public getFeatureAppScope<TFeatureApp>(
     featureAppDefinition: FeatureAppDefinition<TFeatureApp>,
-    idSpecifier?: string,
-    instanceConfig?: unknown
+    options: GetFeatureAppScopeOptions = {}
   ): FeatureAppScope<TFeatureApp> {
+    const {idSpecifier, instanceConfig} = options;
     const {id: featureAppId} = featureAppDefinition;
     const featureAppUid = createUid(featureAppId, idSpecifier);
 

@@ -86,8 +86,7 @@ class InternalFeatureAppContainer extends React.PureComponent<
     try {
       this.featureAppScope = featureAppManager.getFeatureAppScope(
         featureAppDefinition,
-        idSpecifier,
-        instanceConfig
+        {idSpecifier, instanceConfig}
       );
 
       if (!isFeatureApp(this.featureAppScope.featureApp)) {

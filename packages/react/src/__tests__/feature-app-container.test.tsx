@@ -70,7 +70,10 @@ describe('FeatureAppContainer', () => {
     );
 
     expect(mockGetFeatureAppScope.mock.calls).toEqual([
-      [mockFeatureAppDefinition, 'testIdSpecifier', 'testInstanceConfig']
+      [
+        mockFeatureAppDefinition,
+        {idSpecifier: 'testIdSpecifier', instanceConfig: 'testInstanceConfig'}
+      ]
     ]);
   });
 

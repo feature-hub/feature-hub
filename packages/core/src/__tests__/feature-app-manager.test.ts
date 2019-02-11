@@ -160,11 +160,10 @@ describe('FeatureAppManager', () => {
         configs: {[mockFeatureAppDefinition.id]: config}
       });
 
-      featureAppManager.getFeatureAppScope(
-        mockFeatureAppDefinition,
+      featureAppManager.getFeatureAppScope(mockFeatureAppDefinition, {
         idSpecifier,
         instanceConfig
-      );
+      });
 
       expect(mockFeatureServiceRegistry.bindFeatureServices.mock.calls).toEqual(
         [[mockFeatureAppDefinition, idSpecifier]]
@@ -331,10 +330,9 @@ describe('FeatureAppManager', () => {
       });
 
       it("registers the Feature App's own Feature Services before binding its required Feature Services", () => {
-        featureAppManager.getFeatureAppScope(
-          mockFeatureAppDefinition,
-          'testIdSpecifier'
-        );
+        featureAppManager.getFeatureAppScope(mockFeatureAppDefinition, {
+          idSpecifier: 'testIdSpecifier'
+        });
 
         expect(
           mockFeatureServiceRegistry.registerFeatureServices.mock.calls
@@ -390,10 +388,9 @@ describe('FeatureAppManager', () => {
 
       describe('and an id specifier', () => {
         it('logs an info message after creation', () => {
-          featureAppManager.getFeatureAppScope(
-            mockFeatureAppDefinition,
-            'testIdSpecifier'
-          );
+          featureAppManager.getFeatureAppScope(mockFeatureAppDefinition, {
+            idSpecifier: 'testIdSpecifier'
+          });
 
           expect(stubbedConsole.stub.info.mock.calls).toEqual([
             [
@@ -405,14 +402,15 @@ describe('FeatureAppManager', () => {
         it('returns the same Feature App scope', () => {
           const featureAppScope = featureAppManager.getFeatureAppScope(
             mockFeatureAppDefinition,
-            'testIdSpecifier'
+            {
+              idSpecifier: 'testIdSpecifier'
+            }
           );
 
           expect(
-            featureAppManager.getFeatureAppScope(
-              mockFeatureAppDefinition,
-              'testIdSpecifier'
-            )
+            featureAppManager.getFeatureAppScope(mockFeatureAppDefinition, {
+              idSpecifier: 'testIdSpecifier'
+            })
           ).toBe(featureAppScope);
         });
 
@@ -420,16 +418,17 @@ describe('FeatureAppManager', () => {
           it('returns another Feature App scope', () => {
             const featureAppScope = featureAppManager.getFeatureAppScope(
               mockFeatureAppDefinition,
-              'testIdSpecifier'
+              {
+                idSpecifier: 'testIdSpecifier'
+              }
             );
 
             featureAppScope.destroy();
 
             expect(
-              featureAppManager.getFeatureAppScope(
-                mockFeatureAppDefinition,
-                'testIdSpecifier'
-              )
+              featureAppManager.getFeatureAppScope(mockFeatureAppDefinition, {
+                idSpecifier: 'testIdSpecifier'
+              })
             ).not.toBe(featureAppScope);
           });
         });
@@ -442,10 +441,9 @@ describe('FeatureAppManager', () => {
           );
 
           expect(
-            featureAppManager.getFeatureAppScope(
-              mockFeatureAppDefinition,
-              'testIdSpecifier'
-            )
+            featureAppManager.getFeatureAppScope(mockFeatureAppDefinition, {
+              idSpecifier: 'testIdSpecifier'
+            })
           ).not.toBe(featureAppScope);
         });
       });
@@ -475,7 +473,9 @@ describe('FeatureAppManager', () => {
       it('throws an error when destroy is called multiple times', () => {
         const featureAppScope = featureAppManager.getFeatureAppScope(
           mockFeatureAppDefinition,
-          'testIdSpecifier'
+          {
+            idSpecifier: 'testIdSpecifier'
+          }
         );
 
         featureAppScope.destroy();
@@ -490,14 +490,13 @@ describe('FeatureAppManager', () => {
       it('fails to destroy an already destroyed Feature App scope, even if this scope has been re-created', () => {
         const featureAppScope = featureAppManager.getFeatureAppScope(
           mockFeatureAppDefinition,
-          'testIdSpecifier'
+          {idSpecifier: 'testIdSpecifier'}
         );
 
         featureAppScope.destroy();
-        featureAppManager.getFeatureAppScope(
-          mockFeatureAppDefinition,
-          'testIdSpecifier'
-        );
+        featureAppManager.getFeatureAppScope(mockFeatureAppDefinition, {
+          idSpecifier: 'testIdSpecifier'
+        });
 
         expect(() => featureAppScope.destroy()).toThrowError(
           new Error(
