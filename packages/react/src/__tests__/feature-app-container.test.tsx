@@ -60,7 +60,7 @@ describe('FeatureAppContainer', () => {
       options
     );
 
-  it('calls the Feature App manager with the given Feature App definition, id specifier and instance config', () => {
+  it('calls the Feature App manager with the given Feature App definition, id specifier, and instance config', () => {
     renderWithFeatureHubContext(
       <FeatureAppContainer
         featureAppDefinition={mockFeatureAppDefinition}

@@ -35,8 +35,8 @@ export interface FeatureAppLoaderProps {
   readonly idSpecifier?: string;
 
   /**
-   * A Feature App config object that is intended for the specific Feature App
-   * instance that the `FeatureAppLoader` loads.
+   * A config object that is intended for the specific Feature App instance that
+   * the `FeatureAppLoader` loads and renders.
    */
   readonly instanceConfig?: unknown;
 }

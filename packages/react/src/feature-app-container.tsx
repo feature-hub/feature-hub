@@ -52,8 +52,8 @@ export interface FeatureAppContainerProps {
   readonly idSpecifier?: string;
 
   /**
-   * A Feature App config object that is intended for the specific Feature App
-   * instance that the `FeatureAppContainer` renders.
+   * A config object that is intended for the specific Feature App instance that
+   * the `FeatureAppContainer` renders.
    */
   readonly instanceConfig?: unknown;
 }

@@ -16,17 +16,16 @@ export interface FeatureAppEnvironment<
   TFeatureServices extends FeatureServices
 > {
   /**
-   * A Feature App config object that is provided by the integrator. The same
-   * config object is used for all Feature App instances with the same ID, which
-   * is defined in their {@link FeatureAppDefinition}.
+   * A config object that is provided by the integrator. The same config object
+   * is used for all Feature App instances with the same ID, which is defined in
+   * their {@link FeatureAppDefinition}.
    */
   readonly config: TConfig;
 
   /**
-   * An optional Feature App config object that is intended for a specific
-   * Feature App instance.
+   * A config object that is intended for a specific Feature App instance.
    */
-  readonly instanceConfig?: TInstanceConfig;
+  readonly instanceConfig: TInstanceConfig;
 
   /**
    * An object of required Feature Services that are semver-compatible with the
@@ -68,9 +67,17 @@ export interface FeatureAppConfigs {
   readonly [featureAppId: string]: unknown;
 }
 
-export interface GetFeatureAppScopeOptions {
-  idSpecifier?: string;
-  instanceConfig?: unknown;
+export interface FeatureAppScopeOptions {
+  /**
+   * A specifier to distinguish the Feature App instances from others created
+   * from the same definition.
+   */
+  readonly idSpecifier?: string;
+
+  /**
+   * A config object that is intended for a specific Feature App instance.
+   */
+  readonly instanceConfig?: unknown;
 }
 
 export interface FeatureAppManagerLike {
@@ -80,7 +87,7 @@ export interface FeatureAppManagerLike {
 
   getFeatureAppScope<TFeatureApp>(
     featureAppDefinition: FeatureAppDefinition<TFeatureApp>,
-    options?: GetFeatureAppScopeOptions
+    options?: FeatureAppScopeOptions
   ): FeatureAppScope<TFeatureApp>;
 
   preloadFeatureApp(url: string): Promise<void>;
@@ -182,19 +189,15 @@ export class FeatureAppManager implements FeatureAppManagerLike {
    *
    * @param featureAppDefinition The definition of the Feature App to create a
    * scope for.
-   * @param idSpecifier A specifier to distinguish the Feature App instances
-   * from others created from the same definition.
-   * @param instanceConfig An optional Feature App config object that is
-   * intended for the specific Feature App instance.
    *
    * @returns A {@link FeatureAppScope} for the provided {@link
    * FeatureAppDefinition} and ID specifier. If `getFeatureAppScope` is called
-   * multiple times with the same arguments, it returns the {@link
-   * FeatureAppScope} it created on the first call.
+   * multiple times with the same {@link FeatureAppDefinition} and ID specifier,
+   * it returns the {@link FeatureAppScope} it created on the first call.
    */
   public getFeatureAppScope<TFeatureApp>(
     featureAppDefinition: FeatureAppDefinition<TFeatureApp>,
-    options: GetFeatureAppScopeOptions = {}
+    options: FeatureAppScopeOptions = {}
   ): FeatureAppScope<TFeatureApp> {
     const {idSpecifier, instanceConfig} = options;
     const {id: featureAppId} = featureAppDefinition;

@@ -24,7 +24,8 @@ describe('asyncSsrManagerDefinition', () => {
     mockEnv = {
       config: {timeout: 5},
       featureServices: {},
-      idSpecifier: undefined
+      idSpecifier: undefined,
+      instanceConfig: undefined
     };
   });
 
