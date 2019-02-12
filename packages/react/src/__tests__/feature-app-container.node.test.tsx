@@ -116,4 +116,31 @@ describe('FeatureAppContainer (on Node.js)', () => {
       ]);
     });
   });
+
+  describe('when a Feature App throws in render', () => {
+    let mockError: Error;
+
+    beforeEach(() => {
+      mockError = new Error('Failed to render.');
+
+      mockFeatureAppScope = {
+        ...mockFeatureAppScope,
+        featureApp: {
+          render: () => {
+            throw mockError;
+          }
+        }
+      };
+    });
+
+    it('re-throws the error', () => {
+      expect(() =>
+        renderWithFeatureHubContext(
+          <FeatureAppContainer
+            featureAppDefinition={mockFeatureAppDefinition}
+          />
+        )
+      ).toThrowError(mockError);
+    });
+  });
 });
