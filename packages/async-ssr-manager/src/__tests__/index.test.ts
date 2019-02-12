@@ -18,13 +18,14 @@ async function simulateAsyncOperation(result: number): Promise<number> {
 }
 
 describe('asyncSsrManagerDefinition', () => {
-  let mockEnv: FeatureAppEnvironment<AsyncSsrManagerConfig, {}>;
+  let mockEnv: FeatureAppEnvironment<AsyncSsrManagerConfig, undefined, {}>;
 
   beforeEach(() => {
     mockEnv = {
       config: {timeout: 5},
       featureServices: {},
-      idSpecifier: undefined
+      idSpecifier: undefined,
+      instanceConfig: undefined
     };
   });
 

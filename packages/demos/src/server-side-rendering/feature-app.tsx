@@ -17,6 +17,7 @@ async function fetchSubject(): Promise<string> {
 const featureAppDefinition: FeatureAppDefinition<
   ReactFeatureApp,
   undefined,
+  undefined,
   Dependencies
 > = {
   id: 'test:hello-world',

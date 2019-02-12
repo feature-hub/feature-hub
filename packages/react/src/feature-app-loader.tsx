@@ -33,6 +33,12 @@ export interface FeatureAppLoaderProps {
    * defined.
    */
   readonly idSpecifier?: string;
+
+  /**
+   * A config object that is intended for the specific Feature App instance that
+   * the `FeatureAppLoader` loads and renders.
+   */
+  readonly instanceConfig?: unknown;
 }
 
 type InternalFeatureAppLoaderProps = FeatureAppLoaderProps &
@@ -136,6 +142,7 @@ class InternalFeatureAppLoader extends React.PureComponent<
   }
 
   public render(): React.ReactNode {
+    const {idSpecifier, instanceConfig} = this.props;
     const {featureAppDefinition, hasError} = this.state;
 
     if (hasError) {
@@ -151,7 +158,8 @@ class InternalFeatureAppLoader extends React.PureComponent<
     return (
       <FeatureAppContainer
         featureAppDefinition={featureAppDefinition}
-        idSpecifier={this.props.idSpecifier}
+        idSpecifier={idSpecifier}
+        instanceConfig={instanceConfig}
       />
     );
   }
