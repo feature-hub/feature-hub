@@ -85,8 +85,9 @@ version range][semver] as value, e.g. `{'acme:some-feature-service': '^2.0.0'}`.
 The `create` method takes the single argument `env`, which has the following
 properties:
 
-1. `config` — A Feature App [config object that is provided by the
-   integrator][providing-configs]:
+1. `config` — A [config object that is provided by the
+   integrator][providing-configs] for all Feature App instances with the same
+   ID:
 
    ```js
    const myFeatureAppDefinition = {
@@ -99,6 +100,9 @@ properties:
      }
    };
    ```
+
+1. `instanceConfig` — A config object that is intended for a specific Feature
+   App instance.
 
 1. `featureServices` — An object of required Feature Services that are
    semver-compatible with the declared dependencies in the Feature App

@@ -178,8 +178,8 @@ class InternalFeatureAppContainer extends React.PureComponent<
  *
  * When a Feature App throws an error while rendering or, in the case of a
  * {@link ReactFeatureApp}, throws an error in a lifecycle method, the
- * `FeatureAppContainer` renders `null`. Except on the server, where rendering
- * errors are not caught and must, therefore, be handled by the integrator.
+ * `FeatureAppContainer` renders `null`. On the server, however, rendering
+ * errors are not caught and must therefore be handled by the integrator.
  */
 export function FeatureAppContainer(
   props: FeatureAppContainerProps

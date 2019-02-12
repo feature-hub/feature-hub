@@ -246,6 +246,21 @@ integrator:
 </section>
 ```
 
+#### `instanceConfig`
+
+With the `instanceConfig` prop, a config object for a specific Feature App
+instance can be provided:
+
+```jsx
+<FeatureAppLoader
+  src="https://example.com/some-feature-app.js"
+  instanceConfig={{scope: 'foo'}}
+/>
+```
+
+For more details please refer to the the
+["Feature App Instance Configs" section](#feature-app-instance-configs).
+
 ### React Feature App Container
 
 The `FeatureAppContainer` component allows the integrator to bundle Feature Apps
@@ -288,10 +303,28 @@ integrator:
 </section>
 ```
 
+#### `instanceConfig`
+
+With the `instanceConfig` prop, a config object for a specific Feature App
+instance can be provided:
+
+```jsx
+<FeatureAppContainer
+  featureAppDefinition={someFeatureAppDefinition}
+  instanceConfig={{scope: 'foo'}}
+/>
+```
+
+For more details please refer to the the
+["Feature App Instance Configs" section](#feature-app-instance-configs).
+
+### Error Handling
+
 When a Feature App throws an error while rendering or, in the case of a
 `ReactFeatureApp`, throws an error in a lifecycle method, the
-`FeatureAppContainer` renders `null`. Except on the server, where rendering
-errors are not caught and must, therefore, be handled by the integrator.
+`FeatureAppContainer` and `FeatureAppLoader` render `null`. On the server,
+however, rendering errors are not caught and must therefore be handled by the
+integrator.
 
 ## Providing Configs
 
@@ -338,6 +371,40 @@ const someFeatureAppDefinition = {
   }
 };
 ```
+
+### Feature App Instance Configs
+
+When a Feature App needs a configuration that is intended to be specific for a
+given instance, the `instanceConfig` prop can be set on the `FeatureAppLoader`
+or `FeatureAppContainer` for a given Feature App instance, e.g.:
+
+```jsx
+<FeatureAppLoader
+  src="https://example.com/some-feature-app.js"
+  instanceConfig={{scope: 'foo'}}
+/>
+```
+
+The `instanceConfig` will be passed to the Feature App's `create` method via the
+`env` argument:
+
+```js
+const someFeatureAppDefinition = {
+  id: 'acme:some-feature-app',
+
+  create(env) {
+    const {scope} = env.instanceConfig; // scope is 'foo'
+
+    // ...
+  }
+};
+```
+
+> The `instanceConfig` must be completely static, since it is only evaluated
+> when a Feature App is mounted. Changing the `instanceConfig` after a Feature
+> App has been loaded, will have no effect! Therefore, it is not suitable to
+> exchange dynamic state between a Feature App and its outer boundary. In this
+> case a Feature Service should be used instead.
 
 ## Consuming Feature Services
 
