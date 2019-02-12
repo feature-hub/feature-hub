@@ -95,6 +95,115 @@ describe('FeatureAppContainer', () => {
 `);
     });
 
+    describe('when the Feature App throws in render', () => {
+      let mockError: Error;
+
+      beforeEach(() => {
+        mockError = new Error('Failed to render.');
+
+        mockFeatureAppScope = {
+          ...mockFeatureAppScope,
+          featureApp: {
+            render: () => {
+              throw mockError;
+            }
+          }
+        };
+      });
+
+      it("doesn't throw an error", () => {
+        expect(() => {
+          renderWithFeatureHubContext(
+            <FeatureAppContainer
+              featureAppDefinition={mockFeatureAppDefinition}
+            />
+          );
+        }).not.toThrow();
+      });
+
+      it('logs the error', () => {
+        renderWithFeatureHubContext(
+          <FeatureAppContainer
+            featureAppDefinition={mockFeatureAppDefinition}
+          />
+        );
+
+        expect(stubbedConsole.stub.error.mock.calls).toEqual([[mockError]]);
+      });
+
+      it('renders null', () => {
+        const testRenderer = renderWithFeatureHubContext(
+          <FeatureAppContainer
+            featureAppDefinition={mockFeatureAppDefinition}
+          />
+        );
+
+        expect(testRenderer.toJSON()).toBeNull();
+      });
+    });
+
+    describe('when the Feature App throws in componentDidMount', () => {
+      let mockError: Error;
+
+      beforeEach(() => {
+        mockError = new Error('Failed to mount.');
+
+        class FeatureAppComponent extends React.Component {
+          public componentDidMount(): void {
+            throw mockError;
+          }
+
+          public render(): JSX.Element {
+            return <p>Markup</p>;
+          }
+        }
+
+        mockFeatureAppScope = {
+          ...mockFeatureAppScope,
+          featureApp: {
+            render: () => <FeatureAppComponent />
+          }
+        };
+      });
+
+      it("doesn't throw an error", () => {
+        expect(() => {
+          renderWithFeatureHubContext(
+            <FeatureAppContainer
+              featureAppDefinition={mockFeatureAppDefinition}
+            />
+          );
+        }).not.toThrow();
+      });
+
+      it('logs the error', () => {
+        renderWithFeatureHubContext(
+          <FeatureAppContainer
+            featureAppDefinition={mockFeatureAppDefinition}
+          />
+        );
+
+        const expectedErrorBoundaryMessage = expect.stringMatching(
+          '^The above error occurred in'
+        );
+
+        expect(stubbedConsole.stub.error.mock.calls).toEqual([
+          [expect.stringContaining(mockError.message), mockError],
+          [expectedErrorBoundaryMessage]
+        ]);
+      });
+
+      it('renders null', () => {
+        const testRenderer = renderWithFeatureHubContext(
+          <FeatureAppContainer
+            featureAppDefinition={mockFeatureAppDefinition}
+          />
+        );
+
+        expect(testRenderer.toJSON()).toBeNull();
+      });
+    });
+
     describe('when unmounted', () => {
       it('calls destroy() on the Feature App scope', () => {
         const testRenderer = renderWithFeatureHubContext(
@@ -167,6 +276,62 @@ describe('FeatureAppContainer', () => {
       expect(mockSetInnerHtml).toHaveBeenCalledWith(
         'This is the DOM Feature App.'
       );
+    });
+
+    describe('when a Feature App throws in attachTo', () => {
+      let mockError: Error;
+
+      beforeEach(() => {
+        mockError = new Error('Failed to attach.');
+
+        mockFeatureAppScope = {
+          ...mockFeatureAppScope,
+          featureApp: {
+            attachTo: () => {
+              throw mockError;
+            }
+          }
+        };
+      });
+
+      it("doesn't throw an error", () => {
+        expect(() =>
+          renderWithFeatureHubContext(
+            <FeatureAppContainer
+              featureAppDefinition={mockFeatureAppDefinition}
+            />,
+            {
+              createNodeMock: () => ({})
+            }
+          )
+        ).not.toThrowError(mockError);
+      });
+
+      it('logs the error', () => {
+        renderWithFeatureHubContext(
+          <FeatureAppContainer
+            featureAppDefinition={mockFeatureAppDefinition}
+          />,
+          {
+            createNodeMock: () => ({})
+          }
+        );
+
+        expect(stubbedConsole.stub.error.mock.calls).toEqual([[mockError]]);
+      });
+
+      it('renders null', () => {
+        const testRenderer = renderWithFeatureHubContext(
+          <FeatureAppContainer
+            featureAppDefinition={mockFeatureAppDefinition}
+          />,
+          {
+            createNodeMock: () => ({})
+          }
+        );
+
+        expect(testRenderer.toJSON()).toBeNull();
+      });
     });
 
     describe('when unmounted', () => {
