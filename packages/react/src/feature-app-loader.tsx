@@ -211,6 +211,11 @@ class InternalFeatureAppLoader extends React.PureComponent<
  * The `FeatureAppLoader` component allows the integrator to load Feature Apps
  * from a remote location. It can also be used by a Feature App to render
  * another Feature App as a child.
+ *
+ * When a Feature App throws an error while rendering or, in the case of a
+ * {@link ReactFeatureApp}, throws an error in a lifecycle method, the
+ * `FeatureAppLoader` renders `null`. On the server, however, rendering
+ * errors are not caught and must therefore be handled by the integrator.
  */
 export function FeatureAppLoader(props: FeatureAppLoaderProps): JSX.Element {
   return (
