@@ -132,13 +132,13 @@ const {featureAppManager} = createFeatureHub('acme:integrator', {
 ```
 
 When the `providedExternals` option is defined, an `ExternalsValidator` is
-instantiated and passed to the `FeatureAppManager` that uses it to validate the
+instantiated and passed to the `FeatureAppManager` which uses it to validate the
 external dependencies of a Feature App before creating it.
 
 The same `ExternalsValidator` instance is also passed to the
 `FeatureServiceRegistry` to validate the [external dependencies of Feature
 Services][feature-service-dependencies] that are [provided by Feature
-Apps][own-feature-service-definitions] that are loaded from a remote location,
+Apps][own-feature-service-definitions] which are loaded from a remote location,
 instead of being provided by the integrator.
 
 ## Placing Feature Apps on a Web Page Using React
