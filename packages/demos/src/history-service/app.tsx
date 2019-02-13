@@ -1,4 +1,4 @@
-import {FeatureAppManager} from '@feature-hub/core';
+import {FeatureAppManagerLike} from '@feature-hub/core';
 import {
   FeatureAppContainer,
   FeatureHubContextProvider
@@ -7,7 +7,7 @@ import * as React from 'react';
 import {historyConsumerDefinition} from './history-consumer-definition';
 
 export interface AppProps {
-  featureAppManager: FeatureAppManager;
+  featureAppManager: FeatureAppManagerLike;
 }
 
 export function App({featureAppManager}: AppProps): JSX.Element {

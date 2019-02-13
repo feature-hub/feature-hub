@@ -2,11 +2,7 @@ import {
   AsyncSsrManagerV0,
   asyncSsrManagerDefinition
 } from '@feature-hub/async-ssr-manager';
-import {
-  ExternalsValidator,
-  FeatureAppManager,
-  FeatureServiceRegistry
-} from '@feature-hub/core';
+import {createFeatureHub} from '@feature-hub/core';
 import {loadCommonJsModule} from '@feature-hub/module-loader-commonjs';
 import {
   FeatureHubContextProvider,
@@ -24,41 +20,25 @@ import {App} from './app';
 export default async function renderApp({
   port
 }: AppRendererOptions): Promise<AppRendererResult> {
-  const integratorDefinition = {
-    id: 'test:integrator',
-    dependencies: {
-      featureServices: {
+  const {featureAppManager, featureServices} = createFeatureHub(
+    'test:integrator',
+    {
+      moduleLoader: loadCommonJsModule,
+      providedExternals: {react: '16.7.0'},
+      featureServiceDefinitions: [
+        asyncSsrManagerDefinition,
+        serializedStateManagerDefinition
+      ],
+      featureServiceDependencies: {
         [asyncSsrManagerDefinition.id]: '^0.1.0',
         [serializedStateManagerDefinition.id]: '^0.1.0'
       }
     }
-  };
-
-  const externalsValidator = new ExternalsValidator({
-    react: '16.7.0'
-  });
-
-  const featureServiceRegistry = new FeatureServiceRegistry({
-    externalsValidator
-  });
-
-  featureServiceRegistry.registerFeatureServices(
-    [asyncSsrManagerDefinition, serializedStateManagerDefinition],
-    integratorDefinition.id
-  );
-
-  const {featureServices} = featureServiceRegistry.bindFeatureServices(
-    integratorDefinition
   );
 
   const asyncSsrManager = featureServices[
     asyncSsrManagerDefinition.id
   ] as AsyncSsrManagerV0;
-
-  const featureAppManager = new FeatureAppManager(featureServiceRegistry, {
-    moduleLoader: loadCommonJsModule,
-    externalsValidator
-  });
 
   const urlsForHydration = new Set<string>();
 

@@ -1,4 +1,4 @@
-import {FeatureAppManager, FeatureServiceRegistry} from '@feature-hub/core';
+import {createFeatureHub} from '@feature-hub/core';
 import {defineHistoryService} from '@feature-hub/history-service';
 import {defineServerRequest} from '@feature-hub/server-request';
 import * as React from 'react';
@@ -10,19 +10,12 @@ import {rootLocationTransformer} from './root-location-transformer';
 export default async function renderApp({
   req
 }: AppRendererOptions): Promise<AppRendererResult> {
-  const featureServiceRegistry = new FeatureServiceRegistry();
-
-  const featureServiceDefinitions = [
-    defineServerRequest(req),
-    defineHistoryService(rootLocationTransformer)
-  ];
-
-  featureServiceRegistry.registerFeatureServices(
-    featureServiceDefinitions,
-    'test:integrator'
-  );
-
-  const featureAppManager = new FeatureAppManager(featureServiceRegistry);
+  const {featureAppManager} = createFeatureHub('test:integrator', {
+    featureServiceDefinitions: [
+      defineServerRequest(req),
+      defineHistoryService(rootLocationTransformer)
+    ]
+  });
 
   const html = ReactDOM.renderToString(
     <App featureAppManager={featureAppManager} />
