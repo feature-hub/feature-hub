@@ -21,36 +21,37 @@ multiple Feature Apps that share state through Feature Services:
 1. Place Feature Apps on a web page, e.g. [using
    React][placing-feature-apps-on-a-web-page-using-react].
 
-Typical integrator bootstrap code would look like this:
+To simplify the first three steps, an integrator can use the `createFeatureHub`
+function that is also provided by [`@feature-hub/core`][core-api]:
 
 ```js
-import {FeatureAppManager, FeatureServiceRegistry} from '@feature-hub/core';
+import {createFeatureHub} from '@feature-hub/core';
 import {someFeatureServiceDefinition1} from './some-feature-service-1';
 import {someFeatureServiceDefinition2} from './some-feature-service-2';
 ```
 
 ```js
-const featureServiceRegistry = new FeatureServiceRegistry();
-
-const featureServiceDefinitions = [
-  someFeatureServiceDefinition1,
-  someFeatureServiceDefinition2
-];
-
-featureServiceRegistry.registerFeatureServices(
-  featureServiceDefinitions,
-  'acme:integrator'
+const {featureAppManager, featureServiceRegistry} = createFeatureHub(
+  'acme:integrator',
+  {
+    featureServiceDefinitions: [
+      someFeatureServiceDefinition1,
+      someFeatureServiceDefinition2
+    ]
+  }
 );
-
-const featureAppManager = new FeatureAppManager(featureServiceRegistry);
 ```
+
+This creates the `FeatureServiceRegistry` singleton instance, registers all
+`featureServiceDefinitions` for the given integrator ID (`'acme:integrator'`),
+and instantiates a `FeatureAppManager` singleton instance using the
+`FeatureServiceRegistry`. Both singletons are returned.
 
 > The integrator needs a self-selected but unique consumer ID to register or
 > [consume Feature Services][consuming-feature-services] (in the example above
-> it is `'acme:integrator'`). All [Feature Services registered together][faq-1]
-> using the `registerFeatureServices` method of the `FeatureServiceRegistry` are
-> automatically sorted topologically and therefore do not need to be registered
-> in the correct order.
+> it is `'acme:integrator'`). The `featureServiceDefinitions` are automatically
+> sorted topologically before being registered, and therefore do not need to be
+> passed in the correct order.
 
 ## Module Loader
 
@@ -59,6 +60,8 @@ location, it needs to be configured with an implementation of the `ModuleLoader`
 interface of the [`@feature-hub/core`][core-api] package by the integrator (e.g.
 the [`@feature-hub/module-loader-amd`][module-loader-amd-api] package or the
 [`@feature-hub/module-loader-commonjs`][module-loader-commonjs-api] package).
+The module loader can be provided with the `moduleLoader` option of
+`createFeatureHub`.
 
 On the client:
 
@@ -67,7 +70,7 @@ import {loadAmdModule} from '@feature-hub/module-loader-amd';
 ```
 
 ```js
-const featureAppManager = new FeatureAppManager(featureServiceRegistry, {
+const {featureAppManager} = createFeatureHub('acme:integrator', {
   moduleLoader: loadAmdModule
 });
 ```
@@ -79,7 +82,7 @@ import {loadCommonJsModule} from '@feature-hub/module-loader-commonjs';
 ```
 
 ```js
-const featureAppManager = new FeatureAppManager(featureServiceRegistry, {
+const {featureAppManager} = createFeatureHub('acme:integrator', {
   moduleLoader: loadCommonJsModule
 });
 ```
@@ -94,16 +97,13 @@ already thrown when creating a Feature App with incompatible external
 dependencies, and thus enables early feedback as to whether a Feature App is
 compatible with the integration environment.
 
-To accomplish that the integrator can configure an `ExternalsValidator`.
+To accomplish that, the integrator can pass the `providedExternals` option to
+`createFeatureHub`.
 
 On the client:
 
 ```js
-import {
-  ExternalsValidator,
-  FeatureAppManager,
-  FeatureServiceRegistry
-} from '@feature-hub/core';
+import {createFeatureHub} from '@feature-hub/core';
 import {defineExternals, loadAmdModule} from '@feature-hub/module-loader-amd';
 import * as React from 'react';
 ```
@@ -111,47 +111,35 @@ import * as React from 'react';
 ```js
 defineExternals({react: React});
 
-const externalsValidator = new ExternalsValidator({react: '16.7.0'});
-const featureServiceRegistry = new FeatureServiceRegistry();
-
-const featureAppManager = new FeatureAppManager(featureServiceRegistry, {
+const {featureAppManager} = createFeatureHub('acme:integrator', {
   moduleLoader: loadAmdModule,
-  externalsValidator
+  providedExternals: {react: '16.7.0'}
 });
 ```
 
 On the server:
 
 ```js
-import {
-  ExternalsValidator,
-  FeatureAppManager,
-  FeatureServiceRegistry
-} from '@feature-hub/core';
+import {createFeatureHub} from '@feature-hub/core';
 import {loadCommonJsModule} from '@feature-hub/module-loader-commonjs';
 ```
 
 ```js
-const externalsValidator = new ExternalsValidator({react: '16.7.0'});
-const featureServiceRegistry = new FeatureServiceRegistry();
-
-const featureAppManager = new FeatureAppManager(featureServiceRegistry, {
+const {featureAppManager} = createFeatureHub('acme:integrator', {
   moduleLoader: loadCommonJsModule,
-  externalsValidator
+  providedExternals: {react: '16.7.0'}
 });
 ```
 
-The `ExternalsValidator` can also be passed to the `FeatureServiceRegistry` to
-validate the [external dependencies of Feature
+When the `providedExternals` option is defined, an `ExternalsValidator` is
+instantiated and passed to the `FeatureAppManager` which uses it to validate the
+external dependencies of a Feature App before creating it.
+
+The same `ExternalsValidator` instance is also passed to the
+`FeatureServiceRegistry` to validate the [external dependencies of Feature
 Services][feature-service-dependencies] that are [provided by Feature
-Apps][own-feature-service-definitions] that are loaded from a remote location,
+Apps][own-feature-service-definitions] which are loaded from a remote location,
 instead of being provided by the integrator.
-
-On the client/server:
-
-```js
-const featureServiceRegistry = new FeatureServiceRegistry({externalsValidator});
-```
 
 ## Placing Feature Apps on a Web Page Using React
 
@@ -329,20 +317,20 @@ integrator.
 ## Providing Configs
 
 The integrator can provide config objects for Feature Services and Feature Apps,
-associated with their respective IDs, via the `FeatureServiceRegistry` and
-`FeatureAppManager`:
+associated with their respective IDs, as options of `createFeatureHub`:
 
 ```js
-const featureServiceConfigs = {'acme:some-feature-service': {foo: 'bar'}};
-const featureAppConfigs = {'acme:some-feature-app': {baz: 'qux'}};
-
-const featureServiceRegistry = new FeatureServiceRegistry({
-  configs: featureServiceConfigs
-});
-
-const featureAppManager = new FeatureAppManager(featureServiceRegistry, {
-  configs: featureAppConfigs
-});
+const {featureAppManager, featureServiceRegistry} = createFeatureHub(
+  'acme:integrator',
+  {
+    featureServiceConfigs: {
+      'acme:some-feature-service': {foo: 'bar'}
+    },
+    featureAppConfigs: {
+      'acme:some-feature-app': {baz: 'qux'}
+    }
+  }
+);
 ```
 
 Feature Services and Feature Apps can then use their respective config object as
@@ -409,43 +397,27 @@ const someFeatureAppDefinition = {
 ## Consuming Feature Services
 
 Just like Feature Apps or Feature Services, the integrator itself can consume
-its own registered Feature Services. To do this, the integrator needs to define
-a consumer definition object for itself. Besides the self-selected but unique
-consumer `id`, this consumer definition object contains a `dependencies` object.
-The required Feature Services can then be instantiated (bound) using the
-`bindFeatureServices` method of the `FeatureServiceRegistry`:
+its own registered Feature Services. To do this, the integrator needs to specify
+the `featureServiceDependencies` option of `createFeatureHub`. This will bind
+those Feature Services to the integrator and return them as `featureServices`
+from `createFeatureHub`:
 
 ```js
-import {FeatureServiceRegistry} from '@feature-hub/core';
+import {createFeatureHub} from '@feature-hub/core';
 import {someFeatureServiceDefinition1} from './some-feature-service-1';
 import {someFeatureServiceDefinition2} from './some-feature-service-2';
 ```
 
 ```js
-const integratorDefinition = {
-  id: 'acme:integrator',
-  dependencies: {
-    featureServices: {
-      [someFeatureServiceDefinition2.id]: '^1.0.0'
-    }
+const {featureServices} = createFeatureHub('acme:integrator', {
+  featureServiceDefinitions: [
+    someFeatureServiceDefinition1,
+    someFeatureServiceDefinition2
+  ],
+  featureServiceDependencies: {
+    [someFeatureServiceDefinition2.id]: '^1.0.0'
   }
-};
-
-const featureServiceRegistry = new FeatureServiceRegistry();
-
-const featureServiceDefinitions = [
-  someFeatureServiceDefinition1,
-  someFeatureServiceDefinition2
-];
-
-featureServiceRegistry.registerFeatureServices(
-  featureServiceDefinitions,
-  integratorDefinition.id
-);
-
-const {featureServices} = featureServiceRegistry.bindFeatureServices(
-  integratorDefinition
-);
+});
 
 const someFeatureService2 = featureServices[someFeatureServiceDefinition2.id];
 
@@ -457,7 +429,6 @@ someFeatureService2.foo(42);
 [react-api]: /@feature-hub/react/
 [consuming-feature-services]:
   /docs/guides/integrating-the-feature-hub#consuming-feature-services
-[faq-1]: /docs/help/faq#can-the-integrator-register-feature-services-one-by-one
 [implementing-a-feature-app-using-react]:
   /docs/guides/writing-a-feature-app#implementing-a-feature-app-using-react
 [sharing-npm-dependencies]: /docs/guides/sharing-npm-dependencies

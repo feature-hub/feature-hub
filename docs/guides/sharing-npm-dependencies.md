@@ -12,6 +12,7 @@ package, the integrator can provide shared npm dependencies to Feature Apps
 using the `defineExternals` function:
 
 ```js
+import {createFeatureHub} from '@feature-hub/core';
 import {defineExternals, loadAmdModule} from '@feature-hub/module-loader-amd';
 import * as React from 'react';
 import Loadable from 'react-loadable';
@@ -20,7 +21,7 @@ import Loadable from 'react-loadable';
 ```js
 defineExternals({react: React, 'react-loadable': Loadable});
 
-const featureAppManager = new FeatureAppManager(featureServiceRegistry, {
+const {featureAppManager} = createFeatureHub('acme:integrator', {
   moduleLoader: loadAmdModule
 });
 ```
