@@ -6,6 +6,7 @@ import {
 import {
   FeatureAppConfigs,
   FeatureAppManager,
+  FeatureAppManagerLike,
   ModuleLoader
 } from './feature-app-manager';
 import {
@@ -14,24 +15,23 @@ import {
   FeatureServiceConsumerDependencies,
   FeatureServiceProviderDefinition,
   FeatureServiceRegistry,
+  FeatureServiceRegistryLike,
   FeatureServices,
   SharedFeatureService
 } from './feature-service-registry';
 
 export interface FeatureHub {
-  readonly featureAppManager: FeatureAppManager;
-  readonly featureServiceRegistry: FeatureServiceRegistry;
+  readonly featureAppManager: FeatureAppManagerLike;
+  readonly featureServiceRegistry: FeatureServiceRegistryLike;
   readonly featureServices: FeatureServices;
 }
 
 export interface FeatureHubOptions {
   readonly featureAppConfigs?: FeatureAppConfigs;
   readonly featureServiceConfigs?: FeatureServiceConfigs;
-
   readonly featureServiceDefinitions?: FeatureServiceProviderDefinition<
     SharedFeatureService
   >[];
-
   readonly featureServiceDependencies?: FeatureServiceConsumerDependencies;
   readonly providedExternals?: ProvidedExternals;
   readonly moduleLoader?: ModuleLoader;
@@ -42,11 +42,11 @@ export function createFeatureHub(
   options: FeatureHubOptions = {}
 ): FeatureHub {
   const {
-    featureAppConfigs: providedFeatureAppConfigs,
-    featureServiceConfigs: providedFeatureServiceConfigs,
-    featureServiceDefinitions: providedFeatureServiceDefinitions,
+    featureAppConfigs,
+    featureServiceConfigs,
+    featureServiceDefinitions,
     featureServiceDependencies,
-    providedExternals: providedExternals,
+    providedExternals,
     moduleLoader
   } = options;
 
@@ -57,7 +57,7 @@ export function createFeatureHub(
   }
 
   const featureServiceRegistry = new FeatureServiceRegistry({
-    configs: providedFeatureServiceConfigs,
+    configs: featureServiceConfigs,
     externalsValidator
   });
 
@@ -66,15 +66,15 @@ export function createFeatureHub(
     dependencies: {featureServices: featureServiceDependencies}
   };
 
-  if (providedFeatureServiceDefinitions) {
+  if (featureServiceDefinitions) {
     featureServiceRegistry.registerFeatureServices(
-      providedFeatureServiceDefinitions,
+      featureServiceDefinitions,
       integratorDefinition.id
     );
   }
 
   const featureAppManager = new FeatureAppManager(featureServiceRegistry, {
-    configs: providedFeatureAppConfigs,
+    configs: featureAppConfigs,
     externalsValidator,
     moduleLoader
   });
@@ -85,22 +85,3 @@ export function createFeatureHub(
 
   return {featureAppManager, featureServiceRegistry, featureServices};
 }
-
-/*
-const someFeatureServiceDefinition1 = {
-  id: 'acme:feature-service-1',
-  create: jest.fn()
-};
-
-const featureHub = createFeatureHub('acme:integrator', {
-  featureAppConfigs: {'acme:app': 'foo'},
-  featureServiceConfigs: {[someFeatureServiceDefinition1.id]: 'bar'},
-  featureServiceDefinitions: [someFeatureServiceDefinition1],
-  featureServiceDependencies: {[someFeatureServiceDefinition1.id]: '^1.0.0'},
-  providedExternals: {react: '16.7.0'},
-  moduleLoader: {} as any
-});
-
-const someFeatureService1 =
-  featureHub.featureServices[someFeatureServiceDefinition1.id];
-*/
