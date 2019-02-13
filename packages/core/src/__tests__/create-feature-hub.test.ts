@@ -23,118 +23,118 @@ describe('createFeatureHub()', () => {
 
       expect(featureServices).toEqual({});
     });
+  });
 
-    describe('featureAppManager#getAsyncFeatureAppDefinition', () => {
-      describe('without a module loader', () => {
-        it('throws an error', () => {
-          const {featureAppManager} = createFeatureHub('test:integrator');
+  describe('featureAppManager#getAsyncFeatureAppDefinition', () => {
+    describe('without a module loader', () => {
+      it('throws an error', () => {
+        const {featureAppManager} = createFeatureHub('test:integrator');
 
-          expect(() =>
-            featureAppManager.getAsyncFeatureAppDefinition(
-              'http://example.com/test.js'
-            )
-          ).toThrowError(new Error('No module loader provided.'));
-        });
-      });
-
-      describe('with a module loader', () => {
-        let mockModuleLoader: jest.Mock;
-
-        beforeEach(() => {
-          mockModuleLoader = jest.fn(async () => Promise.resolve());
-          featureHubOptions = {moduleLoader: mockModuleLoader};
-        });
-
-        it('uses the module loader to load the Feature App definition', () => {
-          const {featureAppManager} = createFeatureHub(
-            'test:integrator',
-            featureHubOptions
-          );
-
-          const url = 'http://example.com/test.js';
-
-          featureAppManager.getAsyncFeatureAppDefinition(url);
-
-          expect(mockModuleLoader).toHaveBeenCalledWith(url);
-        });
+        expect(() =>
+          featureAppManager.getAsyncFeatureAppDefinition(
+            'http://example.com/test.js'
+          )
+        ).toThrowError(new Error('No module loader provided.'));
       });
     });
 
-    describe('featureAppManager#getFeatureAppScope', () => {
-      let mockFeatureApp: {};
-      let mockFeatureAppCreate: jest.Mock;
-      let mockFeatureAppDefinition: FeatureAppDefinition<unknown>;
+    describe('with a module loader', () => {
+      let mockModuleLoader: jest.Mock;
 
       beforeEach(() => {
-        mockFeatureApp = {};
-        mockFeatureAppCreate = jest.fn(() => mockFeatureApp);
+        mockModuleLoader = jest.fn(async () => Promise.resolve());
+        featureHubOptions = {moduleLoader: mockModuleLoader};
+      });
 
-        mockFeatureAppDefinition = {
-          id: 'test:feature-app',
-          dependencies: {externals: {foo: '^1.0.0'}},
-          create: mockFeatureAppCreate
+      it('uses the module loader to load the Feature App definition', () => {
+        const {featureAppManager} = createFeatureHub(
+          'test:integrator',
+          featureHubOptions
+        );
+
+        const url = 'http://example.com/test.js';
+
+        featureAppManager.getAsyncFeatureAppDefinition(url);
+
+        expect(mockModuleLoader).toHaveBeenCalledWith(url);
+      });
+    });
+  });
+
+  describe('featureAppManager#getFeatureAppScope', () => {
+    let mockFeatureApp: {};
+    let mockFeatureAppCreate: jest.Mock;
+    let mockFeatureAppDefinition: FeatureAppDefinition<unknown>;
+
+    beforeEach(() => {
+      mockFeatureApp = {};
+      mockFeatureAppCreate = jest.fn(() => mockFeatureApp);
+
+      mockFeatureAppDefinition = {
+        id: 'test:feature-app',
+        dependencies: {externals: {foo: '^1.0.0'}},
+        create: mockFeatureAppCreate
+      };
+    });
+
+    it('creates a Feature App', () => {
+      const {featureAppManager} = createFeatureHub('test:integrator');
+
+      const {featureApp} = featureAppManager.getFeatureAppScope(
+        mockFeatureAppDefinition
+      );
+
+      expect(mockFeatureAppCreate).toHaveBeenCalledWith({
+        config: undefined,
+        featureServices: {}
+      });
+
+      expect(featureApp).toBe(mockFeatureApp);
+    });
+
+    describe('with Feature App configs', () => {
+      beforeEach(() => {
+        featureHubOptions = {
+          ...featureHubOptions,
+          featureAppConfigs: {'test:feature-app': 'mockConfig'}
         };
       });
 
-      it('creates a Feature App', () => {
-        const {featureAppManager} = createFeatureHub('test:integrator');
+      it('creates a Feature App, using the relevant config', () => {
+        const {featureAppManager} = createFeatureHub(
+          'test:integrator',
+          featureHubOptions
+        );
 
         const {featureApp} = featureAppManager.getFeatureAppScope(
           mockFeatureAppDefinition
         );
 
         expect(mockFeatureAppCreate).toHaveBeenCalledWith({
-          config: undefined,
+          config: 'mockConfig',
           featureServices: {}
         });
 
         expect(featureApp).toBe(mockFeatureApp);
       });
+    });
 
-      describe('with Feature App configs', () => {
-        beforeEach(() => {
-          featureHubOptions = {
-            ...featureHubOptions,
-            featureAppConfigs: {'test:feature-app': 'mockConfig'}
-          };
-        });
-
-        it('creates a Feature App, using the relevant config', () => {
-          const {featureAppManager} = createFeatureHub(
-            'test:integrator',
-            featureHubOptions
-          );
-
-          const {featureApp} = featureAppManager.getFeatureAppScope(
-            mockFeatureAppDefinition
-          );
-
-          expect(mockFeatureAppCreate).toHaveBeenCalledWith({
-            config: 'mockConfig',
-            featureServices: {}
-          });
-
-          expect(featureApp).toBe(mockFeatureApp);
-        });
+    describe('with provided externals', () => {
+      beforeEach(() => {
+        featureHubOptions = {...featureHubOptions, providedExternals: {}};
       });
 
-      describe('with provided externals', () => {
-        beforeEach(() => {
-          featureHubOptions = {...featureHubOptions, providedExternals: {}};
-        });
+      it('throws for a Feature App with mismatching externals', () => {
+        const {featureAppManager} = createFeatureHub(
+          'test:integrator',
+          featureHubOptions
+        );
 
-        it('throws for a Feature App with mismatching externals', () => {
-          const {featureAppManager} = createFeatureHub(
-            'test:integrator',
-            featureHubOptions
-          );
-
-          expect(() =>
-            featureAppManager.getFeatureAppScope(mockFeatureAppDefinition)
-          ).toThrowError(
-            new Error('The external dependency "foo" is not provided.')
-          );
-        });
+        expect(() =>
+          featureAppManager.getFeatureAppScope(mockFeatureAppDefinition)
+        ).toThrowError(
+          new Error('The external dependency "foo" is not provided.')
+        );
       });
     });
   });
