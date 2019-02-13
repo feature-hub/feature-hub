@@ -398,8 +398,9 @@ const someFeatureAppDefinition = {
 
 Just like Feature Apps or Feature Services, the integrator itself can consume
 its own registered Feature Services. To do this, the integrator needs to specify
-the `featureServiceDependencies` option of `createFeatureHub` which will then
-return the `featureServices` that are bound to the integrator:
+the `featureServiceDependencies` option of `createFeatureHub`. This will bind
+those Feature Services to the integrator and return them as `featureServices`
+from `createFeatureHub`:
 
 ```js
 import {createFeatureHub} from '@feature-hub/core';
