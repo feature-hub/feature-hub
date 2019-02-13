@@ -117,28 +117,21 @@ registers it at the Feature Service registry.
 On the client:
 
 ```js
-import {FeatureServiceRegistry} from '@feature-hub/core';
+import {createFeatureHub} from '@feature-hub/core';
 import {
-  defineHistoryService,
-  createRootLocationTransformer
+  createRootLocationTransformer,
+  defineHistoryService
 } from '@feature-hub/history-service';
 ```
 
 ```js
-const featureServiceRegistry = new FeatureServiceRegistry();
-
 const rootLocationTransformer = createRootLocationTransformer({
   consumerPathsQueryParamName: '---'
 });
 
-const featureServiceDefinitions = [
-  defineHistoryService(rootLocationTransformer)
-];
-
-featureServiceRegistry.registerFeatureServices(
-  featureServiceDefinitions,
-  'acme:integrator'
-);
+const featureHub = createFeatureHub('acme:integrator', {
+  featureServiceDefinitions: [defineHistoryService(rootLocationTransformer)]
+});
 ```
 
 On the server, the History Service needs the server request to compute the
@@ -146,17 +139,15 @@ initial history location of the static history. The integrator therefor defines
 the server request Feature Service:
 
 ```js
-import {FeatureServiceRegistry} from '@feature-hub/core';
+import {createFeatureHub} from '@feature-hub/core';
 import {
-  defineHistoryService,
-  createRootLocationTransformer
+  createRootLocationTransformer,
+  defineHistoryService
 } from '@feature-hub/history-service';
 import {defineServerRequest} from '@feature-hub/server-request';
 ```
 
 ```js
-const featureServiceRegistry = new FeatureServiceRegistry();
-
 const rootLocationTransformer = createRootLocationTransformer({
   consumerPathsQueryParamName: '---'
 });
@@ -165,15 +156,12 @@ const request = {
   // ... obtain the request from somewhere, e.g. a request handler
 };
 
-const featureServiceDefinitions = [
-  defineServerRequest(request),
-  defineHistoryService(rootLocationTransformer)
-];
-
-featureServiceRegistry.registerFeatureServices(
-  featureServiceDefinitions,
-  'acme:integrator'
-);
+const featureHub = createFeatureHub('acme:integrator', {
+  featureServiceDefinitions: [
+    defineServerRequest(request),
+    defineHistoryService(rootLocationTransformer)
+  ]
+});
 ```
 
 ## Root Location Transformer
