@@ -1,8 +1,4 @@
-import {
-  ExternalsValidator,
-  FeatureAppManager,
-  FeatureServiceRegistry
-} from '@feature-hub/core';
+import {createFeatureHub} from '@feature-hub/core';
 import {loadCommonJsModule} from '@feature-hub/module-loader-commonjs';
 import {FeatureAppLoader, FeatureHubContextProvider} from '@feature-hub/react';
 import * as React from 'react';
@@ -12,20 +8,14 @@ import {AppRendererOptions, AppRendererResult} from '../start-server';
 export default async function renderApp({
   port
 }: AppRendererOptions): Promise<AppRendererResult> {
-  const externalsValidator = new ExternalsValidator({
-    react: '16.7.0',
-    '@feature-hub/react': '0.12.0'
-  });
-
   const featureAppNodeUrl = `http://localhost:${port}/feature-app.commonjs.js`;
 
-  const featureServiceRegistry = new FeatureServiceRegistry({
-    externalsValidator
-  });
-
-  const featureAppManager = new FeatureAppManager(featureServiceRegistry, {
+  const {featureAppManager} = createFeatureHub('test:integrator', {
     moduleLoader: loadCommonJsModule,
-    externalsValidator
+    providedExternals: {
+      react: '16.7.0',
+      '@feature-hub/react': '0.12.0'
+    }
   });
 
   // In a real-world integrator, instead of preloading a Feature App manually

@@ -1,4 +1,4 @@
-import {FeatureAppManager, FeatureServiceRegistry} from '@feature-hub/core';
+import {createFeatureHub} from '@feature-hub/core';
 import {loadCommonJsModule} from '@feature-hub/module-loader-commonjs';
 import {FeatureAppLoader, FeatureHubContextProvider} from '@feature-hub/react';
 import * as React from 'react';
@@ -9,9 +9,8 @@ export default async function renderApp({
   port
 }: AppRendererOptions): Promise<AppRendererResult> {
   const featureAppNodeUrl = `http://localhost:${port}/feature-app.commonjs.js`;
-  const featureServiceRegistry = new FeatureServiceRegistry();
 
-  const featureAppManager = new FeatureAppManager(featureServiceRegistry, {
+  const {featureAppManager} = createFeatureHub('test:integrator', {
     moduleLoader: loadCommonJsModule
   });
 
