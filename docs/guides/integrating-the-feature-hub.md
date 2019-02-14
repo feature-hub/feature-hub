@@ -404,7 +404,7 @@ Just like Feature Apps or Feature Services, the integrator itself can consume
 its own registered Feature Services. To do this, the integrator needs to pass
 the `featureServiceDependencies` option to the `createFeatureHub` function. This
 will bind those Feature Services to the integrator and return them as
-`featureServices` property of the `FeatureHub` instance created:
+`featureServices` property of the `FeatureHub` object created:
 
 ```js
 import {createFeatureHub} from '@feature-hub/core';
