@@ -1,6 +1,5 @@
 # Feature Hub
 
-[![Build Status][travis-ci-badge]][travis-ci]
 [![Website][website-badge]][website]
 
 The Feature Hub is an opinionated JavaScript implementation of the micro
@@ -57,8 +56,6 @@ terms of the [MIT License][license].
   https://github.com/sinnerschrader/feature-hub/tree/master/packages/demos#getting-started
 [license]: https://github.com/sinnerschrader/feature-hub/blob/master/LICENSE
 [travis-ci]: https://travis-ci.com/sinnerschrader/feature-hub
-[travis-ci-badge]:
-  https://travis-ci.com/sinnerschrader/feature-hub.svg?branch=master
 [website]: https://feature-hub.io/
 [website-badge]:
   https://img.shields.io/badge/Website-feature--hub.io-%23500dc5.svg
