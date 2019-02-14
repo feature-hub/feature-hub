@@ -6,7 +6,7 @@ different technologies.
 
 ## Documentation
 
-Further information can be found in the [documentation][documentation].
+For more information, please refer to the [documentation][documentation].
 
 ## Contributing
 
