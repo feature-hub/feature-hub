@@ -22,7 +22,7 @@ multiple Feature Apps that share state through Feature Services:
    React][placing-feature-apps-on-a-web-page-using-react].
 
 To simplify the first three steps, an integrator can use the `createFeatureHub`
-function that is also provided by [`@feature-hub/core`][core-api]:
+function that is also provided by the [`@feature-hub/core`][core-api] package:
 
 ```js
 import {createFeatureHub} from '@feature-hub/core';
@@ -45,7 +45,8 @@ const {featureAppManager, featureServiceRegistry} = createFeatureHub(
 This creates the `FeatureServiceRegistry` singleton instance, registers all
 `featureServiceDefinitions` for the given integrator ID (`'acme:integrator'`),
 and instantiates a `FeatureAppManager` singleton instance using the
-`FeatureServiceRegistry`. Both singletons are returned.
+`FeatureServiceRegistry`. Both singletons are returned as properties of the
+`FeatureHub` object created using the `createFeatureHub` function.
 
 > The integrator needs a self-selected but unique consumer ID to register or
 > [consume Feature Services][consuming-feature-services] (in the example above
@@ -60,8 +61,9 @@ location, it needs to be configured with an implementation of the `ModuleLoader`
 interface of the [`@feature-hub/core`][core-api] package by the integrator (e.g.
 the [`@feature-hub/module-loader-amd`][module-loader-amd-api] package or the
 [`@feature-hub/module-loader-commonjs`][module-loader-commonjs-api] package).
-The module loader can be provided with the `moduleLoader` option of
-`createFeatureHub`.
+
+The module loader can be provided with the `moduleLoader` option of the
+`createFeatureHub` function.
 
 On the client:
 
@@ -98,7 +100,7 @@ dependencies, and thus enables early feedback as to whether a Feature App is
 compatible with the integration environment.
 
 To accomplish that, the integrator can pass the `providedExternals` option to
-`createFeatureHub`.
+the `createFeatureHub` function.
 
 On the client:
 
@@ -131,9 +133,10 @@ const {featureAppManager} = createFeatureHub('acme:integrator', {
 });
 ```
 
-When the `providedExternals` option is defined, an `ExternalsValidator` is
-instantiated and passed to the `FeatureAppManager` which uses it to validate the
-external dependencies of a Feature App before creating it.
+When the `providedExternals` option is passed to the `createFeatureHub`
+function, an `ExternalsValidator` is instantiated and passed to the
+`FeatureAppManager` which uses it to validate the external dependencies of a
+Feature App before creating it.
 
 The same `ExternalsValidator` instance is also passed to the
 `FeatureServiceRegistry` to validate the [external dependencies of Feature
@@ -317,7 +320,8 @@ integrator.
 ## Providing Configs
 
 The integrator can provide config objects for Feature Services and Feature Apps,
-associated with their respective IDs, as options of `createFeatureHub`:
+associated with their respective IDs, as options of the `createFeatureHub`
+function:
 
 ```js
 const {featureAppManager, featureServiceRegistry} = createFeatureHub(
@@ -397,10 +401,10 @@ const someFeatureAppDefinition = {
 ## Consuming Feature Services
 
 Just like Feature Apps or Feature Services, the integrator itself can consume
-its own registered Feature Services. To do this, the integrator needs to specify
-the `featureServiceDependencies` option of `createFeatureHub`. This will bind
-those Feature Services to the integrator and return them as `featureServices`
-from `createFeatureHub`:
+its own registered Feature Services. To do this, the integrator needs to pass
+the `featureServiceDependencies` option to the `createFeatureHub` function. This
+will bind those Feature Services to the integrator and return them as
+`featureServices` property of the `FeatureHub` instance created:
 
 ```js
 import {createFeatureHub} from '@feature-hub/core';
