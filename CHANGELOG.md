@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0](https://github.com/sinnerschrader/feature-hub/compare/v0.13.0...v1.0.0) (2019-02-14)
+
+
+### Features
+
+* **all:** introduce instanceConfig ([#350](https://github.com/sinnerschrader/feature-hub/issues/350)) ([9a25084](https://github.com/sinnerschrader/feature-hub/commit/9a25084))
+* **all:** release 1.0 🎉 ([a1794a5](https://github.com/sinnerschrader/feature-hub/commit/a1794a5))
+* **core:** implement createFeatureHub function ([#356](https://github.com/sinnerschrader/feature-hub/issues/356)) ([22df643](https://github.com/sinnerschrader/feature-hub/commit/22df643))
+* **react:** handle feature app errors ([#352](https://github.com/sinnerschrader/feature-hub/issues/352)) ([634c03a](https://github.com/sinnerschrader/feature-hub/commit/634c03a))
+
+
+
+
+
 # 0.13.0 (2019-02-07)
 
 
