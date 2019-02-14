@@ -1,10 +1,12 @@
 # Feature Hub
 
-[![Website][website-badge]][website]
-
 The Feature Hub is an opinionated JavaScript implementation of the micro
 frontends approach to creating scalable web applications with multiple teams and
 different technologies.
+
+## Documentation
+
+Further information can be found in the [documentation][documentation].
 
 ## Contributing
 
@@ -54,8 +56,6 @@ terms of the [MIT License][license].
   https://github.com/sinnerschrader/feature-hub/blob/master/CODE_OF_CONDUCT.md
 [demos-package-getting-started]:
   https://github.com/sinnerschrader/feature-hub/tree/master/packages/demos#getting-started
+[documentation]: https://feature-hub.io/docs/getting-started/introduction.html
 [license]: https://github.com/sinnerschrader/feature-hub/blob/master/LICENSE
 [travis-ci]: https://travis-ci.com/sinnerschrader/feature-hub
-[website]: https://feature-hub.io/
-[website-badge]:
-  https://img.shields.io/badge/Website-feature--hub.io-%23500dc5.svg
