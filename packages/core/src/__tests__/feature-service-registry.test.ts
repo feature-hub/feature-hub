@@ -5,10 +5,9 @@ import {
   FeatureServiceBinding,
   FeatureServiceConfigs,
   FeatureServiceConsumerDefinition,
-  FeatureServiceRegistry,
-  FeatureServiceRegistryLike
+  FeatureServiceRegistry
 } from '..';
-import {ExternalsValidatorLike} from '../externals-validator';
+import {ExternalsValidator} from '../externals-validator';
 
 interface MockProviderDefinition extends FeatureServiceConsumerDefinition {
   create: jest.Mock;
@@ -24,8 +23,8 @@ interface MockFeatureServiceBinding
 }
 
 describe('FeatureServiceRegistry', () => {
-  let featureServiceRegistry: FeatureServiceRegistryLike;
-  let mockExternalsValidator: ExternalsValidatorLike;
+  let featureServiceRegistry: FeatureServiceRegistry;
+  let mockExternalsValidator: ExternalsValidator;
   let providerDefinitionA: MockProviderDefinition;
   let providerDefinitionB: MockProviderDefinition;
   let providerDefinitionC: MockProviderDefinition;
@@ -41,7 +40,9 @@ describe('FeatureServiceRegistry', () => {
   let stubbedConsole: Stubbed<Console>;
 
   beforeEach(() => {
-    mockExternalsValidator = {validate: jest.fn()};
+    mockExternalsValidator = ({validate: jest.fn()} as Partial<
+      ExternalsValidator
+    >) as ExternalsValidator;
 
     featureServiceRegistry = new FeatureServiceRegistry();
 

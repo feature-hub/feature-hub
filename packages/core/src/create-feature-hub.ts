@@ -1,12 +1,7 @@
-import {
-  ExternalsValidator,
-  ExternalsValidatorLike,
-  ProvidedExternals
-} from './externals-validator';
+import {ExternalsValidator, ProvidedExternals} from './externals-validator';
 import {
   FeatureAppConfigs,
   FeatureAppManager,
-  FeatureAppManagerLike,
   ModuleLoader
 } from './feature-app-manager';
 import {
@@ -15,7 +10,6 @@ import {
   FeatureServiceConsumerDependencies,
   FeatureServiceProviderDefinition,
   FeatureServiceRegistry,
-  FeatureServiceRegistryLike,
   FeatureServices,
   SharedFeatureService
 } from './feature-service-registry';
@@ -24,12 +18,12 @@ export interface FeatureHub {
   /**
    * The {@link FeatureAppManager} singleton instance.
    */
-  readonly featureAppManager: FeatureAppManagerLike;
+  readonly featureAppManager: FeatureAppManager;
 
   /**
    * The {@link FeatureServiceRegistry} singleton instance.
    */
-  readonly featureServiceRegistry: FeatureServiceRegistryLike;
+  readonly featureServiceRegistry: FeatureServiceRegistry;
 
   /**
    * The Feature Services that are bound to the integrator based on the {@link
@@ -102,7 +96,7 @@ export function createFeatureHub(
     moduleLoader
   } = options;
 
-  let externalsValidator: ExternalsValidatorLike | undefined;
+  let externalsValidator: ExternalsValidator | undefined;
 
   if (providedExternals) {
     externalsValidator = new ExternalsValidator(providedExternals);

@@ -1,12 +1,12 @@
 import {AsyncSsrManagerV0} from '@feature-hub/async-ssr-manager';
-import {FeatureAppManagerLike} from '@feature-hub/core';
+import {FeatureAppManager} from '@feature-hub/core';
 import * as React from 'react';
 
 export interface FeatureHubContextValue {
   /**
    * The `FeatureAppManager` singleton instance.
    */
-  featureAppManager: FeatureAppManagerLike;
+  featureAppManager: FeatureAppManager;
 
   /**
    * The Async SSR Manager Feature Service that is bound to the integrator. It

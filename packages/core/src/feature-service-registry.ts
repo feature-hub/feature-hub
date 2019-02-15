@@ -1,5 +1,5 @@
 import {satisfies, valid} from 'semver';
-import {ExternalsValidatorLike, RequiredExternals} from './externals-validator';
+import {ExternalsValidator, RequiredExternals} from './externals-validator';
 import {createUid} from './internal/create-uid';
 import * as Messages from './internal/feature-service-registry-messages';
 import {
@@ -89,19 +89,10 @@ export interface FeatureServiceConfigs {
   readonly [featureServiceId: string]: unknown;
 }
 
-export interface FeatureServiceRegistryLike {
-  registerFeatureServices(
-    providerDefinitions: FeatureServiceProviderDefinition<
-      SharedFeatureService
-    >[],
-    consumerId: string
-  ): void;
-
-  bindFeatureServices(
-    consumerDefinition: FeatureServiceConsumerDefinition,
-    consumerIdSpecifier?: string
-  ): FeatureServicesBinding;
-}
+/**
+ * @deprecated Use {@link FeatureServiceRegistry} instead.
+ */
+export type FeatureServiceRegistryLike = FeatureServiceRegistry;
 
 export interface FeatureServiceRegistryOptions {
   /**
@@ -122,7 +113,7 @@ export interface FeatureServiceRegistryOptions {
    * thus enables early feedback as to whether a Feature Service is compatible
    * with the integration environment.
    */
-  readonly externalsValidator?: ExternalsValidatorLike;
+  readonly externalsValidator?: ExternalsValidator;
 }
 
 type ProviderId = string;
@@ -205,7 +196,7 @@ function unbindBinding(
  * The FeatureServiceRegistry provides Feature Services to dependent consumers.
  * The integrator should instantiate a singleton instance of the registry.
  */
-export class FeatureServiceRegistry implements FeatureServiceRegistryLike {
+export class FeatureServiceRegistry {
   private readonly sharedFeatureServices = new Map<
     ProviderId,
     SharedFeatureService
