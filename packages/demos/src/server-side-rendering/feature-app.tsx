@@ -33,7 +33,7 @@ const featureAppDefinition: FeatureAppDefinition<
 
   optionalDependencies: {
     featureServices: {
-      's2:async-ssr-manager': '^0.1.0'
+      's2:async-ssr-manager': '^1.0.0'
     }
   },
 
