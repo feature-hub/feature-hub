@@ -30,8 +30,8 @@ export default async function renderApp({
         serializedStateManagerDefinition
       ],
       featureServiceDependencies: {
-        [asyncSsrManagerDefinition.id]: '^0.1.0',
-        [serializedStateManagerDefinition.id]: '^0.1.0'
+        [asyncSsrManagerDefinition.id]: '^1.0.0',
+        [serializedStateManagerDefinition.id]: '^1.0.0'
       }
     }
   );

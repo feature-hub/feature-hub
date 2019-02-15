@@ -26,12 +26,12 @@ describe('serializedStateManagerDefinition', () => {
   });
 
   describe('#create', () => {
-    it('creates a shared Feature Service containing version 0.1', () => {
+    it('creates a shared Feature Service containing version 1.0.0', () => {
       const sharedSerializedStateManager = serializedStateManagerDefinition.create(
         mockEnv
       );
 
-      expect(sharedSerializedStateManager['0.1.0']).toBeDefined();
+      expect(sharedSerializedStateManager['1.0.0']).toBeDefined();
     });
   });
 
@@ -43,7 +43,7 @@ describe('serializedStateManagerDefinition', () => {
     beforeEach(() => {
       const serializedStateManagerBinder = serializedStateManagerDefinition.create(
         mockEnv
-      )['0.1.0'];
+      )['1.0.0'];
 
       integratorSerializedStateManager = serializedStateManagerBinder(
         'test:integrator'

@@ -40,7 +40,7 @@ function getUrlsForHydrationFromDom(): string[] {
       providedExternals: {react: '16.7.0'},
       featureServiceDefinitions: [serializedStateManagerDefinition],
       featureServiceDependencies: {
-        [serializedStateManagerDefinition.id]: '^0.1.0'
+        [serializedStateManagerDefinition.id]: '^1.0.0'
       }
     }
   );
