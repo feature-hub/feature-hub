@@ -4,24 +4,23 @@ import {Stubbed, stubMethods} from 'jest-stub-methods';
 import {
   FeatureAppDefinition,
   FeatureAppManager,
-  FeatureAppManagerLike,
-  FeatureServiceRegistryLike,
+  FeatureServiceRegistry,
   FeatureServicesBinding,
   ModuleLoader
 } from '..';
-import {ExternalsValidatorLike} from '../externals-validator';
+import {ExternalsValidator} from '../externals-validator';
 import {FeatureAppModule} from '../internal/is-feature-app-module';
 
-interface MockFeatureServiceRegistry extends FeatureServiceRegistryLike {
+interface MockFeatureServiceRegistry extends FeatureServiceRegistry {
   registerFeatureServices: jest.Mock;
   bindFeatureServices: jest.Mock;
 }
 
 describe('FeatureAppManager', () => {
-  let featureAppManager: FeatureAppManagerLike;
+  let featureAppManager: FeatureAppManager;
   let mockFeatureServiceRegistry: MockFeatureServiceRegistry;
   let mockFeatureServicesBinding: FeatureServicesBinding;
-  let mockExternalsValidator: ExternalsValidatorLike;
+  let mockExternalsValidator: ExternalsValidator;
   let mockFeatureServicesBindingUnbind: () => void;
   let mockModuleLoader: ModuleLoader;
   let mockFeatureAppDefinition: FeatureAppDefinition<unknown>;
@@ -43,14 +42,16 @@ describe('FeatureAppManager', () => {
     mockFeatureServiceRegistry = {
       registerFeatureServices: jest.fn(),
       bindFeatureServices: jest.fn(() => mockFeatureServicesBinding)
-    };
+    } as MockFeatureServiceRegistry;
 
     mockFeatureApp = {};
     mockFeatureAppCreate = jest.fn(() => mockFeatureApp);
     mockFeatureAppDefinition = {create: mockFeatureAppCreate, id: 'testId'};
     mockFeatureAppModule = {default: mockFeatureAppDefinition};
     mockModuleLoader = jest.fn(async () => mockFeatureAppModule);
-    mockExternalsValidator = {validate: jest.fn()};
+    mockExternalsValidator = ({validate: jest.fn()} as Partial<
+      ExternalsValidator
+    >) as ExternalsValidator;
 
     featureAppManager = new FeatureAppManager(mockFeatureServiceRegistry);
   });
