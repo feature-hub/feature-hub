@@ -28,7 +28,7 @@ const myFeatureServiceDefinition = {
 
   dependencies: {
     featureServices: {
-      's2:serialized-state-manager': '^0.1.0'
+      's2:serialized-state-manager': '^1.0.0'
     }
   },
 
@@ -172,7 +172,7 @@ const myFeatureAppDefinition = {
 
   optionalDependencies: {
     featureServices: {
-      's2:async-ssr-manager': '^0.1.0'
+      's2:async-ssr-manager': '^1.0.0'
     }
   },
 
@@ -226,7 +226,7 @@ const myFeatureServiceDefinition = {
 
   optionalDependencies: {
     featureServices: {
-      's2:async-ssr-manager': '^0.1.0'
+      's2:async-ssr-manager': '^1.0.0'
     }
   },
 

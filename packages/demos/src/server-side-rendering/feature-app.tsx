@@ -27,7 +27,7 @@ const featureAppDefinition: FeatureAppDefinition<
       react: '^16.7.0'
     },
     featureServices: {
-      's2:serialized-state-manager': '^0.1.0'
+      's2:serialized-state-manager': '^1.0.0'
     }
   },
 

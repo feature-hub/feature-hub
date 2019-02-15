@@ -47,7 +47,7 @@ export interface SerializedStateManagerV0 {
 }
 
 export interface SharedSerializedStateManager extends SharedFeatureService {
-  readonly '0.1.0': FeatureServiceBinder<SerializedStateManagerV0>;
+  readonly '1.0.0': FeatureServiceBinder<SerializedStateManagerV0>;
 }
 
 /**
@@ -63,7 +63,7 @@ export const serializedStateManagerDefinition: FeatureServiceProviderDefinition<
     const clientSideStateManager = new ClientSideStateManager();
 
     return {
-      '0.1.0': consumerUid => ({
+      '1.0.0': consumerUid => ({
         featureService: new SerializedStateManager(
           consumerUid,
           serverSideStateManager,
