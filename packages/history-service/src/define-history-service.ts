@@ -34,7 +34,7 @@ export function defineHistoryService(
   return {
     id: 's2:history',
     optionalDependencies: {
-      featureServices: {'s2:server-request': '^0.1.0'}
+      featureServices: {'s2:server-request': '^1.0.0'}
     },
 
     create: env => {

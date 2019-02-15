@@ -33,7 +33,7 @@ describe('defineServerRequest', () => {
     it('creates a shared Feature Service containing version 0.1', () => {
       const sharedServerRequest = serverRequestDefinition.create(mockEnv);
 
-      expect(sharedServerRequest['0.1.0']).toBeDefined();
+      expect(sharedServerRequest['1.0.0']).toBeDefined();
     });
   });
 
@@ -41,7 +41,7 @@ describe('defineServerRequest', () => {
     let serverRequestBinder: FeatureServiceBinder<ServerRequestV0>;
 
     beforeEach(() => {
-      serverRequestBinder = serverRequestDefinition.create(mockEnv)['0.1.0'];
+      serverRequestBinder = serverRequestDefinition.create(mockEnv)['1.0.0'];
     });
 
     it('equals the defined serverRequest', () => {
