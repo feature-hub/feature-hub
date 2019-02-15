@@ -52,7 +52,7 @@ describe('defineHistoryService', () => {
         featureServices: {}
       });
 
-      expect(sharedHistoryService['0.1.0']).toBeDefined();
+      expect(sharedHistoryService['1.0.0']).toBeDefined();
     });
   });
 
@@ -86,7 +86,7 @@ describe('defineHistoryService', () => {
           testRootLocationTransformer
         ).create(mockEnv);
 
-        return sharedHistoryService['0.1.0'];
+        return sharedHistoryService['1.0.0'];
       };
     });
 

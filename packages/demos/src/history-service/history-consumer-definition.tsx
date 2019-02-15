@@ -16,7 +16,7 @@ export const historyConsumerDefinition: FeatureAppDefinition<
 
   dependencies: {
     featureServices: {
-      's2:history': '^0.1.0'
+      's2:history': '^1.0.0'
     }
   },
 

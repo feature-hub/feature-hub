@@ -18,7 +18,7 @@ export interface HistoryServiceV0 {
 }
 
 export interface SharedHistoryService extends SharedFeatureService {
-  readonly '0.1.0': FeatureServiceBinder<HistoryServiceV0>;
+  readonly '1.0.0': FeatureServiceBinder<HistoryServiceV0>;
 }
 
 export interface HistoryServiceDependencies extends FeatureServices {
@@ -46,7 +46,7 @@ export function defineHistoryService(
       );
 
       return {
-        '0.1.0': createHistoryServiceV0Binder(historyMultiplexers)
+        '1.0.0': createHistoryServiceV0Binder(historyMultiplexers)
       };
     }
   };
