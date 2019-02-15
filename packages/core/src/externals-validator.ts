@@ -15,15 +15,16 @@ export interface RequiredExternals {
   readonly [externalName: string]: string;
 }
 
-export interface ExternalsValidatorLike {
-  validate(requiredExternals: RequiredExternals): void;
-}
+/**
+ * @deprecated Use {@link ExternalsValidator} instead.
+ */
+export type ExternalsValidatorLike = ExternalsValidator;
 
 /**
  * The `ExternalsValidator` validates required externals against the provided
  * set of externals it is initilized with.
  */
-export class ExternalsValidator implements ExternalsValidatorLike {
+export class ExternalsValidator {
   /**
    * @throws Throws an error if the provided externals contain an invalid
    * version.

@@ -6,7 +6,7 @@
 
 import {
   FeatureAppDefinition,
-  FeatureAppManagerLike,
+  FeatureAppManager,
   FeatureAppScope
 } from '@feature-hub/core';
 import {Stubbed, stubMethods} from 'jest-stub-methods';
@@ -15,7 +15,7 @@ import TestRenderer from 'react-test-renderer';
 import {FeatureAppContainer, FeatureHubContextProvider} from '..';
 
 describe('FeatureAppContainer (on Node.js)', () => {
-  let mockFeatureAppManager: FeatureAppManagerLike;
+  let mockFeatureAppManager: FeatureAppManager;
   let mockGetFeatureAppScope: jest.Mock;
   let mockFeatureAppDefinition: FeatureAppDefinition<unknown>;
   let mockFeatureAppScope: FeatureAppScope<unknown>;
@@ -26,11 +26,11 @@ describe('FeatureAppContainer (on Node.js)', () => {
     mockFeatureAppScope = {featureApp: {}, destroy: jest.fn()};
     mockGetFeatureAppScope = jest.fn(() => mockFeatureAppScope);
 
-    mockFeatureAppManager = {
+    mockFeatureAppManager = ({
       getAsyncFeatureAppDefinition: jest.fn(),
       getFeatureAppScope: mockGetFeatureAppScope,
       preloadFeatureApp: jest.fn()
-    };
+    } as Partial<FeatureAppManager>) as FeatureAppManager;
 
     stubbedConsole = stubMethods(console);
   });

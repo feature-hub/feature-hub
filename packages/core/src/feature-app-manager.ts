@@ -1,9 +1,9 @@
 import {AsyncValue} from './async-value';
-import {ExternalsValidatorLike} from './externals-validator';
+import {ExternalsValidator} from './externals-validator';
 import {
   FeatureServiceConsumerDefinition,
   FeatureServiceProviderDefinition,
-  FeatureServiceRegistryLike,
+  FeatureServiceRegistry,
   FeatureServices,
   SharedFeatureService
 } from './feature-service-registry';
@@ -80,18 +80,10 @@ export interface FeatureAppScopeOptions {
   readonly instanceConfig?: unknown;
 }
 
-export interface FeatureAppManagerLike {
-  getAsyncFeatureAppDefinition(
-    url: string
-  ): AsyncValue<FeatureAppDefinition<unknown>>;
-
-  getFeatureAppScope<TFeatureApp>(
-    featureAppDefinition: FeatureAppDefinition<TFeatureApp>,
-    options?: FeatureAppScopeOptions
-  ): FeatureAppScope<TFeatureApp>;
-
-  preloadFeatureApp(url: string): Promise<void>;
-}
+/**
+ * @deprecated Use {@link FeatureAppManager} instead.
+ */
+export type FeatureAppManagerLike = FeatureAppManager;
 
 export interface FeatureAppManagerOptions {
   /**
@@ -115,7 +107,7 @@ export interface FeatureAppManagerOptions {
    * incompatible external dependencies, and thus enables early feedback as to
    * whether a Feature App is compatible with the integration environment.
    */
-  readonly externalsValidator?: ExternalsValidatorLike;
+  readonly externalsValidator?: ExternalsValidator;
 }
 
 type FeatureAppModuleUrl = string;
@@ -124,7 +116,7 @@ type FeatureAppUid = string;
 /**
  * The `FeatureAppManager` manages the lifecycle of Feature Apps.
  */
-export class FeatureAppManager implements FeatureAppManagerLike {
+export class FeatureAppManager {
   private readonly asyncFeatureAppDefinitions = new Map<
     FeatureAppModuleUrl,
     AsyncValue<FeatureAppDefinition<unknown>>
@@ -140,7 +132,7 @@ export class FeatureAppManager implements FeatureAppManagerLike {
   >();
 
   public constructor(
-    private readonly featureServiceRegistry: FeatureServiceRegistryLike,
+    private readonly featureServiceRegistry: FeatureServiceRegistry,
     private readonly options: FeatureAppManagerOptions = {}
   ) {}
 
