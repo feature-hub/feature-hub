@@ -8,7 +8,7 @@ import {AsyncSsrManagerV0} from '@feature-hub/async-ssr-manager';
 import {
   AsyncValue,
   FeatureAppDefinition,
-  FeatureAppManagerLike
+  FeatureAppManager
 } from '@feature-hub/core';
 import {Stubbed, stubMethods} from 'jest-stub-methods';
 import * as React from 'react';
@@ -24,7 +24,7 @@ jest.mock('../feature-app-container', () => ({
 }));
 
 describe('FeatureAppLoader (on Node.js)', () => {
-  let mockFeatureAppManager: FeatureAppManagerLike;
+  let mockFeatureAppManager: FeatureAppManager;
   let mockGetAsyncFeatureAppDefinition: jest.Mock;
   let mockAsyncFeatureAppDefinition: AsyncValue<FeatureAppDefinition<unknown>>;
   let mockAsyncSsrManager: MockAsyncSsrManager;
@@ -40,11 +40,11 @@ describe('FeatureAppLoader (on Node.js)', () => {
       () => mockAsyncFeatureAppDefinition
     );
 
-    mockFeatureAppManager = {
+    mockFeatureAppManager = ({
       getAsyncFeatureAppDefinition: mockGetAsyncFeatureAppDefinition,
       getFeatureAppScope: jest.fn(),
       preloadFeatureApp: jest.fn()
-    };
+    } as Partial<FeatureAppManager>) as FeatureAppManager;
 
     mockAsyncSsrManager = {
       scheduleRerender: jest.fn(),
