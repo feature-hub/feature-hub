@@ -1,6 +1,6 @@
 {
   "name": "@feature-hub/core",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Create scalable web applications using micro frontends.",
   "keywords": [
     "feature-app",
