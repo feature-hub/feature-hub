@@ -30,7 +30,7 @@ describe('defineServerRequest', () => {
   });
 
   describe('#create', () => {
-    it('creates a shared Feature Service containing version 0.1', () => {
+    it('creates a shared Feature Service containing version 1.0.0', () => {
       const sharedServerRequest = serverRequestDefinition.create(mockEnv);
 
       expect(sharedServerRequest['1.0.0']).toBeDefined();

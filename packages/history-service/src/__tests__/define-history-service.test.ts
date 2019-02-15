@@ -46,7 +46,7 @@ describe('defineHistoryService', () => {
   });
 
   describe('#create', () => {
-    it('creates a shared Feature Service containing version 0.1', () => {
+    it('creates a shared Feature Service containing version 1.0.0', () => {
       const sharedHistoryService = historyServiceDefinition.create({
         config: undefined,
         featureServices: {}
