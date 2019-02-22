@@ -1,9 +1,21 @@
+// tslint:disable:no-implicit-dependencies
+
+import {Stubbed, stubMethods} from 'jest-stub-methods';
 import {FeatureHubOptions, createFeatureHub} from '../create-feature-hub';
 import {FeatureAppDefinition, FeatureAppManager} from '../feature-app-manager';
 import {FeatureServiceRegistry} from '../feature-service-registry';
 
 describe('createFeatureHub()', () => {
   let featureHubOptions: FeatureHubOptions;
+  let stubbedConsole: Stubbed<Console>;
+
+  beforeAll(() => {
+    stubbedConsole = stubMethods(console);
+  });
+
+  afterAll(() => {
+    stubbedConsole.restore();
+  });
 
   describe('without any options', () => {
     it('creates a Feature Hub that contains a Feature App manager', () => {
