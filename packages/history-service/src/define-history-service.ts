@@ -4,13 +4,18 @@ import {
   FeatureServices,
   SharedFeatureService
 } from '@feature-hub/core';
-import {ServerRequestV0} from '@feature-hub/server-request';
+import {ServerRequestV1} from '@feature-hub/server-request';
 import * as history from 'history';
 import {RootLocationTransformer} from './create-root-location-transformer';
 import {createHistoryMultiplexers} from './internal/create-history-multiplexers';
-import {createHistoryServiceV0Binder} from './internal/create-history-service-v0-binder';
+import {createHistoryServiceV1Binder} from './internal/create-history-service-v1-binder';
 
-export interface HistoryServiceV0 {
+/**
+ * @deprecated Use {@link HistoryServiceV1} instead.
+ */
+export type HistoryServiceV0 = HistoryServiceV1;
+
+export interface HistoryServiceV1 {
   staticRootLocation: history.Location;
 
   createBrowserHistory(): history.History;
@@ -18,11 +23,11 @@ export interface HistoryServiceV0 {
 }
 
 export interface SharedHistoryService extends SharedFeatureService {
-  readonly '1.0.0': FeatureServiceBinder<HistoryServiceV0>;
+  readonly '1.0.0': FeatureServiceBinder<HistoryServiceV1>;
 }
 
 export interface HistoryServiceDependencies extends FeatureServices {
-  's2:server-request'?: ServerRequestV0;
+  's2:server-request'?: ServerRequestV1;
 }
 
 export function defineHistoryService(
@@ -46,7 +51,7 @@ export function defineHistoryService(
       );
 
       return {
-        '1.0.0': createHistoryServiceV0Binder(historyMultiplexers)
+        '1.0.0': createHistoryServiceV1Binder(historyMultiplexers)
       };
     }
   };

@@ -11,7 +11,7 @@ import {History} from 'history';
 import {Stubbed, stubMethods} from 'jest-stub-methods';
 import {
   HistoryServiceDependencies,
-  HistoryServiceV0,
+  HistoryServiceV1,
   SharedHistoryService,
   defineHistoryService
 } from '..';
@@ -56,9 +56,9 @@ describe('defineHistoryService', () => {
     });
   });
 
-  describe('HistoryServiceV0', () => {
+  describe('HistoryServiceV1', () => {
     let createHistoryServiceBinder: () => FeatureServiceBinder<
-      HistoryServiceV0
+      HistoryServiceV1
     >;
 
     let pushStateSpy: jest.SpyInstance;
@@ -105,8 +105,8 @@ describe('defineHistoryService', () => {
     });
 
     describe('#createBrowserHistory()', () => {
-      let historyBinding1: FeatureServiceBinding<HistoryServiceV0>;
-      let historyBinding2: FeatureServiceBinding<HistoryServiceV0>;
+      let historyBinding1: FeatureServiceBinding<HistoryServiceV1>;
+      let historyBinding2: FeatureServiceBinding<HistoryServiceV1>;
       let history1: History;
       let history2: History;
 

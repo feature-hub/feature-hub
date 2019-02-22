@@ -4,7 +4,7 @@ import {FeatureAppEnvironment, FeatureServiceBinder} from '@feature-hub/core';
 import {stubMethods} from 'jest-stub-methods';
 import {
   AsyncSsrManagerConfig,
-  AsyncSsrManagerV0,
+  AsyncSsrManagerV1,
   asyncSsrManagerDefinition
 } from '..';
 import {useFakeTimers} from './use-fake-timers';
@@ -61,8 +61,8 @@ describe('asyncSsrManagerDefinition', () => {
     }
   });
 
-  describe('AsyncSsrManagerV0', () => {
-    let asyncSsrManagerBinder: FeatureServiceBinder<AsyncSsrManagerV0>;
+  describe('AsyncSsrManagerV1', () => {
+    let asyncSsrManagerBinder: FeatureServiceBinder<AsyncSsrManagerV1>;
 
     beforeEach(() => {
       asyncSsrManagerBinder = asyncSsrManagerDefinition.create(mockEnv)[

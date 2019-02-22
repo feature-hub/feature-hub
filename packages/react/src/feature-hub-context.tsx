@@ -1,4 +1,4 @@
-import {AsyncSsrManagerV0} from '@feature-hub/async-ssr-manager';
+import {AsyncSsrManagerV1} from '@feature-hub/async-ssr-manager';
 import {FeatureAppManager} from '@feature-hub/core';
 import * as React from 'react';
 
@@ -12,7 +12,7 @@ export interface FeatureHubContextValue {
    * The Async SSR Manager Feature Service that is bound to the integrator. It
    * is only provided on the server.
    */
-  asyncSsrManager?: AsyncSsrManagerV0;
+  asyncSsrManager?: AsyncSsrManagerV1;
 
   /**
    * A callback that the integrator provides on the server, mainly for the

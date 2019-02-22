@@ -1,5 +1,5 @@
 import {
-  AsyncSsrManagerV0,
+  AsyncSsrManagerV1,
   asyncSsrManagerDefinition
 } from '@feature-hub/async-ssr-manager';
 import {createFeatureHub} from '@feature-hub/core';
@@ -9,7 +9,7 @@ import {
   FeatureHubContextValue
 } from '@feature-hub/react';
 import {
-  SerializedStateManagerV0,
+  SerializedStateManagerV1,
   serializedStateManagerDefinition
 } from '@feature-hub/serialized-state-manager';
 import * as React from 'react';
@@ -38,7 +38,7 @@ export default async function renderApp({
 
   const asyncSsrManager = featureServices[
     asyncSsrManagerDefinition.id
-  ] as AsyncSsrManagerV0;
+  ] as AsyncSsrManagerV1;
 
   const urlsForHydration = new Set<string>();
 
@@ -61,7 +61,7 @@ export default async function renderApp({
 
   const serializedStateManager = featureServices[
     serializedStateManagerDefinition.id
-  ] as SerializedStateManagerV0;
+  ] as SerializedStateManagerV1;
 
   const serializedStates = serializedStateManager.serializeStates();
 

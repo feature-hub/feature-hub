@@ -1,4 +1,4 @@
-import {AsyncSsrManagerV0} from '..';
+import {AsyncSsrManagerV1} from '..';
 import {setTimeoutAsync} from './set-timeout-async';
 
 async function renderingTimeout(timeout: number): Promise<never> {
@@ -7,7 +7,7 @@ async function renderingTimeout(timeout: number): Promise<never> {
   throw Error(`Got rendering timeout after ${timeout} ms.`);
 }
 
-export class AsyncSsrManager implements AsyncSsrManagerV0 {
+export class AsyncSsrManager implements AsyncSsrManagerV1 {
   private readonly asyncOperations = new Set<Promise<unknown>>();
 
   public constructor(private readonly timeout?: number) {}

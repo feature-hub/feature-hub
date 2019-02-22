@@ -2,7 +2,7 @@ import {createFeatureHub} from '@feature-hub/core';
 import {defineExternals, loadAmdModule} from '@feature-hub/module-loader-amd';
 import {FeatureHubContextProvider} from '@feature-hub/react';
 import {
-  SerializedStateManagerV0,
+  SerializedStateManagerV1,
   serializedStateManagerDefinition
 } from '@feature-hub/serialized-state-manager';
 import * as React from 'react';
@@ -47,7 +47,7 @@ function getUrlsForHydrationFromDom(): string[] {
 
   const serializedStateManager = featureServices[
     serializedStateManagerDefinition.id
-  ] as SerializedStateManagerV0;
+  ] as SerializedStateManagerV1;
 
   const serializedStates = getSerializedStatesFromDom();
 

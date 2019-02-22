@@ -1,4 +1,4 @@
-import {ServerRequestV0} from '@feature-hub/server-request';
+import {ServerRequestV1} from '@feature-hub/server-request';
 import * as history from 'history';
 import {RootHistory, RootLocation} from './history-multiplexer';
 
@@ -6,7 +6,7 @@ export class StaticRootHistory implements RootHistory {
   public readonly length = 1;
   public location: history.Location;
 
-  public constructor(serverRequest: ServerRequestV0) {
+  public constructor(serverRequest: ServerRequestV1) {
     this.location = history.createLocation(serverRequest.url);
   }
 

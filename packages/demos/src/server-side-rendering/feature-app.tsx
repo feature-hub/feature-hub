@@ -1,13 +1,13 @@
 import {Card, Label} from '@blueprintjs/core';
-import {AsyncSsrManagerV0} from '@feature-hub/async-ssr-manager';
+import {AsyncSsrManagerV1} from '@feature-hub/async-ssr-manager';
 import {FeatureAppDefinition} from '@feature-hub/core';
 import {ReactFeatureApp} from '@feature-hub/react';
-import {SerializedStateManagerV0} from '@feature-hub/serialized-state-manager';
+import {SerializedStateManagerV1} from '@feature-hub/serialized-state-manager';
 import * as React from 'react';
 
 interface Dependencies {
-  's2:async-ssr-manager': AsyncSsrManagerV0 | undefined;
-  's2:serialized-state-manager': SerializedStateManagerV0;
+  's2:async-ssr-manager': AsyncSsrManagerV1 | undefined;
+  's2:serialized-state-manager': SerializedStateManagerV1;
 }
 
 async function fetchSubject(): Promise<string> {
