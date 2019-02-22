@@ -23,6 +23,7 @@
     "lib",
     "!__tests__"
   ],
+  "sideEffects": false,
   "main": "lib/cjs/index.js",
   "module": "lib/esm/index.js",
   "typings": "lib/cjs/index.d.ts",
