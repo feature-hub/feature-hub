@@ -63,6 +63,7 @@ There are three different personas in a Feature Hub environment:
     Feature App, other Feature Services, or even the integrator.
 
 [core-api]: /@feature-hub/core/
+[dom-api]: /@feature-hub/dom/
 [dom-feature-app]: /docs/guides/writing-a-feature-app#dom-feature-app
 [our-requirements-for-micro-frontends]:
   /docs/getting-started/motivation#our-requirements-for-micro-frontends

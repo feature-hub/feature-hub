@@ -6,6 +6,8 @@ module.exports = {
   collectCoverageFrom: [
     '**/packages/*/src/**/*.{ts,tsx}',
     '!**/packages/demos/src/**/*.{ts,tsx}',
+    // Covered by the integration test 'integrator-dom'
+    '!**/packages/dom/src/**/*.{ts,tsx}',
     // Covered by the integration test 'module-loader-amd'
     '!**/packages/module-loader-amd/src/index.ts'
   ],

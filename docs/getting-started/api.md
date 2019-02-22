@@ -8,6 +8,10 @@ sidebar_label: API
 
 Create scalable web applications using micro frontends.
 
+## [`@feature-hub/dom`](/@feature-hub/dom)
+
+A library for building a Feature Hub integrator using Web Components.
+
 ## [`@feature-hub/react`](/@feature-hub/react)
 
 A library for building a Feature Hub integrator with React.

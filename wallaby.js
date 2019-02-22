@@ -16,7 +16,6 @@ function setup({projectCacheDir, testFramework}) {
 module.exports = wallaby => ({
   files: [
     'jest.config.js',
-    'scripts/setup-test-framework.js',
     'packages/*/src/**/*.{ts,tsx,snap}',
     '!packages/*/src/**/*.test.{ts,tsx}'
   ],

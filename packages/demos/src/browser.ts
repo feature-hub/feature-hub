@@ -1,3 +1,4 @@
+import {Page} from 'puppeteer';
 import {UrlWithStringQuery, parse} from 'url';
 
 export class Browser {
@@ -35,5 +36,9 @@ export class Browser {
     timeout: number = this.defaultNavigationTimeout
   ): Promise<void> {
     await Promise.all([page.waitForNavigation({timeout}), cause]);
+  }
+
+  public async newPage(): Promise<Page> {
+    return browser.newPage();
   }
 }
