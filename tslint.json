@@ -5,6 +5,7 @@
   },
   "rules": {
     "await-promise": [true, "PromiseLike"],
-    "no-default-export": false
+    "no-default-export": false,
+    "no-submodule-imports": [true, "lit-html", "react-dom", "systemjs"]
   }
 }
