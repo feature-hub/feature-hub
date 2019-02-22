@@ -1,12 +1,12 @@
 import {createFeatureHub} from '@feature-hub/core';
-import {createFeatureAppLoader} from '@feature-hub/dom';
+import {defineFeatureAppLoader} from '@feature-hub/dom';
 import {loadAmdModule} from '@feature-hub/module-loader-amd';
 
 const {featureAppManager} = createFeatureHub('test:integrator', {
   moduleLoader: loadAmdModule
 });
 
-createFeatureAppLoader(featureAppManager);
+defineFeatureAppLoader(featureAppManager);
 
 const app = document.createElement('div');
 

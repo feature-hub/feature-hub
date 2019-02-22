@@ -7,11 +7,14 @@ import {AddressInfo} from 'net';
 import {Page} from 'puppeteer';
 import {Browser} from '../browser';
 import {startServer} from '../start-server';
+import {stubConsole} from '../stub-console';
 import webpackConfigs from './webpack-config';
 
 jest.setTimeout(60000);
 
-describe('integration test: "dom"', () => {
+stubConsole();
+
+describe('integration test: "dom integrator"', () => {
   const browser = new Browser(5000);
 
   let server: Server;

@@ -18,9 +18,9 @@ export interface DomFeatureApp {
   attachTo(container: Element): void;
 }
 
-export function createFeatureAppContainer(
-  manager: FeatureAppManager
-): typeof HTMLElement {
+export function defineFeatureAppContainer(
+  featureAppManager: FeatureAppManager
+): void {
   class FeatureAppContainer extends LitElement {
     @property({type: Object})
     public featureAppDefinition?: FeatureAppDefinition<DomFeatureApp>;
@@ -31,9 +31,32 @@ export function createFeatureAppContainer(
     private featureAppScope: FeatureAppScope<DomFeatureApp> | undefined;
 
     public render(): TemplateResult {
-      return html`
-        ${this.getFeatureApp()}
-      `;
+      try {
+        const element = document.createElement('div');
+
+        if (!this.featureAppDefinition) {
+          return html`
+            ${element}
+          `;
+        }
+
+        this.featureAppScope = featureAppManager.getFeatureAppScope(
+          this.featureAppDefinition,
+          {idSpecifier: this.idSpecifier}
+        );
+
+        this.featureAppScope.featureApp.attachTo(element);
+
+        return html`
+          ${element}
+        `;
+      } catch (error) {
+        console.error(error);
+
+        return html`
+          <slot name="error"></slot>
+        `;
+      }
     }
 
     public disconnectedCallback(): void {
@@ -43,34 +66,7 @@ export function createFeatureAppContainer(
 
       super.disconnectedCallback();
     }
-
-    private getFeatureApp(): HTMLElement | TemplateResult {
-      try {
-        const element = document.createElement('div');
-
-        if (!this.featureAppDefinition) {
-          return element;
-        }
-
-        this.featureAppScope = manager.getFeatureAppScope(
-          this.featureAppDefinition,
-          {idSpecifier: this.idSpecifier}
-        );
-
-        this.featureAppScope.featureApp.attachTo(element);
-
-        return element;
-      } catch (error) {
-        console.error(error);
-
-        return html`
-          <slot name="error"></slot>
-        `;
-      }
-    }
   }
 
   customElements.define('feature-app-container', FeatureAppContainer);
-
-  return FeatureAppContainer;
 }

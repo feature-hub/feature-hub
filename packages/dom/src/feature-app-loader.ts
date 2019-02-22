@@ -2,16 +2,16 @@ import {FeatureAppManager} from '@feature-hub/core';
 import {LitElement, html, property} from 'lit-element';
 import {TemplateResult} from 'lit-html';
 import {until} from 'lit-html/directives/until';
-import {createFeatureAppContainer} from './feature-app-container';
+import {defineFeatureAppContainer} from './feature-app-container';
 
-export function createFeatureAppLoader(
-  manager: FeatureAppManager
-): typeof HTMLElement {
-  createFeatureAppContainer(manager);
+export function defineFeatureAppLoader(
+  featureAppManager: FeatureAppManager
+): void {
+  defineFeatureAppContainer(featureAppManager);
 
   class FeatureAppLoader extends LitElement {
     @property({type: String})
-    public src = '';
+    public src!: string;
 
     @property({type: String})
     public idSpecifier: string | undefined;
@@ -29,8 +29,13 @@ export function createFeatureAppLoader(
 
     private async loadFeatureApp(): Promise<TemplateResult> {
       try {
-        const definition = await manager.getAsyncFeatureAppDefinition(this.src)
-          .promise;
+        if (!this.src) {
+          throw new Error('No src provided.');
+        }
+
+        const definition = await featureAppManager.getAsyncFeatureAppDefinition(
+          this.src
+        ).promise;
 
         return html`
           <feature-app-container
@@ -51,6 +56,4 @@ export function createFeatureAppLoader(
   }
 
   customElements.define('feature-app-loader', FeatureAppLoader);
-
-  return FeatureAppLoader;
 }

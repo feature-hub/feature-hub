@@ -6,10 +6,10 @@ module.exports = {
   collectCoverageFrom: [
     '**/packages/*/src/**/*.{ts,tsx}',
     '!**/packages/demos/src/**/*.{ts,tsx}',
-    // Covered by the integration test 'module-loader-amd'
-    '!**/packages/module-loader-amd/src/index.ts',
     // Covered by the integration test 'integrator-dom'
-    '!**/packages/dom/**/*'
+    '!**/packages/dom/src/**/*.{ts,tsx}',
+    // Covered by the integration test 'module-loader-amd'
+    '!**/packages/module-loader-amd/src/index.ts'
   ],
   coverageThreshold: {
     global: {branches: 100, functions: 100, lines: 100, statements: 100}
@@ -23,5 +23,6 @@ module.exports = {
   modulePathIgnorePatterns: ['/lib'],
   setupFilesAfterEnv: ['expect-puppeteer'],
   testMatch: ['<rootDir>/packages/*/src/**/*.test.{ts,tsx}'],
-  testURL: 'http://example.com'
+  testURL: 'http://example.com',
+  transformIgnorePatterns: ['node_modules/(?!lit-(html|element))']
 };
