@@ -29,6 +29,8 @@ by its terms.
 ### Development Scripts
 
 - `yarn watch:test` — Watches all tests.
+  - `yarn watch:test:unit` — Watches only unit tests.
+  - `yarn watch:test:integration` — Watches only integration tests.
 - `yarn watch:compile` — Watches all sources.
 - `yarn watch:demo <demo-name>` — Watches the given
   [demo][demos-package-getting-started].
