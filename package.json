@@ -23,6 +23,8 @@
     "watch:compile": "lerna exec --parallel -- tsc --project tsconfig.cjs.json --watch --preserveWatchOutput --pretty",
     "watch:demo": "lerna exec --scope @feature-hub/demos -- ts-node -r tsconfig-paths/register src/watch-demo.ts",
     "watch:test": "yarn test --watch --no-coverage --no-verbose",
+    "watch:test:integration": "yarn watch:test --testPathPattern packages/demos",
+    "watch:test:unit": "yarn watch:test --testPathIgnorePatterns packages/demos",
     "watch:website": "lerna exec --scope @feature-hub/website -- docusaurus-start"
   },
   "devDependencies": {
