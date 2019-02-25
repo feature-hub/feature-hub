@@ -1,8 +1,9 @@
 import {Card, Label} from '@blueprintjs/core';
+import {FeatureAppDefinition} from '@feature-hub/core';
 import {ReactFeatureApp} from '@feature-hub/react';
 import * as React from 'react';
 
-export default {
+const featureAppDefinition: FeatureAppDefinition<ReactFeatureApp> = {
   id: 'test:hello-world',
 
   create(): ReactFeatureApp {
@@ -15,3 +16,5 @@ export default {
     };
   }
 };
+
+export default featureAppDefinition;
