@@ -6,15 +6,15 @@ if [ -z "$BLACKLIST" ] ; then
 fi
 
 # replace every comma with a pipe
-BLACKLIST_REGEXP=$(echo $BLACKLIST |tr "," "|")
+BLACKLIST_REGEXP=$(echo "$BLACKLIST" |tr "," "|")
 # read .gitignore, replace newlines with pipes and remove the last pipe
-IGNORE=$(cat .gitignore |tr "\n" "|" |sed -e 's/|$//')
+IGNORE=$(tr "\n" "|" < .gitignore |sed -e 's/|$//')
 
 MATCHES=$(grep --extended-regexp --word-regexp --recursive --regexp="$BLACKLIST_REGEXP" . |grep --extended-regexp --invert-match --regexp="$IGNORE" |grep --extended-regexp --invert-match --regexp=".git")
 RESULT=$?
 
 if [ "$CI" != "true" ] ; then
-  echo $MATCHES
+  echo "$MATCHES"
 fi
 
 if [ $RESULT -eq 0 ] ; then
