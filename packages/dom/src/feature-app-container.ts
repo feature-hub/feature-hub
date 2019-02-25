@@ -18,6 +18,19 @@ export interface DomFeatureApp {
   attachTo(container: Element): void;
 }
 
+/**
+ * Define a custom element named `feature-app-container` at the
+ * `CustomElementRegistry`.
+ *
+ * The defined element has a `featureAppDefinition` property which needs to be
+ * set to a `FeatureAppDefinition` for a {@link DomFeatureApp} and an optional
+ * `idSpecifier` attribute which needs to be defined if multiple instances of
+ * the same Feature App are placed on a single web page.
+ *
+ * It is possible to pass a slot named `error` to the `feature-app-container`
+ * element which is rendered if the Feature App could not be created or if the
+ * Feature App throws in its {@link DomFeatureApp.attachTo} method.
+ */
 export function defineFeatureAppContainer(
   featureAppManager: FeatureAppManager
 ): void {

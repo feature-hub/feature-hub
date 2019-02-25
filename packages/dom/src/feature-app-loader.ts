@@ -4,6 +4,21 @@ import {TemplateResult} from 'lit-html';
 import {until} from 'lit-html/directives/until';
 import {defineFeatureAppContainer} from './feature-app-container';
 
+/**
+ * Define a custom element named `feature-app-loader` at the
+ * `CustomElementRegistry`.
+ *
+ * The defined element has two attributes, a `src` attribute which needs to
+ * contain a URL pointing to a Feature App's module bundle and an optional
+ * `idSpecifier` attribute which needs to be defined if multiple instances of
+ * the same Feature App are placed on a single web page.
+ *
+ * It is possible to pass two slots to the `feature-app-loader` element. One
+ * slot named `loading` is rendered while the Feature App module is loading.
+ * The other one named `error` is rendered if the Feature App module could not
+ * be loaded and is also passed to the underlying `feature-app-container`
+ * element (@see {@link defineFeatureAppContainer}).
+ */
 export function defineFeatureAppLoader(
   featureAppManager: FeatureAppManager
 ): void {
