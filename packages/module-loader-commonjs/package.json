@@ -1,6 +1,6 @@
 {
   "name": "@feature-hub/module-loader-commonjs",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "A FeatureAppManager-compatible CommonJS module loader.",
   "homepage": "https://feature-hub.io/",
   "bugs": {
@@ -21,7 +21,7 @@
   "module": "lib/esm/index.js",
   "typings": "lib/cjs/index.d.ts",
   "dependencies": {
-    "@feature-hub/core": "^1.0.1",
+    "@feature-hub/core": "^1.1.0",
     "fs-extra": "^7.0.1",
     "node-fetch": "^2.3.0"
   },
