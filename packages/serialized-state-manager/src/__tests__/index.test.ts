@@ -1,5 +1,5 @@
 import {FeatureServiceEnvironment} from '@feature-hub/core';
-import {SerializedStateManagerV0, serializedStateManagerDefinition} from '..';
+import {SerializedStateManagerV1, serializedStateManagerDefinition} from '..';
 
 describe('serializedStateManagerDefinition', () => {
   let mockEnv: FeatureServiceEnvironment<undefined, {}>;
@@ -35,10 +35,10 @@ describe('serializedStateManagerDefinition', () => {
     });
   });
 
-  describe('SerializedStateManagerV0', () => {
-    let integratorSerializedStateManager: SerializedStateManagerV0;
-    let consumer1SerializedStateManager: SerializedStateManagerV0;
-    let consumer2SerializedStateManager: SerializedStateManagerV0;
+  describe('SerializedStateManagerV1', () => {
+    let integratorSerializedStateManager: SerializedStateManagerV1;
+    let consumer1SerializedStateManager: SerializedStateManagerV1;
+    let consumer2SerializedStateManager: SerializedStateManagerV1;
 
     beforeEach(() => {
       const serializedStateManagerBinder = serializedStateManagerDefinition.create(

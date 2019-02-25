@@ -1,5 +1,5 @@
 import {FeatureAppDefinition} from '@feature-hub/core';
-import {HistoryServiceV0} from '@feature-hub/history-service';
+import {HistoryServiceV1} from '@feature-hub/history-service';
 import {ReactFeatureApp} from '@feature-hub/react';
 import * as React from 'react';
 import {HistoryConsumer} from './history-consumer';
@@ -10,7 +10,7 @@ export const historyConsumerDefinition: FeatureAppDefinition<
   ReactFeatureApp,
   undefined,
   undefined,
-  {'s2:history': HistoryServiceV0}
+  {'s2:history': HistoryServiceV1}
 > = {
   id: 'test:history-consumer',
 

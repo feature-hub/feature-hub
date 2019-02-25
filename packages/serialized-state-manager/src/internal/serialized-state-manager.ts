@@ -1,8 +1,8 @@
-import {SerializedStateManagerV0} from '..';
+import {SerializedStateManagerV1} from '..';
 import {ClientSideStateManager} from './client-side-state-manager';
 import {ServerSideStateManager} from './server-side-state-manager';
 
-export class SerializedStateManager implements SerializedStateManagerV0 {
+export class SerializedStateManager implements SerializedStateManagerV1 {
   public constructor(
     private readonly consumerUid: string,
     private readonly serverSideStateManager: ServerSideStateManager,

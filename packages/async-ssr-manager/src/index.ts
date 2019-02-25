@@ -14,6 +14,11 @@ export interface AsyncSsrManagerConfig {
 }
 
 /**
+ * @deprecated Use {@link AsyncSsrManagerV1} instead.
+ */
+export type AsyncSsrManagerV0 = AsyncSsrManagerV1;
+
+/**
  * The Async SSR Manager enables the integrator to render a given composition
  * of React Feature Apps in multiple render passes until all Feature Apps and
  * Feature Services have finished their asynchronous operations.
@@ -24,7 +29,7 @@ export interface AsyncSsrManagerConfig {
  * optional dependency. Its presence can be used to determine whether they are
  * currently rendered on the server or on the client.
  */
-export interface AsyncSsrManagerV0 {
+export interface AsyncSsrManagerV1 {
   /**
    * This method is intended for the integrator. It calls the given render
    * function at least once. With {@link scheduleRerender} further render passes
@@ -75,11 +80,11 @@ export interface AsyncSsrManagerV0 {
 }
 
 export interface SharedAsyncSsrManager extends SharedFeatureService {
-  readonly '1.0.0': FeatureServiceBinder<AsyncSsrManagerV0>;
+  readonly '1.0.0': FeatureServiceBinder<AsyncSsrManagerV1>;
 }
 
 /**
- * @see {@link AsyncSsrManagerV0} for further information.
+ * @see {@link AsyncSsrManagerV1} for further information.
  */
 export const asyncSsrManagerDefinition: FeatureServiceProviderDefinition<
   SharedAsyncSsrManager

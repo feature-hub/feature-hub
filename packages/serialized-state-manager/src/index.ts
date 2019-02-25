@@ -7,7 +7,12 @@ import {ClientSideStateManager} from './internal/client-side-state-manager';
 import {SerializedStateManager} from './internal/serialized-state-manager';
 import {ServerSideStateManager} from './internal/server-side-state-manager';
 
-export interface SerializedStateManagerV0 {
+/**
+ * @deprecated Use {@link SerializedStateManagerV1} instead.
+ */
+export type SerializedStateManagerV0 = SerializedStateManagerV1;
+
+export interface SerializedStateManagerV1 {
   /**
    * This method is intended to be called by consumers, i.e. Feature Apps and
    * Feature Services, on the server to register a callback that serializes
@@ -47,11 +52,11 @@ export interface SerializedStateManagerV0 {
 }
 
 export interface SharedSerializedStateManager extends SharedFeatureService {
-  readonly '1.0.0': FeatureServiceBinder<SerializedStateManagerV0>;
+  readonly '1.0.0': FeatureServiceBinder<SerializedStateManagerV1>;
 }
 
 /**
- * @see {@link SerializedStateManagerV0} for further information.
+ * @see {@link SerializedStateManagerV1} for further information.
  */
 export const serializedStateManagerDefinition: FeatureServiceProviderDefinition<
   SharedSerializedStateManager

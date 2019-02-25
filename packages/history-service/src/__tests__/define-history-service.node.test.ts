@@ -10,22 +10,22 @@ import {
   FeatureServiceBinding,
   FeatureServiceEnvironment
 } from '@feature-hub/core';
-import {ServerRequestV0} from '@feature-hub/server-request';
+import {ServerRequestV1} from '@feature-hub/server-request';
 import {History} from 'history';
 import {Stubbed, stubMethods} from 'jest-stub-methods';
 import {
   HistoryServiceDependencies,
-  HistoryServiceV0,
+  HistoryServiceV1,
   RootLocationTransformer,
   defineHistoryService
 } from '..';
 import {testRootLocationTransformer} from '../internal/test-root-location-transformer';
 
-describe('HistoryServiceV0 (on Node.js)', () => {
+describe('HistoryServiceV1 (on Node.js)', () => {
   let createHistoryServiceBinder: (
-    serverRequest: ServerRequestV0 | undefined,
+    serverRequest: ServerRequestV1 | undefined,
     rootLocationTransformer?: RootLocationTransformer
-  ) => FeatureServiceBinder<HistoryServiceV0>;
+  ) => FeatureServiceBinder<HistoryServiceV1>;
 
   let stubbedConsole: Stubbed<Console>;
 
@@ -33,7 +33,7 @@ describe('HistoryServiceV0 (on Node.js)', () => {
     stubbedConsole = stubMethods(console);
 
     createHistoryServiceBinder = (
-      serverRequest: ServerRequestV0 | undefined
+      serverRequest: ServerRequestV1 | undefined
     ) => {
       const mockEnv: FeatureServiceEnvironment<
         undefined,
@@ -58,14 +58,14 @@ describe('HistoryServiceV0 (on Node.js)', () => {
   });
 
   describe('#createStaticHistory()', () => {
-    let historyBinding1: FeatureServiceBinding<HistoryServiceV0>;
-    let historyBinding2: FeatureServiceBinding<HistoryServiceV0>;
-    let historyService1: HistoryServiceV0;
-    let historyService2: HistoryServiceV0;
+    let historyBinding1: FeatureServiceBinding<HistoryServiceV1>;
+    let historyBinding2: FeatureServiceBinding<HistoryServiceV1>;
+    let historyService1: HistoryServiceV1;
+    let historyService2: HistoryServiceV1;
     let history1: History;
     let history2: History;
 
-    const createHistories = (serverRequest: ServerRequestV0 | undefined) => {
+    const createHistories = (serverRequest: ServerRequestV1 | undefined) => {
       const historyServiceBinder = createHistoryServiceBinder(serverRequest);
 
       historyBinding1 = historyServiceBinder('test:1');
@@ -162,7 +162,7 @@ describe('HistoryServiceV0 (on Node.js)', () => {
       it('retrieves consumer specific locations from the server request path', () => {
         destroyHistories();
 
-        const serverRequest: ServerRequestV0 = {
+        const serverRequest: ServerRequestV1 = {
           url: '/?test:1=/foo&test:2=bar',
           cookies: {},
           headers: {}

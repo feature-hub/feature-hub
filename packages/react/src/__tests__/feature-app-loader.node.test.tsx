@@ -4,7 +4,7 @@
 
 // tslint:disable:no-implicit-dependencies
 
-import {AsyncSsrManagerV0} from '@feature-hub/async-ssr-manager';
+import {AsyncSsrManagerV1} from '@feature-hub/async-ssr-manager';
 import {
   AsyncValue,
   FeatureAppDefinition,
@@ -15,7 +15,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom/server';
 import {FeatureAppLoader, FeatureHubContextProvider} from '..';
 
-interface MockAsyncSsrManager extends AsyncSsrManagerV0 {
+interface MockAsyncSsrManager extends AsyncSsrManagerV1 {
   scheduleRerender: ((promise: Promise<unknown>) => void) & jest.Mock;
 }
 

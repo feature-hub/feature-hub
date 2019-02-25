@@ -289,7 +289,7 @@ const html = await asyncSsrManager.renderUntilCompleted(() =>
 
 [async-ssr-manager-api]: /@feature-hub/async-ssr-manager/
 [async-ssr-manager-api-schedule-rerender]:
-  /@feature-hub/async-ssr-manager/interfaces/asyncssrmanagerv0.html#schedulererender
+  /@feature-hub/async-ssr-manager/interfaces/asyncssrmanagerv1.html#schedulererender
 [serialized-state-manager-api]: /@feature-hub/serialized-state-manager/
 [demos-inject-serialized-states-script]:
   https://github.com/sinnerschrader/feature-hub/blob/50a883a744d69f28980e46130bf2a1bdda415216/packages/demos/src/start-server.ts#L26
