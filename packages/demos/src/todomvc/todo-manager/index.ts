@@ -29,14 +29,14 @@ export interface SharedTodoManager extends SharedFeatureService {
 class TodoManagerV1Impl implements TodoManagerV1 {
   private readonly listeners = new Set<ListenerCallback>();
   private todos: Todo[] = [];
-  private nextId = 0;
+  private idCount = 0;
 
   public getTodos(): Todo[] {
     return this.todos;
   }
 
   public add(title: string): Todo {
-    const id = this.getNextId();
+    const id = this.nextId();
     const todo = {id, title, completed: false};
 
     this.todos = [...this.todos, todo];
@@ -82,10 +82,10 @@ class TodoManagerV1Impl implements TodoManagerV1 {
     this.listeners.forEach(listener => listener());
   }
 
-  private getNextId(): string {
-    const id = String(this.nextId);
+  private nextId(): string {
+    const id = String(this.idCount);
 
-    this.nextId += 1;
+    this.idCount += 1;
 
     return id;
   }
