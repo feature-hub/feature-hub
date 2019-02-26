@@ -118,7 +118,7 @@ export class TodoMvcMain extends React.Component<
 
   private readonly handleTodoItemEditTitle = (id: string, title: string) => {
     if (title) {
-      this.props.todoManager.editTitle(id, title);
+      this.props.todoManager.setTitle(id, title);
     } else {
       this.props.todoManager.remove(id);
     }

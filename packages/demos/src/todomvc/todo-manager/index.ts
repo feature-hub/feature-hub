@@ -18,7 +18,7 @@ export interface TodoManagerV1 {
   add(title: string): Todo;
   remove(id: string): void;
   setCompleted(id: string, completed: boolean): void;
-  editTitle(id: string, title: string): void;
+  setTitle(id: string, title: string): void;
   subscribe(listener: ListenerCallback): UnsubscribeCallback;
 }
 
@@ -26,34 +26,23 @@ export interface SharedTodoManager extends SharedFeatureService {
   readonly '1.0.0': FeatureServiceBinder<TodoManagerV1>;
 }
 
-class Id {
-  private value = 0;
-
-  public next(): string {
-    // tslint:disable-next-line:increment-decrement
-    return String(this.value++);
-  }
-}
-
 class TodoManagerV1Impl implements TodoManagerV1 {
   private readonly listeners = new Set<ListenerCallback>();
-  private _todos: Todo[];
-
-  public constructor(todos: Todo[], private readonly id: Id) {
-    this._todos = todos;
-  }
+  private todos: Todo[] = [];
+  private nextId = 0;
 
   public getTodos(): Todo[] {
     return this.todos;
   }
 
   public add(title: string): Todo {
-    const id = this.id.next();
+    const id = this.getNextId();
     const todo = {id, title, completed: false};
 
     this.todos = [...this.todos, todo];
 
     console.info('Added todo:', todo);
+    this.notifyListeners();
 
     return todo;
   }
@@ -72,13 +61,14 @@ class TodoManagerV1Impl implements TodoManagerV1 {
     ];
 
     console.info('Removed todo:', deletedTodo);
+    this.notifyListeners();
   }
 
   public setCompleted(id: string, completed: boolean): void {
     this.editTodo(id, 'completed', completed);
   }
 
-  public editTitle(id: string, title: string): void {
+  public setTitle(id: string, title: string): void {
     this.editTodo(id, 'title', title);
   }
 
@@ -88,14 +78,16 @@ class TodoManagerV1Impl implements TodoManagerV1 {
     return () => this.listeners.delete(listener);
   }
 
-  private set todos(todos: Todo[]) {
-    this._todos = todos;
-
+  private notifyListeners(): void {
     this.listeners.forEach(listener => listener());
   }
 
-  private get todos(): Todo[] {
-    return this._todos;
+  private getNextId(): string {
+    const id = String(this.nextId);
+
+    this.nextId += 1;
+
+    return id;
   }
 
   private editTodo<Key extends keyof Todo>(
@@ -119,6 +111,7 @@ class TodoManagerV1Impl implements TodoManagerV1 {
     ];
 
     console.info('Changed todo from:', oldTodo, 'to:', newTodo);
+    this.notifyListeners();
   }
 }
 
@@ -128,7 +121,7 @@ export const todoManagerDefinition: FeatureServiceProviderDefinition<
   id: 'test:todomvc-todo-manager',
 
   create: () => {
-    const todoManager = new TodoManagerV1Impl([], new Id());
+    const todoManager = new TodoManagerV1Impl();
 
     return {
       '1.0.0': () => ({featureService: todoManager})
