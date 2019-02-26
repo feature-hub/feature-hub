@@ -4,15 +4,15 @@ import * as React from 'react';
 import {TodoManagerV1} from '../todo-manager';
 import {TodoMvcFooter} from './todomvc-footer';
 
-interface Dependencies {
-  'test:todomvc-todo-manager': TodoManagerV1;
+export interface FooterFeatureServices {
+  readonly 'test:todomvc-todo-manager': TodoManagerV1;
 }
 
 const featureAppDefinition: FeatureAppDefinition<
   ReactFeatureApp,
   undefined,
   undefined,
-  Dependencies
+  FooterFeatureServices
 > = {
   id: 'test:todomvc-footer',
 

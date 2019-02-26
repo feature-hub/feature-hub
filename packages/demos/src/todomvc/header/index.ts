@@ -3,15 +3,15 @@ import {DomFeatureApp} from '@feature-hub/react';
 import {TodoManagerV1} from '../todo-manager';
 import {TodoMvcHeader} from './todomvc-header';
 
-interface Dependencies {
-  'test:todomvc-todo-manager': TodoManagerV1;
+export interface HeaderFeatureServices {
+  readonly 'test:todomvc-todo-manager': TodoManagerV1;
 }
 
 const featureAppDefinition: FeatureAppDefinition<
   DomFeatureApp,
   undefined,
   undefined,
-  Dependencies
+  HeaderFeatureServices
 > = {
   id: 'test:todomvc-header',
 

@@ -4,7 +4,7 @@ import * as React from 'react';
 import {TodoManagerV1} from '../todo-manager';
 import {TodoMvcMain} from './todomvc-main';
 
-interface Dependencies {
+export interface MainFeatureServices {
   'test:todomvc-todo-manager': TodoManagerV1;
 }
 
@@ -12,7 +12,7 @@ const featureAppDefinition: FeatureAppDefinition<
   ReactFeatureApp,
   undefined,
   undefined,
-  Dependencies
+  MainFeatureServices
 > = {
   id: 's2:todomvc-main',
 
