@@ -1,8 +1,12 @@
-import {join} from 'path';
-import TsConfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
-import {Configuration} from 'webpack';
+// @ts-check
+const {join} = require('path');
+const TsConfigPathsPlugin = require('tsconfig-paths-webpack-plugin').default;
+const webpack = require('webpack');
 
-export const webpackBaseConfig: Configuration = {
+/**
+ * @type {webpack.Configuration}
+ */
+const webpackBaseConfig = {
   devtool: false,
   mode: 'development',
   module: {
@@ -33,3 +37,5 @@ export const webpackBaseConfig: Configuration = {
     modules: [join(__dirname, '../node_modules'), 'node_modules']
   }
 };
+
+module.exports = webpackBaseConfig;

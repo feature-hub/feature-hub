@@ -1,46 +1,57 @@
-import CopyPlugin from 'copy-webpack-plugin';
-import {join} from 'path';
+// @ts-check
+const CopyPlugin = require('copy-webpack-plugin');
+const path = require('path');
 // @ts-ignore
-import postcssPresetEnv from 'postcss-preset-env';
-import {Configuration} from 'webpack';
-import merge from 'webpack-merge';
-import {webpackBaseConfig} from '../webpack-base-config';
+const postcssPresetEnv = require('postcss-preset-env');
+const webpack = require('webpack');
+const merge = require('webpack-merge');
+const webpackBaseConfig = require('../webpack-base-config');
 
-const configs: Configuration[] = [
+const websiteBuildDir = path.resolve(
+  __dirname,
+  '../../../website/build/feature-hub/todomvc'
+);
+
+/**
+ * @type {webpack.Configuration[]}
+ */
+const configs = [
   {
     ...webpackBaseConfig,
-    entry: join(__dirname, './header/index.ts'),
+    entry: path.join(__dirname, './header/index.ts'),
     externals: {
       react: 'react'
     },
     output: {
-      path: '/header',
+      path: path.join(websiteBuildDir, 'header'),
       filename: 'feature-app-header.umd.js',
       libraryTarget: 'umd',
       publicPath: '/header'
     },
-    plugins: [new CopyPlugin([{from: join(__dirname, './header/index.css')}])]
+    plugins: [
+      new CopyPlugin([{from: path.join(__dirname, './header/index.css')}])
+    ]
   },
   {
     ...webpackBaseConfig,
-    entry: join(__dirname, './main/index.tsx'),
+    entry: path.join(__dirname, './main/index.tsx'),
     externals: {
       react: 'react'
     },
     output: {
-      path: '/main',
+      path: path.join(websiteBuildDir, 'main'),
       filename: 'feature-app-main.umd.js',
       libraryTarget: 'umd',
       publicPath: '/main'
     }
   },
   merge.smart(webpackBaseConfig, {
-    entry: join(__dirname, './footer/index.tsx'),
+    entry: path.join(__dirname, './footer/index.tsx'),
     externals: {
       react: 'react'
     },
     output: {
-      path: '/footer',
+      path: path.join(websiteBuildDir, 'footer'),
       filename: 'feature-app-footer.umd.js',
       libraryTarget: 'umd',
       publicPath: '/footer'
@@ -75,13 +86,19 @@ const configs: Configuration[] = [
   }),
   {
     ...webpackBaseConfig,
-    entry: join(__dirname, './integrator.tsx'),
+    entry: path.join(__dirname, './integrator.tsx'),
     output: {
+      path: websiteBuildDir,
       filename: 'integrator.js',
       publicPath: '/'
     },
-    plugins: [new CopyPlugin([join(__dirname, './index.css')])]
+    plugins: [
+      new CopyPlugin([
+        path.join(__dirname, './index.css'),
+        path.join(__dirname, './index.html')
+      ])
+    ]
   }
 ];
 
-export default configs;
+module.exports = configs;
