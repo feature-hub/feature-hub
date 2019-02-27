@@ -16,12 +16,12 @@ const featureAppDefinition: FeatureAppDefinition<ReactFeatureApp> = {
     }
   },
 
-  create: () => ({
+  create: ({idSpecifier}) => ({
     render: () => (
       <Card style={{margin: '20px'}}>
         <FeatureAppContainer
           featureAppDefinition={innerFeatureAppDefinition}
-          idSpecifier={id}
+          idSpecifier={idSpecifier ? `${id}:${idSpecifier}` : id}
         />
       </Card>
     )
