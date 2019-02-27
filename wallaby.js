@@ -17,12 +17,10 @@ module.exports = wallaby => ({
   files: [
     'jest.config.js',
     'packages/*/src/**/*.{ts,tsx,snap}',
+    '!packages/{dom,demos}/**/*',
     '!packages/*/src/**/*.test.{ts,tsx}'
   ],
-  tests: [
-    'packages/*/src/**/*.test.{ts,tsx}',
-    '!packages/demos/src/**/*.test.{ts,tsx}'
-  ],
+  tests: ['packages/*/src/**/*.test.{ts,tsx}', '!packages/{dom,demos}/**/*'],
   env: {type: 'node', runner: 'node'},
   setup,
   testFramework: 'jest',
