@@ -6,7 +6,7 @@ const demoName = process.argv[2];
 
 function loadWebpackConfigs(): Configuration[] {
   const configPath = `./${demoName}/webpack-config`;
-  const configs: Configuration[] = require(configPath).default;
+  const configs: Configuration[] = require(configPath);
 
   for (const config of configs) {
     config.devtool = 'source-map';

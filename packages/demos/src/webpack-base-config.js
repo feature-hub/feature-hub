@@ -1,8 +1,12 @@
-import {join} from 'path';
-import TsConfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
-import {Configuration} from 'webpack';
+// @ts-check
+const path = require('path');
+const TsConfigPathsPlugin = require('tsconfig-paths-webpack-plugin').default;
+const webpack = require('webpack');
 
-export const webpackBaseConfig: Configuration = {
+/**
+ * @type {webpack.Configuration}
+ */
+const webpackBaseConfig = {
   devtool: false,
   mode: 'development',
   module: {
@@ -25,11 +29,13 @@ export const webpackBaseConfig: Configuration = {
     extensions: ['.js', '.json', '.ts', '.tsx'],
     plugins: [
       new TsConfigPathsPlugin({
-        configFile: join(__dirname, '../tsconfig.json')
+        configFile: path.join(__dirname, '../tsconfig.json')
       })
     ]
   },
   resolveLoader: {
-    modules: [join(__dirname, '../node_modules'), 'node_modules']
+    modules: [path.join(__dirname, '../node_modules'), 'node_modules']
   }
 };
+
+module.exports = webpackBaseConfig;

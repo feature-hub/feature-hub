@@ -1,9 +1,9 @@
 // @ts-check
 
 const {readdirSync} = require('fs');
-const {join} = require('path');
+const path = require('path');
 
-const pkgScopes = readdirSync(join(__dirname, 'packages')).filter(
+const pkgScopes = readdirSync(path.join(__dirname, 'packages')).filter(
   scope => !/^\./.test(scope)
 );
 
