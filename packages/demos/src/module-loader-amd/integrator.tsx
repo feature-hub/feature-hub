@@ -9,10 +9,7 @@ defineExternals({react: React});
 
 const {featureAppManager} = createFeatureHub('test:integrator', {
   moduleLoader: loadAmdModule,
-  providedExternals: {
-    react: process.env.REACT_VERSION as string,
-    '@feature-hub/react': process.env.FEATURE_HUB_REACT_VERSION as string
-  }
+  providedExternals: {react: process.env.REACT_VERSION as string}
 });
 
 ReactDOM.render(

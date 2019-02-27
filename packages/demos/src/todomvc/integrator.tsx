@@ -9,8 +9,7 @@ const {featureAppManager} = createFeatureHub('test:todomvc-integrator', {
   featureServiceDefinitions: [todoManagerDefinition],
   moduleLoader: loadAmdModule,
   providedExternals: {
-    react: process.env.REACT_VERSION as string,
-    '@feature-hub/react': process.env.FEATURE_HUB_REACT_VERSION as string
+    react: process.env.REACT_VERSION as string
   }
 });
 

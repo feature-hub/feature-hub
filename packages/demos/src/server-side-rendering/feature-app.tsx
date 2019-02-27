@@ -23,19 +23,12 @@ const featureAppDefinition: FeatureAppDefinition<
   id: 'test:hello-world',
 
   dependencies: {
-    externals: {
-      react: '^16.7.0',
-      '@feature-hub/react': '^1.2.0'
-    },
-    featureServices: {
-      's2:serialized-state-manager': '^1.0.0'
-    }
+    externals: {react: '^16.7.0'},
+    featureServices: {'s2:serialized-state-manager': '^1.0.0'}
   },
 
   optionalDependencies: {
-    featureServices: {
-      's2:async-ssr-manager': '^1.0.0'
-    }
+    featureServices: {'s2:async-ssr-manager': '^1.0.0'}
   },
 
   create: env => {

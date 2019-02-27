@@ -25,10 +25,7 @@ export default async function renderApp({
     'test:integrator',
     {
       moduleLoader: loadCommonJsModule,
-      providedExternals: {
-        react: getPkgVersion('react'),
-        '@feature-hub/react': getPkgVersion('@feature-hub/react')
-      },
+      providedExternals: {react: getPkgVersion('react')},
       featureServiceDefinitions: [
         asyncSsrManagerDefinition,
         serializedStateManagerDefinition
