@@ -5,10 +5,16 @@ const pkgDir = require('pkg-dir');
 
 /**
  * @param {string} pkgName
+ * @param {boolean} [inFeatureHub]
  * @returns {string}
  */
-function getPkgVersion(pkgName) {
-  const pkgDirname = pkgDir.sync(require.resolve(pkgName)) || undefined;
+function getPkgVersion(pkgName, inFeatureHub) {
+  if (inFeatureHub) {
+    return require(path.join(__dirname, '../..', pkgName, 'package.json'))
+      .version;
+  }
+
+  const pkgDirname = pkgDir.sync(require.resolve(pkgName));
 
   if (!pkgDirname) {
     throw new Error(`Unknown package '${pkgName}'.`);
