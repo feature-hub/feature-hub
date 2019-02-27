@@ -1,17 +1,24 @@
-import {join} from 'path';
-import {Configuration} from 'webpack';
-import {webpackBaseConfig} from '../webpack-base-config';
+// @ts-check
+const path = require('path');
+const webpack = require('webpack');
+const webpackBaseConfig = require('../webpack-base-config');
 
-const featureAppConfig: Configuration = {
+/**
+ * @type {webpack.Configuration}
+ */
+const featureAppConfig = {
   ...webpackBaseConfig,
-  entry: join(__dirname, './feature-app-outer.tsx'),
+  entry: path.join(__dirname, './feature-app-outer.tsx'),
   externals: {
     react: 'react',
     '@feature-hub/react': '@feature-hub/react'
   }
 };
 
-export default [
+/**
+ * @type {webpack.Configuration[]}
+ */
+const configs = [
   {
     ...featureAppConfig,
     output: {
@@ -31,10 +38,12 @@ export default [
   },
   {
     ...webpackBaseConfig,
-    entry: join(__dirname, './integrator.tsx'),
+    entry: path.join(__dirname, './integrator.tsx'),
     output: {
       filename: 'integrator.js',
       publicPath: '/'
     }
   }
-] as Configuration[];
+];
+
+module.exports = configs;
