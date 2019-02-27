@@ -4,6 +4,8 @@ import {TemplateResult} from 'lit-html';
 import {until} from 'lit-html/directives/until';
 import {defineFeatureAppContainer} from './feature-app-container';
 
+const elementName = 'feature-app-loader';
+
 /**
  * Define a custom element named `feature-app-loader` at the
  * `CustomElementRegistry`.
@@ -22,6 +24,10 @@ import {defineFeatureAppContainer} from './feature-app-container';
 export function defineFeatureAppLoader(
   featureAppManager: FeatureAppManager
 ): void {
+  if (customElements.get(elementName)) {
+    return;
+  }
+
   defineFeatureAppContainer(featureAppManager);
 
   class FeatureAppLoader extends LitElement {
@@ -70,5 +76,5 @@ export function defineFeatureAppLoader(
     }
   }
 
-  customElements.define('feature-app-loader', FeatureAppLoader);
+  customElements.define(elementName, FeatureAppLoader);
 }

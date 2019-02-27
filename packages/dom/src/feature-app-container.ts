@@ -18,6 +18,8 @@ export interface DomFeatureApp {
   attachTo(container: Element): void;
 }
 
+const elementName = 'feature-app-container';
+
 /**
  * Define a custom element named `feature-app-container` at the
  * `CustomElementRegistry`.
@@ -34,6 +36,10 @@ export interface DomFeatureApp {
 export function defineFeatureAppContainer(
   featureAppManager: FeatureAppManager
 ): void {
+  if (customElements.get(elementName)) {
+    return;
+  }
+
   class FeatureAppContainer extends LitElement {
     @property({type: Object})
     public featureAppDefinition?: FeatureAppDefinition<DomFeatureApp>;
@@ -81,5 +87,5 @@ export function defineFeatureAppContainer(
     }
   }
 
-  customElements.define('feature-app-container', FeatureAppContainer);
+  customElements.define(elementName, FeatureAppContainer);
 }
