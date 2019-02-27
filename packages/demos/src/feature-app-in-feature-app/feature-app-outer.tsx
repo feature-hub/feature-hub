@@ -21,7 +21,7 @@ const featureAppDefinition: FeatureAppDefinition<ReactFeatureApp> = {
       <Card style={{margin: '20px'}}>
         <FeatureAppContainer
           featureAppDefinition={innerFeatureAppDefinition}
-          idSpecifier={JSON.stringify({id, idSpecifier})}
+          idSpecifier={idSpecifier ? `${id}:${idSpecifier}` : id}
         />
       </Card>
     )

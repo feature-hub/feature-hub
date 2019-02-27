@@ -16,7 +16,7 @@ App that is deployed independently.
 
 To avoid conflicts when multiple instances of the same Feature App are placed on
 a single web page, the parent Feature App should define an `idSpecifier` for its
-child Feature App, e.g. using its own `idSpecifier` combined with its own `id`.
+child Feature App, e.g. using its own `id` combined with its own `idSpecifier`.
 For more details see the ["Feature App in Feature App"
 demo][feature-app-in-feature-demo-outer].
 
