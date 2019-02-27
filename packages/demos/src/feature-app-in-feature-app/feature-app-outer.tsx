@@ -4,8 +4,10 @@ import {FeatureAppContainer, ReactFeatureApp} from '@feature-hub/react';
 import * as React from 'react';
 import featureAppDefinition from './feature-app-inner';
 
+const id = 'test:hello-world-outer';
+
 export default {
-  id: 'test:hello-world-outer',
+  id,
 
   dependencies: {
     externals: {
@@ -17,7 +19,10 @@ export default {
   create: () => ({
     render: () => (
       <Card style={{margin: '20px'}}>
-        <FeatureAppContainer featureAppDefinition={featureAppDefinition} />
+        <FeatureAppContainer
+          featureAppDefinition={featureAppDefinition}
+          idSpecifier={id}
+        />
       </Card>
     )
   })

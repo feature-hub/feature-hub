@@ -18,20 +18,40 @@ export interface DomFeatureApp {
   attachTo(container: Element): void;
 }
 
-const elementName = 'feature-app-container';
-
 /**
- * Define a custom element named `feature-app-container` at the
- * `CustomElementRegistry`.
- *
- * The defined element has a `featureAppDefinition` property which needs to be
- * set to a `FeatureAppDefinition` for a {@link DomFeatureApp} and an optional
- * `idSpecifier` attribute which needs to be defined if multiple instances of
- * the same Feature App are placed on a single web page.
+ * A custom element defined by {@link defineFeatureAppContainer} as
+ * `feature-app-container`.
  *
  * It is possible to pass a slot named `error` to the `feature-app-container`
  * element which is rendered if the Feature App could not be created or if the
  * Feature App throws in its {@link DomFeatureApp.attachTo} method.
+ */
+export interface FeatureAppContainerElement extends HTMLElement {
+  /**
+   * The definition of the Feature App that should be rendered.
+   */
+  featureAppDefinition?: FeatureAppDefinition<DomFeatureApp>;
+
+  /**
+   * If multiple instances of the same Feature App are placed on a single web
+   * page, an `idSpecifier` that is unique for the Feature App ID must be
+   * defined.
+   */
+  idSpecifier?: string;
+
+  /**
+   * A config object that is intended for the specific Feature App instance
+   * that the `feature-app-container` renders.
+   */
+  instanceConfig?: unknown;
+}
+
+const elementName = 'feature-app-container';
+
+/**
+ * Define a custom element implementing the {@link FeatureAppContainerElement}
+ * interface under the name `feature-app-container` at the
+ * `CustomElementRegistry`.
  */
 export function defineFeatureAppContainer(
   featureAppManager: FeatureAppManager
@@ -40,12 +60,16 @@ export function defineFeatureAppContainer(
     return;
   }
 
-  class FeatureAppContainer extends LitElement {
+  class FeatureAppContainer extends LitElement
+    implements FeatureAppContainerElement {
     @property({type: Object})
     public featureAppDefinition?: FeatureAppDefinition<DomFeatureApp>;
 
     @property({type: String})
     public idSpecifier?: string;
+
+    @property({type: Object})
+    public instanceConfig?: unknown;
 
     private featureAppScope: FeatureAppScope<DomFeatureApp> | undefined;
 
@@ -61,7 +85,7 @@ export function defineFeatureAppContainer(
 
         this.featureAppScope = featureAppManager.getFeatureAppScope(
           this.featureAppDefinition,
-          {idSpecifier: this.idSpecifier}
+          {idSpecifier: this.idSpecifier, instanceConfig: this.instanceConfig}
         );
 
         this.featureAppScope.featureApp.attachTo(element);

@@ -14,6 +14,11 @@ Feature App that is included in its bundle, or the parent Feature App can [use
 the `FeatureAppLoader`][react-feature-app-loader] to load and render a Feature
 App that is deployed independently.
 
+To avoid conflicts when multiple instances of the same Feature App are placed on
+a single web page, the parent Feature App should define an `idSpecifier` for its
+child Feature App, e.g. using its own `id`. For more details see the ["Feature
+App in Feature App" demo][feature-app-in-feature-demo-outer].
+
 The `FeatureAppContainer` and `FeatureAppLoader` both access the
 `FeatureAppManager` singleton instance through React context that [the
 integrator provides with the
@@ -47,3 +52,5 @@ defineExternals({
 [sharing-npm-dependencies]: /docs/guides/sharing-npm-dependencies
 [feature-app-in-feature-demo]:
   https://github.com/sinnerschrader/feature-hub/tree/master/packages/demos/src/feature-app-in-feature-app
+[feature-app-in-feature-demo-outer]:
+  https://github.com/sinnerschrader/feature-hub/tree/master/packages/demos/src/feature-app-in-feature-app/feature-app-outer.tsx
