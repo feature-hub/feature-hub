@@ -3,6 +3,7 @@
   "include": ["src/**/*", "types/**/*"],
   "compilerOptions": {
     "allowJs": true,
-    "declaration": false
+    "declaration": false,
+    "outDir": "dist"
   }
 }
