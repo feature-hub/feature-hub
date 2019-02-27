@@ -5,7 +5,7 @@ import {TodoManagerV1} from '../todo-manager';
 import {TodoMvcMain} from './todomvc-main';
 
 export interface MainFeatureServices {
-  'test:todomvc-todo-manager': TodoManagerV1;
+  readonly 'test:todomvc-todo-manager': TodoManagerV1;
 }
 
 const featureAppDefinition: FeatureAppDefinition<
