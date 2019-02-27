@@ -32,5 +32,5 @@ startServer(loadWebpackConfigs(), loadNodeIntegrator(), demoName)
     console.log(`The ${demoName} demo is running at: http://localhost:${port}`);
   })
   .catch(error => {
-    console.error(error.toString());
+    console.error(error);
   });

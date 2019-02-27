@@ -14,6 +14,7 @@ import {
 } from '@feature-hub/serialized-state-manager';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom/server';
+import {getPkgVersion} from '../get-pkg-version';
 import {AppRendererOptions, AppRendererResult} from '../start-server';
 import {App} from './app';
 
@@ -24,7 +25,10 @@ export default async function renderApp({
     'test:integrator',
     {
       moduleLoader: loadCommonJsModule,
-      providedExternals: {react: '16.7.0'},
+      providedExternals: {
+        react: getPkgVersion('react'),
+        '@feature-hub/react': getPkgVersion('@feature-hub/react')
+      },
       featureServiceDefinitions: [
         asyncSsrManagerDefinition,
         serializedStateManagerDefinition

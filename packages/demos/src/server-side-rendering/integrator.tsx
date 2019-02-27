@@ -37,7 +37,10 @@ function getUrlsForHydrationFromDom(): string[] {
     'test:integrator',
     {
       moduleLoader: loadAmdModule,
-      providedExternals: {react: '16.7.0'},
+      providedExternals: {
+        react: process.env.REACT_VERSION as string,
+        '@feature-hub/react': process.env.FEATURE_HUB_REACT_VERSION as string
+      },
       featureServiceDefinitions: [serializedStateManagerDefinition],
       featureServiceDependencies: {
         [serializedStateManagerDefinition.id]: '^1.0.0'

@@ -8,7 +8,8 @@ const featureAppDefinition: FeatureAppDefinition<ReactFeatureApp> = {
 
   dependencies: {
     externals: {
-      react: '^16.7.0'
+      react: '^16.7.0',
+      '@feature-hub/react': '^1.2.0'
     }
   },
 
