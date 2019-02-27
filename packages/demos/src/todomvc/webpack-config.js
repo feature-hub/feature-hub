@@ -7,7 +7,7 @@ const webpack = require('webpack');
 const merge = require('webpack-merge');
 const webpackBaseConfig = require('../webpack-base-config');
 
-const websiteBuildDir = path.resolve(
+const websiteBuildDirname = path.resolve(
   __dirname,
   '../../../website/build/feature-hub/todomvc'
 );
@@ -23,7 +23,7 @@ const configs = [
       react: 'react'
     },
     output: {
-      path: path.join(websiteBuildDir, 'header'),
+      path: path.join(websiteBuildDirname, 'header'),
       filename: 'feature-app-header.umd.js',
       libraryTarget: 'umd',
       publicPath: '/header'
@@ -39,7 +39,7 @@ const configs = [
       react: 'react'
     },
     output: {
-      path: path.join(websiteBuildDir, 'main'),
+      path: path.join(websiteBuildDirname, 'main'),
       filename: 'feature-app-main.umd.js',
       libraryTarget: 'umd',
       publicPath: '/main'
@@ -51,7 +51,7 @@ const configs = [
       react: 'react'
     },
     output: {
-      path: path.join(websiteBuildDir, 'footer'),
+      path: path.join(websiteBuildDirname, 'footer'),
       filename: 'feature-app-footer.umd.js',
       libraryTarget: 'umd',
       publicPath: '/footer'
@@ -88,7 +88,7 @@ const configs = [
     ...webpackBaseConfig,
     entry: path.join(__dirname, './integrator.tsx'),
     output: {
-      path: websiteBuildDir,
+      path: websiteBuildDirname,
       filename: 'integrator.js',
       publicPath: '/'
     },
