@@ -7,7 +7,7 @@ const pkgDir = require('pkg-dir');
  * @param {string} pkgName
  * @returns {string}
  */
-export function getPkgVersion(pkgName) {
+function getPkgVersion(pkgName) {
   const pkgDirname = pkgDir.sync(require.resolve(pkgName)) || undefined;
 
   if (!pkgDirname) {
@@ -16,3 +16,5 @@ export function getPkgVersion(pkgName) {
 
   return require(path.join(pkgDirname, 'package.json')).version;
 }
+
+exports.getPkgVersion = getPkgVersion;
