@@ -170,7 +170,7 @@ class InternalFeatureAppLoader extends React.PureComponent<
     }
 
     for (const {href, media} of this.props.css) {
-      if (!document.querySelector(`link[href="${href}"]`) && document.head) {
+      if (!document.querySelector(`link[href="${href}"]`)) {
         const attributes = {rel: 'stylesheet', href, media: media || 'all'};
         const element = Object.assign(
           document.createElement('link'),

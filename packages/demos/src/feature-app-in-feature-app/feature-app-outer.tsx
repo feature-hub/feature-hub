@@ -2,11 +2,11 @@ import {Card} from '@blueprintjs/core';
 import {FeatureAppDefinition} from '@feature-hub/core';
 import {FeatureAppContainer, ReactFeatureApp} from '@feature-hub/react';
 import * as React from 'react';
-import featureAppDefinition from './feature-app-inner';
+import innerFeatureAppDefinition from './feature-app-inner';
 
 const id = 'test:hello-world-outer';
 
-export default {
+const featureAppDefinition: FeatureAppDefinition<ReactFeatureApp> = {
   id,
 
   dependencies: {
@@ -20,10 +20,12 @@ export default {
     render: () => (
       <Card style={{margin: '20px'}}>
         <FeatureAppContainer
-          featureAppDefinition={featureAppDefinition}
+          featureAppDefinition={innerFeatureAppDefinition}
           idSpecifier={id}
         />
       </Card>
     )
   })
-} as FeatureAppDefinition<ReactFeatureApp>;
+};
+
+export default featureAppDefinition;
