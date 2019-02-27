@@ -1,7 +1,7 @@
 import {FeatureAppDefinition} from '@feature-hub/core';
 import {DomFeatureApp} from '@feature-hub/dom';
 
-export default {
+const featureAppDefinition: FeatureAppDefinition<DomFeatureApp> = {
   id: 'test:hello-world',
 
   create: () => ({
@@ -9,4 +9,6 @@ export default {
       element.innerHTML = 'Hello, World!';
     }
   })
-} as FeatureAppDefinition<DomFeatureApp>;
+};
+
+export default featureAppDefinition;

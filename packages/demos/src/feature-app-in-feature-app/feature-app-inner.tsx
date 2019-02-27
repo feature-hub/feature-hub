@@ -3,7 +3,7 @@ import {FeatureAppDefinition} from '@feature-hub/core';
 import {ReactFeatureApp} from '@feature-hub/react';
 import * as React from 'react';
 
-export default {
+const featureAppDefinition: FeatureAppDefinition<ReactFeatureApp> = {
   id: 'test:hello-world-inner',
 
   dependencies: {
@@ -16,4 +16,6 @@ export default {
   create: () => ({
     render: () => <Label>Hello, World!</Label>
   })
-} as FeatureAppDefinition<ReactFeatureApp>;
+};
+
+export default featureAppDefinition;
