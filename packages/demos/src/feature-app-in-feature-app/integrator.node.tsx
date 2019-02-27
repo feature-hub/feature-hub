@@ -14,7 +14,7 @@ export default async function renderApp({
     moduleLoader: loadCommonJsModule,
     providedExternals: {
       react: '16.7.0',
-      '@feature-hub/react': '0.12.0'
+      '@feature-hub/react': '1.2.0'
     }
   });
 
