@@ -1,5 +1,5 @@
 // @ts-check
-const {join} = require('path');
+const path = require('path');
 const webpack = require('webpack');
 const webpackBaseConfig = require('../webpack-base-config');
 
@@ -9,7 +9,7 @@ const webpackBaseConfig = require('../webpack-base-config');
 const configs = [
   {
     ...webpackBaseConfig,
-    entry: join(__dirname, './feature-app.ts'),
+    entry: path.join(__dirname, './feature-app.ts'),
     output: {
       filename: 'feature-app.umd.js',
       libraryTarget: 'umd',
@@ -18,7 +18,7 @@ const configs = [
   },
   {
     ...webpackBaseConfig,
-    entry: join(__dirname, './integrator.ts'),
+    entry: path.join(__dirname, './integrator.ts'),
     output: {
       filename: 'integrator.js',
       publicPath: '/'

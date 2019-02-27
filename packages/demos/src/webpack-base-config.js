@@ -1,5 +1,5 @@
 // @ts-check
-const {join} = require('path');
+const path = require('path');
 const TsConfigPathsPlugin = require('tsconfig-paths-webpack-plugin').default;
 const webpack = require('webpack');
 
@@ -29,12 +29,12 @@ const webpackBaseConfig = {
     extensions: ['.js', '.json', '.ts', '.tsx'],
     plugins: [
       new TsConfigPathsPlugin({
-        configFile: join(__dirname, '../tsconfig.json')
+        configFile: path.join(__dirname, '../tsconfig.json')
       })
     ]
   },
   resolveLoader: {
-    modules: [join(__dirname, '../node_modules'), 'node_modules']
+    modules: [path.join(__dirname, '../node_modules'), 'node_modules']
   }
 };
 

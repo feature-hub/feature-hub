@@ -1,5 +1,5 @@
 // @ts-check
-const {join} = require('path');
+const path = require('path');
 const webpack = require('webpack');
 const webpackBaseConfig = require('../webpack-base-config');
 
@@ -8,7 +8,7 @@ const webpackBaseConfig = require('../webpack-base-config');
  */
 const featureAppConfig = {
   ...webpackBaseConfig,
-  entry: join(__dirname, './feature-app-outer.tsx'),
+  entry: path.join(__dirname, './feature-app-outer.tsx'),
   externals: {
     react: 'react',
     '@feature-hub/react': '@feature-hub/react'
@@ -38,7 +38,7 @@ const configs = [
   },
   {
     ...webpackBaseConfig,
-    entry: join(__dirname, './integrator.tsx'),
+    entry: path.join(__dirname, './integrator.tsx'),
     output: {
       filename: 'integrator.js',
       publicPath: '/'

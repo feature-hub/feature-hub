@@ -1,5 +1,5 @@
 // @ts-check
-const {join} = require('path');
+const path = require('path');
 const webpack = require('webpack');
 const webpackBaseConfig = require('../webpack-base-config');
 
@@ -9,7 +9,7 @@ const webpackBaseConfig = require('../webpack-base-config');
 const configs = [
   {
     ...webpackBaseConfig,
-    entry: join(__dirname, './feature-app.tsx'),
+    entry: path.join(__dirname, './feature-app.tsx'),
     output: {
       filename: 'feature-app.commonjs.js',
       libraryTarget: 'commonjs2',
@@ -19,7 +19,7 @@ const configs = [
   },
   {
     ...webpackBaseConfig,
-    entry: join(__dirname, './integrator.ts'),
+    entry: path.join(__dirname, './integrator.ts'),
     output: {
       filename: 'integrator.js',
       publicPath: '/'
