@@ -15,7 +15,7 @@ export default async function renderApp({
     moduleLoader: loadCommonJsModule,
     providedExternals: {
       react: getPkgVersion('react'),
-      '@feature-hub/react': getPkgVersion('react', true)
+      '@feature-hub/react': getPkgVersion('@feature-hub/react')
     }
   });
 
