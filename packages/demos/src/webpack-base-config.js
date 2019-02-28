@@ -42,7 +42,7 @@ const webpackBaseConfig = {
     new webpack.DefinePlugin({
       'process.env.REACT_VERSION': JSON.stringify(getPkgVersion('react')),
       'process.env.FEATURE_HUB_REACT_VERSION': JSON.stringify(
-        getPkgVersion('react', true)
+        getPkgVersion('@feature-hub/react')
       )
     })
   ]
