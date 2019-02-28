@@ -3,6 +3,7 @@ import {loadCommonJsModule} from '@feature-hub/module-loader-commonjs';
 import {FeatureAppLoader, FeatureHubContextProvider} from '@feature-hub/react';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom/server';
+import {getPkgVersion} from '../get-pkg-version';
 import {AppRendererOptions, AppRendererResult} from '../start-server';
 
 export default async function renderApp({
@@ -13,8 +14,8 @@ export default async function renderApp({
   const {featureAppManager} = createFeatureHub('test:integrator', {
     moduleLoader: loadCommonJsModule,
     providedExternals: {
-      react: '16.7.0',
-      '@feature-hub/react': '0.12.0'
+      react: getPkgVersion('react'),
+      '@feature-hub/react': getPkgVersion('@feature-hub/react')
     }
   });
 

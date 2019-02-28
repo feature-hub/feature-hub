@@ -17,9 +17,8 @@ const featureAppDefinition: FeatureAppDefinition<
   id: 's2:todomvc-main',
 
   dependencies: {
-    featureServices: {
-      'test:todomvc-todo-manager': '^1.0.0'
-    }
+    externals: {react: '^16.7.0'},
+    featureServices: {'test:todomvc-todo-manager': '^1.0.0'}
   },
 
   create: ({featureServices}) => {

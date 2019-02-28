@@ -7,7 +7,10 @@ import {todoManagerDefinition} from './todo-manager';
 
 const {featureAppManager} = createFeatureHub('test:todomvc-integrator', {
   featureServiceDefinitions: [todoManagerDefinition],
-  moduleLoader: loadAmdModule
+  moduleLoader: loadAmdModule,
+  providedExternals: {
+    react: process.env.REACT_VERSION as string
+  }
 });
 
 defineExternals({react: React});

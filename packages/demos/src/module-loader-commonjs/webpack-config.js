@@ -1,14 +1,14 @@
 // @ts-check
 const path = require('path');
 const webpack = require('webpack');
+const merge = require('webpack-merge');
 const webpackBaseConfig = require('../webpack-base-config');
 
 /**
  * @type {webpack.Configuration[]}
  */
 const configs = [
-  {
-    ...webpackBaseConfig,
+  merge.smart(webpackBaseConfig, {
     entry: path.join(__dirname, './feature-app.tsx'),
     output: {
       filename: 'feature-app.commonjs.js',
@@ -16,15 +16,14 @@ const configs = [
       publicPath: '/'
     },
     target: 'node'
-  },
-  {
-    ...webpackBaseConfig,
+  }),
+  merge.smart(webpackBaseConfig, {
     entry: path.join(__dirname, './integrator.ts'),
     output: {
       filename: 'integrator.js',
       publicPath: '/'
     }
-  }
+  })
 ];
 
 module.exports = configs;

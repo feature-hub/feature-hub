@@ -13,8 +13,8 @@ defineExternals({
 const {featureAppManager} = createFeatureHub('test:integrator', {
   moduleLoader: loadAmdModule,
   providedExternals: {
-    react: '16.7.0',
-    '@feature-hub/react': '0.12.0'
+    react: process.env.REACT_VERSION as string,
+    '@feature-hub/react': process.env.FEATURE_HUB_REACT_VERSION as string
   }
 });
 

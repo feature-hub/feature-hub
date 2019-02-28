@@ -16,8 +16,7 @@ const websiteBuildDirname = path.resolve(
  * @type {webpack.Configuration[]}
  */
 const configs = [
-  {
-    ...webpackBaseConfig,
+  merge.smart(webpackBaseConfig, {
     entry: path.join(__dirname, './header/index.ts'),
     externals: {
       react: 'react'
@@ -31,9 +30,8 @@ const configs = [
     plugins: [
       new CopyPlugin([{from: path.join(__dirname, './header/index.css')}])
     ]
-  },
-  {
-    ...webpackBaseConfig,
+  }),
+  merge.smart(webpackBaseConfig, {
     entry: path.join(__dirname, './main/index.tsx'),
     externals: {
       react: 'react'
@@ -44,7 +42,7 @@ const configs = [
       libraryTarget: 'umd',
       publicPath: '/main'
     }
-  },
+  }),
   merge.smart(webpackBaseConfig, {
     entry: path.join(__dirname, './footer/index.tsx'),
     externals: {
@@ -84,8 +82,7 @@ const configs = [
       ]
     }
   }),
-  {
-    ...webpackBaseConfig,
+  merge.smart(webpackBaseConfig, {
     entry: path.join(__dirname, './integrator.tsx'),
     output: {
       path: websiteBuildDirname,
@@ -98,7 +95,7 @@ const configs = [
         path.join(__dirname, './index.html')
       ])
     ]
-  }
+  })
 ];
 
 module.exports = configs;

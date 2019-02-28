@@ -16,9 +16,7 @@ const featureAppDefinition: FeatureAppDefinition<
   id: 'test:todomvc-header',
 
   dependencies: {
-    featureServices: {
-      'test:todomvc-todo-manager': '^1.0.0'
-    }
+    featureServices: {'test:todomvc-todo-manager': '^1.0.0'}
   },
 
   create: ({featureServices}) => {

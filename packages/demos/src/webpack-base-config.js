@@ -1,7 +1,9 @@
 // @ts-check
+
 const path = require('path');
 const TsConfigPathsPlugin = require('tsconfig-paths-webpack-plugin').default;
 const webpack = require('webpack');
+const {getPkgVersion} = require('./get-pkg-version');
 
 /**
  * @type {webpack.Configuration}
@@ -35,7 +37,15 @@ const webpackBaseConfig = {
   },
   resolveLoader: {
     modules: [path.join(__dirname, '../node_modules'), 'node_modules']
-  }
+  },
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env.REACT_VERSION': JSON.stringify(getPkgVersion('react')),
+      'process.env.FEATURE_HUB_REACT_VERSION': JSON.stringify(
+        getPkgVersion('@feature-hub/react')
+      )
+    })
+  ]
 };
 
 module.exports = webpackBaseConfig;

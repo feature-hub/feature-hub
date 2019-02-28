@@ -7,9 +7,7 @@ const featureAppDefinition: FeatureAppDefinition<ReactFeatureApp> = {
   id: 'test:hello-world',
 
   dependencies: {
-    externals: {
-      react: '^16.7.0'
-    }
+    externals: {react: '^16.7.0'}
   },
 
   create: () => ({
