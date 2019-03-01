@@ -77,9 +77,9 @@ the client.
 
 | Integrator Package | Feature App Type  | Universal SSR | Built-In Shadow DOM | Required Integrator UI Library | Supported Feature App UI Libraries |
 | ------------------ | ----------------- | ------------- | ------------------- | ------------------------------ | ---------------------------------- |
-| @feature-hub/react | React Feature App | ✅            | ❌                  | `react@^16.3.0`                | `react@^16.3.0`                    |
-|                    | DOM Feature App   | ❌            | ❌                  | `react@^16.3.0`                | ✅ all                             |
-| @feature-hub/dom   | DOM Feature App   | ❌            | ✅                  | ✅ None                        | ✅ all                             |
+| @feature-hub/react | React Feature App | ✅             | ❌                   | `react@^16.3.0`                | `react@^16.3.0`                    |
+|                    | DOM Feature App   | ❌             | ❌                   | `react@^16.3.0`                | ✅ all                              |
+| @feature-hub/dom   | DOM Feature App   | ❌             | ✅                   | ✅ None                         | ✅ all                              |
 
 ## Module Loader
 
@@ -422,9 +422,7 @@ document.querySelector('#app').appendChild(featureAppLoader);
 For more details please refer to the the
 ["Feature App Instance Configs" section](#feature-app-instance-configs).
 
-#### Slots
-
-##### `loading`
+#### `loading` Slot
 
 The `feature-app-loader` custom element renders a slot named `loading` while the
 Feature App module is loaded.
@@ -435,11 +433,11 @@ Feature App module is loaded.
 </feature-app-loader>
 ```
 
-##### `error`
+#### `error` Slot
 
 The `feature-app-loader` custom element renders a slot named `error` if the
 Feature App module could not be loaded. It also passes the slot
-[to the underlying `feature-app-container`](#error-1).
+[to the underlying `feature-app-container`](#error-slot-1).
 
 ```html
 <feature-app-loader src="https://example.com/some-feature-app.js">
@@ -508,9 +506,7 @@ document.querySelector('#app').appendChild(featureAppContainer);
 For more details please refer to the the
 ["Feature App Instance Configs" section](#feature-app-instance-configs).
 
-#### Slots
-
-##### `error`
+#### `error` Slot
 
 The `feature-app-container` custom element renders a slot named `error` if the
 Feature App could not be created or if the Feature App throws in its `attachTo`
