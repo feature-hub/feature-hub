@@ -75,11 +75,13 @@ which are also build using React on the server as well as on the client, while
 it can still integrate Feature Apps that are built using other technologies on
 the client.
 
-| Integrator Package | Feature App Type  | Universal SSR | Built-In Shadow DOM | Required Integrator UI Library | Supported Feature App UI Libraries |
-| ------------------ | ----------------- | ------------- | ------------------- | ------------------------------ | ---------------------------------- |
-| @feature-hub/react | React Feature App | ✅            | ❌                  | `react@^16.3.0`                | `react@^16.3.0`                    |
-|                    | DOM Feature App   | ❌            | ❌                  | `react@^16.3.0`                | ✅ all                             |
-| @feature-hub/dom   | DOM Feature App   | ❌            | ✅                  | ✅ None                        | ✅ all                             |
+| Integrator Package                 | @feature-hub/react |                 | @feature-hub/dom |
+| ---------------------------------- | ------------------ | --------------- | ---------------- |
+| Feature App Type                   | `ReactFeatureApp`  | `DomFeatureApp` | `DomFeatureApp`  |
+| Universal SSR                      | ✅                 | ❌              | ❌               |
+| Built-In Shadow DOM                | ❌                 | ❌              | ✅               |
+| Required Integrator UI Library     | `react@^16.3.0`    | `react@^16.3.0` | ✅ None          |
+| Supported Feature App UI Libraries | `react@^16.3.0`    | ✅ Any          | ✅ Any           |
 
 ## Module Loader
 
@@ -457,6 +459,7 @@ A Feature App can be integrated by directly providing its
 
 ```js
 const featureAppContainer = document.createElement('feature-app-container');
+
 featureAppContainer.featureAppDefinition = someFeatureAppDefinition;
 
 document.querySelector('#app').appendChild(featureAppContainer);
@@ -497,6 +500,7 @@ import {someFeatureAppDefinition} from './some-feature-app';
 
 ```js
 const featureAppContainer = document.createElement('feature-app-container');
+
 featureAppContainer.featureAppDefinition = someFeatureAppDefinition;
 featureAppLoader.instanceConfig = {scope: 'foo'};
 
@@ -514,6 +518,7 @@ method.
 
 ```js
 const featureAppContainer = document.createElement('feature-app-container');
+
 featureAppContainer.featureAppDefinition = someFeatureAppDefinition;
 featureAppContainer.innerHtml = '<p slot="error">Sorry, we messed up.</p>';
 
