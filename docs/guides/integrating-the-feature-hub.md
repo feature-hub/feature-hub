@@ -54,6 +54,33 @@ and instantiates a `FeatureAppManager` singleton instance using the
 > sorted topologically before being registered, and therefore do not need to be
 > passed in the correct order.
 
+## Choosing an Integrator Technology
+
+The Feature Hub allows for different technology choices for the integrator as
+well as for Feature Apps supported by the integrator. While it is possible to
+build a custom solution tailored to the UI frameworks or libraries of choice
+using the primitives provided by the [`@feature-hub/core`][core-api] package,
+the [`@feature-hub/react`][react-api] and [`@feature-hub/dom`][dom-api] package
+provide out-of-the-box solutions for building an integrator.
+
+The [`@feature-hub/dom`][dom-api] package uses Web Components as a basis. It
+wraps Feature Apps into a shadow DOM and doesn't rely on the presence of any big
+frontend frameworks, which makes it possible to build integrators that are lean
+in bundle size. Feature Apps can be build using any technology since they just
+have to render themselves into a provided DOM element.
+
+The [`@feature-hub/react`][react-api] package on the other hand allows for
+building an integrator using React. It has the capability to render Feature Apps
+which are also build using React on the server as well as on the client, while
+it can still integrate Feature Apps that are built using other technologies on
+the client.
+
+| Integrator Package | Feature App Type  | Universal SSR | Built-In Shadow DOM | Required Integrator UI Library | Supported Feature App UI Libraries |
+| ------------------ | ----------------- | ------------- | ------------------- | ------------------------------ | ---------------------------------- |
+| @feature-hub/react | React Feature App | ✅             | ❌                   | `react@^16.3.0`                | `react@^16.3.0`                    |
+|                    | DOM Feature App   | ❌             | ❌                   | `react@^16.3.0`                | ✅ all                              |
+| @feature-hub/dom   | DOM Feature App   | ❌             | ✅                   | ✅ None                         | ✅ all                              |
+
 ## Module Loader
 
 For the `FeatureAppManager` to be able to load Feature Apps from a remote
@@ -143,33 +170,6 @@ The same `ExternalsValidator` instance is also passed to the
 Services][feature-service-dependencies] that are [provided by Feature
 Apps][own-feature-service-definitions] which are loaded from a remote location,
 instead of being provided by the integrator.
-
-## Choosing an Integrator Technology
-
-The Feature Hub allows for different technology choices for the integrator as
-well as for Feature Apps supported by the integrator. While it is possible to
-build a custom solution tailored to the UI frameworks or libraries of choice
-using the primitives provided by the [`@feature-hub/core`][core-api] package,
-the [`@feature-hub/react`][react-api] and [`@feature-hub/dom`][dom-api] package
-provide out-of-the-box solutions for building an integrator.
-
-The [`@feature-hub/dom`][dom-api] package uses Web Components as a basis. It
-wraps Feature Apps into a shadow DOM and doesn't rely on the presence of any big
-frontend frameworks, which makes it possible to build integrators that are lean
-in bundle size. Feature Apps can be build using any technology since they just
-have to render themselves into a provided DOM element.
-
-The [`@feature-hub/react`][react-api] package on the other hand allows for
-building an integrator using React. It has the capability to render Feature Apps
-which are also build using React on the server as well as on the client, while
-it can still integrate Feature Apps that are built using other technologies on
-the client.
-
-| Integrator Package | Feature App Type  | Universal SSR | Built-In Shadow DOM | Required Integrator UI Library | Supported Feature App UI Libraries |
-| ------------------ | ----------------- | ------------- | ------------------- | ------------------------------ | ---------------------------------- |
-| @feature-hub/react | React Feature App | ✅            | ❌                  | `react@^16.3.0`                | `react@^16.3.0`                    |
-|                    | DOM Feature App   | ❌            | ❌                  | `react@^16.3.0`                | ✅ all                             |
-| @feature-hub/dom   | DOM Feature App   | ❌            | ✅                  | ✅ None                        | ✅ all                             |
 
 ## Placing Feature Apps on a Web Page Using React
 
