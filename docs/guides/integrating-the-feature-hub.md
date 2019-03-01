@@ -167,9 +167,9 @@ the client.
 
 | Integrator Package | Feature App Type  | Universal SSR | Built-In Shadow DOM | Required Integrator UI Library | Supported Feature App UI Libraries |
 | ------------------ | ----------------- | ------------- | ------------------- | ------------------------------ | ---------------------------------- |
-| @feature-hub/react | React Feature App | ✅             | ❌                   | `react@^16.3.0`                | `react@^16.3.0`                    |
-|                    | DOM Feature App   | ❌             | ❌                   | `react@^16.3.0`                | all                                |
-| @feature-hub/dom   | DOM Feature App   | ❌             | ✅                   | None                           | all                                |
+| @feature-hub/react | React Feature App | ✅            | ❌                  | `react@^16.3.0`                | `react@^16.3.0`                    |
+|                    | DOM Feature App   | ❌            | ❌                  | `react@^16.3.0`                | all                                |
+| @feature-hub/dom   | DOM Feature App   | ❌            | ✅                  | None                           | all                                |
 
 ## Placing Feature Apps on a Web Page Using React
 
