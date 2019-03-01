@@ -47,4 +47,4 @@ independently, and a single Feature Service:
   https://github.com/sinnerschrader/feature-hub/tree/master/packages/demos/src/todomvc/todo-manager
 [github-org]: https://github.com/feature-hub
 [todomvc.com]: http://todomvc.com
-[todomvc-live-demo]: https://feature-hub.io/todomvc/
+[todomvc-live-demo]: /todomvc
