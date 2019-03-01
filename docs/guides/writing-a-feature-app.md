@@ -238,7 +238,7 @@ A DOM Feature App allows for the use of arbitrary frontend technologies such as
 Vue.js, Angular or React, and is [placed on the web page using Web
 Components][placing-feature-apps-on-a-web-page-using-web-components]. The
 Feature App will automatically be enclosed in its own shadow DOM. Its
-definition's create method returns a Feature App instance with an `attachTo`
+definition's `create` method returns a Feature App instance with an `attachTo`
 method that accepts a DOM container element:
 
 ```js
