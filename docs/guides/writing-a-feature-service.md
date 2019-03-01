@@ -52,7 +52,9 @@ The `dependencies` map can contain two types of required dependencies:
 
    Feature Service dependencies are declared with their ID as key, and a [semver
    version range][semver] as value, e.g.
-   `{'acme:other-feature-service': '^2.0.0'}`.
+   `{'acme:other-feature-service': '^2.0.0'}`. Since
+   [Feature Services only provide the latest minor version for each major version](#providing-a-versioned-api),
+   a [caret range][semver-caret-range] should be used here.
 
 1. With `dependencies.externals` all required external dependencies are
    declared. This may include [shared npm
@@ -168,7 +170,7 @@ const myFeatureServiceDefinition = {
 
 Let's say after the first release of this Feature Service, the Feature Service
 provider noticed that there is no way to retrieve the current count. Therefore,
-they introduce the `getCount` method in version `1.1`:
+they introduce the `getCount` method in version `1.1.0`:
 
 ```js
 const myFeatureServiceDefinition = {
@@ -210,7 +212,8 @@ Furthermore, it is possible to add deprecation warnings, and later remove
 deprecated APIs.
 
 In our example the Feature Service provider decides to rename the `plus` /
-`minus` methods to `increment` / `decrement` and adds deprecation warnings:
+`minus` methods to `increment` / `decrement` in a new version `2.0.0`, and adds
+deprecation warnings to the methods of version `1.1.0`:
 
 ```js
 const myFeatureServiceDefinition = {
@@ -247,6 +250,12 @@ const myFeatureServiceDefinition = {
   }
 };
 ```
+
+> Note that a Feature Service needs to provide only one implementation per major
+> version, since minor versions only add new features, and thus the latest minor
+> version also satisfies the consumers of all previous minor versions of the
+> same major version. For this reason, consumers should specify [caret
+> ranges][semver-caret-range] for their [dependencies](#dependencies).
 
 ## Managing Consumer-specific State
 
@@ -311,6 +320,8 @@ const myFeatureServiceDefinition = {
 [providing-configs]: /docs/guides/integrating-the-feature-hub#providing-configs
 [sharing-npm-dependencies]: /docs/guides/sharing-npm-dependencies
 [semver]: https://semver.org
+[semver-caret-range]:
+  https://docs.npmjs.com/misc/semver#caret-ranges-123-025-004
 [own-feature-service-definitions]:
   /docs/guides/writing-a-feature-app#ownfeatureservicedefinitions
 [issue-245]: https://github.com/sinnerschrader/feature-hub/issues/245
