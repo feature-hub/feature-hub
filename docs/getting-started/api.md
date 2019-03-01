@@ -36,3 +36,8 @@ server-side rendered.
 ## [`@feature-hub/async-ssr-manager`](/@feature-hub/async-ssr-manager)
 
 A Feature Service to manage asynchronous server-side rendering.
+
+## [`@feature-hub/serialized-state-manager`](/@feature-hub/serialized-state-manager)
+
+A Feature Service for managing the state transfer to the client when rendering
+on the server.
