@@ -75,13 +75,13 @@ which are also build using React on the server as well as on the client, while
 it can still integrate Feature Apps that are built using other technologies on
 the client.
 
-| Integrator Package                 | @feature-hub/react |                 | @feature-hub/dom |
-| ---------------------------------- | ------------------ | --------------- | ---------------- |
-| Feature App Type                   | `ReactFeatureApp`  | `DomFeatureApp` | `DomFeatureApp`  |
-| Universal SSR                      | ✅                 | ❌              | ❌               |
-| Built-In Shadow DOM                | ❌                 | ❌              | ✅               |
-| Required Integrator UI Library     | `react@^16.3.0`    | `react@^16.3.0` | ✅ None          |
-| Supported Feature App UI Libraries | `react@^16.3.0`    | ✅ Any          | ✅ Any           |
+|                                        | @feature-hub/react |                 | @feature-hub/dom |
+| -------------------------------------- | ------------------ | --------------- | ---------------- |
+| **Feature App Type**                   | `ReactFeatureApp`  | `DomFeatureApp` | `DomFeatureApp`  |
+| **Universal SSR**                      | ✅                 | ❌              | ❌               |
+| **Built-In Shadow DOM**                | ❌                 | ❌              | ✅               |
+| **Required Integrator UI Library**     | `react@^16.3.0`    | `react@^16.3.0` | ✅ None          |
+| **Supported Feature App UI Libraries** | `react@^16.3.0`    | ✅ Any          | ✅ Any           |
 
 ## Module Loader
 
