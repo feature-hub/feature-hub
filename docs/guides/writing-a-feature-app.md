@@ -228,10 +228,10 @@ const myFeatureAppDefinition = {
 
 ## Implementing a Feature App for an Integrator That Uses Web Components
 
-If the targeted integrator is using the [`@feature-hub/dom`](dom-api) package, a
+If the targeted integrator is using the [`@feature-hub/dom`][dom-api] package, a
 Feature App needs to implement the `DomFeatureApp` interface that the package
 defines. Since this interface is compatible with the `DomFeatureApp` interface
-defined by [`@feature-hub/react`](react-api), this Feature App will also be
+defined by [`@feature-hub/react`][react-api], this Feature App will also be
 compatible with an integrator that uses React.
 
 A DOM Feature App allows for the use of arbitrary frontend technologies such as
@@ -264,6 +264,7 @@ const myFeatureAppDefinition = {
 [placing-feature-apps-on-a-web-page-using-web-components]:
   /docs/guides/integrating-the-feature-hub/#placing-feature-apps-on-a-web-page-using-web-components
 [providing-configs]: /docs/guides/integrating-the-feature-hub#providing-configs
+[dom-api]: /@feature-hub/dom/
 [react-api]: /@feature-hub/react/
 [react-feature-app]: /docs/guides/writing-a-feature-app#react-feature-app
 [sharing-npm-dependencies]: /docs/guides/sharing-npm-dependencies

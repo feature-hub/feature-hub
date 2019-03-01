@@ -148,16 +148,16 @@ instead of being provided by the integrator.
 
 The Feature Hub allows for different technology choices for the integrator as
 well as for Feature Apps that the specific integrator supports. While it is
-possbile to build a custom solution tailored to the UI frameworks or libraries
+possibly to build a custom solution tailored to the UI frameworks or libraries
 of choice using the primitives provided by the [`@feature-hub/core`][core-api]
 package, the [`@feature-hub/react`][react-api] and [`@feature-hub/dom`][dom-api]
 package provide out-of-the-box solutions for building an integrator.
 
 The [`@feature-hub/dom`][dom-api] package uses Web Components as a basis. It
 wraps Feature Apps into a shadow DOM and doesn't rely on the presence of any big
-frontend frameworks, which makes it possible to build integrators lean in bundle
-size. Feature Apps can be build using any technology since they just have to
-render themselves into a provided DOM element.
+frontend frameworks, which makes it possible to build integrators that are lean
+in bundle size. Feature Apps can be build using any technology since they just
+have to render themselves into a provided DOM element.
 
 The [`@feature-hub/react`][react-api] package on the other hand allows for
 building an integrator using React. It has the capability to render Feature Apps
