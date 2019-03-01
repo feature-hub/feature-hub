@@ -28,7 +28,9 @@ export class TodoMvcHeader implements DomFeatureApp {
       const input = event.target as HTMLInputElement;
       const title = input.value.trim();
 
-      this.todoManager.add(title);
+      if (title) {
+        this.todoManager.add(title);
+      }
 
       input.value = '';
     }
