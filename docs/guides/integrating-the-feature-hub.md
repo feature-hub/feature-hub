@@ -18,8 +18,8 @@ multiple Feature Apps that share state through Feature Services:
 1. Register a set of Feature Services at the `FeatureServiceRegistry`.
 1. Instantiate a `FeatureAppManager` singleton instance using the
    `FeatureServiceRegistry`.
-1. Place Feature Apps on a web page, e.g. [using
-   React][placing-feature-apps-on-a-web-page-using-react].
+1. Place Feature Apps on a web page, e.g.
+   [using React](#placing-feature-apps-on-a-web-page-using-react).
 
 To simplify the first three steps, an integrator can use the `createFeatureHub`
 function that is also provided by the [`@feature-hub/core`][core-api] package:
@@ -49,7 +49,7 @@ and instantiates a `FeatureAppManager` singleton instance using the
 `FeatureHub` object created using the `createFeatureHub` function.
 
 > The integrator needs a self-selected but unique consumer ID to register or
-> [consume Feature Services][consuming-feature-services] (in the example above
+> [consume Feature Services](#consuming-feature-services) (in the example above
 > it is `'acme:integrator'`). The `featureServiceDefinitions` are automatically
 > sorted topologically before being registered, and therefore do not need to be
 > passed in the correct order.
@@ -147,23 +147,23 @@ instead of being provided by the integrator.
 ## Choosing an Integrator Technology
 
 The Feature Hub allows for different technology choices for the integrator as
-well as for Feature Apps the specific integrator supports. While it is possbile
-to build a custom solution tailored to the UI frameworks or libraries of choice
-using the primitives provided by the [`@feature-hub/core`][core-api] package,
-the [`@feature-hub/react`][react-api] and [`@feature-hub/dom`][dom-api] package
-provide out of the box solutions for building an integrator.
+well as for Feature Apps that the specific integrator supports. While it is
+possbile to build a custom solution tailored to the UI frameworks or libraries
+of choice using the primitives provided by the [`@feature-hub/core`][core-api]
+package, the [`@feature-hub/react`][react-api] and [`@feature-hub/dom`][dom-api]
+package provide out-of-the-box solutions for building an integrator.
 
 The [`@feature-hub/dom`][dom-api] package uses Web Components as a basis. It
-encapsulates Feature Apps into a shadom DOM and doesn't rely on the presence of
-any big frontend frameworks which makes it possible to build integrators lean in
-bundle size. Feature Apps can be build using any technology since they just have
-to render themselves into a provided DOM element.
+wraps Feature Apps into a shadow DOM and doesn't rely on the presence of any big
+frontend frameworks, which makes it possible to build integrators lean in bundle
+size. Feature Apps can be build using any technology since they just have to
+render themselves into a provided DOM element.
 
 The [`@feature-hub/react`][react-api] package on the other hand allows for
 building an integrator using React. It has the capability to render Feature Apps
 which are also build using React on the server as well as on the client, while
-it can still integrate Feature Apps built using other technologies on the
-client-side.
+it can still integrate Feature Apps that are built using other technologies on
+the client.
 
 | Integrator Package | Feature App Type  | Universal SSR | Built-In Shadow DOM | Required Integrator UI Library | Supported Feature App UI Libraries |
 | ------------------ | ----------------- | ------------- | ------------------- | ------------------------------ | ---------------------------------- |
@@ -276,8 +276,8 @@ instance can be provided:
 />
 ```
 
-For more details please refer to the the ["Feature App Instance Configs"
-section][feature-app-instance-configs].
+For more details please refer to the the
+["Feature App Instance Configs" section](#feature-app-instance-configs).
 
 ### React Feature App Container
 
@@ -333,8 +333,8 @@ instance can be provided:
 />
 ```
 
-For more details please refer to the the ["Feature App Instance Configs"
-section][feature-app-instance-configs].
+For more details please refer to the the
+["Feature App Instance Configs" section](#feature-app-instance-configs).
 
 ### Error Handling
 
@@ -371,7 +371,7 @@ Apps from a remote location.
 #### `src`
 
 A Feature App can be loaded and integrated by defining a `src` attribute which
-is the URL of its client module bundle:
+is the URL of its module bundle:
 
 ```html
 <feature-app-loader
@@ -379,8 +379,8 @@ is the URL of its client module bundle:
 ></feature-app-loader>
 ```
 
-> If the integrator has configured the AMD module loader on the client, the
-> Feature App to be loaded via `src` must be provided as an [AMD module][amd].
+> If the integrator has configured the AMD module loader, the Feature App to be
+> loaded via `src` must be provided as an [AMD module][amd].
 
 #### `idSpecifier`
 
@@ -407,25 +407,25 @@ integrator:
 
 #### `instanceConfig`
 
-With the `instanceConfig` prop, a config object for a specific Feature App
+With the `instanceConfig` property, a config object for a specific Feature App
 instance can be provided:
 
 ```js
 const featureAppLoader = document.createElement('feature-app-loader');
 featureAppLoader.setAttribute('src', 'https://example.com/some-feature-app.js');
-featureAppLoader.instanceConfig = {{scope: 'foo'}};
+featureAppLoader.instanceConfig = {scope: 'foo'};
 
 document.querySelector('#app').appendChild(featureAppLoader);
 ```
 
-For more details please refer to the the ["Feature App Instance Configs"
-section][feature-app-instance-configs].
+For more details please refer to the the
+["Feature App Instance Configs" section](#feature-app-instance-configs).
 
 #### Slots
 
 ##### `loading`
 
-The `feature-app-loader` element renders a slot named `loading` while the
+The `feature-app-loader` custom element renders a slot named `loading` while the
 Feature App module is loaded.
 
 ```html
@@ -436,9 +436,9 @@ Feature App module is loaded.
 
 ##### `error`
 
-The `feature-app-loader` element renders a slot named `error` if the Feature App
-module could not be loaded. It also passes slot [to the underlying
-`feature-app-container`][feature-app-container-error-slot].
+The `feature-app-loader` custom element renders a slot named `error` if the
+Feature App module could not be loaded. It also passes the slot
+[to the underlying `feature-app-container`](#error-1).
 
 ```html
 <feature-app-loader src="https://example.com/some-feature-app.js">
@@ -448,8 +448,8 @@ module could not be loaded. It also passes slot [to the underlying
 
 ### `feature-app-container`
 
-The `feature-app-container` component allows the integrator to bundle Feature
-Apps instead of loading them from a remote location.
+The `feature-app-container` custom element allows the integrator to bundle
+Feature Apps instead of loading them from a remote location.
 
 #### `featureAppDefinition`
 
@@ -471,6 +471,7 @@ integrator:
 
 ```js
 const mainFeatureAppContainer = document.createElement('feature-app-container');
+
 mainFeatureAppContainer.featureAppDefinition = someFeatureAppDefinition;
 mainFeatureAppContainer.setAttribute('idSpecifier', 'main');
 
@@ -479,6 +480,7 @@ document.querySelector('main').appendChild(mainFeatureAppContainer);
 const asideFeatureAppContainer = document.createElement(
   'feature-app-container'
 );
+
 asideFeatureAppContainer.featureAppDefinition = someFeatureAppDefinition;
 asideFeatureAppContainer.setAttribute('idSpecifier', 'aside');
 
@@ -487,26 +489,31 @@ document.querySelector('aside').appendChild(asideFeatureAppContainer);
 
 #### `instanceConfig`
 
-With the `instanceConfig` prop, a config object for a specific Feature App
+With the `instanceConfig` property, a config object for a specific Feature App
 instance can be provided:
+
+```js
+import {someFeatureAppDefinition} from './some-feature-app';
+```
 
 ```js
 const featureAppContainer = document.createElement('feature-app-container');
 featureAppContainer.featureAppDefinition = someFeatureAppDefinition;
-featureAppLoader.instanceConfig = {{scope: 'foo'}};
+featureAppLoader.instanceConfig = {scope: 'foo'};
 
 document.querySelector('#app').appendChild(featureAppContainer);
 ```
 
-For more details please refer to the the ["Feature App Instance Configs"
-section][feature-app-instance-configs].
+For more details please refer to the the
+["Feature App Instance Configs" section](#feature-app-instance-configs).
 
 #### Slots
 
 ##### `error`
 
-The `feature-app-container` element renders a slot named `error` if the Feature
-App could not be created or if the Feature App throws in its `attachTo` method.
+The `feature-app-container` custom element renders a slot named `error` if the
+Feature App could not be created or if the Feature App throws in its `attachTo`
+method.
 
 ```js
 const featureAppContainer = document.createElement('feature-app-container');
@@ -567,8 +574,9 @@ const someFeatureAppDefinition = {
 
 When a Feature App needs a configuration that is intended to be specific for a
 given instance, the `instanceConfig` prop can be set on the React
-`FeatureAppLoader`, `feature-app-loader` element, React `FeatureAppContainer`,
-or the `feature-app-container` element for a given Feature App instance, e.g.:
+`FeatureAppLoader`, `feature-app-loader` custom element, React
+`FeatureAppContainer`, or the `feature-app-container` custom element for a given
+Feature App instance, e.g.:
 
 ```jsx
 <FeatureAppLoader
@@ -634,19 +642,11 @@ someFeatureService2.foo(42);
 [module-loader-amd-api]: /@feature-hub/module-loader-amd/
 [module-loader-commonjs-api]: /@feature-hub/module-loader-commonjs/
 [react-api]: /@feature-hub/react/
-[consuming-feature-services]:
-  /docs/guides/integrating-the-feature-hub/#consuming-feature-services
-[feature-app-container-error-slot]:
-  /docs/guides/integrating-the-feature-hub/#error-1
 [feature-app-dependencies]: /docs/guides/writing-a-feature-app#dependencies
-[feature-app-instance-configs]:
-  /docs/guides/integrating-the-feature-hub/#feature-app-instance-configs
 [feature-service-dependencies]:
   /docs/guides/writing-a-feature-service#dependencies
 [implementing-a-feature-app-using-react]:
   /docs/guides/writing-a-feature-app#implementing-a-feature-app-using-react
 [own-feature-service-definitions]:
   /docs/guides/writing-a-feature-app#ownfeatureservicedefinitions
-[placing-feature-apps-on-a-web-page-using-react]:
-  /docs/guides/integrating-the-feature-hub/#placing-feature-apps-on-a-web-page-using-react
 [sharing-npm-dependencies]: /docs/guides/sharing-npm-dependencies

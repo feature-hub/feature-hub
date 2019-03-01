@@ -228,16 +228,18 @@ const myFeatureAppDefinition = {
 
 ## Implementing a Feature App for an Integrator That Uses Web Components
 
-If the targeted integrator is using the [`@feature-hub/dom`](dom-api) package a
-Feature App needs to implement the `DomFeatureApp` interface the package
+If the targeted integrator is using the [`@feature-hub/dom`](dom-api) package, a
+Feature App needs to implement the `DomFeatureApp` interface that the package
 defines. Since this interface is compatible with the `DomFeatureApp` interface
-defined by [`@feature-hub/react`](react-api) this Feature App will also be
-compatible with an integrator using React.
+defined by [`@feature-hub/react`](react-api), this Feature App will also be
+compatible with an integrator that uses React.
 
-A DOM Feature App allows fot the use of arbitrary frontend technologies such as
-Vue.js, Angular or React and is [placed on the web page using Web
+A DOM Feature App allows for the use of arbitrary frontend technologies such as
+Vue.js, Angular or React, and is [placed on the web page using Web
 Components][placing-feature-apps-on-a-web-page-using-web-components]. The
-Feature App will automatically be enclosed in its own shadow DOM.
+Feature App will automatically be enclosed in its own shadow DOM. Its
+definition's create method returns a Feature App instance with an `attachTo`
+method that accepts a DOM container element:
 
 ```js
 const myFeatureAppDefinition = {
