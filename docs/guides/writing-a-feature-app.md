@@ -234,8 +234,8 @@ defines. Since this interface is compatible with the `DomFeatureApp` interface
 defined by [`@feature-hub/react`][react-api], this Feature App will also be
 compatible with an integrator that uses React.
 
-A DOM Feature App allows for the use of arbitrary frontend technologies such as
-Vue.js, Angular or React, and is [placed on the web page using Web
+A DOM Feature App allows the use of arbitrary frontend technologies such as
+Vue.js, Angular, or React, and is [placed on the web page using Web
 Components][placing-feature-apps-on-a-web-page-using-web-components]. The
 Feature App will automatically be enclosed in its own shadow DOM. Its
 definition's `create` method returns a Feature App instance with an `attachTo`

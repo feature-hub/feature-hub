@@ -147,11 +147,11 @@ instead of being provided by the integrator.
 ## Choosing an Integrator Technology
 
 The Feature Hub allows for different technology choices for the integrator as
-well as for Feature Apps that the specific integrator supports. While it is
-possible to build a custom solution tailored to the UI frameworks or libraries
-of choice using the primitives provided by the [`@feature-hub/core`][core-api]
-package, the [`@feature-hub/react`][react-api] and [`@feature-hub/dom`][dom-api]
-package provide out-of-the-box solutions for building an integrator.
+well as for Feature Apps supported by the integrator. While it is possible to
+build a custom solution tailored to the UI frameworks or libraries of choice
+using the primitives provided by the [`@feature-hub/core`][core-api] package,
+the [`@feature-hub/react`][react-api] and [`@feature-hub/dom`][dom-api] package
+provide out-of-the-box solutions for building an integrator.
 
 The [`@feature-hub/dom`][dom-api] package uses Web Components as a basis. It
 wraps Feature Apps into a shadow DOM and doesn't rely on the presence of any big
@@ -412,6 +412,7 @@ instance can be provided:
 
 ```js
 const featureAppLoader = document.createElement('feature-app-loader');
+
 featureAppLoader.setAttribute('src', 'https://example.com/some-feature-app.js');
 featureAppLoader.instanceConfig = {scope: 'foo'};
 
