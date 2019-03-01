@@ -174,7 +174,7 @@ Feature Services by the integrator.
 > If the Feature Service to be registered has already been registered, the new
 > Feature Service is ignored and a warning is emitted.
 
-## Implementing a Feature App Using React
+## Implementing a Feature App for an Integrator That Uses React
 
 The [`@feature-hub/react`][react-api] package defines two interfaces,
 `ReactFeatureApp` and `DomFeatureApp`. A Feature App that implements one of
@@ -226,12 +226,41 @@ const myFeatureAppDefinition = {
 };
 ```
 
+## Implementing a Feature App for an Integrator That Uses Web Components
+
+If the targeted integrator is using the [`@feature-hub/dom`](dom-api) package a
+Feature App needs to implement the `DomFeatureApp` interface the package
+defines. Since this interface is compatible with the `DomFeatureApp` interface
+defined by [`@feature-hub/react`](react-api) this Feature App will also be
+compatible with an integrator using React.
+
+A DOM Feature App allows fot the use of arbitrary frontend technologies such as
+Vue.js, Angular or React and is [placed on the web page using Web
+Components][placing-feature-apps-on-a-web-page-using-web-components]. The
+Feature App will automatically be enclosed in its own shadow DOM.
+
+```js
+const myFeatureAppDefinition = {
+  id: 'acme:my-feature-app',
+
+  create(env) {
+    return {
+      attachTo(containerDiv) {
+        containerDiv.innerText = 'Foo';
+      }
+    };
+  }
+};
+```
+
 [dom-feature-app]: /docs/guides/writing-a-feature-app#dom-feature-app
 [feature-service-binder]:
   /docs/guides/writing-a-feature-service#feature-service-binder
 [idspecifier]: /docs/guides/integrating-the-feature-hub#idspecifier
 [placing-feature-apps-on-a-web-page-using-react]:
   /docs/guides/integrating-the-feature-hub#placing-feature-apps-on-a-web-page-using-react
+[placing-feature-apps-on-a-web-page-using-web-components]:
+  /docs/guides/integrating-the-feature-hub/#placing-feature-apps-on-a-web-page-using-web-components
 [providing-configs]: /docs/guides/integrating-the-feature-hub#providing-configs
 [react-api]: /@feature-hub/react/
 [react-feature-app]: /docs/guides/writing-a-feature-app#react-feature-app
