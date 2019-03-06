@@ -3,18 +3,22 @@
 import {Stubbed, stubMethods} from 'jest-stub-methods';
 import {FeatureHubOptions, createFeatureHub} from '../create-feature-hub';
 import {FeatureAppDefinition, FeatureAppManager} from '../feature-app-manager';
-import {FeatureServiceRegistry} from '../feature-service-registry';
+import {
+  FeatureServiceProviderDefinition,
+  FeatureServiceRegistry,
+  SharedFeatureService
+} from '../feature-service-registry';
+import {Logger} from '../logger';
+
+type MockObject<T extends {}> = {[key in keyof T]: T[key] & jest.Mock};
 
 describe('createFeatureHub()', () => {
   let featureHubOptions: FeatureHubOptions;
-  let stubbedConsole: Stubbed<Console>;
+  let customLogger: MockObject<Logger>;
 
-  beforeAll(() => {
-    stubbedConsole = stubMethods(console);
-  });
-
-  afterAll(() => {
-    stubbedConsole.restore();
+  beforeEach(() => {
+    customLogger = {info: jest.fn()} as MockObject<Logger>;
+    featureHubOptions = {logger: customLogger};
   });
 
   describe('without any options', () => {
@@ -55,7 +59,11 @@ describe('createFeatureHub()', () => {
 
       beforeEach(() => {
         mockModuleLoader = jest.fn(async () => Promise.resolve());
-        featureHubOptions = {moduleLoader: mockModuleLoader};
+
+        featureHubOptions = {
+          ...featureHubOptions,
+          moduleLoader: mockModuleLoader
+        };
       });
 
       it('uses the module loader to load the Feature App definition', () => {
@@ -90,7 +98,10 @@ describe('createFeatureHub()', () => {
     });
 
     it('creates a Feature App', () => {
-      const {featureAppManager} = createFeatureHub('test:integrator');
+      const {featureAppManager} = createFeatureHub(
+        'test:integrator',
+        featureHubOptions
+      );
 
       const {featureApp} = featureAppManager.getFeatureAppScope(
         mockFeatureAppDefinition
@@ -168,6 +179,7 @@ describe('createFeatureHub()', () => {
       }));
 
       featureHubOptions = {
+        ...featureHubOptions,
         featureServiceDefinitions: [
           {
             id: 'test:feature-service',
@@ -251,6 +263,69 @@ describe('createFeatureHub()', () => {
         expect(featureServices['test:feature-service']).toBe(
           mockFeatureServiceV1
         );
+      });
+    });
+  });
+
+  describe('logging', () => {
+    let featureAppDefinition: FeatureAppDefinition<unknown>;
+
+    let featureServiceDefinitions: FeatureServiceProviderDefinition<
+      SharedFeatureService
+    >[];
+
+    let expectedLogCalls: string[][];
+
+    beforeEach(() => {
+      featureAppDefinition = {
+        id: 'test:feature-app',
+        create: jest.fn(() => ({}))
+      };
+
+      featureServiceDefinitions = [
+        {id: 'test:feature-service', create: () => ({'1.0.0': jest.fn()})}
+      ];
+
+      expectedLogCalls = [
+        [
+          'The Feature Service "test:feature-service" has been successfully registered by consumer "test:integrator".'
+        ],
+        ['The Feature App "test:feature-app" has been successfully created.']
+      ];
+    });
+
+    describe('with a custom logger', () => {
+      it('logs messages using the custom logger', () => {
+        const {featureAppManager} = createFeatureHub('test:integrator', {
+          featureServiceDefinitions,
+          logger: customLogger
+        });
+
+        featureAppManager.getFeatureAppScope(featureAppDefinition);
+
+        expect(customLogger.info.mock.calls).toEqual(expectedLogCalls);
+      });
+    });
+
+    describe('without a custom logger', () => {
+      let stubbedConsole: Stubbed<Console>;
+
+      beforeEach(() => {
+        stubbedConsole = stubMethods(console);
+      });
+
+      afterEach(() => {
+        stubbedConsole.restore();
+      });
+
+      it('logs messages using the console', () => {
+        const {featureAppManager} = createFeatureHub('test:integrator', {
+          featureServiceDefinitions
+        });
+
+        featureAppManager.getFeatureAppScope(featureAppDefinition);
+
+        expect(stubbedConsole.stub.info.mock.calls).toEqual(expectedLogCalls);
       });
     });
   });

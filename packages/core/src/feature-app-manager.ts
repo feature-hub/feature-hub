@@ -9,6 +9,7 @@ import {
 } from './feature-service-registry';
 import {createUid} from './internal/create-uid';
 import {isFeatureAppModule} from './internal/is-feature-app-module';
+import {Logger} from './logger';
 
 export interface FeatureAppEnvironment<
   TConfig,
@@ -108,6 +109,11 @@ export interface FeatureAppManagerOptions {
    * whether a Feature App is compatible with the integration environment.
    */
   readonly externalsValidator?: ExternalsValidator;
+
+  /**
+   * A custom logger that shall be used instead of `console`.
+   */
+  readonly logger?: Logger;
 }
 
 type FeatureAppModuleUrl = string;
@@ -131,10 +137,14 @@ export class FeatureAppManager {
     FeatureAppScope<unknown>
   >();
 
+  private readonly logger: Logger;
+
   public constructor(
     private readonly featureServiceRegistry: FeatureServiceRegistry,
     private readonly options: FeatureAppManagerOptions = {}
-  ) {}
+  ) {
+    this.logger = options.logger || console;
+  }
 
   /**
    * Load a {@link FeatureAppDefinition} using the module loader the
@@ -249,7 +259,7 @@ export class FeatureAppManager {
           );
         }
 
-        console.info(
+        this.logger.info(
           `The Feature App module at the url ${JSON.stringify(
             url
           )} has been successfully loaded.`
@@ -307,7 +317,7 @@ export class FeatureAppManager {
       idSpecifier
     });
 
-    console.info(
+    this.logger.info(
       `The Feature App ${JSON.stringify(
         featureAppUid
       )} has been successfully created.`
