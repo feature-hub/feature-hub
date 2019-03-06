@@ -1,4 +1,8 @@
 .cache
+.prettierignore
+.prettierrc.js
+.vscode/extensions.json
+.vscode/settings.json
 coverage
 lerna-debug.log
 lib

@@ -1,8 +1,0 @@
-.cache
-CHANGELOG.md
-coverage
-lib
-node_modules
-package.json
-packages/website/build
-packages/website/i18n
