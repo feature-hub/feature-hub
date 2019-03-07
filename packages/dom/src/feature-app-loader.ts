@@ -1,4 +1,4 @@
-import {FeatureAppManager} from '@feature-hub/core';
+import {FeatureAppManager, Logger} from '@feature-hub/core';
 import {LitElement, html, property} from 'lit-element';
 import {TemplateResult} from 'lit-html';
 import {until} from 'lit-html/directives/until';
@@ -36,19 +36,29 @@ export interface FeatureAppLoaderElement extends HTMLElement {
   instanceConfig?: unknown;
 }
 
+export interface DefineFeatureAppLoaderOptions {
+  /**
+   * A custom logger that shall be used instead of `console`.
+   */
+  readonly logger?: Logger;
+}
+
 /**
  * Define a custom element implementing the {@link FeatureAppLoaderElement}
  * interface under the name `feature-app-loader` at the
  * `CustomElementRegistry`.
  */
 export function defineFeatureAppLoader(
-  featureAppManager: FeatureAppManager
+  featureAppManager: FeatureAppManager,
+  options: DefineFeatureAppLoaderOptions = {}
 ): void {
   if (customElements.get(elementName)) {
     return;
   }
 
-  defineFeatureAppContainer(featureAppManager);
+  const {logger = console} = options;
+
+  defineFeatureAppContainer(featureAppManager, options);
 
   class FeatureAppLoader extends LitElement implements FeatureAppLoaderElement {
     @property({type: String})
@@ -91,7 +101,7 @@ export function defineFeatureAppLoader(
           </feature-app-container>
         `;
       } catch (error) {
-        console.error(error);
+        logger.error(error);
 
         return html`
           <slot name="error"></slot>
