@@ -1,0 +1,11 @@
+{
+  "name": "@feature-hub/rcgen",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "dependencies": {
+    "@rcgen/core": "^0.1.0",
+    "@rcgen/filetypes": "^0.1.0",
+    "@rcgen/patchers": "^0.1.0"
+  }
+}

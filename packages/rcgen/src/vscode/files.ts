@@ -1,11 +1,7 @@
-// @ts-check
+import {File} from '@rcgen/core';
+import {createJsonFiletype} from '@rcgen/filetypes';
 
-const {createJsonFiletype} = require('@rcgen/filetypes');
-
-/**
- * @type {import('@rcgen/core').File<object>}
- */
-const vscodeExtensionsFile = {
+export const vscodeExtensionsFile: File<object> = {
   filename: '.vscode/extensions.json',
   filetype: createJsonFiletype({
     contentSchema: {
@@ -18,17 +14,10 @@ const vscodeExtensionsFile = {
   initialContent: {recommendations: []}
 };
 
-exports.vscodeExtensionsFile = vscodeExtensionsFile;
-
-/**
- * @type {import('@rcgen/core').File<object>}
- */
-const vscodeSettingsFile = {
+export const vscodeSettingsFile: File<object> = {
   filename: '.vscode/settings.json',
   filetype: createJsonFiletype(),
   initialContent: {}
 };
 
-exports.vscodeSettingsFile = vscodeSettingsFile;
-
-exports.vscodeFiles = [vscodeExtensionsFile, vscodeSettingsFile];
+export const vscodeFiles = [vscodeExtensionsFile, vscodeSettingsFile];
