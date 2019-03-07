@@ -1,3 +1,7 @@
+export type MockObject<T extends object> = {
+  readonly [key in keyof T]: T[key] & jest.Mock
+};
+
 export const logger = {
   trace: jest.fn(),
   debug: jest.fn(),
