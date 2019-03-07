@@ -7,6 +7,7 @@ import {
   DependencyGraph,
   toposortDependencies
 } from './internal/toposort-dependencies';
+import {Logger} from './logger';
 
 /**
  * A map of Feature Services with their ID as key and a semver-compatible
@@ -114,6 +115,11 @@ export interface FeatureServiceRegistryOptions {
    * with the integration environment.
    */
   readonly externalsValidator?: ExternalsValidator;
+
+  /**
+   * A custom logger that shall be used instead of `console`.
+   */
+  readonly logger?: Logger;
 }
 
 type ProviderId = string;
@@ -171,27 +177,6 @@ function createProviderDefinitionsById(
   return providerDefinitionsById;
 }
 
-function unbindBinding(
-  binding: FeatureServiceBinding<unknown>,
-  providerId: string,
-  consumerUid: string
-): void {
-  try {
-    if (binding.unbind) {
-      binding.unbind();
-    }
-
-    console.info(
-      Messages.featureServiceSuccessfullyUnbound(providerId, consumerUid)
-    );
-  } catch (error) {
-    console.error(
-      Messages.featureServiceCouldNotBeUnbound(providerId, consumerUid),
-      error
-    );
-  }
-}
-
 /**
  * The FeatureServiceRegistry provides Feature Services to dependent consumers.
  * The integrator should instantiate a singleton instance of the registry.
@@ -204,9 +189,13 @@ export class FeatureServiceRegistry {
 
   private readonly consumerUids = new Set<string>();
 
+  private readonly logger: Logger;
+
   public constructor(
     private readonly options: FeatureServiceRegistryOptions = {}
-  ) {}
+  ) {
+    this.logger = options.logger || console;
+  }
 
   /**
    * Register a set of Feature Services to make them available for binding to
@@ -294,7 +283,7 @@ export class FeatureServiceRegistry {
         continue;
       }
 
-      console.info(
+      this.logger.info(
         Messages.featureServiceSuccessfullyBound(providerId, consumerUid)
       );
 
@@ -317,7 +306,20 @@ export class FeatureServiceRegistry {
       this.consumerUids.delete(consumerUid);
 
       for (const [providerId, binding] of bindings.entries()) {
-        unbindBinding(binding, providerId, consumerUid);
+        try {
+          if (binding.unbind) {
+            binding.unbind();
+          }
+
+          this.logger.info(
+            Messages.featureServiceSuccessfullyUnbound(providerId, consumerUid)
+          );
+        } catch (error) {
+          this.logger.error(
+            Messages.featureServiceCouldNotBeUnbound(providerId, consumerUid),
+            error
+          );
+        }
       }
     };
 
@@ -333,7 +335,7 @@ export class FeatureServiceRegistry {
 
     if (this.sharedFeatureServices.has(providerId)) {
       if (providerDefinitionsById.has(providerId)) {
-        console.warn(
+        this.logger.warn(
           Messages.featureServiceAlreadyRegistered(providerId, consumerId)
         );
       }
@@ -357,7 +359,7 @@ export class FeatureServiceRegistry {
 
       this.sharedFeatureServices.set(providerId, sharedFeatureService);
 
-      console.info(
+      this.logger.info(
         Messages.featureServiceSuccessfullyRegistered(providerId, consumerId)
       );
     }
@@ -377,7 +379,7 @@ export class FeatureServiceRegistry {
       );
 
       if (optional) {
-        console.info(message);
+        this.logger.info(message);
 
         return;
       }
@@ -395,7 +397,7 @@ export class FeatureServiceRegistry {
       );
 
       if (optional) {
-        console.info(message);
+        this.logger.info(message);
 
         return;
       }
@@ -421,7 +423,7 @@ export class FeatureServiceRegistry {
       );
 
       if (optional) {
-        console.info(message);
+        this.logger.info(message);
 
         return;
       }

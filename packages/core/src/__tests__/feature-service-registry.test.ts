@@ -8,6 +8,7 @@ import {
   FeatureServiceRegistry
 } from '..';
 import {ExternalsValidator} from '../externals-validator';
+import {Logger} from '../logger';
 
 interface MockProviderDefinition extends FeatureServiceConsumerDefinition {
   create: jest.Mock;
@@ -21,6 +22,8 @@ interface MockFeatureServiceBinding
   extends FeatureServiceBinding<MockFeatureService> {
   unbind?: jest.Mock;
 }
+
+type MockObject<T extends {}> = {[key in keyof T]: T[key] & jest.Mock};
 
 describe('FeatureServiceRegistry', () => {
   let featureServiceRegistry: FeatureServiceRegistry;
@@ -37,14 +40,20 @@ describe('FeatureServiceRegistry', () => {
   let featureServiceA: MockFeatureService;
   let featureServiceB: MockFeatureService;
   let featureServiceC: MockFeatureService;
-  let stubbedConsole: Stubbed<Console>;
+  let customLogger: MockObject<Logger>;
 
   beforeEach(() => {
+    customLogger = {
+      info: jest.fn(),
+      warn: jest.fn(),
+      error: jest.fn()
+    } as MockObject<Logger>;
+
     mockExternalsValidator = ({validate: jest.fn()} as Partial<
       ExternalsValidator
     >) as ExternalsValidator;
 
-    featureServiceRegistry = new FeatureServiceRegistry();
+    featureServiceRegistry = new FeatureServiceRegistry({logger: customLogger});
 
     featureServiceA = {kind: 'featureServiceA'};
     bindingA = {featureService: featureServiceA};
@@ -74,12 +83,6 @@ describe('FeatureServiceRegistry', () => {
       dependencies: {featureServices: {a: '^1.0.0', b: '1.0.0'}},
       create: jest.fn(() => ({'2.0.0': binderC}))
     };
-
-    stubbedConsole = stubMethods(console);
-  });
-
-  afterEach(() => {
-    stubbedConsole.restore();
   });
 
   describe('#registerFeatureServices', () => {
@@ -109,7 +112,7 @@ describe('FeatureServiceRegistry', () => {
 
       expect(binderC.mock.calls).toEqual([]);
 
-      expect(stubbedConsole.stub.info.mock.calls).toEqual([
+      expect(customLogger.info.mock.calls).toEqual([
         [
           'The Feature Service "a" has been successfully registered by consumer "test".'
         ],
@@ -132,7 +135,11 @@ describe('FeatureServiceRegistry', () => {
     }
     beforeEach(() => {
       configs = {a: {kind: 'a'}, c: {kind: 'c'}};
-      featureServiceRegistry = new FeatureServiceRegistry({configs});
+
+      featureServiceRegistry = new FeatureServiceRegistry({
+        configs,
+        logger: customLogger
+      });
     });
 
     it('registers the Feature Services "a", "b", "c" one after the other', () => {
@@ -177,13 +184,13 @@ describe('FeatureServiceRegistry', () => {
 
       expect(binderA.mock.calls).toEqual([]);
 
-      expect(stubbedConsole.stub.info.mock.calls).toEqual([
+      expect(customLogger.info.mock.calls).toEqual([
         [
           'The Feature Service "a" has been successfully registered by consumer "test".'
         ]
       ]);
 
-      expect(stubbedConsole.stub.warn.mock.calls).toEqual([
+      expect(customLogger.warn.mock.calls).toEqual([
         [
           'The already registered Feature Service "a" could not be re-registered by consumer "test".'
         ]
@@ -217,7 +224,7 @@ describe('FeatureServiceRegistry', () => {
         )
       ).not.toThrowError();
 
-      expect(stubbedConsole.stub.info.mock.calls).toEqual([
+      expect(customLogger.info.mock.calls).toEqual([
         [
           'The optional Feature Service "a" is not registered and therefore could not be bound to consumer "b".'
         ],
@@ -260,7 +267,7 @@ describe('FeatureServiceRegistry', () => {
         )
       ).not.toThrowError();
 
-      expect(stubbedConsole.stub.info.mock.calls).toEqual([
+      expect(customLogger.info.mock.calls).toEqual([
         [
           'The Feature Service "a" has been successfully registered by consumer "test".'
         ],
@@ -306,7 +313,7 @@ describe('FeatureServiceRegistry', () => {
         )
       ).not.toThrowError();
 
-      expect(stubbedConsole.stub.info.mock.calls).toEqual([
+      expect(customLogger.info.mock.calls).toEqual([
         [
           'The Feature Service "a" has been successfully registered by consumer "test".'
         ],
@@ -364,7 +371,8 @@ describe('FeatureServiceRegistry', () => {
     describe('with an ExternalsValidator provided to the FeatureServiceRegistry', () => {
       beforeEach(() => {
         featureServiceRegistry = new FeatureServiceRegistry({
-          externalsValidator: mockExternalsValidator
+          externalsValidator: mockExternalsValidator,
+          logger: customLogger
         });
       });
 
@@ -482,7 +490,9 @@ describe('FeatureServiceRegistry', () => {
 
     describe('for a Feature Service consumer with an id specifier and dependencies', () => {
       it('creates a bindings object with Feature Services', () => {
-        featureServiceRegistry = new FeatureServiceRegistry();
+        featureServiceRegistry = new FeatureServiceRegistry({
+          logger: customLogger
+        });
 
         featureServiceRegistry.registerFeatureServices(
           [providerDefinitionA],
@@ -507,7 +517,9 @@ describe('FeatureServiceRegistry', () => {
 
     describe('for a Feature Service consumer without an id specifier and dependencies', () => {
       it('creates a bindings object with Feature Services', () => {
-        featureServiceRegistry = new FeatureServiceRegistry();
+        featureServiceRegistry = new FeatureServiceRegistry({
+          logger: customLogger
+        });
 
         featureServiceRegistry.registerFeatureServices(
           [providerDefinitionA],
@@ -533,7 +545,9 @@ describe('FeatureServiceRegistry', () => {
     describe('for a Feature Service consumer and two optional dependencies', () => {
       describe('with the first dependency missing', () => {
         it('creates a bindings object with Feature Services', () => {
-          featureServiceRegistry = new FeatureServiceRegistry();
+          featureServiceRegistry = new FeatureServiceRegistry({
+            logger: customLogger
+          });
 
           featureServiceRegistry.registerFeatureServices(
             [providerDefinitionA],
@@ -558,7 +572,9 @@ describe('FeatureServiceRegistry', () => {
 
       describe('with the second dependency missing', () => {
         it('creates a bindings object with Feature Services', () => {
-          featureServiceRegistry = new FeatureServiceRegistry();
+          featureServiceRegistry = new FeatureServiceRegistry({
+            logger: customLogger
+          });
 
           featureServiceRegistry.registerFeatureServices(
             [providerDefinitionA],
@@ -583,7 +599,9 @@ describe('FeatureServiceRegistry', () => {
 
       describe('with no dependency missing', () => {
         it('creates a bindings object with Feature Services', () => {
-          featureServiceRegistry = new FeatureServiceRegistry();
+          featureServiceRegistry = new FeatureServiceRegistry({
+            logger: customLogger
+          });
 
           featureServiceRegistry.registerFeatureServices(
             [providerDefinitionA, providerDefinitionB],
@@ -661,7 +679,7 @@ describe('FeatureServiceRegistry', () => {
         expect(bindingA.unbind).toHaveBeenCalledTimes(1);
         expect(bindingC.unbind).toHaveBeenCalledTimes(1);
 
-        expect(stubbedConsole.stub.info.mock.calls).toEqual([
+        expect(customLogger.info.mock.calls).toEqual([
           [
             'The Feature Service "a" has been successfully registered by consumer "test".'
           ],
@@ -697,7 +715,7 @@ describe('FeatureServiceRegistry', () => {
           ]
         ]);
 
-        expect(stubbedConsole.stub.error.mock.calls).toEqual([
+        expect(customLogger.error.mock.calls).toEqual([
           [
             'The required Feature Service "a" could not be unbound from consumer "foo".',
             mockError
@@ -734,6 +752,32 @@ describe('FeatureServiceRegistry', () => {
           )
         );
       });
+    });
+  });
+
+  describe('without a custom logger', () => {
+    let stubbedConsole: Stubbed<Console>;
+
+    beforeEach(() => {
+      stubbedConsole = stubMethods(console);
+      featureServiceRegistry = new FeatureServiceRegistry();
+    });
+
+    afterEach(() => {
+      stubbedConsole.restore();
+    });
+
+    it('logs messages using the console', () => {
+      featureServiceRegistry.registerFeatureServices(
+        [providerDefinitionA],
+        'test'
+      );
+
+      expect(stubbedConsole.stub.info.mock.calls).toEqual([
+        [
+          'The Feature Service "a" has been successfully registered by consumer "test".'
+        ]
+      ]);
     });
   });
 });

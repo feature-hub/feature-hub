@@ -13,6 +13,7 @@ import {
   FeatureServices,
   SharedFeatureService
 } from './feature-service-registry';
+import {Logger} from './logger';
 
 export interface FeatureHub {
   /**
@@ -72,6 +73,11 @@ export interface FeatureHubOptions {
    * `@feature-hub/module-loader-commonjs` package).
    */
   readonly moduleLoader?: ModuleLoader;
+
+  /**
+   * A custom logger that shall be used instead of `console`.
+   */
+  readonly logger?: Logger;
 }
 
 /**
@@ -93,7 +99,8 @@ export function createFeatureHub(
     featureServiceDefinitions,
     featureServiceDependencies,
     providedExternals,
-    moduleLoader
+    moduleLoader,
+    logger
   } = options;
 
   let externalsValidator: ExternalsValidator | undefined;
@@ -104,7 +111,8 @@ export function createFeatureHub(
 
   const featureServiceRegistry = new FeatureServiceRegistry({
     configs: featureServiceConfigs,
-    externalsValidator
+    externalsValidator,
+    logger
   });
 
   const integratorDefinition: FeatureServiceConsumerDefinition = {
@@ -122,7 +130,8 @@ export function createFeatureHub(
   const featureAppManager = new FeatureAppManager(featureServiceRegistry, {
     configs: featureAppConfigs,
     externalsValidator,
-    moduleLoader
+    moduleLoader,
+    logger
   });
 
   const {featureServices} = featureServiceRegistry.bindFeatureServices(

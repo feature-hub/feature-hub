@@ -10,11 +10,14 @@ import {
 } from '..';
 import {ExternalsValidator} from '../externals-validator';
 import {FeatureAppModule} from '../internal/is-feature-app-module';
+import {Logger} from '../logger';
 
 interface MockFeatureServiceRegistry extends FeatureServiceRegistry {
   registerFeatureServices: jest.Mock;
   bindFeatureServices: jest.Mock;
 }
+
+type MockObject<T extends {}> = {[key in keyof T]: T[key] & jest.Mock};
 
 describe('FeatureAppManager', () => {
   let featureAppManager: FeatureAppManager;
@@ -27,10 +30,10 @@ describe('FeatureAppManager', () => {
   let mockFeatureAppModule: FeatureAppModule | undefined;
   let mockFeatureAppCreate: jest.Mock;
   let mockFeatureApp: {};
-  let stubbedConsole: Stubbed<Console>;
+  let customLogger: MockObject<Logger>;
 
   beforeEach(() => {
-    stubbedConsole = stubMethods(console);
+    customLogger = {info: jest.fn()} as MockObject<Logger>;
 
     mockFeatureServicesBindingUnbind = jest.fn();
 
@@ -53,16 +56,15 @@ describe('FeatureAppManager', () => {
       ExternalsValidator
     >) as ExternalsValidator;
 
-    featureAppManager = new FeatureAppManager(mockFeatureServiceRegistry);
-  });
-
-  afterEach(() => {
-    stubbedConsole.restore();
+    featureAppManager = new FeatureAppManager(mockFeatureServiceRegistry, {
+      logger: customLogger
+    });
   });
 
   describe('#getAsyncFeatureAppDefinition', () => {
     beforeEach(() => {
       featureAppManager = new FeatureAppManager(mockFeatureServiceRegistry, {
+        logger: customLogger,
         moduleLoader: mockModuleLoader
       });
     });
@@ -72,11 +74,11 @@ describe('FeatureAppManager', () => {
         '/example.js'
       );
 
-      expect(stubbedConsole.stub.info.mock.calls).toEqual([]);
+      expect(customLogger.info.mock.calls).toEqual([]);
 
       await asyncFeatureAppDefinition.promise;
 
-      expect(stubbedConsole.stub.info.mock.calls).toEqual([
+      expect(customLogger.info.mock.calls).toEqual([
         [
           'The Feature App module at the url "/example.js" has been successfully loaded.'
         ]
@@ -130,7 +132,9 @@ describe('FeatureAppManager', () => {
       });
 
       it('throws an error if no module loader was provided', () => {
-        featureAppManager = new FeatureAppManager(mockFeatureServiceRegistry);
+        featureAppManager = new FeatureAppManager(mockFeatureServiceRegistry, {
+          logger: customLogger
+        });
 
         expect(() =>
           featureAppManager.getAsyncFeatureAppDefinition('/example.js')
@@ -158,7 +162,8 @@ describe('FeatureAppManager', () => {
       const instanceConfig = 'testInstanceConfig';
 
       featureAppManager = new FeatureAppManager(mockFeatureServiceRegistry, {
-        configs: {[mockFeatureAppDefinition.id]: config}
+        configs: {[mockFeatureAppDefinition.id]: config},
+        logger: customLogger
       });
 
       featureAppManager.getFeatureAppScope(mockFeatureAppDefinition, {
@@ -201,7 +206,8 @@ describe('FeatureAppManager', () => {
     describe('with an ExternalsValidator provided to the FeatureAppManager', () => {
       beforeEach(() => {
         featureAppManager = new FeatureAppManager(mockFeatureServiceRegistry, {
-          externalsValidator: mockExternalsValidator
+          externalsValidator: mockExternalsValidator,
+          logger: customLogger
         });
       });
 
@@ -357,7 +363,7 @@ describe('FeatureAppManager', () => {
         it('logs an info message after creation', () => {
           featureAppManager.getFeatureAppScope(mockFeatureAppDefinition);
 
-          expect(stubbedConsole.stub.info.mock.calls).toEqual([
+          expect(customLogger.info.mock.calls).toEqual([
             ['The Feature App "testId" has been successfully created.']
           ]);
         });
@@ -393,7 +399,7 @@ describe('FeatureAppManager', () => {
             idSpecifier: 'testIdSpecifier'
           });
 
-          expect(stubbedConsole.stub.info.mock.calls).toEqual([
+          expect(customLogger.info.mock.calls).toEqual([
             [
               'The Feature App "testId:testIdSpecifier" has been successfully created.'
             ]
@@ -505,7 +511,8 @@ describe('FeatureAppManager', () => {
   describe('#preloadFeatureApp', () => {
     beforeEach(() => {
       featureAppManager = new FeatureAppManager(mockFeatureServiceRegistry, {
-        moduleLoader: mockModuleLoader
+        moduleLoader: mockModuleLoader,
+        logger: customLogger
       });
     });
 
@@ -520,11 +527,34 @@ describe('FeatureAppManager', () => {
     });
 
     it('throws an error if no module loader was provided', () => {
-      featureAppManager = new FeatureAppManager(mockFeatureServiceRegistry);
+      featureAppManager = new FeatureAppManager(mockFeatureServiceRegistry, {
+        logger: customLogger
+      });
 
       expect(() =>
         featureAppManager.getAsyncFeatureAppDefinition('/example.js')
       ).toThrowError(new Error('No module loader provided.'));
+    });
+  });
+
+  describe('without a custom logger', () => {
+    let stubbedConsole: Stubbed<Console>;
+
+    beforeEach(() => {
+      stubbedConsole = stubMethods(console);
+      featureAppManager = new FeatureAppManager(mockFeatureServiceRegistry);
+    });
+
+    afterEach(() => {
+      stubbedConsole.restore();
+    });
+
+    it('logs messages using the console', () => {
+      featureAppManager.getFeatureAppScope(mockFeatureAppDefinition);
+
+      expect(stubbedConsole.stub.info.mock.calls).toEqual([
+        ['The Feature App "testId" has been successfully created.']
+      ]);
     });
   });
 });
