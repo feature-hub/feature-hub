@@ -8,17 +8,13 @@ import {
   FeatureServiceRegistry,
   SharedFeatureService
 } from '../feature-service-registry';
-import {Logger} from '../logger';
-
-type MockObject<T extends {}> = {[key in keyof T]: T[key] & jest.Mock};
+import {logger} from './logger';
 
 describe('createFeatureHub()', () => {
   let featureHubOptions: FeatureHubOptions;
-  let customLogger: MockObject<Logger>;
 
   beforeEach(() => {
-    customLogger = {info: jest.fn()} as MockObject<Logger>;
-    featureHubOptions = {logger: customLogger};
+    featureHubOptions = {logger};
   });
 
   describe('without any options', () => {
@@ -298,12 +294,12 @@ describe('createFeatureHub()', () => {
       it('logs messages using the custom logger', () => {
         const {featureAppManager} = createFeatureHub('test:integrator', {
           featureServiceDefinitions,
-          logger: customLogger
+          logger
         });
 
         featureAppManager.getFeatureAppScope(featureAppDefinition);
 
-        expect(customLogger.info.mock.calls).toEqual(expectedLogCalls);
+        expect(logger.info.mock.calls).toEqual(expectedLogCalls);
       });
     });
 
