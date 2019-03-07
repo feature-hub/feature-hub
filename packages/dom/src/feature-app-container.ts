@@ -1,7 +1,8 @@
 import {
   FeatureAppDefinition,
   FeatureAppManager,
-  FeatureAppScope
+  FeatureAppScope,
+  Logger
 } from '@feature-hub/core';
 import {LitElement, html, property} from 'lit-element';
 import {TemplateResult} from 'lit-html';
@@ -48,17 +49,27 @@ export interface FeatureAppContainerElement extends HTMLElement {
 
 const elementName = 'feature-app-container';
 
+export interface DefineFeatureAppContainerOptions {
+  /**
+   * A custom logger that shall be used instead of `console`.
+   */
+  readonly logger?: Logger;
+}
+
 /**
  * Define a custom element implementing the {@link FeatureAppContainerElement}
  * interface under the name `feature-app-container` at the
  * `CustomElementRegistry`.
  */
 export function defineFeatureAppContainer(
-  featureAppManager: FeatureAppManager
+  featureAppManager: FeatureAppManager,
+  options: DefineFeatureAppContainerOptions = {}
 ): void {
   if (customElements.get(elementName)) {
     return;
   }
+
+  const {logger = console} = options;
 
   class FeatureAppContainer extends LitElement
     implements FeatureAppContainerElement {
@@ -94,7 +105,7 @@ export function defineFeatureAppContainer(
           ${element}
         `;
       } catch (error) {
-        console.error(error);
+        logger.error(error);
 
         return html`
           <slot name="error"></slot>
