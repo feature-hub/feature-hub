@@ -10,14 +10,12 @@ import {
 } from '..';
 import {ExternalsValidator} from '../externals-validator';
 import {FeatureAppModule} from '../internal/is-feature-app-module';
-import {Logger} from '../logger';
+import {logger} from './logger';
 
 interface MockFeatureServiceRegistry extends FeatureServiceRegistry {
   registerFeatureServices: jest.Mock;
   bindFeatureServices: jest.Mock;
 }
-
-type MockObject<T extends {}> = {[key in keyof T]: T[key] & jest.Mock};
 
 describe('FeatureAppManager', () => {
   let featureAppManager: FeatureAppManager;
@@ -30,11 +28,8 @@ describe('FeatureAppManager', () => {
   let mockFeatureAppModule: FeatureAppModule | undefined;
   let mockFeatureAppCreate: jest.Mock;
   let mockFeatureApp: {};
-  let customLogger: MockObject<Logger>;
 
   beforeEach(() => {
-    customLogger = {info: jest.fn()} as MockObject<Logger>;
-
     mockFeatureServicesBindingUnbind = jest.fn();
 
     mockFeatureServicesBinding = {
@@ -57,14 +52,14 @@ describe('FeatureAppManager', () => {
     >) as ExternalsValidator;
 
     featureAppManager = new FeatureAppManager(mockFeatureServiceRegistry, {
-      logger: customLogger
+      logger
     });
   });
 
   describe('#getAsyncFeatureAppDefinition', () => {
     beforeEach(() => {
       featureAppManager = new FeatureAppManager(mockFeatureServiceRegistry, {
-        logger: customLogger,
+        logger,
         moduleLoader: mockModuleLoader
       });
     });
@@ -74,11 +69,11 @@ describe('FeatureAppManager', () => {
         '/example.js'
       );
 
-      expect(customLogger.info.mock.calls).toEqual([]);
+      expect(logger.info.mock.calls).toEqual([]);
 
       await asyncFeatureAppDefinition.promise;
 
-      expect(customLogger.info.mock.calls).toEqual([
+      expect(logger.info.mock.calls).toEqual([
         [
           'The Feature App module at the url "/example.js" has been successfully loaded.'
         ]
@@ -133,7 +128,7 @@ describe('FeatureAppManager', () => {
 
       it('throws an error if no module loader was provided', () => {
         featureAppManager = new FeatureAppManager(mockFeatureServiceRegistry, {
-          logger: customLogger
+          logger
         });
 
         expect(() =>
@@ -163,7 +158,7 @@ describe('FeatureAppManager', () => {
 
       featureAppManager = new FeatureAppManager(mockFeatureServiceRegistry, {
         configs: {[mockFeatureAppDefinition.id]: config},
-        logger: customLogger
+        logger
       });
 
       featureAppManager.getFeatureAppScope(mockFeatureAppDefinition, {
@@ -207,7 +202,7 @@ describe('FeatureAppManager', () => {
       beforeEach(() => {
         featureAppManager = new FeatureAppManager(mockFeatureServiceRegistry, {
           externalsValidator: mockExternalsValidator,
-          logger: customLogger
+          logger
         });
       });
 
@@ -363,7 +358,7 @@ describe('FeatureAppManager', () => {
         it('logs an info message after creation', () => {
           featureAppManager.getFeatureAppScope(mockFeatureAppDefinition);
 
-          expect(customLogger.info.mock.calls).toEqual([
+          expect(logger.info.mock.calls).toEqual([
             ['The Feature App "testId" has been successfully created.']
           ]);
         });
@@ -399,7 +394,7 @@ describe('FeatureAppManager', () => {
             idSpecifier: 'testIdSpecifier'
           });
 
-          expect(customLogger.info.mock.calls).toEqual([
+          expect(logger.info.mock.calls).toEqual([
             [
               'The Feature App "testId:testIdSpecifier" has been successfully created.'
             ]
@@ -512,7 +507,7 @@ describe('FeatureAppManager', () => {
     beforeEach(() => {
       featureAppManager = new FeatureAppManager(mockFeatureServiceRegistry, {
         moduleLoader: mockModuleLoader,
-        logger: customLogger
+        logger
       });
     });
 
@@ -528,7 +523,7 @@ describe('FeatureAppManager', () => {
 
     it('throws an error if no module loader was provided', () => {
       featureAppManager = new FeatureAppManager(mockFeatureServiceRegistry, {
-        logger: customLogger
+        logger
       });
 
       expect(() =>
