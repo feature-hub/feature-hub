@@ -63,11 +63,13 @@ export interface DefineFeatureAppContainerOptions {
  */
 export function defineFeatureAppContainer(
   featureAppManager: FeatureAppManager,
-  {logger = console}: DefineFeatureAppContainerOptions = {}
+  options: DefineFeatureAppContainerOptions = {}
 ): void {
   if (customElements.get(elementName)) {
     return;
   }
+
+  const {logger = console} = options;
 
   class FeatureAppContainer extends LitElement
     implements FeatureAppContainerElement {

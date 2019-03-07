@@ -50,13 +50,15 @@ export interface DefineFeatureAppLoaderOptions {
  */
 export function defineFeatureAppLoader(
   featureAppManager: FeatureAppManager,
-  {logger = console}: DefineFeatureAppLoaderOptions = {}
+  options: DefineFeatureAppLoaderOptions = {}
 ): void {
   if (customElements.get(elementName)) {
     return;
   }
 
-  defineFeatureAppContainer(featureAppManager, {logger});
+  const {logger = console} = options;
+
+  defineFeatureAppContainer(featureAppManager, options);
 
   class FeatureAppLoader extends LitElement implements FeatureAppLoaderElement {
     @property({type: String})
