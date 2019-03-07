@@ -127,10 +127,7 @@ describe('FeatureServiceRegistry', () => {
     beforeEach(() => {
       configs = {a: {kind: 'a'}, c: {kind: 'c'}};
 
-      featureServiceRegistry = new FeatureServiceRegistry({
-        configs,
-        logger
-      });
+      featureServiceRegistry = new FeatureServiceRegistry({configs, logger});
     });
 
     it('registers the Feature Services "a", "b", "c" one after the other', () => {
@@ -481,9 +478,7 @@ describe('FeatureServiceRegistry', () => {
 
     describe('for a Feature Service consumer with an id specifier and dependencies', () => {
       it('creates a bindings object with Feature Services', () => {
-        featureServiceRegistry = new FeatureServiceRegistry({
-          logger
-        });
+        featureServiceRegistry = new FeatureServiceRegistry({logger});
 
         featureServiceRegistry.registerFeatureServices(
           [providerDefinitionA],
@@ -508,9 +503,7 @@ describe('FeatureServiceRegistry', () => {
 
     describe('for a Feature Service consumer without an id specifier and dependencies', () => {
       it('creates a bindings object with Feature Services', () => {
-        featureServiceRegistry = new FeatureServiceRegistry({
-          logger
-        });
+        featureServiceRegistry = new FeatureServiceRegistry({logger});
 
         featureServiceRegistry.registerFeatureServices(
           [providerDefinitionA],
@@ -536,9 +529,7 @@ describe('FeatureServiceRegistry', () => {
     describe('for a Feature Service consumer and two optional dependencies', () => {
       describe('with the first dependency missing', () => {
         it('creates a bindings object with Feature Services', () => {
-          featureServiceRegistry = new FeatureServiceRegistry({
-            logger
-          });
+          featureServiceRegistry = new FeatureServiceRegistry({logger});
 
           featureServiceRegistry.registerFeatureServices(
             [providerDefinitionA],
@@ -563,9 +554,7 @@ describe('FeatureServiceRegistry', () => {
 
       describe('with the second dependency missing', () => {
         it('creates a bindings object with Feature Services', () => {
-          featureServiceRegistry = new FeatureServiceRegistry({
-            logger
-          });
+          featureServiceRegistry = new FeatureServiceRegistry({logger});
 
           featureServiceRegistry.registerFeatureServices(
             [providerDefinitionA],
@@ -590,9 +579,7 @@ describe('FeatureServiceRegistry', () => {
 
       describe('with no dependency missing', () => {
         it('creates a bindings object with Feature Services', () => {
-          featureServiceRegistry = new FeatureServiceRegistry({
-            logger
-          });
+          featureServiceRegistry = new FeatureServiceRegistry({logger});
 
           featureServiceRegistry.registerFeatureServices(
             [providerDefinitionA, providerDefinitionB],
