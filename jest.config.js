@@ -9,7 +9,8 @@ module.exports = {
     // Covered by the integration test 'integrator-dom'
     '!**/packages/dom/src/**/*.{ts,tsx}',
     // Covered by the integration test 'module-loader-amd'
-    '!**/packages/module-loader-amd/src/index.ts'
+    '!**/packages/module-loader-amd/src/index.ts',
+    '!**/packages/rcgen/src/**/*.{ts,tsx}'
   ],
   coverageThreshold: {
     global: {branches: 100, functions: 100, lines: 100, statements: 100}
