@@ -4,8 +4,10 @@
   "private": true,
   "license": "MIT",
   "dependencies": {
-    "@rcgen/core": "^0.1.0",
-    "@rcgen/filetypes": "^0.1.0",
-    "@rcgen/patchers": "^0.1.0"
+    "@rcgen/core": "^0.2.0",
+    "@rcgen/filetypes": "^0.2.0",
+    "@rcgen/patchers": "^0.2.0",
+    "@schemastore/prettierrc": "^0.0.2",
+    "sync-request": "^6.0.0"
   }
 }

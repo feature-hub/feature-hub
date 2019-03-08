@@ -1,9 +1,17 @@
 import {File} from '@rcgen/core';
 import {createJsonFiletype, createLinesFiletype} from '@rcgen/filetypes';
+import {SchemaForPrettierrc} from '@schemastore/prettierrc';
+import request from 'sync-request';
 
-export const prettierConfigFile: File<object> = {
+export const prettierConfigFile: File<SchemaForPrettierrc> = {
   filename: '.prettierrc.json',
-  filetype: createJsonFiletype(),
+  filetype: createJsonFiletype({
+    contentSchema: JSON.parse(
+      request('GET', 'http://json.schemastore.org/prettierrc')
+        .getBody()
+        .toString()
+    )
+  }),
   initialContent: {},
   conflictingFilenames: [
     '.prettierrc',
