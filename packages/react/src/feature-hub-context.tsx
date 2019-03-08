@@ -1,18 +1,26 @@
 import {AsyncSsrManagerV1} from '@feature-hub/async-ssr-manager';
-import {FeatureAppManager} from '@feature-hub/core';
+import {FeatureAppManager, Logger} from '@feature-hub/core';
 import * as React from 'react';
 
-export interface FeatureHubContextValue {
+type SomeRequired<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>> &
+  Required<Pick<T, K>>;
+
+export interface FeatureHubContextProviderValue {
   /**
    * The `FeatureAppManager` singleton instance.
    */
-  featureAppManager: FeatureAppManager;
+  readonly featureAppManager: FeatureAppManager;
+
+  /**
+   * A custom logger that shall be used instead of `console`.
+   */
+  readonly logger?: Logger;
 
   /**
    * The Async SSR Manager Feature Service that is bound to the integrator. It
    * is only provided on the server.
    */
-  asyncSsrManager?: AsyncSsrManagerV1;
+  readonly asyncSsrManager?: AsyncSsrManagerV1;
 
   /**
    * A callback that the integrator provides on the server, mainly for the
@@ -26,13 +34,20 @@ export interface FeatureHubContextValue {
   addUrlForHydration?(url: string): void;
 }
 
+export type FeatureHubContextValue = FeatureHubContextProviderValue;
+
+export type FeatureHubContextConsumerValue = SomeRequired<
+  FeatureHubContextProviderValue,
+  'logger'
+>;
+
 const dummyDefaultFeatureHubContextValue = {};
 
 const noFeatureHubContextValueErrorMessage =
   'No Feature Hub context was provided! There are two possible causes: 1.) No FeatureHubContextProvider was rendered in the React tree. 2.) A Feature App that renders itself a FeatureAppLoader or a FeatureAppContainer did not declare @feature-hub/react as an external package.';
 
 const FeatureHubContext = React.createContext(
-  dummyDefaultFeatureHubContextValue as FeatureHubContextValue
+  dummyDefaultFeatureHubContextValue as FeatureHubContextProviderValue
 );
 
 /**
@@ -50,15 +65,18 @@ export const FeatureHubContextProvider = FeatureHubContext.Provider;
  * {@link FeatureAppLoader} and {@link FeatureAppContainer}.
  */
 export const FeatureHubContextConsumer = (
-  props: React.ConsumerProps<FeatureHubContextValue>
+  props: React.ConsumerProps<FeatureHubContextConsumerValue>
 ) => (
   <FeatureHubContext.Consumer>
-    {value => {
-      if (value === dummyDefaultFeatureHubContextValue) {
+    {featureHubContextValue => {
+      if (featureHubContextValue === dummyDefaultFeatureHubContextValue) {
         throw new Error(noFeatureHubContextValueErrorMessage);
       }
 
-      return props.children(value);
+      // Provide `console` as the default logger.
+      const {logger = console, ...rest} = featureHubContextValue;
+
+      return props.children({logger, ...rest});
     }}
   </FeatureHubContext.Consumer>
 );
