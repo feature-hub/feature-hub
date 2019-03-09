@@ -3,9 +3,9 @@ import {createLinesFiletype} from '@rcgen/filetypes';
 import {merge} from '@rcgen/patchers';
 import {
   ManifestEnhancer,
-  enhanceFiles,
-  enhancePatchers
-} from './enhance-manifest';
+  mergeManifestFiles,
+  mergeManifestPatchers
+} from './core';
 
 export const gitIgnoreFile: File<string[]> = {
   filename: '.gitignore',
@@ -13,10 +13,10 @@ export const gitIgnoreFile: File<string[]> = {
   initialContent: []
 };
 
-export function gitIgnore(...filenames: string[]): ManifestEnhancer {
-  return enhancePatchers(merge(gitIgnoreFile.filename, filenames));
+export function mergeGitIgnore(...filenames: string[]): ManifestEnhancer {
+  return mergeManifestPatchers(merge(gitIgnoreFile.filename, filenames));
 }
 
-export function git(): ManifestEnhancer {
-  return enhanceFiles(gitIgnoreFile);
+export function useGit(): ManifestEnhancer {
+  return mergeManifestFiles(gitIgnoreFile);
 }

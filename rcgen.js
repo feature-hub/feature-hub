@@ -1,24 +1,23 @@
 // @ts-check
 
-const {enhanceManifest} = require('@feature-hub/rcgen/src/enhance-manifest');
-const {format} = require('@feature-hub/rcgen/src/format');
-const {git, gitIgnore} = require('@feature-hub/rcgen/src/git');
+const {enhanceManifest} = require('@feature-hub/rcgen/src/core');
+const {mergeFormat} = require('@feature-hub/rcgen/src/format');
+const {mergeGitIgnore, useGit} = require('@feature-hub/rcgen/src/git');
 const {
-  prettier,
-  prettierConfig,
-  prettierIgnore
+  mergePrettierConfig,
+  mergePrettierIgnore,
+  usePrettier
 } = require('@feature-hub/rcgen/src/prettier');
 const {
-  vscode,
-  vscodeExtensionsRecommendations,
-  vscodeFilesExclude,
-  vscodeSearchExclude
+  mergeVscodeExtensionsRecommendations,
+  mergeVscodeFilesExclude,
+  mergeVscodeSearchExclude,
+  useVscode
 } = require('@feature-hub/rcgen/src/vscode');
 
 exports.default = enhanceManifest(
-  format(),
-  git(),
-  gitIgnore(
+  useGit(),
+  mergeGitIgnore(
     '.cache',
     'coverage',
     'lerna-debug.log',
@@ -31,13 +30,13 @@ exports.default = enhanceManifest(
     'todo.tasks',
     'yarn-error.log'
   ),
-  prettier(),
-  prettierConfig({
+  usePrettier(),
+  mergePrettierConfig({
     bracketSpacing: false,
     proseWrap: 'always',
     singleQuote: true
   }),
-  prettierIgnore(
+  mergePrettierIgnore(
     '.cache',
     'CHANGELOG.md',
     'coverage',
@@ -47,14 +46,14 @@ exports.default = enhanceManifest(
     'packages/website/build',
     'packages/website/i18n'
   ),
-  vscode(),
-  vscodeExtensionsRecommendations(
+  useVscode(),
+  mergeVscodeExtensionsRecommendations(
     'EditorConfig.EditorConfig',
     'ms-vscode.vscode-typescript-tslint-plugin',
     'unional.vscode-sort-package-json',
     'wallabyjs.wallaby-vscode'
   ),
-  vscodeFilesExclude(
+  mergeVscodeFilesExclude(
     '**/.cache',
     '**/coverage',
     '**/lerna-debug.log',
@@ -66,7 +65,7 @@ exports.default = enhanceManifest(
     '**/packages/website/i18n',
     '**/yarn-error.log'
   ),
-  vscodeSearchExclude(
+  mergeVscodeSearchExclude(
     '**/.cache',
     '**/CHANGELOG.md',
     '**/coverage',
@@ -79,5 +78,6 @@ exports.default = enhanceManifest(
     '**/packages/website/i18n',
     '**/yarn-error.log',
     '**/yarn.lock'
-  )
+  ),
+  mergeFormat()
 )();

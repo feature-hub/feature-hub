@@ -3,11 +3,11 @@ import {createJsonFiletype} from '@rcgen/filetypes';
 import {merge} from '@rcgen/patchers';
 import {
   ManifestEnhancer,
-  enhanceFiles,
   enhanceManifest,
-  enhancePatchers
-} from './enhance-manifest';
-import {gitIgnore} from './git';
+  mergeManifestFiles,
+  mergeManifestPatchers
+} from './core';
+import {mergeGitIgnore} from './git';
 
 export const vscodeExtensionsFile: File<object> = {
   filename: '.vscode/extensions.json',
@@ -28,12 +28,14 @@ export const vscodeSettingsFile: File<object> = {
   initialContent: {}
 };
 
-export function vscodeSettings(settings: object): ManifestEnhancer {
-  return enhancePatchers(merge(vscodeSettingsFile.filename, settings));
+export function mergeVscodeSettings(settings: object): ManifestEnhancer {
+  return mergeManifestPatchers(merge(vscodeSettingsFile.filename, settings));
 }
 
-export function vscodeSearchExclude(...filenames: string[]): ManifestEnhancer {
-  return enhancePatchers(
+export function mergeVscodeSearchExclude(
+  ...filenames: string[]
+): ManifestEnhancer {
+  return mergeManifestPatchers(
     merge<object>(vscodeSettingsFile.filename, {
       'search.exclude': filenames.reduce<object>(
         (filesExclude, filename) => ({...filesExclude, [filename]: true}),
@@ -43,8 +45,10 @@ export function vscodeSearchExclude(...filenames: string[]): ManifestEnhancer {
   );
 }
 
-export function vscodeFilesExclude(...filenames: string[]): ManifestEnhancer {
-  return enhancePatchers(
+export function mergeVscodeFilesExclude(
+  ...filenames: string[]
+): ManifestEnhancer {
+  return mergeManifestPatchers(
     merge<object>(vscodeSettingsFile.filename, {
       'files.exclude': filenames.reduce<object>(
         (filesExclude, filename) => ({...filesExclude, [filename]: false}), // TODO
@@ -54,10 +58,10 @@ export function vscodeFilesExclude(...filenames: string[]): ManifestEnhancer {
   );
 }
 
-export function vscodeExtensionsRecommendations(
+export function mergeVscodeExtensionsRecommendations(
   ...extensionNames: string[]
 ): ManifestEnhancer {
-  return enhancePatchers(
+  return mergeManifestPatchers(
     merge<object>(vscodeExtensionsFile.filename, {
       recommendations: extensionNames
     })
@@ -67,11 +71,11 @@ export function vscodeExtensionsRecommendations(
 const vscodeFiles = [vscodeExtensionsFile, vscodeSettingsFile];
 const vscodeFilenames = vscodeFiles.map(({filename}) => filename);
 
-export function vscode(): ManifestEnhancer {
+export function useVscode(): ManifestEnhancer {
   return enhanceManifest(
-    enhanceFiles(...vscodeFiles),
-    gitIgnore(...vscodeFilenames),
-    vscodeFilesExclude(...vscodeFilenames),
-    vscodeSearchExclude(...vscodeFilenames)
+    mergeManifestFiles(...vscodeFiles),
+    mergeGitIgnore(...vscodeFilenames),
+    mergeVscodeFilesExclude(...vscodeFilenames),
+    mergeVscodeSearchExclude(...vscodeFilenames)
   );
 }

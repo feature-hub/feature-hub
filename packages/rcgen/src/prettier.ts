@@ -5,15 +5,15 @@ import {SchemaForPrettierrc} from '@schemastore/prettierrc';
 import request from 'sync-request';
 import {
   ManifestEnhancer,
-  enhanceFiles,
   enhanceManifest,
-  enhancePatchers
-} from './enhance-manifest';
-import {gitIgnore} from './git';
+  mergeManifestFiles,
+  mergeManifestPatchers
+} from './core';
+import {mergeGitIgnore} from './git';
 import {
-  vscodeExtensionsRecommendations,
-  vscodeFilesExclude,
-  vscodeSearchExclude
+  mergeVscodeExtensionsRecommendations,
+  mergeVscodeFilesExclude,
+  mergeVscodeSearchExclude
 } from './vscode';
 
 export const prettierConfigFile: File<SchemaForPrettierrc> = {
@@ -42,23 +42,25 @@ export const prettierIgnoreFile: File<string[]> = {
   initialContent: []
 };
 
-export function prettierConfig(config: SchemaForPrettierrc): ManifestEnhancer {
-  return enhancePatchers(merge(prettierConfigFile.filename, config));
+export function mergePrettierConfig(
+  config: SchemaForPrettierrc
+): ManifestEnhancer {
+  return mergeManifestPatchers(merge(prettierConfigFile.filename, config));
 }
 
-export function prettierIgnore(...filenames: string[]): ManifestEnhancer {
-  return enhancePatchers(merge(prettierIgnoreFile.filename, filenames));
+export function mergePrettierIgnore(...filenames: string[]): ManifestEnhancer {
+  return mergeManifestPatchers(merge(prettierIgnoreFile.filename, filenames));
 }
 
 const prettierFiles = [prettierConfigFile, prettierIgnoreFile];
 const prettierFilenames = prettierFiles.map(({filename}) => filename);
 
-export function prettier(): ManifestEnhancer {
+export function usePrettier(): ManifestEnhancer {
   return enhanceManifest(
-    enhanceFiles(...prettierFiles),
-    gitIgnore(...prettierFilenames),
-    vscodeExtensionsRecommendations('esbenp.prettier-vscode'),
-    vscodeFilesExclude(...prettierFilenames),
-    vscodeSearchExclude(...prettierFilenames)
+    mergeManifestFiles(...prettierFiles),
+    mergeGitIgnore(...prettierFilenames),
+    mergeVscodeExtensionsRecommendations('esbenp.prettier-vscode'),
+    mergeVscodeFilesExclude(...prettierFilenames),
+    mergeVscodeSearchExclude(...prettierFilenames)
   );
 }

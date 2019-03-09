@@ -1,6 +1,6 @@
-import {ManifestEnhancer, enhanceManifest} from './enhance-manifest';
-import {prettierConfig} from './prettier';
-import {vscodeSettings} from './vscode';
+import {ManifestEnhancer, enhanceManifest} from './core';
+import {mergePrettierConfig} from './prettier';
+import {mergeVscodeSettings} from './vscode';
 
 export interface FormatOptions {
   readonly onSave?: boolean;
@@ -9,7 +9,7 @@ export interface FormatOptions {
   readonly endOfLine?: 'lf' | 'cr' | 'crlf';
 }
 
-export function format(options: FormatOptions = {}): ManifestEnhancer {
+export function mergeFormat(options: FormatOptions = {}): ManifestEnhancer {
   const {
     onSave = true,
     useTabs = false,
@@ -18,7 +18,7 @@ export function format(options: FormatOptions = {}): ManifestEnhancer {
   } = options;
 
   return enhanceManifest(
-    vscodeSettings({'editor.formatOnSave': onSave}),
-    prettierConfig({useTabs, tabWidth, endOfLine})
+    mergePrettierConfig({useTabs, tabWidth, endOfLine}),
+    mergeVscodeSettings({'editor.formatOnSave': onSave})
   );
 }
