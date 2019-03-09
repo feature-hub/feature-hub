@@ -9,6 +9,6 @@ export function prettierConfig(
   return merge<SchemaForPrettierrc>(prettierConfigFile.filename, config);
 }
 
-export function prettierIgnore(...filenames: string[]): Patcher<string[]> {
-  return merge(prettierIgnoreFile.filename, [...filenames]);
+export function prettierIgnore(filenames: string[]): Patcher<string[]> {
+  return merge(prettierIgnoreFile.filename, filenames);
 }

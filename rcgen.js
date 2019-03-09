@@ -24,7 +24,7 @@ exports.default = {
   patchers: [
     ...prettierPatchers,
     ...vscodePatchers,
-    gitIgnore(
+    gitIgnore([
       '.cache',
       'coverage',
       'lerna-debug.log',
@@ -36,13 +36,13 @@ exports.default = {
       'packages/website/i18n',
       'todo.tasks',
       'yarn-error.log'
-    ),
+    ]),
     prettierConfig({
       bracketSpacing: false,
       proseWrap: 'always',
       singleQuote: true
     }),
-    prettierIgnore(
+    prettierIgnore([
       '.cache',
       'CHANGELOG.md',
       'coverage',
@@ -51,14 +51,14 @@ exports.default = {
       'package.json',
       'packages/website/build',
       'packages/website/i18n'
-    ),
-    vscodeExtensionsRecommendations(
+    ]),
+    vscodeExtensionsRecommendations([
       'EditorConfig.EditorConfig',
       'ms-vscode.vscode-typescript-tslint-plugin',
       'unional.vscode-sort-package-json',
       'wallabyjs.wallaby-vscode'
-    ),
-    vscodeFilesExclude(
+    ]),
+    vscodeFilesExclude([
       '**/.cache',
       '**/coverage',
       '**/lerna-debug.log',
@@ -69,8 +69,8 @@ exports.default = {
       '**/packages/website/build',
       '**/packages/website/i18n',
       '**/yarn-error.log'
-    ),
-    vscodeSearchExclude(
+    ]),
+    vscodeSearchExclude([
       '**/.cache',
       '**/CHANGELOG.md',
       '**/coverage',
@@ -83,6 +83,6 @@ exports.default = {
       '**/packages/website/i18n',
       '**/yarn-error.log',
       '**/yarn.lock'
-    )
+    ])
   ]
 };

@@ -9,10 +9,33 @@ import {prettierFiles} from './files';
 
 const prettierFilenames = prettierFiles.map(({filename}) => filename);
 
+const vscodeLanguageIds = [
+  'css',
+  'html',
+  'javascript',
+  'javascriptreact',
+  'json',
+  'jsonc',
+  'less',
+  'markdown',
+  'scss',
+  'typescript',
+  'typescriptreact',
+  'yaml'
+];
+
 export const prettierPatchers = [
-  gitIgnore(...prettierFilenames),
-  vscodeExtensionsRecommendations('esbenp.prettier-vscode'),
-  vscodeFilesExclude(...prettierFilenames),
-  vscodeSearchExclude(...prettierFilenames),
-  vscodeSettings({'editor.formatOnSave': true})
+  gitIgnore(prettierFilenames),
+  vscodeExtensionsRecommendations(['esbenp.prettier-vscode']),
+  vscodeFilesExclude(prettierFilenames),
+  vscodeSearchExclude(prettierFilenames),
+  vscodeSettings(
+    vscodeLanguageIds.reduce<object>(
+      (settings, vscodeLanguageId) => ({
+        ...settings,
+        [`[${vscodeLanguageId}]`]: {'editor.formatOnSave': true}
+      }),
+      {}
+    )
+  )
 ];
