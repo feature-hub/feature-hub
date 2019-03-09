@@ -1919,6 +1919,11 @@
   resolved "https://registry.yarnpkg.com/@types/qs/-/qs-6.5.2.tgz#7f347062655056662845ba4bb79dcbfdc382cd61"
   integrity sha512-47kAAs3yV/hROraCTQYDMh4p/6zI9+gtssjD0kq9OWsGdLcBge59rl49FnCuJ+iWxEKiqFz6KXzeGH5DRVjNJA==
 
+"@types/ramda@^0.26.1":
+  version "0.26.1"
+  resolved "https://registry.yarnpkg.com/@types/ramda/-/ramda-0.26.1.tgz#767ca00d1b78ee8f77700fd5840e4259806d04f6"
+  integrity sha512-rvHuym7ZBYntRnA7W0qoBIQsomVYCamgKz5KD55Y1e94FeJv8UgBH102PylOUUCcyeEdQ1MwnsnP7K8yKlMstA==
+
 "@types/range-parser@*":
   version "1.2.3"
   resolved "https://registry.yarnpkg.com/@types/range-parser/-/range-parser-1.2.3.tgz#7ee330ba7caafb98090bece86a5ee44115904c2c"
@@ -10621,6 +10626,11 @@ quick-lru@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/quick-lru/-/quick-lru-1.1.0.tgz#4360b17c61136ad38078397ff11416e186dcfbb8"
   integrity sha1-Q2CxfGETatOAeDl/8RQW4Ybc+7g=
+
+rambda@^2.4.1:
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/rambda/-/rambda-2.4.1.tgz#fa7cca42205dcaa9de855f990ffca03a1bca267f"
+  integrity sha512-wmY04DwL1Ooz7Me4vCd+QWjzziE05Y5A/2RQ1MokfhDYYz7YNVWVgtsLGK/p4UVSVZUshxJFXQsTytRjid5iXA==
 
 randomatic@^3.0.0:
   version "3.1.1"

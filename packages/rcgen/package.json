@@ -8,6 +8,10 @@
     "@rcgen/filetypes": "^0.3.0",
     "@rcgen/patchers": "^0.3.0",
     "@schemastore/prettierrc": "^0.0.2",
+    "rambda": "^2.4.1",
     "sync-request": "^6.0.0"
+  },
+  "devDependencies": {
+    "@types/ramda": "^0.26.1"
   }
 }
