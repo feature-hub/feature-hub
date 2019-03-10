@@ -23,22 +23,23 @@ const {
   vscodeSettingsFile
 } = require('@feature-hub/rcgen/src/vscode');
 
+const commonExternalFilenames = [
+  '.cache',
+  'coverage',
+  'lerna-debug.log',
+  'lib',
+  'node_modules',
+  'npm-debug.log',
+  'package-lock.json',
+  'packages/website/build',
+  'packages/website/i18n',
+  'yarn-error.log'
+];
+
 exports.default = composeEnhancers([
   useGit(),
   enhanceGitIgnore({
-    externalFilenames: [
-      '.cache',
-      'coverage',
-      'lerna-debug.log',
-      'lib',
-      'node_modules',
-      'npm-debug.log',
-      'package-lock.json',
-      'packages/website/build',
-      'packages/website/i18n',
-      'todo.tasks',
-      'yarn-error.log'
-    ]
+    externalFilenames: [...commonExternalFilenames, 'todo.tasks']
   }),
   usePrettier(),
   enhancePrettierConfig({
@@ -48,14 +49,9 @@ exports.default = composeEnhancers([
   }),
   enhancePrettierIgnore({
     externalFilenames: [
-      '.cache',
+      ...commonExternalFilenames,
       'CHANGELOG.md',
-      'coverage',
-      'lib',
-      'node_modules',
-      'package.json',
-      'packages/website/build',
-      'packages/website/i18n'
+      'package.json'
     ]
   }),
   useVscode(),
@@ -67,16 +63,7 @@ exports.default = composeEnhancers([
   ]),
   enhanceVscodeFilesExclude({
     externalFilenames: [
-      '**/.cache',
-      '**/coverage',
-      '**/lerna-debug.log',
-      '**/lib',
-      '**/node_modules',
-      '**/npm-debug.log',
-      '**/package-lock.json',
-      '**/packages/website/build',
-      '**/packages/website/i18n',
-      '**/yarn-error.log'
+      ...commonExternalFilenames.map(filename => `**/${filename}`)
     ],
     excludedFilenamePatterns: [
       gitIgnoreFile,
@@ -88,17 +75,8 @@ exports.default = composeEnhancers([
   }),
   enhanceVscodeSearchExclude({
     externalFilenames: [
-      '**/.cache',
+      ...commonExternalFilenames.map(filename => `**/${filename}`),
       '**/CHANGELOG.md',
-      '**/coverage',
-      '**/lerna-debug.log',
-      '**/lib',
-      '**/node_modules',
-      '**/npm-debug.log',
-      '**/package-lock.json',
-      '**/packages/website/build',
-      '**/packages/website/i18n',
-      '**/yarn-error.log',
       '**/yarn.lock'
     ]
   }),
