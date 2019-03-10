@@ -30,7 +30,7 @@ exports.default = composeEnhancers(
     'todo.tasks',
     'yarn-error.log'
   ),
-  usePrettier(),
+  usePrettier({excludeInEditor: false}),
   mergePrettierConfig({
     bracketSpacing: false,
     proseWrap: 'always',
@@ -46,7 +46,7 @@ exports.default = composeEnhancers(
     'packages/website/build',
     'packages/website/i18n'
   ),
-  useVscode(),
+  useVscode({excludeInEditor: false}),
   mergeVscodeExtensionsRecommendations(
     'EditorConfig.EditorConfig',
     'ms-vscode.vscode-typescript-tslint-plugin',

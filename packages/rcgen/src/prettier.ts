@@ -61,13 +61,23 @@ export function mergePrettierIgnore(
 const prettierFiles = [prettierConfigFile, prettierIgnoreFile];
 const prettierFilenames = prettierFiles.map(({filename}) => filename);
 
-// TODO: options.hideInEditor & options.ignoreInGit
-export function usePrettier(): Enhancer<Manifest> {
+export interface PrettierOptions {
+  readonly excludeInEditor?: boolean;
+  readonly ignoreInGit?: boolean;
+}
+
+export function usePrettier(options: PrettierOptions = {}): Enhancer<Manifest> {
+  const {excludeInEditor = true, ignoreInGit = true} = options;
+
   return composeEnhancers(
     enhanceManifest({files: prettierFiles}),
-    mergeGitIgnore(...prettierFilenames),
+    ignoreInGit ? mergeGitIgnore(...prettierFilenames) : enhanceManifest({}),
     mergeVscodeExtensionsRecommendations('esbenp.prettier-vscode'),
-    mergeVscodeFilesExclude(...prettierFilenames),
-    mergeVscodeSearchExclude(...prettierFilenames)
+    excludeInEditor
+      ? mergeVscodeFilesExclude(...prettierFilenames)
+      : enhanceManifest({}),
+    excludeInEditor
+      ? mergeVscodeSearchExclude(...prettierFilenames)
+      : enhanceManifest({})
   );
 }

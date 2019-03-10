@@ -56,7 +56,7 @@ export function mergeVscodeFilesExclude(
     patchers: [
       merge<object>(vscodeSettingsFile.filename, {
         'files.exclude': filenames.reduce<object>(
-          (filesExclude, filename) => ({...filesExclude, [filename]: false}), // TODO
+          (filesExclude, filename) => ({...filesExclude, [filename]: true}),
           {}
         )
       })
@@ -79,12 +79,22 @@ export function mergeVscodeExtensionsRecommendations(
 const vscodeFiles = [vscodeExtensionsFile, vscodeSettingsFile];
 const vscodeFilenames = vscodeFiles.map(({filename}) => filename);
 
-// TODO: options.hideInEditor & options.ignoreInGit
-export function useVscode(): Enhancer<Manifest> {
+export interface VscodeOptions {
+  readonly excludeInEditor?: boolean;
+  readonly ignoreInGit?: boolean;
+}
+
+export function useVscode(options: VscodeOptions = {}): Enhancer<Manifest> {
+  const {excludeInEditor = true, ignoreInGit = true} = options;
+
   return composeEnhancers(
     enhanceManifest({files: vscodeFiles}),
-    mergeGitIgnore(...vscodeFilenames),
-    mergeVscodeFilesExclude(...vscodeFilenames),
-    mergeVscodeSearchExclude(...vscodeFilenames)
+    ignoreInGit ? mergeGitIgnore(...vscodeFilenames) : enhanceManifest({}),
+    excludeInEditor
+      ? mergeVscodeFilesExclude(...vscodeFilenames)
+      : enhanceManifest({}),
+    excludeInEditor
+      ? mergeVscodeSearchExclude(...vscodeFilenames)
+      : enhanceManifest({})
   );
 }
