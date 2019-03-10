@@ -1,6 +1,6 @@
 // @ts-check
 
-const {composeEnhancers} = require('@feature-hub/rcgen/src/core');
+const {composeEnhancers} = require('@rcgen/core');
 const {mergeFormat} = require('@feature-hub/rcgen/src/format');
 const {mergeGitIgnore, useGit} = require('@feature-hub/rcgen/src/git');
 const {
@@ -80,4 +80,4 @@ exports.default = composeEnhancers(
     '**/yarn.lock'
   ),
   mergeFormat()
-)({files: []}); // TODO: remove files property with next rcgen version
+)({});

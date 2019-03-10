@@ -1,5 +1,4 @@
-import {Manifest} from '@rcgen/core';
-import {Enhancer, composeEnhancers} from './core';
+import {Enhancer, Manifest, composeEnhancers} from '@rcgen/core';
 import {mergePrettierConfig} from './prettier';
 import {mergeVscodeSettings} from './vscode';
 

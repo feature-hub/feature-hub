@@ -1,9 +1,14 @@
-import {File, Manifest} from '@rcgen/core';
+import {
+  Enhancer,
+  File,
+  Manifest,
+  composeEnhancers,
+  enhanceManifest
+} from '@rcgen/core';
 import {createJsonFiletype, createLinesFiletype} from '@rcgen/filetypes';
 import {merge} from '@rcgen/patchers';
 import {SchemaForPrettierrc} from '@schemastore/prettierrc';
 import request from 'sync-request';
-import {Enhancer, composeEnhancers, enhanceManifest} from './core';
 import {mergeGitIgnore} from './git';
 import {
   mergeVscodeExtensionsRecommendations,
@@ -41,7 +46,6 @@ export function mergePrettierConfig(
   config: SchemaForPrettierrc
 ): Enhancer<Manifest> {
   return enhanceManifest({
-    files: [],
     patchers: [merge(prettierConfigFile.filename, config)]
   });
 }
@@ -50,7 +54,6 @@ export function mergePrettierIgnore(
   ...filenames: string[]
 ): Enhancer<Manifest> {
   return enhanceManifest({
-    files: [],
     patchers: [merge(prettierIgnoreFile.filename, filenames)]
   });
 }

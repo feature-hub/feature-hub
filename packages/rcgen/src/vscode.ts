@@ -1,7 +1,12 @@
-import {File, Manifest} from '@rcgen/core';
+import {
+  Enhancer,
+  File,
+  Manifest,
+  composeEnhancers,
+  enhanceManifest
+} from '@rcgen/core';
 import {createJsonFiletype} from '@rcgen/filetypes';
 import {merge} from '@rcgen/patchers';
-import {Enhancer, composeEnhancers, enhanceManifest} from './core';
 import {mergeGitIgnore} from './git';
 
 export const vscodeExtensionsFile: File<object> = {
@@ -25,7 +30,6 @@ export const vscodeSettingsFile: File<object> = {
 
 export function mergeVscodeSettings(settings: object): Enhancer<Manifest> {
   return enhanceManifest({
-    files: [],
     patchers: [merge(vscodeSettingsFile.filename, settings)]
   });
 }
@@ -34,7 +38,6 @@ export function mergeVscodeSearchExclude(
   ...filenames: string[]
 ): Enhancer<Manifest> {
   return enhanceManifest({
-    files: [],
     patchers: [
       merge<object>(vscodeSettingsFile.filename, {
         'search.exclude': filenames.reduce<object>(
@@ -50,7 +53,6 @@ export function mergeVscodeFilesExclude(
   ...filenames: string[]
 ): Enhancer<Manifest> {
   return enhanceManifest({
-    files: [],
     patchers: [
       merge<object>(vscodeSettingsFile.filename, {
         'files.exclude': filenames.reduce<object>(
@@ -66,7 +68,6 @@ export function mergeVscodeExtensionsRecommendations(
   ...extensionNames: string[]
 ): Enhancer<Manifest> {
   return enhanceManifest({
-    files: [],
     patchers: [
       merge<object>(vscodeExtensionsFile.filename, {
         recommendations: extensionNames
