@@ -1,28 +1,30 @@
-import {File, Manifest, Patcher} from '@rcgen/core';
-import {pipe} from 'rambda';
+import {Manifest} from '@rcgen/core';
 
-export type ManifestEnhancer = (manifest?: Manifest) => Manifest;
+export type Enhancer<T> = (value: T) => T;
 
-export function enhanceManifest(
-  ...manifestEnhancers: ManifestEnhancer[]
-): ManifestEnhancer {
-  // tslint:disable-next-line: no-any
-  return (pipe as any)(...manifestEnhancers);
+export function composeEnhancers<T>(...enhancers: Enhancer<T>[]): Enhancer<T> {
+  return currentValue =>
+    enhancers.reduce(
+      (enhancedValue, enhancer) => enhancer(enhancedValue),
+      currentValue
+    );
 }
 
-// tslint:disable-next-line: no-any
-export function mergeManifestFiles(...files: File<any>[]): ManifestEnhancer {
-  return (manifest = {files: []}) => ({
-    ...manifest,
-    files: [...manifest.files, ...files]
-  });
+function mergeArrays<T>(a?: T[], b?: T[]): T[] | undefined {
+  return !a ? b : !b ? a : [...a, ...b];
 }
 
-export function mergeManifestPatchers(
-  ...patchers: Patcher<any>[] // tslint:disable-line: no-any
-): ManifestEnhancer {
-  return (manifest = {files: []}) => ({
-    ...manifest,
-    patchers: manifest.patchers ? [...manifest.patchers, ...patchers] : patchers
+export function enhanceManifest(manifest: Manifest): Enhancer<Manifest> {
+  return currentManifest => ({
+    files: mergeArrays(currentManifest.files, manifest.files) || [],
+    patchers: mergeArrays(currentManifest.patchers, manifest.patchers),
+    includedFilenames: mergeArrays(
+      currentManifest.includedFilenames,
+      manifest.includedFilenames
+    ),
+    excludedFilenames: mergeArrays(
+      currentManifest.excludedFilenames,
+      manifest.excludedFilenames
+    )
   });
 }

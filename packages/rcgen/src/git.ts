@@ -1,11 +1,7 @@
-import {File} from '@rcgen/core';
+import {File, Manifest} from '@rcgen/core';
 import {createLinesFiletype} from '@rcgen/filetypes';
 import {merge} from '@rcgen/patchers';
-import {
-  ManifestEnhancer,
-  mergeManifestFiles,
-  mergeManifestPatchers
-} from './core';
+import {Enhancer, enhanceManifest} from './core';
 
 export const gitIgnoreFile: File<string[]> = {
   filename: '.gitignore',
@@ -13,10 +9,13 @@ export const gitIgnoreFile: File<string[]> = {
   initialContent: []
 };
 
-export function mergeGitIgnore(...filenames: string[]): ManifestEnhancer {
-  return mergeManifestPatchers(merge(gitIgnoreFile.filename, filenames));
+export function mergeGitIgnore(...filenames: string[]): Enhancer<Manifest> {
+  return enhanceManifest({
+    files: [],
+    patchers: [merge(gitIgnoreFile.filename, filenames)]
+  });
 }
 
-export function useGit(): ManifestEnhancer {
-  return mergeManifestFiles(gitIgnoreFile);
+export function useGit(): Enhancer<Manifest> {
+  return enhanceManifest({files: [gitIgnoreFile]});
 }

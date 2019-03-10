@@ -1,12 +1,7 @@
-import {File} from '@rcgen/core';
+import {File, Manifest} from '@rcgen/core';
 import {createJsonFiletype} from '@rcgen/filetypes';
 import {merge} from '@rcgen/patchers';
-import {
-  ManifestEnhancer,
-  enhanceManifest,
-  mergeManifestFiles,
-  mergeManifestPatchers
-} from './core';
+import {Enhancer, composeEnhancers, enhanceManifest} from './core';
 import {mergeGitIgnore} from './git';
 
 export const vscodeExtensionsFile: File<object> = {
@@ -28,52 +23,65 @@ export const vscodeSettingsFile: File<object> = {
   initialContent: {}
 };
 
-export function mergeVscodeSettings(settings: object): ManifestEnhancer {
-  return mergeManifestPatchers(merge(vscodeSettingsFile.filename, settings));
+export function mergeVscodeSettings(settings: object): Enhancer<Manifest> {
+  return enhanceManifest({
+    files: [],
+    patchers: [merge(vscodeSettingsFile.filename, settings)]
+  });
 }
 
 export function mergeVscodeSearchExclude(
   ...filenames: string[]
-): ManifestEnhancer {
-  return mergeManifestPatchers(
-    merge<object>(vscodeSettingsFile.filename, {
-      'search.exclude': filenames.reduce<object>(
-        (filesExclude, filename) => ({...filesExclude, [filename]: true}),
-        {}
-      )
-    })
-  );
+): Enhancer<Manifest> {
+  return enhanceManifest({
+    files: [],
+    patchers: [
+      merge<object>(vscodeSettingsFile.filename, {
+        'search.exclude': filenames.reduce<object>(
+          (filesExclude, filename) => ({...filesExclude, [filename]: true}),
+          {}
+        )
+      })
+    ]
+  });
 }
 
 export function mergeVscodeFilesExclude(
   ...filenames: string[]
-): ManifestEnhancer {
-  return mergeManifestPatchers(
-    merge<object>(vscodeSettingsFile.filename, {
-      'files.exclude': filenames.reduce<object>(
-        (filesExclude, filename) => ({...filesExclude, [filename]: false}), // TODO
-        {}
-      )
-    })
-  );
+): Enhancer<Manifest> {
+  return enhanceManifest({
+    files: [],
+    patchers: [
+      merge<object>(vscodeSettingsFile.filename, {
+        'files.exclude': filenames.reduce<object>(
+          (filesExclude, filename) => ({...filesExclude, [filename]: false}), // TODO
+          {}
+        )
+      })
+    ]
+  });
 }
 
 export function mergeVscodeExtensionsRecommendations(
   ...extensionNames: string[]
-): ManifestEnhancer {
-  return mergeManifestPatchers(
-    merge<object>(vscodeExtensionsFile.filename, {
-      recommendations: extensionNames
-    })
-  );
+): Enhancer<Manifest> {
+  return enhanceManifest({
+    files: [],
+    patchers: [
+      merge<object>(vscodeExtensionsFile.filename, {
+        recommendations: extensionNames
+      })
+    ]
+  });
 }
 
 const vscodeFiles = [vscodeExtensionsFile, vscodeSettingsFile];
 const vscodeFilenames = vscodeFiles.map(({filename}) => filename);
 
-export function useVscode(): ManifestEnhancer {
-  return enhanceManifest(
-    mergeManifestFiles(...vscodeFiles),
+// TODO: options.hideInEditor & options.ignoreInGit
+export function useVscode(): Enhancer<Manifest> {
+  return composeEnhancers(
+    enhanceManifest({files: vscodeFiles}),
     mergeGitIgnore(...vscodeFilenames),
     mergeVscodeFilesExclude(...vscodeFilenames),
     mergeVscodeSearchExclude(...vscodeFilenames)

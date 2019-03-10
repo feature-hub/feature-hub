@@ -1,6 +1,6 @@
 // @ts-check
 
-const {enhanceManifest} = require('@feature-hub/rcgen/src/core');
+const {composeEnhancers} = require('@feature-hub/rcgen/src/core');
 const {mergeFormat} = require('@feature-hub/rcgen/src/format');
 const {mergeGitIgnore, useGit} = require('@feature-hub/rcgen/src/git');
 const {
@@ -15,7 +15,7 @@ const {
   useVscode
 } = require('@feature-hub/rcgen/src/vscode');
 
-exports.default = enhanceManifest(
+exports.default = composeEnhancers(
   useGit(),
   mergeGitIgnore(
     '.cache',
@@ -80,4 +80,4 @@ exports.default = enhanceManifest(
     '**/yarn.lock'
   ),
   mergeFormat()
-)();
+)({files: []}); // TODO: remove files property with next rcgen version

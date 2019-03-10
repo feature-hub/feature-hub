@@ -1,4 +1,5 @@
-import {ManifestEnhancer, enhanceManifest} from './core';
+import {Manifest} from '@rcgen/core';
+import {Enhancer, composeEnhancers} from './core';
 import {mergePrettierConfig} from './prettier';
 import {mergeVscodeSettings} from './vscode';
 
@@ -9,7 +10,7 @@ export interface FormatOptions {
   readonly endOfLine?: 'lf' | 'cr' | 'crlf';
 }
 
-export function mergeFormat(options: FormatOptions = {}): ManifestEnhancer {
+export function mergeFormat(options: FormatOptions = {}): Enhancer<Manifest> {
   const {
     formatOnSave = true,
     indentStyle = 'space',
@@ -17,7 +18,7 @@ export function mergeFormat(options: FormatOptions = {}): ManifestEnhancer {
     endOfLine = 'lf'
   } = options;
 
-  return enhanceManifest(
+  return composeEnhancers(
     mergePrettierConfig({
       useTabs:
         indentStyle === 'tab'

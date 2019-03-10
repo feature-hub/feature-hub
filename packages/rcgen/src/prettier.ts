@@ -1,14 +1,9 @@
-import {File} from '@rcgen/core';
+import {File, Manifest} from '@rcgen/core';
 import {createJsonFiletype, createLinesFiletype} from '@rcgen/filetypes';
 import {merge} from '@rcgen/patchers';
 import {SchemaForPrettierrc} from '@schemastore/prettierrc';
 import request from 'sync-request';
-import {
-  ManifestEnhancer,
-  enhanceManifest,
-  mergeManifestFiles,
-  mergeManifestPatchers
-} from './core';
+import {Enhancer, composeEnhancers, enhanceManifest} from './core';
 import {mergeGitIgnore} from './git';
 import {
   mergeVscodeExtensionsRecommendations,
@@ -44,20 +39,29 @@ export const prettierIgnoreFile: File<string[]> = {
 
 export function mergePrettierConfig(
   config: SchemaForPrettierrc
-): ManifestEnhancer {
-  return mergeManifestPatchers(merge(prettierConfigFile.filename, config));
+): Enhancer<Manifest> {
+  return enhanceManifest({
+    files: [],
+    patchers: [merge(prettierConfigFile.filename, config)]
+  });
 }
 
-export function mergePrettierIgnore(...filenames: string[]): ManifestEnhancer {
-  return mergeManifestPatchers(merge(prettierIgnoreFile.filename, filenames));
+export function mergePrettierIgnore(
+  ...filenames: string[]
+): Enhancer<Manifest> {
+  return enhanceManifest({
+    files: [],
+    patchers: [merge(prettierIgnoreFile.filename, filenames)]
+  });
 }
 
 const prettierFiles = [prettierConfigFile, prettierIgnoreFile];
 const prettierFilenames = prettierFiles.map(({filename}) => filename);
 
-export function usePrettier(): ManifestEnhancer {
-  return enhanceManifest(
-    mergeManifestFiles(...prettierFiles),
+// TODO: options.hideInEditor & options.ignoreInGit
+export function usePrettier(): Enhancer<Manifest> {
+  return composeEnhancers(
+    enhanceManifest({files: prettierFiles}),
     mergeGitIgnore(...prettierFilenames),
     mergeVscodeExtensionsRecommendations('esbenp.prettier-vscode'),
     mergeVscodeFilesExclude(...prettierFilenames),
