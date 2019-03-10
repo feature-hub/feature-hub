@@ -17,7 +17,7 @@ export function mergeFormat(options: FormatOptions = {}): Enhancer<Manifest> {
     endOfLine = 'lf'
   } = options;
 
-  return composeEnhancers(
+  return composeEnhancers([
     mergePrettierConfig({
       useTabs:
         indentStyle === 'tab'
@@ -29,5 +29,5 @@ export function mergeFormat(options: FormatOptions = {}): Enhancer<Manifest> {
       endOfLine
     }),
     mergeVscodeSettings({'editor.formatOnSave': formatOnSave})
-  );
+  ]);
 }

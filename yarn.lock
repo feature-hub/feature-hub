@@ -1653,37 +1653,37 @@
     universal-user-agent "^2.0.0"
     url-template "^2.0.8"
 
-"@rcgen/cli@^0.4.0":
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/@rcgen/cli/-/cli-0.4.0.tgz#c0e132fd528be319e97e605b76cd90ec08dd59fd"
-  integrity sha512-76lG4AgvDv5pFGcef3QTfQEKtY3zQQQkL7dfqKbq60xOtT5/ZyJmqEJAZJCj+LAW1IO6GskvZUFccg/w9DYLJw==
+"@rcgen/cli@^0.6.0":
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/@rcgen/cli/-/cli-0.6.0.tgz#43a862f145a81b1f4db757f82b6fbd03dc8677d8"
+  integrity sha512-skQugr+jzdIIpImQPKplo/tC2tWWK5gXPUI1/jPKIKeHNXzHLubm3+kjt+pIpTkeF8kKt3swc+0YPE2+GlCGAQ==
   dependencies:
-    "@rcgen/core" "^0.4.0"
+    "@rcgen/core" "^0.6.0"
     meow "^5.0.0"
 
-"@rcgen/core@^0.4.0":
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/@rcgen/core/-/core-0.4.0.tgz#411fb9e594aaefd2dbc5d216efa19787bcd7c29a"
-  integrity sha512-PZ46VvQnzYJWxVbqmZMnGy3YgnZlQqdHOYc4jBIpWWr29eWxxB4mVYvd8ty7L5acMlOiW7rrYJ+2lNyqv5bl4Q==
+"@rcgen/core@^0.6.0":
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/@rcgen/core/-/core-0.6.0.tgz#5183cf81f285994ae9dad95dedc6ecb7d7b9f27b"
+  integrity sha512-x3RqDVjy5S4nPC5K9vIbkkLh4KvYJ48OwJGblrW81YFdfYxb3LMuHmVzQIDj32FLIK57VHby3khnBiWfP+4GSw==
   dependencies:
     ajv "^6.9.2"
     micromatch "^3.1.10"
     mkdirp "^0.5.1"
 
-"@rcgen/filetypes@^0.4.0":
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/@rcgen/filetypes/-/filetypes-0.4.0.tgz#325d36a6c7b7e333e1e018dc652d946eb1efc719"
-  integrity sha512-ZhDU1qmekPfKXlR+Yern7YlMIoVe7m9dkygStvpOWIsVzlUY1mxIKQHbcqNTzVmBui0bbpw8UWj+BiJVQIYIbA==
+"@rcgen/filetypes@^0.6.0":
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/@rcgen/filetypes/-/filetypes-0.6.0.tgz#0c92062ed431722dc4712908780b0170e9248730"
+  integrity sha512-a5cGAT1meFV67F6Fc4ueIG2Hcf/IhuJ+oDrTm6i2H76cJCr+oTrA0KLuduUStnq8RqgFf7903MVNvxZ78iJp9g==
   dependencies:
-    "@rcgen/core" "^0.4.0"
+    "@rcgen/core" "^0.6.0"
     yaml "^1.3.2"
 
-"@rcgen/patchers@^0.4.0":
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/@rcgen/patchers/-/patchers-0.4.0.tgz#5f36df7d0dcb2e6953aa1e9d65f64d04b372c1b2"
-  integrity sha512-gc4ImWfsQtmMuy+xPHxa6kuaSQDrz0IlELv5gz6g8Qi9I/tv8YvDm8sOC2tRajpxQQr2Wau1DHfm4CmFvKHdVA==
+"@rcgen/patchers@^0.6.0":
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/@rcgen/patchers/-/patchers-0.6.0.tgz#82225cfcbd31293a9427af6750fc7448805453e9"
+  integrity sha512-9OtIewQ9ctbWXkPlIs2dUE41thC9hUWQAguRdy8AhbXAgB8BYn4on2qxt1l9kprY6ZzJvgD+akgici8H//IjLQ==
   dependencies:
-    "@rcgen/core" "^0.4.0"
+    "@rcgen/core" "^0.6.0"
     deepmerge "^3.2.0"
 
 "@schemastore/prettierrc@^0.0.2":
