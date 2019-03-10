@@ -1,24 +1,32 @@
 // @ts-check
 
 const {composeEnhancers} = require('@rcgen/core');
-const {mergeFormat} = require('@feature-hub/rcgen/src/format');
-const {enhanceGitIgnore, useGit} = require('@feature-hub/rcgen/src/git');
+const {enhanceFormat} = require('@feature-hub/rcgen/src/format');
 const {
-  mergePrettierConfig,
-  mergePrettierIgnore,
+  enhanceGitIgnore,
+  gitIgnoreFile,
+  useGit
+} = require('@feature-hub/rcgen/src/git');
+const {
+  enhancePrettierConfig,
+  enhancePrettierIgnore,
+  prettierConfigFile,
+  prettierIgnoreFile,
   usePrettier
 } = require('@feature-hub/rcgen/src/prettier');
 const {
-  mergeVscodeExtensionsRecommendations,
-  mergeVscodeFilesExclude,
-  mergeVscodeSearchExclude,
-  useVscode
+  enhanceVscodeExtensions,
+  enhanceVscodeFilesExclude,
+  enhanceVscodeSearchExclude,
+  useVscode,
+  vscodeExtensionsFile,
+  vscodeSettingsFile
 } = require('@feature-hub/rcgen/src/vscode');
 
 exports.default = composeEnhancers([
   useGit(),
   enhanceGitIgnore({
-    additionalFilenames: [
+    externalFilenames: [
       '.cache',
       'coverage',
       'lerna-debug.log',
@@ -32,54 +40,67 @@ exports.default = composeEnhancers([
       'yarn-error.log'
     ]
   }),
-  usePrettier({excludeInEditor: false}),
-  mergePrettierConfig({
+  usePrettier(),
+  enhancePrettierConfig({
     bracketSpacing: false,
     proseWrap: 'always',
     singleQuote: true
   }),
-  mergePrettierIgnore([
-    '.cache',
-    'CHANGELOG.md',
-    'coverage',
-    'lib',
-    'node_modules',
-    'package.json',
-    'packages/website/build',
-    'packages/website/i18n'
-  ]),
-  useVscode({excludeInEditor: false}),
-  mergeVscodeExtensionsRecommendations([
+  enhancePrettierIgnore({
+    externalFilenames: [
+      '.cache',
+      'CHANGELOG.md',
+      'coverage',
+      'lib',
+      'node_modules',
+      'package.json',
+      'packages/website/build',
+      'packages/website/i18n'
+    ]
+  }),
+  useVscode(),
+  enhanceVscodeExtensions([
     'EditorConfig.EditorConfig',
     'ms-vscode.vscode-typescript-tslint-plugin',
     'unional.vscode-sort-package-json',
     'wallabyjs.wallaby-vscode'
   ]),
-  mergeVscodeFilesExclude([
-    '**/.cache',
-    '**/coverage',
-    '**/lerna-debug.log',
-    '**/lib',
-    '**/node_modules',
-    '**/npm-debug.log',
-    '**/package-lock.json',
-    '**/packages/website/build',
-    '**/packages/website/i18n',
-    '**/yarn-error.log'
-  ]),
-  mergeVscodeSearchExclude([
-    '**/.cache',
-    '**/CHANGELOG.md',
-    '**/coverage',
-    '**/lerna-debug.log',
-    '**/lib',
-    '**/node_modules',
-    '**/npm-debug.log',
-    '**/package-lock.json',
-    '**/packages/website/build',
-    '**/packages/website/i18n',
-    '**/yarn-error.log',
-    '**/yarn.lock'
-  ]),
-  mergeFormat()
+  enhanceVscodeFilesExclude({
+    externalFilenames: [
+      '**/.cache',
+      '**/coverage',
+      '**/lerna-debug.log',
+      '**/lib',
+      '**/node_modules',
+      '**/npm-debug.log',
+      '**/package-lock.json',
+      '**/packages/website/build',
+      '**/packages/website/i18n',
+      '**/yarn-error.log'
+    ],
+    excludedFilenamePatterns: [
+      gitIgnoreFile,
+      prettierConfigFile,
+      prettierIgnoreFile,
+      vscodeExtensionsFile,
+      vscodeSettingsFile
+    ].map(({filename}) => filename)
+  }),
+  enhanceVscodeSearchExclude({
+    externalFilenames: [
+      '**/.cache',
+      '**/CHANGELOG.md',
+      '**/coverage',
+      '**/lerna-debug.log',
+      '**/lib',
+      '**/node_modules',
+      '**/npm-debug.log',
+      '**/package-lock.json',
+      '**/packages/website/build',
+      '**/packages/website/i18n',
+      '**/yarn-error.log',
+      '**/yarn.lock'
+    ]
+  }),
+  enhanceFormat()
 ])({});

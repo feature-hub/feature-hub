@@ -1,10 +1,16 @@
-import {Enhancer, File, Manifest, enhanceManifest} from '@rcgen/core';
+import {
+  Enhancer,
+  File,
+  Globs,
+  Manifest,
+  enhanceManifest,
+  matchFile
+} from '@rcgen/core';
 import {createLinesFiletype} from '@rcgen/filetypes';
 import {merge} from '@rcgen/patchers';
 
-export interface EnhanceGitIgnoreOptions {
-  readonly additionalFilenames?: string[];
-  readonly blacklistedFilenames?: string[];
+export interface EnhanceGitIgnoreOptions extends Globs {
+  readonly externalFilenames?: string[];
 }
 
 export const gitIgnoreFile: File<string[]> = {
@@ -16,19 +22,13 @@ export const gitIgnoreFile: File<string[]> = {
 export function enhanceGitIgnore(
   options: EnhanceGitIgnoreOptions = {}
 ): Enhancer<Manifest> {
-  const {additionalFilenames = [], blacklistedFilenames = []} = options;
+  const {externalFilenames = []} = options;
 
   return enhanceManifest({
     patchers: [
-      merge(gitIgnoreFile.filename, ({otherFilenames}) => [
-        ...otherFilenames.filter(
-          otherFilename => !blacklistedFilenames.includes(otherFilename)
-        ),
-        ...additionalFilenames.filter(
-          additionalFilename =>
-            !blacklistedFilenames.includes(additionalFilename)
-        )
-      ])
+      merge(gitIgnoreFile.filename, ({otherFilenames}) =>
+        [...otherFilenames, ...externalFilenames].filter(matchFile(options))
+      )
     ]
   });
 }

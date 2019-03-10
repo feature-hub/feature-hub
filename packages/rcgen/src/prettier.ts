@@ -1,19 +1,21 @@
 import {
   Enhancer,
   File,
+  Globs,
   Manifest,
   composeEnhancers,
-  enhanceManifest
+  enhanceManifest,
+  matchFile
 } from '@rcgen/core';
 import {createJsonFiletype, createLinesFiletype} from '@rcgen/filetypes';
 import {merge} from '@rcgen/patchers';
 import {SchemaForPrettierrc} from '@schemastore/prettierrc';
 import request from 'sync-request';
-import {
-  mergeVscodeExtensionsRecommendations,
-  mergeVscodeFilesExclude,
-  mergeVscodeSearchExclude
-} from './vscode';
+import {enhanceVscodeExtensions} from './vscode';
+
+export interface EnhancePrettierIgnoreOptions extends Globs {
+  readonly externalFilenames?: string[];
+}
 
 export const prettierConfigFile: File<SchemaForPrettierrc> = {
   filename: '.prettierrc.json',
@@ -41,7 +43,7 @@ export const prettierIgnoreFile: File<string[]> = {
   initialContent: []
 };
 
-export function mergePrettierConfig(
+export function enhancePrettierConfig(
   config: SchemaForPrettierrc
 ): Enhancer<Manifest> {
   return enhanceManifest({
@@ -49,30 +51,25 @@ export function mergePrettierConfig(
   });
 }
 
-export function mergePrettierIgnore(filenames: string[]): Enhancer<Manifest> {
+export function enhancePrettierIgnore(
+  options: EnhancePrettierIgnoreOptions = {}
+): Enhancer<Manifest> {
+  const {externalFilenames = []} = options;
+
   return enhanceManifest({
-    patchers: [merge(prettierIgnoreFile.filename, () => filenames)]
+    patchers: [
+      merge(prettierIgnoreFile.filename, ({otherFilenames}) =>
+        [...otherFilenames, ...externalFilenames]
+          .filter(matchFile(options))
+          .filter(filename => filename !== prettierConfigFile.filename)
+      )
+    ]
   });
 }
 
-const prettierFiles = [prettierConfigFile, prettierIgnoreFile];
-const prettierFilenames = prettierFiles.map(({filename}) => filename);
-
-export interface PrettierOptions {
-  readonly excludeInEditor?: boolean;
-}
-
-export function usePrettier(options: PrettierOptions = {}): Enhancer<Manifest> {
-  const {excludeInEditor = true} = options;
-
+export function usePrettier(): Enhancer<Manifest> {
   return composeEnhancers([
-    enhanceManifest({files: prettierFiles}),
-    mergeVscodeExtensionsRecommendations(['esbenp.prettier-vscode']),
-    excludeInEditor
-      ? mergeVscodeFilesExclude(prettierFilenames)
-      : enhanceManifest({}),
-    excludeInEditor
-      ? mergeVscodeSearchExclude(prettierFilenames)
-      : enhanceManifest({})
+    enhanceManifest({files: [prettierConfigFile, prettierIgnoreFile]}),
+    enhanceVscodeExtensions(['esbenp.prettier-vscode'])
   ]);
 }
