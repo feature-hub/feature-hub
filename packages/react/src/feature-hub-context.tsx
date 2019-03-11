@@ -34,6 +34,10 @@ export interface FeatureHubContextProviderValue {
   addUrlForHydration?(url: string): void;
 }
 
+/**
+ * @deprecated Use {@link FeatureHubContextProviderValue} or
+ * {@link FeatureHubContextConsumerValue} instead.
+ */
 export type FeatureHubContextValue = FeatureHubContextProviderValue;
 
 export type FeatureHubContextConsumerValue = SomeRequired<

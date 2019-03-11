@@ -6,7 +6,7 @@ import {createFeatureHub} from '@feature-hub/core';
 import {loadCommonJsModule} from '@feature-hub/module-loader-commonjs';
 import {
   FeatureHubContextProvider,
-  FeatureHubContextValue
+  FeatureHubContextProviderValue
 } from '@feature-hub/react';
 import {
   SerializedStateManagerV1,
@@ -43,7 +43,7 @@ export default async function renderApp({
 
   const urlsForHydration = new Set<string>();
 
-  const featureHubContextValue: FeatureHubContextValue = {
+  const featureHubContextValue: FeatureHubContextProviderValue = {
     featureAppManager,
     asyncSsrManager,
 
