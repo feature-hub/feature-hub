@@ -33,6 +33,6 @@ export function gitIgnore(options: GitIgnoreOptions = {}): Enhancer<Manifest> {
   });
 }
 
-export function initGit(): Enhancer<Manifest> {
+export function git(): Enhancer<Manifest> {
   return enhanceManifest({files: [gitIgnoreFile]});
 }

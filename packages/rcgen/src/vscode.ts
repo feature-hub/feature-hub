@@ -98,6 +98,6 @@ export function vscodeExtensions(
   });
 }
 
-export function initVscode(): Enhancer<Manifest> {
+export function vscode(): Enhancer<Manifest> {
   return enhanceManifest({files: [vscodeExtensionsFile, vscodeSettingsFile]});
 }

@@ -2,15 +2,15 @@
 
 const {composeEnhancers} = require('@rcgen/core');
 const {format} = require('@feature-hub/rcgen/src/format');
-const {gitFiles, gitIgnore, initGit} = require('@feature-hub/rcgen/src/git');
+const {git, gitFiles, gitIgnore} = require('@feature-hub/rcgen/src/git');
 const {
-  initPrettier,
+  prettier,
   prettierConfig,
   prettierFiles,
   prettierIgnore
 } = require('@feature-hub/rcgen/src/prettier');
 const {
-  initVscode,
+  vscode,
   vscodeFiles,
   vscodeExtensions,
   vscodeFilesExclude,
@@ -31,12 +31,11 @@ const additionalFilenames = [
 ];
 
 exports.default = composeEnhancers([
-  initGit(),
-  initPrettier(),
-  initVscode(),
+  git(),
+  prettier(),
+  vscode(),
   format(),
   gitIgnore({additionalFilenames: [...additionalFilenames, 'todo.tasks']}),
-
   prettierConfig({
     bracketSpacing: false,
     proseWrap: 'always',
@@ -49,7 +48,6 @@ exports.default = composeEnhancers([
       'package.json'
     ]
   }),
-
   vscodeExtensions([
     'EditorConfig.EditorConfig',
     'ms-vscode.vscode-typescript-tslint-plugin',

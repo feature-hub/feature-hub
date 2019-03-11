@@ -69,7 +69,7 @@ export function prettierIgnore(
   });
 }
 
-export function initPrettier(): Enhancer<Manifest> {
+export function prettier(): Enhancer<Manifest> {
   return composeEnhancers([
     enhanceManifest({files: [prettierConfigFile, prettierIgnoreFile]}),
     vscodeExtensions(['esbenp.prettier-vscode'])
