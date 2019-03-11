@@ -34,7 +34,7 @@
   "devDependencies": {
     "@types/semver": "^5.5.0",
     "@types/toposort": "^2.0.1",
-    "jest-stub-methods": "^0.2.0"
+    "jest-stub-methods": "^0.2.1"
   },
   "publishConfig": {
     "access": "public"
