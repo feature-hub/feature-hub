@@ -1,24 +1,20 @@
 // @ts-check
 
 const {composeEnhancers} = require('@rcgen/core');
-const {enhanceFormat} = require('@feature-hub/rcgen/src/format');
+const {format} = require('@feature-hub/rcgen/src/format');
+const {gitFiles, gitIgnore, initGit} = require('@feature-hub/rcgen/src/git');
 const {
-  enhanceGitIgnore,
-  gitFiles,
-  useGit
-} = require('@feature-hub/rcgen/src/git');
-const {
-  enhancePrettierConfig,
-  enhancePrettierIgnore,
+  initPrettier,
+  prettierConfig,
   prettierFiles,
-  usePrettier
+  prettierIgnore
 } = require('@feature-hub/rcgen/src/prettier');
 const {
-  enhanceVscodeExtensions,
-  enhanceVscodeFilesExclude,
-  enhanceVscodeSearchExclude,
-  useVscode,
-  vscodeFiles
+  initVscode,
+  vscodeFiles,
+  vscodeExtensions,
+  vscodeFilesExclude,
+  vscodeSearchExclude
 } = require('@feature-hub/rcgen/src/vscode');
 
 const additionalFilenames = [
@@ -35,22 +31,18 @@ const additionalFilenames = [
 ];
 
 exports.default = composeEnhancers([
-  useGit(),
-  usePrettier(),
-  useVscode(),
+  initGit(),
+  initPrettier(),
+  initVscode(),
+  format(),
+  gitIgnore({additionalFilenames: [...additionalFilenames, 'todo.tasks']}),
 
-  enhanceGitIgnore({
-    additionalFilenames: [...additionalFilenames, 'todo.tasks']
-  }),
-
-  enhanceFormat(),
-
-  enhancePrettierConfig({
+  prettierConfig({
     bracketSpacing: false,
     proseWrap: 'always',
     singleQuote: true
   }),
-  enhancePrettierIgnore({
+  prettierIgnore({
     additionalFilenames: [
       ...additionalFilenames,
       'CHANGELOG.md',
@@ -58,13 +50,13 @@ exports.default = composeEnhancers([
     ]
   }),
 
-  enhanceVscodeExtensions([
+  vscodeExtensions([
     'EditorConfig.EditorConfig',
     'ms-vscode.vscode-typescript-tslint-plugin',
     'unional.vscode-sort-package-json',
     'wallabyjs.wallaby-vscode'
   ]),
-  enhanceVscodeFilesExclude({
+  vscodeFilesExclude({
     additionalFilenames: [
       ...additionalFilenames.map(filename => `**/${filename}`)
     ],
@@ -74,7 +66,7 @@ exports.default = composeEnhancers([
       ...vscodeFiles
     ].map(({filename}) => filename)
   }),
-  enhanceVscodeSearchExclude({
+  vscodeSearchExclude({
     additionalFilenames: [
       ...additionalFilenames.map(filename => `**/${filename}`),
       '**/CHANGELOG.md',

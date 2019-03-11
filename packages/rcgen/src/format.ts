@@ -1,17 +1,15 @@
 import {Enhancer, Manifest, composeEnhancers} from '@rcgen/core';
-import {enhancePrettierConfig} from './prettier';
-import {enhanceVscodeSettings} from './vscode';
+import {prettierConfig} from './prettier';
+import {vscodeSettings} from './vscode';
 
-export interface EnhanceFormatOptions {
+export interface FormatOptions {
   readonly formatOnSave?: boolean;
   readonly indentStyle?: 'tab' | 'space';
   readonly indentSize?: number;
   readonly endOfLine?: 'lf' | 'cr' | 'crlf';
 }
 
-export function enhanceFormat(
-  options: EnhanceFormatOptions = {}
-): Enhancer<Manifest> {
+export function format(options: FormatOptions = {}): Enhancer<Manifest> {
   const {
     formatOnSave = true,
     indentStyle = 'space',
@@ -20,7 +18,7 @@ export function enhanceFormat(
   } = options;
 
   return composeEnhancers([
-    enhancePrettierConfig({
+    prettierConfig({
       useTabs:
         indentStyle === 'tab'
           ? true
@@ -30,6 +28,6 @@ export function enhanceFormat(
       tabWidth: indentSize,
       endOfLine
     }),
-    enhanceVscodeSettings({'editor.formatOnSave': formatOnSave})
+    vscodeSettings({'editor.formatOnSave': formatOnSave})
   ]);
 }

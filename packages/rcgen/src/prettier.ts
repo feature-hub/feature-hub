@@ -11,9 +11,9 @@ import {createJsonFiletype, createLinesFiletype} from '@rcgen/filetypes';
 import {merge} from '@rcgen/patchers';
 import {SchemaForPrettierrc} from '@schemastore/prettierrc';
 import request from 'sync-request';
-import {enhanceVscodeExtensions} from './vscode';
+import {vscodeExtensions} from './vscode';
 
-export interface EnhancePrettierIgnoreOptions extends Globs {
+export interface PrettierIgnoreOptions extends Globs {
   readonly additionalFilenames?: string[];
 }
 
@@ -45,7 +45,7 @@ export const prettierIgnoreFile: File<string[]> = {
 
 export const prettierFiles = [prettierConfigFile, prettierIgnoreFile];
 
-export function enhancePrettierConfig(
+export function prettierConfig(
   config: SchemaForPrettierrc
 ): Enhancer<Manifest> {
   return enhanceManifest({
@@ -53,8 +53,8 @@ export function enhancePrettierConfig(
   });
 }
 
-export function enhancePrettierIgnore(
-  options: EnhancePrettierIgnoreOptions = {}
+export function prettierIgnore(
+  options: PrettierIgnoreOptions = {}
 ): Enhancer<Manifest> {
   const {additionalFilenames = []} = options;
 
@@ -69,9 +69,9 @@ export function enhancePrettierIgnore(
   });
 }
 
-export function usePrettier(): Enhancer<Manifest> {
+export function initPrettier(): Enhancer<Manifest> {
   return composeEnhancers([
     enhanceManifest({files: [prettierConfigFile, prettierIgnoreFile]}),
-    enhanceVscodeExtensions(['esbenp.prettier-vscode'])
+    vscodeExtensions(['esbenp.prettier-vscode'])
   ]);
 }

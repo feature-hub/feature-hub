@@ -9,11 +9,11 @@ import {
 import {createJsonFiletype} from '@rcgen/filetypes';
 import {merge} from '@rcgen/patchers';
 
-export interface EnhanceVscodeFilesExcludeOptions extends Globs {
+export interface VscodeFilesExcludeOptions extends Globs {
   readonly additionalFilenames?: string[];
 }
 
-export interface EnhanceVscodeSearchExcludeOptions extends Globs {
+export interface VscodeSearchExcludeOptions extends Globs {
   readonly additionalFilenames?: string[];
 }
 
@@ -38,14 +38,14 @@ export const vscodeSettingsFile: File<object> = {
 
 export const vscodeFiles = [vscodeExtensionsFile, vscodeSettingsFile];
 
-export function enhanceVscodeSettings(settings: object): Enhancer<Manifest> {
+export function vscodeSettings(settings: object): Enhancer<Manifest> {
   return enhanceManifest({
     patchers: [merge(vscodeSettingsFile.filename, () => settings)]
   });
 }
 
-export function enhanceVscodeFilesExclude(
-  options: EnhanceVscodeFilesExcludeOptions = {}
+export function vscodeFilesExclude(
+  options: VscodeFilesExcludeOptions = {}
 ): Enhancer<Manifest> {
   const {additionalFilenames = []} = options;
 
@@ -67,8 +67,8 @@ export function enhanceVscodeFilesExclude(
   });
 }
 
-export function enhanceVscodeSearchExclude(
-  options: EnhanceVscodeSearchExcludeOptions = {}
+export function vscodeSearchExclude(
+  options: VscodeSearchExcludeOptions = {}
 ): Enhancer<Manifest> {
   const {additionalFilenames = []} = options;
 
@@ -90,7 +90,7 @@ export function enhanceVscodeSearchExclude(
   });
 }
 
-export function enhanceVscodeExtensions(
+export function vscodeExtensions(
   recommendations: string[]
 ): Enhancer<Manifest> {
   return enhanceManifest({
@@ -98,6 +98,6 @@ export function enhanceVscodeExtensions(
   });
 }
 
-export function useVscode(): Enhancer<Manifest> {
+export function initVscode(): Enhancer<Manifest> {
   return enhanceManifest({files: [vscodeExtensionsFile, vscodeSettingsFile]});
 }

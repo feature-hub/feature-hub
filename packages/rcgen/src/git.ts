@@ -9,7 +9,7 @@ import {
 import {createLinesFiletype} from '@rcgen/filetypes';
 import {merge} from '@rcgen/patchers';
 
-export interface EnhanceGitIgnoreOptions extends Globs {
+export interface GitIgnoreOptions extends Globs {
   readonly additionalFilenames?: string[];
 }
 
@@ -21,9 +21,7 @@ export const gitIgnoreFile: File<string[]> = {
 
 export const gitFiles = [gitIgnoreFile];
 
-export function enhanceGitIgnore(
-  options: EnhanceGitIgnoreOptions = {}
-): Enhancer<Manifest> {
+export function gitIgnore(options: GitIgnoreOptions = {}): Enhancer<Manifest> {
   const {additionalFilenames = []} = options;
 
   return enhanceManifest({
@@ -35,6 +33,6 @@ export function enhanceGitIgnore(
   });
 }
 
-export function useGit(): Enhancer<Manifest> {
+export function initGit(): Enhancer<Manifest> {
   return enhanceManifest({files: [gitIgnoreFile]});
 }
