@@ -10,7 +10,7 @@ import {createLinesFiletype} from '@rcgen/filetypes';
 import {merge} from '@rcgen/patchers';
 
 export interface EnhanceGitIgnoreOptions extends Globs {
-  readonly externalFilenames?: string[];
+  readonly additionalFilenames?: string[];
 }
 
 export const gitIgnoreFile: File<string[]> = {
@@ -19,15 +19,17 @@ export const gitIgnoreFile: File<string[]> = {
   initialContent: []
 };
 
+export const gitFiles = [gitIgnoreFile];
+
 export function enhanceGitIgnore(
   options: EnhanceGitIgnoreOptions = {}
 ): Enhancer<Manifest> {
-  const {externalFilenames = []} = options;
+  const {additionalFilenames = []} = options;
 
   return enhanceManifest({
     patchers: [
       merge(gitIgnoreFile.filename, ({otherFilenames}) =>
-        [...otherFilenames, ...externalFilenames].filter(matchFile(options))
+        [...otherFilenames, ...additionalFilenames].filter(matchFile(options))
       )
     ]
   });

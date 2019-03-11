@@ -10,11 +10,11 @@ import {createJsonFiletype} from '@rcgen/filetypes';
 import {merge} from '@rcgen/patchers';
 
 export interface EnhanceVscodeFilesExcludeOptions extends Globs {
-  readonly externalFilenames?: string[];
+  readonly additionalFilenames?: string[];
 }
 
 export interface EnhanceVscodeSearchExcludeOptions extends Globs {
-  readonly externalFilenames?: string[];
+  readonly additionalFilenames?: string[];
 }
 
 export const vscodeExtensionsFile: File<object> = {
@@ -36,6 +36,8 @@ export const vscodeSettingsFile: File<object> = {
   initialContent: {}
 };
 
+export const vscodeFiles = [vscodeExtensionsFile, vscodeSettingsFile];
+
 export function enhanceVscodeSettings(settings: object): Enhancer<Manifest> {
   return enhanceManifest({
     patchers: [merge(vscodeSettingsFile.filename, () => settings)]
@@ -45,14 +47,14 @@ export function enhanceVscodeSettings(settings: object): Enhancer<Manifest> {
 export function enhanceVscodeFilesExclude(
   options: EnhanceVscodeFilesExcludeOptions = {}
 ): Enhancer<Manifest> {
-  const {externalFilenames = []} = options;
+  const {additionalFilenames = []} = options;
 
   return enhanceManifest({
     patchers: [
       merge(vscodeSettingsFile.filename, ({otherFilenames}) => ({
         'files.exclude': [
           ...otherFilenames,
-          ...externalFilenames,
+          ...additionalFilenames,
           vscodeSettingsFile.filename
         ]
           .filter(matchFile(options))
@@ -68,14 +70,14 @@ export function enhanceVscodeFilesExclude(
 export function enhanceVscodeSearchExclude(
   options: EnhanceVscodeSearchExcludeOptions = {}
 ): Enhancer<Manifest> {
-  const {externalFilenames = []} = options;
+  const {additionalFilenames = []} = options;
 
   return enhanceManifest({
     patchers: [
       merge(vscodeSettingsFile.filename, ({otherFilenames}) => ({
         'search.exclude': [
           ...otherFilenames,
-          ...externalFilenames,
+          ...additionalFilenames,
           vscodeSettingsFile.filename
         ]
           .filter(matchFile(options))

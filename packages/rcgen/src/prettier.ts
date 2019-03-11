@@ -14,7 +14,7 @@ import request from 'sync-request';
 import {enhanceVscodeExtensions} from './vscode';
 
 export interface EnhancePrettierIgnoreOptions extends Globs {
-  readonly externalFilenames?: string[];
+  readonly additionalFilenames?: string[];
 }
 
 export const prettierConfigFile: File<SchemaForPrettierrc> = {
@@ -43,6 +43,8 @@ export const prettierIgnoreFile: File<string[]> = {
   initialContent: []
 };
 
+export const prettierFiles = [prettierConfigFile, prettierIgnoreFile];
+
 export function enhancePrettierConfig(
   config: SchemaForPrettierrc
 ): Enhancer<Manifest> {
@@ -54,12 +56,12 @@ export function enhancePrettierConfig(
 export function enhancePrettierIgnore(
   options: EnhancePrettierIgnoreOptions = {}
 ): Enhancer<Manifest> {
-  const {externalFilenames = []} = options;
+  const {additionalFilenames = []} = options;
 
   return enhanceManifest({
     patchers: [
       merge(prettierIgnoreFile.filename, ({otherFilenames}) =>
-        [...otherFilenames, ...externalFilenames]
+        [...otherFilenames, ...additionalFilenames]
           .filter(matchFile(options))
           .filter(filename => filename !== prettierConfigFile.filename)
       )
