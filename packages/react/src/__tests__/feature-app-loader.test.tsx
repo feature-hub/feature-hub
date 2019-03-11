@@ -11,6 +11,7 @@ import * as React from 'react';
 import TestRenderer from 'react-test-renderer';
 import {FeatureAppContainer, FeatureAppLoader} from '..';
 import {FeatureHubContextProvider} from '../feature-hub-context';
+import {logger} from './logger';
 
 interface MockAsyncSsrManager extends AsyncSsrManagerV1 {
   scheduleRerender: ((promise: Promise<unknown>) => void) & jest.Mock;
@@ -26,7 +27,6 @@ describe('FeatureAppLoader', () => {
   let mockAsyncFeatureAppDefinition: AsyncValue<FeatureAppDefinition<unknown>>;
   let mockAsyncSsrManager: MockAsyncSsrManager;
   let mockAddUrlForHydration: jest.Mock;
-  let stubbedConsole: Stubbed<Console>;
 
   beforeEach(() => {
     if (document.head) {
@@ -53,12 +53,6 @@ describe('FeatureAppLoader', () => {
     };
 
     mockAddUrlForHydration = jest.fn();
-
-    stubbedConsole = stubMethods(console);
-  });
-
-  afterEach(() => {
-    stubbedConsole.restore();
   });
 
   it('throws an error when rendered without a FeatureHubContextProvider', () => {
@@ -71,13 +65,17 @@ describe('FeatureAppLoader', () => {
     );
   });
 
-  const renderWithFeatureHubContext = (node: React.ReactNode) =>
+  const renderWithFeatureHubContext = (
+    node: React.ReactNode,
+    options: {customLogger?: boolean} = {customLogger: true}
+  ) =>
     TestRenderer.create(
       <FeatureHubContextProvider
         value={{
           featureAppManager: mockFeatureAppManager,
           asyncSsrManager: mockAsyncSsrManager,
-          addUrlForHydration: mockAddUrlForHydration
+          addUrlForHydration: mockAddUrlForHydration,
+          logger: options.customLogger ? logger : undefined
         }}
       >
         {node}
@@ -204,7 +202,7 @@ describe('FeatureAppLoader', () => {
 
       expect(testRenderer.toJSON()).toBeNull();
 
-      expect(stubbedConsole.stub.error.mock.calls).toEqual([
+      expect(logger.error.mock.calls).toEqual([
         [
           'The Feature App for the src "example.js" and the ID specifier "testIdSpecifier" could not be rendered.',
           mockError
@@ -308,7 +306,7 @@ describe('FeatureAppLoader', () => {
 
       expect(testRenderer.toJSON()).toBeNull();
 
-      expect(stubbedConsole.stub.error.mock.calls).toEqual([
+      expect(logger.error.mock.calls).toEqual([
         [
           'The Feature App for the src "example.js" and the ID specifier "testIdSpecifier" could not be rendered.',
           mockError
@@ -332,13 +330,47 @@ describe('FeatureAppLoader', () => {
           expect(error).toBe(mockError);
         }
 
-        expect(stubbedConsole.stub.error.mock.calls).toEqual([
+        expect(logger.error.mock.calls).toEqual([
           [
             'The Feature App for the src "example.js" could not be rendered.',
             mockError
           ]
         ]);
       });
+    });
+  });
+
+  describe('without a custom logger', () => {
+    let stubbedConsole: Stubbed<Console>;
+
+    beforeEach(() => {
+      stubbedConsole = stubMethods(console);
+    });
+
+    afterEach(() => {
+      stubbedConsole.restore();
+    });
+
+    it('logs messages using the console', () => {
+      const mockError = new Error('Failed to load Feature App module.');
+
+      mockAsyncFeatureAppDefinition = new AsyncValue(
+        Promise.reject(mockError),
+        undefined,
+        mockError
+      );
+
+      renderWithFeatureHubContext(
+        <FeatureAppLoader src="example.js" idSpecifier="testIdSpecifier" />,
+        {customLogger: false}
+      );
+
+      expect(stubbedConsole.stub.error.mock.calls).toEqual([
+        [
+          'The Feature App for the src "example.js" and the ID specifier "testIdSpecifier" could not be rendered.',
+          mockError
+        ]
+      ]);
     });
   });
 });

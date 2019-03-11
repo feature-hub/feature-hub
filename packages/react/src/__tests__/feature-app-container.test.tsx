@@ -9,13 +9,13 @@ import {Stubbed, stubMethods} from 'jest-stub-methods';
 import * as React from 'react';
 import TestRenderer from 'react-test-renderer';
 import {FeatureAppContainer, FeatureHubContextProvider} from '..';
+import {logger} from './logger';
 
 describe('FeatureAppContainer', () => {
   let mockFeatureAppManager: FeatureAppManager;
   let mockGetFeatureAppScope: jest.Mock;
   let mockFeatureAppDefinition: FeatureAppDefinition<unknown>;
   let mockFeatureAppScope: FeatureAppScope<unknown>;
-  let stubbedConsole: Stubbed<Console>;
 
   beforeEach(() => {
     mockFeatureAppDefinition = {id: 'testId', create: jest.fn()};
@@ -27,12 +27,6 @@ describe('FeatureAppContainer', () => {
       getFeatureAppScope: mockGetFeatureAppScope,
       preloadFeatureApp: jest.fn()
     } as Partial<FeatureAppManager>) as FeatureAppManager;
-
-    stubbedConsole = stubMethods(console);
-  });
-
-  afterEach(() => {
-    stubbedConsole.restore();
   });
 
   it('throws an error when rendered without a FeatureHubContextProvider', () => {
@@ -49,15 +43,24 @@ describe('FeatureAppContainer', () => {
 
   const renderWithFeatureHubContext = (
     node: React.ReactNode,
-    options?: TestRenderer.TestRendererOptions
+    {
+      customLogger = true,
+      testRendererOptions
+    }: {
+      customLogger?: boolean;
+      testRendererOptions?: TestRenderer.TestRendererOptions;
+    } = {}
   ) =>
     TestRenderer.create(
       <FeatureHubContextProvider
-        value={{featureAppManager: mockFeatureAppManager}}
+        value={{
+          featureAppManager: mockFeatureAppManager,
+          logger: customLogger ? logger : undefined
+        }}
       >
         {node}
       </FeatureHubContextProvider>,
-      options
+      testRendererOptions
     );
 
   it('calls the Feature App manager with the given Feature App definition, id specifier, and instance config', () => {
@@ -132,7 +135,7 @@ describe('FeatureAppContainer', () => {
           />
         );
 
-        expect(stubbedConsole.stub.error.mock.calls).toEqual([[mockError]]);
+        expect(logger.error.mock.calls).toEqual([[mockError]]);
       });
 
       it('renders null', () => {
@@ -187,14 +190,7 @@ describe('FeatureAppContainer', () => {
           />
         );
 
-        const expectedErrorBoundaryMessage = expect.stringMatching(
-          '^The above error occurred in'
-        );
-
-        expect(stubbedConsole.stub.error.mock.calls).toEqual([
-          [expect.stringContaining(mockError.message), mockError],
-          [expectedErrorBoundaryMessage]
-        ]);
+        expect(logger.error.mock.calls).toEqual([[mockError]]);
       });
 
       it('renders null', () => {
@@ -243,7 +239,7 @@ describe('FeatureAppContainer', () => {
 
           testRenderer.unmount();
 
-          expect(stubbedConsole.stub.error.mock.calls).toEqual([[mockError]]);
+          expect(logger.error.mock.calls).toEqual([[mockError]]);
         });
       });
     });
@@ -267,11 +263,13 @@ describe('FeatureAppContainer', () => {
       const testRenderer = renderWithFeatureHubContext(
         <FeatureAppContainer featureAppDefinition={mockFeatureAppDefinition} />,
         {
-          createNodeMock: () => ({
-            set innerHTML(html: string) {
-              mockSetInnerHtml(html);
-            }
-          })
+          testRendererOptions: {
+            createNodeMock: () => ({
+              set innerHTML(html: string) {
+                mockSetInnerHtml(html);
+              }
+            })
+          }
         }
       );
 
@@ -304,9 +302,7 @@ describe('FeatureAppContainer', () => {
             <FeatureAppContainer
               featureAppDefinition={mockFeatureAppDefinition}
             />,
-            {
-              createNodeMock: () => ({})
-            }
+            {testRendererOptions: {createNodeMock: () => ({})}}
           )
         ).not.toThrowError(mockError);
       });
@@ -316,12 +312,10 @@ describe('FeatureAppContainer', () => {
           <FeatureAppContainer
             featureAppDefinition={mockFeatureAppDefinition}
           />,
-          {
-            createNodeMock: () => ({})
-          }
+          {testRendererOptions: {createNodeMock: () => ({})}}
         );
 
-        expect(stubbedConsole.stub.error.mock.calls).toEqual([[mockError]]);
+        expect(logger.error.mock.calls).toEqual([[mockError]]);
       });
 
       it('renders null', () => {
@@ -329,9 +323,7 @@ describe('FeatureAppContainer', () => {
           <FeatureAppContainer
             featureAppDefinition={mockFeatureAppDefinition}
           />,
-          {
-            createNodeMock: () => ({})
-          }
+          {testRendererOptions: {createNodeMock: () => ({})}}
         );
 
         expect(testRenderer.toJSON()).toBeNull();
@@ -373,7 +365,7 @@ describe('FeatureAppContainer', () => {
 
           testRenderer.unmount();
 
-          expect(stubbedConsole.stub.error.mock.calls).toEqual([[mockError]]);
+          expect(logger.error.mock.calls).toEqual([[mockError]]);
         });
       });
     });
@@ -409,7 +401,7 @@ describe('FeatureAppContainer', () => {
           'Invalid Feature App found. The Feature App must be an object with either 1) a `render` method that returns a React element, or 2) an `attachTo` method that accepts a container DOM element.'
         );
 
-        expect(stubbedConsole.stub.error.mock.calls).toEqual([[expectedError]]);
+        expect(logger.error.mock.calls).toEqual([[expectedError]]);
       });
     });
   }
@@ -432,7 +424,7 @@ describe('FeatureAppContainer', () => {
 
       expect(testRenderer.toJSON()).toBeNull();
 
-      expect(stubbedConsole.stub.error.mock.calls).toEqual([[mockError]]);
+      expect(logger.error.mock.calls).toEqual([[mockError]]);
     });
 
     describe('when unmounted', () => {
@@ -445,6 +437,38 @@ describe('FeatureAppContainer', () => {
 
         testRenderer.unmount();
       });
+    });
+  });
+
+  describe('without a custom logger', () => {
+    let stubbedConsole: Stubbed<Console>;
+
+    beforeEach(() => {
+      stubbedConsole = stubMethods(console);
+    });
+
+    afterEach(() => {
+      stubbedConsole.restore();
+    });
+
+    it('logs messages using the console', () => {
+      const mockError = new Error('Failed to render.');
+
+      mockFeatureAppScope = {
+        ...mockFeatureAppScope,
+        featureApp: {
+          render: () => {
+            throw mockError;
+          }
+        }
+      };
+
+      renderWithFeatureHubContext(
+        <FeatureAppContainer featureAppDefinition={mockFeatureAppDefinition} />,
+        {customLogger: false}
+      );
+
+      expect(stubbedConsole.stub.error.mock.calls).toEqual([[mockError]]);
     });
   });
 });

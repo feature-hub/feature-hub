@@ -3,7 +3,7 @@ import * as React from 'react';
 import {FeatureAppContainer} from './feature-app-container';
 import {
   FeatureHubContextConsumer,
-  FeatureHubContextValue
+  FeatureHubContextConsumerValue
 } from './feature-hub-context';
 
 export interface Css {
@@ -42,7 +42,7 @@ export interface FeatureAppLoaderProps {
 }
 
 type InternalFeatureAppLoaderProps = FeatureAppLoaderProps &
-  FeatureHubContextValue;
+  FeatureHubContextConsumerValue;
 
 interface InternalFeatureAppLoaderState {
   readonly featureAppDefinition?: FeatureAppDefinition<unknown>;
@@ -192,7 +192,7 @@ class InternalFeatureAppLoader extends React.PureComponent<
     const {idSpecifier, src: clientSrc, serverSrc} = this.props;
     const src = inBrowser ? clientSrc : serverSrc;
 
-    console.error(
+    this.props.logger.error(
       idSpecifier
         ? `The Feature App for the src ${JSON.stringify(
             src
@@ -220,13 +220,8 @@ class InternalFeatureAppLoader extends React.PureComponent<
 export function FeatureAppLoader(props: FeatureAppLoaderProps): JSX.Element {
   return (
     <FeatureHubContextConsumer>
-      {({featureAppManager, asyncSsrManager, addUrlForHydration}) => (
-        <InternalFeatureAppLoader
-          featureAppManager={featureAppManager}
-          asyncSsrManager={asyncSsrManager}
-          addUrlForHydration={addUrlForHydration}
-          {...props}
-        />
+      {featureHubContextValue => (
+        <InternalFeatureAppLoader {...featureHubContextValue} {...props} />
       )}
     </FeatureHubContextConsumer>
   );

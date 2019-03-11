@@ -2,7 +2,7 @@ import {FeatureAppDefinition, FeatureAppScope} from '@feature-hub/core';
 import * as React from 'react';
 import {
   FeatureHubContextConsumer,
-  FeatureHubContextValue
+  FeatureHubContextConsumerValue
 } from './feature-hub-context';
 import {isDomFeatureApp, isFeatureApp} from './internal/type-guards';
 
@@ -59,7 +59,7 @@ export interface FeatureAppContainerProps {
 }
 
 type InternalFeatureAppContainerProps = FeatureAppContainerProps &
-  FeatureHubContextValue;
+  Pick<FeatureHubContextConsumerValue, 'featureAppManager' | 'logger'>;
 
 interface InternalFeatureAppContainerState {
   /**
@@ -96,7 +96,8 @@ class InternalFeatureAppContainer extends React.PureComponent<
       featureAppManager,
       featureAppDefinition,
       idSpecifier,
-      instanceConfig
+      instanceConfig,
+      logger
     } = props;
 
     try {
@@ -113,7 +114,7 @@ class InternalFeatureAppContainer extends React.PureComponent<
 
       this.featureApp = this.featureAppScope.featureApp;
     } catch (error) {
-      console.error(error);
+      logger.error(error);
 
       if (!inBrowser) {
         throw error;
@@ -121,8 +122,9 @@ class InternalFeatureAppContainer extends React.PureComponent<
     }
   }
 
-  public componentDidCatch(): void {
+  public componentDidCatch(error: Error): void {
     this.setState({hasFeatureAppError: true});
+    this.props.logger.error(error);
   }
 
   public componentDidMount(): void {
@@ -132,8 +134,7 @@ class InternalFeatureAppContainer extends React.PureComponent<
       try {
         this.featureApp.attachTo(container);
       } catch (error) {
-        console.error(error);
-        this.componentDidCatch();
+        this.componentDidCatch(error);
       }
     }
   }
@@ -143,7 +144,7 @@ class InternalFeatureAppContainer extends React.PureComponent<
       try {
         this.featureAppScope.destroy();
       } catch (error) {
-        console.error(error);
+        this.props.logger.error(error);
       }
     }
   }
@@ -164,7 +165,7 @@ class InternalFeatureAppContainer extends React.PureComponent<
         throw error;
       }
 
-      console.error(error);
+      this.props.logger.error(error);
 
       return null;
     }
@@ -186,9 +187,10 @@ export function FeatureAppContainer(
 ): JSX.Element {
   return (
     <FeatureHubContextConsumer>
-      {({featureAppManager}) => (
+      {({featureAppManager, logger}) => (
         <InternalFeatureAppContainer
           featureAppManager={featureAppManager}
+          logger={logger}
           {...props}
         />
       )}
