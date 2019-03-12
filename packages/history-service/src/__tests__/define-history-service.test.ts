@@ -17,6 +17,7 @@ import {
 } from '..';
 import {testRootLocationTransformer} from '../internal/test-root-location-transformer';
 import {stubbedLogger} from './stubbed-logger';
+import {Writable} from './writable';
 
 const simulateOnPopState = (state: unknown, url: string) => {
   // We need to use pushState to change to the URL that should set by the popstate event.
@@ -63,7 +64,7 @@ describe('defineHistoryService', () => {
   describe('HistoryServiceV1', () => {
     let mockEnv: FeatureServiceEnvironment<
       undefined,
-      HistoryServiceDependencies
+      Writable<HistoryServiceDependencies>
     >;
 
     let createHistoryServiceBinder: () => FeatureServiceBinder<
