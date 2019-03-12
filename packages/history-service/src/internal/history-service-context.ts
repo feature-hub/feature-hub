@@ -3,8 +3,8 @@ import {ServerRequestV1} from '@feature-hub/server-request';
 import {HistoryServiceDependencies} from '../define-history-service';
 
 export interface HistoryServiceContext {
-  logger: Logger;
-  serverRequest?: ServerRequestV1;
+  readonly logger: Logger;
+  readonly serverRequest?: ServerRequestV1;
 }
 
 export function createHistoryServiceContext(

@@ -29,8 +29,8 @@ export interface SharedHistoryService extends SharedFeatureService {
 }
 
 export interface HistoryServiceDependencies extends FeatureServices {
-  's2:logger'?: Logger;
-  's2:server-request'?: ServerRequestV1;
+  readonly 's2:logger'?: Logger;
+  readonly 's2:server-request'?: ServerRequestV1;
 }
 
 export function defineHistoryService(
