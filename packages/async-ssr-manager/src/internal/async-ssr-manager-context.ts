@@ -2,7 +2,7 @@ import {Logger} from '@feature-hub/logger';
 import {AsyncSsrManagerDependencies} from '..';
 
 export interface AsyncSsrManagerContext {
-  logger: Logger;
+  readonly logger: Logger;
 }
 
 export function createAsyncSsrManagerContext(

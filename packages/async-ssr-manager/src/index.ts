@@ -87,7 +87,7 @@ export interface SharedAsyncSsrManager extends SharedFeatureService {
 }
 
 export interface AsyncSsrManagerDependencies extends FeatureServices {
-  's2:logger'?: Logger;
+  readonly 's2:logger'?: Logger;
 }
 
 /**
