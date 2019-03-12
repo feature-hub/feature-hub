@@ -21,7 +21,8 @@
   "module": "lib/esm/index.js",
   "typings": "lib/cjs/index.d.ts",
   "dependencies": {
-    "@feature-hub/core": "^1.1.0"
+    "@feature-hub/core": "^1.1.0",
+    "@feature-hub/logger": "^0.0.0"
   },
   "devDependencies": {
     "jest-stub-methods": "^0.2.1"
