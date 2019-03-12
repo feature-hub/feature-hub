@@ -22,6 +22,7 @@
   "typings": "lib/cjs/index.d.ts",
   "dependencies": {
     "@feature-hub/core": "^1.1.0",
+    "@feature-hub/logger": "^0.0.0",
     "@feature-hub/server-request": "^1.1.0",
     "fast-deep-equal": "^2.0.1"
   },

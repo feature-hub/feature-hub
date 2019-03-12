@@ -16,6 +16,7 @@ import {
   defineHistoryService
 } from '..';
 import {testRootLocationTransformer} from '../internal/test-root-location-transformer';
+import {stubbedLogger} from './stubbed-logger';
 
 const simulateOnPopState = (state: unknown, url: string) => {
   // We need to use pushState to change to the URL that should set by the popstate event.
@@ -41,7 +42,10 @@ describe('defineHistoryService', () => {
     expect(historyServiceDefinition.dependencies).toBeUndefined();
 
     expect(historyServiceDefinition.optionalDependencies).toEqual({
-      featureServices: {'s2:server-request': '^1.0.0'}
+      featureServices: {
+        's2:logger': '^1.0.0',
+        's2:server-request': '^1.0.0'
+      }
     });
   });
 
@@ -57,13 +61,17 @@ describe('defineHistoryService', () => {
   });
 
   describe('HistoryServiceV1', () => {
+    let mockEnv: FeatureServiceEnvironment<
+      undefined,
+      HistoryServiceDependencies
+    >;
+
     let createHistoryServiceBinder: () => FeatureServiceBinder<
       HistoryServiceV1
     >;
 
     let pushStateSpy: jest.SpyInstance;
     let replaceStateSpy: jest.SpyInstance;
-    let stubbedConsole: Stubbed<Console>;
 
     beforeEach(() => {
       // ensure the window.location.href is the same before each test
@@ -71,14 +79,10 @@ describe('defineHistoryService', () => {
 
       pushStateSpy = jest.spyOn(window.history, 'pushState');
       replaceStateSpy = jest.spyOn(window.history, 'replaceState');
-      stubbedConsole = stubMethods(console);
 
-      const mockEnv: FeatureServiceEnvironment<
-        undefined,
-        HistoryServiceDependencies
-      > = {
+      mockEnv = {
         config: undefined,
-        featureServices: {}
+        featureServices: {'s2:logger': stubbedLogger}
       };
 
       createHistoryServiceBinder = () => {
@@ -93,7 +97,6 @@ describe('defineHistoryService', () => {
     afterEach(() => {
       pushStateSpy.mockRestore();
       replaceStateSpy.mockRestore();
-      stubbedConsole.restore();
     });
 
     describe('when the history service consumer is destroyed without having created a browser history', () => {
@@ -136,7 +139,7 @@ describe('defineHistoryService', () => {
             history1
           );
 
-          expect(stubbedConsole.stub.warn).toHaveBeenCalledWith(
+          expect(stubbedLogger.warn).toHaveBeenCalledWith(
             'createBrowserHistory was called multiple times by consumer "test:1". Returning the same history instance as before.'
           );
         });
@@ -297,7 +300,7 @@ describe('defineHistoryService', () => {
 
           expect(window.location.href).toBe(href);
 
-          expect(stubbedConsole.stub.warn).toHaveBeenCalledWith(
+          expect(stubbedLogger.warn).toHaveBeenCalledWith(
             'history.go() is not supported.'
           );
         });
@@ -313,7 +316,7 @@ describe('defineHistoryService', () => {
 
           expect(window.location.href).toBe(href);
 
-          expect(stubbedConsole.stub.warn).toHaveBeenCalledWith(
+          expect(stubbedLogger.warn).toHaveBeenCalledWith(
             'history.goBack() is not supported.'
           );
         });
@@ -329,7 +332,7 @@ describe('defineHistoryService', () => {
 
           expect(window.location.href).toBe(href);
 
-          expect(stubbedConsole.stub.warn).toHaveBeenCalledWith(
+          expect(stubbedLogger.warn).toHaveBeenCalledWith(
             'history.goForward() is not supported.'
           );
         });
@@ -348,7 +351,7 @@ describe('defineHistoryService', () => {
 
           expect(promptHookSpy).not.toHaveBeenCalled();
 
-          expect(stubbedConsole.stub.warn).toHaveBeenCalledWith(
+          expect(stubbedLogger.warn).toHaveBeenCalledWith(
             'history.block() is not supported.'
           );
         });
@@ -619,6 +622,31 @@ describe('defineHistoryService', () => {
             expect(history1.location).toMatchObject({pathname: '/foo'});
           });
         });
+      });
+    });
+
+    describe('when no Logger Feature Service is provided', () => {
+      let stubbedConsole: Stubbed<Console>;
+
+      beforeEach(() => {
+        stubbedConsole = stubMethods(console);
+        mockEnv.featureServices['s2:logger'] = undefined;
+      });
+
+      afterEach(() => {
+        stubbedConsole.restore();
+      });
+
+      it('logs messages using the console', () => {
+        const historyServiceBinder = createHistoryServiceBinder();
+        const historyService = historyServiceBinder('test:1').featureService;
+        const browserHistory = historyService.createBrowserHistory();
+
+        browserHistory.go(-1);
+
+        expect(stubbedConsole.stub.warn).toHaveBeenCalledWith(
+          'history.go() is not supported.'
+        );
       });
     });
   });
