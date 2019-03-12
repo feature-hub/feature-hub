@@ -1,12 +1,13 @@
 // tslint:disable:no-implicit-dependencies
 
 import {FeatureAppEnvironment, FeatureServiceBinder} from '@feature-hub/core';
-import {stubMethods} from 'jest-stub-methods';
+import {Stubbed, stubMethods} from 'jest-stub-methods';
 import {
   AsyncSsrManagerConfig,
   AsyncSsrManagerV1,
   asyncSsrManagerDefinition
 } from '..';
+import {stubbedLogger} from './stubbed-logger';
 import {useFakeTimers} from './use-fake-timers';
 
 const queueMacroTask = setImmediate;
@@ -23,7 +24,7 @@ describe('asyncSsrManagerDefinition', () => {
   beforeEach(() => {
     mockEnv = {
       config: {timeout: 5},
-      featureServices: {},
+      featureServices: {'s2:logger': stubbedLogger},
       idSpecifier: undefined,
       instanceConfig: undefined
     };
@@ -33,9 +34,12 @@ describe('asyncSsrManagerDefinition', () => {
     expect(asyncSsrManagerDefinition.id).toBe('s2:async-ssr-manager');
   });
 
-  it('has no dependencies', () => {
+  it('defines its dependencies', () => {
     expect(asyncSsrManagerDefinition.dependencies).toBeUndefined();
-    expect(asyncSsrManagerDefinition.optionalDependencies).toBeUndefined();
+
+    expect(asyncSsrManagerDefinition.optionalDependencies).toEqual({
+      featureServices: {'s2:logger': '^1.0.0'}
+    });
   });
 
   describe('#create', () => {
@@ -292,7 +296,7 @@ describe('asyncSsrManagerDefinition', () => {
         beforeEach(() => {
           asyncSsrManagerBinder = asyncSsrManagerDefinition.create({
             config: undefined,
-            featureServices: {}
+            featureServices: {'s2:logger': stubbedLogger}
           })['1.0.0'];
         });
 
@@ -305,12 +309,46 @@ describe('asyncSsrManagerDefinition', () => {
             asyncSsrManager.renderUntilCompleted(mockRender)
           );
 
-          expect(console.warn).toHaveBeenCalledWith(
-            'No timeout is configured for the Async SSR Manager. This could lead to unexpectedly long render times or, in the worst case, never resolving render calls!'
-          );
+          expect(stubbedLogger.warn.mock.calls).toEqual([
+            [
+              'No timeout is configured for the Async SSR Manager. This could lead to unexpectedly long render times or, in the worst case, never resolving render calls!'
+            ]
+          ]);
 
           stubbedConsole.restore();
         });
+      });
+    });
+
+    describe('when no Logger Feature Service is provided', () => {
+      let stubbedConsole: Stubbed<Console>;
+
+      beforeEach(() => {
+        stubbedConsole = stubMethods(console);
+
+        asyncSsrManagerBinder = asyncSsrManagerDefinition.create({
+          config: undefined,
+          featureServices: {}
+        })['1.0.0'];
+      });
+
+      afterEach(() => {
+        stubbedConsole.restore();
+      });
+
+      it('logs messages using the console', async () => {
+        const asyncSsrManager = asyncSsrManagerBinder('test').featureService;
+        const mockRender = jest.fn(() => 'testHtml');
+
+        await useFakeTimers(async () =>
+          asyncSsrManager.renderUntilCompleted(mockRender)
+        );
+
+        expect(stubbedConsole.stub.warn.mock.calls).toEqual([
+          [
+            'No timeout is configured for the Async SSR Manager. This could lead to unexpectedly long render times or, in the worst case, never resolving render calls!'
+          ]
+        ]);
       });
     });
   });
