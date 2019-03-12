@@ -12,6 +12,7 @@
     "@feature-hub/core": "^1.1.0",
     "@feature-hub/dom": "^1.2.0",
     "@feature-hub/history-service": "^1.1.0",
+    "@feature-hub/logger": "^0.0.0",
     "@feature-hub/module-loader-amd": "^1.1.0",
     "@feature-hub/module-loader-commonjs": "^1.1.0",
     "@feature-hub/react": "^1.2.0",
