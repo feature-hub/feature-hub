@@ -1,7 +1,7 @@
-import {ServerRequestV1} from '@feature-hub/server-request';
 import * as history from 'history';
 import {RootLocationTransformer} from '../create-root-location-transformer';
 import {HistoryMultiplexer} from './history-multiplexer';
+import {HistoryServiceContext} from './history-service-context';
 import {StaticRootHistory} from './static-root-history';
 
 export interface HistoryMultiplexers {
@@ -10,8 +10,8 @@ export interface HistoryMultiplexers {
 }
 
 export function createHistoryMultiplexers(
-  rootLocationTransformer: RootLocationTransformer,
-  serverRequest?: ServerRequestV1
+  context: HistoryServiceContext,
+  rootLocationTransformer: RootLocationTransformer
 ): HistoryMultiplexers {
   let browserHistoryMultiplexer: HistoryMultiplexer | undefined;
   let staticHistoryMultiplexer: HistoryMultiplexer | undefined;
@@ -30,14 +30,14 @@ export function createHistoryMultiplexers(
 
     get staticHistoryMultiplexer(): HistoryMultiplexer {
       if (!staticHistoryMultiplexer) {
-        if (!serverRequest) {
+        if (!context.serverRequest) {
           throw new Error(
             'Static history can not be created without a server request.'
           );
         }
 
         staticHistoryMultiplexer = new HistoryMultiplexer(
-          new StaticRootHistory(serverRequest),
+          new StaticRootHistory(context.serverRequest),
           rootLocationTransformer
         );
       }

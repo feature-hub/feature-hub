@@ -2,6 +2,7 @@ import equal from 'fast-deep-equal';
 import * as history from 'history';
 import {ConsumerHistory} from './consumer-history';
 import {HistoryMultiplexer} from './history-multiplexer';
+import {HistoryServiceContext} from './history-service-context';
 
 export class BrowserConsumerHistory extends ConsumerHistory {
   private readonly listeners = new Set<history.LocationListener>();
@@ -9,10 +10,11 @@ export class BrowserConsumerHistory extends ConsumerHistory {
   private readonly browserUnregister: () => void;
 
   public constructor(
+    context: HistoryServiceContext,
     consumerUid: string,
     historyMultiplexer: HistoryMultiplexer
   ) {
-    super(consumerUid, historyMultiplexer);
+    super(context, consumerUid, historyMultiplexer);
 
     this.browserUnregister = historyMultiplexer.listenForPop(() => {
       this.handlePop();

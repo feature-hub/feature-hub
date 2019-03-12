@@ -1,11 +1,13 @@
 import * as history from 'history';
 import {HistoryMultiplexer} from './history-multiplexer';
+import {HistoryServiceContext} from './history-service-context';
 
 export abstract class ConsumerHistory implements history.History {
   public action: history.Action = 'POP';
   public location: history.Location;
 
   public constructor(
+    protected readonly context: HistoryServiceContext,
     protected readonly consumerUid: string,
     protected readonly historyMultiplexer: HistoryMultiplexer
   ) {
@@ -56,19 +58,19 @@ export abstract class ConsumerHistory implements history.History {
   }
 
   public go(): void {
-    console.warn('history.go() is not supported.');
+    this.context.logger.warn('history.go() is not supported.');
   }
 
   public goBack(): void {
-    console.warn('history.goBack() is not supported.');
+    this.context.logger.warn('history.goBack() is not supported.');
   }
 
   public goForward(): void {
-    console.warn('history.goForward() is not supported.');
+    this.context.logger.warn('history.goForward() is not supported.');
   }
 
   public block(): history.UnregisterCallback {
-    console.warn('history.block() is not supported.');
+    this.context.logger.warn('history.block() is not supported.');
 
     return () => undefined;
   }

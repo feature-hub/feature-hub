@@ -3,9 +3,11 @@ import * as history from 'history';
 import {HistoryServiceV1} from '../define-history-service';
 import {BrowserConsumerHistory} from './browser-consumer-history';
 import {HistoryMultiplexers} from './create-history-multiplexers';
+import {HistoryServiceContext} from './history-service-context';
 import {StaticConsumerHistory} from './static-consumer-history';
 
 export function createHistoryServiceV1Binder(
+  context: HistoryServiceContext,
   historyMultiplexers: HistoryMultiplexers
 ): FeatureServiceBinder<HistoryServiceV1> {
   return (consumerUid: string): FeatureServiceBinding<HistoryServiceV1> => {
@@ -15,13 +17,14 @@ export function createHistoryServiceV1Binder(
     const featureService: HistoryServiceV1 = {
       createBrowserHistory: () => {
         if (browserConsumerHistory) {
-          console.warn(
+          context.logger.warn(
             `createBrowserHistory was called multiple times by consumer ${JSON.stringify(
               consumerUid
             )}. Returning the same history instance as before.`
           );
         } else {
           browserConsumerHistory = new BrowserConsumerHistory(
+            context,
             consumerUid,
             historyMultiplexers.browserHistoryMultiplexer
           );
@@ -32,13 +35,14 @@ export function createHistoryServiceV1Binder(
 
       createStaticHistory: () => {
         if (staticConsumerHistory) {
-          console.warn(
+          context.logger.warn(
             `createStaticHistory was called multiple times by consumer ${JSON.stringify(
               consumerUid
             )}. Returning the same history instance as before.`
           );
         } else {
           staticConsumerHistory = new StaticConsumerHistory(
+            context,
             consumerUid,
             historyMultiplexers.staticHistoryMultiplexer
           );
