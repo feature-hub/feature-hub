@@ -1,4 +1,5 @@
 import {createFeatureHub} from '@feature-hub/core';
+import {defineLogger} from '@feature-hub/logger';
 import {defineExternals, loadAmdModule} from '@feature-hub/module-loader-amd';
 import {FeatureAppLoader, FeatureHubContextProvider} from '@feature-hub/react';
 import * as React from 'react';
@@ -6,7 +7,7 @@ import * as ReactDOM from 'react-dom';
 import {todoManagerDefinition} from './todo-manager';
 
 const {featureAppManager} = createFeatureHub('test:todomvc-integrator', {
-  featureServiceDefinitions: [todoManagerDefinition],
+  featureServiceDefinitions: [defineLogger(), todoManagerDefinition],
   moduleLoader: loadAmdModule,
   providedExternals: {
     react: process.env.REACT_VERSION as string
