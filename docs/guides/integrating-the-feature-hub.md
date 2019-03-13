@@ -48,6 +48,7 @@ and instantiates a `FeatureAppManager` singleton instance using the
 `FeatureServiceRegistry`. Both singletons are returned as properties of the
 `FeatureHub` object created using the `createFeatureHub` function.
 
+> **Note:**  
 > The integrator needs a self-selected but unique consumer ID to register or
 > [consume Feature Services](#consuming-feature-services) (in the example above
 > it is `'acme:integrator'`). The `featureServiceDefinitions` are automatically
@@ -210,8 +211,9 @@ import {FeatureAppLoader} from '@feature-hub/react';
 <FeatureAppLoader src="https://example.com/some-feature-app.js" />
 ```
 
-> If the integrator has configured the AMD module loader on the client, the
-> Feature App to be loaded via `src` must be provided as an [AMD module][amd].
+> **Note:**  
+>  If the integrator has configured the AMD module loader on the client, the Feature
+> App to be loaded via `src` must be provided as an [AMD module][amd].
 
 #### `serverSrc`
 
@@ -225,9 +227,9 @@ Additionally, when a Feature App needs to be rendered on the server, its
 />
 ```
 
-> If the integrator has configured the CommonJS module loader on the server, the
-> Feature App to be loaded via `serverSrc` must be provided as a CommonJS
-> module.
+> **Note:**  
+>  If the integrator has configured the CommonJS module loader on the server, the
+> Feature App to be loaded via `serverSrc` must be provided as a CommonJS module.
 
 #### `css`
 
@@ -381,6 +383,7 @@ is the URL of its module bundle:
 ></feature-app-loader>
 ```
 
+> **Note:**  
 > If the integrator has configured the AMD module loader, the Feature App to be
 > loaded via `src` must be provided as an [AMD module][amd].
 
@@ -602,6 +605,7 @@ const someFeatureAppDefinition = {
 };
 ```
 
+> **Note:**  
 > The `instanceConfig` must be completely static, since it is only evaluated
 > when a Feature App is mounted. Changing the `instanceConfig` after a Feature
 > App has been loaded, will have no effect! Therefore, it is not suitable to

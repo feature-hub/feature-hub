@@ -158,6 +158,7 @@ A Feature App that, for example, needs to fetch data asynchronously when it is
 initially rendered, must define the Async SSR Manager as an optional dependency
 in its Feature App definition.
 
+> **Note:**  
 > The dependency must be optional, since the integrator provides the Feature
 > Service only on the server. The Feature App can determine from its presence
 > whether it is currently rendered on the server or on the client.
@@ -204,10 +205,12 @@ const myFeatureAppDefinition = {
 };
 ```
 
+> **Note:**  
 > The `scheduleRerender` method must be called synchronously during a render
 > pass, or while already scheduled asynchronous operations are running. For more
 > information see the [API docs][async-ssr-manager-api-schedule-rerender].
 
+> **Note:**  
 > In more complex Feature Apps, it may be more difficult to determine the right
 > point in time where all asynchronous operations have been completed. However,
 > this is a problem that needs to be solved anyway when such web applications
@@ -283,6 +286,7 @@ const html = await asyncSsrManager.renderUntilCompleted(() =>
 );
 ```
 
+> **Note:**  
 > The client-side integrator code should not register the Async SSR Manager, so
 > that consumers can determine from its presence whether they are currently
 > rendered on the server or on the client.
