@@ -26,7 +26,7 @@ provide a full-fledged solution for composing micro frontends:
   [placing micro frontends on a web page using
   React][placing-feature-apps-on-a-web-page-using-react], but also allows the
   integration of micro frontends that are [built with any other frontend
-  technology][dom-feature-app] (e.g. Vue.js, Angular, Web Components).
+  technology][dom-feature-app].
 
 The use of the [`@feature-hub/core`][core-api] package without React is
 possible, but requires a custom implementation of the ability to place micro
