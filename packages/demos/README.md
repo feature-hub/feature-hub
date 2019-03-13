@@ -76,6 +76,17 @@ Demonstrates:
 yarn watch:demo server-side-rendering
 ```
 
+### [Custom Logging](src/custom-logging)
+
+Demonstrates:
+
+- how to configure custom loggers for the server and client, using [pino][pino]
+  on the server, and a customized `console` on the client
+
+```sh
+yarn watch:demo custom-logging
+```
+
 ### [TodoMVC](src/todomvc)
 
 Demonstrates:
@@ -97,3 +108,4 @@ terms of the [MIT License][license].
 [website-badge]:
   https://img.shields.io/badge/Website-feature--hub.io-%23500dc5.svg
 [todomvc]: http://todomvc.com
+[pino]: http://getpino.io
