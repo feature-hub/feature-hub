@@ -1,8 +1,10 @@
 import {
   FeatureServiceBinder,
   FeatureServiceProviderDefinition,
+  FeatureServices,
   SharedFeatureService
 } from '@feature-hub/core';
+import {Logger} from '@feature-hub/logger';
 
 export interface Todo {
   readonly id: string;
@@ -26,10 +28,16 @@ export interface SharedTodoManager extends SharedFeatureService {
   readonly '1.0.0': FeatureServiceBinder<TodoManagerV1>;
 }
 
+export interface TodoManagerDependencies extends FeatureServices {
+  readonly 's2:logger': Logger;
+}
+
 class TodoManagerV1Impl implements TodoManagerV1 {
   private readonly listeners = new Set<ListenerCallback>();
   private todos: Todo[] = [];
   private idCount = 0;
+
+  public constructor(private readonly logger: Logger) {}
 
   public getTodos(): Todo[] {
     return this.todos;
@@ -41,7 +49,7 @@ class TodoManagerV1Impl implements TodoManagerV1 {
 
     this.todos = [...this.todos, todo];
 
-    console.info('Added todo:', todo);
+    this.logger.info('Added todo:', todo);
     this.notifyListeners();
 
     return todo;
@@ -60,7 +68,7 @@ class TodoManagerV1Impl implements TodoManagerV1 {
       ...this.todos.slice(index + 1)
     ];
 
-    console.info('Removed todo:', deletedTodo);
+    this.logger.info('Removed todo:', deletedTodo);
     this.notifyListeners();
   }
 
@@ -110,18 +118,26 @@ class TodoManagerV1Impl implements TodoManagerV1 {
       ...this.todos.slice(index + 1)
     ];
 
-    console.info('Changed todo from:', oldTodo, 'to:', newTodo);
+    this.logger.info('Changed todo from:', oldTodo, 'to:', newTodo);
     this.notifyListeners();
   }
 }
 
 export const todoManagerDefinition: FeatureServiceProviderDefinition<
-  SharedTodoManager
+  SharedTodoManager,
+  TodoManagerDependencies
 > = {
   id: 'test:todomvc-todo-manager',
 
-  create: () => {
-    const todoManager = new TodoManagerV1Impl();
+  dependencies: {
+    featureServices: {
+      's2:logger': '^1.0.0'
+    }
+  },
+
+  create: env => {
+    const logger = env.featureServices['s2:logger'];
+    const todoManager = new TodoManagerV1Impl(logger);
 
     return {
       '1.0.0': () => ({featureService: todoManager})
