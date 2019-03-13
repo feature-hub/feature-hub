@@ -20,9 +20,13 @@ import {
 } from '..';
 import {testRootLocationTransformer} from '../internal/test-root-location-transformer';
 import {stubbedLogger} from './stubbed-logger';
+import {Writable} from './writable';
 
 describe('HistoryServiceV1 (on Node.js)', () => {
-  let mockEnv: FeatureServiceEnvironment<undefined, HistoryServiceDependencies>;
+  let mockEnv: FeatureServiceEnvironment<
+    undefined,
+    Writable<HistoryServiceDependencies>
+  >;
 
   let createHistoryServiceBinder: () => FeatureServiceBinder<HistoryServiceV1>;
 

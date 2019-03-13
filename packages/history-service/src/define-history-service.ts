@@ -18,7 +18,7 @@ import {createHistoryServiceContext} from './internal/history-service-context';
 export type HistoryServiceV0 = HistoryServiceV1;
 
 export interface HistoryServiceV1 {
-  staticRootLocation: history.Location;
+  readonly staticRootLocation: history.Location;
 
   createBrowserHistory(): history.History;
   createStaticHistory(): history.History;
@@ -29,8 +29,8 @@ export interface SharedHistoryService extends SharedFeatureService {
 }
 
 export interface HistoryServiceDependencies extends FeatureServices {
-  's2:logger'?: Logger;
-  's2:server-request'?: ServerRequestV1;
+  readonly 's2:logger'?: Logger;
+  readonly 's2:server-request'?: ServerRequestV1;
 }
 
 export function defineHistoryService(
