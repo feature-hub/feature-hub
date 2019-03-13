@@ -6,11 +6,15 @@ import {HistoryConsumer} from './history-consumer';
 
 const inBrowser = typeof window !== 'undefined';
 
+interface Dependencies {
+  readonly 's2:history': HistoryServiceV1;
+}
+
 export const historyConsumerDefinition: FeatureAppDefinition<
   ReactFeatureApp,
   undefined,
   undefined,
-  {'s2:history': HistoryServiceV1}
+  Dependencies
 > = {
   id: 'test:history-consumer',
 

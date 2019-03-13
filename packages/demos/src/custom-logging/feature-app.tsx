@@ -5,7 +5,7 @@ import {ReactFeatureApp} from '@feature-hub/react';
 import * as React from 'react';
 
 interface Dependencies {
-  's2:logger': Logger;
+  readonly 's2:logger': Logger;
 }
 
 const featureAppDefinition: FeatureAppDefinition<
