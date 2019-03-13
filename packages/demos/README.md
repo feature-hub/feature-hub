@@ -76,6 +76,16 @@ Demonstrates:
 yarn watch:demo server-side-rendering
 ```
 
+### [Custom Logging](src/custom-logging)
+
+Demonstrates:
+
+- how to configure custom loggers for the server and client
+
+```sh
+yarn watch:demo custom-logging
+```
+
 ### [TodoMVC](src/todomvc)
 
 Demonstrates:
