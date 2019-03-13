@@ -22,7 +22,7 @@ export default async function renderApp(): Promise<AppRendererResult> {
   });
 
   const html = ReactDOM.renderToString(
-    <FeatureHubContextProvider value={{featureAppManager}}>
+    <FeatureHubContextProvider value={{featureAppManager, logger}}>
       <App />
     </FeatureHubContextProvider>
   );
