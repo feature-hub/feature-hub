@@ -43,3 +43,7 @@ body:not(.sideNavVisible) .button:hover {
   background: #ea3458;
   color: #fff;
 }
+
+blockquote {
+  color: #24292e;
+}

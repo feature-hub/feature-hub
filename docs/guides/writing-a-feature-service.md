@@ -77,6 +77,7 @@ Feature Service dependencies are declared with their ID as key, and a [semver
 version range][semver] as value, e.g.
 `{'acme:other-feature-service': '^2.0.0'}`.
 
+> **Note:**  
 > Optional external dependencies (i.e. `optionalDependencies.externals`) are not
 > yet supported (see [#245][issue-245]).
 
@@ -251,10 +252,11 @@ const myFeatureServiceDefinition = {
 };
 ```
 
-> Note that a Feature Service needs to provide only one implementation per major
-> version, since minor versions only add new features, and thus the latest minor
-> version also satisfies the consumers of all previous minor versions of the
-> same major version. For this reason, consumers should specify [caret
+> **Note:**  
+> A Feature Service needs to provide only one implementation per major version,
+> since minor versions only add new features, and thus the latest minor version
+> also satisfies the consumers of all previous minor versions of the same major
+> version. For this reason, consumers should specify [caret
 > ranges][semver-caret-range] for their [dependencies](#dependencies).
 
 ## Managing Consumer-specific State

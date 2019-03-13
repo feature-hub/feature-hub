@@ -77,6 +77,7 @@ log an info message.
 Feature Service dependencies are declared with their ID as key, and a [semver
 version range][semver] as value, e.g. `{'acme:some-feature-service': '^2.0.0'}`.
 
+> **Note:**  
 > Optional external dependencies (i.e. `optionalDependencies.externals`) are not
 > yet supported (see [#245][issue-245]).
 
@@ -171,6 +172,7 @@ being dependent on the integrator. However, as soon as other teams need to use
 this Feature Service, it should be published and included in the global set of
 Feature Services by the integrator.
 
+> **Note:**  
 > If the Feature Service to be registered has already been registered, the new
 > Feature Service is ignored and a warning is emitted.
 
@@ -201,6 +203,7 @@ const myFeatureAppDefinition = {
 };
 ```
 
+> **Note:**  
 > Since this element is directly rendered by React, the standard React lifecyle
 > methods can be used (if `render` returns an instance of a React
 > `ComponentClass`).
