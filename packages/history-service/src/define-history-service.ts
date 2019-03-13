@@ -18,7 +18,7 @@ import {createHistoryServiceContext} from './internal/history-service-context';
 export type HistoryServiceV0 = HistoryServiceV1;
 
 export interface HistoryServiceV1 {
-  staticRootLocation: history.Location;
+  readonly staticRootLocation: history.Location;
 
   createBrowserHistory(): history.History;
   createStaticHistory(): history.History;
