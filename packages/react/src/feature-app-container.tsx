@@ -56,37 +56,26 @@ export interface FeatureAppContainerProps {
    * the `FeatureAppContainer` renders.
    */
   readonly instanceConfig?: unknown;
+
+  // tslint:disable-next-line: prefer-method-signature
+  readonly onError?: (error: Error) => void;
+
+  // tslint:disable-next-line: prefer-method-signature
+  readonly renderError?: (error: Error) => React.ReactNode;
 }
 
 type InternalFeatureAppContainerProps = FeatureAppContainerProps &
   Pick<FeatureHubContextConsumerValue, 'featureAppManager' | 'logger'>;
 
-interface InternalFeatureAppContainerState {
-  /**
-   * Will be set to true if a DOM Feature App throws in #attachTo or if the
-   * error boundary catches an error thrown by a React Feature app in a
-   * lifecycle method. Since DOM Feature Apps aren't server-side-rendered and
-   * error boundaries only work on the client, this flag will only ever be true
-   * on the client.
-   */
-  hasFeatureAppError: boolean;
-}
-
-const inBrowser =
-  typeof window === 'object' &&
-  typeof document === 'object' &&
-  document.nodeType === 9;
+type InternalFeatureAppContainerState =
+  | {featureAppError: Error}
+  | {featureApp: FeatureApp};
 
 class InternalFeatureAppContainer extends React.PureComponent<
   InternalFeatureAppContainerProps,
   InternalFeatureAppContainerState
 > {
-  public readonly state: InternalFeatureAppContainerState = {
-    hasFeatureAppError: false
-  };
-
   private readonly featureAppScope?: FeatureAppScope<unknown>;
-  private readonly featureApp?: FeatureApp;
   private readonly containerRef = React.createRef<HTMLDivElement>();
 
   public constructor(props: InternalFeatureAppContainerProps) {
@@ -96,8 +85,7 @@ class InternalFeatureAppContainer extends React.PureComponent<
       featureAppManager,
       featureAppDefinition,
       idSpecifier,
-      instanceConfig,
-      logger
+      instanceConfig
     } = props;
 
     try {
@@ -112,27 +100,30 @@ class InternalFeatureAppContainer extends React.PureComponent<
         );
       }
 
-      this.featureApp = this.featureAppScope.featureApp;
+      this.state = {featureApp: this.featureAppScope.featureApp};
     } catch (error) {
-      logger.error(error);
+      this.handleError(error);
 
-      if (!inBrowser) {
-        throw error;
-      }
+      this.state = {featureAppError: error};
     }
   }
 
   public componentDidCatch(error: Error): void {
-    this.setState({hasFeatureAppError: true});
-    this.props.logger.error(error);
+    this.handleError(error);
+
+    this.setState({featureAppError: error});
   }
 
   public componentDidMount(): void {
     const container = this.containerRef.current;
 
-    if (container && this.featureApp && isDomFeatureApp(this.featureApp)) {
+    if (
+      container &&
+      'featureApp' in this.state &&
+      isDomFeatureApp(this.state.featureApp)
+    ) {
       try {
-        this.featureApp.attachTo(container);
+        this.state.featureApp.attachTo(container);
       } catch (error) {
         this.componentDidCatch(error);
       }
@@ -144,30 +135,40 @@ class InternalFeatureAppContainer extends React.PureComponent<
       try {
         this.featureAppScope.destroy();
       } catch (error) {
-        this.props.logger.error(error);
+        this.handleError(error);
       }
     }
   }
 
   public render(): React.ReactNode {
-    if (!this.featureApp || this.state.hasFeatureAppError) {
-      return null;
+    if ('featureAppError' in this.state) {
+      return this.renderError(this.state.featureAppError);
     }
 
-    if (isDomFeatureApp(this.featureApp)) {
+    if (isDomFeatureApp(this.state.featureApp)) {
       return <div ref={this.containerRef} />;
     }
 
     try {
-      return this.featureApp.render();
+      return this.state.featureApp.render();
     } catch (error) {
-      if (!inBrowser) {
-        throw error;
-      }
+      this.handleError(error);
 
-      this.props.logger.error(error);
+      return this.renderError(error);
+    }
+  }
 
-      return null;
+  private renderError(error: Error): React.ReactNode {
+    return this.props.renderError ? this.props.renderError(error) : null;
+  }
+
+  private handleError(error: Error): void {
+    const {logger, onError} = this.props;
+
+    logger.error(error);
+
+    if (onError) {
+      onError(error);
     }
   }
 }

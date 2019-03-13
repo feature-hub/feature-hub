@@ -1,5 +1,4 @@
 // tslint:disable:no-implicit-dependencies
-
 import {
   FeatureAppDefinition,
   FeatureAppManager,
@@ -144,14 +143,57 @@ describe('FeatureAppContainer', () => {
         expect(logger.error.mock.calls).toEqual([[mockError]]);
       });
 
-      it('renders null', () => {
-        const testRenderer = renderWithFeatureHubContext(
-          <FeatureAppContainer
-            featureAppDefinition={mockFeatureAppDefinition}
-          />
-        );
+      describe('with onError provided', () => {
+        it('calls onError with the error', () => {
+          const onError = jest.fn();
 
-        expect(testRenderer.toJSON()).toBeNull();
+          renderWithFeatureHubContext(
+            <FeatureAppContainer
+              featureAppDefinition={mockFeatureAppDefinition}
+              onError={onError}
+            />
+          );
+
+          expect(onError.mock.calls).toEqual([[mockError]]);
+        });
+      });
+
+      describe('with no renderError function provided', () => {
+        it('renders null', () => {
+          const testRenderer = renderWithFeatureHubContext(
+            <FeatureAppContainer
+              featureAppDefinition={mockFeatureAppDefinition}
+            />
+          );
+
+          expect(testRenderer.toJSON()).toBeNull();
+        });
+      });
+
+      describe('with a renderError function provided', () => {
+        it('calls the function with the error', () => {
+          const testRenderer = renderWithFeatureHubContext(
+            <FeatureAppContainer
+              featureAppDefinition={mockFeatureAppDefinition}
+              renderError={() => 'Custom Error UI'}
+            />
+          );
+
+          expect(testRenderer.toJSON()).toBe('Custom Error UI');
+        });
+
+        it('renders what the function returns', () => {
+          const renderError = jest.fn().mockReturnValue(null);
+
+          renderWithFeatureHubContext(
+            <FeatureAppContainer
+              featureAppDefinition={mockFeatureAppDefinition}
+              renderError={renderError}
+            />
+          );
+
+          expect(renderError.mock.calls).toEqual([[mockError]]);
+        });
       });
     });
 
@@ -199,14 +241,57 @@ describe('FeatureAppContainer', () => {
         expect(logger.error.mock.calls).toEqual([[mockError]]);
       });
 
-      it('renders null', () => {
-        const testRenderer = renderWithFeatureHubContext(
-          <FeatureAppContainer
-            featureAppDefinition={mockFeatureAppDefinition}
-          />
-        );
+      describe('with onError provided', () => {
+        it('calls onError with the error', () => {
+          const onError = jest.fn();
 
-        expect(testRenderer.toJSON()).toBeNull();
+          renderWithFeatureHubContext(
+            <FeatureAppContainer
+              featureAppDefinition={mockFeatureAppDefinition}
+              onError={onError}
+            />
+          );
+
+          expect(onError.mock.calls).toEqual([[mockError]]);
+        });
+      });
+
+      describe('with no renderError function provided', () => {
+        it('renders null', () => {
+          const testRenderer = renderWithFeatureHubContext(
+            <FeatureAppContainer
+              featureAppDefinition={mockFeatureAppDefinition}
+            />
+          );
+
+          expect(testRenderer.toJSON()).toBeNull();
+        });
+      });
+
+      describe('with a renderError function provided', () => {
+        it('calls the function with the error', () => {
+          const testRenderer = renderWithFeatureHubContext(
+            <FeatureAppContainer
+              featureAppDefinition={mockFeatureAppDefinition}
+              renderError={() => 'Custom Error UI'}
+            />
+          );
+
+          expect(testRenderer.toJSON()).toBe('Custom Error UI');
+        });
+
+        it('renders what the function returns', () => {
+          const renderError = jest.fn().mockReturnValue(null);
+
+          renderWithFeatureHubContext(
+            <FeatureAppContainer
+              featureAppDefinition={mockFeatureAppDefinition}
+              renderError={renderError}
+            />
+          );
+
+          expect(renderError.mock.calls).toEqual([[mockError]]);
+        });
       });
     });
 
@@ -324,15 +409,63 @@ describe('FeatureAppContainer', () => {
         expect(logger.error.mock.calls).toEqual([[mockError]]);
       });
 
-      it('renders null', () => {
-        const testRenderer = renderWithFeatureHubContext(
-          <FeatureAppContainer
-            featureAppDefinition={mockFeatureAppDefinition}
-          />,
-          {testRendererOptions: {createNodeMock: () => ({})}}
-        );
+      describe('with an onError function provided', () => {
+        it('calls the function with the error', () => {
+          const onError = jest.fn();
 
-        expect(testRenderer.toJSON()).toBeNull();
+          renderWithFeatureHubContext(
+            <FeatureAppContainer
+              featureAppDefinition={mockFeatureAppDefinition}
+              onError={onError}
+            />,
+            {testRendererOptions: {createNodeMock: () => ({})}}
+          );
+
+          expect(onError.mock.calls).toEqual([[mockError]]);
+        });
+      });
+
+      describe('with a renderError function provided', () => {
+        it('calls the function with the error', () => {
+          const renderError = jest.fn().mockReturnValue(null);
+
+          renderWithFeatureHubContext(
+            <FeatureAppContainer
+              featureAppDefinition={mockFeatureAppDefinition}
+              renderError={renderError}
+            />,
+            {testRendererOptions: {createNodeMock: () => ({})}}
+          );
+
+          expect(renderError.mock.calls).toEqual([[mockError]]);
+        });
+
+        it('renders the result of the function', () => {
+          const customErrorUI = 'custom error UI';
+
+          const testRenderer = renderWithFeatureHubContext(
+            <FeatureAppContainer
+              featureAppDefinition={mockFeatureAppDefinition}
+              renderError={() => customErrorUI}
+            />,
+            {testRendererOptions: {createNodeMock: () => ({})}}
+          );
+
+          expect(testRenderer.toJSON()).toBe(customErrorUI);
+        });
+      });
+
+      describe('without a renderError function provided', () => {
+        it('renders null', () => {
+          const testRenderer = renderWithFeatureHubContext(
+            <FeatureAppContainer
+              featureAppDefinition={mockFeatureAppDefinition}
+            />,
+            {testRendererOptions: {createNodeMock: () => ({})}}
+          );
+
+          expect(testRenderer.toJSON()).toBeNull();
+        });
       });
     });
 
@@ -372,6 +505,23 @@ describe('FeatureAppContainer', () => {
           testRenderer.unmount();
 
           expect(logger.error.mock.calls).toEqual([[mockError]]);
+        });
+
+        describe('with an onError function provided', () => {
+          it('calls the function with the error', () => {
+            const onError = jest.fn();
+
+            const testRenderer = renderWithFeatureHubContext(
+              <FeatureAppContainer
+                featureAppDefinition={mockFeatureAppDefinition}
+                onError={onError}
+              />
+            );
+
+            testRenderer.unmount();
+
+            expect(onError.mock.calls).toEqual([[mockError]]);
+          });
         });
       });
     });
@@ -423,14 +573,67 @@ describe('FeatureAppContainer', () => {
       });
     });
 
-    it('renders nothing and logs an error', () => {
-      const testRenderer = renderWithFeatureHubContext(
+    it('logs the creation error', () => {
+      renderWithFeatureHubContext(
         <FeatureAppContainer featureAppDefinition={mockFeatureAppDefinition} />
       );
 
-      expect(testRenderer.toJSON()).toBeNull();
-
       expect(logger.error.mock.calls).toEqual([[mockError]]);
+    });
+
+    describe('with an onError function provided', () => {
+      it('calls the function with the error', () => {
+        const onError = jest.fn();
+
+        renderWithFeatureHubContext(
+          <FeatureAppContainer
+            featureAppDefinition={mockFeatureAppDefinition}
+            onError={onError}
+          />
+        );
+
+        expect(onError.mock.calls).toEqual([[mockError]]);
+      });
+    });
+
+    describe('with a renderError function provided', () => {
+      it('calls the function with the creation error', () => {
+        const renderError = jest.fn().mockReturnValue(null);
+
+        renderWithFeatureHubContext(
+          <FeatureAppContainer
+            featureAppDefinition={mockFeatureAppDefinition}
+            renderError={renderError}
+          />
+        );
+
+        expect(renderError.mock.calls).toEqual([[mockError]]);
+      });
+
+      it('renders the result of the function', () => {
+        const customErrorUI = 'custom error UI';
+
+        const testRenderer = renderWithFeatureHubContext(
+          <FeatureAppContainer
+            featureAppDefinition={mockFeatureAppDefinition}
+            renderError={() => customErrorUI}
+          />
+        );
+
+        expect(testRenderer.toJSON()).toBe(customErrorUI);
+      });
+    });
+
+    describe('without a renderError function provided', () => {
+      it('renders null', () => {
+        const testRenderer = renderWithFeatureHubContext(
+          <FeatureAppContainer
+            featureAppDefinition={mockFeatureAppDefinition}
+          />
+        );
+
+        expect(testRenderer.toJSON()).toBeNull();
+      });
     });
 
     describe('when unmounted', () => {
