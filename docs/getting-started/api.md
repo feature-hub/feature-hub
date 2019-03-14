@@ -41,3 +41,8 @@ A Feature Service to manage asynchronous server-side rendering.
 
 A Feature Service for managing the state transfer to the client when rendering
 on the server.
+
+## [`@feature-hub/logger`](/@feature-hub/logger)
+
+A Feature Service for providing a common logging integration to all Feature Hub
+consumers.
