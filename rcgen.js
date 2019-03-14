@@ -1,9 +1,9 @@
 // @ts-check
 
 const {git, gitIgnore} = require('@rcgen/configs');
-const {composeEnhancers} = require('@rcgen/core');
+const {composeManifest} = require('@rcgen/core');
 
-exports.default = composeEnhancers([
+exports.default = composeManifest(
   git(),
   gitIgnore({
     additionalFilenames: [
@@ -20,4 +20,4 @@ exports.default = composeEnhancers([
       'yarn-error.log'
     ]
   })
-])({});
+)();
