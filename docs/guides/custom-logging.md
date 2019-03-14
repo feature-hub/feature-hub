@@ -18,7 +18,7 @@ import pino from 'pino';
 const logger = pino();
 ```
 
-### `@feature-hub/core`
+## `@feature-hub/core`
 
 To provide a custom logger to the `FeatureAppManager` and
 `FeatureServiceRegistry`, the integrator can set the `logger` option of the
@@ -32,7 +32,7 @@ import {createFeatureHub} from '@feature-hub/core';
 const {featureAppManager} = createFeatureHub('acme:integrator', {logger});
 ```
 
-### `@feature-hub/react`
+## `@feature-hub/react`
 
 To provide a custom logger to the React `FeatureAppLoader` and React
 `FeatureAppContainer`, the integrator can use the `FeatureHubContextProvider`:
@@ -47,7 +47,7 @@ import {FeatureHubContextProvider} from '@feature-hub/react';
 </FeatureHubContextProvider>
 ```
 
-### `@feature-hub/dom`
+## `@feature-hub/dom`
 
 To provide a custom logger to the `feature-app-loader` and
 `feature-app-container` custom elements, the integrator can set the `logger`
@@ -66,7 +66,7 @@ defineFeatureAppContainer(featureAppManager, {logger});
 defineFeatureAppLoader(featureAppManager, {logger});
 ```
 
-### Feature Apps & Feature Services
+## Feature Apps & Feature Services
 
 To provide a custom logger to Feature Apps and Feature Services, the integrator
 can provide the Logger Feature Service from the
