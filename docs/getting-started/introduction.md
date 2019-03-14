@@ -19,6 +19,18 @@ end-to-end several times.
 > team. This ensures that every feature is developed, tested and deployed
 > independently from other features. — [thoughtworks.com][thoughtworks]
 
+The Feature Hub includes a collection of npm packages that when used together
+provide a full-fledged solution for composing micro frontends. The main packages
+are:
+
+- [`@feature-hub/core`][core-api] — Allows dynamic loading of micro frontends,
+  lifecycle management of micro frontends, and controlled sharing of state and
+  functionality between micro frontends.
+- [`@feature-hub/dom`][dom-api] - Provides an out-of-the-box solution for
+  placing micro frontends on a web page using Web Components.
+- [`@feature-hub/react`][react-api] — Provides an out-of-the-box solution for
+  placing micro frontends on a web page using React.
+
 ## Feature Apps and Feature Services
 
 In the context of the Feature Hub, a micro frontend is referred to as a
@@ -49,8 +61,11 @@ There are three different personas in a Feature Hub environment:
 3.  A **consumer** is everyone who consumes Feature Services. This can be a
     Feature App, other Feature Services, or even the integrator.
 
+[core-api]: /@feature-hub/core/
+[dom-api]: /@feature-hub/dom/
 [our-requirements-for-micro-frontends]:
   /docs/getting-started/motivation#our-requirements-for-micro-frontends
 [thoughtworks]: https://www.thoughtworks.com/de/radar/techniques/micro-frontends
 [providing-a-versioned-api]:
   /docs/guides/writing-a-feature-service#providing-a-versioned-api
+[react-api]: /@feature-hub/react/
