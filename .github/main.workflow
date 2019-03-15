@@ -16,8 +16,7 @@ action "Install (Node 11)" {
 
 action "Commitlint" {
   uses = "docker://node:11"
-  runs = "yarn"
-  args = "commitlint --from ${GITHUB_SHA}^1 --to $GITHUB_SHA"
+  runs = ["sh", "-c", "yarn commitlint --from $GITHUB_SHA^1 --to $GITHUB_SHA"]
   needs = ["Install (Node 11)"]
 }
 
