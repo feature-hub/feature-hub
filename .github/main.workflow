@@ -1,11 +1,7 @@
 workflow "Build (Node 11)" {
   on = "push"
   resolves = [
-    "Commitlint",
-    "Lint",
-    "Compile",
-    "Verify",
-    "Test (Node 11)"
+    "Commitlint"
   ]
 }
 
