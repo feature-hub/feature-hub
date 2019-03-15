@@ -30,16 +30,19 @@ App][feature-app-in-feature-app].
 ## Can we integrate an existing Angular 2.0 application into the Feature Hub?
 
 Yes, but the application must first be [converted to a Feature
-App][writing-a-feature-app]. The [`@feature-hub/react`][react-api] package could
-be used to integrate the application as a [DOM Feature App][dom-feature-app].
-However, if you don't want to integrate other React Feature Apps, you probably
-should build a Feature Hub Integrator without React.
+App][writing-a-feature-app]. The [`@feature-hub/dom`][dom-api] or the
+[`@feature-hub/react`][react-api] package can be used to integrate the
+application as a DOM Feature App. There is a [demo][angular-feature-app] that
+shows the integration of an Angular application into a `@feature-hub/dom`
+integrator.
 
-[own-feature-service-definitions]:
-  /docs/guides/writing-a-feature-app#ownfeatureservicedefinitions
+[angular-feature-app]: https://github.com/feature-hub/angular-feature-app
+[dom-api]: /@feature-hub/dom/
 [dom-feature-app]: /docs/guides/writing-a-feature-app#dom-feature-app
 [dynamic-code-splitting]:
   /docs/guides/reducing-the-bundle-size#dynamic-code-splitting-with-webpack
+[own-feature-service-definitions]:
+  /docs/guides/writing-a-feature-app#ownfeatureservicedefinitions
 [react-api]: /@feature-hub/react/
 [writing-a-feature-app]: /docs/guides/writing-a-feature-app
 [feature-app-in-feature-app]: /docs/guides/feature-app-in-feature-app
