@@ -250,8 +250,8 @@ const myFeatureAppDefinition = {
 
   create(env) {
     return {
-      attachTo(containerDiv) {
-        containerDiv.innerText = 'Foo';
+      attachTo(container) {
+        container.innerText = 'Foo';
       }
     };
   }
