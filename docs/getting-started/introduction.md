@@ -23,7 +23,7 @@ are:
 - [`@feature-hub/core`][core-api] — Allows dynamic loading of micro frontends,
   lifecycle management of micro frontends, and controlled sharing of state and
   functionality between micro frontends.
-- [`@feature-hub/dom`][dom-api] - Provides an out-of-the-box solution for
+- [`@feature-hub/dom`][dom-api] — Provides an out-of-the-box solution for
   placing micro frontends on a web page using Web Components.
 - [`@feature-hub/react`][react-api] — Provides an out-of-the-box solution for
   placing micro frontends on a web page using React.
