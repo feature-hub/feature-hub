@@ -5,10 +5,6 @@
 
 A library for building a Feature Hub integrator with React.
 
-> Provides an out-of-the-box solution for placing micro frontends on a web page
-> using React, but also allows the integration of micro frontends that are built
-> with any other frontend technology (e.g. Vue.js, Angular, Web Components).
-
 ## Installation
 
 ### Using Yarn

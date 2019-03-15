@@ -5,9 +5,6 @@
 
 A library for building a Feature Hub integrator using Web Components.
 
-> Provides an out-of-the-box solution for placing micro frontends on a web page
-> using Web Components.
-
 ## Installation
 
 ### Using Yarn
