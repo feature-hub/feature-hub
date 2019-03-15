@@ -41,6 +41,7 @@ by its terms.
 - `yarn verify` — Verifies non-functional requirements (used on CI).
 - `yarn format` — Formats all files.
 - `yarn sort-package-jsons` — Sorts all `package.json` files.
+- `yarn generate-config` — Generates all config files.
 
 ### Publishing a New Release
 

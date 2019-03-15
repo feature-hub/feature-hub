@@ -10,6 +10,7 @@
     "compile": "lerna exec -- tsc --project tsconfig.cjs.json",
     "compile:esm": "lerna exec --no-private -- tsc --project tsconfig.esm.json",
     "format": "prettier --write '**/*.{js,json,md,ts,tsx,yml}'",
+    "generate-config": "rcgen --verbose --force",
     "postinstall": "rcgen --verbose",
     "lint": "lerna exec --parallel -- tslint --config tslint.json --project tsconfig.json --format verbose",
     "sort-package-jsons": "sort-package-json package.json packages/*/package.json",
