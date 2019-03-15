@@ -3,7 +3,6 @@ workflow "Build" {
   resolves = [
     "Commitlint",
     "Lint",
-    "Compile",
     "Verify",
     "Test"
   ]
@@ -38,7 +37,7 @@ action "Verify" {
   uses = "docker://node:11"
   runs = "yarn"
   args = "verify"
-  needs = ["Install"]
+  needs = ["Compile"]
 }
 
 action "Test" {
