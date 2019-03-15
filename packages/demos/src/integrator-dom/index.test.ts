@@ -33,7 +33,7 @@ describe('integration test: "dom integrator"', () => {
   describe('if the Feature App loads successfully', () => {
     it('renders the Feature App', async () => {
       const handle = await page.evaluateHandle(
-        'document.querySelector("feature-app-loader").shadowRoot.querySelector("feature-app-container").shadowRoot.querySelector("div")'
+        'document.querySelector("feature-app-loader").shadowRoot.querySelector("feature-app-container").shadowRoot'
       );
 
       await expect(handle).toMatch('Hello, World!');
