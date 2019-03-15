@@ -1,4 +1,4 @@
-workflow "CI (Node 11)" {
+workflow "Build (Node 11)" {
   on = "push"
   resolves = [
     "Commitlint",
@@ -17,7 +17,7 @@ action "Install (Node 11)" {
 action "Commitlint" {
   uses = "docker://node:11"
   runs = "yarn"
-  args = "commitlint --edit"
+  args = "commitlint --from ${GITHUB_SHA}^1 --to $GITHUB_SHA"
   needs = ["Install (Node 11)"]
 }
 
