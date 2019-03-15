@@ -82,35 +82,42 @@ export function defineFeatureAppContainer(
     @property({type: Object})
     public instanceConfig?: unknown;
 
+    @property({type: Object, reflect: false})
+    private error?: Error;
+
     private featureAppScope: FeatureAppScope<DomFeatureApp> | undefined;
 
-    public render(): TemplateResult {
+    private readonly appElement = document.createElement('div');
+
+    public firstUpdated(): void {
+      if (!this.featureAppDefinition) {
+        return;
+      }
+
       try {
-        const element = document.createElement('div');
-
-        if (!this.featureAppDefinition) {
-          return html`
-            ${element}
-          `;
-        }
-
         this.featureAppScope = featureAppManager.getFeatureAppScope(
           this.featureAppDefinition,
           {idSpecifier: this.idSpecifier, instanceConfig: this.instanceConfig}
         );
 
-        this.featureAppScope.featureApp.attachTo(element);
-
-        return html`
-          ${element}
-        `;
+        this.featureAppScope.featureApp.attachTo(this.appElement);
       } catch (error) {
         logger.error(error);
 
+        this.error = error;
+      }
+    }
+
+    public render(): TemplateResult {
+      if (this.error) {
         return html`
           <slot name="error"></slot>
         `;
       }
+
+      return html`
+        ${this.appElement}
+      `;
     }
 
     public disconnectedCallback(): void {
