@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/sinnerschrader/feature-hub/compare/v1.2.0...v1.3.0) (2019-03-15)
+
+
+### Bug Fixes
+
+* **demos:** implement a guard against empty todos ([#396](https://github.com/sinnerschrader/feature-hub/issues/396)) ([50276e6](https://github.com/sinnerschrader/feature-hub/commit/50276e6))
+* **react:** deprecate FeatureHubContextValue interface ([#411](https://github.com/sinnerschrader/feature-hub/issues/411)) ([fc13a16](https://github.com/sinnerschrader/feature-hub/commit/fc13a16))
+
+
+### Features
+
+* **demos:** add custom logging demo ([#418](https://github.com/sinnerschrader/feature-hub/issues/418)) ([6ad41b9](https://github.com/sinnerschrader/feature-hub/commit/6ad41b9))
+* **demos:** dynamize external declarations ([#389](https://github.com/sinnerschrader/feature-hub/issues/389)) ([9918fd5](https://github.com/sinnerschrader/feature-hub/commit/9918fd5))
+* **demos:** use Logger Feature Service in Todo Manager ([#417](https://github.com/sinnerschrader/feature-hub/issues/417)) ([58287e5](https://github.com/sinnerschrader/feature-hub/commit/58287e5))
+* **dom:** allow for container replacement ([#428](https://github.com/sinnerschrader/feature-hub/issues/428)) ([ea54ddf](https://github.com/sinnerschrader/feature-hub/commit/ea54ddf))
+
+
+
+
+
 # [1.2.0](https://github.com/sinnerschrader/feature-hub/compare/v1.1.0...v1.2.0) (2019-02-27)
 
 

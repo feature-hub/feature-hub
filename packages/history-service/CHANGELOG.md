@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/sinnerschrader/feature-hub/compare/v1.2.0...v1.3.0) (2019-03-15)
+
+
+### Bug Fixes
+
+* **history-service:** add missing readonlys ([#416](https://github.com/sinnerschrader/feature-hub/issues/416)) ([e67fc27](https://github.com/sinnerschrader/feature-hub/commit/e67fc27))
+
+
+### Features
+
+* **history-service:** use Logger Feature Service instead of console ([#414](https://github.com/sinnerschrader/feature-hub/issues/414)) ([a363757](https://github.com/sinnerschrader/feature-hub/commit/a363757))
+
+
+
+
+
 # [1.1.0](https://github.com/sinnerschrader/feature-hub/compare/v1.0.1...v1.1.0) (2019-02-25)
 
 

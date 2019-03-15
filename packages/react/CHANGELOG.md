@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/sinnerschrader/feature-hub/compare/v1.2.0...v1.3.0) (2019-03-15)
+
+
+### Bug Fixes
+
+* **react:** deprecate FeatureHubContextValue interface ([#411](https://github.com/sinnerschrader/feature-hub/issues/411)) ([fc13a16](https://github.com/sinnerschrader/feature-hub/commit/fc13a16))
+
+
+### Features
+
+* **react:** add custom logger option to FeatureHubContext ([#408](https://github.com/sinnerschrader/feature-hub/issues/408)) ([470acd3](https://github.com/sinnerschrader/feature-hub/commit/470acd3))
+
+
+
+
+
 # [1.2.0](https://github.com/sinnerschrader/feature-hub/compare/v1.1.0...v1.2.0) (2019-02-27)
 
 
