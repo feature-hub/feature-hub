@@ -32,8 +32,8 @@ App][feature-app-in-feature-app].
 Yes, but the application must first be [converted to a Feature
 App][writing-a-feature-app]. The [`@feature-hub/dom`][dom-api] or the
 [`@feature-hub/react`][react-api] package can be used to integrate the
-application as a DOM Feature App. We have created a [demo][angular-feature-app]
-that shows the integration of an Angular application into an `@feature-hub/dom`
+application as a DOM Feature App. There is a [demo][angular-feature-app] that
+shows the integration of an Angular application into an `@feature-hub/dom`
 integrator.
 
 [angular-feature-app]: https://github.com/feature-hub/angular-feature-app
