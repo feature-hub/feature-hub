@@ -1,15 +1,15 @@
-workflow "Build (Node 11)" {
+workflow "Build" {
   on = "push"
   resolves = [
     "Commitlint",
     "Lint",
     "Compile",
     "Verify",
-    "Test (Node 11)"
+    "Test"
   ]
 }
 
-action "Install (Node 11)" {
+action "Install" {
   uses = "docker://node:11"
   runs = "yarn"
 }
@@ -17,33 +17,33 @@ action "Install (Node 11)" {
 action "Commitlint" {
   uses = "docker://node:11"
   runs = ["sh", "-c", "yarn commitlint --from $GITHUB_SHA^1 --to $GITHUB_SHA"]
-  needs = ["Install (Node 11)"]
+  needs = ["Install"]
 }
 
 action "Lint" {
   uses = "docker://node:11"
   runs = "yarn"
   args = "lint"
-  needs = ["Install (Node 11)"]
+  needs = ["Install"]
 }
 
 action "Compile" {
   uses = "docker://node:11"
   runs = "yarn"
   args = "compile"
-  needs = ["Install (Node 11)"]
+  needs = ["Install"]
 }
 
 action "Verify" {
   uses = "docker://node:11"
   runs = "yarn"
   args = "verify"
-  needs = ["Install (Node 11)"]
+  needs = ["Install"]
 }
 
-action "Test (Node 11)" {
-  uses = "docker://node:11"
+action "Test" {
+  uses = "ianwalter/puppeteer@v1.0.0"
   runs = "yarn"
   args = "test --no-cache --runInBand --no-verbose"
-  needs = ["Install (Node 11)"]
+  needs = ["Install"]
 }
