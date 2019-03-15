@@ -1,8 +1,8 @@
 # Feature Hub
 
 The **Feature Hub** is an opinionated JavaScript implementation of the micro
-frontends approach, which enables scalable development and cross-page reuse of
-end-to-end built features.
+frontends approach to creating scalable web applications with multiple teams and
+different technologies.
 
 ## Documentation
 

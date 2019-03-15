@@ -5,8 +5,8 @@ sidebar_label: Introduction
 ---
 
 The **Feature Hub** is an [opinionated][our-requirements-for-micro-frontends]
-JavaScript implementation of the micro frontends approach, which enables
-scalable development and cross-page reuse of end-to-end built features.
+JavaScript implementation of the micro frontends approach to creating scalable
+web applications with multiple teams and different technologies.
 
 > We've seen many teams create front-end **monoliths** — a single, large and
 > sprawling browser application — on top of their back-end services. Our
