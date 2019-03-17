@@ -1800,12 +1800,12 @@
     universal-user-agent "^2.0.0"
     url-template "^2.0.8"
 
-"@rcgen/cli@^0.10.0":
-  version "0.10.0"
-  resolved "https://registry.yarnpkg.com/@rcgen/cli/-/cli-0.10.0.tgz#e5b344707c787e8677cdbce7c845c07e84ae48a3"
-  integrity sha512-BZY6Wb/YqaOvoQRp72n8lYIodQjzWbXJ4ZOagUEYJyrMQ/IjN5Ehpuu2QN3bvTCbtxOc01Cu4U0WEGQ5wm0t3Q==
+"@rcgen/cli@^0.13.0":
+  version "0.13.0"
+  resolved "https://registry.yarnpkg.com/@rcgen/cli/-/cli-0.13.0.tgz#4b6278dbc5ec7373bed3065c1f5eb568c393826f"
+  integrity sha512-9pg8CExwt4Xa5alTNvEWtFKGeHKrKn5/kN0Podqho+qiFn0uwC3hNN2prx4iEZNP1ZyZ0L5C8Hqxe98QZnXcoQ==
   dependencies:
-    "@rcgen/core" "^0.10.0"
+    "@rcgen/core" "^0.13.0"
     meow "^5.0.0"
 
 "@rcgen/configs@^0.10.0":
@@ -1821,6 +1821,15 @@
   version "0.10.0"
   resolved "https://registry.yarnpkg.com/@rcgen/core/-/core-0.10.0.tgz#ece9f075c74c0a8c6bde2991985c90979cf7fc3a"
   integrity sha512-QbMZ1NUBbxzoUDtOyYsrx1NJh/SkAcDupWfMCOkNccqonlBWevTdn1HrfpBoPSh0PTHD36f6MdLcEh+qFd4XSQ==
+  dependencies:
+    ajv "^6.9.2"
+    micromatch "^3.1.10"
+    mkdirp "^0.5.1"
+
+"@rcgen/core@^0.13.0":
+  version "0.13.0"
+  resolved "https://registry.yarnpkg.com/@rcgen/core/-/core-0.13.0.tgz#075aced46edfc551c0edceb97d0a77a280309242"
+  integrity sha512-UHbSQ2u2nNJgzlOYcOa/dXQOxhyqcCwqzFqEPxk5ttGJ4lcwVpl6DvZUZO3KEZxXltkgBPsH+R4ODtFq73hZHg==
   dependencies:
     ajv "^6.9.2"
     micromatch "^3.1.10"
