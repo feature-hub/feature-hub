@@ -39,7 +39,7 @@
     "@commitlint/config-angular": "^7.1.2",
     "@commitlint/travis-cli": "^7.2.1",
     "@rcgen/cli": "^0.10.0",
-    "@rcgen/configs": "^0.10.0",
+    "@rcgen/configs": "^0.13.0",
     "@rcgen/core": "^0.10.0",
     "@types/cheerio": "^0.22.9",
     "@types/expect-puppeteer": "^3.3.0",
