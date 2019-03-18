@@ -27,8 +27,11 @@ describe('FeatureAppLoader', () => {
   let mockAsyncFeatureAppDefinition: AsyncValue<FeatureAppDefinition<unknown>>;
   let mockAsyncSsrManager: MockAsyncSsrManager;
   let mockAddUrlForHydration: jest.Mock;
+  let stubbedConsole: Stubbed<Console>;
 
   beforeEach(() => {
+    stubbedConsole = stubMethods(console);
+
     if (document.head) {
       document.head.innerHTML = '';
     }
@@ -53,6 +56,10 @@ describe('FeatureAppLoader', () => {
     };
 
     mockAddUrlForHydration = jest.fn();
+  });
+
+  afterEach(() => {
+    stubbedConsole.restore();
   });
 
   it('throws an error when rendered without a FeatureHubContextProvider', () => {
@@ -341,16 +348,6 @@ describe('FeatureAppLoader', () => {
   });
 
   describe('without a custom logger', () => {
-    let stubbedConsole: Stubbed<Console>;
-
-    beforeEach(() => {
-      stubbedConsole = stubMethods(console);
-    });
-
-    afterEach(() => {
-      stubbedConsole.restore();
-    });
-
     it('logs messages using the console', () => {
       const mockError = new Error('Failed to load Feature App module.');
 
