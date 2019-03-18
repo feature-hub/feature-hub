@@ -16,8 +16,10 @@ describe('FeatureAppContainer', () => {
   let mockGetFeatureAppScope: jest.Mock;
   let mockFeatureAppDefinition: FeatureAppDefinition<unknown>;
   let mockFeatureAppScope: FeatureAppScope<unknown>;
+  let stubbedConsole: Stubbed<Console>;
 
   beforeEach(() => {
+    stubbedConsole = stubMethods(console);
     mockFeatureAppDefinition = {id: 'testId', create: jest.fn()};
     mockFeatureAppScope = {featureApp: {}, destroy: jest.fn()};
     mockGetFeatureAppScope = jest.fn(() => mockFeatureAppScope);
@@ -27,6 +29,10 @@ describe('FeatureAppContainer', () => {
       getFeatureAppScope: mockGetFeatureAppScope,
       preloadFeatureApp: jest.fn()
     } as Partial<FeatureAppManager>) as FeatureAppManager;
+  });
+
+  afterEach(() => {
+    stubbedConsole.restore();
   });
 
   it('throws an error when rendered without a FeatureHubContextProvider', () => {
@@ -441,16 +447,6 @@ describe('FeatureAppContainer', () => {
   });
 
   describe('without a custom logger', () => {
-    let stubbedConsole: Stubbed<Console>;
-
-    beforeEach(() => {
-      stubbedConsole = stubMethods(console);
-    });
-
-    afterEach(() => {
-      stubbedConsole.restore();
-    });
-
     it('logs messages using the console', () => {
       const mockError = new Error('Failed to render.');
 
