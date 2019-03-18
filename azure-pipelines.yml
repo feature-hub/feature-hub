@@ -14,5 +14,5 @@ steps:
 
 - script: yarn && ./scripts/ci/test.sh
   env:
-    TARGET_BRANCH=$(System.PullRequest.TargetBranch)
+    TARGET_BRANCH: $(System.PullRequest.TargetBranch)
   displayName: 'test'
