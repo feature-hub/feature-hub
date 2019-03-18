@@ -70,6 +70,7 @@
     "ts-config": "^20.9.0",
     "tslint": "^5.12.0",
     "typedoc": "^0.14.2",
+    "typedoc-plugin-sourcefile-url": "^1.0.4",
     "typescript": "^3.2.4",
     "typescript-tslint-plugin": "^0.3.1"
   }
