@@ -2,7 +2,6 @@
 
 module.exports = {
   mode: 'modules',
-  tocIncludeModules: true,
   ignoreCompilerErrors: false,
   'external-modulemap': '.*packages/([^/]+)/src/.*',
   exclude: ['**/*+(__tests__|internal|lib|node_modules|demos)/**/*'],
