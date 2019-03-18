@@ -13,4 +13,6 @@ steps:
     versionSpec: $(node_version)
 
 - script: yarn && ./scripts/ci/test.sh
+  env:
+    TARGET_BRANCH=$(System.PullRequest.TargetBranch)
   displayName: 'test'
