@@ -4,7 +4,7 @@ set -e
 
 ./scripts/ci/word-blacklist.sh
 
-yarn commitlint-travis
+yarn commitlint --from=master
 
 yarn test --no-cache --maxWorkers 2 --no-verbose
 yarn lint
