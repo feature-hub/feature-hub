@@ -112,15 +112,15 @@ export function createRootLocationTransformer(
         const search = searchParams.toString();
 
         return history.createPath({pathname, search});
-      } else {
-        const consumerPaths = searchParams.get(consumerPathsQueryParamName);
-
-        if (!consumerPaths) {
-          return undefined;
-        }
-
-        return getConsumerPath(consumerPaths, consumerUid);
       }
+
+      const consumerPaths = searchParams.get(consumerPathsQueryParamName);
+
+      if (!consumerPaths) {
+        return undefined;
+      }
+
+      return getConsumerPath(consumerPaths, consumerUid);
     },
 
     createRootLocation: (
@@ -137,14 +137,14 @@ export function createRootLocationTransformer(
           consumerLocation,
           consumerPathsQueryParamName
         );
-      } else {
-        return createRootLocationForOtherConsumer(
-          rootLocation,
-          consumerLocation,
-          consumerUid,
-          consumerPathsQueryParamName
-        );
       }
+
+      return createRootLocationForOtherConsumer(
+        rootLocation,
+        consumerLocation,
+        consumerUid,
+        consumerPathsQueryParamName
+      );
     }
   };
 }
