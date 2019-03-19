@@ -102,7 +102,7 @@ yarn watch:demo todomvc
 
 Demonstrates:
 
-- how to the `@feature-hub/dom` package can be used to render DOM Feature Apps
+- how the `@feature-hub/dom` package can be used to render DOM Feature Apps
   using Web Components
 
 ```sh
