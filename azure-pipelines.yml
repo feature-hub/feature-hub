@@ -13,17 +13,8 @@ steps:
     inputs:
       versionSpec: $(node_version)
 
-  - checkout: self
-    clean: true
-    fetchDepth: 0
-
   - script: yarn
     displayName: install
 
   - bash: ./scripts/ci/test.sh
     displayName: test
-
-  - script:
-      git checkout $(System.PullRequest.SourceBranch) && yarn commitlint
-      --from=$(System.PullRequest.TargetBranch)
-    displayName: commitlint
