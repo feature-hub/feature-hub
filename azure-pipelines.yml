@@ -18,5 +18,5 @@ steps:
   - script: yarn
     displayName: install
 
-  - bash: ./scripts/ci/test.sh
+  - bash: ./scripts/ci/test-azure.sh
     displayName: test
