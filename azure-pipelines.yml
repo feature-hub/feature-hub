@@ -17,11 +17,8 @@ steps:
     clean: true
     fetchDepth: 0
 
-  - script: git checkout $(System.PullRequest.SourceBranch) && yarn commitlint --from=$(System.PullRequest.TargetBranch)
+  - script: yarn commitlint --from=$(System.PullRequest.TargetBranch) --to=$(System.PullRequest.SourceBranch)
     displayName: 'commitlint'
-
-  - checkout: self
-    clean: true
 
   - script: yarn && ./scripts/ci/test.sh
     displayName: 'test'
