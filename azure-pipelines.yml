@@ -3,21 +3,21 @@ pool:
 
 strategy:
   matrix:
-    node_8_x:
+    node_8:
       node_version: 8.x
-    node_10_x:
+    node_10:
       node_version: 10.x
 
 steps:
-- task: NodeTool@0 
-  inputs:
-    versionSpec: $(node_version)
+  - task: NodeTool@0
+    inputs:
+      versionSpec: $(node_version)
 
-- checkout: self
-  clean: true
-  fetchDepth: 0
+  - checkout: self
+    clean: true
+    fetchDepth: 0
 
-- script: yarn && ./scripts/ci/test.sh
-  env:
-    TARGET_BRANCH: $(System.PullRequest.TargetBranch)
-  displayName: 'test'
+  - script: yarn && ./scripts/ci/test.sh
+    displayName: 'test'
+    env:
+      TARGET_BRANCH: $(System.PullRequest.TargetBranch)
