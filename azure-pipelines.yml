@@ -20,8 +20,9 @@ steps:
   - script: yarn
     displayName: install
 
-  - script: yarn commitlint --from=$(System.PullRequest.TargetBranch) --to=$(System.PullRequest.SourceBranch)
-    displayName: commitlint
-
   - script: ./scripts/ci/test.sh
     displayName: test
+
+  - script: git checkout $(System.PullRequest.SourceBranch) && yarn commitlint --from=$(System.PullRequest.TargetBranch)
+    displayName: commitlint
+
