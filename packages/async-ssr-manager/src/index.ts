@@ -17,7 +17,7 @@ export interface AsyncSsrManagerConfig {
 }
 
 /**
- * @deprecated Use {@link AsyncSsrManagerV1} instead.
+ * @deprecated Use [[AsyncSsrManagerV1]] instead.
  */
 export type AsyncSsrManagerV0 = AsyncSsrManagerV1;
 
@@ -35,11 +35,11 @@ export type AsyncSsrManagerV0 = AsyncSsrManagerV1;
 export interface AsyncSsrManagerV1 {
   /**
    * This method is intended for the integrator. It calls the given render
-   * function at least once. With {@link scheduleRerender} further render passes
+   * function at least once. With [[scheduleRerender]] further render passes
    * can be triggered. It resolves with the result of the last render call.
    *
    * @throws Throws an error when the configured timeout is reached
-   * (see {@link AsyncSsrManagerConfig.timeout}).
+   * (see [[AsyncSsrManagerConfig.timeout]]).
    *
    * @param render A render function that is called for each render pass.
    */
@@ -91,7 +91,7 @@ export interface AsyncSsrManagerDependencies extends FeatureServices {
 }
 
 /**
- * @see {@link AsyncSsrManagerV1} for further information.
+ * @see [[AsyncSsrManagerV1]] for further information.
  */
 export const asyncSsrManagerDefinition: FeatureServiceProviderDefinition<
   SharedAsyncSsrManager,

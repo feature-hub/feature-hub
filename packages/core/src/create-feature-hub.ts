@@ -17,18 +17,18 @@ import {Logger} from './logger';
 
 export interface FeatureHub {
   /**
-   * The {@link FeatureAppManager} singleton instance.
+   * The [[FeatureAppManager]] singleton instance.
    */
   readonly featureAppManager: FeatureAppManager;
 
   /**
-   * The {@link FeatureServiceRegistry} singleton instance.
+   * The [[FeatureServiceRegistry]] singleton instance.
    */
   readonly featureServiceRegistry: FeatureServiceRegistry;
 
   /**
-   * The Feature Services that are bound to the integrator based on the {@link
-   * FeatureHubOptions.featureServiceDependencies}.
+   * The Feature Services that are bound to the integrator based on the
+   * [[FeatureHubOptions.featureServiceDependencies]].
    */
   readonly featureServices: FeatureServices;
 }
@@ -67,7 +67,7 @@ export interface FeatureHubOptions {
   readonly providedExternals?: ProvidedExternals;
 
   /**
-   * For the {@link FeatureAppManager} to be able to load Feature Apps from a
+   * For the [[FeatureAppManager]] to be able to load Feature Apps from a
    * remote location, a module loader must be provided, (e.g. the
    * `@feature-hub/module-loader-amd` package or the
    * `@feature-hub/module-loader-commonjs` package).
@@ -81,10 +81,10 @@ export interface FeatureHubOptions {
 }
 
 /**
- * Creates the {@link FeatureServiceRegistry} singleton instance, registers all
- * {@link FeatureHubOptions.featureServiceDefinitions} for the given integrator
- * ID, and instantiates a {@link FeatureAppManager} singleton instance using
- * the {@link FeatureServiceRegistry}.
+ * Creates the [[FeatureServiceRegistry]] singleton instance, registers all
+ * [[FeatureHubOptions.featureServiceDefinitions]] for the given integrator
+ * ID, and instantiates a [[FeatureAppManager]] singleton instance using
+ * the [[FeatureServiceRegistry]].
  *
  * @param integratorId A self-selected but unique consumer ID that is used to
  * register or consume Feature Services.

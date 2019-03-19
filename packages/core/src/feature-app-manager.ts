@@ -19,7 +19,7 @@ export interface FeatureAppEnvironment<
   /**
    * A config object that is provided by the integrator. The same config object
    * is used for all Feature App instances with the same ID, which is defined in
-   * their {@link FeatureAppDefinition}.
+   * their [[FeatureAppDefinition]].
    */
   readonly config: TConfig;
 
@@ -82,7 +82,7 @@ export interface FeatureAppScopeOptions {
 }
 
 /**
- * @deprecated Use {@link FeatureAppManager} instead.
+ * @deprecated Use [[FeatureAppManager]] instead.
  */
 export type FeatureAppManagerLike = FeatureAppManager;
 
@@ -101,7 +101,7 @@ export interface FeatureAppManagerOptions {
   readonly moduleLoader?: ModuleLoader;
 
   /**
-   * When using a {@link #moduleLoader}, it might make sense to validate
+   * When using a [[moduleLoader]], it might make sense to validate
    * external dependencies that are required by Feature Apps against the
    * shared dependencies that are provided by the integrator. This makes it
    * possible that an error is already thrown when creating a Feature App with
@@ -147,19 +147,19 @@ export class FeatureAppManager {
   }
 
   /**
-   * Load a {@link FeatureAppDefinition} using the module loader the
-   * {@link FeatureAppManager} was initilized with.
+   * Load a [[FeatureAppDefinition]] using the module loader the
+   * [[FeatureAppManager]] was initilized with.
    *
    * @throws Throws an error if no module loader was provided on initilization.
    *
-   * @param url A URL pointing to a {@link FeatureAppDefinition} bundle in a
+   * @param url A URL pointing to a [[FeatureAppDefinition]] bundle in a
    * module format compatible with the module loader.
    *
-   * @returns An {@link AsyncValue} containing a promise that resolves with the
-   * loaded {@link FeatureAppDefinition}. If called again with the same URL it
-   * returns the same {@link AsyncValue}. The promise rejects when loading
-   * fails, or when the loaded bundle doesn't export a {@link
-   * FeatureAppDefinition} as default.
+   * @returns An [[AsyncValue]] containing a promise that resolves with the
+   * loaded [[FeatureAppDefinition]]. If called again with the same URL it
+   * returns the same [[AsyncValue]]. The promise rejects when loading
+   * fails, or when the loaded bundle doesn't export a [[FeatureAppDefinition]]
+   * as default.
    */
   public getAsyncFeatureAppDefinition(
     url: string
@@ -176,26 +176,26 @@ export class FeatureAppManager {
   }
 
   /**
-   * Create a {@link FeatureAppScope} which includes validating externals,
+   * Create a [[FeatureAppScope]] which includes validating externals,
    * binding all available Feature Service dependencies, and calling the
-   * `create` method of the {@link FeatureAppDefinition}.
+   * `create` method of the [[FeatureAppDefinition]].
    *
-   * @throws Throws an error if Feature Services that the {@link
-   * FeatureAppDefinition} provides with its `ownFeatureServices` key fail to
+   * @throws Throws an error if Feature Services that the
+   * [[FeatureAppDefinition]] provides with its `ownFeatureServices` key fail to
    * be registered.
    * @throws Throws an error if the required externals can't be satisfied.
    * @throws Throws an error if the required Feature Services can't be
    * satisfied.
-   * @throws Throws an error the {@link FeatureAppDefinition}'s `create` method
+   * @throws Throws an error the [[FeatureAppDefinition]]'s `create` method
    * throws.
    *
    * @param featureAppDefinition The definition of the Feature App to create a
    * scope for.
    *
-   * @returns A {@link FeatureAppScope} for the provided {@link
-   * FeatureAppDefinition} and ID specifier. If `getFeatureAppScope` is called
-   * multiple times with the same {@link FeatureAppDefinition} and ID specifier,
-   * it returns the {@link FeatureAppScope} it created on the first call.
+   * @returns A [[FeatureAppScope]] for the provided [[FeatureAppDefinition]]
+   * and ID specifier. If `getFeatureAppScope` is called
+   * multiple times with the same [[FeatureAppDefinition]] and ID specifier,
+   * it returns the [[FeatureAppScope]] it created on the first call.
    */
   public getFeatureAppScope<TFeatureApp>(
     featureAppDefinition: FeatureAppDefinition<TFeatureApp>,
@@ -227,14 +227,14 @@ export class FeatureAppManager {
   }
 
   /**
-   * Preload a {@link FeatureAppDefinition} using the module loader the {@link
-   * FeatureAppManager} was initilized with. Useful before hydration of a
+   * Preload a [[FeatureAppDefinition]] using the module loader the
+   * [[FeatureAppManager]] was initilized with. Useful before hydration of a
    * server rendered page to avoid render result mismatch between client and
-   * server due missing {@link FeatureAppDefinition}s.
+   * server due missing [[FeatureAppDefinition]]s.
    *
    * @throws Throws an error if no module loader was provided on initilization.
    *
-   * @see {@link getAsyncFeatureAppDefinition} for further information.
+   * @see [[getAsyncFeatureAppDefinition]] for further information.
    */
   public async preloadFeatureApp(url: string): Promise<void> {
     await this.getAsyncFeatureAppDefinition(url).promise;

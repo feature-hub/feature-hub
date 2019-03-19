@@ -91,7 +91,7 @@ export interface FeatureServiceConfigs {
 }
 
 /**
- * @deprecated Use {@link FeatureServiceRegistry} instead.
+ * @deprecated Use [[FeatureServiceRegistry]] instead.
  */
 export type FeatureServiceRegistryLike = FeatureServiceRegistry;
 
@@ -103,16 +103,16 @@ export interface FeatureServiceRegistryOptions {
   readonly configs?: FeatureServiceConfigs;
 
   /**
-   * If the {@link FeatureAppManager} is configured with a
-   * {@link FeatureAppManager#moduleLoader}, to load Feature Apps from a remote
-   * location that also provide their own Feature Services, i.e. the Feature
-   * Services are included in a different bundle than the integrator bundle, it
-   * might make sense to validate external dependencies that are required by
-   * those Feature Services against the shared dependencies that are provided by
-   * the integrator. This makes it possible that an error is already thrown when
-   * registering a Feature Service with incompatible external dependencies, and
-   * thus enables early feedback as to whether a Feature Service is compatible
-   * with the integration environment.
+   * If the [[FeatureAppManager]] is configured with a
+   * [[FeatureAppManagerOptions.moduleLoader]], to load Feature Apps from a
+   * remote location that also provide their own Feature Services, i.e. the
+   * Feature Services are included in a different bundle than the integrator
+   * bundle, it might make sense to validate external dependencies that are
+   * required by those Feature Services against the shared dependencies that are
+   * provided by the integrator. This makes it possible that an error is already
+   * thrown when registering a Feature Service with incompatible external
+   * dependencies, and thus enables early feedback as to whether a Feature
+   * Service is compatible with the integration environment.
    */
   readonly externalsValidator?: ExternalsValidator;
 
