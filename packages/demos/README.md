@@ -98,6 +98,17 @@ Demonstrates:
 yarn watch:demo todomvc
 ```
 
+### [DOM Integrator](src/integrator-dom)
+
+Demonstrates:
+
+- how the `@feature-hub/dom` package can be used to render DOM Feature Apps
+  using Web Components
+
+```sh
+yarn watch:demo integrator-dom
+```
+
 ---
 
 Copyright (c) 2018-2019 SinnerSchrader Deutschland GmbH. Released under the
