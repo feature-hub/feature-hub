@@ -267,8 +267,8 @@ const myFeatureAppDefinition = {
 [placing-feature-apps-on-a-web-page-using-web-components]:
   /docs/guides/integrating-the-feature-hub/#placing-feature-apps-on-a-web-page-using-web-components
 [providing-configs]: /docs/guides/integrating-the-feature-hub#providing-configs
-[dom-api]: /@feature-hub/dom/
-[react-api]: /@feature-hub/react/
+[dom-api]: /@feature-hub/modules/dom.html
+[react-api]: /@feature-hub/modules/react.html
 [react-feature-app]: /docs/guides/writing-a-feature-app#react-feature-app
 [sharing-npm-dependencies]: /docs/guides/sharing-npm-dependencies
 [semver]: https://semver.org

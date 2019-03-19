@@ -49,7 +49,7 @@ defineExternals({
 [react-feature-app-loader]:
   /docs/guides/integrating-the-feature-hub#react-feature-app-loader
 [react-feature-app]: /docs/guides/writing-a-feature-app#react-feature-app
-[react-api]: /@feature-hub/react/
+[react-api]: /@feature-hub/modules/react.html
 [sharing-npm-dependencies]: /docs/guides/sharing-npm-dependencies
 [feature-app-in-feature-demo]:
   https://github.com/sinnerschrader/feature-hub/tree/master/packages/demos/src/feature-app-in-feature-app
