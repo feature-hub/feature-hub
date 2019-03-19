@@ -32,9 +32,9 @@ export interface DomFeatureApp {
 }
 
 /**
- * A Feature App that can be rendered by the {@link FeatureAppLoader} or
- * {@link FeatureAppContainer} must be either a {@link ReactFeatureApp}
- * (recommended) or a {@link DomFeatureApp}.
+ * A Feature App that can be rendered by the [[FeatureAppLoader]] or
+ * [[FeatureAppContainer]] must be either a [[ReactFeatureApp]]
+ * (recommended) or a [[DomFeatureApp]].
  */
 export type FeatureApp = ReactFeatureApp | DomFeatureApp;
 
@@ -178,7 +178,7 @@ class InternalFeatureAppContainer extends React.PureComponent<
  * a Feature App to render another Feature App as a child.
  *
  * When a Feature App throws an error while rendering or, in the case of a
- * {@link ReactFeatureApp}, throws an error in a lifecycle method, the
+ * [[ReactFeatureApp]], throws an error in a lifecycle method, the
  * `FeatureAppContainer` renders `null`. On the server, however, rendering
  * errors are not caught and must therefore be handled by the integrator.
  */

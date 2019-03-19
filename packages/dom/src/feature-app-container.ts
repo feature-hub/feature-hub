@@ -20,12 +20,12 @@ export interface DomFeatureApp {
 }
 
 /**
- * A custom element defined by {@link defineFeatureAppContainer} as
+ * A custom element defined by [[defineFeatureAppContainer]] as
  * `feature-app-container`.
  *
  * It is possible to pass a slot named `error` to the `feature-app-container`
  * element which is rendered if the Feature App could not be created or if the
- * Feature App throws in its {@link DomFeatureApp.attachTo} method.
+ * Feature App throws in its [[DomFeatureApp.attachTo]] method.
  */
 export interface FeatureAppContainerElement extends HTMLElement {
   /**
@@ -57,7 +57,7 @@ export interface DefineFeatureAppContainerOptions {
 }
 
 /**
- * Define a custom element implementing the {@link FeatureAppContainerElement}
+ * Define a custom element implementing the [[FeatureAppContainerElement]]
  * interface under the name `feature-app-container` at the
  * `CustomElementRegistry`.
  */

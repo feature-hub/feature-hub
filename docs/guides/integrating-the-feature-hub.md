@@ -643,11 +643,11 @@ someFeatureService2.foo(42);
 ```
 
 [amd]: https://github.com/amdjs/amdjs-api/blob/master/AMD.md
-[core-api]: /@feature-hub/core/
-[dom-api]: /@feature-hub/dom/
-[module-loader-amd-api]: /@feature-hub/module-loader-amd/
-[module-loader-commonjs-api]: /@feature-hub/module-loader-commonjs/
-[react-api]: /@feature-hub/react/
+[core-api]: /@feature-hub/modules/core.html
+[dom-api]: /@feature-hub/modules/dom.html
+[module-loader-amd-api]: /@feature-hub/modules/module_loader_amd.html
+[module-loader-commonjs-api]: /@feature-hub/modules/module_loader_commonjs.html
+[react-api]: /@feature-hub/modules/react.html
 [feature-app-dependencies]: /docs/guides/writing-a-feature-app#dependencies
 [feature-service-dependencies]:
   /docs/guides/writing-a-feature-service#dependencies

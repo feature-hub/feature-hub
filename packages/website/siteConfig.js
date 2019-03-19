@@ -9,6 +9,7 @@ const siteConfig = {
   organizationName: 'sinnerschrader',
   headerLinks: [
     {search: true},
+    {label: 'API', href: '/@feature-hub/'},
     {label: 'GitHub', href: 'https://github.com/sinnerschrader/feature-hub'}
   ],
   colors: {primaryColor: '#500dc5', secondaryColor: '#ea3458'},

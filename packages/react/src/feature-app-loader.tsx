@@ -213,7 +213,7 @@ class InternalFeatureAppLoader extends React.PureComponent<
  * another Feature App as a child.
  *
  * When a Feature App throws an error while rendering or, in the case of a
- * {@link ReactFeatureApp}, throws an error in a lifecycle method, the
+ * [[ReactFeatureApp]], throws an error in a lifecycle method, the
  * `FeatureAppLoader` renders `null`. On the server, however, rendering
  * errors are not caught and must therefore be handled by the integrator.
  */

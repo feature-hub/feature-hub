@@ -16,7 +16,7 @@ export interface RequiredExternals {
 }
 
 /**
- * @deprecated Use {@link ExternalsValidator} instead.
+ * @deprecated Use [[ExternalsValidator]] instead.
  */
 export type ExternalsValidatorLike = ExternalsValidator;
 

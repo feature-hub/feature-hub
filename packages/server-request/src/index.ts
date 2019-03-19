@@ -5,7 +5,7 @@ import {
 } from '@feature-hub/core';
 
 /**
- * @deprecated Use {@link ServerRequestV1} instead.
+ * @deprecated Use [[ServerRequestV1]] instead.
  */
 export type ServerRequestV0 = ServerRequestV1;
 

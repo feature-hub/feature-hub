@@ -8,7 +8,7 @@ import {SerializedStateManager} from './internal/serialized-state-manager';
 import {ServerSideStateManager} from './internal/server-side-state-manager';
 
 /**
- * @deprecated Use {@link SerializedStateManagerV1} instead.
+ * @deprecated Use [[SerializedStateManagerV1]] instead.
  */
 export type SerializedStateManagerV0 = SerializedStateManagerV1;
 
@@ -28,18 +28,18 @@ export interface SerializedStateManagerV1 {
    * the server-side rendering has been completed, to serialize all consumer
    * states. The returned string is encoded, so that it can be safely injected
    * into an HTML document. On the client, this string must be passed unmodified
-   * into {@link setSerializedStates} where it will be decoded again.
+   * into [[setSerializedStates]] where it will be decoded again.
    */
   serializeStates(): string;
 
   /**
    * This method is intended to be called by the integrator on the client to
    * provide the serialized state to all consumers, i.e. Feature Apps and
-   * Feature Services, (via {@link getSerializedState}) that serialized their
+   * Feature Services, (via [[getSerializedState]]) that serialized their
    * state on the server.
    *
    * @param serializedStates The string that was created on the server with
-   * {@link serializeStates}.
+   * [[serializeStates]].
    */
   setSerializedStates(serializedStates: string): void;
 
@@ -56,7 +56,7 @@ export interface SharedSerializedStateManager extends SharedFeatureService {
 }
 
 /**
- * @see {@link SerializedStateManagerV1} for further information.
+ * @see [[SerializedStateManagerV1]] for further information.
  */
 export const serializedStateManagerDefinition: FeatureServiceProviderDefinition<
   SharedSerializedStateManager

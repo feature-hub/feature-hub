@@ -24,7 +24,7 @@ export interface FeatureHubContextProviderValue {
 
   /**
    * A callback that the integrator provides on the server, mainly for the
-   * {@link FeatureAppLoader}, to add client URLs of those Feature Apps that
+   * [[FeatureAppLoader]], to add client URLs of those Feature Apps that
    * are rendered on the server, so that they can be preloaded on the client
    * before hydration. Calling it more than once with the same URL must not have
    * any impact.
@@ -35,8 +35,8 @@ export interface FeatureHubContextProviderValue {
 }
 
 /**
- * @deprecated Use {@link FeatureHubContextProviderValue} or
- * {@link FeatureHubContextConsumerValue} instead.
+ * @deprecated Use [[FeatureHubContextProviderValue]] or
+ * [[FeatureHubContextConsumerValue]] instead.
  */
 export type FeatureHubContextValue = FeatureHubContextProviderValue;
 
@@ -58,7 +58,7 @@ const FeatureHubContext = React.createContext(
  * The integrator must render a `FeatureHubContextProvider` to provide the
  * `FeatureAppManager` singleton instance, as well as the Async SSR Manager
  * Feature Service (optionally), to Feature Hub context consumers, e.g. the
- * {@link FeatureAppLoader} or {@link FeatureAppContainer}.
+ * [[FeatureAppLoader]] or [[FeatureAppContainer]].
  */
 export const FeatureHubContextProvider = FeatureHubContext.Provider;
 
@@ -66,7 +66,7 @@ export const FeatureHubContextProvider = FeatureHubContext.Provider;
  * A `FeatureHubContextConsumer` can be used to retrieve the `FeatureAppManager`
  * singleton instance, as well as the Async SSR Manager Feature Service (if it
  * is provided by the integrator). Its main purpose is to be used inside the
- * {@link FeatureAppLoader} and {@link FeatureAppContainer}.
+ * [[FeatureAppLoader]] and [[FeatureAppContainer]].
  */
 export const FeatureHubContextConsumer = (
   props: React.ConsumerProps<FeatureHubContextConsumerValue>

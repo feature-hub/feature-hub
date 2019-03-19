@@ -8,14 +8,14 @@ import {defineFeatureAppContainer} from './feature-app-container';
 const elementName = 'feature-app-loader';
 
 /**
- * A custom element defined by {@link defineFeatureAppLoader} as
+ * A custom element defined by [[defineFeatureAppLoader]] as
  * `feature-app-loader`.
  *
  * It is possible to pass two slots to the `feature-app-loader` element. One
  * slot named `loading` is rendered while the Feature App module is loading.
  * The other one named `error` is rendered if the Feature App module could not
  * be loaded and is also passed to the underlying `feature-app-container`
- * element (@see {@link FeatureAppContainerElement}).
+ * element (@see [[FeatureAppContainerElement]]).
  */
 export interface FeatureAppLoaderElement extends HTMLElement {
   /**
@@ -45,7 +45,7 @@ export interface DefineFeatureAppLoaderOptions {
 }
 
 /**
- * Define a custom element implementing the {@link FeatureAppLoaderElement}
+ * Define a custom element implementing the [[FeatureAppLoaderElement]]
  * interface under the name `feature-app-loader` at the
  * `CustomElementRegistry`.
  */

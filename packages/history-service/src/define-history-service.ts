@@ -13,7 +13,7 @@ import {createHistoryServiceV1Binder} from './internal/create-history-service-v1
 import {createHistoryServiceContext} from './internal/history-service-context';
 
 /**
- * @deprecated Use {@link HistoryServiceV1} instead.
+ * @deprecated Use [[HistoryServiceV1]] instead.
  */
 export type HistoryServiceV0 = HistoryServiceV1;
 
