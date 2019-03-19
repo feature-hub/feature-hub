@@ -17,6 +17,8 @@ steps:
     clean: true
     fetchDepth: 0
 
+  - script: git branch && git checkout master
+
   - script: yarn && ./scripts/ci/test.sh
     displayName: 'test'
     env:
