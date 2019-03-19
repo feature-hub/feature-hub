@@ -17,8 +17,11 @@ steps:
     clean: true
     fetchDepth: 0
 
-  - script: yarn commitlint --from=$(System.PullRequest.TargetBranch) --to=$(System.PullRequest.SourceBranch)
-    displayName: 'commitlint'
+  - script: yarn
+    displayName: install
 
-  - script: yarn && ./scripts/ci/test.sh
-    displayName: 'test'
+  - script: yarn commitlint --from=$(System.PullRequest.TargetBranch) --to=$(System.PullRequest.SourceBranch)
+    displayName: commitlint
+
+  - script: ./scripts/ci/test.sh
+    displayName: test
