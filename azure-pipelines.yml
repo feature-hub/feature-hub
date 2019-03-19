@@ -1,9 +1,7 @@
 pool:
   vmImage: 'ubuntu-16.04'
 
-trigger:
-  branches:
-    exclude: ['*']
+trigger: none
 
 strategy:
   matrix:
