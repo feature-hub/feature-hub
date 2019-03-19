@@ -1,5 +1,7 @@
 // @ts-check
 
+const git = require('git-rev-sync');
+
 module.exports = {
   mode: 'modules',
   ignoreCompilerErrors: false,
@@ -14,6 +16,5 @@ module.exports = {
   name: '@feature-hub',
   out: 'packages/website/build/feature-hub/@feature-hub',
   tsconfig: 'tsconfig.json',
-  'sourcefile-url-prefix':
-    'https://github.com/sinnerschrader/feature-hub/tree/master/packages/'
+  'sourcefile-url-prefix': `https://github.com/sinnerschrader/feature-hub/tree/${git.short()}/packages/`
 };
