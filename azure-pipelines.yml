@@ -19,4 +19,6 @@ steps:
     displayName: install
 
   - bash: ./scripts/ci/test-azure.sh
+    env:
+      BLACKLIST: $(blacklist)
     displayName: test
