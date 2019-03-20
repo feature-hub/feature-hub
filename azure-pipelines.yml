@@ -1,0 +1,24 @@
+pool:
+  vmImage: 'ubuntu-16.04'
+
+trigger: none
+
+strategy:
+  matrix:
+    node_8:
+      node_version: 8.x
+    node_10:
+      node_version: 10.x
+
+steps:
+  - task: NodeTool@0
+    inputs:
+      versionSpec: $(node_version)
+
+  - script: yarn
+    displayName: install
+
+  - bash: ./scripts/ci/test-azure.sh
+    env:
+      BLACKLIST: $(blacklist)
+    displayName: test

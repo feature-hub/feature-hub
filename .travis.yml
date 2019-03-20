@@ -14,7 +14,7 @@ before_script:
   - git config --global user.name "Feature Hub CI"
   - npm config set "//registry.npmjs.org/:_authToken=${NPM_TOKEN}"
 script:
-  - ./scripts/ci/test.sh
+  - ./scripts/ci/test-travis.sh
 deploy:
   provider: script
   script: scripts/ci/release.sh
