@@ -891,7 +891,7 @@
   dependencies:
     find-up "^2.1.0"
 
-"@commitlint/travis-cli@7.5.2":
+"@commitlint/travis-cli@^7.5.2":
   version "7.5.2"
   resolved "https://registry.yarnpkg.com/@commitlint/travis-cli/-/travis-cli-7.5.2.tgz#f82ca57296eb913b6557124b80eac9773dcbbf1d"
   integrity sha512-kbkn8TIjRtGWcKOJBM/fbT9yRPjbLTybetRH5mkAQdX9ratkV9+N3akaOSmv5eemNfHsOM1cdrWkcjZbSqZV2A==
