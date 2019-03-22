@@ -66,8 +66,8 @@ type InternalFeatureAppContainerProps = FeatureAppContainerProps &
   Pick<FeatureHubContextConsumerValue, 'featureAppManager' | 'logger'>;
 
 type InternalFeatureAppContainerState =
-  | {featureAppError: Error}
-  | {featureApp: FeatureApp};
+  | {readonly featureAppError: Error}
+  | {readonly featureApp: FeatureApp};
 
 class InternalFeatureAppContainer extends React.PureComponent<
   InternalFeatureAppContainerProps,
