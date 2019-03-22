@@ -40,8 +40,8 @@ integrator.
 
 Yes, it is possible to use Vue.js to build Feature Apps. A Vue.js Feature App
 would implement the DOM Feature App interface and therefore be integratable in
-an integrator using [`@feature-hub/dom`](dom-api) as well as
-[`@feature-hub/react`](react-api). There is a [demo][vue-feature-app] that shows
+an integrator using [`@feature-hub/dom`][dom-api] as well as
+[`@feature-hub/react`][react-api]. There is a [demo][vue-feature-app] that shows
 the integration of a Vue.js application into a `@feature-hub/dom` integrator.
 
 [angular-feature-app]: https://github.com/feature-hub/angular-feature-app
