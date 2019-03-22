@@ -1802,46 +1802,47 @@
     universal-user-agent "^2.0.0"
     url-template "^2.0.8"
 
-"@rcgen/cli@^0.10.0":
-  version "0.10.0"
-  resolved "https://registry.yarnpkg.com/@rcgen/cli/-/cli-0.10.0.tgz#e5b344707c787e8677cdbce7c845c07e84ae48a3"
-  integrity sha512-BZY6Wb/YqaOvoQRp72n8lYIodQjzWbXJ4ZOagUEYJyrMQ/IjN5Ehpuu2QN3bvTCbtxOc01Cu4U0WEGQ5wm0t3Q==
+"@rcgen/cli@^0.13.0":
+  version "0.13.0"
+  resolved "https://registry.yarnpkg.com/@rcgen/cli/-/cli-0.13.0.tgz#4b6278dbc5ec7373bed3065c1f5eb568c393826f"
+  integrity sha512-9pg8CExwt4Xa5alTNvEWtFKGeHKrKn5/kN0Podqho+qiFn0uwC3hNN2prx4iEZNP1ZyZ0L5C8Hqxe98QZnXcoQ==
   dependencies:
-    "@rcgen/core" "^0.10.0"
+    "@rcgen/core" "^0.13.0"
     meow "^5.0.0"
 
-"@rcgen/configs@^0.10.0":
-  version "0.10.0"
-  resolved "https://registry.yarnpkg.com/@rcgen/configs/-/configs-0.10.0.tgz#5e5885e227b7c04da5a703a2e6e7f675d65e2c00"
-  integrity sha512-zynkyuXjIi9KBax5hB6WxurvJf3JDOB/TqnmnBIm7gPAJ0Ns4LFshJO1or8AaDQemcLF+irbl3OedYxJysj4Yg==
+"@rcgen/configs@^0.13.0":
+  version "0.13.0"
+  resolved "https://registry.yarnpkg.com/@rcgen/configs/-/configs-0.13.0.tgz#498d8d33a81cfbf111885926ebd2c7ac886ae783"
+  integrity sha512-pgDJ0D5pczqCrTuaWgzAIUGeYY+6m5L02+1ixhhxrtYrjVtlGrP4IeZ9ouMYPY1+cFclcMhOXuei9meoQNSyjg==
   dependencies:
-    "@rcgen/core" "^0.10.0"
-    "@rcgen/filetypes" "^0.10.0"
-    "@rcgen/patchers" "^0.10.0"
+    "@rcgen/core" "^0.13.0"
+    "@rcgen/filetypes" "^0.13.0"
+    "@rcgen/patchers" "^0.13.0"
+    sort-package-json "^1.21.0"
 
-"@rcgen/core@^0.10.0":
-  version "0.10.0"
-  resolved "https://registry.yarnpkg.com/@rcgen/core/-/core-0.10.0.tgz#ece9f075c74c0a8c6bde2991985c90979cf7fc3a"
-  integrity sha512-QbMZ1NUBbxzoUDtOyYsrx1NJh/SkAcDupWfMCOkNccqonlBWevTdn1HrfpBoPSh0PTHD36f6MdLcEh+qFd4XSQ==
+"@rcgen/core@^0.13.0":
+  version "0.13.0"
+  resolved "https://registry.yarnpkg.com/@rcgen/core/-/core-0.13.0.tgz#075aced46edfc551c0edceb97d0a77a280309242"
+  integrity sha512-UHbSQ2u2nNJgzlOYcOa/dXQOxhyqcCwqzFqEPxk5ttGJ4lcwVpl6DvZUZO3KEZxXltkgBPsH+R4ODtFq73hZHg==
   dependencies:
     ajv "^6.9.2"
     micromatch "^3.1.10"
     mkdirp "^0.5.1"
 
-"@rcgen/filetypes@^0.10.0":
-  version "0.10.0"
-  resolved "https://registry.yarnpkg.com/@rcgen/filetypes/-/filetypes-0.10.0.tgz#68c2c5786db9365bdbc8d026fbe5ca77e7db371e"
-  integrity sha512-NzHsYTUgnWe8mdFzAFJjkjddWPSssj5ShvZDpgca+4UUq+o6Ioh0bDUKNaR/+s/PM+jTjpNa+eGfmXwpnnuLtA==
+"@rcgen/filetypes@^0.13.0":
+  version "0.13.0"
+  resolved "https://registry.yarnpkg.com/@rcgen/filetypes/-/filetypes-0.13.0.tgz#f54d5f9c10cc227e33b38935a50fc9cd05e3a7ff"
+  integrity sha512-AAMAw9aHEVE5svt8N2R2gG2dZUmFOBS/JF/jsO19T2Mu1p319uZULJvcuboqj0dGY/TWbojDZx80CqsnViwRow==
   dependencies:
-    "@rcgen/core" "^0.10.0"
+    "@rcgen/core" "^0.13.0"
     yaml "^1.3.2"
 
-"@rcgen/patchers@^0.10.0":
-  version "0.10.0"
-  resolved "https://registry.yarnpkg.com/@rcgen/patchers/-/patchers-0.10.0.tgz#dca247e6c9f184de865428c6015c9f8c1f7e0a6d"
-  integrity sha512-NG9B8zF6sg+xF1hHMABJ4HUsLYHbBQ71f70R9bSNSphXddiVgWiJddxueP4Tmc0YbhGKyih6QsZqu8EkNGc7Yg==
+"@rcgen/patchers@^0.13.0":
+  version "0.13.0"
+  resolved "https://registry.yarnpkg.com/@rcgen/patchers/-/patchers-0.13.0.tgz#d0145cb3d9306b4ddcc1668895466302fe0dfaa3"
+  integrity sha512-Fb9qgRJ9IMisJHCX0eol2jo6I0JhrlNivT6hU5sirCpEK/apskXPrlXDYVYrqc2kICbx+lPJSCoRjuGzVG1ugQ==
   dependencies:
-    "@rcgen/core" "^0.10.0"
+    "@rcgen/core" "^0.13.0"
     deepmerge "^3.2.0"
 
 "@sindresorhus/is@^0.7.0":
@@ -12009,7 +12010,7 @@ sort-object-keys@^1.1.2:
   resolved "https://registry.yarnpkg.com/sort-object-keys/-/sort-object-keys-1.1.2.tgz#d3a6c48dc2ac97e6bc94367696e03f6d09d37952"
   integrity sha1-06bEjcKsl+a8lDZ2luA/bQnTeVI=
 
-sort-package-json@^1.16.0:
+sort-package-json@^1.16.0, sort-package-json@^1.21.0:
   version "1.21.0"
   resolved "https://registry.yarnpkg.com/sort-package-json/-/sort-package-json-1.21.0.tgz#9501273da130693b4dd1ebe68882d1d289119546"
   integrity sha512-G920kGKROov3kS32jnmf03YolcGTkdONKbOv+Hi1Db7D9lBXhNU5aNMZCE0j/hfDqd/zmPVmpSiuhSOt3Lv+4A==
