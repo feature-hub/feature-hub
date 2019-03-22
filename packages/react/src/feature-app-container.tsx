@@ -57,10 +57,8 @@ export interface FeatureAppContainerProps {
    */
   readonly instanceConfig?: unknown;
 
-  // tslint:disable-next-line: prefer-method-signature
   readonly onError?: (error: Error) => void;
 
-  // tslint:disable-next-line: prefer-method-signature
   readonly renderError?: (error: Error) => React.ReactNode;
 }
 
