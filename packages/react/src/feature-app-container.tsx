@@ -163,10 +163,10 @@ class InternalFeatureAppContainer extends React.PureComponent<
   private handleError(error: Error): void {
     const {logger, onError} = this.props;
 
-    logger.error(error);
-
     if (onError) {
       onError(error);
+    } else {
+      logger.error(error);
     }
   }
 }
