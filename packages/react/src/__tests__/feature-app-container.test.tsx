@@ -752,7 +752,7 @@ describe('FeatureAppContainer', () => {
     {attachTo: 'foo'},
     {render: 'foo'}
   ]) {
-    describe.skip(`when an invalid Feature App (${JSON.stringify(
+    describe(`when an invalid Feature App (${JSON.stringify(
       invalidFeatureApp
     )}) is created`, () => {
       beforeEach(() => {
