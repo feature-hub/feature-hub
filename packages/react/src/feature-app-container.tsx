@@ -69,6 +69,11 @@ type InternalFeatureAppContainerState =
   | {readonly featureAppError: Error}
   | {readonly featureApp: FeatureApp};
 
+const inBrowser =
+  typeof window === 'object' &&
+  typeof document === 'object' &&
+  document.nodeType === 9;
+
 class InternalFeatureAppContainer extends React.PureComponent<
   InternalFeatureAppContainerProps,
   InternalFeatureAppContainerState
@@ -166,6 +171,14 @@ class InternalFeatureAppContainer extends React.PureComponent<
     if (onError) {
       onError(error);
     } else {
+      /**
+       * @deprecated Should be handled instead by providing onError that throws.
+       * Remove this legacy branch for version 2.0 of @feature-hub/react.
+       */
+      if (!inBrowser) {
+        throw error;
+      }
+
       logger.error(error);
     }
   }
