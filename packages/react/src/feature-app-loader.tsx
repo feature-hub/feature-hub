@@ -121,28 +121,16 @@ class InternalFeatureAppLoader extends React.PureComponent<
 
     const {featureAppManager, src} = this.props;
 
-    const asyncFeatureAppDefinition = featureAppManager.getAsyncFeatureAppDefinition(
-      src
-    );
-
     try {
-      const featureAppDefinition = await asyncFeatureAppDefinition.promise;
+      const featureAppDefinition = await featureAppManager.getAsyncFeatureAppDefinition(
+        src
+      ).promise;
 
       if (this.mounted) {
         this.setState({featureAppDefinition});
       }
-    } catch (loadingError) {
-      try {
-        this.handleError(loadingError);
-
-        if (this.mounted) {
-          this.setState({error: loadingError});
-        }
-      } catch (handledError) {
-        if (this.mounted) {
-          this.setState({error: handledError, failedToHandleAsyncError: true});
-        }
-      }
+    } catch (error) {
+      this.handleAsyncError(error);
     }
   }
 
@@ -203,31 +191,10 @@ class InternalFeatureAppLoader extends React.PureComponent<
 
     this.errorHandled = true;
 
-    const {
-      idSpecifier,
-      logger,
-      onError,
-      src: clientSrc,
-      serverSrc
-    } = this.props;
-
-    if (onError) {
-      onError(error);
+    if (this.props.onError) {
+      this.props.onError(error);
     } else {
-      const src = inBrowser ? clientSrc : serverSrc;
-
-      logger.error(
-        idSpecifier
-          ? `The Feature App for the src ${JSON.stringify(
-              src
-            )} and the ID specifier ${JSON.stringify(
-              idSpecifier
-            )} could not be rendered.`
-          : `The Feature App for the src ${JSON.stringify(
-              src
-            )} could not be rendered.`,
-        error
-      );
+      this.logError(error);
 
       /**
        * @deprecated Should be handled instead by providing onError that throws.
@@ -237,6 +204,38 @@ class InternalFeatureAppLoader extends React.PureComponent<
         throw error;
       }
     }
+  }
+
+  private handleAsyncError(error: Error): void {
+    try {
+      this.handleError(error);
+
+      if (this.mounted) {
+        this.setState({error});
+      }
+    } catch (handledError) {
+      if (this.mounted) {
+        this.setState({error: handledError, failedToHandleAsyncError: true});
+      }
+    }
+  }
+
+  private logError(error: Error): void {
+    const {idSpecifier, logger, src: clientSrc, serverSrc} = this.props;
+    const src = inBrowser ? clientSrc : serverSrc;
+
+    logger.error(
+      idSpecifier
+        ? `The Feature App for the src ${JSON.stringify(
+            src
+          )} and the ID specifier ${JSON.stringify(
+            idSpecifier
+          )} could not be rendered.`
+        : `The Feature App for the src ${JSON.stringify(
+            src
+          )} could not be rendered.`,
+      error
+    );
   }
 }
 
