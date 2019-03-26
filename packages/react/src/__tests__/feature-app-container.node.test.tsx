@@ -21,6 +21,24 @@ describe('FeatureAppContainer (on Node.js)', () => {
   let mockFeatureAppScope: FeatureAppScope<unknown>;
   let stubbedConsole: Stubbed<Console>;
 
+  const noErrorBoundaryConsoleErrorCalls = [
+    [
+      expect.stringContaining(
+        'Consider adding an error boundary to your tree to customize error handling behavior.'
+      )
+    ]
+  ];
+
+  const expectConsoleErrorCalls = (expectedConsoleErrorCalls: unknown[][]) => {
+    try {
+      expect(stubbedConsole.stub.error.mock.calls).toEqual(
+        expectedConsoleErrorCalls
+      );
+    } finally {
+      stubbedConsole.stub.error.mockClear();
+    }
+  };
+
   beforeEach(() => {
     mockFeatureAppDefinition = {id: 'testId', create: jest.fn()};
     mockFeatureAppScope = {featureApp: {}, destroy: jest.fn()};
@@ -36,12 +54,9 @@ describe('FeatureAppContainer (on Node.js)', () => {
   });
 
   afterEach(() => {
+    expect(stubbedConsole.stub.error).not.toHaveBeenCalled();
     stubbedConsole.restore();
   });
-
-  const expectedErrorBoundaryMessage = expect.stringMatching(
-    '^The above error occurred in'
-  );
 
   const renderWithFeatureHubContext = (node: React.ReactNode) =>
     TestRenderer.create(
@@ -82,9 +97,9 @@ describe('FeatureAppContainer (on Node.js)', () => {
           )
         ).toThrowError(expectedError);
 
-        expect(stubbedConsole.stub.error.mock.calls).toEqual([
+        expectConsoleErrorCalls([
           [expectedError],
-          [expectedErrorBoundaryMessage]
+          ...noErrorBoundaryConsoleErrorCalls
         ]);
       });
     });
@@ -110,9 +125,9 @@ describe('FeatureAppContainer (on Node.js)', () => {
         )
       ).toThrowError(mockError);
 
-      expect(stubbedConsole.stub.error.mock.calls).toEqual([
+      expectConsoleErrorCalls([
         [mockError],
-        [expectedErrorBoundaryMessage]
+        ...noErrorBoundaryConsoleErrorCalls
       ]);
     });
   });
@@ -133,7 +148,7 @@ describe('FeatureAppContainer (on Node.js)', () => {
       };
     });
 
-    it('re-throws the error', () => {
+    it('logs and re-throws the error', () => {
       expect(() =>
         renderWithFeatureHubContext(
           <FeatureAppContainer
@@ -141,6 +156,11 @@ describe('FeatureAppContainer (on Node.js)', () => {
           />
         )
       ).toThrowError(mockError);
+
+      expectConsoleErrorCalls([
+        [mockError],
+        ...noErrorBoundaryConsoleErrorCalls
+      ]);
     });
   });
 });
