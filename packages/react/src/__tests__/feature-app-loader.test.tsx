@@ -524,6 +524,45 @@ describe('FeatureAppLoader', () => {
           expect(testRenderer.toJSON()).toBe('test error boundary');
           expectConsoleErrorCalls(usingTestErrorBoundaryConsoleErrorCalls);
         });
+
+        describe('when unmounted before loading has finished', () => {
+          it('calls onError with the error', async () => {
+            const onError = jest.fn(() => {
+              throw onErrorMockError;
+            });
+
+            const testRenderer = renderWithFeatureHubContext(
+              <FeatureAppLoader src="example.js" onError={onError} />
+            );
+
+            testRenderer.unmount();
+
+            try {
+              await mockAsyncFeatureAppDefinition.promise;
+            } catch {}
+
+            expect(onError.mock.calls).toEqual([[mockError]]);
+          });
+
+          it('renders nothing', async () => {
+            const testRenderer = renderWithFeatureHubContext(
+              <FeatureAppLoader
+                src="example.js"
+                onError={() => {
+                  throw onErrorMockError;
+                }}
+              />
+            );
+
+            testRenderer.unmount();
+
+            try {
+              await mockAsyncFeatureAppDefinition.promise;
+            } catch {}
+
+            expect(testRenderer.toJSON()).toBeNull();
+          });
+        });
       });
     });
 
