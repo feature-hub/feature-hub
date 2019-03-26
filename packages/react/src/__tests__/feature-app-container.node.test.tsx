@@ -97,7 +97,10 @@ describe('FeatureAppContainer (on Node.js)', () => {
           )
         ).toThrowError(expectedError);
 
-        expectConsoleErrorCalls(noErrorBoundaryConsoleErrorCalls);
+        expectConsoleErrorCalls([
+          [expectedError],
+          ...noErrorBoundaryConsoleErrorCalls
+        ]);
       });
     });
   }
@@ -122,7 +125,10 @@ describe('FeatureAppContainer (on Node.js)', () => {
         )
       ).toThrowError(mockError);
 
-      expectConsoleErrorCalls(noErrorBoundaryConsoleErrorCalls);
+      expectConsoleErrorCalls([
+        [mockError],
+        ...noErrorBoundaryConsoleErrorCalls
+      ]);
     });
   });
 
@@ -142,7 +148,7 @@ describe('FeatureAppContainer (on Node.js)', () => {
       };
     });
 
-    it('re-throws the error', () => {
+    it('logs and re-throws the error', () => {
       expect(() =>
         renderWithFeatureHubContext(
           <FeatureAppContainer
@@ -151,7 +157,10 @@ describe('FeatureAppContainer (on Node.js)', () => {
         )
       ).toThrowError(mockError);
 
-      expectConsoleErrorCalls(noErrorBoundaryConsoleErrorCalls);
+      expectConsoleErrorCalls([
+        [mockError],
+        ...noErrorBoundaryConsoleErrorCalls
+      ]);
     });
   });
 });

@@ -171,6 +171,8 @@ class InternalFeatureAppContainer extends React.PureComponent<
     if (onError) {
       onError(error);
     } else {
+      logger.error(error);
+
       /**
        * @deprecated Should be handled instead by providing onError that throws.
        * Remove this legacy branch for version 2.0 of @feature-hub/react.
@@ -178,8 +180,6 @@ class InternalFeatureAppContainer extends React.PureComponent<
       if (!inBrowser) {
         throw error;
       }
-
-      logger.error(error);
     }
   }
 }
