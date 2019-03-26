@@ -39,6 +39,10 @@ export interface FeatureAppLoaderProps {
    * the `FeatureAppLoader` loads and renders.
    */
   readonly instanceConfig?: unknown;
+
+  readonly onError?: (error: Error) => void;
+
+  readonly renderError?: (error: Error) => React.ReactNode;
 }
 
 type InternalFeatureAppLoaderProps = FeatureAppLoaderProps &
@@ -46,7 +50,8 @@ type InternalFeatureAppLoaderProps = FeatureAppLoaderProps &
 
 interface InternalFeatureAppLoaderState {
   readonly featureAppDefinition?: FeatureAppDefinition<unknown>;
-  readonly hasError?: boolean;
+  readonly error?: Error;
+  readonly failedToHandleAsyncError?: boolean;
 }
 
 const inBrowser =
@@ -60,7 +65,7 @@ class InternalFeatureAppLoader extends React.PureComponent<
 > {
   public readonly state: InternalFeatureAppLoaderState = {};
 
-  private errorReported = false;
+  private errorHandled = false;
   private mounted = false;
 
   public constructor(props: InternalFeatureAppLoaderProps) {
@@ -88,22 +93,20 @@ class InternalFeatureAppLoader extends React.PureComponent<
       addUrlForHydration(clientSrc);
     }
 
-    const asyncFeatureAppDefinition = featureAppManager.getAsyncFeatureAppDefinition(
-      src
-    );
+    const {
+      error,
+      promise: loadingPromise,
+      value: featureAppDefinition
+    } = featureAppManager.getAsyncFeatureAppDefinition(src);
 
-    if (asyncFeatureAppDefinition.error) {
-      this.reportError(asyncFeatureAppDefinition.error);
+    if (error) {
+      this.handleError(error);
 
-      if (!inBrowser) {
-        throw asyncFeatureAppDefinition.error;
-      }
-
-      this.state = {hasError: true};
-    } else if (asyncFeatureAppDefinition.value) {
-      this.state = {featureAppDefinition: asyncFeatureAppDefinition.value};
+      this.state = {error};
+    } else if (featureAppDefinition) {
+      this.state = {featureAppDefinition};
     } else if (!inBrowser && asyncSsrManager) {
-      asyncSsrManager.scheduleRerender(asyncFeatureAppDefinition.promise);
+      asyncSsrManager.scheduleRerender(loadingPromise);
     }
   }
 
@@ -128,11 +131,17 @@ class InternalFeatureAppLoader extends React.PureComponent<
       if (this.mounted) {
         this.setState({featureAppDefinition});
       }
-    } catch (error) {
-      this.reportError(error);
+    } catch (loadingError) {
+      try {
+        this.handleError(loadingError);
 
-      if (this.mounted) {
-        this.setState({hasError: true});
+        if (this.mounted) {
+          this.setState({error: loadingError});
+        }
+      } catch (handledError) {
+        if (this.mounted) {
+          this.setState({error: handledError, failedToHandleAsyncError: true});
+        }
       }
     }
   }
@@ -142,12 +151,15 @@ class InternalFeatureAppLoader extends React.PureComponent<
   }
 
   public render(): React.ReactNode {
-    const {idSpecifier, instanceConfig} = this.props;
-    const {featureAppDefinition, hasError} = this.state;
+    const {idSpecifier, instanceConfig, onError, renderError} = this.props;
+    const {error, failedToHandleAsyncError, featureAppDefinition} = this.state;
 
-    if (hasError) {
-      // An error UI could be rendered here.
-      return null;
+    if (error) {
+      if (failedToHandleAsyncError) {
+        throw error;
+      }
+
+      return renderError ? renderError(error) : null;
     }
 
     if (!featureAppDefinition) {
@@ -160,6 +172,8 @@ class InternalFeatureAppLoader extends React.PureComponent<
         featureAppDefinition={featureAppDefinition}
         idSpecifier={idSpecifier}
         instanceConfig={instanceConfig}
+        onError={onError}
+        renderError={renderError}
       />
     );
   }
@@ -182,28 +196,47 @@ class InternalFeatureAppLoader extends React.PureComponent<
     }
   }
 
-  private reportError(error: Error): void {
-    if (this.errorReported) {
+  private handleError(error: Error): void {
+    if (this.errorHandled) {
       return;
     }
 
-    this.errorReported = true;
+    this.errorHandled = true;
 
-    const {idSpecifier, src: clientSrc, serverSrc} = this.props;
-    const src = inBrowser ? clientSrc : serverSrc;
+    const {
+      idSpecifier,
+      logger,
+      onError,
+      src: clientSrc,
+      serverSrc
+    } = this.props;
 
-    this.props.logger.error(
-      idSpecifier
-        ? `The Feature App for the src ${JSON.stringify(
-            src
-          )} and the ID specifier ${JSON.stringify(
-            idSpecifier
-          )} could not be rendered.`
-        : `The Feature App for the src ${JSON.stringify(
-            src
-          )} could not be rendered.`,
-      error
-    );
+    if (onError) {
+      onError(error);
+    } else {
+      const src = inBrowser ? clientSrc : serverSrc;
+
+      logger.error(
+        idSpecifier
+          ? `The Feature App for the src ${JSON.stringify(
+              src
+            )} and the ID specifier ${JSON.stringify(
+              idSpecifier
+            )} could not be rendered.`
+          : `The Feature App for the src ${JSON.stringify(
+              src
+            )} could not be rendered.`,
+        error
+      );
+
+      /**
+       * @deprecated Should be handled instead by providing onError that throws.
+       * Remove this legacy branch for version 2.0 of @feature-hub/react.
+       */
+      if (!inBrowser) {
+        throw error;
+      }
+    }
   }
 }
 
