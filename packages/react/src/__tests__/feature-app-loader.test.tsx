@@ -363,6 +363,49 @@ describe('FeatureAppLoader', () => {
           expectConsoleErrorCalls(usingTestErrorBoundaryConsoleErrorCalls);
         });
       });
+
+      describe('when onError is also provided', () => {
+        it('renders what the renderError function returns', () => {
+          const testRenderer = renderWithFeatureHubContext(
+            <FeatureAppLoader
+              src="example.js"
+              onError={jest.fn()}
+              renderError={() => 'Custom Error UI'}
+            />
+          );
+
+          expect(testRenderer.toJSON()).toBe('Custom Error UI');
+        });
+
+        describe('and throws an error', () => {
+          let onErrorMockError: Error;
+
+          beforeEach(() => {
+            onErrorMockError = new Error('Throwing in onError.');
+          });
+
+          it('does not call renderError and throws the error in render', () => {
+            const handleError = jest.fn();
+            const renderError = jest.fn();
+
+            const testRenderer = renderWithFeatureHubContext(
+              <FeatureAppLoader
+                src="example.js"
+                onError={() => {
+                  throw onErrorMockError;
+                }}
+                renderError={renderError}
+              />,
+              {handleError}
+            );
+
+            expect(renderError).not.toHaveBeenCalled();
+            expect(handleError.mock.calls).toEqual([[onErrorMockError]]);
+            expect(testRenderer.toJSON()).toBe('test error boundary');
+            expectConsoleErrorCalls(usingTestErrorBoundaryConsoleErrorCalls);
+          });
+        });
+      });
     });
   });
 
