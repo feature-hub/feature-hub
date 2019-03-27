@@ -213,9 +213,9 @@ class InternalFeatureAppLoader extends React.PureComponent<
       if (this.mounted) {
         this.setState({error});
       }
-    } catch (handledError) {
+    } catch (handlerError) {
       if (this.mounted) {
-        this.setState({error: handledError, failedToHandleAsyncError: true});
+        this.setState({error: handlerError, failedToHandleAsyncError: true});
       }
     }
   }
