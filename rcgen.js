@@ -13,6 +13,7 @@ exports.default = composeManifest(
   git(),
   gitIgnoreFiles(
     '.cache',
+    '.tmp',
     'coverage',
     'lerna-debug.log',
     'lib',
