@@ -1,6 +1,7 @@
 .cache
 .node-version
 .nvmrc
+.tmp
 coverage
 lerna-debug.log
 lib
