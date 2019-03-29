@@ -2,14 +2,10 @@ import {FeatureAppDefinition} from '@feature-hub/core';
 import * as React from 'react';
 import {FeatureAppContainer} from './feature-app-container';
 import {
+  Css,
   FeatureHubContextConsumer,
   FeatureHubContextConsumerValue
 } from './feature-hub-context';
-
-export interface Css {
-  readonly href: string;
-  readonly media?: string;
-}
 
 export interface FeatureAppLoaderProps {
   /**
@@ -75,8 +71,10 @@ class InternalFeatureAppLoader extends React.PureComponent<
       featureAppManager,
       src: clientSrc,
       serverSrc,
+      css,
       asyncSsrManager,
-      addUrlForHydration
+      addUrlForHydration,
+      addStylesheetsForSsr
     } = props;
 
     const src = inBrowser ? clientSrc : serverSrc;
@@ -91,6 +89,10 @@ class InternalFeatureAppLoader extends React.PureComponent<
 
     if (!inBrowser && addUrlForHydration) {
       addUrlForHydration(clientSrc);
+    }
+
+    if (!inBrowser && css && addStylesheetsForSsr) {
+      addStylesheetsForSsr(css);
     }
 
     const {

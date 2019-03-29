@@ -5,6 +5,11 @@ import * as React from 'react';
 type SomeRequired<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>> &
   Required<Pick<T, K>>;
 
+export interface Css {
+  readonly href: string;
+  readonly media?: string;
+}
+
 export interface FeatureHubContextProviderValue {
   /**
    * The `FeatureAppManager` singleton instance.
@@ -32,6 +37,18 @@ export interface FeatureHubContextProviderValue {
    * @param url The client URL of a Feature App that is rendered on the server.
    */
   addUrlForHydration?(url: string): void;
+
+  /**
+   * A callback that the integrator provides on the server, mainly for the
+   * [[FeatureAppLoader]], to add stylesheets for those Feature Apps that are
+   * rendered on the server, so that they can be added to the document before
+   * being sent to the client. Calling it more than once with the same `href`
+   * must not have any impact.
+   *
+   * @param stylesheets A list of stylesheets for a Feature App that is rendered
+   * on the server.
+   */
+  addStylesheetsForSsr?(stylesheets: Css[]): void;
 }
 
 /**

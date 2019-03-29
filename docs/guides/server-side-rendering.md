@@ -129,9 +129,9 @@ await Promise.all(
 
 ### Using React
 
-A React integrator can use the `FeatureHubContextProvider` to provide a callback
-that is called by the `FeatureAppLoader` for server-rendered Feature Apps to
-populate a set of URLs on the server for hydration on the client:
+On the server, a React integrator can use the `FeatureHubContextProvider` to
+provide a callback that is called by the `FeatureAppLoader` for server-rendered
+Feature Apps to populate a set of URLs for hydration on the client:
 
 ```js
 const urlsForHydration = new Set();
@@ -140,6 +140,38 @@ const addUrlForHydration = url => urlsForHydration.add(url);
 
 ```jsx
 <FeatureHubContextProvider value={{featureAppManager, addUrlForHydration}}>
+  {/* render Feature Apps here */}
+</FeatureHubContextProvider>
+```
+
+## Adding Stylesheets to the Document
+
+When a Feature App has been rendered on the server, and there are [external
+stylesheets defined for this Feature App][feature-app-loader-css], those
+stylesheets should be added to the document head, before sending the HTML to the
+client. This allows the browser to render the Feature App HTML with the
+corresponding styles before all the scripts have been loaded and the
+server-rendered page has been hydrated.
+
+### Using React
+
+On the server, a React integrator can use the `FeatureHubContextProvider` to
+provide a callback that is called by the `FeatureAppLoader` for server-rendered
+Feature Apps to populate a collection of stylesheets that should be added to the
+document head:
+
+```js
+const stylesheetsForSsr = new Map();
+
+const addStylesheetsForSsr = stylesheets => {
+  for (const stylesheet of stylesheets) {
+    stylesheetsForSsr.set(stylesheet.href, stylesheet);
+  }
+};
+```
+
+```jsx
+<FeatureHubContextProvider value={{featureAppManager, addStylesheetsForSsr}}>
   {/* render Feature Apps here */}
 </FeatureHubContextProvider>
 ```
@@ -304,3 +336,4 @@ const html = await asyncSsrManager.renderUntilCompleted(() =>
   /docs/guides/integrating-the-feature-hub#consuming-feature-services
 [server-side-rendering-demo]:
   https://github.com/sinnerschrader/feature-hub/tree/master/packages/demos/src/server-side-rendering
+[feature-app-loader-css]: /docs/guides/integrating-the-feature-hub#css

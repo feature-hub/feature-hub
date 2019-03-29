@@ -1,4 +1,5 @@
 // @ts-check
+const CopyPlugin = require('copy-webpack-plugin');
 const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
@@ -38,7 +39,16 @@ const configs = [
     output: {
       filename: 'integrator.js',
       publicPath: '/'
-    }
+    },
+    plugins: [
+      new CopyPlugin(
+        [
+          'normalize.css/normalize.css',
+          '@blueprintjs/icons/lib/css/blueprint-icons.css',
+          '@blueprintjs/core/lib/css/blueprint.css'
+        ].map(cssPath => ({from: require.resolve(cssPath)}))
+      )
+    ]
   })
 ];
 

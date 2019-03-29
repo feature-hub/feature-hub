@@ -13,7 +13,7 @@ import {
 import {Stubbed, stubMethods} from 'jest-stub-methods';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom/server';
-import {FeatureAppLoader, FeatureHubContextProvider} from '..';
+import {Css, FeatureAppLoader, FeatureHubContextProvider} from '..';
 
 interface MockAsyncSsrManager extends AsyncSsrManagerV1 {
   scheduleRerender: ((promise: Promise<unknown>) => void) & jest.Mock;
@@ -29,6 +29,7 @@ describe('FeatureAppLoader (on Node.js)', () => {
   let mockAsyncFeatureAppDefinition: AsyncValue<FeatureAppDefinition<unknown>>;
   let mockAsyncSsrManager: MockAsyncSsrManager;
   let mockAddUrlForHydration: jest.Mock;
+  let mockAddStylesheetsForSsr: jest.Mock;
   let stubbedConsole: Stubbed<Console>;
 
   beforeEach(() => {
@@ -52,6 +53,7 @@ describe('FeatureAppLoader (on Node.js)', () => {
     };
 
     mockAddUrlForHydration = jest.fn();
+    mockAddStylesheetsForSsr = jest.fn();
 
     stubbedConsole = stubMethods(console);
   });
@@ -66,7 +68,8 @@ describe('FeatureAppLoader (on Node.js)', () => {
         value={{
           featureAppManager: mockFeatureAppManager,
           asyncSsrManager: mockAsyncSsrManager,
-          addUrlForHydration: mockAddUrlForHydration
+          addUrlForHydration: mockAddUrlForHydration,
+          addStylesheetsForSsr: mockAddStylesheetsForSsr
         }}
       >
         {node}
@@ -191,6 +194,32 @@ describe('FeatureAppLoader (on Node.js)', () => {
 
         expect(mockAddUrlForHydration).toHaveBeenCalledWith('example.js');
       });
+    });
+  });
+
+  describe('without a css prop', () => {
+    it('does not try to add stylesheets for SSR', () => {
+      renderWithFeatureHubContext(
+        <FeatureAppLoader src="example.js" serverSrc="example-node.js" />
+      );
+
+      expect(mockAddStylesheetsForSsr).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('with a css prop', () => {
+    it('adds the stylesheets for SSR', () => {
+      const css: Css[] = [{href: 'foo.css'}];
+
+      renderWithFeatureHubContext(
+        <FeatureAppLoader
+          src="example.js"
+          serverSrc="example-node.js"
+          css={css}
+        />
+      );
+
+      expect(mockAddStylesheetsForSsr.mock.calls).toEqual([[css]]);
     });
   });
 });

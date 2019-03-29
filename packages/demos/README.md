@@ -71,6 +71,8 @@ Demonstrates:
   server-rendered Feature Apps to the client
 - how server-rendered Feature Apps can be preloaded in the client before
   hydration
+- how external stylesheets of Feature Apps can be added to the document during
+  SSR
 
 ```sh
 yarn watch:demo server-side-rendering
