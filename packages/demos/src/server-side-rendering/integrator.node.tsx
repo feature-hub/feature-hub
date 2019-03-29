@@ -5,6 +5,7 @@ import {
 import {createFeatureHub} from '@feature-hub/core';
 import {loadCommonJsModule} from '@feature-hub/module-loader-commonjs';
 import {
+  Css,
   FeatureHubContextProvider,
   FeatureHubContextProviderValue
 } from '@feature-hub/react';
@@ -42,13 +43,18 @@ export default async function renderApp({
   ] as AsyncSsrManagerV1;
 
   const urlsForHydration = new Set<string>();
+  const stylesheetsForSsr = new Map<string, Css>();
 
   const featureHubContextValue: FeatureHubContextProviderValue = {
     featureAppManager,
     asyncSsrManager,
 
-    addUrlForHydration(url: string): void {
-      urlsForHydration.add(url);
+    addUrlForHydration: url => urlsForHydration.add(url),
+
+    addStylesheetsForSsr: stylesheets => {
+      for (const stylesheet of stylesheets) {
+        stylesheetsForSsr.set(stylesheet.href, stylesheet);
+      }
     }
   };
 
@@ -66,5 +72,5 @@ export default async function renderApp({
 
   const serializedStates = serializedStateManager.serializeStates();
 
-  return {html, serializedStates, urlsForHydration};
+  return {html, serializedStates, stylesheetsForSsr, urlsForHydration};
 }

@@ -7,7 +7,6 @@ import {
 } from '@feature-hub/serialized-state-manager';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import '../blueprint-css';
 import {App} from './app';
 
 function getSerializedStatesFromDom(): string | undefined {

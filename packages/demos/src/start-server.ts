@@ -1,3 +1,4 @@
+import {Css} from '@feature-hub/react';
 import express from 'express';
 import getPort from 'get-port';
 import {Server} from 'http';
@@ -12,6 +13,7 @@ export interface AppRendererOptions {
 export interface AppRendererResult {
   html: string;
   serializedStates?: string;
+  stylesheetsForSsr?: Map<string, Css>;
   urlsForHydration?: Set<string>;
 }
 
@@ -19,11 +21,26 @@ export type AppRenderer = (
   options: AppRendererOptions
 ) => Promise<AppRendererResult>;
 
+function createStylesheetLink({href, media = 'all'}: Css): string {
+  return `<link href="${href}" media="${media}" rel="stylesheet" />`;
+}
+
+function createStylesheetLinks(stylesheets: Css[]): string {
+  return stylesheets.map(createStylesheetLink).join('\n');
+}
+
 function createDocumentHtml(
   bodyHtml: string,
-  serializedStates?: string,
-  urlsForHydration?: Set<string>
+  {
+    serializedStates,
+    stylesheetsForSsr,
+    urlsForHydration
+  }: Partial<AppRendererResult> = {}
 ): string {
+  const stylesheetLinks = stylesheetsForSsr
+    ? createStylesheetLinks(Array.from(stylesheetsForSsr.values()))
+    : '';
+
   const serializedStatesScript = serializedStates
     ? `<script type="x-feature-hub/serialized-states">${serializedStates}</script>`
     : '';
@@ -39,6 +56,7 @@ function createDocumentHtml(
     <html>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        ${stylesheetLinks}
       </head>
       <body>
         ${bodyHtml}
@@ -61,18 +79,10 @@ export async function startServer(
   app.get('/', async (req, res) => {
     try {
       if (renderApp) {
-        const {
-          html: appHtml,
-          serializedStates,
-          urlsForHydration
-        } = await renderApp({port, req});
+        const renderResult = await renderApp({port, req});
 
         res.send(
-          createDocumentHtml(
-            `<main>${appHtml}</main>`,
-            serializedStates,
-            urlsForHydration
-          )
+          createDocumentHtml(`<main>${renderResult.html}</main>`, renderResult)
         );
       } else {
         res.send(createDocumentHtml(`<main></main>`));

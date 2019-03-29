@@ -28,6 +28,7 @@ describe('FeatureAppLoader', () => {
   let mockAsyncFeatureAppDefinition: AsyncValue<FeatureAppDefinition<unknown>>;
   let mockAsyncSsrManager: MockAsyncSsrManager;
   let mockAddUrlForHydration: jest.Mock;
+  let mockAddStylesheetsForSsr: jest.Mock;
   let stubbedConsole: Stubbed<Console>;
 
   const usingTestErrorBoundaryConsoleErrorCalls = [
@@ -83,6 +84,7 @@ describe('FeatureAppLoader', () => {
     };
 
     mockAddUrlForHydration = jest.fn();
+    mockAddStylesheetsForSsr = jest.fn();
   });
 
   afterEach(() => {
@@ -114,6 +116,7 @@ describe('FeatureAppLoader', () => {
           featureAppManager: mockFeatureAppManager,
           asyncSsrManager: mockAsyncSsrManager,
           addUrlForHydration: mockAddUrlForHydration,
+          addStylesheetsForSsr: mockAddStylesheetsForSsr,
           logger: customLogger ? logger : undefined
         }}
       >
@@ -149,6 +152,12 @@ describe('FeatureAppLoader', () => {
 
       expect(document.head).toMatchSnapshot();
     });
+
+    it('does not try to add stylesheets for SSR', () => {
+      renderWithFeatureHubContext(<FeatureAppLoader src="example.js" />);
+
+      expect(mockAddStylesheetsForSsr).not.toHaveBeenCalled();
+    });
   });
 
   describe('with a css prop', () => {
@@ -161,6 +170,14 @@ describe('FeatureAppLoader', () => {
       );
 
       expect(document.head).toMatchSnapshot();
+    });
+
+    it('does not add the stylesheets for SSR', () => {
+      renderWithFeatureHubContext(
+        <FeatureAppLoader src="example.js" css={[{href: 'foo.css'}]} />
+      );
+
+      expect(mockAddStylesheetsForSsr).not.toHaveBeenCalled();
     });
 
     describe('when the css has already been appended', () => {
