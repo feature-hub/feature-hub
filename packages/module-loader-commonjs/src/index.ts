@@ -5,7 +5,7 @@ import fetch from 'node-fetch';
 import path from 'path';
 
 // This must be a local directory to make node module resolution possible.
-const cacheDirname = path.join(__dirname, '.cache');
+const tmpDirname = path.join(__dirname, '.tmp');
 
 function createHash(data: string): string {
   return crypto
@@ -16,11 +16,11 @@ function createHash(data: string): string {
 
 async function writeFile(url: string, data: Buffer): Promise<string> {
   /* istanbul ignore next */
-  if (!(await fs.pathExists(cacheDirname))) {
-    await fs.mkdirp(cacheDirname);
+  if (!(await fs.pathExists(tmpDirname))) {
+    await fs.mkdirp(tmpDirname);
   }
 
-  const filename = path.join(cacheDirname, `${createHash(url)}.js`);
+  const filename = path.join(tmpDirname, `${createHash(url)}.js`);
 
   await fs.writeFile(filename, data);
 
@@ -32,8 +32,11 @@ async function requireAsync(url: string): Promise<unknown> {
   const data = await response.buffer();
   const filename = await writeFile(url, data);
 
+  // Make sure no stale version of the module is loaded from the require cache!
+  // tslint:disable-next-line:no-dynamic-delete
+  delete require.cache[require.resolve(filename)];
+
   return require(filename);
 }
 
-export const loadCommonJsModule: ModuleLoader = async (url: string) =>
-  requireAsync(url);
+export const loadCommonJsModule: ModuleLoader = async url => requireAsync(url);

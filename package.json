@@ -68,7 +68,7 @@
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
     "rimraf": "^2.6.2",
-    "size-limit": "^0.21.0",
+    "size-limit": "^0.22.0",
     "sort-package-json": "^1.16.0",
     "ts-config": "^20.9.0",
     "tslint": "^5.12.0",
