@@ -10,6 +10,11 @@ export function App({port}: AppProps): JSX.Element {
     <FeatureAppLoader
       src="feature-app.umd.js"
       serverSrc={port ? `http://localhost:${port}/feature-app.commonjs.js` : ''}
+      css={[
+        {href: 'normalize.css'},
+        {href: 'blueprint-icons.css'},
+        {href: 'blueprint.css'}
+      ]}
     />
   );
 }
