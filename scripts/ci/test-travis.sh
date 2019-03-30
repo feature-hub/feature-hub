@@ -2,11 +2,16 @@
 
 set -e
 
-./scripts/ci/word-blacklist.sh
+if [ "$TEST_SUITE" = "unit" ]
+then
+  ./scripts/ci/word-blacklist.sh
 
-yarn commitlint-travis
+  yarn commitlint-travis
 
-yarn test --no-cache --maxWorkers 2 --no-verbose
-yarn lint
-yarn compile
-yarn verify
+  yarn test:$TEST_SUITE --no-cache --maxWorkers 2 --no-verbose
+  yarn lint
+  yarn compile
+  yarn verify
+else
+  yarn test:$TEST_SUITE --no-cache --runInBand --logHeapUsage --no-verbose
+fi
