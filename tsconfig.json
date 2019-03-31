@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "ES2017",
+    "target": "es5",
     "module": "commonjs",
     "moduleResolution": "node",
     "declaration": true,
@@ -13,6 +13,7 @@
     "noFallthroughCasesInSwitch": true,
     "forceConsistentCasingInFileNames": true,
     "esModuleInterop": true,
+    "downlevelIteration": true,
     "lib": ["dom", "es2017"],
     "jsx": "react",
     "experimentalDecorators": true,

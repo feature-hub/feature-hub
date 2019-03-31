@@ -6,6 +6,7 @@
     "packages/*"
   ],
   "scripts": {
+    "bundle:polyfills": "lerna run --scope @feature-hub/core bundle:polyfills",
     "precompile": "lerna exec --parallel -- rimraf lib",
     "compile": "lerna exec -- tsc --project tsconfig.cjs.json",
     "compile:esm": "lerna exec --no-private -- tsc --project tsconfig.esm.json",
@@ -25,6 +26,7 @@
     "preverify:sort-package-jsons": "yarn sort-package-jsons",
     "verify:sort-package-jsons": "git diff --exit-code package.json packages/*/package.json",
     "watch:compile": "lerna exec --parallel -- tsc --project tsconfig.cjs.json --watch --preserveWatchOutput --pretty",
+    "prewatch:demo": "yarn bundle:polyfills",
     "watch:demo": "lerna exec --scope @feature-hub/demos -- ts-node -r tsconfig-paths/register src/watch-demo.ts",
     "watch:test": "yarn test --watch --no-coverage --no-verbose",
     "watch:test:integration": "yarn watch:test --testPathPattern packages/demos",

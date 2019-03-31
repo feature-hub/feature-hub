@@ -2,6 +2,7 @@
   "extends": "../../tsconfig.json",
   "include": ["src/**/*", "types/**/*"],
   "compilerOptions": {
+    "target": "es2017",
     "allowJs": true,
     "declaration": false,
     "outDir": "dist"

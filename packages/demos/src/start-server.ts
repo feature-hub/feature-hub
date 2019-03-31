@@ -2,6 +2,7 @@ import {Css} from '@feature-hub/react';
 import express from 'express';
 import getPort from 'get-port';
 import {Server} from 'http';
+import path from 'path';
 import webpack from 'webpack';
 import devMiddleware from 'webpack-dev-middleware';
 
@@ -53,6 +54,7 @@ function createDocumentHtml(
       : '';
 
   return `
+    <!DOCTYPE html>
     <html>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -62,6 +64,7 @@ function createDocumentHtml(
         ${bodyHtml}
         ${serializedStatesScript}
         ${urlsForHydrationScript}
+        <script src="polyfills.js"></script>
         <script src="integrator.js"></script>
       </body>
     </html>
@@ -75,6 +78,22 @@ export async function startServer(
 ): Promise<Server> {
   const port = await getPort(demoName ? {port: 3000} : undefined);
   const app = express();
+
+  // serve icon fonts for IE11
+  app.use(
+    '/resources/icons',
+    express.static(
+      path.resolve(
+        require.resolve('@blueprintjs/icons/package.json'),
+        '../resources/icons'
+      )
+    )
+  );
+
+  // serve polyfills for IE11
+  app.get('/polyfills.js', (_req, res) =>
+    res.sendFile(require.resolve('@feature-hub/core/lib/polyfills.js'))
+  );
 
   app.get('/', async (req, res) => {
     try {
