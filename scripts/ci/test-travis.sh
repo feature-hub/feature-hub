@@ -7,7 +7,7 @@ set -e
 yarn commitlint-travis
 
 yarn test:unit --no-cache --maxWorkers 2 --no-verbose
-node --max_old_space_size=4096 $(npm bin)/jest --no-cache --maxWorkers 2 --no-verbose --no-coverage --logHeapUsage --testPathPattern packages/demos
+find packages/demos -iname '*test.ts*' | xargs -n 2 yarn jest --no-cache --no-verbose --no-coverage --maxWorkers 2
 yarn lint
 yarn compile
 yarn verify
