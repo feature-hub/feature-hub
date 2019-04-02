@@ -44,6 +44,42 @@ an integrator using [`@feature-hub/dom`][dom-api] as well as
 [`@feature-hub/react`][react-api]. There is a [demo][vue-feature-app] that shows
 the integration of a Vue.js application into a `@feature-hub/dom` integrator.
 
+## Does the Feature Hub run in Internet Explorer 11 (IE11)?
+
+The Feature Hub's published source code includes ES2017 language features.
+Therefore, only evergreen browsers (and Node >= 8) are supported out-of-the-box.
+
+An integrator could still choose to support IE11 though, by transpiling the
+published sources to ES5 while creating its bundle. For example, if webpack is
+used, the [babel-loader][] can be configured with an `exclude` option like this:
+
+```js
+module: {
+  rules: [
+    {
+      test: /\.js$/,
+      exclude: /node_modules\/(?!@feature-hub)/,
+      use: {
+        loader: 'babel-loader',
+        options: {
+          presets: ['@babel/preset-env']
+        }
+      }
+    }
+  ];
+}
+```
+
+Furthermore, polyfills for ES2015, ES2016, and ES2017 must be provided, e.g. by
+integrating a service like [Polyfill.io][]:
+
+```html
+<script
+  crossorigin="anonymous"
+  src="https://polyfill.io/v3/polyfill.min.js?features=es2015%2Ces2016%2Ces2017"
+></script>
+```
+
 [angular-feature-app]: https://github.com/feature-hub/angular-feature-app
 [dom-api]: /@feature-hub/modules/dom.html
 [dom-feature-app]: /docs/guides/writing-a-feature-app#dom-feature-app
@@ -55,3 +91,5 @@ the integration of a Vue.js application into a `@feature-hub/dom` integrator.
 [writing-a-feature-app]: /docs/guides/writing-a-feature-app
 [vue-feature-app]: https://github.com/feature-hub/vue-feature-app
 [feature-app-in-feature-app]: /docs/guides/feature-app-in-feature-app
+[polyfill.io]: https://polyfill.io/v3/
+[babel-loader]: https://github.com/babel/babel-loader
