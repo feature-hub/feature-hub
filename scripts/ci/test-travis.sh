@@ -8,10 +8,10 @@ then
 
   yarn commitlint-travis
 
-  yarn test:$TEST_SUITE --no-cache --maxWorkers 2 --no-verbose
+  yarn test:unit --no-cache --maxWorkers 2 --no-verbose
   yarn lint
   yarn compile
   yarn verify
 else
-  yarn test:$TEST_SUITE --no-cache --runInBand --logHeapUsage --no-verbose
+  node --max_old_space_size=4096 $(npm bin)/jest --no-cache --maxWorkers 2 --no-verbose --no-coverage --logHeapUsage --testPathPattern packages/demos
 fi
