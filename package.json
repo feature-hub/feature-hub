@@ -68,7 +68,7 @@
     "size-limit": "^0.22.0",
     "sort-package-json": "^1.16.0",
     "ts-config": "^20.9.0",
-    "tslint": "^5.12.0",
+    "tslint": "^5.15.0",
     "typedoc": "^0.14.2",
     "typedoc-plugin-sourcefile-url": "^1.0.4",
     "typescript": "^3.2.4",
