@@ -94,6 +94,7 @@ describe('FeatureAppManager', () => {
       expect(asyncFeatureAppDefinition.error).toBeUndefined();
     });
 
+    // tslint:disable-next-line no-null-undefined-union
     for (const invalidFeatureAppModule of [
       undefined,
       null,
