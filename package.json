@@ -44,7 +44,7 @@
     "@commitlint/travis-cli": "^7.5.2",
     "@rcgen/cli": "^0.13.0",
     "@rcgen/configs": "^0.13.0",
-    "@rcgen/core": "^0.13.0",
+    "@rcgen/core": "^0.14.0",
     "@strictsoftware/typedoc-plugin-monorepo": "^0.2.1",
     "@types/cheerio": "^0.22.9",
     "@types/expect-puppeteer": "^3.3.0",

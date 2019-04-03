@@ -1830,6 +1830,14 @@
     micromatch "^3.1.10"
     mkdirp "^0.5.1"
 
+"@rcgen/core@^0.14.0":
+  version "0.14.0"
+  resolved "https://registry.yarnpkg.com/@rcgen/core/-/core-0.14.0.tgz#fd1a80228bcd724ca46d3fa2ccbdbe3ac7ca6865"
+  integrity sha512-p+TaoEOFVGEthQlRUXWuEM+ISCAdd9KofOp9+HfS1gvQQPblYCSTY9NSiMaxITXh/ycFyvKxbhO2c/MvmEB+9w==
+  dependencies:
+    ajv "^6.9.2"
+    mkdirp "^0.5.1"
+
 "@rcgen/filetypes@^0.13.0":
   version "0.13.0"
   resolved "https://registry.yarnpkg.com/@rcgen/filetypes/-/filetypes-0.13.0.tgz#f54d5f9c10cc227e33b38935a50fc9cd05e3a7ff"
