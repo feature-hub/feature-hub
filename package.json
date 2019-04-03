@@ -18,6 +18,8 @@
     "sort-package-jsons": "sort-package-json package.json packages/*/package.json",
     "pretest": "rimraf coverage",
     "test": "jest --verbose",
+    "test:integration": "jest --verbose --testPathPattern packages/demos",
+    "test:unit": "jest --verbose --testPathIgnorePatterns packages/demos",
     "verify": "run-p verify:**",
     "verify:format": "prettier --list-different '**/*.{js,json,md,ts,tsx,yml}'",
     "verify:install": "git diff --exit-code yarn.lock",
