@@ -6,6 +6,7 @@
   "rules": {
     "await-promise": [true, "PromiseLike"],
     "no-default-export": false,
+    "no-null-undefined-union": false,
     "no-submodule-imports": [true, "lit-html", "react-dom", "systemjs"],
     "prefer-method-signature": false
   }
