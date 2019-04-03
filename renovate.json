@@ -2,7 +2,7 @@
   "extends": ["config:base", ":preserveSemverRanges"],
   "packageRules": [
     {"packagePatterns": ["*"], "semanticCommitType": "build"},
-    {"depTypeList": ["dependencies"], "semanticCommitType": "fix"}
+    {"depTypeList": ["dependencies"], "semanticCommitType": "build"}
   ],
   "semanticCommitScope": "all",
   "semanticCommitType": "build",
