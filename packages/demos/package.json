@@ -30,7 +30,7 @@
     "copy-webpack-plugin": "^5.0.0",
     "css-loader": "^2.0.0",
     "express": "^4.16.4",
-    "get-port": "^4.0.0",
+    "get-port": "^5.0.0",
     "history": "^4.7.2",
     "lit-html": "^1.0.0",
     "pino": "^5.11.1",
