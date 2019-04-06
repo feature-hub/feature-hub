@@ -23,7 +23,7 @@
     "@types/get-port": "^4.0.0",
     "@types/history": "^4.7.2",
     "@types/pino": "^5.8.5",
-    "@types/styled-components": "4.1.8",
+    "@types/styled-components": "4.1.13",
     "@types/webpack": "^4.4.20",
     "@types/webpack-dev-middleware": "^2.0.2",
     "@types/webpack-merge": "^4.1.3",
