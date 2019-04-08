@@ -11,7 +11,7 @@ import {stubConsole} from '../stub-console';
 import renderApp from './integrator.node';
 import webpackConfigs from './webpack-config';
 
-jest.setTimeout(60000);
+jest.setTimeout(120000);
 
 stubConsole();
 
@@ -82,7 +82,7 @@ describe('integration test: "history-service"', () => {
     url = `http://localhost:${port}/`;
 
     // Trigger initial webpack DEV build
-    await browser.goto(url, 60000);
+    await browser.goto(url, 120000);
   });
 
   afterAll(done => server.close(done));
