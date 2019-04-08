@@ -10,7 +10,7 @@ import {stubConsole} from '../stub-console';
 import renderApp from './integrator.node';
 import webpackConfigs from './webpack-config';
 
-jest.setTimeout(60000);
+jest.setTimeout(120000);
 
 stubConsole();
 
@@ -27,7 +27,7 @@ describe('integration test: "Feature App in Feature App"', () => {
 
     url = `http://localhost:${port}/`;
 
-    await browser.goto(`http://localhost:${port}`, 60000);
+    await browser.goto(`http://localhost:${port}`, 120000);
   });
 
   afterAll(done => server.close(done));
