@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/sinnerschrader/feature-hub/compare/v1.3.0...v1.4.0) (2019-04-08)
+
+
+### Features
+
+* **react:** add onError and renderError to FeatureAppContainer ([#420](https://github.com/sinnerschrader/feature-hub/issues/420)) ([33fcce7](https://github.com/sinnerschrader/feature-hub/commit/33fcce7))
+* **react:** add onError and renderError to FeatureAppLoader ([#445](https://github.com/sinnerschrader/feature-hub/issues/445)) ([2a967b5](https://github.com/sinnerschrader/feature-hub/commit/2a967b5))
+* **react:** support adding Feature App stylesheets to the document during SSR ([#452](https://github.com/sinnerschrader/feature-hub/issues/452)) ([5340f28](https://github.com/sinnerschrader/feature-hub/commit/5340f28))
+
+
+
+
+
 # [1.3.0](https://github.com/sinnerschrader/feature-hub/compare/v1.2.0...v1.3.0) (2019-03-15)
 
 

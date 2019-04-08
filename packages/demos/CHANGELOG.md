@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/sinnerschrader/feature-hub/compare/v1.3.0...v1.4.0) (2019-04-08)
+
+
+### Features
+
+* **demos:** add React Error Handling demo ([#447](https://github.com/sinnerschrader/feature-hub/issues/447)) ([05fbb75](https://github.com/sinnerschrader/feature-hub/commit/05fbb75))
+* **react:** support adding Feature App stylesheets to the document during SSR ([#452](https://github.com/sinnerschrader/feature-hub/issues/452)) ([5340f28](https://github.com/sinnerschrader/feature-hub/commit/5340f28))
+
+
+
+
+
 # [1.3.0](https://github.com/sinnerschrader/feature-hub/compare/v1.2.0...v1.3.0) (2019-03-15)
 
 
