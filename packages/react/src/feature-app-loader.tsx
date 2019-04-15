@@ -6,20 +6,30 @@ import {
   FeatureHubContextConsumer,
   FeatureHubContextConsumerValue
 } from './feature-hub-context';
+import {prependBaseUrl} from './internal/prepend-base-url';
 
 export interface FeatureAppLoaderProps {
   /**
-   * The URL of the Feature App's client module bundle.
+   * The absolute or relative base URL of the Feature App's assets and/or BFF.
+   */
+  readonly baseUrl?: string;
+
+  /**
+   * The URL of the Feature App's client module bundle. If [[baseUrl]] is
+   * specified, it will be prepended, unless `src` is an absolute URL.
    */
   readonly src: string;
 
   /**
-   * The URL of the Feature App's server module bundle.
+   * The URL of the Feature App's server module bundle. If [[baseUrl]] is
+   * specified, it will be prepended, unless `serverSrc` is an absolute URL.
+   * Either [[baseUrl]] or `serverSrc` must be an absolute URL.
    */
   readonly serverSrc?: string;
 
   /**
-   * A list of stylesheets that should be added to the document.
+   * A list of stylesheets that should be added to the document. If [[baseUrl]]
+   * is specified, it will be prepended, unless [[Css.href]] is an absolute URL.
    */
   readonly css?: Css[];
 
@@ -68,10 +78,10 @@ class InternalFeatureAppLoader extends React.PureComponent<
     super(props);
 
     const {
+      baseUrl,
       featureAppManager,
       src: clientSrc,
       serverSrc,
-      css,
       asyncSsrManager,
       addUrlForHydration,
       addStylesheetsForSsr
@@ -88,18 +98,24 @@ class InternalFeatureAppLoader extends React.PureComponent<
     }
 
     if (!inBrowser && addUrlForHydration) {
-      addUrlForHydration(clientSrc);
+      addUrlForHydration(prependBaseUrl(baseUrl, clientSrc));
     }
 
-    if (!inBrowser && css && addStylesheetsForSsr) {
-      addStylesheetsForSsr(css);
+    if (!inBrowser && addStylesheetsForSsr) {
+      const css = this.prependCssHrefs();
+
+      if (css) {
+        addStylesheetsForSsr(css);
+      }
     }
+
+    const url = prependBaseUrl(baseUrl, src);
 
     const {
       error,
       promise: loadingPromise,
       value: featureAppDefinition
-    } = featureAppManager.getAsyncFeatureAppDefinition(src);
+    } = featureAppManager.getAsyncFeatureAppDefinition(url);
 
     if (error) {
       this.handleError(error);
@@ -121,11 +137,11 @@ class InternalFeatureAppLoader extends React.PureComponent<
       return;
     }
 
-    const {featureAppManager, src} = this.props;
+    const {baseUrl, featureAppManager, src} = this.props;
 
     try {
       const featureAppDefinition = await featureAppManager.getAsyncFeatureAppDefinition(
-        src
+        prependBaseUrl(baseUrl, src)
       ).promise;
 
       if (this.mounted) {
@@ -141,7 +157,14 @@ class InternalFeatureAppLoader extends React.PureComponent<
   }
 
   public render(): React.ReactNode {
-    const {idSpecifier, instanceConfig, onError, renderError} = this.props;
+    const {
+      baseUrl,
+      idSpecifier,
+      instanceConfig,
+      onError,
+      renderError
+    } = this.props;
+
     const {error, failedToHandleAsyncError, featureAppDefinition} = this.state;
 
     if (error) {
@@ -159,6 +182,7 @@ class InternalFeatureAppLoader extends React.PureComponent<
 
     return (
       <FeatureAppContainer
+        baseUrl={baseUrl}
         featureAppDefinition={featureAppDefinition}
         idSpecifier={idSpecifier}
         instanceConfig={instanceConfig}
@@ -169,21 +193,36 @@ class InternalFeatureAppLoader extends React.PureComponent<
   }
 
   private appendCss(): void {
-    if (!this.props.css) {
+    const css = this.prependCssHrefs();
+
+    if (!css) {
       return;
     }
 
-    for (const {href, media} of this.props.css) {
+    for (const {href, media = 'all'} of css) {
       if (!document.querySelector(`link[href="${href}"]`)) {
-        const attributes = {rel: 'stylesheet', href, media: media || 'all'};
-        const element = Object.assign(
-          document.createElement('link'),
-          attributes
+        document.head.appendChild(
+          Object.assign(document.createElement('link'), {
+            rel: 'stylesheet',
+            href,
+            media
+          })
         );
-
-        document.head.appendChild(element);
       }
     }
+  }
+
+  private prependCssHrefs(): Css[] | undefined {
+    const {baseUrl, css} = this.props;
+
+    if (!baseUrl || !css) {
+      return css;
+    }
+
+    return css.map(({href, media}) => ({
+      href: prependBaseUrl(baseUrl, href),
+      media
+    }));
   }
 
   private handleError(error: Error): void {
@@ -223,13 +262,20 @@ class InternalFeatureAppLoader extends React.PureComponent<
   }
 
   private logError(error: Error): void {
-    const {idSpecifier, logger, src: clientSrc, serverSrc} = this.props;
+    const {
+      baseUrl,
+      idSpecifier,
+      logger,
+      src: clientSrc,
+      serverSrc
+    } = this.props;
+
     const src = inBrowser ? clientSrc : serverSrc;
 
     logger.error(
       idSpecifier
         ? `The Feature App for the src ${JSON.stringify(
-            src
+            src && prependBaseUrl(baseUrl, src)
           )} and the ID specifier ${JSON.stringify(
             idSpecifier
           )} could not be rendered.`

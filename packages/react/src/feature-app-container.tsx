@@ -40,6 +40,11 @@ export type FeatureApp = ReactFeatureApp | DomFeatureApp;
 
 export interface FeatureAppContainerProps {
   /**
+   * The absolute or relative base URL of the Feature App's assets and/or BFF.
+   */
+  readonly baseUrl?: string;
+
+  /**
    * The consumer definition of the Feature App.
    */
   readonly featureAppDefinition: FeatureAppDefinition<unknown>;
@@ -85,6 +90,7 @@ class InternalFeatureAppContainer extends React.PureComponent<
     super(props);
 
     const {
+      baseUrl,
       featureAppManager,
       featureAppDefinition,
       idSpecifier,
@@ -94,7 +100,7 @@ class InternalFeatureAppContainer extends React.PureComponent<
     try {
       this.featureAppScope = featureAppManager.getFeatureAppScope(
         featureAppDefinition,
-        {idSpecifier, instanceConfig}
+        {baseUrl, idSpecifier, instanceConfig}
       );
 
       if (!isFeatureApp(this.featureAppScope.featureApp)) {

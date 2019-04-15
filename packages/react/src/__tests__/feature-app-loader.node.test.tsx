@@ -13,7 +13,7 @@ import {
 import {Stubbed, stubMethods} from 'jest-stub-methods';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom/server';
-import {Css, FeatureAppLoader, FeatureHubContextProvider} from '..';
+import {FeatureAppLoader, FeatureHubContextProvider} from '..';
 
 interface MockAsyncSsrManager extends AsyncSsrManagerV1 {
   scheduleRerender: ((promise: Promise<unknown>) => void) & jest.Mock;
@@ -107,6 +107,22 @@ describe('FeatureAppLoader (on Node.js)', () => {
       ]);
     });
 
+    describe('with a baseUrl', () => {
+      it('loads a Feature App definition for the prepended serverSrc', () => {
+        renderWithFeatureHubContext(
+          <FeatureAppLoader
+            baseUrl="http://example.com"
+            src="example.js"
+            serverSrc="example-node.js"
+          />
+        );
+
+        expect(mockGetAsyncFeatureAppDefinition.mock.calls).toEqual([
+          ['http://example.com/example-node.js']
+        ]);
+      });
+    });
+
     it('schedules a rerender on the Async SSR Manager with the feature app definition promise', () => {
       renderWithFeatureHubContext(
         <FeatureAppLoader src="example.js" serverSrc="example-node.js" />
@@ -123,6 +139,22 @@ describe('FeatureAppLoader (on Node.js)', () => {
       );
 
       expect(mockAddUrlForHydration).toHaveBeenCalledWith('example.js');
+    });
+
+    describe('with a baseUrl', () => {
+      it('adds the prepended src URL for hydration', () => {
+        renderWithFeatureHubContext(
+          <FeatureAppLoader
+            baseUrl="http://example.com"
+            src="example.js"
+            serverSrc="example-node.js"
+          />
+        );
+
+        expect(mockAddUrlForHydration).toHaveBeenCalledWith(
+          'http://example.com/example.js'
+        );
+      });
     });
 
     describe('when a Feature App definition is synchronously available', () => {
@@ -209,17 +241,42 @@ describe('FeatureAppLoader (on Node.js)', () => {
 
   describe('with a css prop', () => {
     it('adds the stylesheets for SSR', () => {
-      const css: Css[] = [{href: 'foo.css'}];
-
       renderWithFeatureHubContext(
         <FeatureAppLoader
           src="example.js"
           serverSrc="example-node.js"
-          css={css}
+          css={[{href: 'foo.css'}]}
         />
       );
 
-      expect(mockAddStylesheetsForSsr.mock.calls).toEqual([[css]]);
+      expect(mockAddStylesheetsForSsr.mock.calls).toEqual([
+        [[{href: 'foo.css'}]]
+      ]);
+    });
+
+    describe('and a baseUrl', () => {
+      it('adds the stylesheets for SSR', () => {
+        renderWithFeatureHubContext(
+          <FeatureAppLoader
+            baseUrl="http://feature-hub.io"
+            src="example.js"
+            serverSrc="example-node.js"
+            css={[
+              {href: 'http://example.com/foo.css'},
+              {href: 'bar.css', media: 'print'}
+            ]}
+          />
+        );
+
+        expect(mockAddStylesheetsForSsr.mock.calls).toEqual([
+          [
+            [
+              {href: 'http://example.com/foo.css'},
+              {href: 'http://feature-hub.io/bar.css', media: 'print'}
+            ]
+          ]
+        ]);
+      });
     });
   });
 });

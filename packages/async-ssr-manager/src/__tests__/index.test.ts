@@ -23,6 +23,7 @@ describe('asyncSsrManagerDefinition', () => {
 
   beforeEach(() => {
     mockEnv = {
+      baseUrl: undefined,
       config: {timeout: 5},
       featureServices: {'s2:logger': stubbedLogger},
       idSpecifier: undefined,

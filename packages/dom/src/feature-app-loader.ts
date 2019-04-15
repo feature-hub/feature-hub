@@ -4,6 +4,7 @@ import {TemplateResult} from 'lit-html';
 import {ifDefined} from 'lit-html/directives/if-defined';
 import {until} from 'lit-html/directives/until';
 import {defineFeatureAppContainer} from './feature-app-container';
+import {prependBaseUrl} from './internal/prepend-base-url';
 
 const elementName = 'feature-app-loader';
 
@@ -19,7 +20,13 @@ const elementName = 'feature-app-loader';
  */
 export interface FeatureAppLoaderElement extends HTMLElement {
   /**
-   * A URL pointing to a Feature App's module bundle.
+   * The absolute or relative base URL of the Feature App's assets and/or BFF.
+   */
+  baseUrl?: string;
+
+  /**
+   * The URL of the Feature App's module bundle. If [[baseUrl]] is specified, it
+   * will be prepended, unless `src` is an absolute URL.
    */
   src: string;
 
@@ -63,6 +70,9 @@ export function defineFeatureAppLoader(
 
   class FeatureAppLoader extends LitElement implements FeatureAppLoaderElement {
     @property({type: String})
+    public baseUrl?: string;
+
+    @property({type: String})
     public src!: string;
 
     @property({type: String})
@@ -89,11 +99,12 @@ export function defineFeatureAppLoader(
         }
 
         const definition = await featureAppManager.getAsyncFeatureAppDefinition(
-          this.src
+          prependBaseUrl(this.baseUrl, this.src)
         ).promise;
 
         return html`
           <feature-app-container
+            baseUrl=${ifDefined(this.baseUrl)}
             idSpecifier=${ifDefined(this.idSpecifier)}
             .featureAppDefinition=${definition}
             .instanceConfig=${this.instanceConfig}

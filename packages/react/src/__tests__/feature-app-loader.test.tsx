@@ -165,7 +165,10 @@ describe('FeatureAppLoader', () => {
       renderWithFeatureHubContext(
         <FeatureAppLoader
           src="example.js"
-          css={[{href: 'foo.css'}, {href: 'bar.css', media: 'print'}]}
+          css={[
+            {href: 'https://example.com/foo.css'},
+            {href: 'bar.css', media: 'print'}
+          ]}
         />
       );
 
@@ -193,6 +196,23 @@ describe('FeatureAppLoader', () => {
         expect(document.head).toMatchSnapshot();
       });
     });
+
+    describe('and a baseUrl', () => {
+      it('appends link elements to the document head', () => {
+        renderWithFeatureHubContext(
+          <FeatureAppLoader
+            baseUrl="http://feature-hub.io"
+            src="example.js"
+            css={[
+              {href: 'https://example.com/foo.css'},
+              {href: 'bar.css', media: 'print'}
+            ]}
+          />
+        );
+
+        expect(document.head).toMatchSnapshot();
+      });
+    });
   });
 
   describe('when a Feature App definition is synchronously available', () => {
@@ -207,6 +227,38 @@ describe('FeatureAppLoader', () => {
       mockAsyncFeatureAppDefinition = new AsyncValue(
         Promise.resolve(mockFeatureAppDefinition)
       );
+    });
+
+    it('calls getAsyncFeatureAppDefinition with the given src exactly once', () => {
+      renderWithFeatureHubContext(<FeatureAppLoader src="example.js" />);
+
+      expect(mockGetAsyncFeatureAppDefinition.mock.calls).toEqual([
+        ['example.js']
+      ]);
+    });
+
+    describe('with a baseUrl and a relative src', () => {
+      it('calls getAsyncFeatureAppDefinition with a prepended src', () => {
+        renderWithFeatureHubContext(
+          <FeatureAppLoader baseUrl="/base" src="example.js" />
+        );
+
+        expect(mockGetAsyncFeatureAppDefinition.mock.calls).toEqual([
+          ['/base/example.js']
+        ]);
+      });
+    });
+
+    describe('with a baseUrl and an absolute src', () => {
+      it('calls getAsyncFeatureAppDefinition with the absolute src', () => {
+        renderWithFeatureHubContext(
+          <FeatureAppLoader baseUrl="/base" src="http://example.com/foo.js" />
+        );
+
+        expect(mockGetAsyncFeatureAppDefinition.mock.calls).toEqual([
+          ['http://example.com/foo.js']
+        ]);
+      });
     });
 
     it('renders a FeatureAppContainer', () => {
@@ -441,6 +493,41 @@ describe('FeatureAppLoader', () => {
           setImmediate(() => resolve(mockFeatureAppDefinition))
         )
       );
+    });
+
+    it('calls getAsyncFeatureAppDefinition with the given src exactly twice', () => {
+      renderWithFeatureHubContext(<FeatureAppLoader src="example.js" />);
+
+      expect(mockGetAsyncFeatureAppDefinition.mock.calls).toEqual([
+        ['example.js'],
+        ['example.js']
+      ]);
+    });
+
+    describe('with a baseUrl and a relative src', () => {
+      it('calls getAsyncFeatureAppDefinition with a prepended src', () => {
+        renderWithFeatureHubContext(
+          <FeatureAppLoader baseUrl="/base" src="example.js" />
+        );
+
+        expect(mockGetAsyncFeatureAppDefinition.mock.calls).toEqual([
+          ['/base/example.js'],
+          ['/base/example.js']
+        ]);
+      });
+    });
+
+    describe('with a baseUrl and an absolute src', () => {
+      it('calls getAsyncFeatureAppDefinition with the absolute src', () => {
+        renderWithFeatureHubContext(
+          <FeatureAppLoader baseUrl="/base" src="http://example.com/foo.js" />
+        );
+
+        expect(mockGetAsyncFeatureAppDefinition.mock.calls).toEqual([
+          ['http://example.com/foo.js'],
+          ['http://example.com/foo.js']
+        ]);
+      });
     });
 
     it('initially renders nothing', () => {

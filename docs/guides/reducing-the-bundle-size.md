@@ -36,7 +36,7 @@ two settings need to be made:
      id: 'acme:my-feature-app',
 
      create(env) {
-       __webpack_public_path__ = '/path/to/my-feature-app';
+       __webpack_public_path__ = env.baseUrl;
 
        // ...
      }
@@ -48,7 +48,7 @@ two settings need to be made:
      id: 'acme:my-feature-service',
 
      create(env) {
-       __webpack_public_path__ = '/path/to/my-feature-service';
+       __webpack_public_path__ = env.baseUrl;
 
        // ...
      }
