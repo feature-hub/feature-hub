@@ -4,7 +4,7 @@ import {
   FeatureHubContextProvider
 } from '@feature-hub/react';
 import * as React from 'react';
-import {historyConsumerDefinition} from './history-consumer-definition';
+import {historyConsumerDefinition} from './history-consumer';
 
 export interface AppProps {
   featureAppManager: FeatureAppManager;
