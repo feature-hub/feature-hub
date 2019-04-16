@@ -1,6 +1,6 @@
 {
   "name": "@feature-hub/history-service",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "A history facade guaranteeing safe access for multiple consumers.",
   "homepage": "https://feature-hub.io/",
   "bugs": {
@@ -21,9 +21,9 @@
   "module": "lib/esm/index.js",
   "typings": "lib/cjs/index.d.ts",
   "dependencies": {
-    "@feature-hub/core": "^1.4.0",
-    "@feature-hub/logger": "^1.4.0",
-    "@feature-hub/server-request": "^1.4.0",
+    "@feature-hub/core": "^1.5.0",
+    "@feature-hub/logger": "^1.5.0",
+    "@feature-hub/server-request": "^1.5.0",
     "fast-deep-equal": "^2.0.1"
   },
   "devDependencies": {
