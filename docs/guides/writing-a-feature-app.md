@@ -133,9 +133,9 @@ properties:
 1. `idSpecifier` — An optional [ID specifier][idspecifier] that distinguishes
    the Feature App instance from other Feature App instances with the same ID.
 
-1. `baseUrl` — A base URL to to be used for referencing the Feature App's own
-   assets and/or [BFF][bff]. It is only set in the `env` if the integrator has
-   defined a `baseUrl` on the corresponding
+1. `baseUrl` — A base URL to be used for referencing the Feature App's own
+   resources. It is only set in the `env` if the integrator has defined a
+   `baseUrl` on the corresponding
    [`FeatureAppLoader`][feature-app-loader-base-url] or
    [`FeatureAppContainer`][feature-app-container-base-url].
 
@@ -282,5 +282,3 @@ const myFeatureAppDefinition = {
 [sharing-npm-dependencies]: /docs/guides/sharing-npm-dependencies
 [semver]: https://semver.org
 [issue-245]: https://github.com/sinnerschrader/feature-hub/issues/245
-[bff]:
-  https://www.thoughtworks.com/de/radar/techniques/bff-backend-for-frontends

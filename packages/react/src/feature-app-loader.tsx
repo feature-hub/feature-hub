@@ -28,8 +28,8 @@ export interface FeatureAppLoaderProps {
   readonly serverSrc?: string;
 
   /**
-   * A list of stylesheets that should be added to the document. If [[baseUrl]]
-   * is specified, it will be prepended, unless [[Css.href]] is an absolute URL.
+   * A list of stylesheets to be added to the document. If [[baseUrl]] is
+   * specified, it will be prepended, unless [[Css.href]] is an absolute URL.
    */
   readonly css?: Css[];
 

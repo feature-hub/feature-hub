@@ -5,8 +5,8 @@ function isAbsolute(url: string): boolean {
 }
 
 /**
- * Prepends the given `url` with the given `baseUrl` (can be relative or
- * absolute), unless `url` itself is absolute.
+ * Prepends the given `base` - which can be relative or absolute - to the `url`,
+ * unless the `url` is absolute.
  */
 export function prependBaseUrl(base: string | undefined, url: string): string {
   if (!base || isAbsolute(url)) {
