@@ -2,7 +2,8 @@
 import {
   FeatureAppDefinition,
   FeatureAppManager,
-  FeatureAppScope
+  FeatureAppScope,
+  FeatureAppScopeOptions
 } from '@feature-hub/core';
 import {Stubbed, stubMethods} from 'jest-stub-methods';
 import * as React from 'react';
@@ -98,20 +99,24 @@ describe('FeatureAppContainer', () => {
       testRendererOptions
     );
 
-  it('calls the Feature App manager with the given Feature App definition, id specifier, and instance config', () => {
+  it('calls the Feature App manager with the given Feature App definition, base url, id specifier, and instance config', () => {
     renderWithFeatureHubContext(
       <FeatureAppContainer
         featureAppDefinition={mockFeatureAppDefinition}
         idSpecifier="testIdSpecifier"
         instanceConfig="testInstanceConfig"
+        baseUrl="/base"
       />
     );
 
+    const expectedOptions: FeatureAppScopeOptions = {
+      baseUrl: '/base',
+      idSpecifier: 'testIdSpecifier',
+      instanceConfig: 'testInstanceConfig'
+    };
+
     expect(mockGetFeatureAppScope.mock.calls).toEqual([
-      [
-        mockFeatureAppDefinition,
-        {idSpecifier: 'testIdSpecifier', instanceConfig: 'testInstanceConfig'}
-      ]
+      [mockFeatureAppDefinition, expectedOptions]
     ]);
   });
 

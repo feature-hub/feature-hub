@@ -155,6 +155,7 @@ describe('FeatureAppManager', () => {
       const config = {kind: 'test'};
       const idSpecifier = 'testIdSpecifier';
       const instanceConfig = 'testInstanceConfig';
+      const baseUrl = '/base';
 
       featureAppManager = new FeatureAppManager(mockFeatureServiceRegistry, {
         configs: {[mockFeatureAppDefinition.id]: config},
@@ -162,6 +163,7 @@ describe('FeatureAppManager', () => {
       });
 
       featureAppManager.getFeatureAppScope(mockFeatureAppDefinition, {
+        baseUrl,
         idSpecifier,
         instanceConfig
       });
@@ -173,7 +175,7 @@ describe('FeatureAppManager', () => {
       const {featureServices} = mockFeatureServicesBinding;
 
       expect(mockFeatureAppCreate.mock.calls).toEqual([
-        [{config, instanceConfig, featureServices, idSpecifier}]
+        [{baseUrl, config, instanceConfig, featureServices, idSpecifier}]
       ]);
     });
 

@@ -133,6 +133,12 @@ properties:
 1. `idSpecifier` — An optional [ID specifier][idspecifier] that distinguishes
    the Feature App instance from other Feature App instances with the same ID.
 
+1. `baseUrl` — A base URL to be used for referencing the Feature App's own
+   resources. It is only set in the `env` if the integrator has defined a
+   `baseUrl` on the corresponding
+   [`FeatureAppLoader`][feature-app-loader-base-url] or
+   [`FeatureAppContainer`][feature-app-container-base-url].
+
 The return value of the `create` method can vary depending on the integration
 solution used. Assuming the [`@feature-hub/react`][react-api] package is used, a
 Feature App can be either a [React Feature App][react-feature-app] or a [DOM
@@ -262,6 +268,9 @@ const myFeatureAppDefinition = {
 [feature-service-binder]:
   /docs/guides/writing-a-feature-service#feature-service-binder
 [idspecifier]: /docs/guides/integrating-the-feature-hub#idspecifier
+[feature-app-loader-base-url]: /docs/guides/integrating-the-feature-hub#baseurl
+[feature-app-container-base-url]:
+  /docs/guides/integrating-the-feature-hub#baseurl-1
 [placing-feature-apps-on-a-web-page-using-react]:
   /docs/guides/integrating-the-feature-hub#placing-feature-apps-on-a-web-page-using-react
 [placing-feature-apps-on-a-web-page-using-web-components]:

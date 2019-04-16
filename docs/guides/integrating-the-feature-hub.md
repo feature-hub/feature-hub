@@ -227,9 +227,13 @@ Additionally, when a Feature App needs to be rendered on the server, its
 />
 ```
 
-> **Note:**  
->  If the integrator has configured the CommonJS module loader on the server, the
-> Feature App to be loaded via `serverSrc` must be provided as a CommonJS module.
+> **Notes:**
+>
+> - If the integrator has configured the CommonJS module loader on the server,
+>   the Feature App to be loaded via `serverSrc` must be provided as a CommonJS
+>   module.
+> - If `baseUrl` is specified as well, it will be prepended if `serverSrc` is a
+>   relative URL. In this case `baseUrl` must be an absolute URL.
 
 #### `css`
 
@@ -244,6 +248,28 @@ You can also define a `css` prop to add stylesheets to the document:
   ]}
 />
 ```
+
+#### `baseUrl`
+
+Optionally, a relative or absolute `baseUrl` can be specified for two purposes:
+
+1. as a common base URL for relative [`src`](#src), [`serverSrc`](#serversrc),
+   and [`css`](#css) hrefs
+1. to provide the Feature App with a base URL with which it can refer to its own
+   resources
+
+```jsx
+<FeatureAppLoader
+  baseUrl="https://example.com/some-feature-app"
+  src="main.js"
+  serverSrc="main-node.js"
+  css={[{href: 'styles.css'}]}
+/>
+```
+
+> **Note:**  
+> Only relative URLs are prepended with the `baseUrl`. Absolute URLs are used
+> unchanged.
 
 #### `idSpecifier`
 
@@ -300,6 +326,18 @@ import {someFeatureAppDefinition} from './some-feature-app';
 
 ```jsx
 <FeatureAppContainer featureAppDefinition={someFeatureAppDefinition} />
+```
+
+#### `baseUrl`
+
+Optionally, a `baseUrl` can be specified to provide the Feature App with a base
+URL that it can use to reference its own resources:
+
+```jsx
+<FeatureAppLoader
+  featureAppDefinition={someFeatureAppDefinition}
+  baseUrl="https://example.com/some-feature-app"
+/>
 ```
 
 #### `idSpecifier`
@@ -387,6 +425,21 @@ is the URL of its module bundle:
 > If the integrator has configured the AMD module loader, the Feature App to be
 > loaded via `src` must be provided as an [AMD module][amd].
 
+#### `baseUrl`
+
+Optionally, a `baseUrl` can be specified for two purposes:
+
+1. as a common base URL for a relative [`src`](#src-1)
+1. to provide the Feature App with a base URL with which it can refer to its own
+   resources
+
+```html
+<feature-app-loader
+  baseUrl="https://example.com/some-feature-app"
+  src="main.js"
+></feature-app-loader>
+```
+
 #### `idSpecifier`
 
 If multiple instances of the same Feature App are placed on a single web page,
@@ -464,6 +517,24 @@ A Feature App can be integrated by directly providing its
 const featureAppContainer = document.createElement('feature-app-container');
 
 featureAppContainer.featureAppDefinition = someFeatureAppDefinition;
+
+document.querySelector('#app').appendChild(featureAppContainer);
+```
+
+#### `baseUrl`
+
+Optionally, a `baseUrl` can be specified to provide the Feature App with a base
+URL that it can use to reference its own resources:
+
+```js
+const featureAppContainer = document.createElement('feature-app-container');
+
+featureAppContainer.featureAppDefinition = someFeatureAppDefinition;
+
+featureAppContainer.setAttribute(
+  'baseUrl',
+  'https://example.com/some-feature-app'
+);
 
 document.querySelector('#app').appendChild(featureAppContainer);
 ```

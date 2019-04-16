@@ -29,6 +29,11 @@ export interface DomFeatureApp {
  */
 export interface FeatureAppContainerElement extends HTMLElement {
   /**
+   * The absolute or relative base URL of the Feature App's assets and/or BFF.
+   */
+  baseUrl?: string;
+
+  /**
    * The definition of the Feature App that should be rendered.
    */
   featureAppDefinition?: FeatureAppDefinition<DomFeatureApp>;
@@ -73,6 +78,9 @@ export function defineFeatureAppContainer(
 
   class FeatureAppContainer extends LitElement
     implements FeatureAppContainerElement {
+    @property({type: String})
+    public baseUrl?: string;
+
     @property({type: Object})
     public featureAppDefinition?: FeatureAppDefinition<DomFeatureApp>;
 
@@ -97,7 +105,11 @@ export function defineFeatureAppContainer(
       try {
         this.featureAppScope = featureAppManager.getFeatureAppScope(
           this.featureAppDefinition,
-          {idSpecifier: this.idSpecifier, instanceConfig: this.instanceConfig}
+          {
+            baseUrl: this.baseUrl,
+            idSpecifier: this.idSpecifier,
+            instanceConfig: this.instanceConfig
+          }
         );
 
         this.featureAppScope.featureApp.attachTo(this.appElement);

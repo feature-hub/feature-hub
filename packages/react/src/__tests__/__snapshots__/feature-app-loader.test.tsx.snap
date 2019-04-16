@@ -1,9 +1,24 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`FeatureAppLoader with a css prop and a baseUrl appends link elements to the document head 1`] = `
+<head>
+  <link
+    href="https://example.com/foo.css"
+    media="all"
+    rel="stylesheet"
+  />
+  <link
+    href="http://feature-hub.io/bar.css"
+    media="print"
+    rel="stylesheet"
+  />
+</head>
+`;
+
 exports[`FeatureAppLoader with a css prop appends link elements to the document head 1`] = `
 <head>
   <link
-    href="foo.css"
+    href="https://example.com/foo.css"
     media="all"
     rel="stylesheet"
   />

@@ -39,6 +39,11 @@ export interface FeatureAppEnvironment<
    * other Feature App instances with the same ID.
    */
   readonly idSpecifier: string | undefined;
+
+  /**
+   * The absolute or relative base URL of the Feature App's assets and/or BFF.
+   */
+  readonly baseUrl: string | undefined;
 }
 
 export interface FeatureAppDefinition<
@@ -69,6 +74,11 @@ export interface FeatureAppConfigs {
 }
 
 export interface FeatureAppScopeOptions {
+  /**
+   * The absolute or relative base URL of the Feature App's assets and/or BFF.
+   */
+  readonly baseUrl?: string;
+
   /**
    * A specifier to distinguish the Feature App instances from others created
    * from the same definition.
@@ -201,7 +211,7 @@ export class FeatureAppManager {
     featureAppDefinition: FeatureAppDefinition<TFeatureApp>,
     options: FeatureAppScopeOptions = {}
   ): FeatureAppScope<TFeatureApp> {
-    const {idSpecifier, instanceConfig} = options;
+    const {baseUrl, idSpecifier, instanceConfig} = options;
     const {id: featureAppId} = featureAppDefinition;
     const featureAppUid = createUid(featureAppId, idSpecifier);
 
@@ -210,14 +220,10 @@ export class FeatureAppManager {
     if (!featureAppScope) {
       this.registerOwnFeatureServices(featureAppDefinition);
 
-      const deleteFeatureAppScope = () =>
-        this.featureAppScopes.delete(featureAppUid);
-
       featureAppScope = this.createFeatureAppScope(
         featureAppDefinition,
-        idSpecifier,
-        instanceConfig,
-        deleteFeatureAppScope
+        () => this.featureAppScopes.delete(featureAppUid),
+        {baseUrl, idSpecifier, instanceConfig}
       );
 
       this.featureAppScopes.set(featureAppUid, featureAppScope);
@@ -295,12 +301,12 @@ export class FeatureAppManager {
 
   private createFeatureAppScope<TFeatureApp>(
     featureAppDefinition: FeatureAppDefinition<TFeatureApp>,
-    idSpecifier: string | undefined,
-    instanceConfig: unknown,
-    deleteFeatureAppScope: () => void
+    deleteFeatureAppScope: () => void,
+    options: FeatureAppScopeOptions
   ): FeatureAppScope<TFeatureApp> {
     this.validateExternals(featureAppDefinition);
 
+    const {baseUrl, idSpecifier, instanceConfig} = options;
     const {configs} = this.options;
     const config = configs && configs[featureAppDefinition.id];
     const featureAppUid = createUid(featureAppDefinition.id, idSpecifier);
@@ -311,6 +317,7 @@ export class FeatureAppManager {
     );
 
     const featureApp = featureAppDefinition.create({
+      baseUrl,
       config,
       instanceConfig,
       featureServices: binding.featureServices,

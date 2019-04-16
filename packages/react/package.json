@@ -22,10 +22,12 @@
   "typings": "lib/cjs/index.d.ts",
   "dependencies": {
     "@feature-hub/async-ssr-manager": "^1.4.0",
-    "@feature-hub/core": "^1.4.0"
+    "@feature-hub/core": "^1.4.0",
+    "url-join": "^4.0.0"
   },
   "devDependencies": {
     "@types/react-test-renderer": "^16.0.3",
+    "@types/url-join": "^4.0.0",
     "jest-stub-methods": "^0.2.1",
     "react": "^16.6.3",
     "react-test-renderer": "^16.7.0"
