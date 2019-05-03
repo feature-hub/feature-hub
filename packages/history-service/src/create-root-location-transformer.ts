@@ -55,7 +55,11 @@ function createRootLocationForPrimaryConsumer(
     ? primaryConsumerLocation.pathname
     : '/';
 
-  return {pathname, search};
+  const hash = primaryConsumerLocation
+    ? primaryConsumerLocation.hash
+    : undefined;
+
+  return {pathname, search, hash};
 }
 
 function createRootLocationForOtherConsumer(
@@ -83,7 +87,8 @@ function createRootLocationForOtherConsumer(
 
   return {
     pathname: rootLocation.pathname,
-    search: allSearchParams.toString()
+    search: allSearchParams.toString(),
+    hash: rootLocation.hash
   };
 }
 

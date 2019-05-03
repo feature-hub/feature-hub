@@ -88,21 +88,22 @@ describe('#createRootLocationTransformer', () => {
     });
 
     describe('with only a primary', () => {
-      it('puts the location pathname and query params directly to the root location', () => {
+      it('puts the location pathname, query params, and hash directly to the root location', () => {
         const locationTransformer = createRootLocationTransformer({
           consumerPathsQueryParamName: '---',
           primaryConsumerUid: 'test:pri'
         });
 
         const rootLocation = locationTransformer.createRootLocation(
-          {pathname: '/foo', search: 'bar=1&baz=2'} as Location,
+          {pathname: '/foo', search: 'bar=1&baz=2', hash: '#qux'} as Location,
           {pathname: '/'} as Location,
           'test:pri'
         );
 
         expect(rootLocation).toMatchObject({
           pathname: '/foo',
-          search: 'bar=1&baz=2'
+          search: 'bar=1&baz=2',
+          hash: '#qux'
         });
       });
 
@@ -113,7 +114,7 @@ describe('#createRootLocationTransformer', () => {
         });
 
         let rootLocation = locationTransformer.createRootLocation(
-          {pathname: '/foo'} as Location,
+          {pathname: '/foo', search: 'bar=1&baz=2', hash: '#qux'} as Location,
           {pathname: '/'} as Location,
           'test:pri'
         );
@@ -124,10 +125,7 @@ describe('#createRootLocationTransformer', () => {
           'test:pri'
         );
 
-        expect(rootLocation).toMatchObject({
-          pathname: '/',
-          search: ''
-        });
+        expect(rootLocation).toMatchObject({pathname: '/', search: ''});
       });
 
       describe('when the primary tries to set a query param that conflicts with the consumer paths query param', () => {
@@ -153,49 +151,35 @@ describe('#createRootLocationTransformer', () => {
     });
 
     describe('with the primary and two other consumers', () => {
-      it('takes the pathname and query params of the primary consumer directly, and the pathname and query params of the other consumers encoded as a single query param, into the root location', () => {
+      it('takes the pathname, query params, and hash of the primary consumer directly, and the pathname and query params of the other consumers encoded as a single query param, into the root location', () => {
         const locationTransformer = createRootLocationTransformer({
           consumerPathsQueryParamName: '---',
           primaryConsumerUid: 'test:pri'
         });
 
         let rootLocation = locationTransformer.createRootLocation(
-          {pathname: '/foo', search: 'bar=1'} as Location,
+          {pathname: '/baz', search: 'qux=3'} as Location,
           {pathname: '/'} as Location,
-          'test:pri'
-        );
-
-        rootLocation = locationTransformer.createRootLocation(
-          {
-            pathname: '/baz',
-            search: 'qux=3'
-          } as Location,
-          rootLocation as Location,
           'test:1'
         );
 
         rootLocation = locationTransformer.createRootLocation(
-          {
-            pathname: '/some',
-            search: 'thing=else'
-          } as Location,
+          {pathname: '/foo', search: 'bar=1', hash: '#qux'} as Location,
           rootLocation as Location,
-          'test:2'
+          'test:pri'
         );
 
         rootLocation = locationTransformer.createRootLocation(
-          {
-            pathname: '/foo',
-            search: 'bar=2'
-          } as Location,
+          {pathname: '/some', search: 'thing=else'} as Location,
           rootLocation as Location,
-          'test:pri'
+          'test:2'
         );
 
         expect(rootLocation).toMatchObject({
           pathname: '/foo',
           search:
-            'bar=2&---=%7B%22test%3A1%22%3A%22%2Fbaz%3Fqux%3D3%22%2C%22test%3A2%22%3A%22%2Fsome%3Fthing%3Delse%22%7D'
+            'bar=1&---=%7B%22test%3A1%22%3A%22%2Fbaz%3Fqux%3D3%22%2C%22test%3A2%22%3A%22%2Fsome%3Fthing%3Delse%22%7D',
+          hash: '#qux'
         });
       });
     });
