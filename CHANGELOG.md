@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0](https://github.com/sinnerschrader/feature-hub/compare/v1.5.0...v1.6.0) (2019-05-03)
+
+
+### Features
+
+* **history-service:** support setting a hash by the primary consumer ([#483](https://github.com/sinnerschrader/feature-hub/issues/483)) ([8a73593](https://github.com/sinnerschrader/feature-hub/commit/8a73593))
+
+
+
+
+
 # [1.5.0](https://github.com/sinnerschrader/feature-hub/compare/v1.4.0...v1.5.0) (2019-04-16)
 
 
