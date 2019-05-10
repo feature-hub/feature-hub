@@ -264,14 +264,17 @@ describe('FeatureAppLoader', () => {
     it('renders a FeatureAppContainer', () => {
       const onError = jest.fn();
       const renderError = jest.fn();
+      const beforeCreate = jest.fn();
 
       const testRenderer = renderWithFeatureHubContext(
         <FeatureAppLoader
           src="example.js"
           idSpecifier="testIdSpecifier"
           instanceConfig="testInstanceConfig"
+          beforeCreate={beforeCreate}
           onError={onError}
           renderError={renderError}
+          baseUrl="/base"
         />
       );
 
@@ -281,8 +284,10 @@ describe('FeatureAppLoader', () => {
         featureAppDefinition: mockFeatureAppDefinition,
         idSpecifier: 'testIdSpecifier',
         instanceConfig: 'testInstanceConfig',
+        beforeCreate,
         onError,
-        renderError
+        renderError,
+        baseUrl: '/base'
       };
 
       expect(FeatureAppContainer).toHaveBeenCalledWith(expectedProps, {});

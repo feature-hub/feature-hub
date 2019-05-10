@@ -1,4 +1,8 @@
-import {FeatureAppDefinition, FeatureAppScope} from '@feature-hub/core';
+import {
+  FeatureAppDefinition,
+  FeatureAppScope,
+  FeatureServices
+} from '@feature-hub/core';
 import * as React from 'react';
 import {
   FeatureHubContextConsumer,
@@ -62,6 +66,14 @@ export interface FeatureAppContainerProps {
    */
   readonly instanceConfig?: unknown;
 
+  /**
+   * A callback that is called before the Feature App is created.
+   */
+  readonly beforeCreate?: (
+    consumerUid: string,
+    featureServices: FeatureServices
+  ) => void;
+
   readonly onError?: (error: Error) => void;
 
   readonly renderError?: (error: Error) => React.ReactNode;
@@ -91,6 +103,7 @@ class InternalFeatureAppContainer extends React.PureComponent<
 
     const {
       baseUrl,
+      beforeCreate,
       featureAppManager,
       featureAppDefinition,
       idSpecifier,
@@ -100,7 +113,7 @@ class InternalFeatureAppContainer extends React.PureComponent<
     try {
       this.featureAppScope = featureAppManager.getFeatureAppScope(
         featureAppDefinition,
-        {baseUrl, idSpecifier, instanceConfig}
+        {baseUrl, idSpecifier, instanceConfig, beforeCreate}
       );
 
       if (!isFeatureApp(this.featureAppScope.featureApp)) {

@@ -1,5 +1,5 @@
 import {createFeatureHub} from '@feature-hub/core';
-import {ConsumerLoggerCreator, defineLogger} from '@feature-hub/logger';
+import {ConsumerLoggerCreator, Logger, defineLogger} from '@feature-hub/logger';
 import {defineExternals, loadAmdModule} from '@feature-hub/module-loader-amd';
 import {FeatureHubContextProvider} from '@feature-hub/react';
 import * as React from 'react';
@@ -21,15 +21,27 @@ const createConsumerConsole: ConsumerLoggerCreator = consumerUid => {
   };
 };
 
-const {featureAppManager} = createFeatureHub('test:integrator', {
-  moduleLoader: loadAmdModule,
-  providedExternals: {react: process.env.REACT_VERSION as string},
-  featureServiceDefinitions: [defineLogger(createConsumerConsole)]
-});
+const {featureAppManager, featureServices} = createFeatureHub(
+  'test:integrator',
+  {
+    moduleLoader: loadAmdModule,
+    providedExternals: {react: process.env.REACT_VERSION as string},
+    featureServiceDefinitions: [defineLogger(createConsumerConsole)],
+    featureServiceDependencies: {'s2:logger': '^1.0.0'}
+  }
+);
+
+const logger = featureServices['s2:logger'] as Logger;
 
 ReactDOM.hydrate(
   <FeatureHubContextProvider value={{featureAppManager}}>
-    <App />
+    <App
+      beforeCreate={consumerUid =>
+        logger.debug(
+          `Creating Feature App with consumerUid "${consumerUid}"...`
+        )
+      }
+    />
   </FeatureHubContextProvider>,
   document.querySelector('main')
 );

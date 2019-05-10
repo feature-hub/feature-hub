@@ -99,20 +99,24 @@ describe('FeatureAppContainer', () => {
       testRendererOptions
     );
 
-  it('calls the Feature App manager with the given Feature App definition, base url, id specifier, and instance config', () => {
+  it('calls the Feature App manager with the given Feature App definition, base url, id specifier, instance config, and beforeCreate callback', () => {
+    const mockBeforeCreate = jest.fn();
+
     renderWithFeatureHubContext(
       <FeatureAppContainer
         featureAppDefinition={mockFeatureAppDefinition}
         idSpecifier="testIdSpecifier"
         instanceConfig="testInstanceConfig"
         baseUrl="/base"
+        beforeCreate={mockBeforeCreate}
       />
     );
 
     const expectedOptions: FeatureAppScopeOptions = {
       baseUrl: '/base',
       idSpecifier: 'testIdSpecifier',
-      instanceConfig: 'testInstanceConfig'
+      instanceConfig: 'testInstanceConfig',
+      beforeCreate: mockBeforeCreate
     };
 
     expect(mockGetFeatureAppScope.mock.calls).toEqual([
