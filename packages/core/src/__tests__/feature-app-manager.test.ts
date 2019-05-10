@@ -179,6 +179,107 @@ describe('FeatureAppManager', () => {
       ]);
     });
 
+    describe('with an beforeCreate callback', () => {
+      describe('and no id specifier', () => {
+        it('calls the beforeCreate callback without an enriched consumer id', () => {
+          const config = {kind: 'test'};
+          const instanceConfig = 'testInstanceConfig';
+          const baseUrl = '/base';
+
+          featureAppManager = new FeatureAppManager(
+            mockFeatureServiceRegistry,
+            {
+              configs: {[mockFeatureAppDefinition.id]: config},
+              logger
+            }
+          );
+
+          const mockBeforeCreate = jest.fn();
+
+          featureAppManager.getFeatureAppScope(mockFeatureAppDefinition, {
+            baseUrl,
+            beforeCreate: mockBeforeCreate,
+            instanceConfig
+          });
+
+          const {featureServices} = mockFeatureServicesBinding;
+
+          expect(mockBeforeCreate.mock.calls).toEqual([
+            ['testId', featureServices]
+          ]);
+        });
+      });
+
+      describe('and an id specifier', () => {
+        it('calls the beforeCreate callback with an enriched consumer id', () => {
+          const config = {kind: 'test'};
+          const idSpecifier = 'testIdSpecifier';
+          const instanceConfig = 'testInstanceConfig';
+          const baseUrl = '/base';
+
+          featureAppManager = new FeatureAppManager(
+            mockFeatureServiceRegistry,
+            {
+              configs: {[mockFeatureAppDefinition.id]: config},
+              logger
+            }
+          );
+
+          const mockBeforeCreate = jest.fn();
+
+          featureAppManager.getFeatureAppScope(mockFeatureAppDefinition, {
+            baseUrl,
+            beforeCreate: mockBeforeCreate,
+            idSpecifier,
+            instanceConfig
+          });
+
+          const {featureServices} = mockFeatureServicesBinding;
+
+          expect(mockBeforeCreate.mock.calls).toEqual([
+            [`testId:${idSpecifier}`, featureServices]
+          ]);
+        });
+      });
+
+      it('calls the beforeCreate callback prior to calling create', () => {
+        expect.assertions(2);
+
+        const config = {kind: 'test'};
+        const instanceConfig = 'testInstanceConfig';
+        const baseUrl = '/base';
+
+        featureAppManager = new FeatureAppManager(mockFeatureServiceRegistry, {
+          configs: {[mockFeatureAppDefinition.id]: config},
+          logger
+        });
+
+        let beforeCreateCalled = false;
+
+        const mockBeforeCreate = jest.fn(() => {
+          beforeCreateCalled = true;
+        });
+
+        mockFeatureAppCreate.mockImplementation(() => {
+          expect(beforeCreateCalled).toBe(true);
+
+          return mockFeatureApp;
+        });
+
+        featureAppManager.getFeatureAppScope(mockFeatureAppDefinition, {
+          baseUrl,
+          beforeCreate: mockBeforeCreate,
+          instanceConfig
+        });
+
+        const {featureServices} = mockFeatureServicesBinding;
+
+        expect(mockBeforeCreate.mock.calls).toEqual([
+          ['testId', featureServices]
+        ]);
+      });
+    });
+
     describe('without an ExternalsValidator provided to the FeatureAppManager', () => {
       describe('with a Feature App definition that is declaring external dependencies', () => {
         beforeEach(() => {
@@ -356,6 +457,89 @@ describe('FeatureAppManager', () => {
     });
 
     describe('for a known Feature App definition', () => {
+      describe('with a beforeCreate callback', () => {
+        it('does not call the beforeCreate callback multiple times', () => {
+          const config = {kind: 'test'};
+          const instanceConfig = 'testInstanceConfig';
+          const baseUrl = '/base';
+
+          featureAppManager = new FeatureAppManager(
+            mockFeatureServiceRegistry,
+            {
+              configs: {[mockFeatureAppDefinition.id]: config},
+              logger
+            }
+          );
+
+          const mockBeforeCreate = jest.fn();
+
+          const options = {
+            baseUrl,
+            beforeCreate: mockBeforeCreate,
+            instanceConfig
+          };
+
+          featureAppManager.getFeatureAppScope(
+            mockFeatureAppDefinition,
+            options
+          );
+
+          featureAppManager.getFeatureAppScope(
+            mockFeatureAppDefinition,
+            options
+          );
+
+          const {featureServices} = mockFeatureServicesBinding;
+
+          expect(mockBeforeCreate.mock.calls).toEqual([
+            ['testId', featureServices]
+          ]);
+        });
+
+        describe('when destroy() is called on the Feature App scope', () => {
+          it('calls the beforeCreate callback again', () => {
+            const config = {kind: 'test'};
+            const instanceConfig = 'testInstanceConfig';
+            const baseUrl = '/base';
+
+            featureAppManager = new FeatureAppManager(
+              mockFeatureServiceRegistry,
+              {
+                configs: {[mockFeatureAppDefinition.id]: config},
+                logger
+              }
+            );
+
+            const mockBeforeCreate = jest.fn();
+
+            const options = {
+              baseUrl,
+              beforeCreate: mockBeforeCreate,
+              instanceConfig
+            };
+
+            const featureAppScope = featureAppManager.getFeatureAppScope(
+              mockFeatureAppDefinition,
+              options
+            );
+
+            featureAppScope.destroy();
+
+            featureAppManager.getFeatureAppScope(
+              mockFeatureAppDefinition,
+              options
+            );
+
+            const {featureServices} = mockFeatureServicesBinding;
+
+            expect(mockBeforeCreate.mock.calls).toEqual([
+              ['testId', featureServices],
+              ['testId', featureServices]
+            ]);
+          });
+        });
+      });
+
       describe('and no id specifier', () => {
         it('logs an info message after creation', () => {
           featureAppManager.getFeatureAppScope(mockFeatureAppDefinition);
