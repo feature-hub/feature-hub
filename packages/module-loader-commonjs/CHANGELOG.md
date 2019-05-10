@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.7.0](https://github.com/sinnerschrader/feature-hub/compare/v1.6.0...v1.7.0) (2019-05-10)
+
+**Note:** Version bump only for package @feature-hub/module-loader-commonjs
+
+
+
+
+
 # [1.5.0](https://github.com/sinnerschrader/feature-hub/compare/v1.4.0...v1.5.0) (2019-04-16)
 
 **Note:** Version bump only for package @feature-hub/module-loader-commonjs
