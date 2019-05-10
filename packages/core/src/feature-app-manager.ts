@@ -89,6 +89,14 @@ export interface FeatureAppScopeOptions {
    * A config object that is intended for a specific Feature App instance.
    */
   readonly instanceConfig?: unknown;
+
+  /**
+   * A callback that is called before the Feature App is created.
+   */
+  readonly beforeCreate?: (
+    consumerUid: string,
+    featureServices: FeatureServices
+  ) => void;
 }
 
 /**
@@ -211,9 +219,8 @@ export class FeatureAppManager {
     featureAppDefinition: FeatureAppDefinition<TFeatureApp>,
     options: FeatureAppScopeOptions = {}
   ): FeatureAppScope<TFeatureApp> {
-    const {baseUrl, idSpecifier, instanceConfig} = options;
     const {id: featureAppId} = featureAppDefinition;
-    const featureAppUid = createUid(featureAppId, idSpecifier);
+    const featureAppUid = createUid(featureAppId, options.idSpecifier);
 
     let featureAppScope = this.featureAppScopes.get(featureAppUid);
 
@@ -223,7 +230,7 @@ export class FeatureAppManager {
       featureAppScope = this.createFeatureAppScope(
         featureAppDefinition,
         () => this.featureAppScopes.delete(featureAppUid),
-        {baseUrl, idSpecifier, instanceConfig}
+        options
       );
 
       this.featureAppScopes.set(featureAppUid, featureAppScope);
@@ -306,7 +313,7 @@ export class FeatureAppManager {
   ): FeatureAppScope<TFeatureApp> {
     this.validateExternals(featureAppDefinition);
 
-    const {baseUrl, idSpecifier, instanceConfig} = options;
+    const {baseUrl, beforeCreate, idSpecifier, instanceConfig} = options;
     const {configs} = this.options;
     const config = configs && configs[featureAppDefinition.id];
     const featureAppUid = createUid(featureAppDefinition.id, idSpecifier);
@@ -315,6 +322,10 @@ export class FeatureAppManager {
       featureAppDefinition,
       idSpecifier
     );
+
+    if (beforeCreate) {
+      beforeCreate(featureAppUid, binding.featureServices);
+    }
 
     const featureApp = featureAppDefinition.create({
       baseUrl,

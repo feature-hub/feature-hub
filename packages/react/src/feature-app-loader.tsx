@@ -1,4 +1,4 @@
-import {FeatureAppDefinition} from '@feature-hub/core';
+import {FeatureAppDefinition, FeatureServices} from '@feature-hub/core';
 import * as React from 'react';
 import {FeatureAppContainer} from './feature-app-container';
 import {
@@ -45,6 +45,14 @@ export interface FeatureAppLoaderProps {
    * the `FeatureAppLoader` loads and renders.
    */
   readonly instanceConfig?: unknown;
+
+  /**
+   * A callback that is called before the Feature App is created.
+   */
+  readonly beforeCreate?: (
+    consumerUid: string,
+    featureServices: FeatureServices
+  ) => void;
 
   readonly onError?: (error: Error) => void;
 
@@ -159,6 +167,7 @@ class InternalFeatureAppLoader extends React.PureComponent<
   public render(): React.ReactNode {
     const {
       baseUrl,
+      beforeCreate,
       idSpecifier,
       instanceConfig,
       onError,
@@ -186,6 +195,7 @@ class InternalFeatureAppLoader extends React.PureComponent<
         featureAppDefinition={featureAppDefinition}
         idSpecifier={idSpecifier}
         instanceConfig={instanceConfig}
+        beforeCreate={beforeCreate}
         onError={onError}
         renderError={renderError}
       />
