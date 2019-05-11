@@ -22,7 +22,7 @@
   "typings": "lib/cjs/index.d.ts",
   "dependencies": {
     "@feature-hub/core": "^1.7.0",
-    "fs-extra": "^7.0.1",
+    "fs-extra": "^8.0.0",
     "node-fetch": "^2.3.0"
   },
   "devDependencies": {
