@@ -1,5 +1,8 @@
-import {RootLocationTransformer} from '@feature-hub/history-service';
-import {createPath} from 'history';
+import {
+  ConsumerLocation,
+  RootLocationTransformer
+} from '@feature-hub/history-service';
+import {Location, createPath} from 'history';
 import {URLSearchParams} from './url-search-params';
 
 export const rootLocationTransformer: RootLocationTransformer = {
@@ -10,6 +13,9 @@ export const rootLocationTransformer: RootLocationTransformer = {
   },
 
   createRootLocation: (rootLocation, consumerLocation, consumerId) => {
+    if (!rootLocation) {
+      throw new Error('ppp');
+    }
     const searchParams = new URLSearchParams(rootLocation.search);
 
     if (consumerLocation) {
@@ -25,5 +31,11 @@ export const rootLocationTransformer: RootLocationTransformer = {
       search: searchParams.toString(),
       state
     };
+  },
+
+  createRootLocationForMultipleConsumers(
+    ..._consumerLocations: ConsumerLocation[]
+  ): Location {
+    throw new Error('not implementted yet.');
   }
 };

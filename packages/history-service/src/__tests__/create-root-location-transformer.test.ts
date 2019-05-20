@@ -242,4 +242,56 @@ describe('#createRootLocationTransformer', () => {
       });
     });
   });
+
+  describe('#createRootLocationForMultipleConsumers', () => {
+    describe('without a primary', () => {
+      it('joins all non-primary consumer locations together as a single encoded query param', () => {
+        const locationTransformer = createRootLocationTransformer({
+          consumerPathsQueryParamName: '---'
+        });
+
+        const rootLocation = locationTransformer.createRootLocationForMultipleConsumers(
+          {location: {pathname: '/foo'} as Location, historyKey: 'test:1'},
+          {location: {pathname: '/bar'} as Location, historyKey: 'test:2'}
+        );
+
+        expect(rootLocation.pathname).toEqual('/');
+        expect(rootLocation.search).toEqual(
+          '---=%7B%22test%3A1%22%3A%22%2Ffoo%22%2C%22test%3A2%22%3A%22%2Fbar%22%7D'
+        );
+      });
+    });
+
+    describe('with a primary', () => {
+      it('joins all non-primary consumer locations together as a single encoded query param', () => {
+        const locationTransformer = createRootLocationTransformer({
+          consumerPathsQueryParamName: '---',
+          primaryConsumerId: 'test:1'
+        });
+
+        const rootLocation = locationTransformer.createRootLocationForMultipleConsumers(
+          {location: {pathname: '/foo'} as Location, historyKey: 'test:1'},
+          {location: {pathname: '/bar'} as Location, historyKey: 'test:2'}
+        );
+        expect(rootLocation.pathname).toEqual('/foo');
+        expect(rootLocation.search).toEqual(
+          '---=%7B%22test%3A2%22%3A%22%2Fbar%22%7D'
+        );
+      });
+
+      it('primary must be passed if configured', () => {
+        const locationTransformer = createRootLocationTransformer({
+          consumerPathsQueryParamName: '---',
+          primaryConsumerId: 'test:1'
+        });
+
+        expect(() =>
+          locationTransformer.createRootLocationForMultipleConsumers({
+            location: {pathname: '/bar'} as Location,
+            historyKey: 'test:2'
+          })
+        ).toThrowError(new Error('Primary consumer is mandatory.'));
+      });
+    });
+  });
 });

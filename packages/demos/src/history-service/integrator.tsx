@@ -7,7 +7,9 @@ import {App} from './app';
 import {rootLocationTransformer} from './root-location-transformer';
 
 const {featureAppManager} = createFeatureHub('test:integrator', {
-  featureServiceDefinitions: [defineHistoryService(rootLocationTransformer)]
+  featureServiceDefinitions: [
+    defineHistoryService(rootLocationTransformer, true)
+  ]
 });
 
 ReactDOM.render(

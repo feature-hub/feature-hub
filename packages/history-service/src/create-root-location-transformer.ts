@@ -11,6 +11,11 @@ export interface RootLocationOptions {
   readonly primaryConsumerId?: string;
 }
 
+export interface ConsumerLocation {
+  readonly historyKey: string;
+  readonly location: history.Location;
+}
+
 export interface RootLocationTransformer {
   getConsumerPathFromRootLocation(
     rootLocation: history.Location,
@@ -19,9 +24,13 @@ export interface RootLocationTransformer {
 
   createRootLocation(
     currentRootLocation: history.Location,
-    consumerLocation: history.Location | undefined,
+    consumerLocation: history.LocationDescriptorObject | undefined,
     consumerId: string
   ): history.LocationDescriptorObject;
+
+  createRootLocationForMultipleConsumers(
+    ...consumerLocations: ConsumerLocation[]
+  ): history.Location;
 }
 
 function createRootLocationForPrimaryConsumer(
@@ -111,6 +120,7 @@ export function createRootLocationTransformer(
       const searchParams = createSearchParams(rootLocation);
 
       if (isPrimaryConsumer) {
+        console.log('is primary ' + consumerId);
         searchParams.delete(consumerPathsQueryParamName);
 
         const pathname = rootLocation.pathname;
@@ -126,6 +136,35 @@ export function createRootLocationTransformer(
       }
 
       return getConsumerPath(consumerPaths, consumerId);
+    },
+
+    createRootLocationForMultipleConsumers(
+      ...consumerLocations: ConsumerLocation[]
+    ): history.Location {
+      if (
+        options.primaryConsumerId &&
+        !consumerLocations.some(
+          consumerLocation =>
+            consumerLocation.historyKey === options.primaryConsumerId
+        )
+      ) {
+        throw new Error('Primary consumer is mandatory.');
+      }
+      let rootlocation: history.Location = {
+        hash: '',
+        pathname: '/',
+        search: '',
+        state: {}
+      };
+      for (const consumerLocation of consumerLocations) {
+        rootlocation = this.createRootLocation(
+          rootlocation,
+          consumerLocation.location,
+          consumerLocation.historyKey
+        ) as history.Location;
+      }
+
+      return rootlocation;
     },
 
     createRootLocation: (

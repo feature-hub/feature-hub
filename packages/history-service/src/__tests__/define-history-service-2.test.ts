@@ -11,7 +11,7 @@ import {History} from 'history';
 import {Stubbed, stubMethods} from 'jest-stub-methods';
 import {
   HistoryServiceDependencies,
-  HistoryServiceV1,
+  HistoryServiceV2,
   SharedHistoryService,
   defineHistoryService
 } from '..';
@@ -55,23 +55,23 @@ describe('defineHistoryService', () => {
   });
 
   describe('#create', () => {
-    it('creates a shared Feature Service containing version 1.0.0', () => {
+    it('creates a shared Feature Service containing version 2.0.0', () => {
       const sharedHistoryService = historyServiceDefinition.create({
         featureServices: {}
       });
 
-      expect(sharedHistoryService['1.0.0']).toBeDefined();
+      expect(sharedHistoryService['2.0.0']).toBeDefined();
     });
   });
 
-  describe('HistoryServiceV1', () => {
+  describe('HistoryServiceV2', () => {
     let mockEnv: FeatureServiceEnvironment<
       Writable<HistoryServiceDependencies>
     >;
 
-    let createHistoryServiceBinder: () => FeatureServiceBinder<
-      HistoryServiceV1
-    >;
+    let createHistoryServiceBinder: (
+      browser: boolean
+    ) => FeatureServiceBinder<HistoryServiceV2>;
 
     let pushStateSpy: jest.SpyInstance;
     let replaceStateSpy: jest.SpyInstance;
@@ -83,15 +83,21 @@ describe('defineHistoryService', () => {
       pushStateSpy = jest.spyOn(window.history, 'pushState');
       replaceStateSpy = jest.spyOn(window.history, 'replaceState');
 
-      mockEnv = {featureServices: {'s2:logger': stubbedLogger}};
+      mockEnv = {
+        featureServices: {'s2:logger': stubbedLogger}
+      };
 
-      createHistoryServiceBinder = () => {
+      createHistoryServiceBinder = (
+        browser: boolean
+      ): FeatureServiceBinder<HistoryServiceV2> => {
         const sharedHistoryService = defineHistoryService(
           testRootLocationTransformer,
-          true
+          browser
         ).create(mockEnv);
 
-        return sharedHistoryService['1.0.0'];
+        return sharedHistoryService['2.0.0'] as FeatureServiceBinder<
+          HistoryServiceV2
+        >;
       };
     });
 
@@ -102,28 +108,28 @@ describe('defineHistoryService', () => {
 
     describe('when the history service consumer is destroyed without having created a browser history', () => {
       it('does not try to unbind the non-existent browser history', () => {
-        const historyServiceBinder = createHistoryServiceBinder();
+        const historyServiceBinder = createHistoryServiceBinder(true);
 
         historyServiceBinder('test').unbind!();
       });
     });
 
     describe('#createBrowserHistory()', () => {
-      let historyBinding1: FeatureServiceBinding<HistoryServiceV1>;
-      let historyBinding2: FeatureServiceBinding<HistoryServiceV1>;
+      let historyBinding1: FeatureServiceBinding<HistoryServiceV2>;
+      let historyBinding2: FeatureServiceBinding<HistoryServiceV2>;
       let history1: History;
       let history2: History;
 
       const createHistories = () => {
-        const historyServiceBinder = createHistoryServiceBinder();
+        const historyServiceBinder = createHistoryServiceBinder(true);
 
         historyBinding1 = historyServiceBinder('test:1');
         const historyService1 = historyBinding1.featureService;
-        history1 = historyService1.createBrowserHistory();
+        history1 = historyService1.history;
 
         historyBinding2 = historyServiceBinder('test:2');
         const historyService2 = historyBinding2.featureService;
-        history2 = historyService2.createBrowserHistory();
+        history2 = historyService2.history;
       };
 
       const destroyHistories = () => {
@@ -136,13 +142,7 @@ describe('defineHistoryService', () => {
 
       describe('when called multiple times for the same consumer', () => {
         it('returns the same instance and logs a warning', () => {
-          expect(historyBinding1.featureService.createBrowserHistory()).toEqual(
-            history1
-          );
-
-          expect(stubbedLogger.warn).toHaveBeenCalledWith(
-            'createBrowserHistory was called multiple times by consumer "test:1". Returning the same history instance as before.'
-          );
+          expect(historyBinding1.featureService.history).toEqual(history1);
         });
       });
 
@@ -639,15 +639,49 @@ describe('defineHistoryService', () => {
       });
 
       it('logs messages using the console', () => {
-        const historyServiceBinder = createHistoryServiceBinder();
+        const historyServiceBinder = createHistoryServiceBinder(true);
         const historyService = historyServiceBinder('test:1').featureService;
-        const browserHistory = historyService.createBrowserHistory();
+        const browserHistory = historyService.history;
 
         browserHistory.go(-1);
 
         expect(stubbedConsole.stub.warn).toHaveBeenCalledWith(
           'history.go() is not supported.'
         );
+      });
+    });
+
+    describe('root history service', () => {
+      it('it creates location for one primary consumer', () => {
+        const historyServiceBinder = createHistoryServiceBinder(true);
+        const historyService = historyServiceBinder('test:1').featureService;
+        const rootHistory = historyService.rootHistory;
+
+        const location = rootHistory.createLocation({
+          historyKey: 'test:1',
+          location: {pathname: 'test:1', search: '', hash: '', state: {}}
+        });
+
+        expect(location.pathname).toEqual('test:1');
+      });
+
+      it('it creates location for two consumers', () => {
+        const historyServiceBinder = createHistoryServiceBinder(true);
+        const historyService = historyServiceBinder('test:1').featureService;
+        const rootHistory = historyService.rootHistory;
+
+        const location = rootHistory.createLocation(
+          {
+            historyKey: 'test:1',
+            location: {pathname: '/test', search: '', hash: '', state: {}}
+          },
+          {
+            historyKey: 'test:2',
+            location: {pathname: '/xxx', search: '', hash: '', state: {}}
+          }
+        );
+
+        expect(location.pathname).toEqual('test:1/test:2');
       });
     });
   });

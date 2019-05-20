@@ -15,35 +15,40 @@ import {History} from 'history';
 import {Stubbed, stubMethods} from 'jest-stub-methods';
 import {
   HistoryServiceDependencies,
-  HistoryServiceV1,
+  HistoryServiceV2,
   defineHistoryService
 } from '..';
 import {testRootLocationTransformer} from '../internal/test-root-location-transformer';
 import {stubbedLogger} from './stubbed-logger';
 import {Writable} from './writable';
 
-describe('HistoryServiceV1 (on Node.js)', () => {
+describe('HistoryServiceV2 (on Node.js)', () => {
   let mockEnv: FeatureServiceEnvironment<Writable<HistoryServiceDependencies>>;
-  let createHistoryServiceBinder: () => FeatureServiceBinder<HistoryServiceV1>;
+
+  let createHistoryServiceBinder: () => FeatureServiceBinder<HistoryServiceV2>;
 
   beforeEach(() => {
-    mockEnv = {featureServices: {'s2:logger': stubbedLogger}};
+    mockEnv = {
+      featureServices: {'s2:logger': stubbedLogger}
+    };
 
-    createHistoryServiceBinder = () => {
+    createHistoryServiceBinder = (): FeatureServiceBinder<HistoryServiceV2> => {
       const sharedHistoryService = defineHistoryService(
         testRootLocationTransformer,
         false
       ).create(mockEnv);
 
-      return sharedHistoryService['1.0.0'];
+      return sharedHistoryService['2.0.0'] as FeatureServiceBinder<
+        HistoryServiceV2
+      >;
     };
   });
 
   describe('#createStaticHistory()', () => {
-    let historyBinding1: FeatureServiceBinding<HistoryServiceV1>;
-    let historyBinding2: FeatureServiceBinding<HistoryServiceV1>;
-    let historyService1: HistoryServiceV1;
-    let historyService2: HistoryServiceV1;
+    let historyBinding1: FeatureServiceBinding<HistoryServiceV2>;
+    let historyBinding2: FeatureServiceBinding<HistoryServiceV2>;
+    let historyService1: HistoryServiceV2;
+    let historyService2: HistoryServiceV2;
     let history1: History;
     let history2: History;
 
@@ -54,11 +59,11 @@ describe('HistoryServiceV1 (on Node.js)', () => {
 
       historyBinding1 = historyServiceBinder('test:1');
       historyService1 = historyBinding1.featureService;
-      history1 = historyService1.createStaticHistory();
+      history1 = historyService1.history;
 
       historyBinding2 = historyServiceBinder('test:2');
       historyService2 = historyBinding2.featureService;
-      history2 = historyService2.createStaticHistory();
+      history2 = historyService2.history;
     };
 
     const destroyHistories = () => {
@@ -82,18 +87,6 @@ describe('HistoryServiceV1 (on Node.js)', () => {
           new Error(
             'Static history can not be created without a server request.'
           )
-        );
-      });
-    });
-
-    describe('when called multiple times for the same consumer', () => {
-      it('returns the same instance and logs a warning', () => {
-        expect(historyBinding1.featureService.createStaticHistory()).toEqual(
-          history1
-        );
-
-        expect(stubbedLogger.warn).toHaveBeenCalledWith(
-          'createStaticHistory was called multiple times by consumer "test:1". Returning the same history instance as before.'
         );
       });
     });
@@ -172,13 +165,13 @@ describe('HistoryServiceV1 (on Node.js)', () => {
       it('changes the static root location for every consumer push', () => {
         history1.push('/foo');
 
-        expect(historyService1.staticRootLocation).toMatchObject({
+        expect(historyService1.rootHistory.location).toMatchObject({
           search: '?test:1=/foo'
         });
 
         history2.push('/bar?baz=1');
 
-        expect(historyService1.staticRootLocation).toMatchObject({
+        expect(historyService1.rootHistory.location).toMatchObject({
           search: '?test:1=/foo&test:2=/bar?baz=1'
         });
       });
@@ -186,7 +179,7 @@ describe('HistoryServiceV1 (on Node.js)', () => {
       it('normalizes the pathname', () => {
         history1.push('foo');
 
-        expect(historyService1.staticRootLocation).toMatchObject({
+        expect(historyService1.rootHistory.location).toMatchObject({
           search: '?test:1=/foo'
         });
       });
@@ -195,7 +188,7 @@ describe('HistoryServiceV1 (on Node.js)', () => {
         history1.push('/foo/bar');
         history1.push('baz');
 
-        expect(historyService1.staticRootLocation).toMatchObject({
+        expect(historyService1.rootHistory.location).toMatchObject({
           search: '?test:1=/foo/baz'
         });
       });
@@ -205,13 +198,13 @@ describe('HistoryServiceV1 (on Node.js)', () => {
       it('changes the static root location for every consumer replace', () => {
         history1.replace('/foo');
 
-        expect(historyService1.staticRootLocation).toMatchObject({
+        expect(historyService1.rootHistory.location).toMatchObject({
           search: '?test:1=/foo'
         });
 
         history2.replace('/bar?baz=1');
 
-        expect(historyService1.staticRootLocation).toMatchObject({
+        expect(historyService1.rootHistory.location).toMatchObject({
           search: '?test:1=/foo&test:2=/bar?baz=1'
         });
       });
@@ -219,7 +212,7 @@ describe('HistoryServiceV1 (on Node.js)', () => {
       it('normalizes the pathname', () => {
         history1.replace('foo');
 
-        expect(historyService1.staticRootLocation).toMatchObject({
+        expect(historyService1.rootHistory.location).toMatchObject({
           search: '?test:1=/foo'
         });
       });
@@ -228,7 +221,7 @@ describe('HistoryServiceV1 (on Node.js)', () => {
         history1.replace('/foo/bar');
         history1.replace('baz');
 
-        expect(historyService1.staticRootLocation).toMatchObject({
+        expect(historyService1.rootHistory.location).toMatchObject({
           search: '?test:1=/foo/baz'
         });
       });
@@ -238,11 +231,11 @@ describe('HistoryServiceV1 (on Node.js)', () => {
       it('does nothing and logs a warning that go() is not supported', () => {
         history1.push('/foo');
 
-        const rootLocation = historyService1.staticRootLocation;
+        const rootLocation = historyService1.rootHistory.location;
 
         history1.go(-1);
 
-        expect(historyService1.staticRootLocation).toBe(rootLocation);
+        expect(historyService1.rootHistory.location).toBe(rootLocation);
 
         expect(stubbedLogger.warn).toHaveBeenCalledWith(
           'history.go() is not supported.'
@@ -254,11 +247,11 @@ describe('HistoryServiceV1 (on Node.js)', () => {
       it('does nothing and logs a warning that goBack() is not supported', () => {
         history1.push('/foo');
 
-        const rootLocation = historyService1.staticRootLocation;
+        const rootLocation = historyService1.rootHistory.location;
 
         history1.goBack();
 
-        expect(historyService1.staticRootLocation).toBe(rootLocation);
+        expect(historyService1.rootHistory.location).toBe(rootLocation);
 
         expect(stubbedLogger.warn).toHaveBeenCalledWith(
           'history.goBack() is not supported.'
@@ -270,11 +263,11 @@ describe('HistoryServiceV1 (on Node.js)', () => {
       it('does nothing and logs a warning that goForward() is not supported', () => {
         history1.push('foo');
 
-        const rootLocation = historyService1.staticRootLocation;
+        const rootLocation = historyService1.rootHistory.location;
 
         history1.goForward();
 
-        expect(historyService1.staticRootLocation).toBe(rootLocation);
+        expect(historyService1.rootHistory.location).toBe(rootLocation);
 
         expect(stubbedLogger.warn).toHaveBeenCalledWith(
           'history.goForward() is not supported.'
@@ -289,7 +282,7 @@ describe('HistoryServiceV1 (on Node.js)', () => {
         history1.block(promptHookSpy);
         history1.push('/foo?bar=1');
 
-        expect(historyService1.staticRootLocation).toMatchObject({
+        expect(historyService1.rootHistory.location).toMatchObject({
           search: '?test:1=/foo?bar=1'
         });
 
@@ -373,7 +366,7 @@ describe('HistoryServiceV1 (on Node.js)', () => {
     it('logs messages using the console', () => {
       const historyServiceBinder = createHistoryServiceBinder();
       const historyService = historyServiceBinder('test:1').featureService;
-      const staticHistory = historyService.createStaticHistory();
+      const staticHistory = historyService.history;
 
       staticHistory.go(-1);
 

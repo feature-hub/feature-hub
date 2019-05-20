@@ -19,8 +19,8 @@ export interface RootHistory {
 
 export class HistoryMultiplexer {
   public constructor(
-    private readonly rootHistory: RootHistory,
-    private readonly rootLocationTransformer: RootLocationTransformer
+    public readonly rootHistory: RootHistory,
+    public readonly rootLocationTransformer: RootLocationTransformer
   ) {}
 
   public get length(): number {

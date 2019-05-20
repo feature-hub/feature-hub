@@ -1,5 +1,8 @@
 import * as history from 'history';
-import {RootLocationTransformer} from '../create-root-location-transformer';
+import {
+  ConsumerLocation,
+  RootLocationTransformer
+} from '../create-root-location-transformer';
 import {URLSearchParams} from '../internal/url-search-params';
 
 export const testRootLocationTransformer: RootLocationTransformer = {
@@ -24,5 +27,21 @@ export const testRootLocationTransformer: RootLocationTransformer = {
       search: decodeURIComponent(searchParams.toString()),
       state: rootLocation.state
     };
+  },
+
+  createRootLocationForMultipleConsumers: (
+    ...consumerLocations: ConsumerLocation[]
+  ) => {
+    const location = {
+      pathname: consumerLocations
+        .map(consumerLocation => consumerLocation.historyKey)
+        .join('/'),
+      // decodeURIComponent is used here only for a better readability in the test expectations
+      search: '',
+      state: {},
+      hash: ''
+    };
+
+    return location;
   }
 };
