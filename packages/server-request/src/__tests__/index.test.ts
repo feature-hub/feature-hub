@@ -6,14 +6,14 @@ import {
 import {ServerRequestV1, SharedServerRequest, defineServerRequest} from '..';
 
 describe('defineServerRequest', () => {
-  let mockEnv: FeatureServiceEnvironment<undefined, {}>;
+  let mockEnv: FeatureServiceEnvironment<{}>;
   let serverRequestDefinition: FeatureServiceProviderDefinition<
     SharedServerRequest
   >;
   let serverRequest: ServerRequestV1;
 
   beforeEach(() => {
-    mockEnv = {config: undefined, featureServices: {}};
+    mockEnv = {featureServices: {}};
 
     serverRequest = {
       url: '/app',

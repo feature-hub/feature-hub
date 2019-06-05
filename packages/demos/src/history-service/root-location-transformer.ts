@@ -3,19 +3,19 @@ import {createPath} from 'history';
 import {URLSearchParams} from './url-search-params';
 
 export const rootLocationTransformer: RootLocationTransformer = {
-  getConsumerPathFromRootLocation: (rootLocation, consumerUid) => {
+  getConsumerPathFromRootLocation: (rootLocation, consumerId) => {
     const searchParams = new URLSearchParams(rootLocation.search);
 
-    return searchParams.get(consumerUid) || undefined;
+    return searchParams.get(consumerId) || undefined;
   },
 
-  createRootLocation: (consumerLocation, rootLocation, consumerUid) => {
+  createRootLocation: (consumerLocation, rootLocation, consumerId) => {
     const searchParams = new URLSearchParams(rootLocation.search);
 
     if (consumerLocation) {
-      searchParams.set(consumerUid, createPath(consumerLocation));
+      searchParams.set(consumerId, createPath(consumerLocation));
     } else {
-      searchParams.delete(consumerUid);
+      searchParams.delete(consumerId);
     }
 
     const {pathname, state} = rootLocation;

@@ -169,7 +169,7 @@ describe('FeatureAppManager', () => {
       });
 
       expect(mockFeatureServiceRegistry.bindFeatureServices.mock.calls).toEqual(
-        [[mockFeatureAppDefinition, idSpecifier]]
+        [[mockFeatureAppDefinition, 'testId:testIdSpecifier']]
       );
 
       const {featureServices} = mockFeatureServicesBinding;
@@ -206,7 +206,7 @@ describe('FeatureAppManager', () => {
         const {featureServices} = mockFeatureServicesBinding;
 
         expect(mockBeforeCreate.mock.calls).toEqual([
-          ['testId', featureServices]
+          [mockFeatureAppDefinition.id, featureServices]
         ]);
       });
 
@@ -226,7 +226,7 @@ describe('FeatureAppManager', () => {
           const {featureServices} = mockFeatureServicesBinding;
 
           expect(mockBeforeCreate.mock.calls).toEqual([
-            ['testId', featureServices]
+            [mockFeatureAppDefinition.id, featureServices]
           ]);
         });
       });
@@ -250,7 +250,7 @@ describe('FeatureAppManager', () => {
           const {featureServices} = mockFeatureServicesBinding;
 
           expect(mockBeforeCreate.mock.calls).toEqual([
-            [`testId:${idSpecifier}`, featureServices]
+            [`${mockFeatureAppDefinition.id}:${idSpecifier}`, featureServices]
           ]);
         });
       });
@@ -411,19 +411,20 @@ describe('FeatureAppManager', () => {
       });
 
       it("registers the Feature App's own Feature Services before binding its required Feature Services", () => {
-        featureAppManager.getFeatureAppScope(mockFeatureAppDefinition, {
-          idSpecifier: 'testIdSpecifier'
-        });
+        featureAppManager.getFeatureAppScope(mockFeatureAppDefinition);
 
         expect(
           mockFeatureServiceRegistry.registerFeatureServices.mock.calls
         ).toEqual([
-          [mockFeatureAppDefinition.ownFeatureServiceDefinitions, 'testId']
+          [
+            mockFeatureAppDefinition.ownFeatureServiceDefinitions,
+            mockFeatureAppDefinition.id
+          ]
         ]);
 
         expect(
           mockFeatureServiceRegistry.bindFeatureServices.mock.calls
-        ).toEqual([[mockFeatureAppDefinition, 'testIdSpecifier']]);
+        ).toEqual([[mockFeatureAppDefinition, mockFeatureAppDefinition.id]]);
 
         expect(featureServiceRegistryMethodCalls).toEqual([
           'registerFeatureServices',
@@ -453,7 +454,7 @@ describe('FeatureAppManager', () => {
           const {featureServices} = mockFeatureServicesBinding;
 
           expect(mockBeforeCreate.mock.calls).toEqual([
-            ['testId', featureServices]
+            [mockFeatureAppDefinition.id, featureServices]
           ]);
         });
 
@@ -480,8 +481,8 @@ describe('FeatureAppManager', () => {
             const {featureServices} = mockFeatureServicesBinding;
 
             expect(mockBeforeCreate.mock.calls).toEqual([
-              ['testId', featureServices],
-              ['testId', featureServices]
+              [mockFeatureAppDefinition.id, featureServices],
+              [mockFeatureAppDefinition.id, featureServices]
             ]);
           });
         });

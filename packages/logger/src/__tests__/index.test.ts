@@ -8,12 +8,12 @@ import {Stub, Stubbed, stubMethods} from 'jest-stub-methods';
 import {Logger, SharedLogger, defineLogger} from '..';
 
 describe('defineLogger', () => {
-  let mockEnv: FeatureServiceEnvironment<undefined, {}>;
+  let mockEnv: FeatureServiceEnvironment<{}>;
 
   let loggerDefinition: FeatureServiceProviderDefinition<SharedLogger>;
 
   beforeEach(() => {
-    mockEnv = {config: undefined, featureServices: {}};
+    mockEnv = {featureServices: {}};
     loggerDefinition = defineLogger();
   });
 
@@ -105,7 +105,7 @@ describe('defineLogger', () => {
           .featureService;
       });
 
-      it('calls the given createConsumerLogger with the consumerUid', () => {
+      it('calls the given createConsumerLogger with the consumerId', () => {
         expect(mockCreateConsumerLogger.mock.calls).toEqual([['test:id']]);
       });
 

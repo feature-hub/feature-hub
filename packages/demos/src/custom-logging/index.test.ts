@@ -45,13 +45,13 @@ describe('integration test: "custom logging"', () => {
     expect(messages).toContainEqual([
       '%ctest:integrator',
       'font-weight: bold',
-      'Creating Feature App with consumerUid "test:logging-app:first"...'
+      'Creating Feature App with consumerId "test:logging-app:first"...'
     ]);
 
     expect(messages).toContainEqual([
       '%ctest:integrator',
       'font-weight: bold',
-      'Creating Feature App with consumerUid "test:logging-app:second"...'
+      'Creating Feature App with consumerId "test:logging-app:second"...'
     ]);
   });
 });

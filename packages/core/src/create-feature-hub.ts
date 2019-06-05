@@ -5,7 +5,6 @@ import {
   ModuleLoader
 } from './feature-app-manager';
 import {
-  FeatureServiceConfigs,
   FeatureServiceConsumerDefinition,
   FeatureServiceConsumerDependencies,
   FeatureServiceProviderDefinition,
@@ -38,12 +37,6 @@ export interface FeatureHubOptions {
    * Configurations for all Feature Apps that will potentially be created.
    */
   readonly featureAppConfigs?: FeatureAppConfigs;
-
-  /**
-   * Configurations for all Feature Services that will potentially be
-   * registered.
-   */
-  readonly featureServiceConfigs?: FeatureServiceConfigs;
 
   /**
    * Provided Feature Services. Sorting the provided definitions is not
@@ -95,7 +88,6 @@ export function createFeatureHub(
 ): FeatureHub {
   const {
     featureAppConfigs,
-    featureServiceConfigs,
     featureServiceDefinitions,
     featureServiceDependencies,
     providedExternals,
@@ -110,20 +102,18 @@ export function createFeatureHub(
   }
 
   const featureServiceRegistry = new FeatureServiceRegistry({
-    configs: featureServiceConfigs,
     externalsValidator,
     logger
   });
 
   const integratorDefinition: FeatureServiceConsumerDefinition = {
-    id: integratorId,
     dependencies: {featureServices: featureServiceDependencies}
   };
 
   if (featureServiceDefinitions) {
     featureServiceRegistry.registerFeatureServices(
       featureServiceDefinitions,
-      integratorDefinition.id
+      integratorId
     );
   }
 
@@ -135,7 +125,8 @@ export function createFeatureHub(
   });
 
   const {featureServices} = featureServiceRegistry.bindFeatureServices(
-    integratorDefinition
+    integratorDefinition,
+    integratorId
   );
 
   return {featureAppManager, featureServiceRegistry, featureServices};
