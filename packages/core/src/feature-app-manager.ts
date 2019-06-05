@@ -96,7 +96,7 @@ export interface FeatureAppScopeOptions {
    * A callback that is called before the Feature App is created.
    */
   readonly beforeCreate?: (
-    consumerId: string,
+    featureAppUid: string,
     featureServices: FeatureServices
   ) => void;
 }
