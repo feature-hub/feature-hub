@@ -2,13 +2,10 @@ import {FeatureServiceEnvironment} from '@feature-hub/core';
 import {SerializedStateManagerV1, serializedStateManagerDefinition} from '..';
 
 describe('serializedStateManagerDefinition', () => {
-  let mockEnv: FeatureServiceEnvironment<undefined, {}>;
+  let mockEnv: FeatureServiceEnvironment<{}>;
 
   beforeEach(() => {
-    mockEnv = {
-      config: undefined,
-      featureServices: {}
-    };
+    mockEnv = {featureServices: {}};
   });
 
   it('defines an id', () => {

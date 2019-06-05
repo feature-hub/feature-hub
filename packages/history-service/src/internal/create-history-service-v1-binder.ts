@@ -10,7 +10,7 @@ export function createHistoryServiceV1Binder(
   context: HistoryServiceContext,
   historyMultiplexers: HistoryMultiplexers
 ): FeatureServiceBinder<HistoryServiceV1> {
-  return (consumerUid: string): FeatureServiceBinding<HistoryServiceV1> => {
+  return (consumerId: string): FeatureServiceBinding<HistoryServiceV1> => {
     let browserConsumerHistory: BrowserConsumerHistory | undefined;
     let staticConsumerHistory: history.History | undefined;
 
@@ -19,13 +19,13 @@ export function createHistoryServiceV1Binder(
         if (browserConsumerHistory) {
           context.logger.warn(
             `createBrowserHistory was called multiple times by consumer ${JSON.stringify(
-              consumerUid
+              consumerId
             )}. Returning the same history instance as before.`
           );
         } else {
           browserConsumerHistory = new BrowserConsumerHistory(
             context,
-            consumerUid,
+            consumerId,
             historyMultiplexers.browserHistoryMultiplexer
           );
         }
@@ -37,13 +37,13 @@ export function createHistoryServiceV1Binder(
         if (staticConsumerHistory) {
           context.logger.warn(
             `createStaticHistory was called multiple times by consumer ${JSON.stringify(
-              consumerUid
+              consumerId
             )}. Returning the same history instance as before.`
           );
         } else {
           staticConsumerHistory = new StaticConsumerHistory(
             context,
-            consumerUid,
+            consumerId,
             historyMultiplexers.staticHistoryMultiplexer
           );
         }

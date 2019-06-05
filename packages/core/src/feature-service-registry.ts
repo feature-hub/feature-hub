@@ -1,6 +1,5 @@
 import {satisfies, valid} from 'semver';
 import {ExternalsValidator, RequiredExternals} from './externals-validator';
-import {createUid} from './internal/create-uid';
 import * as Messages from './internal/feature-service-registry-messages';
 import {
   Dependencies,
@@ -18,7 +17,6 @@ export interface FeatureServiceConsumerDependencies {
 }
 
 export interface FeatureServiceConsumerDefinition {
-  readonly id: string;
   readonly dependencies?: {
     /**
      * A map of required Feature Services with their ID as key and a
@@ -41,14 +39,8 @@ export interface FeatureServices {
 }
 
 export interface FeatureServiceEnvironment<
-  TConfig,
   TFeatureServices extends FeatureServices
 > {
-  /**
-   * A Feature Service config object that is provided by the integrator.
-   */
-  readonly config: TConfig;
-
   /**
    * An object of required Feature Services that are semver-compatible with the
    * declared dependencies in the Feature App definition.
@@ -58,11 +50,12 @@ export interface FeatureServiceEnvironment<
 
 export interface FeatureServiceProviderDefinition<
   TSharedFeatureService extends SharedFeatureService,
-  TFeatureServices extends FeatureServices = FeatureServices,
-  TConfig = unknown
+  TFeatureServices extends FeatureServices = FeatureServices
 > extends FeatureServiceConsumerDefinition {
+  readonly id: string;
+
   create(
-    env: FeatureServiceEnvironment<TConfig, TFeatureServices>
+    env: FeatureServiceEnvironment<TFeatureServices>
   ): TSharedFeatureService;
 }
 
@@ -73,7 +66,7 @@ export interface FeatureServiceBinding<TFeatureService> {
 }
 
 export type FeatureServiceBinder<TFeatureService> = (
-  consumerUid: string
+  consumerId: string
 ) => FeatureServiceBinding<TFeatureService>;
 
 export interface SharedFeatureService {
@@ -86,22 +79,12 @@ export interface FeatureServicesBinding {
   unbind(): void;
 }
 
-export interface FeatureServiceConfigs {
-  readonly [featureServiceId: string]: unknown;
-}
-
 /**
  * @deprecated Use [[FeatureServiceRegistry]] instead.
  */
 export type FeatureServiceRegistryLike = FeatureServiceRegistry;
 
 export interface FeatureServiceRegistryOptions {
-  /**
-   * Configurations for all Feature Services that will potentially be
-   * registered.
-   */
-  readonly configs?: FeatureServiceConfigs;
-
   /**
    * If the [[FeatureAppManager]] is configured with a
    * [[FeatureAppManagerOptions.moduleLoader]], to load Feature Apps from a
@@ -187,7 +170,7 @@ export class FeatureServiceRegistry {
     SharedFeatureService
   >();
 
-  private readonly consumerUids = new Set<string>();
+  private readonly consumerIds = new Set<string>();
 
   private readonly logger: Logger;
 
@@ -207,19 +190,19 @@ export class FeatureServiceRegistry {
    * an invalid version according to semver notation.
    *
    * @param providerDefinitions Feature Services that should be registered. A
-   * Feature Service and its dependencies must either be registered together,
-   * or the dependencies must have already been registered. It is not possible
-   * to provide dependencies later. Sorting the provided definitions is not
+   * Feature Service and its dependencies must either be registered together, or
+   * the dependencies must have already been registered. It is not possible to
+   * provide dependencies later. Sorting the provided definitions is not
    * necessary, since the registry takes care of registering the given
    * definitions in the correct order.
-   * @param consumerId The ID of the consumer that provides the provider
+   * @param registrantId The ID of the entity that registers the provider
    * definitions.
    */
   public registerFeatureServices(
     providerDefinitions: FeatureServiceProviderDefinition<
       SharedFeatureService
     >[],
-    consumerId: string
+    registrantId: string
   ): void {
     const providerDefinitionsById = createProviderDefinitionsById(
       providerDefinitions
@@ -231,7 +214,7 @@ export class FeatureServiceRegistry {
       this.registerFeatureService(
         providerDefinitionsById,
         providerId,
-        consumerId
+        registrantId
       );
     }
   }
@@ -245,19 +228,15 @@ export class FeatureServiceRegistry {
    *
    * @param consumerDefinition The definition of the consumer to which
    * dependencies should be bound.
-   * @param consumerIdSpecifier A specifier that distinguishes the consumer
-   * from others with the same definition.
+   * @param consumerId The ID of the consumer to which dependencies should be
+   * bound.
    */
   public bindFeatureServices(
     consumerDefinition: FeatureServiceConsumerDefinition,
-    consumerIdSpecifier?: string
+    consumerId: string
   ): FeatureServicesBinding {
-    const {id: consumerId} = consumerDefinition;
-
-    const consumerUid = createUid(consumerId, consumerIdSpecifier);
-
-    if (this.consumerUids.has(consumerUid)) {
-      throw new Error(Messages.featureServicesAlreadyBound(consumerUid));
+    if (this.consumerIds.has(consumerId)) {
+      throw new Error(Messages.featureServicesAlreadyBound(consumerId));
     }
 
     const bindings = new Map<string, FeatureServiceBinding<unknown>>();
@@ -274,7 +253,7 @@ export class FeatureServiceRegistry {
 
       const binding = this.bindFeatureService(
         providerId,
-        consumerUid,
+        consumerId,
         versionRange,
         {optional}
       );
@@ -284,7 +263,7 @@ export class FeatureServiceRegistry {
       }
 
       this.logger.info(
-        Messages.featureServiceSuccessfullyBound(providerId, consumerUid)
+        Messages.featureServiceSuccessfullyBound(providerId, consumerId)
       );
 
       bindings.set(providerId, binding);
@@ -292,18 +271,18 @@ export class FeatureServiceRegistry {
       featureServices[providerId] = binding.featureService;
     }
 
-    this.consumerUids.add(consumerUid);
+    this.consumerIds.add(consumerId);
 
     let unbound = false;
 
     const unbind = () => {
       if (unbound) {
-        throw new Error(Messages.featureServicesAlreadyUnbound(consumerUid));
+        throw new Error(Messages.featureServicesAlreadyUnbound(consumerId));
       }
 
       unbound = true;
 
-      this.consumerUids.delete(consumerUid);
+      this.consumerIds.delete(consumerId);
 
       for (const [providerId, binding] of bindings.entries()) {
         try {
@@ -312,11 +291,11 @@ export class FeatureServiceRegistry {
           }
 
           this.logger.info(
-            Messages.featureServiceSuccessfullyUnbound(providerId, consumerUid)
+            Messages.featureServiceSuccessfullyUnbound(providerId, consumerId)
           );
         } catch (error) {
           this.logger.error(
-            Messages.featureServiceCouldNotBeUnbound(providerId, consumerUid),
+            Messages.featureServiceCouldNotBeUnbound(providerId, consumerId),
             error
           );
         }
@@ -329,45 +308,41 @@ export class FeatureServiceRegistry {
   private registerFeatureService(
     providerDefinitionsById: ProviderDefinitionsById,
     providerId: string,
-    consumerId: string
+    registrantId: string
   ): void {
     const providerDefinition = providerDefinitionsById.get(providerId);
 
     if (this.sharedFeatureServices.has(providerId)) {
-      if (providerDefinitionsById.has(providerId)) {
-        this.logger.warn(
-          Messages.featureServiceAlreadyRegistered(providerId, consumerId)
-        );
-      }
+      this.logger.warn(
+        Messages.featureServiceAlreadyRegistered(providerId, registrantId)
+      );
     } else if (providerDefinition) {
       this.validateExternals(providerDefinition);
 
-      const {configs} = this.options;
-      const config = configs && configs[providerId];
-      const {featureServices} = this.bindFeatureServices(providerDefinition);
+      const {featureServices} = this.bindFeatureServices(
+        providerDefinition,
+        providerId
+      );
 
-      const sharedFeatureService = providerDefinition.create({
-        config,
-        featureServices
-      });
+      const sharedFeatureService = providerDefinition.create({featureServices});
 
       this.validateFeatureServiceVersions(
         sharedFeatureService,
         providerId,
-        consumerId
+        registrantId
       );
 
       this.sharedFeatureServices.set(providerId, sharedFeatureService);
 
       this.logger.info(
-        Messages.featureServiceSuccessfullyRegistered(providerId, consumerId)
+        Messages.featureServiceSuccessfullyRegistered(providerId, registrantId)
       );
     }
   }
 
   private bindFeatureService(
     providerId: string,
-    consumerUid: string,
+    consumerId: string,
     versionRange: string | undefined,
     {optional}: {optional: boolean}
   ): FeatureServiceBinding<unknown> | undefined {
@@ -375,7 +350,7 @@ export class FeatureServiceRegistry {
       const message = Messages.featureServiceDependencyVersionInvalid(
         optional,
         providerId,
-        consumerUid
+        consumerId
       );
 
       if (optional) {
@@ -393,7 +368,7 @@ export class FeatureServiceRegistry {
       const message = Messages.featureServiceNotRegistered(
         optional,
         providerId,
-        consumerUid
+        consumerId
       );
 
       if (optional) {
@@ -417,7 +392,7 @@ export class FeatureServiceRegistry {
       const message = Messages.featureServiceUnsupported(
         optional,
         providerId,
-        consumerUid,
+        consumerId,
         versionRange,
         supportedVersions
       );
@@ -431,7 +406,7 @@ export class FeatureServiceRegistry {
       throw new Error(message);
     }
 
-    return bindFeatureService(consumerUid);
+    return bindFeatureService(consumerId);
   }
 
   private validateExternals(
@@ -453,12 +428,16 @@ export class FeatureServiceRegistry {
   private validateFeatureServiceVersions(
     sharedFeatureService: SharedFeatureService,
     providerId: string,
-    consumerId: string
+    registrantId: string
   ): void {
     for (const version of Object.keys(sharedFeatureService)) {
       if (!valid(version)) {
         throw new Error(
-          Messages.featureServiceVersionInvalid(providerId, consumerId, version)
+          Messages.featureServiceVersionInvalid(
+            providerId,
+            registrantId,
+            version
+          )
         );
       }
     }

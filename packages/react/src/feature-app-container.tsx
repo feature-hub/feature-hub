@@ -70,7 +70,7 @@ export interface FeatureAppContainerProps {
    * A callback that is called before the Feature App is created.
    */
   readonly beforeCreate?: (
-    consumerUid: string,
+    featureAppUid: string,
     featureServices: FeatureServices
   ) => void;
 

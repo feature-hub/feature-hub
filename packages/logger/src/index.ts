@@ -11,7 +11,7 @@ export interface SharedLogger extends SharedFeatureService {
   readonly '1.0.0': FeatureServiceBinder<Logger>;
 }
 
-export type ConsumerLoggerCreator = (consumerUid: string) => Logger;
+export type ConsumerLoggerCreator = (consumerId: string) => Logger;
 
 export function defineLogger(
   createConsumerLogger: ConsumerLoggerCreator = () => console
@@ -20,8 +20,8 @@ export function defineLogger(
     id: 's2:logger',
 
     create: () => ({
-      '1.0.0': consumerUid => ({
-        featureService: createConsumerLogger(consumerUid)
+      '1.0.0': consumerId => ({
+        featureService: createConsumerLogger(consumerId)
       })
     })
   };

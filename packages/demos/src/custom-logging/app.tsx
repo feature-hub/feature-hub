@@ -5,7 +5,7 @@ import featureAppDefinition from './feature-app';
 
 export interface AppProps {
   readonly beforeCreate?: (
-    consumerUid: string,
+    featureAppUid: string,
     featureServices: FeatureServices
   ) => void;
 }

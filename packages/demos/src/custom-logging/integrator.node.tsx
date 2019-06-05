@@ -17,7 +17,7 @@ export default async function renderApp(): Promise<AppRendererResult> {
     moduleLoader: loadCommonJsModule,
     providedExternals: {react: getPkgVersion('react')},
     featureServiceDefinitions: [
-      defineLogger(consumerUid => logger.child({consumerUid}))
+      defineLogger(consumerId => logger.child({consumerId}))
     ]
   });
 

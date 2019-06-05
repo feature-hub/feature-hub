@@ -9,8 +9,8 @@ import {App} from './app';
 
 defineExternals({react: React});
 
-const createConsumerConsole: ConsumerLoggerCreator = consumerUid => {
-  const prefixArgs = [`%c${consumerUid}`, 'font-weight: bold'];
+const createConsumerConsole: ConsumerLoggerCreator = consumerId => {
+  const prefixArgs = [`%c${consumerId}`, 'font-weight: bold'];
 
   return {
     trace: console.trace.bind(console, ...prefixArgs),
@@ -36,10 +36,8 @@ const logger = featureServices['s2:logger'] as Logger;
 ReactDOM.hydrate(
   <FeatureHubContextProvider value={{featureAppManager}}>
     <App
-      beforeCreate={consumerUid =>
-        logger.debug(
-          `Creating Feature App with consumerUid "${consumerUid}"...`
-        )
+      beforeCreate={featureAppUid =>
+        logger.debug(`Creating Feature App "${featureAppUid}"...`)
       }
     />
   </FeatureHubContextProvider>,

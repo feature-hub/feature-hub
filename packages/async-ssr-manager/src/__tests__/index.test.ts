@@ -23,7 +23,7 @@ async function simulateAsyncOperation(result: number): Promise<number> {
 }
 
 describe('defineAsyncSsrManager', () => {
-  let mockEnv: FeatureServiceEnvironment<undefined, {}>;
+  let mockEnv: FeatureServiceEnvironment<{}>;
 
   let asyncSsrManagerDefinition: FeatureServiceProviderDefinition<
     SharedAsyncSsrManager
@@ -34,10 +34,7 @@ describe('defineAsyncSsrManager', () => {
   });
 
   beforeEach(() => {
-    mockEnv = {
-      config: undefined,
-      featureServices: {'s2:logger': stubbedLogger}
-    };
+    mockEnv = {featureServices: {'s2:logger': stubbedLogger}};
   });
 
   it('creates an Async SSR Manager definition', () => {
@@ -322,7 +319,6 @@ describe('defineAsyncSsrManager', () => {
         asyncSsrManagerDefinition = defineAsyncSsrManager();
 
         asyncSsrManagerBinder = asyncSsrManagerDefinition.create({
-          config: undefined,
           featureServices: {}
         })['1.0.0'];
       });

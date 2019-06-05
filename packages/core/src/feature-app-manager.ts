@@ -52,6 +52,8 @@ export interface FeatureAppDefinition<
   TInstanceConfig = unknown,
   TFeatureServices extends FeatureServices = FeatureServices
 > extends FeatureServiceConsumerDefinition {
+  readonly id: string;
+
   readonly ownFeatureServiceDefinitions?: FeatureServiceProviderDefinition<
     SharedFeatureService
   >[];
@@ -94,7 +96,7 @@ export interface FeatureAppScopeOptions {
    * A callback that is called before the Feature App is created.
    */
   readonly beforeCreate?: (
-    consumerUid: string,
+    featureAppUid: string,
     featureServices: FeatureServices
   ) => void;
 }
@@ -320,7 +322,7 @@ export class FeatureAppManager {
 
     const binding = this.featureServiceRegistry.bindFeatureServices(
       featureAppDefinition,
-      idSpecifier
+      featureAppUid
     );
 
     if (beforeCreate) {

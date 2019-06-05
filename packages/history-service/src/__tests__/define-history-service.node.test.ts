@@ -23,18 +23,11 @@ import {stubbedLogger} from './stubbed-logger';
 import {Writable} from './writable';
 
 describe('HistoryServiceV1 (on Node.js)', () => {
-  let mockEnv: FeatureServiceEnvironment<
-    undefined,
-    Writable<HistoryServiceDependencies>
-  >;
-
+  let mockEnv: FeatureServiceEnvironment<Writable<HistoryServiceDependencies>>;
   let createHistoryServiceBinder: () => FeatureServiceBinder<HistoryServiceV1>;
 
   beforeEach(() => {
-    mockEnv = {
-      config: undefined,
-      featureServices: {'s2:logger': stubbedLogger}
-    };
+    mockEnv = {featureServices: {'s2:logger': stubbedLogger}};
 
     createHistoryServiceBinder = () => {
       const sharedHistoryService = defineHistoryService(

@@ -53,7 +53,6 @@ describe('defineHistoryService', () => {
   describe('#create', () => {
     it('creates a shared Feature Service containing version 1.0.0', () => {
       const sharedHistoryService = historyServiceDefinition.create({
-        config: undefined,
         featureServices: {}
       });
 
@@ -63,7 +62,6 @@ describe('defineHistoryService', () => {
 
   describe('HistoryServiceV1', () => {
     let mockEnv: FeatureServiceEnvironment<
-      undefined,
       Writable<HistoryServiceDependencies>
     >;
 
@@ -81,10 +79,7 @@ describe('defineHistoryService', () => {
       pushStateSpy = jest.spyOn(window.history, 'pushState');
       replaceStateSpy = jest.spyOn(window.history, 'replaceState');
 
-      mockEnv = {
-        config: undefined,
-        featureServices: {'s2:logger': stubbedLogger}
-      };
+      mockEnv = {featureServices: {'s2:logger': stubbedLogger}};
 
       createHistoryServiceBinder = () => {
         const sharedHistoryService = defineHistoryService(

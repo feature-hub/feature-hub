@@ -195,24 +195,6 @@ describe('createFeatureHub()', () => {
       });
     });
 
-    describe('and with Feature Service configs', () => {
-      beforeEach(() => {
-        featureHubOptions = {
-          ...featureHubOptions,
-          featureServiceConfigs: {'test:feature-service': 'mockConfig'}
-        };
-      });
-
-      it('registers and creates the Feature Services, using the relevant config', () => {
-        createFeatureHub('test:integrator', featureHubOptions);
-
-        expect(mockFeatureServiceCreate).toHaveBeenCalledWith({
-          config: 'mockConfig',
-          featureServices: {}
-        });
-      });
-    });
-
     describe('and with provided externals', () => {
       beforeEach(() => {
         featureHubOptions = {...featureHubOptions, providedExternals: {}};
@@ -284,7 +266,7 @@ describe('createFeatureHub()', () => {
 
       expectedLogCalls = [
         [
-          'The Feature Service "test:feature-service" has been successfully registered by consumer "test:integrator".'
+          'The Feature Service "test:feature-service" has been successfully registered by registrant "test:integrator".'
         ],
         ['The Feature App "test:feature-app" has been successfully created.']
       ];

@@ -68,9 +68,9 @@ export const serializedStateManagerDefinition: FeatureServiceProviderDefinition<
     const clientSideStateManager = new ClientSideStateManager();
 
     return {
-      '1.0.0': consumerUid => ({
+      '1.0.0': consumerId => ({
         featureService: new SerializedStateManager(
-          consumerUid,
+          consumerId,
           serverSideStateManager,
           clientSideStateManager
         )
