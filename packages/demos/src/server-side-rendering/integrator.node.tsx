@@ -1,6 +1,6 @@
 import {
   AsyncSsrManagerV1,
-  asyncSsrManagerDefinition
+  defineAsyncSsrManager
 } from '@feature-hub/async-ssr-manager';
 import {createFeatureHub} from '@feature-hub/core';
 import {loadCommonJsModule} from '@feature-hub/module-loader-commonjs';
@@ -22,6 +22,8 @@ import {App} from './app';
 export default async function renderApp({
   port
 }: AppRendererOptions): Promise<AppRendererResult> {
+  const asyncSsrManagerDefinition = defineAsyncSsrManager();
+
   const {featureAppManager, featureServices} = createFeatureHub(
     'test:integrator',
     {

@@ -7,9 +7,8 @@ import {
 import {Logger} from '@feature-hub/logger';
 import {AsyncSsrManager} from './internal/async-ssr-manager';
 import {createAsyncSsrManagerContext} from './internal/async-ssr-manager-context';
-import {validateConfig} from './internal/validate-config';
 
-export interface AsyncSsrManagerConfig {
+export interface AsyncSsrManagerOptions {
   /**
    * Render timeout in milliseconds.
    */
@@ -93,28 +92,28 @@ export interface AsyncSsrManagerDependencies extends FeatureServices {
 /**
  * @see [[AsyncSsrManagerV1]] for further information.
  */
-export const asyncSsrManagerDefinition: FeatureServiceProviderDefinition<
+export function defineAsyncSsrManager(
+  options: AsyncSsrManagerOptions = {}
+): FeatureServiceProviderDefinition<
   SharedAsyncSsrManager,
   AsyncSsrManagerDependencies
-> = {
-  id: 's2:async-ssr-manager',
+> {
+  return {
+    id: 's2:async-ssr-manager',
 
-  optionalDependencies: {
-    featureServices: {
-      's2:logger': '^1.0.0'
+    optionalDependencies: {
+      featureServices: {
+        's2:logger': '^1.0.0'
+      }
+    },
+
+    create: env => {
+      const context = createAsyncSsrManagerContext(env.featureServices);
+      const asyncSsrManager = new AsyncSsrManager(context, options.timeout);
+
+      return {
+        '1.0.0': () => ({featureService: asyncSsrManager})
+      };
     }
-  },
-
-  create: env => {
-    const context = createAsyncSsrManagerContext(env.featureServices);
-
-    const {timeout} =
-      validateConfig(env.config) || ({} as AsyncSsrManagerConfig);
-
-    const asyncSsrManager = new AsyncSsrManager(context, timeout);
-
-    return {
-      '1.0.0': () => ({featureService: asyncSsrManager})
-    };
-  }
-};
+  };
+}

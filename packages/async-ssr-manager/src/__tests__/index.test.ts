@@ -1,11 +1,15 @@
 // tslint:disable:no-implicit-dependencies
 
-import {FeatureAppEnvironment, FeatureServiceBinder} from '@feature-hub/core';
+import {
+  FeatureServiceBinder,
+  FeatureServiceEnvironment,
+  FeatureServiceProviderDefinition
+} from '@feature-hub/core';
 import {Stubbed, stubMethods} from 'jest-stub-methods';
 import {
-  AsyncSsrManagerConfig,
   AsyncSsrManagerV1,
-  asyncSsrManagerDefinition
+  SharedAsyncSsrManager,
+  defineAsyncSsrManager
 } from '..';
 import {stubbedLogger} from './stubbed-logger';
 import {useFakeTimers} from './use-fake-timers';
@@ -18,24 +22,26 @@ async function simulateAsyncOperation(result: number): Promise<number> {
   return result;
 }
 
-describe('asyncSsrManagerDefinition', () => {
-  let mockEnv: FeatureAppEnvironment<AsyncSsrManagerConfig, undefined, {}>;
+describe('defineAsyncSsrManager', () => {
+  let mockEnv: FeatureServiceEnvironment<undefined, {}>;
+
+  let asyncSsrManagerDefinition: FeatureServiceProviderDefinition<
+    SharedAsyncSsrManager
+  >;
+
+  beforeEach(() => {
+    asyncSsrManagerDefinition = defineAsyncSsrManager({timeout: 5});
+  });
 
   beforeEach(() => {
     mockEnv = {
-      baseUrl: undefined,
-      config: {timeout: 5},
-      featureServices: {'s2:logger': stubbedLogger},
-      idSpecifier: undefined,
-      instanceConfig: undefined
+      config: undefined,
+      featureServices: {'s2:logger': stubbedLogger}
     };
   });
 
-  it('defines an id', () => {
+  it('creates an Async SSR Manager definition', () => {
     expect(asyncSsrManagerDefinition.id).toBe('s2:async-ssr-manager');
-  });
-
-  it('defines its dependencies', () => {
     expect(asyncSsrManagerDefinition.dependencies).toBeUndefined();
 
     expect(asyncSsrManagerDefinition.optionalDependencies).toEqual({
@@ -49,21 +55,6 @@ describe('asyncSsrManagerDefinition', () => {
 
       expect(sharedAsyncSsrManager['1.0.0']).toBeDefined();
     });
-
-    for (const invalidConfig of [null, {timeout: false}]) {
-      describe(`with an invalid config ${JSON.stringify(
-        invalidConfig
-      )}`, () => {
-        it('throws an error', () => {
-          expect(() =>
-            asyncSsrManagerDefinition.create({
-              featureServices: {},
-              config: invalidConfig
-            })
-          ).toThrowError(new Error('The Async SSR Manager config is invalid.'));
-        });
-      });
-    }
   });
 
   describe('AsyncSsrManagerV1', () => {
@@ -295,10 +286,11 @@ describe('asyncSsrManagerDefinition', () => {
 
       describe('when no timeout is configured', () => {
         beforeEach(() => {
-          asyncSsrManagerBinder = asyncSsrManagerDefinition.create({
-            config: undefined,
-            featureServices: {'s2:logger': stubbedLogger}
-          })['1.0.0'];
+          asyncSsrManagerDefinition = defineAsyncSsrManager();
+
+          asyncSsrManagerBinder = asyncSsrManagerDefinition.create(mockEnv)[
+            '1.0.0'
+          ];
         });
 
         it('logs a warning', async () => {
@@ -326,6 +318,8 @@ describe('asyncSsrManagerDefinition', () => {
 
       beforeEach(() => {
         stubbedConsole = stubMethods(console);
+
+        asyncSsrManagerDefinition = defineAsyncSsrManager();
 
         asyncSsrManagerBinder = asyncSsrManagerDefinition.create({
           config: undefined,
