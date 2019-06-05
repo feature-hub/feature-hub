@@ -91,7 +91,7 @@ describe('#createRootLocationTransformer', () => {
       it('puts the location pathname, query params, and hash directly to the root location', () => {
         const locationTransformer = createRootLocationTransformer({
           consumerPathsQueryParamName: '---',
-          primaryConsumerUid: 'test:pri'
+          primaryConsumerId: 'test:pri'
         });
 
         const rootLocation = locationTransformer.createRootLocation(
@@ -110,7 +110,7 @@ describe('#createRootLocationTransformer', () => {
       it('removes undefined consumer locations from the query parameter', () => {
         const locationTransformer = createRootLocationTransformer({
           consumerPathsQueryParamName: '---',
-          primaryConsumerUid: 'test:pri'
+          primaryConsumerId: 'test:pri'
         });
 
         let rootLocation = locationTransformer.createRootLocation(
@@ -132,7 +132,7 @@ describe('#createRootLocationTransformer', () => {
         it('throws an error', () => {
           const locationTransformer = createRootLocationTransformer({
             consumerPathsQueryParamName: '---',
-            primaryConsumerUid: 'test:pri'
+            primaryConsumerId: 'test:pri'
           });
 
           expect(() =>
@@ -154,7 +154,7 @@ describe('#createRootLocationTransformer', () => {
       it('takes the pathname, query params, and hash of the primary consumer directly, and the pathname and query params of the other consumers encoded as a single query param, into the root location', () => {
         const locationTransformer = createRootLocationTransformer({
           consumerPathsQueryParamName: '---',
-          primaryConsumerUid: 'test:pri'
+          primaryConsumerId: 'test:pri'
         });
 
         let rootLocation = locationTransformer.createRootLocation(
@@ -190,7 +190,7 @@ describe('#createRootLocationTransformer', () => {
       it('returns the consumer-specific locations', () => {
         const locationTransformer = createRootLocationTransformer({
           consumerPathsQueryParamName: '---',
-          primaryConsumerUid: 'test:pri'
+          primaryConsumerId: 'test:pri'
         });
 
         const rootLocation = {
@@ -225,7 +225,7 @@ describe('#createRootLocationTransformer', () => {
       it('returns undefined for a non-primary consumer', () => {
         const locationTransformer = createRootLocationTransformer({
           consumerPathsQueryParamName: '---',
-          primaryConsumerUid: 'test:pri'
+          primaryConsumerId: 'test:pri'
         });
 
         const rootLocation = {

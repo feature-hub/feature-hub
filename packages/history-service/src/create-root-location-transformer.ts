@@ -8,7 +8,7 @@ import {URLSearchParams} from './internal/url-search-params';
 
 export interface RootLocationOptions {
   readonly consumerPathsQueryParamName: string;
-  readonly primaryConsumerUid?: string;
+  readonly primaryConsumerId?: string;
 }
 
 export interface RootLocationTransformer {
@@ -106,8 +106,8 @@ export function createRootLocationTransformer(
       rootLocation: history.Location,
       consumerId: string
     ): string | undefined => {
-      const {consumerPathsQueryParamName, primaryConsumerUid} = options;
-      const isPrimaryConsumer = consumerId === primaryConsumerUid;
+      const {consumerPathsQueryParamName, primaryConsumerId} = options;
+      const isPrimaryConsumer = consumerId === primaryConsumerId;
       const searchParams = createSearchParams(rootLocation);
 
       if (isPrimaryConsumer) {
@@ -133,8 +133,8 @@ export function createRootLocationTransformer(
       currentRootLocation: history.Location,
       consumerId: string
     ): history.LocationDescriptorObject => {
-      const {consumerPathsQueryParamName, primaryConsumerUid} = options;
-      const isPrimaryConsumer = consumerId === primaryConsumerUid;
+      const {consumerPathsQueryParamName, primaryConsumerId} = options;
+      const isPrimaryConsumer = consumerId === primaryConsumerId;
 
       if (isPrimaryConsumer) {
         return createRootLocationForPrimaryConsumer(
