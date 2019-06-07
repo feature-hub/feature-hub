@@ -19,10 +19,6 @@ function isFeatureAppDefinition(
     unknown
   >;
 
-  if (typeof featureAppDefinition.id !== 'string') {
-    return false;
-  }
-
   return typeof featureAppDefinition.create === 'function';
 }
 

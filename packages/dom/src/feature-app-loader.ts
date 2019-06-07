@@ -20,6 +20,15 @@ const elementName = 'feature-app-loader';
  */
 export interface FeatureAppLoaderElement extends HTMLElement {
   /**
+   * The Feature App ID is used to identify the Feature App instance. Multiple
+   * Feature App Loaders with the same `featureAppId` will render the same
+   * Feature app instance. The ID is also used as a consumer ID for dependent
+   * Feature Services. To render multiple instances of the same kind of Feature
+   * App, different IDs must be used.
+   */
+  featureAppId: string;
+
+  /**
    * The absolute or relative base URL of the Feature App's assets and/or BFF.
    */
   baseUrl?: string;
@@ -31,17 +40,9 @@ export interface FeatureAppLoaderElement extends HTMLElement {
   src: string;
 
   /**
-   * If multiple instances of the same Feature App are placed on a single web
-   * page, an `idSpecifier` that is unique for the Feature App ID must be
-   * defined.
+   * A config object that is passed to the Feature App's `create` method.
    */
-  idSpecifier?: string;
-
-  /**
-   * A config object that is intended for the specific Feature App instance that
-   * the `feature-app-loader` loads.
-   */
-  instanceConfig?: unknown;
+  config?: unknown;
 }
 
 export interface DefineFeatureAppLoaderOptions {
@@ -70,16 +71,16 @@ export function defineFeatureAppLoader(
 
   class FeatureAppLoader extends LitElement implements FeatureAppLoaderElement {
     @property({type: String})
+    public featureAppId!: string;
+
+    @property({type: String})
     public baseUrl?: string;
 
     @property({type: String})
     public src!: string;
 
-    @property({type: String})
-    public idSpecifier?: string;
-
     @property({type: Object})
-    public instanceConfig?: unknown;
+    public config?: unknown;
 
     public render(): TemplateResult {
       return html`
@@ -104,10 +105,10 @@ export function defineFeatureAppLoader(
 
         return html`
           <feature-app-container
+            featureAppId=${this.featureAppId}
             baseUrl=${ifDefined(this.baseUrl)}
-            idSpecifier=${ifDefined(this.idSpecifier)}
             .featureAppDefinition=${definition}
-            .instanceConfig=${this.instanceConfig}
+            .config=${this.config}
           >
             <slot name="error" slot="error"></slot>
           </feature-app-container>

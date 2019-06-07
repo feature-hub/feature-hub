@@ -78,19 +78,25 @@ describe('FeatureAppLoader (on Node.js)', () => {
 
   describe('without a serverSrc', () => {
     it('does not try to load a Feature App definition', () => {
-      renderWithFeatureHubContext(<FeatureAppLoader src="example.js" />);
+      renderWithFeatureHubContext(
+        <FeatureAppLoader featureAppId="testId" src="example.js" />
+      );
 
       expect(mockGetAsyncFeatureAppDefinition).not.toHaveBeenCalled();
     });
 
     it('does not schedule a rerender on the Async SSR Manager', () => {
-      renderWithFeatureHubContext(<FeatureAppLoader src="example.js" />);
+      renderWithFeatureHubContext(
+        <FeatureAppLoader featureAppId="testId" src="example.js" />
+      );
 
       expect(mockAsyncSsrManager.scheduleRerender).not.toHaveBeenCalled();
     });
 
     it('does not add a URL for hydration', () => {
-      renderWithFeatureHubContext(<FeatureAppLoader src="example.js" />);
+      renderWithFeatureHubContext(
+        <FeatureAppLoader featureAppId="testId" src="example.js" />
+      );
 
       expect(mockAddUrlForHydration).not.toHaveBeenCalled();
     });
@@ -99,7 +105,11 @@ describe('FeatureAppLoader (on Node.js)', () => {
   describe('with a serverSrc', () => {
     it('loads a Feature App definition for the serverSrc', () => {
       renderWithFeatureHubContext(
-        <FeatureAppLoader src="example.js" serverSrc="example-node.js" />
+        <FeatureAppLoader
+          featureAppId="testId"
+          src="example.js"
+          serverSrc="example-node.js"
+        />
       );
 
       expect(mockGetAsyncFeatureAppDefinition.mock.calls).toEqual([
@@ -111,6 +121,7 @@ describe('FeatureAppLoader (on Node.js)', () => {
       it('loads a Feature App definition for the prepended serverSrc', () => {
         renderWithFeatureHubContext(
           <FeatureAppLoader
+            featureAppId="testId"
             baseUrl="http://example.com"
             src="example.js"
             serverSrc="example-node.js"
@@ -125,7 +136,11 @@ describe('FeatureAppLoader (on Node.js)', () => {
 
     it('schedules a rerender on the Async SSR Manager with the feature app definition promise', () => {
       renderWithFeatureHubContext(
-        <FeatureAppLoader src="example.js" serverSrc="example-node.js" />
+        <FeatureAppLoader
+          featureAppId="testId"
+          src="example.js"
+          serverSrc="example-node.js"
+        />
       );
 
       expect(mockAsyncSsrManager.scheduleRerender.mock.calls).toEqual([
@@ -135,7 +150,11 @@ describe('FeatureAppLoader (on Node.js)', () => {
 
     it('adds the src URL for hydration', () => {
       renderWithFeatureHubContext(
-        <FeatureAppLoader src="example.js" serverSrc="example-node.js" />
+        <FeatureAppLoader
+          featureAppId="testId"
+          src="example.js"
+          serverSrc="example-node.js"
+        />
       );
 
       expect(mockAddUrlForHydration).toHaveBeenCalledWith('example.js');
@@ -145,6 +164,7 @@ describe('FeatureAppLoader (on Node.js)', () => {
       it('adds the prepended src URL for hydration', () => {
         renderWithFeatureHubContext(
           <FeatureAppLoader
+            featureAppId="testId"
             baseUrl="http://example.com"
             src="example.js"
             serverSrc="example-node.js"
@@ -161,10 +181,7 @@ describe('FeatureAppLoader (on Node.js)', () => {
       let mockFeatureAppDefinition: FeatureAppDefinition<unknown>;
 
       beforeEach(() => {
-        mockFeatureAppDefinition = {
-          id: 'testId',
-          create: jest.fn()
-        };
+        mockFeatureAppDefinition = {create: jest.fn()};
 
         mockAsyncFeatureAppDefinition = new AsyncValue(
           Promise.resolve(mockFeatureAppDefinition)
@@ -173,7 +190,11 @@ describe('FeatureAppLoader (on Node.js)', () => {
 
       it('does not schedule a rerender on the Async SSR Manager', () => {
         renderWithFeatureHubContext(
-          <FeatureAppLoader src="example.js" serverSrc="example-node.js" />
+          <FeatureAppLoader
+            featureAppId="testId"
+            src="example.js"
+            serverSrc="example-node.js"
+          />
         );
 
         expect(mockAsyncSsrManager.scheduleRerender).not.toHaveBeenCalled();
@@ -194,14 +215,14 @@ describe('FeatureAppLoader (on Node.js)', () => {
             <FeatureAppLoader
               src="example.js"
               serverSrc="example-node.js"
-              idSpecifier="testIdSpecifier"
+              featureAppId="testId"
             />
           )
         ).toThrowError(mockError);
 
         expect(stubbedConsole.stub.error.mock.calls).toEqual([
           [
-            'The Feature App for the src "example-node.js" and the ID specifier "testIdSpecifier" could not be rendered.',
+            'The Feature App for the src "example-node.js" and the ID "testId" could not be rendered.',
             mockError
           ]
         ]);
@@ -210,7 +231,11 @@ describe('FeatureAppLoader (on Node.js)', () => {
       it('does not schedule a rerender on the Async SSR Manager', () => {
         try {
           renderWithFeatureHubContext(
-            <FeatureAppLoader src="example.js" serverSrc="example-node.js" />
+            <FeatureAppLoader
+              featureAppId="testId"
+              src="example.js"
+              serverSrc="example-node.js"
+            />
           );
         } catch {}
 
@@ -220,7 +245,11 @@ describe('FeatureAppLoader (on Node.js)', () => {
       it('adds the src URL for hydration', () => {
         try {
           renderWithFeatureHubContext(
-            <FeatureAppLoader src="example.js" serverSrc="example-node.js" />
+            <FeatureAppLoader
+              featureAppId="testId"
+              src="example.js"
+              serverSrc="example-node.js"
+            />
           );
         } catch {}
 
@@ -232,7 +261,11 @@ describe('FeatureAppLoader (on Node.js)', () => {
   describe('without a css prop', () => {
     it('does not try to add stylesheets for SSR', () => {
       renderWithFeatureHubContext(
-        <FeatureAppLoader src="example.js" serverSrc="example-node.js" />
+        <FeatureAppLoader
+          featureAppId="testId"
+          src="example.js"
+          serverSrc="example-node.js"
+        />
       );
 
       expect(mockAddStylesheetsForSsr).not.toHaveBeenCalled();
@@ -243,6 +276,7 @@ describe('FeatureAppLoader (on Node.js)', () => {
     it('adds the stylesheets for SSR', () => {
       renderWithFeatureHubContext(
         <FeatureAppLoader
+          featureAppId="testId"
           src="example.js"
           serverSrc="example-node.js"
           css={[{href: 'foo.css'}]}
@@ -258,6 +292,7 @@ describe('FeatureAppLoader (on Node.js)', () => {
       it('adds the stylesheets for SSR', () => {
         renderWithFeatureHubContext(
           <FeatureAppLoader
+            featureAppId="testId"
             baseUrl="http://feature-hub.io"
             src="example.js"
             serverSrc="example-node.js"

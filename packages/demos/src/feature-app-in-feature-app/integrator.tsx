@@ -22,7 +22,10 @@ const {FeatureHubContextProvider, FeatureAppLoader} = FeatureHubReact;
 
 ReactDOM.render(
   <FeatureHubContextProvider value={{featureAppManager}}>
-    <FeatureAppLoader src="feature-app.umd.js" />
+    <FeatureAppLoader
+      featureAppId="test:hello-world-outer"
+      src="feature-app.umd.js"
+    />
   </FeatureHubContextProvider>,
 
   document.querySelector('main')

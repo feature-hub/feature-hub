@@ -44,6 +44,15 @@ export type FeatureApp = ReactFeatureApp | DomFeatureApp;
 
 export interface FeatureAppContainerProps {
   /**
+   * The Feature App ID is used to identify the Feature App instance. Multiple
+   * Feature App Loaders with the same `featureAppId` will render the same
+   * Feature app instance. The ID is also used as a consumer ID for dependent
+   * Feature Services. To render multiple instances of the same kind of Feature
+   * App, different IDs must be used.
+   */
+  readonly featureAppId: string;
+
+  /**
    * The absolute or relative base URL of the Feature App's assets and/or BFF.
    */
   readonly baseUrl?: string;
@@ -54,23 +63,15 @@ export interface FeatureAppContainerProps {
   readonly featureAppDefinition: FeatureAppDefinition<unknown>;
 
   /**
-   * If multiple instances of the same Feature App are placed on a single web
-   * page, an `idSpecifier` that is unique for the Feature App ID must be
-   * defined.
+   * A config object that is passed to the Feature App's `create` method.
    */
-  readonly idSpecifier?: string;
-
-  /**
-   * A config object that is intended for the specific Feature App instance that
-   * the `FeatureAppContainer` renders.
-   */
-  readonly instanceConfig?: unknown;
+  readonly config?: unknown;
 
   /**
    * A callback that is called before the Feature App is created.
    */
   readonly beforeCreate?: (
-    featureAppUid: string,
+    featureAppId: string,
     featureServices: FeatureServices
   ) => void;
 
@@ -104,16 +105,17 @@ class InternalFeatureAppContainer extends React.PureComponent<
     const {
       baseUrl,
       beforeCreate,
-      featureAppManager,
+      config,
       featureAppDefinition,
-      idSpecifier,
-      instanceConfig
+      featureAppId,
+      featureAppManager
     } = props;
 
     try {
       this.featureAppScope = featureAppManager.getFeatureAppScope(
         featureAppDefinition,
-        {baseUrl, idSpecifier, instanceConfig, beforeCreate}
+        featureAppId,
+        {baseUrl, config, beforeCreate}
       );
 
       if (!isFeatureApp(this.featureAppScope.featureApp)) {

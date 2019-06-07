@@ -7,27 +7,13 @@ import {
   FeatureServices,
   SharedFeatureService
 } from './feature-service-registry';
-import {createUid} from './internal/create-uid';
 import {isFeatureAppModule} from './internal/is-feature-app-module';
 import {Logger} from './logger';
 
 export interface FeatureAppEnvironment<
-  TConfig,
-  TInstanceConfig,
-  TFeatureServices extends FeatureServices
+  TFeatureServices extends FeatureServices,
+  TConfig
 > {
-  /**
-   * A config object that is provided by the integrator. The same config object
-   * is used for all Feature App instances with the same ID, which is defined in
-   * their [[FeatureAppDefinition]].
-   */
-  readonly config: TConfig;
-
-  /**
-   * A config object that is intended for a specific Feature App instance.
-   */
-  readonly instanceConfig: TInstanceConfig;
-
   /**
    * An object of required Feature Services that are semver-compatible with the
    * declared dependencies in the Feature App definition.
@@ -35,10 +21,14 @@ export interface FeatureAppEnvironment<
   readonly featureServices: TFeatureServices;
 
   /**
-   * An optional ID specifier that distinguishes the Feature App instance from
-   * other Feature App instances with the same ID.
+   * A config object that is provided by the integrator.
    */
-  readonly idSpecifier: string | undefined;
+  readonly config: TConfig;
+
+  /**
+   * The ID that the integrator has assigned to the Feature App instance.
+   */
+  readonly featureAppId: string;
 
   /**
    * The absolute or relative base URL of the Feature App's assets and/or BFF.
@@ -48,19 +38,14 @@ export interface FeatureAppEnvironment<
 
 export interface FeatureAppDefinition<
   TFeatureApp,
-  TConfig = unknown,
-  TInstanceConfig = unknown,
-  TFeatureServices extends FeatureServices = FeatureServices
+  TFeatureServices extends FeatureServices = FeatureServices,
+  TConfig = unknown
 > extends FeatureServiceConsumerDefinition {
-  readonly id: string;
-
   readonly ownFeatureServiceDefinitions?: FeatureServiceProviderDefinition<
     SharedFeatureService
   >[];
 
-  create(
-    env: FeatureAppEnvironment<TConfig, TInstanceConfig, TFeatureServices>
-  ): TFeatureApp;
+  create(env: FeatureAppEnvironment<TFeatureServices, TConfig>): TFeatureApp;
 }
 
 export type ModuleLoader = (url: string) => Promise<unknown>;
@@ -71,10 +56,6 @@ export interface FeatureAppScope<TFeatureApp> {
   destroy(): void;
 }
 
-export interface FeatureAppConfigs {
-  readonly [featureAppId: string]: unknown;
-}
-
 export interface FeatureAppScopeOptions {
   /**
    * The absolute or relative base URL of the Feature App's assets and/or BFF.
@@ -82,21 +63,15 @@ export interface FeatureAppScopeOptions {
   readonly baseUrl?: string;
 
   /**
-   * A specifier to distinguish the Feature App instances from others created
-   * from the same definition.
-   */
-  readonly idSpecifier?: string;
-
-  /**
    * A config object that is intended for a specific Feature App instance.
    */
-  readonly instanceConfig?: unknown;
+  readonly config?: unknown;
 
   /**
    * A callback that is called before the Feature App is created.
    */
   readonly beforeCreate?: (
-    featureAppUid: string,
+    featureAppId: string,
     featureServices: FeatureServices
   ) => void;
 }
@@ -107,11 +82,6 @@ export interface FeatureAppScopeOptions {
 export type FeatureAppManagerLike = FeatureAppManager;
 
 export interface FeatureAppManagerOptions {
-  /**
-   * Configurations for all Feature Apps that will potentially be created.
-   */
-  readonly configs?: FeatureAppConfigs;
-
   /**
    * For the `FeatureAppManager` to be able to load Feature Apps from a remote
    * location, a module loader must be provided, (e.g. the
@@ -137,7 +107,7 @@ export interface FeatureAppManagerOptions {
 }
 
 type FeatureAppModuleUrl = string;
-type FeatureAppUid = string;
+type FeatureAppId = string;
 
 /**
  * The `FeatureAppManager` manages the lifecycle of Feature Apps.
@@ -153,7 +123,7 @@ export class FeatureAppManager {
   >();
 
   private readonly featureAppScopes = new Map<
-    FeatureAppUid,
+    FeatureAppId,
     FeatureAppScope<unknown>
   >();
 
@@ -219,23 +189,22 @@ export class FeatureAppManager {
    */
   public getFeatureAppScope<TFeatureApp>(
     featureAppDefinition: FeatureAppDefinition<TFeatureApp>,
+    featureAppId: string,
     options: FeatureAppScopeOptions = {}
   ): FeatureAppScope<TFeatureApp> {
-    const {id: featureAppId} = featureAppDefinition;
-    const featureAppUid = createUid(featureAppId, options.idSpecifier);
-
-    let featureAppScope = this.featureAppScopes.get(featureAppUid);
+    let featureAppScope = this.featureAppScopes.get(featureAppId);
 
     if (!featureAppScope) {
-      this.registerOwnFeatureServices(featureAppDefinition);
+      this.registerOwnFeatureServices(featureAppDefinition, featureAppId);
 
       featureAppScope = this.createFeatureAppScope(
         featureAppDefinition,
-        () => this.featureAppScopes.delete(featureAppUid),
+        featureAppId,
+        () => this.featureAppScopes.delete(featureAppId),
         options
       );
 
-      this.featureAppScopes.set(featureAppUid, featureAppScope);
+      this.featureAppScopes.set(featureAppId, featureAppScope);
     }
 
     return featureAppScope as FeatureAppScope<TFeatureApp>;
@@ -270,7 +239,7 @@ export class FeatureAppManager {
           throw new Error(
             `The Feature App module at the url ${JSON.stringify(
               url
-            )} is invalid. A Feature App module must have a Feature App definition as default export. A Feature App definition is an object with at least an \`id\` string and a \`create\` method.`
+            )} is invalid. A Feature App module must have a Feature App definition as default export. A Feature App definition is an object with at least a \`create\` method.`
           );
         }
 
@@ -286,7 +255,8 @@ export class FeatureAppManager {
   }
 
   private registerOwnFeatureServices(
-    featureAppDefinition: FeatureAppDefinition<unknown>
+    featureAppDefinition: FeatureAppDefinition<unknown>,
+    featureAppId: string
   ): void {
     if (
       this.featureAppDefinitionsWithRegisteredOwnFeatureServices.has(
@@ -299,7 +269,7 @@ export class FeatureAppManager {
     if (featureAppDefinition.ownFeatureServiceDefinitions) {
       this.featureServiceRegistry.registerFeatureServices(
         featureAppDefinition.ownFeatureServiceDefinitions,
-        featureAppDefinition.id
+        featureAppId
       );
     }
 
@@ -310,36 +280,33 @@ export class FeatureAppManager {
 
   private createFeatureAppScope<TFeatureApp>(
     featureAppDefinition: FeatureAppDefinition<TFeatureApp>,
+    featureAppId: string,
     deleteFeatureAppScope: () => void,
     options: FeatureAppScopeOptions
   ): FeatureAppScope<TFeatureApp> {
     this.validateExternals(featureAppDefinition);
 
-    const {baseUrl, beforeCreate, idSpecifier, instanceConfig} = options;
-    const {configs} = this.options;
-    const config = configs && configs[featureAppDefinition.id];
-    const featureAppUid = createUid(featureAppDefinition.id, idSpecifier);
+    const {baseUrl, beforeCreate, config} = options;
 
     const binding = this.featureServiceRegistry.bindFeatureServices(
       featureAppDefinition,
-      featureAppUid
+      featureAppId
     );
 
     if (beforeCreate) {
-      beforeCreate(featureAppUid, binding.featureServices);
+      beforeCreate(featureAppId, binding.featureServices);
     }
 
     const featureApp = featureAppDefinition.create({
       baseUrl,
       config,
-      instanceConfig,
-      featureServices: binding.featureServices,
-      idSpecifier
+      featureAppId,
+      featureServices: binding.featureServices
     });
 
     this.logger.info(
-      `The Feature App ${JSON.stringify(
-        featureAppUid
+      `The Feature App with the ID ${JSON.stringify(
+        featureAppId
       )} has been successfully created.`
     );
 
@@ -348,8 +315,8 @@ export class FeatureAppManager {
     const destroy = () => {
       if (destroyed) {
         throw new Error(
-          `The Feature App ${JSON.stringify(
-            featureAppUid
+          `The Feature App with the ID ${JSON.stringify(
+            featureAppId
           )} could not be destroyed.`
         );
       }

@@ -94,7 +94,9 @@ describe('FeatureAppLoader', () => {
 
   it('throws an error when rendered without a FeatureHubContextProvider', () => {
     expect(() =>
-      TestRenderer.create(<FeatureAppLoader src="example.js" />)
+      TestRenderer.create(
+        <FeatureAppLoader featureAppId="testId" src="example.js" />
+      )
     ).toThrowError(
       new Error(
         'No Feature Hub context was provided! There are two possible causes: 1.) No FeatureHubContextProvider was rendered in the React tree. 2.) A Feature App that renders itself a FeatureAppLoader or a FeatureAppContainer did not declare @feature-hub/react as an external package.'
@@ -129,7 +131,7 @@ describe('FeatureAppLoader', () => {
     const handleError = jest.fn();
 
     const testRenderer = renderWithFeatureHubContext(
-      <FeatureAppLoader src="" />,
+      <FeatureAppLoader featureAppId="testId" src="" />,
       {handleError}
     );
 
@@ -140,7 +142,7 @@ describe('FeatureAppLoader', () => {
 
   it('initially renders nothing', () => {
     const testRenderer = renderWithFeatureHubContext(
-      <FeatureAppLoader src="example.js" />
+      <FeatureAppLoader featureAppId="testId" src="example.js" />
     );
 
     expect(testRenderer.toJSON()).toBeNull();
@@ -148,13 +150,17 @@ describe('FeatureAppLoader', () => {
 
   describe('without a css prop', () => {
     it('does not change the document head', () => {
-      renderWithFeatureHubContext(<FeatureAppLoader src="example.js" />);
+      renderWithFeatureHubContext(
+        <FeatureAppLoader featureAppId="testId" src="example.js" />
+      );
 
       expect(document.head).toMatchSnapshot();
     });
 
     it('does not try to add stylesheets for SSR', () => {
-      renderWithFeatureHubContext(<FeatureAppLoader src="example.js" />);
+      renderWithFeatureHubContext(
+        <FeatureAppLoader featureAppId="testId" src="example.js" />
+      );
 
       expect(mockAddStylesheetsForSsr).not.toHaveBeenCalled();
     });
@@ -164,6 +170,7 @@ describe('FeatureAppLoader', () => {
     it('appends link elements to the document head', () => {
       renderWithFeatureHubContext(
         <FeatureAppLoader
+          featureAppId="testId"
           src="example.js"
           css={[
             {href: 'https://example.com/foo.css'},
@@ -177,7 +184,11 @@ describe('FeatureAppLoader', () => {
 
     it('does not add the stylesheets for SSR', () => {
       renderWithFeatureHubContext(
-        <FeatureAppLoader src="example.js" css={[{href: 'foo.css'}]} />
+        <FeatureAppLoader
+          featureAppId="testId"
+          src="example.js"
+          css={[{href: 'foo.css'}]}
+        />
       );
 
       expect(mockAddStylesheetsForSsr).not.toHaveBeenCalled();
@@ -186,11 +197,19 @@ describe('FeatureAppLoader', () => {
     describe('when the css has already been appended', () => {
       it('does not append the css a second time', () => {
         renderWithFeatureHubContext(
-          <FeatureAppLoader src="example.js" css={[{href: 'foo.css'}]} />
+          <FeatureAppLoader
+            featureAppId="testId"
+            src="example.js"
+            css={[{href: 'foo.css'}]}
+          />
         );
 
         renderWithFeatureHubContext(
-          <FeatureAppLoader src="example.js" css={[{href: 'foo.css'}]} />
+          <FeatureAppLoader
+            featureAppId="testId"
+            src="example.js"
+            css={[{href: 'foo.css'}]}
+          />
         );
 
         expect(document.head).toMatchSnapshot();
@@ -201,6 +220,7 @@ describe('FeatureAppLoader', () => {
       it('appends link elements to the document head', () => {
         renderWithFeatureHubContext(
           <FeatureAppLoader
+            featureAppId="testId"
             baseUrl="http://feature-hub.io"
             src="example.js"
             css={[
@@ -219,10 +239,7 @@ describe('FeatureAppLoader', () => {
     let mockFeatureAppDefinition: FeatureAppDefinition<unknown>;
 
     beforeEach(() => {
-      mockFeatureAppDefinition = {
-        id: 'testId',
-        create: jest.fn()
-      };
+      mockFeatureAppDefinition = {create: jest.fn()};
 
       mockAsyncFeatureAppDefinition = new AsyncValue(
         Promise.resolve(mockFeatureAppDefinition)
@@ -230,7 +247,9 @@ describe('FeatureAppLoader', () => {
     });
 
     it('calls getAsyncFeatureAppDefinition with the given src exactly once', () => {
-      renderWithFeatureHubContext(<FeatureAppLoader src="example.js" />);
+      renderWithFeatureHubContext(
+        <FeatureAppLoader featureAppId="testId" src="example.js" />
+      );
 
       expect(mockGetAsyncFeatureAppDefinition.mock.calls).toEqual([
         ['example.js']
@@ -240,7 +259,11 @@ describe('FeatureAppLoader', () => {
     describe('with a baseUrl and a relative src', () => {
       it('calls getAsyncFeatureAppDefinition with a prepended src', () => {
         renderWithFeatureHubContext(
-          <FeatureAppLoader baseUrl="/base" src="example.js" />
+          <FeatureAppLoader
+            featureAppId="testId"
+            baseUrl="/base"
+            src="example.js"
+          />
         );
 
         expect(mockGetAsyncFeatureAppDefinition.mock.calls).toEqual([
@@ -252,7 +275,11 @@ describe('FeatureAppLoader', () => {
     describe('with a baseUrl and an absolute src', () => {
       it('calls getAsyncFeatureAppDefinition with the absolute src', () => {
         renderWithFeatureHubContext(
-          <FeatureAppLoader baseUrl="/base" src="http://example.com/foo.js" />
+          <FeatureAppLoader
+            featureAppId="testId"
+            baseUrl="/base"
+            src="http://example.com/foo.js"
+          />
         );
 
         expect(mockGetAsyncFeatureAppDefinition.mock.calls).toEqual([
@@ -269,8 +296,8 @@ describe('FeatureAppLoader', () => {
       const testRenderer = renderWithFeatureHubContext(
         <FeatureAppLoader
           src="example.js"
-          idSpecifier="testIdSpecifier"
-          instanceConfig="testInstanceConfig"
+          featureAppId="testId"
+          config="testConfig"
           beforeCreate={beforeCreate}
           onError={onError}
           renderError={renderError}
@@ -281,13 +308,13 @@ describe('FeatureAppLoader', () => {
       expect(testRenderer.toJSON()).toBe('mocked FeatureAppContainer');
 
       const expectedProps = {
-        featureAppDefinition: mockFeatureAppDefinition,
-        idSpecifier: 'testIdSpecifier',
-        instanceConfig: 'testInstanceConfig',
+        baseUrl: '/base',
         beforeCreate,
+        config: 'testConfig',
+        featureAppDefinition: mockFeatureAppDefinition,
+        featureAppId: 'testId',
         onError,
-        renderError,
-        baseUrl: '/base'
+        renderError
       };
 
       expect(FeatureAppContainer).toHaveBeenCalledWith(expectedProps, {});
@@ -295,7 +322,11 @@ describe('FeatureAppLoader', () => {
 
     it('does not schedule a rerender on the Async SSR Manager', () => {
       renderWithFeatureHubContext(
-        <FeatureAppLoader src="example.js" serverSrc="example-node.js" />
+        <FeatureAppLoader
+          featureAppId="testId"
+          src="example.js"
+          serverSrc="example-node.js"
+        />
       );
 
       expect(mockAsyncSsrManager.scheduleRerender).not.toHaveBeenCalled();
@@ -303,7 +334,11 @@ describe('FeatureAppLoader', () => {
 
     it('does not add a URL for hydration', () => {
       renderWithFeatureHubContext(
-        <FeatureAppLoader src="example.js" serverSrc="example-node.js" />
+        <FeatureAppLoader
+          featureAppId="testId"
+          src="example.js"
+          serverSrc="example-node.js"
+        />
       );
 
       expect(mockAddUrlForHydration).not.toHaveBeenCalled();
@@ -325,7 +360,7 @@ describe('FeatureAppLoader', () => {
 
     it('renders nothing and logs an error (only once)', async () => {
       const testRenderer = renderWithFeatureHubContext(
-        <FeatureAppLoader src="example.js" idSpecifier="testIdSpecifier" />
+        <FeatureAppLoader src="example.js" featureAppId="testId" />
       );
 
       try {
@@ -337,7 +372,7 @@ describe('FeatureAppLoader', () => {
 
         expect(logger.error.mock.calls).toEqual([
           [
-            'The Feature App for the src "example.js" and the ID specifier "testIdSpecifier" could not be rendered.',
+            'The Feature App for the src "example.js" and the ID "testId" could not be rendered.',
             mockError
           ]
         ]);
@@ -349,7 +384,11 @@ describe('FeatureAppLoader', () => {
         const onError = jest.fn();
 
         renderWithFeatureHubContext(
-          <FeatureAppLoader src="example.js" onError={onError} />
+          <FeatureAppLoader
+            featureAppId="testId"
+            src="example.js"
+            onError={onError}
+          />
         );
 
         expect(onError.mock.calls).toEqual([[mockError]]);
@@ -357,7 +396,11 @@ describe('FeatureAppLoader', () => {
 
       it('does not log the error', () => {
         renderWithFeatureHubContext(
-          <FeatureAppLoader src="example.js" onError={jest.fn()} />
+          <FeatureAppLoader
+            featureAppId="testId"
+            src="example.js"
+            onError={jest.fn()}
+          />
         );
 
         expect(logger.error).not.toHaveBeenCalled();
@@ -375,6 +418,7 @@ describe('FeatureAppLoader', () => {
 
           const testRenderer = renderWithFeatureHubContext(
             <FeatureAppLoader
+              featureAppId="testId"
               src="example.js"
               onError={() => {
                 throw onErrorMockError;
@@ -395,7 +439,11 @@ describe('FeatureAppLoader', () => {
         const renderError = jest.fn().mockReturnValue(null);
 
         renderWithFeatureHubContext(
-          <FeatureAppLoader src="example.js" renderError={renderError} />
+          <FeatureAppLoader
+            featureAppId="testId"
+            src="example.js"
+            renderError={renderError}
+          />
         );
 
         expect(renderError.mock.calls).toEqual([[mockError]]);
@@ -404,6 +452,7 @@ describe('FeatureAppLoader', () => {
       it('renders what the function returns', () => {
         const testRenderer = renderWithFeatureHubContext(
           <FeatureAppLoader
+            featureAppId="testId"
             src="example.js"
             renderError={() => 'Custom Error UI'}
           />
@@ -424,6 +473,7 @@ describe('FeatureAppLoader', () => {
 
           const testRenderer = renderWithFeatureHubContext(
             <FeatureAppLoader
+              featureAppId="testId"
               src="example.js"
               renderError={() => {
                 throw renderErrorMockError;
@@ -442,6 +492,7 @@ describe('FeatureAppLoader', () => {
         it('renders what the renderError function returns', () => {
           const testRenderer = renderWithFeatureHubContext(
             <FeatureAppLoader
+              featureAppId="testId"
               src="example.js"
               onError={jest.fn()}
               renderError={() => 'Custom Error UI'}
@@ -464,6 +515,7 @@ describe('FeatureAppLoader', () => {
 
             const testRenderer = renderWithFeatureHubContext(
               <FeatureAppLoader
+                featureAppId="testId"
                 src="example.js"
                 onError={() => {
                   throw onErrorMockError;
@@ -487,10 +539,7 @@ describe('FeatureAppLoader', () => {
     let mockFeatureAppDefinition: FeatureAppDefinition<unknown>;
 
     beforeEach(() => {
-      mockFeatureAppDefinition = {
-        id: 'testId',
-        create: jest.fn()
-      };
+      mockFeatureAppDefinition = {create: jest.fn()};
 
       mockAsyncFeatureAppDefinition = new AsyncValue(
         new Promise<FeatureAppDefinition<unknown>>(resolve =>
@@ -501,7 +550,9 @@ describe('FeatureAppLoader', () => {
     });
 
     it('calls getAsyncFeatureAppDefinition with the given src exactly twice', () => {
-      renderWithFeatureHubContext(<FeatureAppLoader src="example.js" />);
+      renderWithFeatureHubContext(
+        <FeatureAppLoader featureAppId="testId" src="example.js" />
+      );
 
       expect(mockGetAsyncFeatureAppDefinition.mock.calls).toEqual([
         ['example.js'],
@@ -512,7 +563,11 @@ describe('FeatureAppLoader', () => {
     describe('with a baseUrl and a relative src', () => {
       it('calls getAsyncFeatureAppDefinition with a prepended src', () => {
         renderWithFeatureHubContext(
-          <FeatureAppLoader baseUrl="/base" src="example.js" />
+          <FeatureAppLoader
+            featureAppId="testId"
+            baseUrl="/base"
+            src="example.js"
+          />
         );
 
         expect(mockGetAsyncFeatureAppDefinition.mock.calls).toEqual([
@@ -525,7 +580,11 @@ describe('FeatureAppLoader', () => {
     describe('with a baseUrl and an absolute src', () => {
       it('calls getAsyncFeatureAppDefinition with the absolute src', () => {
         renderWithFeatureHubContext(
-          <FeatureAppLoader baseUrl="/base" src="http://example.com/foo.js" />
+          <FeatureAppLoader
+            featureAppId="testId"
+            baseUrl="/base"
+            src="http://example.com/foo.js"
+          />
         );
 
         expect(mockGetAsyncFeatureAppDefinition.mock.calls).toEqual([
@@ -537,7 +596,7 @@ describe('FeatureAppLoader', () => {
 
     it('initially renders nothing', () => {
       const testRenderer = renderWithFeatureHubContext(
-        <FeatureAppLoader src="example.js" />
+        <FeatureAppLoader featureAppId="testId" src="example.js" />
       );
 
       expect(testRenderer.toJSON()).toBeNull();
@@ -545,7 +604,7 @@ describe('FeatureAppLoader', () => {
 
     it('renders a FeatureAppContainer when loaded', async () => {
       const testRenderer = renderWithFeatureHubContext(
-        <FeatureAppLoader src="example.js" idSpecifier="testIdSpecifier" />
+        <FeatureAppLoader src="example.js" featureAppId="testId" />
       );
 
       await mockAsyncFeatureAppDefinition.promise;
@@ -555,7 +614,11 @@ describe('FeatureAppLoader', () => {
 
     it('does not schedule a rerender on the Async SSR Manager', () => {
       renderWithFeatureHubContext(
-        <FeatureAppLoader src="example.js" serverSrc="example-node.js" />
+        <FeatureAppLoader
+          featureAppId="testId"
+          src="example.js"
+          serverSrc="example-node.js"
+        />
       );
 
       expect(mockAsyncSsrManager.scheduleRerender).not.toHaveBeenCalled();
@@ -563,7 +626,11 @@ describe('FeatureAppLoader', () => {
 
     it('does not add a URL for hydration', () => {
       renderWithFeatureHubContext(
-        <FeatureAppLoader src="example.js" serverSrc="example-node.js" />
+        <FeatureAppLoader
+          featureAppId="testId"
+          src="example.js"
+          serverSrc="example-node.js"
+        />
       );
 
       expect(mockAddUrlForHydration).not.toHaveBeenCalled();
@@ -572,7 +639,7 @@ describe('FeatureAppLoader', () => {
     describe('when unmounted before loading has finished', () => {
       it('renders nothing', async () => {
         const testRenderer = renderWithFeatureHubContext(
-          <FeatureAppLoader src="example.js" />
+          <FeatureAppLoader featureAppId="testId" src="example.js" />
         );
 
         testRenderer.unmount();
@@ -600,7 +667,7 @@ describe('FeatureAppLoader', () => {
 
     it('renders nothing and logs an error', async () => {
       const testRenderer = renderWithFeatureHubContext(
-        <FeatureAppLoader src="example.js" idSpecifier="testIdSpecifier" />
+        <FeatureAppLoader src="example.js" featureAppId="testId" />
       );
 
       expect.assertions(4); // Note: one of the assertions is in afterEach.
@@ -615,7 +682,7 @@ describe('FeatureAppLoader', () => {
 
       expect(logger.error.mock.calls).toEqual([
         [
-          'The Feature App for the src "example.js" and the ID specifier "testIdSpecifier" could not be rendered.',
+          'The Feature App for the src "example.js" and the ID "testId" could not be rendered.',
           mockError
         ]
       ]);
@@ -627,7 +694,11 @@ describe('FeatureAppLoader', () => {
 
         try {
           renderWithFeatureHubContext(
-            <FeatureAppLoader src="example.js" onError={onError} />
+            <FeatureAppLoader
+              featureAppId="testId"
+              src="example.js"
+              onError={onError}
+            />
           );
 
           await mockAsyncFeatureAppDefinition.promise;
@@ -639,7 +710,11 @@ describe('FeatureAppLoader', () => {
       it('does not log the error', async () => {
         try {
           renderWithFeatureHubContext(
-            <FeatureAppLoader src="example.js" onError={jest.fn()} />
+            <FeatureAppLoader
+              featureAppId="testId"
+              src="example.js"
+              onError={jest.fn()}
+            />
           );
 
           await mockAsyncFeatureAppDefinition.promise;
@@ -660,6 +735,7 @@ describe('FeatureAppLoader', () => {
 
           const testRenderer = renderWithFeatureHubContext(
             <FeatureAppLoader
+              featureAppId="testId"
               src="example.js"
               onError={() => {
                 throw onErrorMockError;
@@ -684,7 +760,11 @@ describe('FeatureAppLoader', () => {
             });
 
             const testRenderer = renderWithFeatureHubContext(
-              <FeatureAppLoader src="example.js" onError={onError} />
+              <FeatureAppLoader
+                featureAppId="testId"
+                src="example.js"
+                onError={onError}
+              />
             );
 
             testRenderer.unmount();
@@ -699,6 +779,7 @@ describe('FeatureAppLoader', () => {
           it('renders nothing', async () => {
             const testRenderer = renderWithFeatureHubContext(
               <FeatureAppLoader
+                featureAppId="testId"
                 src="example.js"
                 onError={() => {
                   throw onErrorMockError;
@@ -723,7 +804,11 @@ describe('FeatureAppLoader', () => {
         const renderError = jest.fn().mockReturnValue(null);
 
         renderWithFeatureHubContext(
-          <FeatureAppLoader src="example.js" renderError={renderError} />
+          <FeatureAppLoader
+            featureAppId="testId"
+            src="example.js"
+            renderError={renderError}
+          />
         );
 
         try {
@@ -736,6 +821,7 @@ describe('FeatureAppLoader', () => {
       it('renders what the function returns', async () => {
         const testRenderer = renderWithFeatureHubContext(
           <FeatureAppLoader
+            featureAppId="testId"
             src="example.js"
             renderError={() => 'Custom Error UI'}
           />
@@ -760,6 +846,7 @@ describe('FeatureAppLoader', () => {
 
           const testRenderer = renderWithFeatureHubContext(
             <FeatureAppLoader
+              featureAppId="testId"
               src="example.js"
               renderError={() => {
                 throw renderErrorMockError;
@@ -782,7 +869,7 @@ describe('FeatureAppLoader', () => {
     describe('when unmounted before loading has finished', () => {
       it('logs an error', async () => {
         const testRenderer = renderWithFeatureHubContext(
-          <FeatureAppLoader src="example.js" />
+          <FeatureAppLoader featureAppId="testId" src="example.js" />
         );
 
         testRenderer.unmount();
@@ -797,7 +884,7 @@ describe('FeatureAppLoader', () => {
 
         expect(logger.error.mock.calls).toEqual([
           [
-            'The Feature App for the src "example.js" could not be rendered.',
+            'The Feature App for the src "example.js" and the ID "testId" could not be rendered.',
             mockError
           ]
         ]);
@@ -816,13 +903,13 @@ describe('FeatureAppLoader', () => {
       );
 
       renderWithFeatureHubContext(
-        <FeatureAppLoader src="example.js" idSpecifier="testIdSpecifier" />,
+        <FeatureAppLoader src="example.js" featureAppId="testId" />,
         {customLogger: false}
       );
 
       expectConsoleErrorCalls([
         [
-          'The Feature App for the src "example.js" and the ID specifier "testIdSpecifier" could not be rendered.',
+          'The Feature App for the src "example.js" and the ID "testId" could not be rendered.',
           mockError
         ]
       ]);

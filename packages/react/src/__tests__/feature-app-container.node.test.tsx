@@ -40,7 +40,7 @@ describe('FeatureAppContainer (on Node.js)', () => {
   };
 
   beforeEach(() => {
-    mockFeatureAppDefinition = {id: 'testId', create: jest.fn()};
+    mockFeatureAppDefinition = {create: jest.fn()};
     mockFeatureAppScope = {featureApp: {}, destroy: jest.fn()};
     mockGetFeatureAppScope = jest.fn(() => mockFeatureAppScope);
 
@@ -92,6 +92,7 @@ describe('FeatureAppContainer (on Node.js)', () => {
         expect(() =>
           renderWithFeatureHubContext(
             <FeatureAppContainer
+              featureAppId="testId"
               featureAppDefinition={mockFeatureAppDefinition}
             />
           )
@@ -120,6 +121,7 @@ describe('FeatureAppContainer (on Node.js)', () => {
       expect(() =>
         renderWithFeatureHubContext(
           <FeatureAppContainer
+            featureAppId="testId"
             featureAppDefinition={mockFeatureAppDefinition}
           />
         )
@@ -152,6 +154,7 @@ describe('FeatureAppContainer (on Node.js)', () => {
       expect(() =>
         renderWithFeatureHubContext(
           <FeatureAppContainer
+            featureAppId="testId"
             featureAppDefinition={mockFeatureAppDefinition}
           />
         )

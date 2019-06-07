@@ -11,7 +11,7 @@ defineFeatureAppLoader(featureAppManager);
 const app = document.createElement('div');
 
 app.innerHTML = `
-  <feature-app-loader src="feature-app.umd.js">
+  <feature-app-loader featureAppId="test:hello-world" src="feature-app.umd.js">
     <div slot="loading">
       Loading...
     </div>

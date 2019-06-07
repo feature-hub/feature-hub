@@ -87,7 +87,6 @@ describe('createFeatureHub()', () => {
       mockFeatureAppCreate = jest.fn(() => mockFeatureApp);
 
       mockFeatureAppDefinition = {
-        id: 'test:feature-app',
         dependencies: {externals: {foo: '^1.0.0'}},
         create: mockFeatureAppCreate
       };
@@ -100,42 +99,16 @@ describe('createFeatureHub()', () => {
       );
 
       const {featureApp} = featureAppManager.getFeatureAppScope(
-        mockFeatureAppDefinition
+        mockFeatureAppDefinition,
+        'test:feature-app'
       );
 
       expect(mockFeatureAppCreate).toHaveBeenCalledWith({
-        config: undefined,
+        featureAppId: 'test:feature-app',
         featureServices: {}
       });
 
       expect(featureApp).toBe(mockFeatureApp);
-    });
-
-    describe('with Feature App configs', () => {
-      beforeEach(() => {
-        featureHubOptions = {
-          ...featureHubOptions,
-          featureAppConfigs: {'test:feature-app': 'mockConfig'}
-        };
-      });
-
-      it('creates a Feature App, using the relevant config', () => {
-        const {featureAppManager} = createFeatureHub(
-          'test:integrator',
-          featureHubOptions
-        );
-
-        const {featureApp} = featureAppManager.getFeatureAppScope(
-          mockFeatureAppDefinition
-        );
-
-        expect(mockFeatureAppCreate).toHaveBeenCalledWith({
-          config: 'mockConfig',
-          featureServices: {}
-        });
-
-        expect(featureApp).toBe(mockFeatureApp);
-      });
     });
 
     describe('with provided externals', () => {
@@ -150,7 +123,10 @@ describe('createFeatureHub()', () => {
         );
 
         expect(() =>
-          featureAppManager.getFeatureAppScope(mockFeatureAppDefinition)
+          featureAppManager.getFeatureAppScope(
+            mockFeatureAppDefinition,
+            'test:feature-app'
+          )
         ).toThrowError(
           new Error('The external dependency "foo" is not provided.')
         );
@@ -190,7 +166,6 @@ describe('createFeatureHub()', () => {
       createFeatureHub('test:integrator', featureHubOptions);
 
       expect(mockFeatureServiceCreate).toHaveBeenCalledWith({
-        config: undefined,
         featureServices: {}
       });
     });
@@ -255,10 +230,7 @@ describe('createFeatureHub()', () => {
     let expectedLogCalls: string[][];
 
     beforeEach(() => {
-      featureAppDefinition = {
-        id: 'test:feature-app',
-        create: jest.fn(() => ({}))
-      };
+      featureAppDefinition = {create: jest.fn(() => ({}))};
 
       featureServiceDefinitions = [
         {id: 'test:feature-service', create: () => ({'1.0.0': jest.fn()})}
@@ -268,7 +240,9 @@ describe('createFeatureHub()', () => {
         [
           'The Feature Service "test:feature-service" has been successfully registered by registrant "test:integrator".'
         ],
-        ['The Feature App "test:feature-app" has been successfully created.']
+        [
+          'The Feature App with the ID "test:feature-app" has been successfully created.'
+        ]
       ];
     });
 
@@ -279,7 +253,10 @@ describe('createFeatureHub()', () => {
           logger
         });
 
-        featureAppManager.getFeatureAppScope(featureAppDefinition);
+        featureAppManager.getFeatureAppScope(
+          featureAppDefinition,
+          'test:feature-app'
+        );
 
         expect(logger.info.mock.calls).toEqual(expectedLogCalls);
       });
@@ -301,7 +278,10 @@ describe('createFeatureHub()', () => {
           featureServiceDefinitions
         });
 
-        featureAppManager.getFeatureAppScope(featureAppDefinition);
+        featureAppManager.getFeatureAppScope(
+          featureAppDefinition,
+          'test:feature-app'
+        );
 
         expect(stubbedConsole.stub.info.mock.calls).toEqual(expectedLogCalls);
       });

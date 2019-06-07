@@ -27,12 +27,21 @@ ReactDOM.render(
   <FeatureHubContextProvider value={{featureAppManager}}>
     <section className="todoapp">
       <FeatureAppLoader
+        featureAppId="test:todomvc-header"
         baseUrl="header"
         src="feature-app-header.umd.js"
         css={[{href: 'index.css'}]}
       />
-      <FeatureAppLoader baseUrl="main" src="feature-app-main.umd.js" />
-      <FeatureAppLoader baseUrl="footer" src="feature-app-footer.umd.js" />
+      <FeatureAppLoader
+        featureAppId="s2:todomvc-main"
+        baseUrl="main"
+        src="feature-app-main.umd.js"
+      />
+      <FeatureAppLoader
+        featureAppId="test:todomvc-footer"
+        baseUrl="footer"
+        src="feature-app-footer.umd.js"
+      />
     </section>
   </FeatureHubContextProvider>,
   document.querySelector('main')

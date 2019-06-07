@@ -36,8 +36,8 @@ const logger = featureServices['s2:logger'] as Logger;
 ReactDOM.hydrate(
   <FeatureHubContextProvider value={{featureAppManager}}>
     <App
-      beforeCreate={featureAppUid =>
-        logger.debug(`Creating Feature App "${featureAppUid}"...`)
+      beforeCreate={featureAppId =>
+        logger.debug(`Creating Feature App "${featureAppId}"...`)
       }
     />
   </FeatureHubContextProvider>,

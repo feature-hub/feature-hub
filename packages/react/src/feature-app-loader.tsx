@@ -10,6 +10,15 @@ import {prependBaseUrl} from './internal/prepend-base-url';
 
 export interface FeatureAppLoaderProps {
   /**
+   * The Feature App ID is used to identify the Feature App instance. Multiple
+   * Feature App Loaders with the same `featureAppId` will render the same
+   * Feature app instance. The ID is also used as a consumer ID for dependent
+   * Feature Services. To render multiple instances of the same kind of Feature
+   * App, different IDs must be used.
+   */
+  readonly featureAppId: string;
+
+  /**
    * The absolute or relative base URL of the Feature App's assets and/or BFF.
    */
   readonly baseUrl?: string;
@@ -34,23 +43,15 @@ export interface FeatureAppLoaderProps {
   readonly css?: Css[];
 
   /**
-   * If multiple instances of the same Feature App are placed on a single web
-   * page, an `idSpecifier` that is unique for the Feature App ID must be
-   * defined.
+   * A config object that is passed to the Feature App's `create` method.
    */
-  readonly idSpecifier?: string;
-
-  /**
-   * A config object that is intended for the specific Feature App instance that
-   * the `FeatureAppLoader` loads and renders.
-   */
-  readonly instanceConfig?: unknown;
+  readonly config?: unknown;
 
   /**
    * A callback that is called before the Feature App is created.
    */
   readonly beforeCreate?: (
-    featureAppUid: string,
+    featureAppId: string,
     featureServices: FeatureServices
   ) => void;
 
@@ -168,8 +169,8 @@ class InternalFeatureAppLoader extends React.PureComponent<
     const {
       baseUrl,
       beforeCreate,
-      idSpecifier,
-      instanceConfig,
+      config,
+      featureAppId,
       onError,
       renderError
     } = this.props;
@@ -192,10 +193,10 @@ class InternalFeatureAppLoader extends React.PureComponent<
     return (
       <FeatureAppContainer
         baseUrl={baseUrl}
-        featureAppDefinition={featureAppDefinition}
-        idSpecifier={idSpecifier}
-        instanceConfig={instanceConfig}
         beforeCreate={beforeCreate}
+        config={config}
+        featureAppDefinition={featureAppDefinition}
+        featureAppId={featureAppId}
         onError={onError}
         renderError={renderError}
       />
@@ -274,7 +275,7 @@ class InternalFeatureAppLoader extends React.PureComponent<
   private logError(error: Error): void {
     const {
       baseUrl,
-      idSpecifier,
+      featureAppId,
       logger,
       src: clientSrc,
       serverSrc
@@ -283,15 +284,9 @@ class InternalFeatureAppLoader extends React.PureComponent<
     const src = inBrowser ? clientSrc : serverSrc;
 
     logger.error(
-      idSpecifier
-        ? `The Feature App for the src ${JSON.stringify(
-            src && prependBaseUrl(baseUrl, src)
-          )} and the ID specifier ${JSON.stringify(
-            idSpecifier
-          )} could not be rendered.`
-        : `The Feature App for the src ${JSON.stringify(
-            src
-          )} could not be rendered.`,
+      `The Feature App for the src ${JSON.stringify(
+        src && prependBaseUrl(baseUrl, src)
+      )} and the ID ${JSON.stringify(featureAppId)} could not be rendered.`,
       error
     );
   }

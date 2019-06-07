@@ -14,7 +14,10 @@ const {featureAppManager} = createFeatureHub('test:integrator', {
 
 ReactDOM.render(
   <FeatureHubContextProvider value={{featureAppManager}}>
-    <FeatureAppLoader src="feature-app.umd.js" />
+    <FeatureAppLoader
+      featureAppId="test:hello-world"
+      src="feature-app.umd.js"
+    />
   </FeatureHubContextProvider>,
 
   document.querySelector('main')

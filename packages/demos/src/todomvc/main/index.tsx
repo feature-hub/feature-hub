@@ -10,12 +10,8 @@ export interface MainFeatureServices {
 
 const featureAppDefinition: FeatureAppDefinition<
   ReactFeatureApp,
-  undefined,
-  undefined,
   MainFeatureServices
 > = {
-  id: 's2:todomvc-main',
-
   dependencies: {
     externals: {react: '^16.7.0'},
     featureServices: {'test:todomvc-todo-manager': '^1.0.0'}

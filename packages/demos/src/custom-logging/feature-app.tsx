@@ -10,12 +10,8 @@ interface Dependencies {
 
 const featureAppDefinition: FeatureAppDefinition<
   ReactFeatureApp,
-  undefined,
-  undefined,
   Dependencies
 > = {
-  id: 'test:logging-app',
-
   dependencies: {
     externals: {react: '^16.7.0'},
     featureServices: {'s2:logger': '^1.0.0'}
@@ -33,7 +29,7 @@ const featureAppDefinition: FeatureAppDefinition<
     return {
       render: () => (
         <Card style={{margin: '20px'}}>
-          <Label>This is the {env.idSpecifier} Feature App!</Label>
+          <Label>This is the Feature App {env.featureAppId}.</Label>
         </Card>
       )
     };

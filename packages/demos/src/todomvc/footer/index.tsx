@@ -10,12 +10,8 @@ export interface FooterFeatureServices {
 
 const featureAppDefinition: FeatureAppDefinition<
   ReactFeatureApp,
-  undefined,
-  undefined,
   FooterFeatureServices
 > = {
-  id: 'test:todomvc-footer',
-
   dependencies: {
     externals: {react: '^16.7.0'},
     featureServices: {'test:todomvc-todo-manager': '^1.0.0'}

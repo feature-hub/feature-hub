@@ -1,9 +1,5 @@
 import {ExternalsValidator, ProvidedExternals} from './externals-validator';
-import {
-  FeatureAppConfigs,
-  FeatureAppManager,
-  ModuleLoader
-} from './feature-app-manager';
+import {FeatureAppManager, ModuleLoader} from './feature-app-manager';
 import {
   FeatureServiceConsumerDefinition,
   FeatureServiceConsumerDependencies,
@@ -33,11 +29,6 @@ export interface FeatureHub {
 }
 
 export interface FeatureHubOptions {
-  /**
-   * Configurations for all Feature Apps that will potentially be created.
-   */
-  readonly featureAppConfigs?: FeatureAppConfigs;
-
   /**
    * Provided Feature Services. Sorting the provided definitions is not
    * necessary, since the registry takes care of registering the given
@@ -87,7 +78,6 @@ export function createFeatureHub(
   options: FeatureHubOptions = {}
 ): FeatureHub {
   const {
-    featureAppConfigs,
     featureServiceDefinitions,
     featureServiceDependencies,
     providedExternals,
@@ -118,7 +108,6 @@ export function createFeatureHub(
   }
 
   const featureAppManager = new FeatureAppManager(featureServiceRegistry, {
-    configs: featureAppConfigs,
     externalsValidator,
     moduleLoader,
     logger

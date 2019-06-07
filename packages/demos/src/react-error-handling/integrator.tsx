@@ -23,6 +23,7 @@ ReactDOM.render(
   <div style={{padding: '20px'}}>
     <FeatureHubContextProvider value={{featureAppManager}}>
       <FeatureAppLoader
+        featureAppId="test:invalid"
         src="feature-app.umd.js"
         onError={console.warn}
         renderError={error => <Error error={error} />}

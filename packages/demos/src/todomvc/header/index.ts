@@ -9,12 +9,8 @@ export interface HeaderFeatureServices {
 
 const featureAppDefinition: FeatureAppDefinition<
   DomFeatureApp,
-  undefined,
-  undefined,
   HeaderFeatureServices
 > = {
-  id: 'test:todomvc-header',
-
   dependencies: {
     featureServices: {'test:todomvc-todo-manager': '^1.0.0'}
   },
