@@ -188,14 +188,14 @@ export class FeatureAppManager {
    * it returns the [[FeatureAppScope]] it created on the first call.
    */
   public getFeatureAppScope<TFeatureApp>(
-    featureAppDefinition: FeatureAppDefinition<TFeatureApp>,
     featureAppId: string,
+    featureAppDefinition: FeatureAppDefinition<TFeatureApp>,
     options: FeatureAppScopeOptions = {}
   ): FeatureAppScope<TFeatureApp> {
     let featureAppScope = this.featureAppScopes.get(featureAppId);
 
     if (!featureAppScope) {
-      this.registerOwnFeatureServices(featureAppDefinition, featureAppId);
+      this.registerOwnFeatureServices(featureAppId, featureAppDefinition);
 
       featureAppScope = this.createFeatureAppScope(
         featureAppDefinition,
@@ -255,8 +255,8 @@ export class FeatureAppManager {
   }
 
   private registerOwnFeatureServices(
-    featureAppDefinition: FeatureAppDefinition<unknown>,
-    featureAppId: string
+    featureAppId: string,
+    featureAppDefinition: FeatureAppDefinition<unknown>
   ): void {
     if (
       this.featureAppDefinitionsWithRegisteredOwnFeatureServices.has(

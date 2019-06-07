@@ -105,8 +105,8 @@ export function defineFeatureAppContainer(
 
       try {
         this.featureAppScope = featureAppManager.getFeatureAppScope(
-          this.featureAppDefinition,
           this.featureAppId,
+          this.featureAppDefinition,
           {baseUrl: this.baseUrl, config: this.config}
         );
 

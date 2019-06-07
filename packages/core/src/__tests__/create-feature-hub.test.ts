@@ -99,8 +99,8 @@ describe('createFeatureHub()', () => {
       );
 
       const {featureApp} = featureAppManager.getFeatureAppScope(
-        mockFeatureAppDefinition,
-        'test:feature-app'
+        'test:feature-app',
+        mockFeatureAppDefinition
       );
 
       expect(mockFeatureAppCreate).toHaveBeenCalledWith({
@@ -124,8 +124,8 @@ describe('createFeatureHub()', () => {
 
         expect(() =>
           featureAppManager.getFeatureAppScope(
-            mockFeatureAppDefinition,
-            'test:feature-app'
+            'test:feature-app',
+            mockFeatureAppDefinition
           )
         ).toThrowError(
           new Error('The external dependency "foo" is not provided.')
@@ -254,8 +254,8 @@ describe('createFeatureHub()', () => {
         });
 
         featureAppManager.getFeatureAppScope(
-          featureAppDefinition,
-          'test:feature-app'
+          'test:feature-app',
+          featureAppDefinition
         );
 
         expect(logger.info.mock.calls).toEqual(expectedLogCalls);
@@ -279,8 +279,8 @@ describe('createFeatureHub()', () => {
         });
 
         featureAppManager.getFeatureAppScope(
-          featureAppDefinition,
-          'test:feature-app'
+          'test:feature-app',
+          featureAppDefinition
         );
 
         expect(stubbedConsole.stub.info.mock.calls).toEqual(expectedLogCalls);

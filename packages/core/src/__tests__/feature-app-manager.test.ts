@@ -159,8 +159,8 @@ describe('FeatureAppManager', () => {
       });
 
       featureAppManager.getFeatureAppScope(
-        mockFeatureAppDefinition,
         featureAppId,
+        mockFeatureAppDefinition,
         {baseUrl, config}
       );
 
@@ -198,8 +198,8 @@ describe('FeatureAppManager', () => {
         });
 
         featureAppManager.getFeatureAppScope(
-          mockFeatureAppDefinition,
           featureAppId,
+          mockFeatureAppDefinition,
           {beforeCreate: mockBeforeCreate}
         );
 
@@ -227,8 +227,8 @@ describe('FeatureAppManager', () => {
         it("doesn't throw an error", () => {
           expect(() => {
             featureAppManager.getFeatureAppScope(
-              mockFeatureAppDefinition,
-              'testId'
+              'testId',
+              mockFeatureAppDefinition
             );
           }).not.toThrowError();
         });
@@ -266,8 +266,8 @@ describe('FeatureAppManager', () => {
         it('calls the provided ExternalsValidator with the defined externals', () => {
           try {
             featureAppManager.getFeatureAppScope(
-              mockFeatureAppDefinition,
-              'testId'
+              'testId',
+              mockFeatureAppDefinition
             );
           } catch {}
 
@@ -279,8 +279,8 @@ describe('FeatureAppManager', () => {
         it('throws the validation error', () => {
           expect(() => {
             featureAppManager.getFeatureAppScope(
-              mockFeatureAppDefinition,
-              'testId'
+              'testId',
+              mockFeatureAppDefinition
             );
           }).toThrowError(mockError);
         });
@@ -300,8 +300,8 @@ describe('FeatureAppManager', () => {
 
         it('calls the provided ExternalsValidator with the defined externals', () => {
           featureAppManager.getFeatureAppScope(
-            mockFeatureAppDefinition,
-            'testId'
+            'testId',
+            mockFeatureAppDefinition
           );
 
           expect(mockExternalsValidator.validate).toHaveBeenCalledWith({
@@ -312,8 +312,8 @@ describe('FeatureAppManager', () => {
         it("doesn't throw an error", () => {
           expect(() => {
             featureAppManager.getFeatureAppScope(
-              mockFeatureAppDefinition,
-              'testId'
+              'testId',
+              mockFeatureAppDefinition
             );
           }).not.toThrowError();
         });
@@ -322,8 +322,8 @@ describe('FeatureAppManager', () => {
       describe('with a Feature App definition that declares no externals', () => {
         it('does not call the provided ExternalsValidator', () => {
           featureAppManager.getFeatureAppScope(
-            mockFeatureAppDefinition,
-            'testId'
+            'testId',
+            mockFeatureAppDefinition
           );
 
           expect(mockExternalsValidator.validate).not.toHaveBeenCalled();
@@ -332,8 +332,8 @@ describe('FeatureAppManager', () => {
         it("doesn't throw an error", () => {
           expect(() => {
             featureAppManager.getFeatureAppScope(
-              mockFeatureAppDefinition,
-              'testId'
+              'testId',
+              mockFeatureAppDefinition
             );
           }).not.toThrowError();
         });
@@ -356,8 +356,8 @@ describe('FeatureAppManager', () => {
       it('throws the same error', () => {
         expect(() =>
           featureAppManager.getFeatureAppScope(
-            mockFeatureAppDefinition,
-            'testId'
+            'testId',
+            mockFeatureAppDefinition
           )
         ).toThrowError(mockError);
       });
@@ -395,8 +395,8 @@ describe('FeatureAppManager', () => {
         const featureAppId = 'testId';
 
         featureAppManager.getFeatureAppScope(
-          mockFeatureAppDefinition,
-          featureAppId
+          featureAppId,
+          mockFeatureAppDefinition
         );
 
         expect(
@@ -429,14 +429,14 @@ describe('FeatureAppManager', () => {
           const mockBeforeCreate = jest.fn();
 
           featureAppManager.getFeatureAppScope(
-            mockFeatureAppDefinition,
             featureAppId,
+            mockFeatureAppDefinition,
             {beforeCreate: mockBeforeCreate}
           );
 
           featureAppManager.getFeatureAppScope(
-            mockFeatureAppDefinition,
             featureAppId,
+            mockFeatureAppDefinition,
             {beforeCreate: mockBeforeCreate}
           );
 
@@ -459,16 +459,16 @@ describe('FeatureAppManager', () => {
             const mockBeforeCreate = jest.fn();
 
             const featureAppScope = featureAppManager.getFeatureAppScope(
-              mockFeatureAppDefinition,
               featureAppId,
+              mockFeatureAppDefinition,
               {beforeCreate: mockBeforeCreate}
             );
 
             featureAppScope.destroy();
 
             featureAppManager.getFeatureAppScope(
-              mockFeatureAppDefinition,
               featureAppId,
+              mockFeatureAppDefinition,
               {beforeCreate: mockBeforeCreate}
             );
 
@@ -484,8 +484,8 @@ describe('FeatureAppManager', () => {
 
       it('logs an info message after creation', () => {
         featureAppManager.getFeatureAppScope(
-          mockFeatureAppDefinition,
-          'testId'
+          'testId',
+          mockFeatureAppDefinition
         );
 
         expect(logger.info.mock.calls).toEqual([
@@ -497,14 +497,14 @@ describe('FeatureAppManager', () => {
 
       it('returns the same Feature App scope', () => {
         const featureAppScope = featureAppManager.getFeatureAppScope(
-          mockFeatureAppDefinition,
-          'testId'
+          'testId',
+          mockFeatureAppDefinition
         );
 
         expect(
           featureAppManager.getFeatureAppScope(
-            mockFeatureAppDefinition,
-            'testId'
+            'testId',
+            mockFeatureAppDefinition
           )
         ).toBe(featureAppScope);
       });
@@ -512,16 +512,16 @@ describe('FeatureAppManager', () => {
       describe('when destroy() is called on the Feature App scope', () => {
         it('returns another Feature App scope', () => {
           const featureAppScope = featureAppManager.getFeatureAppScope(
-            mockFeatureAppDefinition,
-            'testId'
+            'testId',
+            mockFeatureAppDefinition
           );
 
           featureAppScope.destroy();
 
           expect(
             featureAppManager.getFeatureAppScope(
-              mockFeatureAppDefinition,
-              'testId'
+              'testId',
+              mockFeatureAppDefinition
             )
           ).not.toBe(featureAppScope);
         });
@@ -531,8 +531,8 @@ describe('FeatureAppManager', () => {
     describe('#featureApp', () => {
       it("is the Feature App that the Feature App definition's create returns", () => {
         const featureAppScope = featureAppManager.getFeatureAppScope(
-          mockFeatureAppDefinition,
-          'testId'
+          'testId',
+          mockFeatureAppDefinition
         );
 
         expect(featureAppScope.featureApp).toBe(mockFeatureApp);
@@ -542,8 +542,8 @@ describe('FeatureAppManager', () => {
     describe('#destroy', () => {
       it('unbinds the bound Feature Services', () => {
         const featureAppScope = featureAppManager.getFeatureAppScope(
-          mockFeatureAppDefinition,
-          'testId'
+          'testId',
+          mockFeatureAppDefinition
         );
 
         featureAppScope.destroy();
@@ -553,8 +553,8 @@ describe('FeatureAppManager', () => {
 
       it('throws an error when destroy is called multiple times', () => {
         const featureAppScope = featureAppManager.getFeatureAppScope(
-          mockFeatureAppDefinition,
-          'testId'
+          'testId',
+          mockFeatureAppDefinition
         );
 
         featureAppScope.destroy();
@@ -568,14 +568,14 @@ describe('FeatureAppManager', () => {
 
       it('fails to destroy an already destroyed Feature App scope, even if this scope has been re-created', () => {
         const featureAppScope = featureAppManager.getFeatureAppScope(
-          mockFeatureAppDefinition,
-          'testId'
+          'testId',
+          mockFeatureAppDefinition
         );
 
         featureAppScope.destroy();
         featureAppManager.getFeatureAppScope(
-          mockFeatureAppDefinition,
-          'testId'
+          'testId',
+          mockFeatureAppDefinition
         );
 
         expect(() => featureAppScope.destroy()).toThrowError(
@@ -629,7 +629,7 @@ describe('FeatureAppManager', () => {
     });
 
     it('logs messages using the console', () => {
-      featureAppManager.getFeatureAppScope(mockFeatureAppDefinition, 'testId');
+      featureAppManager.getFeatureAppScope('testId', mockFeatureAppDefinition);
 
       expect(stubbedConsole.stub.info.mock.calls).toEqual([
         ['The Feature App with the ID "testId" has been successfully created.']

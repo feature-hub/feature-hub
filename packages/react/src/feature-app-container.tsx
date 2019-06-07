@@ -113,8 +113,8 @@ class InternalFeatureAppContainer extends React.PureComponent<
 
     try {
       this.featureAppScope = featureAppManager.getFeatureAppScope(
-        featureAppDefinition,
         featureAppId,
+        featureAppDefinition,
         {baseUrl, config, beforeCreate}
       );
 

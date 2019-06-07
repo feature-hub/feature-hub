@@ -195,8 +195,8 @@ class InternalFeatureAppLoader extends React.PureComponent<
         baseUrl={baseUrl}
         beforeCreate={beforeCreate}
         config={config}
-        featureAppDefinition={featureAppDefinition}
         featureAppId={featureAppId}
+        featureAppDefinition={featureAppDefinition}
         onError={onError}
         renderError={renderError}
       />

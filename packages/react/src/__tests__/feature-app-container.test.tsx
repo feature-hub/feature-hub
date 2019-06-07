@@ -122,7 +122,7 @@ describe('FeatureAppContainer', () => {
     };
 
     expect(mockGetFeatureAppScope.mock.calls).toEqual([
-      [mockFeatureAppDefinition, 'testId', expectedOptions]
+      ['testId', mockFeatureAppDefinition, expectedOptions]
     ]);
   });
 
