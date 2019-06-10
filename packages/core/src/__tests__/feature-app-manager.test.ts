@@ -176,7 +176,7 @@ describe('FeatureAppManager', () => {
     });
 
     describe('with a beforeCreate callback', () => {
-      it('calls the beforeCreate callback prior to calling create', () => {
+      it('calls the beforeCreate callback with the same env that is passed to create, prior to calling create', () => {
         const featureAppId = 'testId';
 
         featureAppManager = new FeatureAppManager(mockFeatureServiceRegistry, {
@@ -203,11 +203,9 @@ describe('FeatureAppManager', () => {
           {beforeCreate: mockBeforeCreate}
         );
 
-        const {featureServices} = mockFeatureServicesBinding;
-
-        expect(mockBeforeCreate.mock.calls).toEqual([
-          [featureAppId, featureServices]
-        ]);
+        expect(mockBeforeCreate.mock.calls).toEqual(
+          mockFeatureAppCreate.mock.calls
+        );
       });
     });
 
@@ -440,11 +438,11 @@ describe('FeatureAppManager', () => {
             {beforeCreate: mockBeforeCreate}
           );
 
-          const {featureServices} = mockFeatureServicesBinding;
+          expect(mockBeforeCreate.mock.calls).toHaveLength(1);
 
-          expect(mockBeforeCreate.mock.calls).toEqual([
-            [featureAppId, featureServices]
-          ]);
+          expect(mockBeforeCreate.mock.calls).toEqual(
+            mockFeatureAppCreate.mock.calls
+          );
         });
 
         describe('when destroy() is called on the Feature App scope', () => {
@@ -472,12 +470,11 @@ describe('FeatureAppManager', () => {
               {beforeCreate: mockBeforeCreate}
             );
 
-            const {featureServices} = mockFeatureServicesBinding;
+            expect(mockBeforeCreate.mock.calls).toHaveLength(2);
 
-            expect(mockBeforeCreate.mock.calls).toEqual([
-              [featureAppId, featureServices],
-              [featureAppId, featureServices]
-            ]);
+            expect(mockBeforeCreate.mock.calls).toEqual(
+              mockFeatureAppCreate.mock.calls
+            );
           });
         });
       });

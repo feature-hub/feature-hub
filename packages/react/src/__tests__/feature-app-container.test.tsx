@@ -115,7 +115,7 @@ describe('FeatureAppContainer', () => {
       />
     );
 
-    const expectedOptions: FeatureAppScopeOptions = {
+    const expectedOptions: FeatureAppScopeOptions<string> = {
       baseUrl: '/base',
       config: 'testConfig',
       beforeCreate: mockBeforeCreate
