@@ -12,7 +12,7 @@ import Media from 'react-media';
 
 interface HistoryConsumerProps {
   readonly history: History;
-  readonly idSpecifier: string;
+  readonly consumerId: string;
 }
 
 interface HistoryConsumerState {
@@ -41,7 +41,8 @@ export class HistoryConsumer extends React.Component<
   }
 
   public render(): React.ReactNode {
-    const {idSpecifier} = this.props;
+    const {consumerId} = this.props;
+    const idSpecifier = consumerId.slice(consumerId.length - 1);
     const {pathname} = this.state;
 
     return (

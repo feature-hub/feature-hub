@@ -16,12 +16,8 @@ async function fetchSubject(): Promise<string> {
 
 const featureAppDefinition: FeatureAppDefinition<
   ReactFeatureApp,
-  undefined,
-  undefined,
   Dependencies
 > = {
-  id: 'test:hello-world',
-
   dependencies: {
     externals: {react: '^16.7.0'},
     featureServices: {'s2:serialized-state-manager': '^1.0.0'}

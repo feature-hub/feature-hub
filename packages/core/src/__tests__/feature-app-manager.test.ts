@@ -44,7 +44,7 @@ describe('FeatureAppManager', () => {
 
     mockFeatureApp = {};
     mockFeatureAppCreate = jest.fn(() => mockFeatureApp);
-    mockFeatureAppDefinition = {create: mockFeatureAppCreate, id: 'testId'};
+    mockFeatureAppDefinition = {create: mockFeatureAppCreate};
     mockFeatureAppModule = {default: mockFeatureAppDefinition};
     mockModuleLoader = jest.fn(async () => mockFeatureAppModule);
     mockExternalsValidator = ({validate: jest.fn()} as Partial<
@@ -94,17 +94,15 @@ describe('FeatureAppManager', () => {
       expect(asyncFeatureAppDefinition.error).toBeUndefined();
     });
 
-    for (const invalidFeatureAppModule of [
+    describe.each([
       undefined,
       null,
       {},
       {default: {}},
-      {default: {id: 'testId'}},
-      {default: {create: jest.fn()}}
-    ]) {
-      describe(`when an invalid Feature App module (${JSON.stringify(
-        invalidFeatureAppModule
-      )}) has been loaded`, () => {
+      {default: {create: 'notAFunction'}}
+    ])(
+      'when an invalid Feature App module (%o) has been loaded',
+      invalidFeatureAppModule => {
         beforeEach(() => {
           // tslint:disable-next-line:no-any
           mockFeatureAppModule = invalidFeatureAppModule as any;
@@ -112,7 +110,7 @@ describe('FeatureAppManager', () => {
 
         it('throws an error (and stores it on the async value)', async () => {
           const expectedError = new Error(
-            'The Feature App module at the url "/example.js" is invalid. A Feature App module must have a Feature App definition as default export. A Feature App definition is an object with at least an `id` string and a `create` method.'
+            'The Feature App module at the url "/example.js" is invalid. A Feature App module must have a Feature App definition as default export. A Feature App definition is an object with at least a `create` method.'
           );
 
           await expect(
@@ -124,18 +122,18 @@ describe('FeatureAppManager', () => {
             featureAppManager.getAsyncFeatureAppDefinition('/example.js').error
           ).toEqual(expectedError);
         });
+      }
+    );
+
+    it('throws an error if no module loader was provided', () => {
+      featureAppManager = new FeatureAppManager(mockFeatureServiceRegistry, {
+        logger
       });
 
-      it('throws an error if no module loader was provided', () => {
-        featureAppManager = new FeatureAppManager(mockFeatureServiceRegistry, {
-          logger
-        });
-
-        expect(() =>
-          featureAppManager.getAsyncFeatureAppDefinition('/example.js')
-        ).toThrowError(new Error('No module loader provided.'));
-      });
-    }
+      expect(() =>
+        featureAppManager.getAsyncFeatureAppDefinition('/example.js')
+      ).toThrowError(new Error('No module loader provided.'));
+    });
 
     describe('for a known Feature App module url', () => {
       it('returns the same async Feature App definition', () => {
@@ -152,35 +150,35 @@ describe('FeatureAppManager', () => {
 
   describe('#getFeatureAppScope', () => {
     it('creates a Feature App with a consumer environment using the Feature Service registry', () => {
-      const config = {kind: 'test'};
-      const idSpecifier = 'testIdSpecifier';
-      const instanceConfig = 'testInstanceConfig';
+      const featureAppId = 'testId';
+      const config = 'testConfig';
       const baseUrl = '/base';
 
       featureAppManager = new FeatureAppManager(mockFeatureServiceRegistry, {
-        configs: {[mockFeatureAppDefinition.id]: config},
         logger
       });
 
-      featureAppManager.getFeatureAppScope(mockFeatureAppDefinition, {
-        baseUrl,
-        idSpecifier,
-        instanceConfig
-      });
+      featureAppManager.getFeatureAppScope(
+        featureAppId,
+        mockFeatureAppDefinition,
+        {baseUrl, config}
+      );
 
       expect(mockFeatureServiceRegistry.bindFeatureServices.mock.calls).toEqual(
-        [[mockFeatureAppDefinition, 'testId:testIdSpecifier']]
+        [[mockFeatureAppDefinition, featureAppId]]
       );
 
       const {featureServices} = mockFeatureServicesBinding;
 
       expect(mockFeatureAppCreate.mock.calls).toEqual([
-        [{baseUrl, config, instanceConfig, featureServices, idSpecifier}]
+        [{baseUrl, config, featureServices, featureAppId}]
       ]);
     });
 
     describe('with a beforeCreate callback', () => {
       it('calls the beforeCreate callback prior to calling create', () => {
+        const featureAppId = 'testId';
+
         featureAppManager = new FeatureAppManager(mockFeatureServiceRegistry, {
           logger
         });
@@ -199,60 +197,17 @@ describe('FeatureAppManager', () => {
           return mockFeatureApp;
         });
 
-        featureAppManager.getFeatureAppScope(mockFeatureAppDefinition, {
-          beforeCreate: mockBeforeCreate
-        });
+        featureAppManager.getFeatureAppScope(
+          featureAppId,
+          mockFeatureAppDefinition,
+          {beforeCreate: mockBeforeCreate}
+        );
 
         const {featureServices} = mockFeatureServicesBinding;
 
         expect(mockBeforeCreate.mock.calls).toEqual([
-          [mockFeatureAppDefinition.id, featureServices]
+          [featureAppId, featureServices]
         ]);
-      });
-
-      describe('and no id specifier', () => {
-        it('calls the beforeCreate callback without an enriched consumer id', () => {
-          featureAppManager = new FeatureAppManager(
-            mockFeatureServiceRegistry,
-            {logger}
-          );
-
-          const mockBeforeCreate = jest.fn();
-
-          featureAppManager.getFeatureAppScope(mockFeatureAppDefinition, {
-            beforeCreate: mockBeforeCreate
-          });
-
-          const {featureServices} = mockFeatureServicesBinding;
-
-          expect(mockBeforeCreate.mock.calls).toEqual([
-            [mockFeatureAppDefinition.id, featureServices]
-          ]);
-        });
-      });
-
-      describe('and an id specifier', () => {
-        it('calls the beforeCreate callback with an enriched consumer id', () => {
-          const idSpecifier = 'testIdSpecifier';
-
-          featureAppManager = new FeatureAppManager(
-            mockFeatureServiceRegistry,
-            {logger}
-          );
-
-          const mockBeforeCreate = jest.fn();
-
-          featureAppManager.getFeatureAppScope(mockFeatureAppDefinition, {
-            beforeCreate: mockBeforeCreate,
-            idSpecifier
-          });
-
-          const {featureServices} = mockFeatureServicesBinding;
-
-          expect(mockBeforeCreate.mock.calls).toEqual([
-            [`${mockFeatureAppDefinition.id}:${idSpecifier}`, featureServices]
-          ]);
-        });
       });
     });
 
@@ -271,7 +226,10 @@ describe('FeatureAppManager', () => {
 
         it("doesn't throw an error", () => {
           expect(() => {
-            featureAppManager.getFeatureAppScope(mockFeatureAppDefinition);
+            featureAppManager.getFeatureAppScope(
+              'testId',
+              mockFeatureAppDefinition
+            );
           }).not.toThrowError();
         });
       });
@@ -307,7 +265,10 @@ describe('FeatureAppManager', () => {
 
         it('calls the provided ExternalsValidator with the defined externals', () => {
           try {
-            featureAppManager.getFeatureAppScope(mockFeatureAppDefinition);
+            featureAppManager.getFeatureAppScope(
+              'testId',
+              mockFeatureAppDefinition
+            );
           } catch {}
 
           expect(mockExternalsValidator.validate).toHaveBeenCalledWith({
@@ -317,7 +278,10 @@ describe('FeatureAppManager', () => {
 
         it('throws the validation error', () => {
           expect(() => {
-            featureAppManager.getFeatureAppScope(mockFeatureAppDefinition);
+            featureAppManager.getFeatureAppScope(
+              'testId',
+              mockFeatureAppDefinition
+            );
           }).toThrowError(mockError);
         });
       });
@@ -335,7 +299,10 @@ describe('FeatureAppManager', () => {
         });
 
         it('calls the provided ExternalsValidator with the defined externals', () => {
-          featureAppManager.getFeatureAppScope(mockFeatureAppDefinition);
+          featureAppManager.getFeatureAppScope(
+            'testId',
+            mockFeatureAppDefinition
+          );
 
           expect(mockExternalsValidator.validate).toHaveBeenCalledWith({
             react: '^16.0.0'
@@ -344,21 +311,30 @@ describe('FeatureAppManager', () => {
 
         it("doesn't throw an error", () => {
           expect(() => {
-            featureAppManager.getFeatureAppScope(mockFeatureAppDefinition);
+            featureAppManager.getFeatureAppScope(
+              'testId',
+              mockFeatureAppDefinition
+            );
           }).not.toThrowError();
         });
       });
 
       describe('with a Feature App definition that declares no externals', () => {
         it('does not call the provided ExternalsValidator', () => {
-          featureAppManager.getFeatureAppScope(mockFeatureAppDefinition);
+          featureAppManager.getFeatureAppScope(
+            'testId',
+            mockFeatureAppDefinition
+          );
 
           expect(mockExternalsValidator.validate).not.toHaveBeenCalled();
         });
 
         it("doesn't throw an error", () => {
           expect(() => {
-            featureAppManager.getFeatureAppScope(mockFeatureAppDefinition);
+            featureAppManager.getFeatureAppScope(
+              'testId',
+              mockFeatureAppDefinition
+            );
           }).not.toThrowError();
         });
       });
@@ -379,7 +355,10 @@ describe('FeatureAppManager', () => {
 
       it('throws the same error', () => {
         expect(() =>
-          featureAppManager.getFeatureAppScope(mockFeatureAppDefinition)
+          featureAppManager.getFeatureAppScope(
+            'testId',
+            mockFeatureAppDefinition
+          )
         ).toThrowError(mockError);
       });
     });
@@ -406,25 +385,29 @@ describe('FeatureAppManager', () => {
 
         mockFeatureAppDefinition = {
           ...mockFeatureAppDefinition,
-          ownFeatureServiceDefinitions: [{id: 'ownId', create: jest.fn()}]
+          ownFeatureServiceDefinitions: [
+            {id: 'ownFeatureServiceId', create: jest.fn()}
+          ]
         };
       });
 
       it("registers the Feature App's own Feature Services before binding its required Feature Services", () => {
-        featureAppManager.getFeatureAppScope(mockFeatureAppDefinition);
+        const featureAppId = 'testId';
+
+        featureAppManager.getFeatureAppScope(
+          featureAppId,
+          mockFeatureAppDefinition
+        );
 
         expect(
           mockFeatureServiceRegistry.registerFeatureServices.mock.calls
         ).toEqual([
-          [
-            mockFeatureAppDefinition.ownFeatureServiceDefinitions,
-            mockFeatureAppDefinition.id
-          ]
+          [mockFeatureAppDefinition.ownFeatureServiceDefinitions, featureAppId]
         ]);
 
         expect(
           mockFeatureServiceRegistry.bindFeatureServices.mock.calls
-        ).toEqual([[mockFeatureAppDefinition, mockFeatureAppDefinition.id]]);
+        ).toEqual([[mockFeatureAppDefinition, featureAppId]]);
 
         expect(featureServiceRegistryMethodCalls).toEqual([
           'registerFeatureServices',
@@ -436,6 +419,8 @@ describe('FeatureAppManager', () => {
     describe('for a known Feature App definition', () => {
       describe('with a beforeCreate callback', () => {
         it('does not call the beforeCreate callback multiple times', () => {
+          const featureAppId = 'testId';
+
           featureAppManager = new FeatureAppManager(
             mockFeatureServiceRegistry,
             {logger}
@@ -443,23 +428,29 @@ describe('FeatureAppManager', () => {
 
           const mockBeforeCreate = jest.fn();
 
-          featureAppManager.getFeatureAppScope(mockFeatureAppDefinition, {
-            beforeCreate: mockBeforeCreate
-          });
+          featureAppManager.getFeatureAppScope(
+            featureAppId,
+            mockFeatureAppDefinition,
+            {beforeCreate: mockBeforeCreate}
+          );
 
-          featureAppManager.getFeatureAppScope(mockFeatureAppDefinition, {
-            beforeCreate: mockBeforeCreate
-          });
+          featureAppManager.getFeatureAppScope(
+            featureAppId,
+            mockFeatureAppDefinition,
+            {beforeCreate: mockBeforeCreate}
+          );
 
           const {featureServices} = mockFeatureServicesBinding;
 
           expect(mockBeforeCreate.mock.calls).toEqual([
-            [mockFeatureAppDefinition.id, featureServices]
+            [featureAppId, featureServices]
           ]);
         });
 
         describe('when destroy() is called on the Feature App scope', () => {
           it('calls the beforeCreate callback again', () => {
+            const featureAppId = 'testId';
+
             featureAppManager = new FeatureAppManager(
               mockFeatureServiceRegistry,
               {logger}
@@ -468,114 +459,70 @@ describe('FeatureAppManager', () => {
             const mockBeforeCreate = jest.fn();
 
             const featureAppScope = featureAppManager.getFeatureAppScope(
+              featureAppId,
               mockFeatureAppDefinition,
               {beforeCreate: mockBeforeCreate}
             );
 
             featureAppScope.destroy();
 
-            featureAppManager.getFeatureAppScope(mockFeatureAppDefinition, {
-              beforeCreate: mockBeforeCreate
-            });
+            featureAppManager.getFeatureAppScope(
+              featureAppId,
+              mockFeatureAppDefinition,
+              {beforeCreate: mockBeforeCreate}
+            );
 
             const {featureServices} = mockFeatureServicesBinding;
 
             expect(mockBeforeCreate.mock.calls).toEqual([
-              [mockFeatureAppDefinition.id, featureServices],
-              [mockFeatureAppDefinition.id, featureServices]
+              [featureAppId, featureServices],
+              [featureAppId, featureServices]
             ]);
           });
         });
       });
 
-      describe('and no id specifier', () => {
-        it('logs an info message after creation', () => {
-          featureAppManager.getFeatureAppScope(mockFeatureAppDefinition);
+      it('logs an info message after creation', () => {
+        featureAppManager.getFeatureAppScope(
+          'testId',
+          mockFeatureAppDefinition
+        );
 
-          expect(logger.info.mock.calls).toEqual([
-            ['The Feature App "testId" has been successfully created.']
-          ]);
-        });
+        expect(logger.info.mock.calls).toEqual([
+          [
+            'The Feature App with the ID "testId" has been successfully created.'
+          ]
+        ]);
+      });
 
-        it('returns the same Feature App scope', () => {
-          const featureAppScope = featureAppManager.getFeatureAppScope(
+      it('returns the same Feature App scope', () => {
+        const featureAppScope = featureAppManager.getFeatureAppScope(
+          'testId',
+          mockFeatureAppDefinition
+        );
+
+        expect(
+          featureAppManager.getFeatureAppScope(
+            'testId',
             mockFeatureAppDefinition
-          );
-
-          expect(
-            featureAppManager.getFeatureAppScope(mockFeatureAppDefinition)
-          ).toBe(featureAppScope);
-        });
-
-        describe('when destroy() is called on the Feature App scope', () => {
-          it('returns another Feature App scope', () => {
-            const featureAppScope = featureAppManager.getFeatureAppScope(
-              mockFeatureAppDefinition
-            );
-
-            featureAppScope.destroy();
-
-            expect(
-              featureAppManager.getFeatureAppScope(mockFeatureAppDefinition)
-            ).not.toBe(featureAppScope);
-          });
-        });
+          )
+        ).toBe(featureAppScope);
       });
 
-      describe('and an id specifier', () => {
-        it('logs an info message after creation', () => {
-          featureAppManager.getFeatureAppScope(mockFeatureAppDefinition, {
-            idSpecifier: 'testIdSpecifier'
-          });
-
-          expect(logger.info.mock.calls).toEqual([
-            [
-              'The Feature App "testId:testIdSpecifier" has been successfully created.'
-            ]
-          ]);
-        });
-
-        it('returns the same Feature App scope', () => {
-          const featureAppScope = featureAppManager.getFeatureAppScope(
-            mockFeatureAppDefinition,
-            {idSpecifier: 'testIdSpecifier'}
-          );
-
-          expect(
-            featureAppManager.getFeatureAppScope(mockFeatureAppDefinition, {
-              idSpecifier: 'testIdSpecifier'
-            })
-          ).toBe(featureAppScope);
-        });
-
-        describe('when destroy() is called on the Feature App scope', () => {
-          it('returns another Feature App scope', () => {
-            const featureAppScope = featureAppManager.getFeatureAppScope(
-              mockFeatureAppDefinition,
-              {idSpecifier: 'testIdSpecifier'}
-            );
-
-            featureAppScope.destroy();
-
-            expect(
-              featureAppManager.getFeatureAppScope(mockFeatureAppDefinition, {
-                idSpecifier: 'testIdSpecifier'
-              })
-            ).not.toBe(featureAppScope);
-          });
-        });
-      });
-
-      describe('and a different id specifier', () => {
+      describe('when destroy() is called on the Feature App scope', () => {
         it('returns another Feature App scope', () => {
           const featureAppScope = featureAppManager.getFeatureAppScope(
+            'testId',
             mockFeatureAppDefinition
           );
 
+          featureAppScope.destroy();
+
           expect(
-            featureAppManager.getFeatureAppScope(mockFeatureAppDefinition, {
-              idSpecifier: 'testIdSpecifier'
-            })
+            featureAppManager.getFeatureAppScope(
+              'testId',
+              mockFeatureAppDefinition
+            )
           ).not.toBe(featureAppScope);
         });
       });
@@ -584,6 +531,7 @@ describe('FeatureAppManager', () => {
     describe('#featureApp', () => {
       it("is the Feature App that the Feature App definition's create returns", () => {
         const featureAppScope = featureAppManager.getFeatureAppScope(
+          'testId',
           mockFeatureAppDefinition
         );
 
@@ -594,6 +542,7 @@ describe('FeatureAppManager', () => {
     describe('#destroy', () => {
       it('unbinds the bound Feature Services', () => {
         const featureAppScope = featureAppManager.getFeatureAppScope(
+          'testId',
           mockFeatureAppDefinition
         );
 
@@ -604,33 +553,34 @@ describe('FeatureAppManager', () => {
 
       it('throws an error when destroy is called multiple times', () => {
         const featureAppScope = featureAppManager.getFeatureAppScope(
-          mockFeatureAppDefinition,
-          {idSpecifier: 'testIdSpecifier'}
+          'testId',
+          mockFeatureAppDefinition
         );
 
         featureAppScope.destroy();
 
         expect(() => featureAppScope.destroy()).toThrowError(
           new Error(
-            'The Feature App "testId:testIdSpecifier" could not be destroyed.'
+            'The Feature App with the ID "testId" could not be destroyed.'
           )
         );
       });
 
       it('fails to destroy an already destroyed Feature App scope, even if this scope has been re-created', () => {
         const featureAppScope = featureAppManager.getFeatureAppScope(
-          mockFeatureAppDefinition,
-          {idSpecifier: 'testIdSpecifier'}
+          'testId',
+          mockFeatureAppDefinition
         );
 
         featureAppScope.destroy();
-        featureAppManager.getFeatureAppScope(mockFeatureAppDefinition, {
-          idSpecifier: 'testIdSpecifier'
-        });
+        featureAppManager.getFeatureAppScope(
+          'testId',
+          mockFeatureAppDefinition
+        );
 
         expect(() => featureAppScope.destroy()).toThrowError(
           new Error(
-            'The Feature App "testId:testIdSpecifier" could not be destroyed.'
+            'The Feature App with the ID "testId" could not be destroyed.'
           )
         );
       });
@@ -679,10 +629,10 @@ describe('FeatureAppManager', () => {
     });
 
     it('logs messages using the console', () => {
-      featureAppManager.getFeatureAppScope(mockFeatureAppDefinition);
+      featureAppManager.getFeatureAppScope('testId', mockFeatureAppDefinition);
 
       expect(stubbedConsole.stub.info.mock.calls).toEqual([
-        ['The Feature App "testId" has been successfully created.']
+        ['The Feature App with the ID "testId" has been successfully created.']
       ]);
     });
   });

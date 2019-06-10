@@ -29,6 +29,15 @@ export interface DomFeatureApp {
  */
 export interface FeatureAppContainerElement extends HTMLElement {
   /**
+   * The Feature App ID is used to identify the Feature App instance. Multiple
+   * Feature App Loaders with the same `featureAppId` will render the same
+   * Feature app instance. The ID is also used as a consumer ID for dependent
+   * Feature Services. To render multiple instances of the same kind of Feature
+   * App, different IDs must be used.
+   */
+  featureAppId: string;
+
+  /**
    * The absolute or relative base URL of the Feature App's assets and/or BFF.
    */
   baseUrl?: string;
@@ -39,17 +48,9 @@ export interface FeatureAppContainerElement extends HTMLElement {
   featureAppDefinition?: FeatureAppDefinition<DomFeatureApp>;
 
   /**
-   * If multiple instances of the same Feature App are placed on a single web
-   * page, an `idSpecifier` that is unique for the Feature App ID must be
-   * defined.
+   * A config object that is passed to the Feature App's `create` method.
    */
-  idSpecifier?: string;
-
-  /**
-   * A config object that is intended for the specific Feature App instance
-   * that the `feature-app-container` renders.
-   */
-  instanceConfig?: unknown;
+  config?: unknown;
 }
 
 const elementName = 'feature-app-container';
@@ -79,16 +80,16 @@ export function defineFeatureAppContainer(
   class FeatureAppContainer extends LitElement
     implements FeatureAppContainerElement {
     @property({type: String})
+    public featureAppId!: string;
+
+    @property({type: String})
     public baseUrl?: string;
 
     @property({type: Object})
     public featureAppDefinition?: FeatureAppDefinition<DomFeatureApp>;
 
-    @property({type: String})
-    public idSpecifier?: string;
-
     @property({type: Object})
-    public instanceConfig?: unknown;
+    public config?: unknown;
 
     @property({type: Object, reflect: false})
     private error?: Error;
@@ -104,12 +105,9 @@ export function defineFeatureAppContainer(
 
       try {
         this.featureAppScope = featureAppManager.getFeatureAppScope(
+          this.featureAppId,
           this.featureAppDefinition,
-          {
-            baseUrl: this.baseUrl,
-            idSpecifier: this.idSpecifier,
-            instanceConfig: this.instanceConfig
-          }
+          {baseUrl: this.baseUrl, config: this.config}
         );
 
         this.featureAppScope.featureApp.attachTo(this.appElement);

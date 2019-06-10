@@ -47,7 +47,7 @@ describe('FeatureAppContainer', () => {
 
   beforeEach(() => {
     stubbedConsole = stubMethods(console);
-    mockFeatureAppDefinition = {id: 'testId', create: jest.fn()};
+    mockFeatureAppDefinition = {create: jest.fn()};
     mockFeatureAppScope = {featureApp: {}, destroy: jest.fn()};
     mockGetFeatureAppScope = jest.fn(() => mockFeatureAppScope);
 
@@ -66,7 +66,10 @@ describe('FeatureAppContainer', () => {
   it('throws an error when rendered without a FeatureHubContextProvider', () => {
     expect(() =>
       TestRenderer.create(
-        <FeatureAppContainer featureAppDefinition={mockFeatureAppDefinition} />
+        <FeatureAppContainer
+          featureAppId="testId"
+          featureAppDefinition={mockFeatureAppDefinition}
+        />
       )
     ).toThrowError(
       new Error(
@@ -99,14 +102,14 @@ describe('FeatureAppContainer', () => {
       testRendererOptions
     );
 
-  it('calls the Feature App manager with the given Feature App definition, base url, id specifier, instance config, and beforeCreate callback', () => {
+  it('calls the Feature App manager with the given featureAppDefinition, featureAppId, config, baseUrl, and beforeCreate callback', () => {
     const mockBeforeCreate = jest.fn();
 
     renderWithFeatureHubContext(
       <FeatureAppContainer
         featureAppDefinition={mockFeatureAppDefinition}
-        idSpecifier="testIdSpecifier"
-        instanceConfig="testInstanceConfig"
+        featureAppId="testId"
+        config="testConfig"
         baseUrl="/base"
         beforeCreate={mockBeforeCreate}
       />
@@ -114,13 +117,12 @@ describe('FeatureAppContainer', () => {
 
     const expectedOptions: FeatureAppScopeOptions = {
       baseUrl: '/base',
-      idSpecifier: 'testIdSpecifier',
-      instanceConfig: 'testInstanceConfig',
+      config: 'testConfig',
       beforeCreate: mockBeforeCreate
     };
 
     expect(mockGetFeatureAppScope.mock.calls).toEqual([
-      [mockFeatureAppDefinition, expectedOptions]
+      ['testId', mockFeatureAppDefinition, expectedOptions]
     ]);
   });
 
@@ -136,7 +138,10 @@ describe('FeatureAppContainer', () => {
 
     it('renders the React element', () => {
       const testRenderer = renderWithFeatureHubContext(
-        <FeatureAppContainer featureAppDefinition={mockFeatureAppDefinition} />
+        <FeatureAppContainer
+          featureAppId="testId"
+          featureAppDefinition={mockFeatureAppDefinition}
+        />
       );
 
       expect(testRenderer.toJSON()).toMatchInlineSnapshot(`
@@ -166,6 +171,7 @@ describe('FeatureAppContainer', () => {
         expect(() => {
           renderWithFeatureHubContext(
             <FeatureAppContainer
+              featureAppId="testId"
               featureAppDefinition={mockFeatureAppDefinition}
             />
           );
@@ -175,6 +181,7 @@ describe('FeatureAppContainer', () => {
       it('logs the error', () => {
         renderWithFeatureHubContext(
           <FeatureAppContainer
+            featureAppId="testId"
             featureAppDefinition={mockFeatureAppDefinition}
           />
         );
@@ -188,6 +195,7 @@ describe('FeatureAppContainer', () => {
 
           renderWithFeatureHubContext(
             <FeatureAppContainer
+              featureAppId="testId"
               featureAppDefinition={mockFeatureAppDefinition}
               onError={onError}
             />
@@ -199,6 +207,7 @@ describe('FeatureAppContainer', () => {
         it('does not log the error', () => {
           renderWithFeatureHubContext(
             <FeatureAppContainer
+              featureAppId="testId"
               featureAppDefinition={mockFeatureAppDefinition}
               onError={jest.fn()}
             />
@@ -218,6 +227,7 @@ describe('FeatureAppContainer', () => {
             expect(() =>
               renderWithFeatureHubContext(
                 <FeatureAppContainer
+                  featureAppId="testId"
                   featureAppDefinition={mockFeatureAppDefinition}
                   onError={() => {
                     throw onErrorMockError;
@@ -235,6 +245,7 @@ describe('FeatureAppContainer', () => {
         it('renders null', () => {
           const testRenderer = renderWithFeatureHubContext(
             <FeatureAppContainer
+              featureAppId="testId"
               featureAppDefinition={mockFeatureAppDefinition}
             />
           );
@@ -247,6 +258,7 @@ describe('FeatureAppContainer', () => {
         it('calls the function with the error', () => {
           const testRenderer = renderWithFeatureHubContext(
             <FeatureAppContainer
+              featureAppId="testId"
               featureAppDefinition={mockFeatureAppDefinition}
               renderError={() => 'Custom Error UI'}
             />
@@ -260,6 +272,7 @@ describe('FeatureAppContainer', () => {
 
           renderWithFeatureHubContext(
             <FeatureAppContainer
+              featureAppId="testId"
               featureAppDefinition={mockFeatureAppDefinition}
               renderError={renderError}
             />
@@ -279,6 +292,7 @@ describe('FeatureAppContainer', () => {
             expect(() =>
               renderWithFeatureHubContext(
                 <FeatureAppContainer
+                  featureAppId="testId"
                   featureAppDefinition={mockFeatureAppDefinition}
                   renderError={() => {
                     throw renderErrorMockError;
@@ -321,6 +335,7 @@ describe('FeatureAppContainer', () => {
         expect(() => {
           renderWithFeatureHubContext(
             <FeatureAppContainer
+              featureAppId="testId"
               featureAppDefinition={mockFeatureAppDefinition}
             />
           );
@@ -332,6 +347,7 @@ describe('FeatureAppContainer', () => {
       it('logs the error', () => {
         renderWithFeatureHubContext(
           <FeatureAppContainer
+            featureAppId="testId"
             featureAppDefinition={mockFeatureAppDefinition}
           />
         );
@@ -346,6 +362,7 @@ describe('FeatureAppContainer', () => {
 
           renderWithFeatureHubContext(
             <FeatureAppContainer
+              featureAppId="testId"
               featureAppDefinition={mockFeatureAppDefinition}
               onError={onError}
             />
@@ -358,6 +375,7 @@ describe('FeatureAppContainer', () => {
         it('does not log the error', () => {
           renderWithFeatureHubContext(
             <FeatureAppContainer
+              featureAppId="testId"
               featureAppDefinition={mockFeatureAppDefinition}
               onError={jest.fn()}
             />
@@ -378,6 +396,7 @@ describe('FeatureAppContainer', () => {
             expect(() =>
               renderWithFeatureHubContext(
                 <FeatureAppContainer
+                  featureAppId="testId"
                   featureAppDefinition={mockFeatureAppDefinition}
                   onError={() => {
                     throw onErrorMockError;
@@ -399,6 +418,7 @@ describe('FeatureAppContainer', () => {
         it('renders null', () => {
           const testRenderer = renderWithFeatureHubContext(
             <FeatureAppContainer
+              featureAppId="testId"
               featureAppDefinition={mockFeatureAppDefinition}
             />
           );
@@ -412,6 +432,7 @@ describe('FeatureAppContainer', () => {
         it('calls the function with the error', () => {
           const testRenderer = renderWithFeatureHubContext(
             <FeatureAppContainer
+              featureAppId="testId"
               featureAppDefinition={mockFeatureAppDefinition}
               renderError={() => 'Custom Error UI'}
             />
@@ -426,6 +447,7 @@ describe('FeatureAppContainer', () => {
 
           renderWithFeatureHubContext(
             <FeatureAppContainer
+              featureAppId="testId"
               featureAppDefinition={mockFeatureAppDefinition}
               renderError={renderError}
             />
@@ -441,6 +463,7 @@ describe('FeatureAppContainer', () => {
       it('calls destroy() on the Feature App scope', () => {
         const testRenderer = renderWithFeatureHubContext(
           <FeatureAppContainer
+            featureAppId="testId"
             featureAppDefinition={mockFeatureAppDefinition}
           />
         );
@@ -466,6 +489,7 @@ describe('FeatureAppContainer', () => {
         it('logs the error', () => {
           const testRenderer = renderWithFeatureHubContext(
             <FeatureAppContainer
+              featureAppId="testId"
               featureAppDefinition={mockFeatureAppDefinition}
             />
           );
@@ -481,6 +505,7 @@ describe('FeatureAppContainer', () => {
 
             const testRenderer = renderWithFeatureHubContext(
               <FeatureAppContainer
+                featureAppId="testId"
                 featureAppDefinition={mockFeatureAppDefinition}
                 onError={onError}
               />
@@ -494,6 +519,7 @@ describe('FeatureAppContainer', () => {
           it('does not log the error', () => {
             const testRenderer = renderWithFeatureHubContext(
               <FeatureAppContainer
+                featureAppId="testId"
                 featureAppDefinition={mockFeatureAppDefinition}
                 onError={jest.fn()}
               />
@@ -514,6 +540,7 @@ describe('FeatureAppContainer', () => {
             it('re-throws the error', () => {
               const testRenderer = renderWithFeatureHubContext(
                 <FeatureAppContainer
+                  featureAppId="testId"
                   featureAppDefinition={mockFeatureAppDefinition}
                   onError={() => {
                     throw onErrorMockError;
@@ -552,7 +579,10 @@ describe('FeatureAppContainer', () => {
       const mockSetInnerHtml = jest.fn();
 
       const testRenderer = renderWithFeatureHubContext(
-        <FeatureAppContainer featureAppDefinition={mockFeatureAppDefinition} />,
+        <FeatureAppContainer
+          featureAppId="testId"
+          featureAppDefinition={mockFeatureAppDefinition}
+        />,
         {
           testRendererOptions: {
             createNodeMock: () => ({
@@ -591,6 +621,7 @@ describe('FeatureAppContainer', () => {
         expect(() =>
           renderWithFeatureHubContext(
             <FeatureAppContainer
+              featureAppId="testId"
               featureAppDefinition={mockFeatureAppDefinition}
             />,
             {testRendererOptions: {createNodeMock: () => ({})}}
@@ -601,6 +632,7 @@ describe('FeatureAppContainer', () => {
       it('logs the error', () => {
         renderWithFeatureHubContext(
           <FeatureAppContainer
+            featureAppId="testId"
             featureAppDefinition={mockFeatureAppDefinition}
           />,
           {testRendererOptions: {createNodeMock: () => ({})}}
@@ -615,6 +647,7 @@ describe('FeatureAppContainer', () => {
 
           renderWithFeatureHubContext(
             <FeatureAppContainer
+              featureAppId="testId"
               featureAppDefinition={mockFeatureAppDefinition}
               onError={onError}
             />,
@@ -635,6 +668,7 @@ describe('FeatureAppContainer', () => {
             expect(() =>
               renderWithFeatureHubContext(
                 <FeatureAppContainer
+                  featureAppId="testId"
                   featureAppDefinition={mockFeatureAppDefinition}
                   onError={() => {
                     throw onErrorMockError;
@@ -658,6 +692,7 @@ describe('FeatureAppContainer', () => {
 
           renderWithFeatureHubContext(
             <FeatureAppContainer
+              featureAppId="testId"
               featureAppDefinition={mockFeatureAppDefinition}
               renderError={renderError}
             />,
@@ -672,6 +707,7 @@ describe('FeatureAppContainer', () => {
 
           const testRenderer = renderWithFeatureHubContext(
             <FeatureAppContainer
+              featureAppId="testId"
               featureAppDefinition={mockFeatureAppDefinition}
               renderError={() => customErrorUI}
             />,
@@ -686,6 +722,7 @@ describe('FeatureAppContainer', () => {
         it('renders null', () => {
           const testRenderer = renderWithFeatureHubContext(
             <FeatureAppContainer
+              featureAppId="testId"
               featureAppDefinition={mockFeatureAppDefinition}
             />,
             {testRendererOptions: {createNodeMock: () => ({})}}
@@ -700,6 +737,7 @@ describe('FeatureAppContainer', () => {
       it('calls destroy() on the Feature App scope', () => {
         const testRenderer = renderWithFeatureHubContext(
           <FeatureAppContainer
+            featureAppId="testId"
             featureAppDefinition={mockFeatureAppDefinition}
           />
         );
@@ -725,6 +763,7 @@ describe('FeatureAppContainer', () => {
         it('logs the error', () => {
           const testRenderer = renderWithFeatureHubContext(
             <FeatureAppContainer
+              featureAppId="testId"
               featureAppDefinition={mockFeatureAppDefinition}
             />
           );
@@ -740,6 +779,7 @@ describe('FeatureAppContainer', () => {
 
             const testRenderer = renderWithFeatureHubContext(
               <FeatureAppContainer
+                featureAppId="testId"
                 featureAppDefinition={mockFeatureAppDefinition}
                 onError={onError}
               />
@@ -774,6 +814,7 @@ describe('FeatureAppContainer', () => {
       it('renders nothing and logs an error', () => {
         const testRenderer = renderWithFeatureHubContext(
           <FeatureAppContainer
+            featureAppId="testId"
             featureAppDefinition={mockFeatureAppDefinition}
           />
         );
@@ -802,7 +843,10 @@ describe('FeatureAppContainer', () => {
 
     it('logs the creation error', () => {
       renderWithFeatureHubContext(
-        <FeatureAppContainer featureAppDefinition={mockFeatureAppDefinition} />
+        <FeatureAppContainer
+          featureAppId="testId"
+          featureAppDefinition={mockFeatureAppDefinition}
+        />
       );
 
       expect(logger.error.mock.calls).toEqual([[mockError]]);
@@ -814,6 +858,7 @@ describe('FeatureAppContainer', () => {
 
         renderWithFeatureHubContext(
           <FeatureAppContainer
+            featureAppId="testId"
             featureAppDefinition={mockFeatureAppDefinition}
             onError={onError}
           />
@@ -833,6 +878,7 @@ describe('FeatureAppContainer', () => {
           expect(() =>
             renderWithFeatureHubContext(
               <FeatureAppContainer
+                featureAppId="testId"
                 featureAppDefinition={mockFeatureAppDefinition}
                 onError={() => {
                   throw onErrorMockError;
@@ -852,6 +898,7 @@ describe('FeatureAppContainer', () => {
 
         renderWithFeatureHubContext(
           <FeatureAppContainer
+            featureAppId="testId"
             featureAppDefinition={mockFeatureAppDefinition}
             renderError={renderError}
           />
@@ -865,6 +912,7 @@ describe('FeatureAppContainer', () => {
 
         const testRenderer = renderWithFeatureHubContext(
           <FeatureAppContainer
+            featureAppId="testId"
             featureAppDefinition={mockFeatureAppDefinition}
             renderError={() => customErrorUI}
           />
@@ -884,6 +932,7 @@ describe('FeatureAppContainer', () => {
           expect(() =>
             renderWithFeatureHubContext(
               <FeatureAppContainer
+                featureAppId="testId"
                 featureAppDefinition={mockFeatureAppDefinition}
                 renderError={() => {
                   throw renderErrorMockError;
@@ -901,6 +950,7 @@ describe('FeatureAppContainer', () => {
       it('renders null', () => {
         const testRenderer = renderWithFeatureHubContext(
           <FeatureAppContainer
+            featureAppId="testId"
             featureAppDefinition={mockFeatureAppDefinition}
           />
         );
@@ -913,6 +963,7 @@ describe('FeatureAppContainer', () => {
       it('does nothing', () => {
         const testRenderer = renderWithFeatureHubContext(
           <FeatureAppContainer
+            featureAppId="testId"
             featureAppDefinition={mockFeatureAppDefinition}
           />
         );
@@ -936,7 +987,10 @@ describe('FeatureAppContainer', () => {
       };
 
       renderWithFeatureHubContext(
-        <FeatureAppContainer featureAppDefinition={mockFeatureAppDefinition} />,
+        <FeatureAppContainer
+          featureAppId="testId"
+          featureAppDefinition={mockFeatureAppDefinition}
+        />,
         {customLogger: false}
       );
 

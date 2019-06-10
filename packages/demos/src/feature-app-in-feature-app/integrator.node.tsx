@@ -27,6 +27,7 @@ export default async function renderApp({
   const html = ReactDOM.renderToString(
     <FeatureHubContextProvider value={{featureAppManager}}>
       <FeatureAppLoader
+        featureAppId="test:hello-world-outer"
         src="feature-app.umd.js"
         serverSrc={featureAppNodeUrl}
       />

@@ -12,19 +12,15 @@ interface Dependencies {
 
 export const historyConsumerDefinition: FeatureAppDefinition<
   ReactFeatureApp,
-  undefined,
-  undefined,
   Dependencies
 > = {
-  id: 'test:history-consumer',
-
   dependencies: {
     featureServices: {
       's2:history': '^1.0.0'
     }
   },
 
-  create: ({featureServices, idSpecifier}) => {
+  create: ({featureServices, featureAppId}) => {
     const historyService = featureServices['s2:history'];
 
     const history = inBrowser
@@ -33,7 +29,7 @@ export const historyConsumerDefinition: FeatureAppDefinition<
 
     return {
       render: () => (
-        <HistoryConsumer history={history} idSpecifier={idSpecifier || ''} />
+        <HistoryConsumer history={history} consumerId={featureAppId} />
       )
     };
   }

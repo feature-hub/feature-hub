@@ -4,8 +4,6 @@ import {ReactFeatureApp} from '@feature-hub/react';
 import * as React from 'react';
 
 const featureAppDefinition: FeatureAppDefinition<ReactFeatureApp> = {
-  id: 'test:hello-world-inner',
-
   dependencies: {
     externals: {
       react: '^16.7.0',

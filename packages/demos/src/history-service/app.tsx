@@ -14,12 +14,12 @@ export function App({featureAppManager}: AppProps): JSX.Element {
   return (
     <FeatureHubContextProvider value={{featureAppManager}}>
       <FeatureAppContainer
+        featureAppId="test:history-consumer:a"
         featureAppDefinition={historyConsumerDefinition}
-        idSpecifier="a"
       />
       <FeatureAppContainer
+        featureAppId="test:history-consumer:b"
         featureAppDefinition={historyConsumerDefinition}
-        idSpecifier="b"
       />
     </FeatureHubContextProvider>
   );

@@ -8,6 +8,7 @@ export interface AppProps {
 export function App({port}: AppProps): JSX.Element {
   return (
     <FeatureAppLoader
+      featureAppId="test:hello-world"
       src="feature-app.umd.js"
       serverSrc={port ? `http://localhost:${port}/feature-app.commonjs.js` : ''}
       css={[

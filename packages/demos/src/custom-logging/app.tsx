@@ -5,7 +5,7 @@ import featureAppDefinition from './feature-app';
 
 export interface AppProps {
   readonly beforeCreate?: (
-    featureAppUid: string,
+    featureAppId: string,
     featureServices: FeatureServices
   ) => void;
 }
@@ -15,12 +15,12 @@ export function App({beforeCreate}: AppProps): JSX.Element {
     <>
       <FeatureAppContainer
         featureAppDefinition={featureAppDefinition}
-        idSpecifier="first"
+        featureAppId="test:logging-app:first"
         beforeCreate={beforeCreate}
       />
       <FeatureAppContainer
         featureAppDefinition={featureAppDefinition}
-        idSpecifier="second"
+        featureAppId="test:logging-app:second"
         beforeCreate={beforeCreate}
       />
     </>

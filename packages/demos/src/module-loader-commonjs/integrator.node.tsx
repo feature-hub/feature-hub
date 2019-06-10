@@ -21,7 +21,11 @@ export default async function renderApp({
 
   const html = ReactDOM.renderToString(
     <FeatureHubContextProvider value={{featureAppManager}}>
-      <FeatureAppLoader src="" serverSrc={featureAppNodeUrl} />
+      <FeatureAppLoader
+        featureAppId="test:hello-world"
+        src=""
+        serverSrc={featureAppNodeUrl}
+      />
     </FeatureHubContextProvider>
   );
 
