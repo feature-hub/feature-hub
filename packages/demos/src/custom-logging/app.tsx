@@ -1,12 +1,11 @@
-import {FeatureServices} from '@feature-hub/core';
+import {FeatureAppEnvironment, FeatureServices} from '@feature-hub/core';
 import {FeatureAppContainer} from '@feature-hub/react';
 import * as React from 'react';
 import featureAppDefinition from './feature-app';
 
 export interface AppProps {
   readonly beforeCreate?: (
-    featureAppId: string,
-    featureServices: FeatureServices
+    env: FeatureAppEnvironment<FeatureServices, undefined>
   ) => void;
 }
 

@@ -1,6 +1,10 @@
-import {FeatureAppDefinition, FeatureServices} from '@feature-hub/core';
+import {
+  FeatureAppDefinition,
+  FeatureAppEnvironment,
+  FeatureServices
+} from '@feature-hub/core';
 import * as React from 'react';
-import {FeatureAppContainer} from './feature-app-container';
+import {FeatureApp, FeatureAppContainer} from './feature-app-container';
 import {
   Css,
   FeatureHubContextConsumer,
@@ -8,7 +12,7 @@ import {
 } from './feature-hub-context';
 import {prependBaseUrl} from './internal/prepend-base-url';
 
-export interface FeatureAppLoaderProps {
+export interface FeatureAppLoaderProps<TConfig = unknown> {
   /**
    * The Feature App ID is used to identify the Feature App instance. Multiple
    * Feature App Loaders with the same `featureAppId` will render the same
@@ -45,14 +49,13 @@ export interface FeatureAppLoaderProps {
   /**
    * A config object that is passed to the Feature App's `create` method.
    */
-  readonly config?: unknown;
+  readonly config?: TConfig;
 
   /**
    * A callback that is called before the Feature App is created.
    */
   readonly beforeCreate?: (
-    featureAppId: string,
-    featureServices: FeatureServices
+    env: FeatureAppEnvironment<FeatureServices, TConfig>
   ) => void;
 
   readonly onError?: (error: Error) => void;
@@ -60,7 +63,7 @@ export interface FeatureAppLoaderProps {
   readonly renderError?: (error: Error) => React.ReactNode;
 }
 
-type InternalFeatureAppLoaderProps = FeatureAppLoaderProps &
+type InternalFeatureAppLoaderProps<TConfig> = FeatureAppLoaderProps<TConfig> &
   FeatureHubContextConsumerValue;
 
 interface InternalFeatureAppLoaderState {
@@ -74,8 +77,8 @@ const inBrowser =
   typeof document === 'object' &&
   document.nodeType === 9;
 
-class InternalFeatureAppLoader extends React.PureComponent<
-  InternalFeatureAppLoaderProps,
+class InternalFeatureAppLoader<TConfig = unknown> extends React.PureComponent<
+  InternalFeatureAppLoaderProps<TConfig>,
   InternalFeatureAppLoaderState
 > {
   public readonly state: InternalFeatureAppLoaderState = {};
@@ -83,7 +86,7 @@ class InternalFeatureAppLoader extends React.PureComponent<
   private errorHandled = false;
   private mounted = false;
 
-  public constructor(props: InternalFeatureAppLoaderProps) {
+  public constructor(props: InternalFeatureAppLoaderProps<TConfig>) {
     super(props);
 
     const {
@@ -196,7 +199,9 @@ class InternalFeatureAppLoader extends React.PureComponent<
         beforeCreate={beforeCreate}
         config={config}
         featureAppId={featureAppId}
-        featureAppDefinition={featureAppDefinition}
+        featureAppDefinition={
+          featureAppDefinition as FeatureAppDefinition<FeatureApp>
+        }
         onError={onError}
         renderError={renderError}
       />
@@ -302,11 +307,16 @@ class InternalFeatureAppLoader extends React.PureComponent<
  * `FeatureAppLoader` renders `null`. On the server, however, rendering
  * errors are not caught and must therefore be handled by the integrator.
  */
-export function FeatureAppLoader(props: FeatureAppLoaderProps): JSX.Element {
+export function FeatureAppLoader<TConfig>(
+  props: FeatureAppLoaderProps<TConfig>
+): JSX.Element {
   return (
     <FeatureHubContextConsumer>
       {featureHubContextValue => (
-        <InternalFeatureAppLoader {...featureHubContextValue} {...props} />
+        <InternalFeatureAppLoader<TConfig>
+          {...featureHubContextValue}
+          {...props}
+        />
       )}
     </FeatureHubContextConsumer>
   );

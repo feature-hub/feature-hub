@@ -73,8 +73,10 @@ export interface SharedFeatureService {
   readonly [version: string]: FeatureServiceBinder<unknown> | undefined;
 }
 
-export interface FeatureServicesBinding {
-  readonly featureServices: FeatureServices;
+export interface FeatureServicesBinding<
+  TFeatureServices extends FeatureServices = FeatureServices
+> {
+  readonly featureServices: TFeatureServices;
 
   unbind(): void;
 }
