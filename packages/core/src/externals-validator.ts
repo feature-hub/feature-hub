@@ -16,11 +16,6 @@ export interface RequiredExternals {
 }
 
 /**
- * @deprecated Use [[ExternalsValidator]] instead.
- */
-export type ExternalsValidatorLike = ExternalsValidator;
-
-/**
  * The `ExternalsValidator` validates required externals against the provided
  * set of externals it is initilized with.
  */

@@ -16,11 +16,6 @@ export interface AsyncSsrManagerOptions {
 }
 
 /**
- * @deprecated Use [[AsyncSsrManagerV1]] instead.
- */
-export type AsyncSsrManagerV0 = AsyncSsrManagerV1;
-
-/**
  * The Async SSR Manager enables the integrator to render a given composition
  * of React Feature Apps in multiple render passes until all Feature Apps and
  * Feature Services have finished their asynchronous operations.

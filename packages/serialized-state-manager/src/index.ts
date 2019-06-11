@@ -7,11 +7,6 @@ import {ClientSideStateManager} from './internal/client-side-state-manager';
 import {SerializedStateManager} from './internal/serialized-state-manager';
 import {ServerSideStateManager} from './internal/server-side-state-manager';
 
-/**
- * @deprecated Use [[SerializedStateManagerV1]] instead.
- */
-export type SerializedStateManagerV0 = SerializedStateManagerV1;
-
 export interface SerializedStateManagerV1 {
   /**
    * This method is intended to be called by consumers, i.e. Feature Apps and

@@ -51,12 +51,6 @@ export interface FeatureHubContextProviderValue {
   addStylesheetsForSsr?(stylesheets: Css[]): void;
 }
 
-/**
- * @deprecated Use [[FeatureHubContextProviderValue]] or
- * [[FeatureHubContextConsumerValue]] instead.
- */
-export type FeatureHubContextValue = FeatureHubContextProviderValue;
-
 export type FeatureHubContextConsumerValue = SomeRequired<
   FeatureHubContextProviderValue,
   'logger'
