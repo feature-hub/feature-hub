@@ -21,14 +21,6 @@ describe('FeatureAppContainer (on Node.js)', () => {
   let mockFeatureAppScope: FeatureAppScope<unknown>;
   let stubbedConsole: Stubbed<Console>;
 
-  const noErrorBoundaryConsoleErrorCalls = [
-    [
-      expect.stringContaining(
-        'Consider adding an error boundary to your tree to customize error handling behavior.'
-      )
-    ]
-  ];
-
   const expectConsoleErrorCalls = (expectedConsoleErrorCalls: unknown[][]) => {
     try {
       expect(stubbedConsole.stub.error.mock.calls).toEqual(
@@ -84,24 +76,19 @@ describe('FeatureAppContainer (on Node.js)', () => {
         };
       });
 
-      it('logs and throws an error', () => {
+      it('logs an error', () => {
         const expectedError = new Error(
           'Invalid Feature App found. The Feature App must be an object with either 1) a `render` method that returns a React element, or 2) an `attachTo` method that accepts a container DOM element.'
         );
 
-        expect(() =>
-          renderWithFeatureHubContext(
-            <FeatureAppContainer
-              featureAppId="testId"
-              featureAppDefinition={mockFeatureAppDefinition}
-            />
-          )
-        ).toThrowError(expectedError);
+        renderWithFeatureHubContext(
+          <FeatureAppContainer
+            featureAppId="testId"
+            featureAppDefinition={mockFeatureAppDefinition}
+          />
+        );
 
-        expectConsoleErrorCalls([
-          [expectedError],
-          ...noErrorBoundaryConsoleErrorCalls
-        ]);
+        expectConsoleErrorCalls([[expectedError]]);
       });
     });
   }
@@ -117,20 +104,15 @@ describe('FeatureAppContainer (on Node.js)', () => {
       });
     });
 
-    it('logs and throws an error', () => {
-      expect(() =>
-        renderWithFeatureHubContext(
-          <FeatureAppContainer
-            featureAppId="testId"
-            featureAppDefinition={mockFeatureAppDefinition}
-          />
-        )
-      ).toThrowError(mockError);
+    it('logs an error', () => {
+      renderWithFeatureHubContext(
+        <FeatureAppContainer
+          featureAppId="testId"
+          featureAppDefinition={mockFeatureAppDefinition}
+        />
+      );
 
-      expectConsoleErrorCalls([
-        [mockError],
-        ...noErrorBoundaryConsoleErrorCalls
-      ]);
+      expectConsoleErrorCalls([[mockError]]);
     });
   });
 
@@ -150,20 +132,15 @@ describe('FeatureAppContainer (on Node.js)', () => {
       };
     });
 
-    it('logs and re-throws the error', () => {
-      expect(() =>
-        renderWithFeatureHubContext(
-          <FeatureAppContainer
-            featureAppId="testId"
-            featureAppDefinition={mockFeatureAppDefinition}
-          />
-        )
-      ).toThrowError(mockError);
+    it('logs the error', () => {
+      renderWithFeatureHubContext(
+        <FeatureAppContainer
+          featureAppId="testId"
+          featureAppDefinition={mockFeatureAppDefinition}
+        />
+      );
 
-      expectConsoleErrorCalls([
-        [mockError],
-        ...noErrorBoundaryConsoleErrorCalls
-      ]);
+      expectConsoleErrorCalls([[mockError]]);
     });
   });
 });

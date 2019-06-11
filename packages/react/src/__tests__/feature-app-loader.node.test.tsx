@@ -209,16 +209,14 @@ describe('FeatureAppLoader (on Node.js)', () => {
         mockAsyncFeatureAppDefinition.error = mockError;
       });
 
-      it('logs and re-throws the error', () => {
-        expect(() =>
-          renderWithFeatureHubContext(
-            <FeatureAppLoader
-              src="example.js"
-              serverSrc="example-node.js"
-              featureAppId="testId"
-            />
-          )
-        ).toThrowError(mockError);
+      it('logs the error', () => {
+        renderWithFeatureHubContext(
+          <FeatureAppLoader
+            src="example.js"
+            serverSrc="example-node.js"
+            featureAppId="testId"
+          />
+        );
 
         expect(stubbedConsole.stub.error.mock.calls).toEqual([
           [
