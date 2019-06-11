@@ -9,7 +9,7 @@ export const testRootLocationTransformer: RootLocationTransformer = {
     return searchParams.get(consumerId) || undefined;
   },
 
-  createRootLocation: (consumerLocation, rootLocation, consumerId) => {
+  createRootLocation: (rootLocation, consumerLocation, consumerId) => {
     const searchParams = new URLSearchParams(rootLocation.search);
 
     if (consumerLocation) {

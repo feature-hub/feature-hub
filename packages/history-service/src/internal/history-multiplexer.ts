@@ -81,8 +81,8 @@ export class HistoryMultiplexer {
     consumerLocation: history.Location | undefined
   ): history.Location {
     const rootLocation = this.rootLocationTransformer.createRootLocation(
-      consumerLocation,
       this.rootHistory.location,
+      consumerLocation,
       consumerId
     );
 

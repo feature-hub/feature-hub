@@ -10,17 +10,17 @@ describe('#createRootLocationTransformer', () => {
         });
 
         let rootLocation = locationTransformer.createRootLocation(
-          {pathname: '/foo'} as Location,
           {pathname: '/'} as Location,
+          {pathname: '/foo'} as Location,
           'test:1'
         );
 
         rootLocation = locationTransformer.createRootLocation(
+          rootLocation as Location,
           {
             pathname: '/bar',
             search: 'baz=1'
           } as Location,
-          rootLocation as Location,
           'test:2'
         );
 
@@ -37,17 +37,17 @@ describe('#createRootLocationTransformer', () => {
         });
 
         let rootLocation = locationTransformer.createRootLocation(
-          {pathname: '/foo'} as Location,
           {
             pathname: '/',
             search: '---=%7B%22test%3A2%22%3A%22%2Fbar%22%7D'
           } as Location,
+          {pathname: '/foo'} as Location,
           'test:1'
         );
 
         rootLocation = locationTransformer.createRootLocation(
-          undefined,
           rootLocation as Location,
+          undefined,
           'test:1'
         );
 
@@ -63,20 +63,20 @@ describe('#createRootLocationTransformer', () => {
         });
 
         let rootLocation = locationTransformer.createRootLocation(
-          {pathname: '/foo'} as Location,
           {pathname: '/'} as Location,
+          {pathname: '/foo'} as Location,
           'test:1'
         );
 
         rootLocation = locationTransformer.createRootLocation(
-          undefined,
           rootLocation as Location,
+          undefined,
           'test:1'
         );
 
         rootLocation = locationTransformer.createRootLocation(
-          undefined,
           rootLocation as Location,
+          undefined,
           'test:1'
         );
 
@@ -95,8 +95,8 @@ describe('#createRootLocationTransformer', () => {
         });
 
         const rootLocation = locationTransformer.createRootLocation(
-          {pathname: '/foo', search: 'bar=1&baz=2', hash: '#qux'} as Location,
           {pathname: '/'} as Location,
+          {pathname: '/foo', search: 'bar=1&baz=2', hash: '#qux'} as Location,
           'test:pri'
         );
 
@@ -114,14 +114,14 @@ describe('#createRootLocationTransformer', () => {
         });
 
         let rootLocation = locationTransformer.createRootLocation(
-          {pathname: '/foo', search: 'bar=1&baz=2', hash: '#qux'} as Location,
           {pathname: '/'} as Location,
+          {pathname: '/foo', search: 'bar=1&baz=2', hash: '#qux'} as Location,
           'test:pri'
         );
 
         rootLocation = locationTransformer.createRootLocation(
-          undefined,
           rootLocation as Location,
+          undefined,
           'test:pri'
         );
 
@@ -137,8 +137,8 @@ describe('#createRootLocationTransformer', () => {
 
           expect(() =>
             locationTransformer.createRootLocation(
-              {pathname: '/foo', search: '---=1'} as Location,
               {pathname: '/'} as Location,
+              {pathname: '/foo', search: '---=1'} as Location,
               'test:pri'
             )
           ).toThrowError(
@@ -158,20 +158,20 @@ describe('#createRootLocationTransformer', () => {
         });
 
         let rootLocation = locationTransformer.createRootLocation(
-          {pathname: '/baz', search: 'qux=3'} as Location,
           {pathname: '/'} as Location,
+          {pathname: '/baz', search: 'qux=3'} as Location,
           'test:1'
         );
 
         rootLocation = locationTransformer.createRootLocation(
-          {pathname: '/foo', search: 'bar=1', hash: '#qux'} as Location,
           rootLocation as Location,
+          {pathname: '/foo', search: 'bar=1', hash: '#qux'} as Location,
           'test:pri'
         );
 
         rootLocation = locationTransformer.createRootLocation(
-          {pathname: '/some', search: 'thing=else'} as Location,
           rootLocation as Location,
+          {pathname: '/some', search: 'thing=else'} as Location,
           'test:2'
         );
 
