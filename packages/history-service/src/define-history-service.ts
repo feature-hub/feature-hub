@@ -12,11 +12,6 @@ import {createHistoryMultiplexers} from './internal/create-history-multiplexers'
 import {createHistoryServiceV1Binder} from './internal/create-history-service-v1-binder';
 import {createHistoryServiceContext} from './internal/history-service-context';
 
-/**
- * @deprecated Use [[HistoryServiceV1]] instead.
- */
-export type HistoryServiceV0 = HistoryServiceV1;
-
 export interface HistoryServiceV1 {
   readonly staticRootLocation: history.Location;
 

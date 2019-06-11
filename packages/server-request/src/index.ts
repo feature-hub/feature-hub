@@ -4,11 +4,6 @@ import {
   SharedFeatureService
 } from '@feature-hub/core';
 
-/**
- * @deprecated Use [[ServerRequestV1]] instead.
- */
-export type ServerRequestV0 = ServerRequestV1;
-
 export interface ServerRequestV1 {
   readonly url: string;
   readonly cookies: Record<string, string>;

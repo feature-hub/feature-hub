@@ -78,11 +78,6 @@ export interface FeatureAppScopeOptions<
   ) => void;
 }
 
-/**
- * @deprecated Use [[FeatureAppManager]] instead.
- */
-export type FeatureAppManagerLike = FeatureAppManager;
-
 export interface FeatureAppManagerOptions {
   /**
    * For the `FeatureAppManager` to be able to load Feature Apps from a remote

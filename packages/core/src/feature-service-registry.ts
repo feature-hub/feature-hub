@@ -81,11 +81,6 @@ export interface FeatureServicesBinding<
   unbind(): void;
 }
 
-/**
- * @deprecated Use [[FeatureServiceRegistry]] instead.
- */
-export type FeatureServiceRegistryLike = FeatureServiceRegistry;
-
 export interface FeatureServiceRegistryOptions {
   /**
    * If the [[FeatureAppManager]] is configured with a
