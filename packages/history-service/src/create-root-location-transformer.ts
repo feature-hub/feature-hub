@@ -18,8 +18,8 @@ export interface RootLocationTransformer {
   ): string | undefined;
 
   createRootLocation(
-    consumerLocation: history.Location | undefined,
     currentRootLocation: history.Location,
+    consumerLocation: history.Location | undefined,
     consumerId: string
   ): history.LocationDescriptorObject;
 }
@@ -129,8 +129,8 @@ export function createRootLocationTransformer(
     },
 
     createRootLocation: (
-      consumerLocation: history.Location | undefined,
       currentRootLocation: history.Location,
+      consumerLocation: history.Location | undefined,
       consumerId: string
     ): history.LocationDescriptorObject => {
       const {consumerPathsQueryParamName, primaryConsumerId} = options;
