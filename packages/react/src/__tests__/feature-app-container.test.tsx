@@ -8,13 +8,13 @@ import {
 import {Stubbed, stubMethods} from 'jest-stub-methods';
 import * as React from 'react';
 import TestRenderer from 'react-test-renderer';
-import {FeatureAppContainer, FeatureHubContextProvider} from '..';
+import {FeatureApp, FeatureAppContainer, FeatureHubContextProvider} from '..';
 import {logger} from './logger';
 
 describe('FeatureAppContainer', () => {
   let mockFeatureAppManager: FeatureAppManager;
   let mockGetFeatureAppScope: jest.Mock;
-  let mockFeatureAppDefinition: FeatureAppDefinition<unknown>;
+  let mockFeatureAppDefinition: FeatureAppDefinition<FeatureApp>;
   let mockFeatureAppScope: FeatureAppScope<unknown>;
   let stubbedConsole: Stubbed<Console>;
 
@@ -115,7 +115,7 @@ describe('FeatureAppContainer', () => {
       />
     );
 
-    const expectedOptions: FeatureAppScopeOptions<string> = {
+    const expectedOptions: FeatureAppScopeOptions<{}, string> = {
       baseUrl: '/base',
       config: 'testConfig',
       beforeCreate: mockBeforeCreate

@@ -4,7 +4,7 @@ import {
   FeatureServices
 } from '@feature-hub/core';
 import * as React from 'react';
-import {FeatureAppContainer} from './feature-app-container';
+import {FeatureApp, FeatureAppContainer} from './feature-app-container';
 import {
   Css,
   FeatureHubContextConsumer,
@@ -12,7 +12,7 @@ import {
 } from './feature-hub-context';
 import {prependBaseUrl} from './internal/prepend-base-url';
 
-export interface FeatureAppLoaderProps<TConfig> {
+export interface FeatureAppLoaderProps<TConfig = unknown> {
   /**
    * The Feature App ID is used to identify the Feature App instance. Multiple
    * Feature App Loaders with the same `featureAppId` will render the same
@@ -77,7 +77,7 @@ const inBrowser =
   typeof document === 'object' &&
   document.nodeType === 9;
 
-class InternalFeatureAppLoader<TConfig> extends React.PureComponent<
+class InternalFeatureAppLoader<TConfig = unknown> extends React.PureComponent<
   InternalFeatureAppLoaderProps<TConfig>,
   InternalFeatureAppLoaderState
 > {
@@ -199,7 +199,9 @@ class InternalFeatureAppLoader<TConfig> extends React.PureComponent<
         beforeCreate={beforeCreate}
         config={config}
         featureAppId={featureAppId}
-        featureAppDefinition={featureAppDefinition}
+        featureAppDefinition={
+          featureAppDefinition as FeatureAppDefinition<FeatureApp>
+        }
         onError={onError}
         renderError={renderError}
       />

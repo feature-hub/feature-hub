@@ -9,7 +9,11 @@ import {
   FeatureHubContextConsumer,
   FeatureHubContextConsumerValue
 } from './feature-hub-context';
-import {isDomFeatureApp, isFeatureApp} from './internal/type-guards';
+import {
+  isDomFeatureApp,
+  isFeatureApp,
+  isReactFeatureApp
+} from './internal/type-guards';
 
 /**
  * The recommended way of writing a Feature App for a React integrator.
@@ -43,7 +47,11 @@ export interface DomFeatureApp {
  */
 export type FeatureApp = ReactFeatureApp | DomFeatureApp;
 
-export interface FeatureAppContainerProps<TConfig> {
+export interface FeatureAppContainerProps<
+  TFeatureApp,
+  TFeatureServices extends FeatureServices = FeatureServices,
+  TConfig = unknown
+> {
   /**
    * The Feature App ID is used to identify the Feature App instance. Multiple
    * Feature App Loaders with the same `featureAppId` will render the same
@@ -61,7 +69,11 @@ export interface FeatureAppContainerProps<TConfig> {
   /**
    * The consumer definition of the Feature App.
    */
-  readonly featureAppDefinition: FeatureAppDefinition<unknown>;
+  readonly featureAppDefinition: FeatureAppDefinition<
+    TFeatureApp,
+    TFeatureServices,
+    TConfig
+  >;
 
   /**
    * A config object that is passed to the Feature App's `create` method.
@@ -72,7 +84,7 @@ export interface FeatureAppContainerProps<TConfig> {
    * A callback that is called before the Feature App is created.
    */
   readonly beforeCreate?: (
-    env: FeatureAppEnvironment<FeatureServices, TConfig>
+    env: FeatureAppEnvironment<TFeatureServices, TConfig>
   ) => void;
 
   readonly onError?: (error: Error) => void;
@@ -80,28 +92,40 @@ export interface FeatureAppContainerProps<TConfig> {
   readonly renderError?: (error: Error) => React.ReactNode;
 }
 
-type InternalFeatureAppContainerProps<TConfig> = FeatureAppContainerProps<
+type InternalFeatureAppContainerProps<
+  TFeatureApp,
+  TFeatureServices extends FeatureServices,
   TConfig
-> &
+> = FeatureAppContainerProps<TFeatureApp, TFeatureServices, TConfig> &
   Pick<FeatureHubContextConsumerValue, 'featureAppManager' | 'logger'>;
 
-type InternalFeatureAppContainerState =
+type InternalFeatureAppContainerState<TFeatureApp extends FeatureApp> =
   | {readonly featureAppError: Error}
-  | {readonly featureApp: FeatureApp};
+  | {readonly featureApp: TFeatureApp};
 
 const inBrowser =
   typeof window === 'object' &&
   typeof document === 'object' &&
   document.nodeType === 9;
 
-class InternalFeatureAppContainer<TConfig> extends React.PureComponent<
-  InternalFeatureAppContainerProps<TConfig>,
-  InternalFeatureAppContainerState
+class InternalFeatureAppContainer<
+  TFeatureApp extends FeatureApp,
+  TFeatureServices extends FeatureServices = FeatureServices,
+  TConfig = unknown
+> extends React.PureComponent<
+  InternalFeatureAppContainerProps<TFeatureApp, TFeatureServices, TConfig>,
+  InternalFeatureAppContainerState<TFeatureApp>
 > {
-  private readonly featureAppScope?: FeatureAppScope<unknown>;
+  private readonly featureAppScope?: FeatureAppScope<TFeatureApp>;
   private readonly containerRef = React.createRef<HTMLDivElement>();
 
-  public constructor(props: InternalFeatureAppContainerProps<TConfig>) {
+  public constructor(
+    props: InternalFeatureAppContainerProps<
+      TFeatureApp,
+      TFeatureServices,
+      TConfig
+    >
+  ) {
     super(props);
 
     const {
@@ -171,17 +195,17 @@ class InternalFeatureAppContainer<TConfig> extends React.PureComponent<
       return this.renderError(this.state.featureAppError);
     }
 
-    if (isDomFeatureApp(this.state.featureApp)) {
-      return <div ref={this.containerRef} />;
+    if (isReactFeatureApp(this.state.featureApp)) {
+      try {
+        return this.state.featureApp.render();
+      } catch (error) {
+        this.handleError(error);
+
+        return this.renderError(error);
+      }
     }
 
-    try {
-      return this.state.featureApp.render();
-    } catch (error) {
-      this.handleError(error);
-
-      return this.renderError(error);
-    }
+    return <div ref={this.containerRef} />;
   }
 
   private renderError(error: Error): React.ReactNode {
@@ -217,13 +241,17 @@ class InternalFeatureAppContainer<TConfig> extends React.PureComponent<
  * `FeatureAppContainer` renders `null`. On the server, however, rendering
  * errors are not caught and must therefore be handled by the integrator.
  */
-export function FeatureAppContainer<TConfig>(
-  props: FeatureAppContainerProps<TConfig>
+export function FeatureAppContainer<
+  TFeatureApp extends FeatureApp,
+  TFeatureServices extends FeatureServices = FeatureServices,
+  TConfig = unknown
+>(
+  props: FeatureAppContainerProps<TFeatureApp, TFeatureServices, TConfig>
 ): JSX.Element {
   return (
     <FeatureHubContextConsumer>
       {({featureAppManager, logger}) => (
-        <InternalFeatureAppContainer<TConfig>
+        <InternalFeatureAppContainer<TFeatureApp, TFeatureServices, TConfig>
           featureAppManager={featureAppManager}
           logger={logger}
           {...props}

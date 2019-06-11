@@ -56,7 +56,10 @@ export interface FeatureAppScope<TFeatureApp> {
   destroy(): void;
 }
 
-export interface FeatureAppScopeOptions<TConfig> {
+export interface FeatureAppScopeOptions<
+  TFeatureServices extends FeatureServices,
+  TConfig
+> {
   /**
    * The absolute or relative base URL of the Feature App's assets and/or BFF.
    */
@@ -71,7 +74,7 @@ export interface FeatureAppScopeOptions<TConfig> {
    * A callback that is called before the Feature App is created.
    */
   readonly beforeCreate?: (
-    env: FeatureAppEnvironment<FeatureServices, TConfig>
+    env: FeatureAppEnvironment<TFeatureServices, TConfig>
   ) => void;
 }
 
@@ -186,10 +189,18 @@ export class FeatureAppManager {
    * multiple times with the same [[FeatureAppDefinition]] and ID specifier,
    * it returns the [[FeatureAppScope]] it created on the first call.
    */
-  public getFeatureAppScope<TFeatureApp, TConfig>(
+  public getFeatureAppScope<
+    TFeatureApp,
+    TFeatureServices extends FeatureServices = FeatureServices,
+    TConfig = unknown
+  >(
     featureAppId: string,
-    featureAppDefinition: FeatureAppDefinition<TFeatureApp>,
-    options: FeatureAppScopeOptions<TConfig> = {}
+    featureAppDefinition: FeatureAppDefinition<
+      TFeatureApp,
+      TFeatureServices,
+      TConfig
+    >,
+    options: FeatureAppScopeOptions<TFeatureServices, TConfig> = {}
   ): FeatureAppScope<TFeatureApp> {
     let featureAppScope = this.featureAppScopes.get(featureAppId);
 
@@ -277,11 +288,19 @@ export class FeatureAppManager {
     );
   }
 
-  private createFeatureAppScope<TFeatureApp, TConfig>(
-    featureAppDefinition: FeatureAppDefinition<TFeatureApp>,
+  private createFeatureAppScope<
+    TFeatureApp,
+    TFeatureServices extends FeatureServices,
+    TConfig
+  >(
+    featureAppDefinition: FeatureAppDefinition<
+      TFeatureApp,
+      TFeatureServices,
+      TConfig
+    >,
     featureAppId: string,
     deleteFeatureAppScope: () => void,
-    options: FeatureAppScopeOptions<TConfig>
+    options: FeatureAppScopeOptions<TFeatureServices, TConfig>
   ): FeatureAppScope<TFeatureApp> {
     this.validateExternals(featureAppDefinition);
 
@@ -292,11 +311,11 @@ export class FeatureAppManager {
       featureAppId
     );
 
-    const env: FeatureAppEnvironment<FeatureServices, TConfig> = {
+    const env: FeatureAppEnvironment<TFeatureServices, TConfig> = {
       baseUrl,
       config,
       featureAppId,
-      featureServices: binding.featureServices
+      featureServices: binding.featureServices as TFeatureServices
     };
 
     if (beforeCreate) {
