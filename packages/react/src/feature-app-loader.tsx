@@ -252,14 +252,6 @@ class InternalFeatureAppLoader<TConfig = unknown> extends React.PureComponent<
       this.props.onError(error);
     } else {
       this.logError(error);
-
-      /**
-       * @deprecated Should be handled instead by providing onError that throws.
-       * Remove this legacy branch for version 2.0 of @feature-hub/react.
-       */
-      if (!inBrowser) {
-        throw error;
-      }
     }
   }
 
