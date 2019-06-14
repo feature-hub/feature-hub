@@ -501,8 +501,8 @@ describe('FeatureAppManager', () => {
           mockFeatureAppDefinition
         );
 
-        expect(featureAppScope1).not.toBe(featureAppScope2);
-        expect(featureAppScope1.featureApp).toBe(featureAppScope2.featureApp);
+        expect(featureAppScope2).not.toBe(featureAppScope1);
+        expect(featureAppScope2.featureApp).toBe(featureAppScope1.featureApp);
       });
     });
 
