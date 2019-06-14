@@ -13,7 +13,7 @@ import {logger} from './logger';
 
 describe('FeatureAppContainer', () => {
   let mockFeatureAppManager: FeatureAppManager;
-  let mockGetFeatureAppScope: jest.Mock;
+  let mockCreateFeatureAppScope: jest.Mock;
   let mockFeatureAppDefinition: FeatureAppDefinition<FeatureApp>;
   let mockFeatureAppScope: FeatureAppScope<unknown>;
   let stubbedConsole: Stubbed<Console>;
@@ -48,12 +48,12 @@ describe('FeatureAppContainer', () => {
   beforeEach(() => {
     stubbedConsole = stubMethods(console);
     mockFeatureAppDefinition = {create: jest.fn()};
-    mockFeatureAppScope = {featureApp: {}, destroy: jest.fn()};
-    mockGetFeatureAppScope = jest.fn(() => mockFeatureAppScope);
+    mockFeatureAppScope = {featureApp: {}, release: jest.fn()};
+    mockCreateFeatureAppScope = jest.fn(() => ({...mockFeatureAppScope}));
 
     mockFeatureAppManager = ({
       getAsyncFeatureAppDefinition: jest.fn(),
-      getFeatureAppScope: mockGetFeatureAppScope,
+      createFeatureAppScope: mockCreateFeatureAppScope,
       preloadFeatureApp: jest.fn()
     } as Partial<FeatureAppManager>) as FeatureAppManager;
   });
@@ -121,7 +121,7 @@ describe('FeatureAppContainer', () => {
       beforeCreate: mockBeforeCreate
     };
 
-    expect(mockGetFeatureAppScope.mock.calls).toEqual([
+    expect(mockCreateFeatureAppScope.mock.calls).toEqual([
       ['testId', mockFeatureAppDefinition, expectedOptions]
     ]);
   });
@@ -132,7 +132,7 @@ describe('FeatureAppContainer', () => {
         featureApp: {
           render: () => <div>This is the React Feature App.</div>
         },
-        destroy: jest.fn()
+        release: jest.fn()
       };
     });
 
@@ -460,7 +460,7 @@ describe('FeatureAppContainer', () => {
     });
 
     describe('when unmounted', () => {
-      it('calls destroy() on the Feature App scope', () => {
+      it('calls release() on the Feature App scope', () => {
         const testRenderer = renderWithFeatureHubContext(
           <FeatureAppContainer
             featureAppId="testId"
@@ -468,20 +468,20 @@ describe('FeatureAppContainer', () => {
           />
         );
 
-        expect(mockFeatureAppScope.destroy).not.toHaveBeenCalled();
+        expect(mockFeatureAppScope.release).not.toHaveBeenCalled();
 
         testRenderer.unmount();
 
-        expect(mockFeatureAppScope.destroy).toHaveBeenCalledTimes(1);
+        expect(mockFeatureAppScope.release).toHaveBeenCalledTimes(1);
       });
 
       describe('when the Feature App scope throws an error while being destroyed', () => {
         let mockError: Error;
 
         beforeEach(() => {
-          mockError = new Error('Failed to destroy Feature App scope');
+          mockError = new Error('Failed to release Feature App');
 
-          mockFeatureAppScope.destroy = () => {
+          mockFeatureAppScope.release = () => {
             throw mockError;
           };
         });
@@ -571,7 +571,7 @@ describe('FeatureAppContainer', () => {
             container.innerHTML = 'This is the DOM Feature App.';
           }
         },
-        destroy: jest.fn()
+        release: jest.fn()
       };
     });
 
@@ -734,7 +734,7 @@ describe('FeatureAppContainer', () => {
     });
 
     describe('when unmounted', () => {
-      it('calls destroy() on the Feature App scope', () => {
+      it('calls release() on the Feature App scope', () => {
         const testRenderer = renderWithFeatureHubContext(
           <FeatureAppContainer
             featureAppId="testId"
@@ -742,20 +742,20 @@ describe('FeatureAppContainer', () => {
           />
         );
 
-        expect(mockFeatureAppScope.destroy).not.toHaveBeenCalled();
+        expect(mockFeatureAppScope.release).not.toHaveBeenCalled();
 
         testRenderer.unmount();
 
-        expect(mockFeatureAppScope.destroy).toHaveBeenCalledTimes(1);
+        expect(mockFeatureAppScope.release).toHaveBeenCalledTimes(1);
       });
 
-      describe('when the Feature App scope throws an error while being destroyed', () => {
+      describe('when the Feature App scope throws an error while being released', () => {
         let mockError: Error;
 
         beforeEach(() => {
-          mockError = new Error('Failed to destroy Feature App scope');
+          mockError = new Error('Failed to release Feature App');
 
-          mockFeatureAppScope.destroy = () => {
+          mockFeatureAppScope.release = () => {
             throw mockError;
           };
         });
@@ -807,7 +807,7 @@ describe('FeatureAppContainer', () => {
       beforeEach(() => {
         mockFeatureAppScope = {
           featureApp: invalidFeatureApp,
-          destroy: jest.fn()
+          release: jest.fn()
         };
       });
 
@@ -836,7 +836,7 @@ describe('FeatureAppContainer', () => {
     beforeEach(() => {
       mockError = new Error('Failed to create Feature App scope.');
 
-      mockGetFeatureAppScope.mockImplementation(() => {
+      mockCreateFeatureAppScope.mockImplementation(() => {
         throw mockError;
       });
     });

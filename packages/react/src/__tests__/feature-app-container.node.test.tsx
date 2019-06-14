@@ -16,7 +16,7 @@ import {FeatureApp, FeatureAppContainer, FeatureHubContextProvider} from '..';
 
 describe('FeatureAppContainer (on Node.js)', () => {
   let mockFeatureAppManager: FeatureAppManager;
-  let mockGetFeatureAppScope: jest.Mock;
+  let mockCreateFeatureAppScope: jest.Mock;
   let mockFeatureAppDefinition: FeatureAppDefinition<FeatureApp>;
   let mockFeatureAppScope: FeatureAppScope<unknown>;
   let stubbedConsole: Stubbed<Console>;
@@ -33,12 +33,12 @@ describe('FeatureAppContainer (on Node.js)', () => {
 
   beforeEach(() => {
     mockFeatureAppDefinition = {create: jest.fn()};
-    mockFeatureAppScope = {featureApp: {}, destroy: jest.fn()};
-    mockGetFeatureAppScope = jest.fn(() => mockFeatureAppScope);
+    mockFeatureAppScope = {featureApp: {}, release: jest.fn()};
+    mockCreateFeatureAppScope = jest.fn(() => ({...mockFeatureAppScope}));
 
     mockFeatureAppManager = ({
       getAsyncFeatureAppDefinition: jest.fn(),
-      getFeatureAppScope: mockGetFeatureAppScope,
+      createFeatureAppScope: mockCreateFeatureAppScope,
       preloadFeatureApp: jest.fn()
     } as Partial<FeatureAppManager>) as FeatureAppManager;
 
@@ -72,7 +72,7 @@ describe('FeatureAppContainer (on Node.js)', () => {
       beforeEach(() => {
         mockFeatureAppScope = {
           featureApp: invalidFeatureApp,
-          destroy: jest.fn()
+          release: jest.fn()
         };
       });
 
@@ -99,7 +99,7 @@ describe('FeatureAppContainer (on Node.js)', () => {
     beforeEach(() => {
       mockError = new Error('Failed to create Feature App scope.');
 
-      mockGetFeatureAppScope.mockImplementation(() => {
+      mockCreateFeatureAppScope.mockImplementation(() => {
         throw mockError;
       });
     });

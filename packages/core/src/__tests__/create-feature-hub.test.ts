@@ -77,7 +77,7 @@ describe('createFeatureHub()', () => {
     });
   });
 
-  describe('featureAppManager#getFeatureAppScope', () => {
+  describe('featureAppManager#createFeatureAppScope', () => {
     let mockFeatureApp: {};
     let mockFeatureAppCreate: jest.Mock;
     let mockFeatureAppDefinition: FeatureAppDefinition<unknown>;
@@ -98,7 +98,7 @@ describe('createFeatureHub()', () => {
         featureHubOptions
       );
 
-      const {featureApp} = featureAppManager.getFeatureAppScope(
+      const {featureApp} = featureAppManager.createFeatureAppScope(
         'test:feature-app',
         mockFeatureAppDefinition
       );
@@ -123,7 +123,7 @@ describe('createFeatureHub()', () => {
         );
 
         expect(() =>
-          featureAppManager.getFeatureAppScope(
+          featureAppManager.createFeatureAppScope(
             'test:feature-app',
             mockFeatureAppDefinition
           )
@@ -253,7 +253,7 @@ describe('createFeatureHub()', () => {
           logger
         });
 
-        featureAppManager.getFeatureAppScope(
+        featureAppManager.createFeatureAppScope(
           'test:feature-app',
           featureAppDefinition
         );
@@ -278,7 +278,7 @@ describe('createFeatureHub()', () => {
           featureServiceDefinitions
         });
 
-        featureAppManager.getFeatureAppScope(
+        featureAppManager.createFeatureAppScope(
           'test:feature-app',
           featureAppDefinition
         );

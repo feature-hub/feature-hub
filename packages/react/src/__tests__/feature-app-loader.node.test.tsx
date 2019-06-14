@@ -43,7 +43,7 @@ describe('FeatureAppLoader (on Node.js)', () => {
 
     mockFeatureAppManager = ({
       getAsyncFeatureAppDefinition: mockGetAsyncFeatureAppDefinition,
-      getFeatureAppScope: jest.fn(),
+      createFeatureAppScope: jest.fn(),
       preloadFeatureApp: jest.fn()
     } as Partial<FeatureAppManager>) as FeatureAppManager;
 
