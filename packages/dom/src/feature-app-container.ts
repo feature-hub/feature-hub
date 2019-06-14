@@ -104,7 +104,7 @@ export function defineFeatureAppContainer(
       }
 
       try {
-        this.featureAppScope = featureAppManager.getFeatureAppScope(
+        this.featureAppScope = featureAppManager.createFeatureAppScope(
           this.featureAppId,
           this.featureAppDefinition,
           {baseUrl: this.baseUrl, config: this.config}
@@ -132,7 +132,7 @@ export function defineFeatureAppContainer(
 
     public disconnectedCallback(): void {
       if (this.featureAppScope) {
-        this.featureAppScope.destroy();
+        this.featureAppScope.release();
       }
 
       super.disconnectedCallback();

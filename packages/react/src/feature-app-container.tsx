@@ -133,7 +133,7 @@ class InternalFeatureAppContainer<
     } = props;
 
     try {
-      this.featureAppScope = featureAppManager.getFeatureAppScope(
+      this.featureAppScope = featureAppManager.createFeatureAppScope(
         featureAppId,
         featureAppDefinition,
         {baseUrl, config, beforeCreate}
@@ -178,7 +178,7 @@ class InternalFeatureAppContainer<
   public componentWillUnmount(): void {
     if (this.featureAppScope) {
       try {
-        this.featureAppScope.destroy();
+        this.featureAppScope.release();
       } catch (error) {
         this.handleError(error);
       }

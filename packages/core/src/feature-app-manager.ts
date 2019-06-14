@@ -5,6 +5,7 @@ import {
   FeatureServiceProviderDefinition,
   FeatureServiceRegistry,
   FeatureServices,
+  FeatureServicesBinding,
   SharedFeatureService
 } from './feature-service-registry';
 import {isFeatureAppModule} from './internal/is-feature-app-module';
@@ -53,7 +54,12 @@ export type ModuleLoader = (url: string) => Promise<unknown>;
 export interface FeatureAppScope<TFeatureApp> {
   readonly featureApp: TFeatureApp;
 
-  destroy(): void;
+  /**
+   * When the `FeatureAppScope` is not needed anymore, e.g. the Feature App is
+   * unmounted, `release` must be called. When all scopes for a Feature App ID
+   * have been released, the Feature App instance is destroyed.
+   */
+  release(): void;
 }
 
 export interface FeatureAppScopeOptions<
@@ -106,6 +112,12 @@ export interface FeatureAppManagerOptions {
 type FeatureAppModuleUrl = string;
 type FeatureAppId = string;
 
+interface FeatureAppRetainer<TFeatureApp> {
+  readonly featureApp: TFeatureApp;
+  readonly binding: FeatureServicesBinding;
+  retainCount: number;
+}
+
 /**
  * The `FeatureAppManager` manages the lifecycle of Feature Apps.
  */
@@ -119,9 +131,9 @@ export class FeatureAppManager {
     FeatureAppDefinition<unknown>
   >();
 
-  private readonly featureAppScopes = new Map<
+  private readonly featureAppRetainers = new Map<
     FeatureAppId,
-    FeatureAppScope<unknown>
+    FeatureAppRetainer<unknown>
   >();
 
   private readonly logger: Logger;
@@ -163,9 +175,9 @@ export class FeatureAppManager {
   }
 
   /**
-   * Create a [[FeatureAppScope]] which includes validating externals,
-   * binding all available Feature Service dependencies, and calling the
-   * `create` method of the [[FeatureAppDefinition]].
+   * Create a [[FeatureAppScope]] which includes validating externals, binding
+   * all available Feature Service dependencies, and calling the `create` method
+   * of the [[FeatureAppDefinition]].
    *
    * @throws Throws an error if Feature Services that the
    * [[FeatureAppDefinition]] provides with its `ownFeatureServices` key fail to
@@ -176,15 +188,15 @@ export class FeatureAppManager {
    * @throws Throws an error the [[FeatureAppDefinition]]'s `create` method
    * throws.
    *
+   * @param featureAppID The ID of the Feature App to create a scope for.
    * @param featureAppDefinition The definition of the Feature App to create a
    * scope for.
    *
-   * @returns A [[FeatureAppScope]] for the provided [[FeatureAppDefinition]]
-   * and ID specifier. If `getFeatureAppScope` is called
-   * multiple times with the same [[FeatureAppDefinition]] and ID specifier,
-   * it returns the [[FeatureAppScope]] it created on the first call.
+   * @returns A [[FeatureAppScope]] for the provided Feature App ID and
+   * [[FeatureAppDefinition]]. A new scope is created for every call of
+   * `createFeatureAppScope`, even with the same ID and definiton.
    */
-  public getFeatureAppScope<
+  public createFeatureAppScope<
     TFeatureApp,
     TFeatureServices extends FeatureServices = FeatureServices,
     TConfig = unknown
@@ -197,22 +209,35 @@ export class FeatureAppManager {
     >,
     options: FeatureAppScopeOptions<TFeatureServices, TConfig> = {}
   ): FeatureAppScope<TFeatureApp> {
-    let featureAppScope = this.featureAppScopes.get(featureAppId);
+    const featureAppRetainer = this.getFeatureAppRetainer<
+      TFeatureApp,
+      TFeatureServices,
+      TConfig
+    >(featureAppId, featureAppDefinition, options);
 
-    if (!featureAppScope) {
-      this.registerOwnFeatureServices(featureAppId, featureAppDefinition);
+    let released = false;
 
-      featureAppScope = this.createFeatureAppScope(
-        featureAppDefinition,
-        featureAppId,
-        () => this.featureAppScopes.delete(featureAppId),
-        options
-      );
+    return {
+      featureApp: featureAppRetainer.featureApp,
 
-      this.featureAppScopes.set(featureAppId, featureAppScope);
-    }
+      release: () => {
+        if (released) {
+          this.logger.warn(
+            `The Feature App with the ID ${JSON.stringify(
+              featureAppId
+            )} has already been released for this scope.`
+          );
+        } else {
+          released = true;
+          featureAppRetainer.retainCount -= 1;
 
-    return featureAppScope as FeatureAppScope<TFeatureApp>;
+          if (featureAppRetainer.retainCount === 0) {
+            this.featureAppRetainers.delete(featureAppId);
+            featureAppRetainer.binding.unbind();
+          }
+        }
+      }
+    };
   }
 
   /**
@@ -283,7 +308,39 @@ export class FeatureAppManager {
     );
   }
 
-  private createFeatureAppScope<
+  private getFeatureAppRetainer<
+    TFeatureApp,
+    TFeatureServices extends FeatureServices = FeatureServices,
+    TConfig = unknown
+  >(
+    featureAppId: string,
+    featureAppDefinition: FeatureAppDefinition<
+      TFeatureApp,
+      TFeatureServices,
+      TConfig
+    >,
+    options: FeatureAppScopeOptions<TFeatureServices, TConfig>
+  ): FeatureAppRetainer<TFeatureApp> {
+    let featureAppRetainer = this.featureAppRetainers.get(featureAppId);
+
+    if (featureAppRetainer) {
+      featureAppRetainer.retainCount += 1;
+    } else {
+      this.registerOwnFeatureServices(featureAppId, featureAppDefinition);
+
+      featureAppRetainer = this.createFeatureAppRetainer(
+        featureAppDefinition,
+        featureAppId,
+        options
+      );
+
+      this.featureAppRetainers.set(featureAppId, featureAppRetainer);
+    }
+
+    return featureAppRetainer as FeatureAppRetainer<TFeatureApp>;
+  }
+
+  private createFeatureAppRetainer<
     TFeatureApp,
     TFeatureServices extends FeatureServices,
     TConfig
@@ -294,9 +351,8 @@ export class FeatureAppManager {
       TConfig
     >,
     featureAppId: string,
-    deleteFeatureAppScope: () => void,
     options: FeatureAppScopeOptions<TFeatureServices, TConfig>
-  ): FeatureAppScope<TFeatureApp> {
+  ): FeatureAppRetainer<TFeatureApp> {
     this.validateExternals(featureAppDefinition);
 
     const {baseUrl, beforeCreate, config} = options;
@@ -325,24 +381,7 @@ export class FeatureAppManager {
       )} has been successfully created.`
     );
 
-    let destroyed = false;
-
-    const destroy = () => {
-      if (destroyed) {
-        throw new Error(
-          `The Feature App with the ID ${JSON.stringify(
-            featureAppId
-          )} could not be destroyed.`
-        );
-      }
-
-      deleteFeatureAppScope();
-      binding.unbind();
-
-      destroyed = true;
-    };
-
-    return {featureApp, destroy};
+    return {featureApp, binding, retainCount: 1};
   }
 
   private validateExternals(
