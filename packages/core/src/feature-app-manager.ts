@@ -5,7 +5,6 @@ import {
   FeatureServiceProviderDefinition,
   FeatureServiceRegistry,
   FeatureServices,
-  FeatureServicesBinding,
   SharedFeatureService
 } from './feature-service-registry';
 import {isFeatureAppModule} from './internal/is-feature-app-module';
@@ -114,8 +113,8 @@ type FeatureAppId = string;
 
 interface FeatureAppRetainer<TFeatureApp> {
   readonly featureApp: TFeatureApp;
-  readonly binding: FeatureServicesBinding;
-  retainCount: number;
+  retain(): void;
+  release(): void;
 }
 
 /**
@@ -229,12 +228,7 @@ export class FeatureAppManager {
           );
         } else {
           released = true;
-          featureAppRetainer.retainCount -= 1;
-
-          if (featureAppRetainer.retainCount === 0) {
-            this.featureAppRetainers.delete(featureAppId);
-            featureAppRetainer.binding.unbind();
-          }
+          featureAppRetainer.release();
         }
       }
     };
@@ -324,7 +318,7 @@ export class FeatureAppManager {
     let featureAppRetainer = this.featureAppRetainers.get(featureAppId);
 
     if (featureAppRetainer) {
-      featureAppRetainer.retainCount += 1;
+      featureAppRetainer.retain();
     } else {
       this.registerOwnFeatureServices(featureAppId, featureAppDefinition);
 
@@ -333,8 +327,6 @@ export class FeatureAppManager {
         featureAppId,
         options
       );
-
-      this.featureAppRetainers.set(featureAppId, featureAppRetainer);
     }
 
     return featureAppRetainer as FeatureAppRetainer<TFeatureApp>;
@@ -381,7 +373,28 @@ export class FeatureAppManager {
       )} has been successfully created.`
     );
 
-    return {featureApp, binding, retainCount: 1};
+    let retainCount = 1;
+
+    const featureAppRetainer: FeatureAppRetainer<TFeatureApp> = {
+      featureApp,
+
+      retain: () => {
+        retainCount += 1;
+      },
+
+      release: () => {
+        retainCount -= 1;
+
+        if (retainCount === 0) {
+          this.featureAppRetainers.delete(featureAppId);
+          binding.unbind();
+        }
+      }
+    };
+
+    this.featureAppRetainers.set(featureAppId, featureAppRetainer);
+
+    return featureAppRetainer;
   }
 
   private validateExternals(
