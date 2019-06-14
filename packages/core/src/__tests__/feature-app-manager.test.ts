@@ -22,12 +22,11 @@ describe('FeatureAppManager', () => {
   let mockFeatureServiceRegistry: MockFeatureServiceRegistry;
   let mockFeatureServicesBinding: FeatureServicesBinding;
   let mockExternalsValidator: ExternalsValidator;
-  let mockFeatureServicesBindingUnbind: () => void;
+  let mockFeatureServicesBindingUnbind: jest.Mock;
   let mockModuleLoader: ModuleLoader;
   let mockFeatureAppDefinition: FeatureAppDefinition<unknown>;
   let mockFeatureAppModule: FeatureAppModule | undefined;
   let mockFeatureAppCreate: jest.Mock;
-  let mockFeatureApp: {};
 
   beforeEach(() => {
     mockFeatureServicesBindingUnbind = jest.fn();
@@ -42,8 +41,7 @@ describe('FeatureAppManager', () => {
       bindFeatureServices: jest.fn(() => mockFeatureServicesBinding)
     } as MockFeatureServiceRegistry;
 
-    mockFeatureApp = {};
-    mockFeatureAppCreate = jest.fn(() => mockFeatureApp);
+    mockFeatureAppCreate = jest.fn(() => ({}));
     mockFeatureAppDefinition = {create: mockFeatureAppCreate};
     mockFeatureAppModule = {default: mockFeatureAppDefinition};
     mockModuleLoader = jest.fn(async () => mockFeatureAppModule);
@@ -194,7 +192,7 @@ describe('FeatureAppManager', () => {
         mockFeatureAppCreate.mockImplementation(() => {
           expect(beforeCreateCalled).toBe(true);
 
-          return mockFeatureApp;
+          return {};
         });
 
         featureAppManager.createFeatureAppScope(
@@ -492,23 +490,28 @@ describe('FeatureAppManager', () => {
         ]);
       });
 
-      it('returns a new Feature App scope', () => {
-        const featureAppScope = featureAppManager.createFeatureAppScope(
+      it('returns a new Feature App scope containing the same Feature App instance', () => {
+        const featureAppScope1 = featureAppManager.createFeatureAppScope(
           'testId',
           mockFeatureAppDefinition
         );
 
-        expect(
-          featureAppManager.createFeatureAppScope(
-            'testId',
-            mockFeatureAppDefinition
-          )
-        ).not.toBe(featureAppScope);
+        const featureAppScope2 = featureAppManager.createFeatureAppScope(
+          'testId',
+          mockFeatureAppDefinition
+        );
+
+        expect(featureAppScope1).not.toBe(featureAppScope2);
+        expect(featureAppScope1.featureApp).toBe(featureAppScope2.featureApp);
       });
     });
 
     describe('#featureApp', () => {
       it("is the Feature App that the Feature App definition's create returns", () => {
+        const mockFeatureApp = {};
+
+        mockFeatureAppCreate.mockReturnValue(mockFeatureApp);
+
         const featureAppScope = featureAppManager.createFeatureAppScope(
           'testId',
           mockFeatureAppDefinition
@@ -528,6 +531,34 @@ describe('FeatureAppManager', () => {
         featureAppScope.release();
 
         expect(mockFeatureServicesBindingUnbind).toHaveBeenCalledTimes(1);
+      });
+
+      describe('when unbind throws an error', () => {
+        it('a consecutive call of createFeatureAppScope does not return a scope with the old Feature App instance', () => {
+          const mockError = new Error('failed to unbind');
+
+          const featureAppScope1 = featureAppManager.createFeatureAppScope(
+            'testId',
+            mockFeatureAppDefinition
+          );
+
+          mockFeatureServicesBindingUnbind.mockImplementation(() => {
+            throw mockError;
+          });
+
+          expect(() => {
+            featureAppScope1.release();
+          }).toThrowError(mockError);
+
+          const featureAppScope2 = featureAppManager.createFeatureAppScope(
+            'testId',
+            mockFeatureAppDefinition
+          );
+
+          expect(featureAppScope1.featureApp).not.toBe(
+            featureAppScope2.featureApp
+          );
+        });
       });
 
       describe('when createFeatureAppScope has been called two times', () => {
