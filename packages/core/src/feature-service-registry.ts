@@ -220,8 +220,7 @@ export class FeatureServiceRegistry {
    * Bind all dependencies to a consumer.
    *
    * @throws Throws an error if non-optional dependencies can't be fulfilled.
-   * @throws Throws an error if called with the same consumer definition and
-   * specifier more than once.
+   * @throws Throws an error if called with the same consumer ID more than once.
    *
    * @param consumerDefinition The definition of the consumer to which
    * dependencies should be bound.

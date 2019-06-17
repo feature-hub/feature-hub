@@ -36,10 +36,9 @@ const myFeatureServiceDefinition = {
 ## `id`
 
 It is recommended to use namespaces for the Feature Service ID to avoid naming
-conflicts, e.g. `'acme:my-feature-service'`. This ID is used to look up the
-config for a Feature Service. Furthermore, it is used as a consumer ID for
-[binding the required Feature Services][feature-service-binder] to the dependent
-Feature Service.
+conflicts, e.g. `'acme:my-feature-service'`. This ID is used as a consumer ID
+for [binding the required Feature Services][feature-service-binder] to the
+dependent Feature Service.
 
 ## `dependencies`
 
@@ -88,21 +87,6 @@ the `FeatureServiceRegistry`. It should store, and possibly initialize, any
 shared state. The method takes the single argument `env`, which has the
 following properties:
 
-1. `config` — A Feature Service [config object that is provided by the
-   integrator][providing-configs]:
-
-   ```js
-   const myFeatureServiceDefinition = {
-     id: 'acme:my-feature-service',
-
-     create(env) {
-       const {foo} = env.config;
-
-       // ...
-     }
-   };
-   ```
-
 1. `featureServices` — An object of required Feature Services that are
    semver-compatible with the declared dependencies in the Feature Service
    definition:
@@ -150,7 +134,7 @@ const myFeatureServiceDefinition = {
   id: 'acme:my-feature-service',
 
   create(env) {
-    let count = env.config.initialCount || 0;
+    let count = 0;
 
     const v1 = consumerUid => ({
       featureService: {
@@ -178,7 +162,7 @@ const myFeatureServiceDefinition = {
   id: 'acme:my-feature-service',
 
   create(env) {
-    let count = env.config.initialCount || 0;
+    let count = 0;
 
     const v1 = consumerUid => ({
       featureService: {
@@ -221,7 +205,7 @@ const myFeatureServiceDefinition = {
   id: 'acme:my-feature-service',
 
   create(env) {
-    let count = env.config.initialCount || 0;
+    let count = 0;
 
     const getCount = () => count;
     const decrement = () => void --count;

@@ -196,7 +196,32 @@ import {FeatureHubContextProvider} from '@feature-hub/react';
 ### React Feature App Loader
 
 The `FeatureAppLoader` component allows the integrator to load Feature Apps from
-a remote location.
+a remote location. It has two required props: `featureAppId` and `src`.
+
+#### `featureAppId`
+
+The Feature App ID is required to identify the Feature App instance. Multiple
+Feature App Loaders with the same `featureAppId` will render the same Feature
+app instance. The ID is also used as a consumer ID for dependent Feature
+Services. To render multiple instances of the same kind of Feature App,
+different IDs must be used:
+
+```jsx
+<section>
+  <div>
+    <FeatureAppLoader
+      featureAppId="some-feature-app:main"
+      src="https://example.com/some-feature-app.js"
+    />
+  </div>
+  <aside>
+    <FeatureAppLoader
+      featureAppId="some-feature-app:aside"
+      src="https://example.com/some-feature-app.js"
+    />
+  </aside>
+</section>
+```
 
 #### `src`
 
@@ -208,7 +233,10 @@ import {FeatureAppLoader} from '@feature-hub/react';
 ```
 
 ```jsx
-<FeatureAppLoader src="https://example.com/some-feature-app.js" />
+<FeatureAppLoader
+  featureAppId="some-feature-app"
+  src="https://example.com/some-feature-app.js"
+/>
 ```
 
 > **Note:**  
@@ -222,6 +250,7 @@ Additionally, when a Feature App needs to be rendered on the server, its
 
 ```jsx
 <FeatureAppLoader
+  featureAppId="some-feature-app"
   src="https://example.com/some-feature-app.js"
   serverSrc="https://example.com/some-feature-app-node.js"
 />
@@ -241,6 +270,7 @@ You can also define a `css` prop to add stylesheets to the document:
 
 ```jsx
 <FeatureAppLoader
+  featureAppId="some-feature-app"
   src="https://example.com/some-feature-app.js"
   css={[
     {href: 'https://example.com/some-feature-app.css'},
@@ -260,6 +290,7 @@ Optionally, a relative or absolute `baseUrl` can be specified for two purposes:
 
 ```jsx
 <FeatureAppLoader
+  featureAppId="some-feature-app"
   baseUrl="https://example.com/some-feature-app"
   src="main.js"
   serverSrc="main-node.js"
@@ -271,48 +302,27 @@ Optionally, a relative or absolute `baseUrl` can be specified for two purposes:
 > Only relative URLs are prepended with the `baseUrl`. Absolute URLs are used
 > unchanged.
 
-#### `idSpecifier`
+#### `config`
 
-If multiple instances of the same Feature App are placed on a single web page,
-an `idSpecifier` that is unique for the Feature App ID must be defined by the
-integrator:
-
-```jsx
-<section>
-  <div>
-    <FeatureAppLoader
-      src="https://example.com/some-feature-app.js"
-      idSpecifier="main"
-    />
-  </div>
-  <aside>
-    <FeatureAppLoader
-      src="https://example.com/some-feature-app.js"
-      idSpecifier="aside"
-    />
-  </aside>
-</section>
-```
-
-#### `instanceConfig`
-
-With the `instanceConfig` prop, a config object for a specific Feature App
-instance can be provided:
+With the `config` prop, a config object for a specific Feature App instance can
+be provided:
 
 ```jsx
 <FeatureAppLoader
+  featureAppId="some-feature-app"
   src="https://example.com/some-feature-app.js"
-  instanceConfig={{scope: 'foo'}}
+  config={{someConfig: 'foo'}}
 />
 ```
 
 For more details please refer to the the
-["Feature App Instance Configs" section](#feature-app-instance-configs).
+["Feature App Configs" section](#feature-app-configs).
 
 ### React Feature App Container
 
 The `FeatureAppContainer` component allows the integrator to bundle Feature Apps
-instead of loading them from a remote location.
+instead of loading them from a remote location. It has two required props:
+`featureAppId` and `featureAppDefinition`.
 
 #### `featureAppDefinition`
 
@@ -325,7 +335,35 @@ import {someFeatureAppDefinition} from './some-feature-app';
 ```
 
 ```jsx
-<FeatureAppContainer featureAppDefinition={someFeatureAppDefinition} />
+<FeatureAppContainer
+  featureAppId="some-feature-app"
+  featureAppDefinition={someFeatureAppDefinition}
+/>
+```
+
+#### `featureAppId`
+
+The Feature App ID is required to identify the Feature App instance. Multiple
+Feature App Containers with the same `featureAppId` will render the same Feature
+app instance. The ID is also used as a consumer ID for dependent Feature
+Services. To render multiple instances of the same kind of Feature App,
+different IDs must be used:
+
+```jsx
+<section>
+  <div>
+    <FeatureAppContainer
+      featureAppId="some-feature-app:main"
+      featureAppDefinition={someFeatureAppDefinition}
+    />
+  </div>
+  <aside>
+    <FeatureAppContainer
+      featureAppId="some-feature-app:aside"
+      featureAppDefinition={someFeatureAppDefinition}
+    />
+  </aside>
+</section>
 ```
 
 #### `baseUrl`
@@ -334,49 +372,28 @@ Optionally, a `baseUrl` can be specified to provide the Feature App with a base
 URL that it can use to reference its own resources:
 
 ```jsx
-<FeatureAppLoader
+<FeatureAppContainer
+  featureAppId="some-feature-app"
   featureAppDefinition={someFeatureAppDefinition}
   baseUrl="https://example.com/some-feature-app"
 />
 ```
 
-#### `idSpecifier`
+#### `config`
 
-If multiple instances of the same Feature App are placed on a single web page,
-an `idSpecifier` that is unique for the Feature App ID must be defined by the
-integrator:
-
-```jsx
-<section>
-  <div>
-    <FeatureAppContainer
-      featureAppDefinition={someFeatureAppDefinition}
-      idSpecifier="main"
-    />
-  </div>
-  <aside>
-    <FeatureAppContainer
-      featureAppDefinition={someFeatureAppDefinition}
-      idSpecifier="aside"
-    />
-  </aside>
-</section>
-```
-
-#### `instanceConfig`
-
-With the `instanceConfig` prop, a config object for a specific Feature App
-instance can be provided:
+With the `config` prop, a config object for a specific Feature App instance can
+be provided:
 
 ```jsx
 <FeatureAppContainer
+  featureAppId="some-feature-app"
   featureAppDefinition={someFeatureAppDefinition}
-  instanceConfig={{scope: 'foo'}}
+  config={{someConfig: 'foo'}}
 />
 ```
 
 For more details please refer to the the
-["Feature App Instance Configs" section](#feature-app-instance-configs).
+["Feature App Configs" section](#feature-app-configs).
 
 ### Error Handling
 
@@ -410,6 +427,31 @@ defineFeatureAppLoader(featureAppManager);
 The `feature-app-loader` custom element allows the integrator to load Feature
 Apps from a remote location.
 
+#### `featureAppId`
+
+The Feature App ID is required to identify the Feature App instance. Multiple
+`feature-app-loader` custom elements with the same `featureAppId` will render
+the same Feature app instance. The ID is also used as a consumer ID for
+dependent Feature Services. To render multiple instances of the same kind of
+Feature App, different IDs must be used:
+
+```html
+<section>
+  <div>
+    <feature-app-loader
+      featureAppId="some-feature-app:main"
+      src="https://example.com/some-feature-app.js"
+    ></feature-app-loader>
+  </div>
+  <aside>
+    <feature-app-loader
+      featureAppId="some-feature-app:aside"
+      src="https://example.com/some-feature-app.js"
+    ></feature-app-loader>
+  </aside>
+</section>
+```
+
 #### `src`
 
 A Feature App can be loaded and integrated by defining a `src` attribute which
@@ -417,6 +459,7 @@ is the URL of its module bundle:
 
 ```html
 <feature-app-loader
+  featureAppId="some-feature-app"
   src="https://example.com/some-feature-app.js"
 ></feature-app-loader>
 ```
@@ -435,50 +478,29 @@ Optionally, a `baseUrl` can be specified for two purposes:
 
 ```html
 <feature-app-loader
+  featureAppId="some-feature-app"
   baseUrl="https://example.com/some-feature-app"
   src="main.js"
 ></feature-app-loader>
 ```
 
-#### `idSpecifier`
+#### `config`
 
-If multiple instances of the same Feature App are placed on a single web page,
-an `idSpecifier` that is unique for the Feature App ID must be defined by the
-integrator:
-
-```html
-<section>
-  <div>
-    <feature-app-loader
-      src="https://example.com/some-feature-app.js"
-      idSpecifier="main"
-    ></feature-app-loader>
-  </div>
-  <aside>
-    <feature-app-loader
-      src="https://example.com/some-feature-app.js"
-      idSpecifier="aside"
-    ></feature-app-loader>
-  </aside>
-</section>
-```
-
-#### `instanceConfig`
-
-With the `instanceConfig` property, a config object for a specific Feature App
-instance can be provided:
+With the `config` property, a config object for a specific Feature App instance
+can be provided:
 
 ```js
 const featureAppLoader = document.createElement('feature-app-loader');
 
+featureAppLoader.setAttribute('featureAppId', 'some-feature-app');
 featureAppLoader.setAttribute('src', 'https://example.com/some-feature-app.js');
-featureAppLoader.instanceConfig = {scope: 'foo'};
+featureAppLoader.config = {someConfig: 'foo'};
 
 document.querySelector('#app').appendChild(featureAppLoader);
 ```
 
 For more details please refer to the the
-["Feature App Instance Configs" section](#feature-app-instance-configs).
+["Feature App Configs" section](#feature-app-configs).
 
 #### `loading` Slot
 
@@ -486,7 +508,10 @@ The `feature-app-loader` custom element renders a slot named `loading` while the
 Feature App module is loaded.
 
 ```html
-<feature-app-loader src="https://example.com/some-feature-app.js">
+<feature-app-loader
+  featureAppId="some-feature-app"
+  src="https://example.com/some-feature-app.js"
+>
   <p slot="loading">Loading...</p>
 </feature-app-loader>
 ```
@@ -498,7 +523,10 @@ Feature App module could not be loaded. It also passes the slot
 [to the underlying `feature-app-container`](#error-slot-1).
 
 ```html
-<feature-app-loader src="https://example.com/some-feature-app.js">
+<feature-app-loader
+  featureAppId="some-feature-app"
+  src="https://example.com/some-feature-app.js"
+>
   <p slot="error">Sorry, we messed up.</p>
 </feature-app-loader>
 ```
@@ -514,11 +542,42 @@ A Feature App can be integrated by directly providing its
 `featureAppDefinition`:
 
 ```js
+import {someFeatureAppDefinition} from './some-feature-app';
+```
+
+```js
 const featureAppContainer = document.createElement('feature-app-container');
 
+featureAppLoader.setAttribute('featureAppId', 'some-feature-app');
 featureAppContainer.featureAppDefinition = someFeatureAppDefinition;
 
 document.querySelector('#app').appendChild(featureAppContainer);
+```
+
+#### `featureAppId`
+
+The Feature App ID is required to identify the Feature App instance. Multiple
+`feature-app-loader` custom elements with the same `featureAppId` will render
+the same Feature app instance. The ID is also used as a consumer ID for
+dependent Feature Services. To render multiple instances of the same kind of
+Feature App, different IDs must be used:
+
+```js
+const mainFeatureAppContainer = document.createElement('feature-app-container');
+
+mainFeatureAppContainer.setAttribute('featureAppId', 'some-feature-app:main');
+mainFeatureAppContainer.featureAppDefinition = someFeatureAppDefinition;
+
+document.querySelector('main').appendChild(mainFeatureAppContainer);
+
+const asideFeatureAppContainer = document.createElement(
+  'feature-app-container'
+);
+
+asideFeatureAppContainer.setAttribute('featureAppId', 'some-feature-app:aside');
+asideFeatureAppContainer.featureAppDefinition = someFeatureAppDefinition;
+
+document.querySelector('aside').appendChild(asideFeatureAppContainer);
 ```
 
 #### `baseUrl`
@@ -529,6 +588,7 @@ URL that it can use to reference its own resources:
 ```js
 const featureAppContainer = document.createElement('feature-app-container');
 
+mainFeatureAppContainer.setAttribute('featureAppId', 'some-feature-app');
 featureAppContainer.featureAppDefinition = someFeatureAppDefinition;
 
 featureAppContainer.setAttribute(
@@ -539,50 +599,23 @@ featureAppContainer.setAttribute(
 document.querySelector('#app').appendChild(featureAppContainer);
 ```
 
-#### `idSpecifier`
+#### `config`
 
-If multiple instances of the same Feature App are placed on a single web page,
-an `idSpecifier` that is unique for the Feature App ID must be defined by the
-integrator:
-
-```js
-const mainFeatureAppContainer = document.createElement('feature-app-container');
-
-mainFeatureAppContainer.featureAppDefinition = someFeatureAppDefinition;
-mainFeatureAppContainer.setAttribute('idSpecifier', 'main');
-
-document.querySelector('main').appendChild(mainFeatureAppContainer);
-
-const asideFeatureAppContainer = document.createElement(
-  'feature-app-container'
-);
-
-asideFeatureAppContainer.featureAppDefinition = someFeatureAppDefinition;
-asideFeatureAppContainer.setAttribute('idSpecifier', 'aside');
-
-document.querySelector('aside').appendChild(asideFeatureAppContainer);
-```
-
-#### `instanceConfig`
-
-With the `instanceConfig` property, a config object for a specific Feature App
-instance can be provided:
-
-```js
-import {someFeatureAppDefinition} from './some-feature-app';
-```
+With the `config` property, a config object for a specific Feature App instance
+can be provided:
 
 ```js
 const featureAppContainer = document.createElement('feature-app-container');
 
+mainFeatureAppContainer.setAttribute('featureAppId', 'some-feature-app');
 featureAppContainer.featureAppDefinition = someFeatureAppDefinition;
-featureAppLoader.instanceConfig = {scope: 'foo'};
+featureAppLoader.config = {someConfig: 'foo'};
 
 document.querySelector('#app').appendChild(featureAppContainer);
 ```
 
 For more details please refer to the the
-["Feature App Instance Configs" section](#feature-app-instance-configs).
+["Feature App Configs" section](#feature-app-configs).
 
 #### `error` Slot
 
@@ -593,6 +626,7 @@ method.
 ```js
 const featureAppContainer = document.createElement('feature-app-container');
 
+mainFeatureAppContainer.setAttribute('featureAppId', 'some-feature-app');
 featureAppContainer.featureAppDefinition = someFeatureAppDefinition;
 featureAppContainer.innerHtml = '<p slot="error">Sorry, we messed up.</p>';
 
@@ -601,75 +635,57 @@ document.querySelector('#app').appendChild(featureAppContainer);
 
 ## Providing Configs
 
-The integrator can provide config objects for Feature Services and Feature Apps,
-associated with their respective IDs, as options of the `createFeatureHub`
-function:
+### Feature Service Configs
+
+If a Feature Service must be configurable, it must export a factory function
+that accepts some options and returns a Feature Service definition, e.g.:
 
 ```js
-const {featureAppManager, featureServiceRegistry} = createFeatureHub(
-  'acme:integrator',
-  {
-    featureServiceConfigs: {
-      'acme:some-feature-service': {foo: 'bar'}
-    },
-    featureAppConfigs: {
-      'acme:some-feature-app': {baz: 'qux'}
+export function defineSomeFeatureService(options = {}) {
+  return {
+    id: 'acme:some-feature-service',
+
+    create: () => {
+      return {
+        '1.0.0': () => ({
+          featureService: {
+            foo() {
+              return 42 + options.someConfig;
+            }
+          }
+        })
+      };
     }
-  }
-);
+  };
+}
 ```
 
-Feature Services and Feature Apps can then use their respective config object as
-follows:
+The integrator can then pass the configuration to the Feature Service when
+creating the Feature Service definiton for the `featureServiceDefinitions`
+option of `createFeatureHub` (see above).
 
-```js
-const someFeatureServiceDefinition = {
-  id: 'acme:some-feature-service',
+### Feature App Configs
 
-  create(env) {
-    const {foo} = env.config; // foo is 'bar'
-
-    // ...
-  }
-};
-```
-
-```js
-const someFeatureAppDefinition = {
-  id: 'acme:some-feature-app',
-
-  create(env) {
-    const {baz} = env.config; // baz is 'qux'
-
-    // ...
-  }
-};
-```
-
-### Feature App Instance Configs
-
-When a Feature App needs a configuration that is intended to be specific for a
-given instance, the `instanceConfig` prop can be set on the React
-`FeatureAppLoader`, `feature-app-loader` custom element, React
+When a Feature App needs a configuration, the `config` prop can be set on the
+React `FeatureAppLoader`, `feature-app-loader` custom element, React
 `FeatureAppContainer`, or the `feature-app-container` custom element for a given
 Feature App instance, e.g.:
 
 ```jsx
 <FeatureAppLoader
+  featureAppId="some-feature-app"
   src="https://example.com/some-feature-app.js"
-  instanceConfig={{scope: 'foo'}}
+  config={{someConfig: 'foo'}}
 />
 ```
 
-The `instanceConfig` will be passed to the Feature App's `create` method via the
-`env` argument:
+The `config` will be passed to the Feature App's `create` method via the `env`
+argument:
 
 ```js
 const someFeatureAppDefinition = {
-  id: 'acme:some-feature-app',
-
   create(env) {
-    const {scope} = env.instanceConfig; // scope is 'foo'
+    const {someConfig} = env.config; // someConfig is 'foo'
 
     // ...
   }
@@ -677,11 +693,11 @@ const someFeatureAppDefinition = {
 ```
 
 > **Note:**  
-> The `instanceConfig` must be completely static, since it is only evaluated
-> when a Feature App is mounted. Changing the `instanceConfig` after a Feature
-> App has been loaded, will have no effect! Therefore, it is not suitable to
-> exchange dynamic state between a Feature App and its outer boundary. In this
-> case a Feature Service should be used instead.
+> The `config` must be completely static, since it is only evaluated when a
+> Feature App is mounted. Changing the `config` after a Feature App has been
+> loaded, will have no effect! Therefore, it is not suitable to exchange dynamic
+> state between a Feature App and its outer boundary. In this case a Feature
+> Service should be used instead.
 
 ## Consuming Feature Services
 
