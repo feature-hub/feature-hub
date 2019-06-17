@@ -4,14 +4,12 @@ title: Writing a Feature App
 sidebar_label: Writing a Feature App
 ---
 
-A Feature App is described by a consumer definition object. It consists of an
-`id`, `dependencies` and/or `optionalDependencies` objects, and a `create`
+A Feature App is described by a consumer definition object. It consists of
+optional `dependencies` and `optionalDependencies` objects, and a `create`
 method:
 
 ```js
 const myFeatureAppDefinition = {
-  id: 'acme:my-feature-app',
-
   dependencies: {
     featureServices: {
       'acme:some-feature-service': '^2.0.0'
@@ -39,13 +37,6 @@ If a Feature App module is to be loaded asynchronously with the
 ```js
 export default myFeatureAppDefinition;
 ```
-
-## `id`
-
-It is recommended to use namespaces for the Feature App ID to avoid naming
-conflicts, e.g. `'acme:my-feature-app'`. This ID is used to look up the config
-for a Feature App. Furthermore, it is used as a consumer ID for [binding the
-required Feature Services][feature-service-binder] to the dependent Feature App.
 
 ## `dependencies`
 
@@ -87,13 +78,10 @@ The `create` method takes the single argument `env`, which has the following
 properties:
 
 1. `config` — A [config object that is provided by the
-   integrator][providing-configs] for all Feature App instances with the same
-   ID:
+   integrator][feature-app-configs]:
 
    ```js
    const myFeatureAppDefinition = {
-     id: 'acme:my-feature-app',
-
      create(env) {
        const {foo} = env.config;
 
@@ -102,17 +90,12 @@ properties:
    };
    ```
 
-1. `instanceConfig` — A config object that is intended for a specific Feature
-   App instance.
-
 1. `featureServices` — An object of required Feature Services that are
    semver-compatible with the declared dependencies in the Feature App
    definition:
 
    ```js
    const myFeatureAppDefinition = {
-     id: 'acme:my-feature-app',
-
      dependencies: {
        featureServices: {
          'acme:some-feature-service': '^2.0.0'
@@ -130,8 +113,9 @@ properties:
    };
    ```
 
-1. `idSpecifier` — An optional [ID specifier][idspecifier] that distinguishes
-   the Feature App instance from other Feature App instances with the same ID.
+1. `featureAppId` — The ID that the integrator has assigned to the Feature App
+   instance. This ID is used as a consumer ID for [binding the required Feature
+   Services][feature-service-binder] to the Feature App.
 
 1. `baseUrl` — A base URL to be used for referencing the Feature App's own
    resources. It is only set in the `env` if the integrator has defined a
@@ -155,8 +139,6 @@ import {myFeatureServiceDefinition} from './my-feature-service';
 
 ```js
 const myFeatureAppDefinition = {
-  id: 'acme:my-feature-app',
-
   dependencies: {
     featureServices: {
       'acme:my-feature-service': '^1.0.0'
@@ -197,8 +179,6 @@ with a `render` method that itself returns a `ReactNode`:
 
 ```js
 const myFeatureAppDefinition = {
-  id: 'acme:my-feature-app',
-
   create(env) {
     return {
       render() {
@@ -223,8 +203,6 @@ accepts a DOM container element:
 
 ```js
 const myFeatureAppDefinition = {
-  id: 'acme:my-feature-app',
-
   create(env) {
     return {
       attachTo(container) {
@@ -252,8 +230,6 @@ method that accepts a DOM container element:
 
 ```js
 const myFeatureAppDefinition = {
-  id: 'acme:my-feature-app',
-
   create(env) {
     return {
       attachTo(container) {
@@ -267,7 +243,6 @@ const myFeatureAppDefinition = {
 [dom-feature-app]: /docs/guides/writing-a-feature-app#dom-feature-app
 [feature-service-binder]:
   /docs/guides/writing-a-feature-service#feature-service-binder
-[idspecifier]: /docs/guides/integrating-the-feature-hub#idspecifier
 [feature-app-loader-base-url]: /docs/guides/integrating-the-feature-hub#baseurl
 [feature-app-container-base-url]:
   /docs/guides/integrating-the-feature-hub#baseurl-1
@@ -275,7 +250,8 @@ const myFeatureAppDefinition = {
   /docs/guides/integrating-the-feature-hub#placing-feature-apps-on-a-web-page-using-react
 [placing-feature-apps-on-a-web-page-using-web-components]:
   /docs/guides/integrating-the-feature-hub/#placing-feature-apps-on-a-web-page-using-web-components
-[providing-configs]: /docs/guides/integrating-the-feature-hub#providing-configs
+[feature-app-configs]:
+  /docs/guides/integrating-the-feature-hub#feature-app-configs
 [dom-api]: /@feature-hub/modules/dom.html
 [react-api]: /@feature-hub/modules/react.html
 [react-feature-app]: /docs/guides/writing-a-feature-app#react-feature-app

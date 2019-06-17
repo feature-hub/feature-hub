@@ -14,10 +14,10 @@ Feature App that is included in its bundle, or the parent Feature App can [use
 the `FeatureAppLoader`][react-feature-app-loader] to load and render a Feature
 App that is deployed independently.
 
-To avoid conflicts when multiple instances of the same Feature App are placed on
-a single web page, the parent Feature App should define an `idSpecifier` for its
-child Feature App, e.g. using its own `id` combined with its own `idSpecifier`.
-For more details see the ["Feature App in Feature App"
+The parent Feature App must define a `featureAppId` for its child Feature App.
+To avoid conflicts when multiple instances of this child Feature App are placed
+on a single web page, the child `featureAppId` can be created using the parent's
+`featureAppId` as prefix. For more details see the ["Feature App in Feature App"
 demo][feature-app-in-feature-demo-outer].
 
 The `FeatureAppContainer` and `FeatureAppLoader` both access the
