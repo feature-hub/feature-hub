@@ -3,6 +3,45 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/sinnerschrader/feature-hub/compare/v1.7.0...v2.0.0) (2019-06-20)
+
+
+### Bug Fixes
+
+* **all:** do not destroy Feature App when it is rendered multiple times ([#512](https://github.com/sinnerschrader/feature-hub/issues/512)) ([bf8a8ad](https://github.com/sinnerschrader/feature-hub/commit/bf8a8ad)), closes [#505](https://github.com/sinnerschrader/feature-hub/issues/505)
+
+
+### Features
+
+* **all:** let featureAppId be defined by the integrator ([#504](https://github.com/sinnerschrader/feature-hub/issues/504)) ([2565f0c](https://github.com/sinnerschrader/feature-hub/commit/2565f0c)), closes [#495](https://github.com/sinnerschrader/feature-hub/issues/495)
+
+
+### BREAKING CHANGES
+
+* **all:** `FeatureAppManager#getFeatureAppScope` has been
+replaced by `FeatureAppManager#createFeatureAppScope`, since now a new
+`FeatureAppScope` is created for every call. When a Feature App is
+unmounted, the `release` method (previously called `destroy`) must be
+called. Only when all scopes for a Feature App ID have been released,
+the Feature App instance is destroyed.
+* **all:** The option `featureAppConfigs` has been removed
+from the options of `createFeatureHub` and from the options of the
+`FeatureAppManager` constructor. The `env` that is passed to a
+Feature App's `create` method does not include a `config` property
+anymore. If a Feature App must be configured, the integrator needs to
+specify the `config` prop of the `FeatureAppLoader` or
+`FeatureAppContainer`. Furthermore, the `FeatureAppLoader` or
+`FeatureAppContainer` now require a `featureAppId` prop, and the
+`instanceConfig` and `idSpecifier` props have been removed. The same
+applies to the `<feature-app-loader>` and `<feature-app-container>`
+custom elements. Since the integrator now needs to define the ID of a
+Feature App, the Feature App definition must not specify an `id`
+anymore.
+
+
+
+
+
 # [1.7.0](https://github.com/sinnerschrader/feature-hub/compare/v1.6.0...v1.7.0) (2019-05-10)
 
 **Note:** Version bump only for package @feature-hub/dom

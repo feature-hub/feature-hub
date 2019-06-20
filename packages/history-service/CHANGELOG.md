@@ -3,6 +3,49 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/sinnerschrader/feature-hub/compare/v1.7.0...v2.0.0) (2019-06-20)
+
+
+### Bug Fixes
+
+* **all:** remove all deprecated interfaces ([#510](https://github.com/sinnerschrader/feature-hub/issues/510)) ([7df042e](https://github.com/sinnerschrader/feature-hub/commit/7df042e))
+* **history-service:** reorder createRootLocation params ([#511](https://github.com/sinnerschrader/feature-hub/issues/511)) ([92d6070](https://github.com/sinnerschrader/feature-hub/commit/92d6070))
+
+
+### Features
+
+* **core:** remove ability to provide configs via FeatureServiceRegistry ([#500](https://github.com/sinnerschrader/feature-hub/issues/500)) ([388b9f0](https://github.com/sinnerschrader/feature-hub/commit/388b9f0))
+* **history-service:** rename primaryConsumerUid to primaryConsumerId ([#502](https://github.com/sinnerschrader/feature-hub/issues/502)) ([49fae65](https://github.com/sinnerschrader/feature-hub/commit/49fae65))
+
+
+### BREAKING CHANGES
+
+* **history-service:** The currentRootLocation and consumerLocation
+parameters of createRootLocation have been switched.
+* **all:** The following interfaces have been removed:
+- AsyncSsrManagerV0
+- ExternalsValidatorLike
+- FeatureAppManagerLike
+- FeatureServiceRegistryLike
+- HistoryServiceV0
+- FeatureHubContextValue
+- SerializedStateManagerV0
+- ServerRequestV0
+* **history-service:** The option `primaryConsumerUid` of
+`createRootLocationTransformer` has been renamed to `primaryConsumerId`.
+* **core:** The option `featureServiceConfigs` has been removed
+from the options of `createFeatureHub` and from the options of the
+`FeatureServiceRegistry` constructor. The `env` that is passed to a
+Feature Service's `create` method does not include a `config` property
+anymore. If a Feature Service must be configured, a factory function
+that accepts options, and that returns a Feature Service definition,
+should be used instead, see `@feature-hub/async-ssr-manager` for an
+example.
+
+
+
+
+
 # [1.7.0](https://github.com/sinnerschrader/feature-hub/compare/v1.6.0...v1.7.0) (2019-05-10)
 
 **Note:** Version bump only for package @feature-hub/history-service

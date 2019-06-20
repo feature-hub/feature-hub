@@ -3,6 +3,50 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/sinnerschrader/feature-hub/compare/v1.7.0...v2.0.0) (2019-06-20)
+
+
+### Bug Fixes
+
+* **all:** remove all deprecated interfaces ([#510](https://github.com/sinnerschrader/feature-hub/issues/510)) ([7df042e](https://github.com/sinnerschrader/feature-hub/commit/7df042e))
+
+
+### Features
+
+* **async-ssr-manager:** move timeout from config to options ([#499](https://github.com/sinnerschrader/feature-hub/issues/499)) ([9536ef7](https://github.com/sinnerschrader/feature-hub/commit/9536ef7))
+* **core:** remove ability to provide configs via FeatureServiceRegistry ([#500](https://github.com/sinnerschrader/feature-hub/issues/500)) ([388b9f0](https://github.com/sinnerschrader/feature-hub/commit/388b9f0))
+
+
+### BREAKING CHANGES
+
+* **all:** The following interfaces have been removed:
+- AsyncSsrManagerV0
+- ExternalsValidatorLike
+- FeatureAppManagerLike
+- FeatureServiceRegistryLike
+- HistoryServiceV0
+- FeatureHubContextValue
+- SerializedStateManagerV0
+- ServerRequestV0
+* **core:** The option `featureServiceConfigs` has been removed
+from the options of `createFeatureHub` and from the options of the
+`FeatureServiceRegistry` constructor. The `env` that is passed to a
+Feature Service's `create` method does not include a `config` property
+anymore. If a Feature Service must be configured, a factory function
+that accepts options, and that returns a Feature Service definition,
+should be used instead, see `@feature-hub/async-ssr-manager` for an
+example.
+* **async-ssr-manager:** The `asyncSsrManagerDefinition` has been replaced with
+the factory function `defineAsyncSsrManager`. This function accepts
+options to set the `timeout`, which previously had to be set by the
+integrator via Feature Service configs. This is in preparation of an
+upcoming breaking change that removes the ability to provide Feature
+Service configs through the Feature Service registry.
+
+
+
+
+
 # [1.7.0](https://github.com/sinnerschrader/feature-hub/compare/v1.6.0...v1.7.0) (2019-05-10)
 
 **Note:** Version bump only for package @feature-hub/async-ssr-manager

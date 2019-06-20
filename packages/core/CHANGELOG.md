@@ -3,6 +3,70 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/sinnerschrader/feature-hub/compare/v1.7.0...v2.0.0) (2019-06-20)
+
+
+### Bug Fixes
+
+* **all:** do not destroy Feature App when it is rendered multiple times ([#512](https://github.com/sinnerschrader/feature-hub/issues/512)) ([bf8a8ad](https://github.com/sinnerschrader/feature-hub/commit/bf8a8ad)), closes [#505](https://github.com/sinnerschrader/feature-hub/issues/505)
+* **all:** remove all deprecated interfaces ([#510](https://github.com/sinnerschrader/feature-hub/issues/510)) ([7df042e](https://github.com/sinnerschrader/feature-hub/commit/7df042e))
+
+
+### Features
+
+* **all:** let featureAppId be defined by the integrator ([#504](https://github.com/sinnerschrader/feature-hub/issues/504)) ([2565f0c](https://github.com/sinnerschrader/feature-hub/commit/2565f0c)), closes [#495](https://github.com/sinnerschrader/feature-hub/issues/495)
+* **all:** pass full env to beforeCreate callback ([#506](https://github.com/sinnerschrader/feature-hub/issues/506)) ([abeb26a](https://github.com/sinnerschrader/feature-hub/commit/abeb26a)), closes [#490](https://github.com/sinnerschrader/feature-hub/issues/490)
+* **core:** remove ability to provide configs via FeatureServiceRegistry ([#500](https://github.com/sinnerschrader/feature-hub/issues/500)) ([388b9f0](https://github.com/sinnerschrader/feature-hub/commit/388b9f0))
+
+
+### BREAKING CHANGES
+
+* **all:** `FeatureAppManager#getFeatureAppScope` has been
+replaced by `FeatureAppManager#createFeatureAppScope`, since now a new
+`FeatureAppScope` is created for every call. When a Feature App is
+unmounted, the `release` method (previously called `destroy`) must be
+called. Only when all scopes for a Feature App ID have been released,
+the Feature App instance is destroyed.
+* **all:** The following interfaces have been removed:
+- AsyncSsrManagerV0
+- ExternalsValidatorLike
+- FeatureAppManagerLike
+- FeatureServiceRegistryLike
+- HistoryServiceV0
+- FeatureHubContextValue
+- SerializedStateManagerV0
+- ServerRequestV0
+* **all:** Instead of passing the `featureAppId` and the
+`featureServices` as separate arguments to the `beforeCreate` callback,
+the full Feature App environment, that contains the `featureAppId` and
+`featureServices`, is now passed as a single argument (`env`). This is
+the same argument that is passed to the Feature App's `create` method.
+* **all:** The option `featureAppConfigs` has been removed
+from the options of `createFeatureHub` and from the options of the
+`FeatureAppManager` constructor. The `env` that is passed to a
+Feature App's `create` method does not include a `config` property
+anymore. If a Feature App must be configured, the integrator needs to
+specify the `config` prop of the `FeatureAppLoader` or
+`FeatureAppContainer`. Furthermore, the `FeatureAppLoader` or
+`FeatureAppContainer` now require a `featureAppId` prop, and the
+`instanceConfig` and `idSpecifier` props have been removed. The same
+applies to the `<feature-app-loader>` and `<feature-app-container>`
+custom elements. Since the integrator now needs to define the ID of a
+Feature App, the Feature App definition must not specify an `id`
+anymore.
+* **core:** The option `featureServiceConfigs` has been removed
+from the options of `createFeatureHub` and from the options of the
+`FeatureServiceRegistry` constructor. The `env` that is passed to a
+Feature Service's `create` method does not include a `config` property
+anymore. If a Feature Service must be configured, a factory function
+that accepts options, and that returns a Feature Service definition,
+should be used instead, see `@feature-hub/async-ssr-manager` for an
+example.
+
+
+
+
+
 # [1.7.0](https://github.com/sinnerschrader/feature-hub/compare/v1.6.0...v1.7.0) (2019-05-10)
 
 
