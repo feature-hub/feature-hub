@@ -31,18 +31,18 @@ replaced by `FeatureAppManager#createFeatureAppScope`, since now a new
 unmounted, the `release` method (previously called `destroy`) must be
 called. Only when all scopes for a Feature App ID have been released,
 the Feature App instance is destroyed.
-* **history-service:** The currentRootLocation and consumerLocation
-parameters of createRootLocation have been switched.
+* **history-service:** The `currentRootLocation` and `consumerLocation`
+parameters of `createRootLocation` have been switched.
 * **all:** The following interfaces have been removed:
-- AsyncSsrManagerV0
-- ExternalsValidatorLike
-- FeatureAppManagerLike
-- FeatureServiceRegistryLike
-- HistoryServiceV0
-- FeatureHubContextValue
-- SerializedStateManagerV0
-- ServerRequestV0
-* **react:** When the FeatureAppContainer/FeatureAppLoader
+  * `AsyncSsrManagerV0`
+  * `ExternalsValidatorLike`
+  * `FeatureAppManagerLike`
+  * `FeatureServiceRegistryLike`
+  * `HistoryServiceV0`
+  * `FeatureHubContextValue`
+  * `SerializedStateManagerV0`
+  * `ServerRequestV0`
+* **react:** When the `FeatureAppContainer`/`FeatureAppLoader`
 catches a render error on the server, this error was previously re-thrown.
 To re-create this behavior, an `onError` prop must be defined that throws
 the error.
@@ -80,7 +80,11 @@ options to set the `timeout`, which previously had to be set by the
 integrator via Feature Service configs. This is in preparation of an
 upcoming breaking change that removes the ability to provide Feature
 Service configs through the Feature Service registry.
-
+* **core:** The type params of the following interfaces have been changed:
+  * `FeatureAppDefinition`
+  * `FeatureAppEnvironment`
+  * `FeatureServiceProviderDefinition`
+  * `FeatureServiceEnvironment`
 
 
 
