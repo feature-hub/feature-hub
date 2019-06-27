@@ -1,10 +1,10 @@
 import {ServerRequestV1} from '@feature-hub/server-request';
 import * as history from 'history';
+import {RootHistory} from '..';
 import {
   RootLocation,
   RootLocationDescriptorObject
 } from '../create-root-location-transformer';
-import {RootHistory} from './history-multiplexer';
 
 export class StaticRootHistory implements RootHistory {
   public readonly length = 1;

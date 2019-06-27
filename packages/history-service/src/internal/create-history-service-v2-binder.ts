@@ -1,5 +1,5 @@
 import {FeatureServiceBinder, FeatureServiceBinding} from '@feature-hub/core';
-import {HistoryServiceV2} from '../define-history-service';
+import {HistoryServiceV2} from '..';
 import {BrowserConsumerHistory} from './browser-consumer-history';
 import {ConsumerHistory} from './consumer-history';
 import {HistoryMultiplexers} from './create-history-multiplexers';

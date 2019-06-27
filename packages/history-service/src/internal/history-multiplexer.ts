@@ -1,25 +1,11 @@
 import * as history from 'history';
+import {ConsumerLocation, RootHistory} from '..';
 import {
   ConsumerHistoryStates,
   RootLocation,
   RootLocationDescriptorObject,
   RootLocationTransformer
 } from '../create-root-location-transformer';
-
-export interface RootHistory {
-  readonly length: number;
-  readonly location: RootLocation;
-
-  push(location: RootLocationDescriptorObject): void;
-  replace(location: RootLocationDescriptorObject): void;
-  createHref(location: RootLocationDescriptorObject): string;
-  listen(listener: history.LocationListener): history.UnregisterCallback;
-}
-
-export interface ConsumerLocation {
-  readonly historyKey: string;
-  readonly location: history.LocationDescriptorObject;
-}
 
 export class HistoryMultiplexer {
   public constructor(
