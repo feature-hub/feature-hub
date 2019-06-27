@@ -1,10 +1,14 @@
 import {ServerRequestV1} from '@feature-hub/server-request';
 import * as history from 'history';
-import {RootHistory, RootLocation} from './history-multiplexer';
+import {
+  RootLocation,
+  RootLocationDescriptorObject
+} from '../create-root-location-transformer';
+import {RootHistory} from './history-multiplexer';
 
 export class StaticRootHistory implements RootHistory {
   public readonly length = 1;
-  public location: history.Location;
+  public location: RootLocation;
 
   public constructor(serverRequest: ServerRequestV1) {
     this.location = history.createLocation(serverRequest.url);
@@ -15,15 +19,15 @@ export class StaticRootHistory implements RootHistory {
     return () => undefined;
   }
 
-  public push(location: RootLocation): void {
+  public push(location: RootLocationDescriptorObject): void {
     this.location = history.createLocation(location);
   }
 
-  public replace(location: RootLocation): void {
+  public replace(location: RootLocationDescriptorObject): void {
     this.location = history.createLocation(location);
   }
 
-  public createHref(location: RootLocation): history.Href {
+  public createHref(location: RootLocationDescriptorObject): history.Href {
     return history.createPath(location);
   }
 }

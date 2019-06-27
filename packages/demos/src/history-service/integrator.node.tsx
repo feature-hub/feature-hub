@@ -13,7 +13,7 @@ export default async function renderApp({
   const {featureAppManager} = createFeatureHub('test:integrator', {
     featureServiceDefinitions: [
       defineServerRequest(req),
-      defineHistoryService(rootLocationTransformer)
+      defineHistoryService(rootLocationTransformer, {mode: 'static'})
     ]
   });
 

@@ -1,26 +1,30 @@
 import * as history from 'history';
-import {RootLocationTransformer} from '../create-root-location-transformer';
-
-export interface ConsumerHistoryStates {
-  readonly [consumerId: string]: unknown;
-}
-
-export type RootLocation = history.Location<ConsumerHistoryStates>;
+import {
+  ConsumerHistoryStates,
+  RootLocation,
+  RootLocationDescriptorObject,
+  RootLocationTransformer
+} from '../create-root-location-transformer';
 
 export interface RootHistory {
   readonly length: number;
   readonly location: RootLocation;
 
-  push(location: RootLocation): void;
-  replace(location: RootLocation): void;
-  createHref(location: RootLocation): string;
+  push(location: RootLocationDescriptorObject): void;
+  replace(location: RootLocationDescriptorObject): void;
+  createHref(location: RootLocationDescriptorObject): string;
   listen(listener: history.LocationListener): history.UnregisterCallback;
+}
+
+export interface ConsumerLocation {
+  readonly historyKey: string;
+  readonly location: history.LocationDescriptorObject;
 }
 
 export class HistoryMultiplexer {
   public constructor(
-    private readonly rootHistory: RootHistory,
-    private readonly rootLocationTransformer: RootLocationTransformer
+    public readonly rootHistory: RootHistory,
+    public readonly rootLocationTransformer: RootLocationTransformer
   ) {}
 
   public get length(): number {
@@ -31,39 +35,42 @@ export class HistoryMultiplexer {
     return this.rootHistory.location;
   }
 
-  public push(consumerId: string, consumerLocation: history.Location): void {
+  public push(
+    historyKey: string,
+    consumerLocation: history.LocationDescriptorObject
+  ): void {
     this.rootHistory.push(
-      this.createRootLocation(consumerId, consumerLocation)
+      this.createRootLocation(historyKey, consumerLocation)
     );
   }
 
   public replace(
-    consumerId: string,
-    consumerLocation: history.Location | undefined
+    historyKey: string,
+    consumerLocation: history.LocationDescriptorObject
   ): void {
     this.rootHistory.replace(
-      this.createRootLocation(consumerId, consumerLocation)
+      this.createRootLocation(historyKey, consumerLocation)
     );
   }
 
   public createHref(
-    consumerId: string,
+    historyKey: string,
     consumerLocation: history.Location
   ): history.Href {
     return this.rootHistory.createHref(
-      this.createRootLocation(consumerId, consumerLocation)
+      this.createRootLocation(historyKey, consumerLocation)
     );
   }
 
-  public getConsumerLocation(consumerId: string): history.Location {
+  public getConsumerLocation(historyKey: string): history.Location {
     const consumerPath =
       this.rootLocationTransformer.getConsumerPathFromRootLocation(
-        this.rootHistory.location,
-        consumerId
+        this.rootLocation,
+        historyKey
       ) || '/';
 
-    const consumerStates = this.rootHistory.location.state;
-    const consumerState = consumerStates && consumerStates[consumerId];
+    const consumerStates = this.rootLocation.state;
+    const consumerState = consumerStates && consumerStates[historyKey];
 
     return history.createLocation(consumerPath, consumerState);
   }
@@ -76,24 +83,43 @@ export class HistoryMultiplexer {
     });
   }
 
+  public createNewRootLocationForMultipleConsumers(
+    ...consumerLocations: ConsumerLocation[]
+  ): RootLocationDescriptorObject {
+    let rootlocation: RootLocationDescriptorObject = {pathname: '/'};
+
+    for (const consumerLocation of consumerLocations) {
+      rootlocation = this.createRootLocation(
+        consumerLocation.historyKey,
+        consumerLocation.location,
+        rootlocation
+      );
+    }
+
+    return rootlocation;
+  }
+
   private createRootLocation(
-    consumerId: string,
-    consumerLocation: history.Location | undefined
-  ): history.Location {
-    const rootLocation = this.rootLocationTransformer.createRootLocation(
-      this.rootHistory.location,
+    historyKey: string,
+    consumerLocation: history.LocationDescriptorObject,
+    rootLocation: RootLocationDescriptorObject = this.rootLocation
+  ): RootLocation {
+    const newRootLocation = this.rootLocationTransformer.createRootLocation(
+      rootLocation,
       consumerLocation,
-      consumerId
+      historyKey
     );
 
-    const consumerStates = this.rootHistory.location.state;
-    const consumerState = consumerLocation && consumerLocation.state;
+    const consumerStates = rootLocation.state;
 
     const newConsumerStates: ConsumerHistoryStates = {
       ...consumerStates,
-      [consumerId]: consumerState
+      [historyKey]: consumerLocation.state
     };
 
-    return history.createLocation({...rootLocation, state: newConsumerStates});
+    return history.createLocation({
+      ...newRootLocation,
+      state: newConsumerStates
+    });
   }
 }

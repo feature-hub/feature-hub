@@ -1,32 +1,83 @@
 import * as history from 'history';
-import {
-  addConsumerPath,
-  getConsumerPath,
-  removeConsumerPath
-} from './internal/consumer-paths';
 import {URLSearchParams} from './internal/url-search-params';
+
+export interface ConsumerHistoryStates {
+  readonly [historyKey: string]: unknown;
+}
 
 export interface RootLocationOptions {
   readonly consumerPathsQueryParamName: string;
+
+  /**
+   * @deprecated Use `primaryConsumerHistoryKey` instead.
+   */
   readonly primaryConsumerId?: string;
+
+  readonly primaryConsumerHistoryKey?: string;
 }
+
+export type RootLocation = history.Location<ConsumerHistoryStates>;
+
+export type RootLocationDescriptorObject = history.LocationDescriptorObject<
+  ConsumerHistoryStates
+>;
 
 export interface RootLocationTransformer {
   getConsumerPathFromRootLocation(
-    rootLocation: history.Location,
-    consumerId: string
+    rootLocation: RootLocation,
+    historyKey: string
   ): string | undefined;
 
   createRootLocation(
-    currentRootLocation: history.Location,
-    consumerLocation: history.Location | undefined,
-    consumerId: string
+    currentRootLocation: RootLocationDescriptorObject,
+    consumerLocation: history.LocationDescriptorObject,
+    historyKey: string
   ): history.LocationDescriptorObject;
 }
 
-function createRootLocationForPrimaryConsumer(
+export interface ConsumerPaths {
+  readonly [historyKey: string]: string;
+}
+
+function encodeConsumerPaths(consumerPaths: ConsumerPaths): string {
+  return JSON.stringify(consumerPaths);
+}
+
+function decodeConsumerPaths(encodedConsumerPaths: string): ConsumerPaths {
+  return JSON.parse(encodedConsumerPaths);
+}
+
+export function addConsumerPath(
+  encodedConsumerPaths: string | null,
+  historyKey: string,
+  path: string
+): string {
+  return encodeConsumerPaths({
+    ...decodeConsumerPaths(encodedConsumerPaths || '{}'),
+    [historyKey]: path
+  });
+}
+
+export function getConsumerPath(
+  encodedConsumerPaths: string,
+  historyKey: string
+): string {
+  return decodeConsumerPaths(encodedConsumerPaths)[historyKey];
+}
+
+export function createSearchParams(
+  location: history.Location
+): URLSearchParams {
+  return new URLSearchParams(location.search);
+}
+
+export function serializeSearchParams(searchParams: URLSearchParams): string {
+  return `?${searchParams.toString()}`;
+}
+
+export function createRootLocationForPrimaryConsumer(
   currentRootLocation: history.Location,
-  primaryConsumerLocation: history.Location | undefined,
+  primaryConsumerLocation: history.Location,
   consumerPathsQueryParamName: string
 ): history.LocationDescriptorObject {
   const allSearchParams = createSearchParams(currentRootLocation);
@@ -46,56 +97,45 @@ function createRootLocationForPrimaryConsumer(
 
   if (consumerPaths) {
     newSearchParams.set(consumerPathsQueryParamName, consumerPaths);
-    search = newSearchParams.toString();
+    search = serializeSearchParams(newSearchParams);
   } else {
-    search = primaryConsumerLocation ? primaryConsumerLocation.search : '';
+    search = primaryConsumerLocation.search;
   }
 
-  const pathname = primaryConsumerLocation
-    ? primaryConsumerLocation.pathname
-    : '/';
-
-  const hash = primaryConsumerLocation
-    ? primaryConsumerLocation.hash
-    : undefined;
+  const {pathname, hash} = primaryConsumerLocation;
 
   return {pathname, search, hash};
 }
 
-function createRootLocationForOtherConsumer(
+export function createRootLocationForOtherConsumer(
   currentRootLocation: history.Location,
-  consumerLocation: history.Location | undefined,
-  consumerId: string,
+  consumerLocation: history.Location,
+  historyKey: string,
   consumerPathsQueryParamName: string
 ): history.LocationDescriptorObject {
   const allSearchParams = createSearchParams(currentRootLocation);
   const consumerPaths = allSearchParams.get(consumerPathsQueryParamName);
 
-  const newConsumerPaths = consumerLocation
-    ? addConsumerPath(
-        consumerPaths,
-        consumerId,
-        history.createPath(consumerLocation)
-      )
-    : removeConsumerPath(consumerPaths, consumerId);
+  const newConsumerPaths = addConsumerPath(
+    consumerPaths,
+    historyKey,
+    history.createPath(consumerLocation)
+  );
 
-  if (newConsumerPaths) {
-    allSearchParams.set(consumerPathsQueryParamName, newConsumerPaths);
-  } else {
-    allSearchParams.delete(consumerPathsQueryParamName);
-  }
+  allSearchParams.set(consumerPathsQueryParamName, newConsumerPaths);
 
   return {
     pathname: currentRootLocation.pathname,
-    search: allSearchParams.toString(),
+    search: serializeSearchParams(allSearchParams),
     hash: currentRootLocation.hash
   };
 }
 
-function createSearchParams(
-  location: history.Location | undefined
-): URLSearchParams {
-  return new URLSearchParams(location && location.search);
+export function getPrimaryConsumerHistoryKey(
+  options: RootLocationOptions
+): string | undefined {
+  // tslint:disable-next-line: deprecation
+  return options.primaryConsumerHistoryKey || options.primaryConsumerId;
 }
 
 export function createRootLocationTransformer(
@@ -104,17 +144,18 @@ export function createRootLocationTransformer(
   return {
     getConsumerPathFromRootLocation: (
       rootLocation: history.Location,
-      consumerId: string
+      historyKey: string
     ): string | undefined => {
-      const {consumerPathsQueryParamName, primaryConsumerId} = options;
-      const isPrimaryConsumer = consumerId === primaryConsumerId;
+      const {consumerPathsQueryParamName} = options;
+      const primaryConsumerHistoryKey = getPrimaryConsumerHistoryKey(options);
+      const isPrimaryConsumer = historyKey === primaryConsumerHistoryKey;
       const searchParams = createSearchParams(rootLocation);
 
       if (isPrimaryConsumer) {
         searchParams.delete(consumerPathsQueryParamName);
 
         const pathname = rootLocation.pathname;
-        const search = searchParams.toString();
+        const search = serializeSearchParams(searchParams);
 
         return history.createPath({pathname, search});
       }
@@ -125,16 +166,17 @@ export function createRootLocationTransformer(
         return undefined;
       }
 
-      return getConsumerPath(consumerPaths, consumerId);
+      return getConsumerPath(consumerPaths, historyKey);
     },
 
     createRootLocation: (
       currentRootLocation: history.Location,
-      consumerLocation: history.Location | undefined,
-      consumerId: string
+      consumerLocation: history.Location,
+      historyKey: string
     ): history.LocationDescriptorObject => {
-      const {consumerPathsQueryParamName, primaryConsumerId} = options;
-      const isPrimaryConsumer = consumerId === primaryConsumerId;
+      const primaryConsumerHistoryKey = getPrimaryConsumerHistoryKey(options);
+      const {consumerPathsQueryParamName} = options;
+      const isPrimaryConsumer = historyKey === primaryConsumerHistoryKey;
 
       if (isPrimaryConsumer) {
         return createRootLocationForPrimaryConsumer(
@@ -147,7 +189,7 @@ export function createRootLocationTransformer(
       return createRootLocationForOtherConsumer(
         currentRootLocation,
         consumerLocation,
-        consumerId,
+        historyKey,
         consumerPathsQueryParamName
       );
     }

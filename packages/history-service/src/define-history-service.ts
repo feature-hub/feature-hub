@@ -7,10 +7,27 @@ import {
 import {Logger} from '@feature-hub/logger';
 import {ServerRequestV1} from '@feature-hub/server-request';
 import * as history from 'history';
-import {RootLocationTransformer} from './create-root-location-transformer';
+import {
+  RootLocationDescriptorObject,
+  RootLocationTransformer
+} from './create-root-location-transformer';
 import {createHistoryMultiplexers} from './internal/create-history-multiplexers';
 import {createHistoryServiceV1Binder} from './internal/create-history-service-v1-binder';
+import {createHistoryServiceV2Binder} from './internal/create-history-service-v2-binder';
+import {ConsumerLocation, RootHistory} from './internal/history-multiplexer';
 import {createHistoryServiceContext} from './internal/history-service-context';
+
+export {ConsumerLocation, RootHistory};
+
+export interface HistoryServiceV2 {
+  readonly historyKey: string;
+  readonly history: history.History;
+  readonly rootHistory: RootHistory;
+
+  createNewRootLocationForMultipleConsumers(
+    ...consumerLocations: ConsumerLocation[]
+  ): RootLocationDescriptorObject;
+}
 
 export interface HistoryServiceV1 {
   readonly staticRootLocation: history.Location;
@@ -21,6 +38,7 @@ export interface HistoryServiceV1 {
 
 export interface SharedHistoryService extends SharedFeatureService {
   readonly '1.0.0': FeatureServiceBinder<HistoryServiceV1>;
+  readonly '2.0.0': FeatureServiceBinder<HistoryServiceV2>;
 }
 
 export interface HistoryServiceDependencies extends FeatureServices {
@@ -28,12 +46,19 @@ export interface HistoryServiceDependencies extends FeatureServices {
   readonly 's2:server-request'?: ServerRequestV1;
 }
 
+export interface HistoryServiceDefinitionOptions {
+  readonly mode?: 'browser' | 'static';
+}
+
 export function defineHistoryService(
-  rootLocationTransformer: RootLocationTransformer
+  rootLocationTransformer: RootLocationTransformer,
+  options: HistoryServiceDefinitionOptions = {}
 ): FeatureServiceProviderDefinition<
   SharedHistoryService,
   HistoryServiceDependencies
 > {
+  const {mode = 'browser'} = options;
+
   return {
     id: 's2:history',
 
@@ -53,7 +78,13 @@ export function defineHistoryService(
       );
 
       return {
-        '1.0.0': createHistoryServiceV1Binder(context, historyMultiplexers)
+        '1.0.0': createHistoryServiceV1Binder(context, historyMultiplexers),
+
+        '2.0.0': createHistoryServiceV2Binder(
+          context,
+          historyMultiplexers,
+          mode
+        )
       };
     }
   };
