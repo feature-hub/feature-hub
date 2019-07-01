@@ -154,9 +154,7 @@ const rootLocationTransformer = {
 
   createRootLocation(currentRootLocation, consumerLocation, historyKey) {
     const searchParams = new URLSearchParams(currentRootLocation.search);
-
     searchParams.set(historyKey, history.createPath(consumerLocation));
-
     const {pathname, state} = currentRootLocation;
 
     return {pathname, search: searchParams.toString(), state};
@@ -234,8 +232,33 @@ When a History Service consumer pushes the same location multiple times in a row
 and the user subsequently navigates back, no pop event is emitted for the
 unchanged location of this consumer.
 
+## Changing multiple consumers at once with a single navigation
+
+To trigger a navigation from a Feature App to another page that composes a
+different set of Feature Apps, a navigation Feature Service that encapsulates
+integrator routing logic would be needed.
+
+Such a Feature Service would have the need to collect consumer locations from
+other consumers (and itself), and then push a single root location that combines
+these consumer locations to the root history.
+
+To accomplish that, the History Service exposes the following additional
+properties:
+
+- `historyKey`: The history key that has been assigned to the consumer.
+- `createNewRootLocationForMultipleConsumers`: A method that creates a new root
+  location from multiple so-called consumer locations. A consumer location
+  consists of the actual `location` and the `historyKey` of the consumer.
+- `rootHistory`: Offers `push`, `replace`, and `createHref` methods that all
+  accept a new root location that was created using the
+  `createNewRootLocationForMultipleConsumers` method.
+
+> For more details see the ["Advanced Routing" demo][advanced-routing-demo].
+
 [browser-history-api]: https://developer.mozilla.org/en-US/docs/Web/API/History
 [history-npm]: https://www.npmjs.com/package/history
 [history-service-api]: /@feature-hub/modules/history_service.html
 [history-service-demo]:
   https://github.com/sinnerschrader/feature-hub/tree/master/packages/demos/src/history-service
+[advanced-routing-demo]:
+  https://github.com/sinnerschrader/feature-hub/tree/master/packages/demos/src/advanced-routing
