@@ -1258,6 +1258,43 @@ describe('defineHistoryService', () => {
 
           expect(window.location.href).toBe('http://example.com/foo/baz');
         });
+
+        it('changes the location and action of affected consumer histories', () => {
+          const rootLocation = historyService1.createNewRootLocationForMultipleConsumers(
+            {historyKey: 'test2', location: {pathname: '/test2'}}
+          );
+
+          historyService1.rootHistory.push(rootLocation);
+
+          expect(historyService1.history.location).toMatchObject({
+            pathname: '/'
+          });
+
+          expect(historyService1.history.action).toBe('POP');
+
+          expect(historyService2.history.location).toMatchObject({
+            pathname: '/test2'
+          });
+
+          expect(historyService2.history.action).toBe('PUSH');
+        });
+
+        it('notifies affected consumer history listeners', () => {
+          const listener1 = jest.fn();
+          const listener2 = jest.fn();
+
+          historyService1.history.listen(listener1);
+          historyService2.history.listen(listener2);
+
+          const rootLocation = historyService1.createNewRootLocationForMultipleConsumers(
+            {historyKey: 'test2', location: {pathname: '/test2'}}
+          );
+
+          historyService1.rootHistory.push(rootLocation);
+
+          expect(listener1).not.toHaveBeenCalled();
+          expect(listener2).toHaveBeenCalledTimes(1);
+        });
       });
 
       describe('#replace()', () => {
@@ -1282,6 +1319,43 @@ describe('defineHistoryService', () => {
           historyService1.rootHistory.replace({pathname: 'baz'});
 
           expect(window.location.href).toBe('http://example.com/foo/baz');
+        });
+
+        it('changes the location and action of affected consumer histories', () => {
+          const rootLocation = historyService1.createNewRootLocationForMultipleConsumers(
+            {historyKey: 'test2', location: {pathname: '/test2'}}
+          );
+
+          historyService1.rootHistory.replace(rootLocation);
+
+          expect(historyService1.history.location).toMatchObject({
+            pathname: '/'
+          });
+
+          expect(historyService1.history.action).toBe('POP');
+
+          expect(historyService2.history.location).toMatchObject({
+            pathname: '/test2'
+          });
+
+          expect(historyService2.history.action).toBe('REPLACE');
+        });
+
+        it('notifies affected consumer history listeners', () => {
+          const listener1 = jest.fn();
+          const listener2 = jest.fn();
+
+          historyService1.history.listen(listener1);
+          historyService2.history.listen(listener2);
+
+          const rootLocation = historyService1.createNewRootLocationForMultipleConsumers(
+            {historyKey: 'test2', location: {pathname: '/test2'}}
+          );
+
+          historyService1.rootHistory.replace(rootLocation);
+
+          expect(listener1).not.toHaveBeenCalled();
+          expect(listener2).toHaveBeenCalledTimes(1);
         });
       });
 

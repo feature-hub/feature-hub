@@ -16,9 +16,11 @@ export class BrowserConsumerHistory extends ConsumerHistory {
   ) {
     super(context, historyKey, historyMultiplexer);
 
-    this.browserUnregister = historyMultiplexer.listenForPop(() => {
-      this.handlePop();
-    });
+    this.browserUnregister = historyMultiplexer.listenForRootLocationChange(
+      action => {
+        this.handleRootLocationChange(action);
+      }
+    );
   }
 
   public destroy(): void {
@@ -62,7 +64,7 @@ export class BrowserConsumerHistory extends ConsumerHistory {
     }
   }
 
-  private handlePop(): void {
+  private handleRootLocationChange(action: history.Action): void {
     const location = this.historyMultiplexer.getConsumerLocation(
       this.historyKey
     );
@@ -72,7 +74,7 @@ export class BrowserConsumerHistory extends ConsumerHistory {
     }
 
     this.location = location;
-    this.action = 'POP';
+    this.action = action;
 
     this.notifyListeners();
   }

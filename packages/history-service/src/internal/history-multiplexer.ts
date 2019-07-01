@@ -61,11 +61,11 @@ export class HistoryMultiplexer {
     return history.createLocation(consumerPath, consumerState);
   }
 
-  public listenForPop(listener: () => void): () => void {
+  public listenForRootLocationChange(
+    listener: (action: history.Action) => void
+  ): () => void {
     return this.rootHistory.listen((_location, action) => {
-      if (action === 'POP') {
-        listener();
-      }
+      listener(action);
     });
   }
 
