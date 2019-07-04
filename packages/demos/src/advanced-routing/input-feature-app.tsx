@@ -18,10 +18,12 @@ function NameControlGroup({onSubmit}: NameControlGroupProps): JSX.Element {
   return (
     <ControlGroup>
       <InputGroup
+        id="name-input"
         placeholder="Enter a name..."
         inputRef={element => (inputRef.current = element)}
       />
       <Button
+        id="submit-button"
         text="Say Hello"
         onClick={() => inputRef.current && onSubmit(inputRef.current.value)}
       />

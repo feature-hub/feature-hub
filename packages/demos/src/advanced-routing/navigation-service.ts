@@ -1,6 +1,7 @@
 import {
   FeatureServiceBinder,
   FeatureServiceProviderDefinition,
+  FeatureServices,
   SharedFeatureService
 } from '@feature-hub/core';
 import {ConsumerLocation, HistoryServiceV2} from '@feature-hub/history-service';
@@ -16,7 +17,7 @@ export interface SharedNavigationService extends SharedFeatureService {
   readonly '1.0.0': FeatureServiceBinder<NavigationServiceV1>;
 }
 
-export interface NavigationServiceDependencies {
+export interface NavigationServiceDependencies extends FeatureServices {
   readonly 'test:hello-world-service': HelloWorldServiceV1;
   readonly 's2:history': HistoryServiceV2;
 }

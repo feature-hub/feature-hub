@@ -20,7 +20,11 @@ function HelloWorldText({helloWorldService}: HelloWorldTextProps): JSX.Element {
     [helloWorldService]
   );
 
-  return <Text>Hello, {name}!</Text>;
+  return (
+    <Text>
+      <span id="hello-text">Hello, {name}!</span>
+    </Text>
+  );
 }
 
 const featureAppDefinition: FeatureAppDefinition<

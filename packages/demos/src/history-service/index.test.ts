@@ -15,7 +15,7 @@ jest.setTimeout(120000);
 
 stubConsole();
 
-class HistoryConsumerUI {
+class HistoryConsumerUi {
   public constructor(
     private readonly browser: Browser,
     private readonly specifier: 'a' | 'b'
@@ -68,8 +68,8 @@ class HistoryConsumerUI {
 
 describe('integration test: "history-service"', () => {
   const browser = new Browser(5000);
-  const a = new HistoryConsumerUI(browser, 'a');
-  const b = new HistoryConsumerUI(browser, 'b');
+  const a = new HistoryConsumerUi(browser, 'a');
+  const b = new HistoryConsumerUi(browser, 'b');
 
   let server: Server;
   let url: string;
