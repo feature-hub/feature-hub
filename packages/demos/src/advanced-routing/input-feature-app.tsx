@@ -5,7 +5,7 @@ import * as React from 'react';
 import {NavigationServiceV1} from './navigation-service';
 
 interface Dependencies {
-  'test:navigation-service': NavigationServiceV1;
+  readonly 'test:navigation-service': NavigationServiceV1;
 }
 
 interface NameControlGroupProps {
