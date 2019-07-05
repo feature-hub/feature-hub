@@ -1283,6 +1283,8 @@ describe('defineHistoryService', () => {
           const listener1 = jest.fn();
           const listener2 = jest.fn();
 
+          historyService1.history.push('/foo');
+
           historyService1.history.listen(listener1);
           historyService2.history.listen(listener2);
 
@@ -1292,8 +1294,16 @@ describe('defineHistoryService', () => {
 
           historyService1.rootHistory.push(rootLocation);
 
-          expect(listener1).not.toHaveBeenCalled();
-          expect(listener2).toHaveBeenCalledTimes(1);
+          expect(listener1.mock.calls).toEqual([
+            [{pathname: '/', search: '', hash: '', state: undefined}, 'PUSH']
+          ]);
+
+          expect(listener2.mock.calls).toEqual([
+            [
+              {pathname: '/test2', search: '', hash: '', state: undefined},
+              'PUSH'
+            ]
+          ]);
         });
       });
 
