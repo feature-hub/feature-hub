@@ -1,6 +1,6 @@
 {
   "name": "@feature-hub/module-loader-commonjs",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "A FeatureAppManager-compatible CommonJS module loader.",
   "homepage": "https://feature-hub.io/",
   "bugs": {

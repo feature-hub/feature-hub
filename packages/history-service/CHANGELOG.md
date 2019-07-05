@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/sinnerschrader/feature-hub/compare/v2.0.0...v2.1.0) (2019-07-05)
+
+
+### Features
+
+* **history-service:** support multiple location changes in one navigation ([#518](https://github.com/sinnerschrader/feature-hub/issues/518)) ([1352318](https://github.com/sinnerschrader/feature-hub/commit/1352318)), closes [#496](https://github.com/sinnerschrader/feature-hub/issues/496) [#441](https://github.com/sinnerschrader/feature-hub/issues/441)
+
+
+
+
+
 # [2.0.0](https://github.com/sinnerschrader/feature-hub/compare/v1.7.0...v2.0.0) (2019-06-20)
 
 
