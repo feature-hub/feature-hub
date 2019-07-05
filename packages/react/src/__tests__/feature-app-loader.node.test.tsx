@@ -10,7 +10,6 @@ import {
   FeatureAppDefinition,
   FeatureAppManager
 } from '@feature-hub/core';
-import {Stubbed, stubMethods} from 'jest-stub-methods';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom/server';
 import {FeatureAppLoader, FeatureHubContextProvider} from '..';
@@ -30,7 +29,7 @@ describe('FeatureAppLoader (on Node.js)', () => {
   let mockAsyncSsrManager: MockAsyncSsrManager;
   let mockAddUrlForHydration: jest.Mock;
   let mockAddStylesheetsForSsr: jest.Mock;
-  let stubbedConsole: Stubbed<Console>;
+  let consoleErrorSpy: jest.SpyInstance;
 
   beforeEach(() => {
     mockAsyncFeatureAppDefinition = new AsyncValue(
@@ -55,11 +54,11 @@ describe('FeatureAppLoader (on Node.js)', () => {
     mockAddUrlForHydration = jest.fn();
     mockAddStylesheetsForSsr = jest.fn();
 
-    stubbedConsole = stubMethods(console);
+    consoleErrorSpy = jest.spyOn(console, 'error');
   });
 
   afterEach(() => {
-    stubbedConsole.restore();
+    consoleErrorSpy.mockRestore();
   });
 
   const renderWithFeatureHubContext = (node: React.ReactNode) =>
@@ -218,7 +217,7 @@ describe('FeatureAppLoader (on Node.js)', () => {
           />
         );
 
-        expect(stubbedConsole.stub.error.mock.calls).toEqual([
+        expect(consoleErrorSpy.mock.calls).toEqual([
           [
             'The Feature App for the src "example-node.js" and the ID "testId" could not be rendered.',
             mockError

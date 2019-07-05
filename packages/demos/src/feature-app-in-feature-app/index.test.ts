@@ -6,13 +6,10 @@ import {Server} from 'http';
 import {AddressInfo} from 'net';
 import {Browser} from '../browser';
 import {startServer} from '../start-server';
-import {stubConsole} from '../stub-console';
 import renderApp from './integrator.node';
 import webpackConfigs from './webpack-config';
 
 jest.setTimeout(120000);
-
-stubConsole();
 
 describe('integration test: "Feature App in Feature App"', () => {
   const browser = new Browser(5000);

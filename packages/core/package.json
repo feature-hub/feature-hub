@@ -33,8 +33,7 @@
   },
   "devDependencies": {
     "@types/semver": "^6.0.0",
-    "@types/toposort": "^2.0.1",
-    "jest-stub-methods": "^0.2.1"
+    "@types/toposort": "^2.0.1"
   },
   "publishConfig": {
     "access": "public"

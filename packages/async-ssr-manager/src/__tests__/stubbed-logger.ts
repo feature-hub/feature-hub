@@ -1,7 +1,10 @@
-// tslint:disable:no-implicit-dependencies
-
 import {Logger} from '@feature-hub/logger';
-import {Stub} from 'jest-stub-methods';
+
+export type Stub<T extends {}> = {
+  [key in keyof T]: T[key] extends (...args: unknown[]) => unknown
+    ? T[key] & jest.Mock
+    : T[key]
+};
 
 export const stubbedLogger: Stub<Logger> = {
   trace: jest.fn(),

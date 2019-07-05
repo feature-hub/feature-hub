@@ -24,9 +24,6 @@
     "@feature-hub/core": "^2.0.0",
     "@feature-hub/logger": "^2.0.0"
   },
-  "devDependencies": {
-    "jest-stub-methods": "^0.2.1"
-  },
   "publishConfig": {
     "access": "public"
   }

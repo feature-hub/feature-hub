@@ -6,7 +6,6 @@ import {
   FeatureAppDefinition,
   FeatureAppManager
 } from '@feature-hub/core';
-import stubMethods, {Stubbed} from 'jest-stub-methods';
 import * as React from 'react';
 import TestRenderer from 'react-test-renderer';
 import {FeatureAppContainer, FeatureAppLoader} from '..';
@@ -29,7 +28,7 @@ describe('FeatureAppLoader', () => {
   let mockAsyncSsrManager: MockAsyncSsrManager;
   let mockAddUrlForHydration: jest.Mock;
   let mockAddStylesheetsForSsr: jest.Mock;
-  let stubbedConsole: Stubbed<Console>;
+  let consoleErrorSpy: jest.SpyInstance;
 
   const usingTestErrorBoundaryConsoleErrorCalls = [
     [
@@ -49,16 +48,14 @@ describe('FeatureAppLoader', () => {
 
   const expectConsoleErrorCalls = (expectedConsoleErrorCalls: unknown[][]) => {
     try {
-      expect(stubbedConsole.stub.error.mock.calls).toEqual(
-        expectedConsoleErrorCalls
-      );
+      expect(consoleErrorSpy.mock.calls).toEqual(expectedConsoleErrorCalls);
     } finally {
-      stubbedConsole.stub.error.mockClear();
+      consoleErrorSpy.mockClear();
     }
   };
 
   beforeEach(() => {
-    stubbedConsole = stubMethods(console);
+    consoleErrorSpy = jest.spyOn(console, 'error');
 
     if (document.head) {
       document.head.innerHTML = '';
@@ -88,8 +85,8 @@ describe('FeatureAppLoader', () => {
   });
 
   afterEach(() => {
-    expect(stubbedConsole.stub.error).not.toHaveBeenCalled();
-    stubbedConsole.restore();
+    expect(consoleErrorSpy).not.toHaveBeenCalled();
+    consoleErrorSpy.mockRestore();
   });
 
   it('throws an error when rendered without a FeatureHubContextProvider', () => {
