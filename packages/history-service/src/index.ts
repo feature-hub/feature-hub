@@ -42,10 +42,30 @@ export interface HistoryServiceV1 {
 }
 
 export interface HistoryServiceV2 {
+  /**
+   * The history key that has been assigned to the consumer. It can be used to
+   * create a [[ConsumerLocation]].
+   */
   readonly historyKey: string;
+
+  /**
+   * The consumer's own history. When location changes are applied to this
+   * history, no other consumer histories are affected.
+   */
   readonly history: history.History;
+
+  /**
+   * Allows special consumers, like overarching navigation services, to change
+   * the full root location. To create a new root location, it is recommended to
+   * use the `createNewRootLocationForMultipleConsumers` method.
+   */
   readonly rootHistory: RootHistory;
 
+  /**
+   * Creates a new root location from multiple consumer locations. The returned
+   * location can be used for the `push`, `replace`, and `createHref` methods of
+   * the `rootHistory`.
+   */
   createNewRootLocationForMultipleConsumers(
     ...consumerLocations: ConsumerLocation[]
   ): RootLocationDescriptorObject;
