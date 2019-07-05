@@ -1,13 +1,11 @@
 import {FeatureAppDefinition} from '@feature-hub/core';
-import {HistoryServiceV1} from '@feature-hub/history-service';
+import {HistoryServiceV2} from '@feature-hub/history-service';
 import {ReactFeatureApp} from '@feature-hub/react';
 import * as React from 'react';
 import {HistoryConsumer} from './history-consumer';
 
-const inBrowser = typeof window !== 'undefined';
-
 interface Dependencies {
-  readonly 's2:history': HistoryServiceV1;
+  readonly 's2:history': HistoryServiceV2;
 }
 
 export const historyConsumerDefinition: FeatureAppDefinition<
@@ -16,20 +14,19 @@ export const historyConsumerDefinition: FeatureAppDefinition<
 > = {
   dependencies: {
     featureServices: {
-      's2:history': '^1.0.0'
+      's2:history': '^2.0.0'
     }
   },
 
-  create: ({featureServices, featureAppId}) => {
+  create: ({featureServices}) => {
     const historyService = featureServices['s2:history'];
-
-    const history = inBrowser
-      ? historyService.createBrowserHistory()
-      : historyService.createStaticHistory();
 
     return {
       render: () => (
-        <HistoryConsumer history={history} consumerId={featureAppId} />
+        <HistoryConsumer
+          history={historyService.history}
+          historyKey={historyService.historyKey}
+        />
       )
     };
   }

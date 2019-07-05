@@ -11,20 +11,21 @@ export class BrowserConsumerHistory extends ConsumerHistory {
 
   public constructor(
     context: HistoryServiceContext,
-    consumerId: string,
+    historyKey: string,
     historyMultiplexer: HistoryMultiplexer
   ) {
-    super(context, consumerId, historyMultiplexer);
+    super(context, historyKey, historyMultiplexer);
 
-    this.browserUnregister = historyMultiplexer.listenForPop(() => {
-      this.handlePop();
-    });
+    this.browserUnregister = historyMultiplexer.listenForRootLocationChange(
+      action => {
+        this.handleRootLocationChange(action);
+      }
+    );
   }
 
   public destroy(): void {
     this.browserUnregister();
     this.unregisterCallbacks.forEach(unregister => unregister());
-    this.historyMultiplexer.replace(this.consumerId, undefined);
   }
 
   public listen(
@@ -63,9 +64,9 @@ export class BrowserConsumerHistory extends ConsumerHistory {
     }
   }
 
-  private handlePop(): void {
+  private handleRootLocationChange(action: history.Action): void {
     const location = this.historyMultiplexer.getConsumerLocation(
-      this.consumerId
+      this.historyKey
     );
 
     if (this.matches(location)) {
@@ -73,7 +74,7 @@ export class BrowserConsumerHistory extends ConsumerHistory {
     }
 
     this.location = location;
-    this.action = 'POP';
+    this.action = action;
 
     this.notifyListeners();
   }

@@ -12,11 +12,7 @@ export const rootLocationTransformer: RootLocationTransformer = {
   createRootLocation: (rootLocation, consumerLocation, consumerId) => {
     const searchParams = new URLSearchParams(rootLocation.search);
 
-    if (consumerLocation) {
-      searchParams.set(consumerId, createPath(consumerLocation));
-    } else {
-      searchParams.delete(consumerId);
-    }
+    searchParams.set(consumerId, createPath(consumerLocation));
 
     const {pathname, state} = rootLocation;
 

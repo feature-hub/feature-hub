@@ -1,4 +1,4 @@
-import {Card, Label} from '@blueprintjs/core';
+import {Card, Text} from '@blueprintjs/core';
 import {AsyncSsrManagerV1} from '@feature-hub/async-ssr-manager';
 import {FeatureAppDefinition} from '@feature-hub/core';
 import {ReactFeatureApp} from '@feature-hub/react';
@@ -54,7 +54,7 @@ const featureAppDefinition: FeatureAppDefinition<
     return {
       render: () => (
         <Card style={{margin: '20px'}}>
-          <Label>Hello, {subject}!</Label>
+          <Text>Hello, {subject}!</Text>
         </Card>
       )
     };

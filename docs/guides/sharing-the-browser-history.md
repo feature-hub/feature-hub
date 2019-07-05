@@ -26,7 +26,7 @@ its own history.
 
 How the root location is build from the consumer locations, is a problem that
 can not be solved generally, since it is dependant on the usecase. This is why
-the integrator defines the service with a so-called **root location
+the integrator defines the History Service with a so-called **root location
 transformer**. The root location transformer provides functions for merging
 consumer locations into a root location, and for extracting a consumer path from
 the root location.
@@ -42,8 +42,6 @@ JSON string which will be assigned to a single configurable query parameter.
 
 ### As a Feature App
 
-On the client:
-
 ```js
 import {Router} from 'react-router';
 ```
@@ -54,17 +52,16 @@ const myFeatureAppDefinition = {
 
   dependencies: {
     featureServices: {
-      's2:history': '^1.0.0'
+      's2:history': '^2.0.0'
     }
   },
 
   create(env) {
     const historyService = env.featureServices['s2:history'];
-    const browserHistory = historyService.createBrowserHistory();
 
     return {
       render: () => (
-        <Router history={browserHistory}>
+        <Router history={historyService.history}>
           <App />
         </Router>
       )
@@ -73,40 +70,9 @@ const myFeatureAppDefinition = {
 };
 ```
 
-On the server:
-
-```js
-import {Router} from 'react-router';
-```
-
-```js
-const myFeatureAppDefinition = {
-  id: 'acme:my-feature-app',
-
-  dependencies: {
-    featureServices: {
-      's2:history': '^1.0.0'
-    }
-  },
-
-  create(env) {
-    const historyService = env.featureServices['s2:history'];
-    const staticHistory = historyService.createStaticHistory();
-
-    return {
-      render: () => (
-        <Router history={staticHistory}>
-          <App />
-        </Router>
-      )
-    };
-  }
-};
-```
-
-For both the browser and the static history, the service is API-compatible with
-the history package. Note, however, that the `go`, `goBack`, `goForward` and
-`block` methods are not supported. For further information, reference its
+The `history` property of the History Service is API-compatible with the history
+package. Note, however, that the `go`, `goBack`, `goForward` and `block` methods
+are not supported. For further information, reference its
 [documentation][history-npm].
 
 ### As the Integrator
@@ -135,8 +101,9 @@ const featureHub = createFeatureHub('acme:integrator', {
 ```
 
 On the server, the History Service needs the server request to compute the
-initial history location of the static history. The integrator therefor defines
-the server request Feature Service:
+initial history location of the static history. The integrator therefore defines
+the server request Feature Service, and sets the `mode` of the History Service
+to `'static'`:
 
 ```js
 import {createFeatureHub} from '@feature-hub/core';
@@ -159,7 +126,7 @@ const request = {
 const featureHub = createFeatureHub('acme:integrator', {
   featureServiceDefinitions: [
     defineServerRequest(request),
-    defineHistoryService(rootLocationTransformer)
+    defineHistoryService(rootLocationTransformer, {mode: 'static'})
   ]
 });
 ```
@@ -171,7 +138,7 @@ A root location transformer is an object that implements the
 [`@feature-hub/history-service`][history-service-api] package. It provides two
 functions, `getConsumerPathFromRootLocation` and `createRootLocation`. In the
 following example, each consumer location is encoded as its own query parameter,
-with the `consumerUid` used as parameter name:
+with the `historyKey` used as parameter name:
 
 ```js
 import * as history from 'history';
@@ -179,28 +146,18 @@ import * as history from 'history';
 
 ```js
 const rootLocationTransformer = {
-  getConsumerPathFromRootLocation(rootLocation, consumerUid) {
+  getConsumerPathFromRootLocation(rootLocation, historyKey) {
     const searchParams = new URLSearchParams(rootLocation.search);
 
-    return searchParams.get(consumerUid);
+    return searchParams.get(historyKey);
   },
 
-  createRootLocation(consumerLocation, rootLocation, consumerUid) {
-    const searchParams = new URLSearchParams(rootLocation.search);
+  createRootLocation(currentRootLocation, consumerLocation, historyKey) {
+    const searchParams = new URLSearchParams(currentRootLocation.search);
+    searchParams.set(historyKey, history.createPath(consumerLocation));
+    const {pathname, state} = currentRootLocation;
 
-    if (consumerLocation) {
-      searchParams.set(consumerUid, history.createPath(consumerLocation));
-    } else {
-      searchParams.delete(consumerUid);
-    }
-
-    const {pathname, state} = rootLocation;
-
-    return {
-      pathname,
-      search: searchParams.toString(),
-      state
-    };
+    return {pathname, search: searchParams.toString(), state};
   }
 };
 ```
@@ -275,8 +232,33 @@ When a History Service consumer pushes the same location multiple times in a row
 and the user subsequently navigates back, no pop event is emitted for the
 unchanged location of this consumer.
 
+## Changing multiple consumers at once with a single navigation
+
+To trigger a navigation from a Feature App to another page that composes a
+different set of Feature Apps, a navigation Feature Service that encapsulates
+integrator routing logic would be needed.
+
+Such a Feature Service would have the need to collect consumer locations from
+other consumers (and itself), and then push a single root location that combines
+these consumer locations to the root history.
+
+To accomplish that, the History Service exposes the following additional
+properties:
+
+- `historyKey`: The history key that has been assigned to the consumer.
+- `createNewRootLocationForMultipleConsumers`: A method that creates a new root
+  location from multiple so-called consumer locations. A consumer location
+  consists of the actual `location` and the `historyKey` of the consumer.
+- `rootHistory`: Offers `push`, `replace`, and `createHref` methods that all
+  accept a new root location that was created using the
+  `createNewRootLocationForMultipleConsumers` method.
+
+> For more details see the ["Advanced Routing" demo][advanced-routing-demo].
+
 [browser-history-api]: https://developer.mozilla.org/en-US/docs/Web/API/History
 [history-npm]: https://www.npmjs.com/package/history
 [history-service-api]: /@feature-hub/modules/history_service.html
 [history-service-demo]:
   https://github.com/sinnerschrader/feature-hub/tree/master/packages/demos/src/history-service
+[advanced-routing-demo]:
+  https://github.com/sinnerschrader/feature-hub/tree/master/packages/demos/src/advanced-routing

@@ -1,4 +1,4 @@
-import {Label} from '@blueprintjs/core';
+import {Text} from '@blueprintjs/core';
 import {FeatureAppDefinition} from '@feature-hub/core';
 import {ReactFeatureApp} from '@feature-hub/react';
 import * as React from 'react';
@@ -12,7 +12,7 @@ const featureAppDefinition: FeatureAppDefinition<ReactFeatureApp> = {
   },
 
   create: () => ({
-    render: () => <Label>Hello, World!</Label>
+    render: () => <Text>Hello, World!</Text>
   })
 };
 

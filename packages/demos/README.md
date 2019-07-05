@@ -124,6 +124,17 @@ Demonstrates:
 yarn watch:demo integrator-dom
 ```
 
+### [Advanced Routing](src/advanced-routing)
+
+Demonstrates:
+
+- how the `@feature-hub/history-service` package and a custom navigation service
+  can be utilized to push location changes from one Feature App to another
+
+```sh
+yarn watch:demo advanced-routing
+```
+
 ---
 
 Copyright (c) 2018-2019 SinnerSchrader Deutschland GmbH. Released under the

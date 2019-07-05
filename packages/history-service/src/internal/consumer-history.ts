@@ -8,11 +8,11 @@ export abstract class ConsumerHistory implements history.History {
 
   public constructor(
     protected readonly context: HistoryServiceContext,
-    protected readonly consumerId: string,
+    protected readonly historyKey: string,
     protected readonly historyMultiplexer: HistoryMultiplexer
   ) {
     this.location = history.createLocation(
-      historyMultiplexer.getConsumerLocation(consumerId),
+      historyMultiplexer.getConsumerLocation(historyKey),
       undefined,
       undefined,
       history.createLocation('/')
@@ -38,7 +38,7 @@ export abstract class ConsumerHistory implements history.History {
       this.location
     );
 
-    this.historyMultiplexer.push(this.consumerId, this.location);
+    this.historyMultiplexer.push(this.historyKey, this.location);
     this.action = 'PUSH';
   }
 
@@ -53,7 +53,7 @@ export abstract class ConsumerHistory implements history.History {
       this.location
     );
 
-    this.historyMultiplexer.replace(this.consumerId, this.location);
+    this.historyMultiplexer.replace(this.historyKey, this.location);
     this.action = 'REPLACE';
   }
 
@@ -77,7 +77,7 @@ export abstract class ConsumerHistory implements history.History {
 
   public createHref(location: history.LocationDescriptorObject): history.Href {
     return this.historyMultiplexer.createHref(
-      this.consumerId,
+      this.historyKey,
       history.createLocation(location, undefined, undefined, this.location)
     );
   }
