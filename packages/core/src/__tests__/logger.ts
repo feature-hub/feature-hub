@@ -1,7 +1,7 @@
 import {Logger} from '../logger';
 
 export type MockLogger = {
-  readonly [key in keyof Logger]: Logger[key] & jest.Mock
+  readonly [key in keyof Logger]: Logger[key] & jest.Mock;
 };
 
 export const logger: MockLogger = {
