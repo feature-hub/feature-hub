@@ -1,10 +1,10 @@
-import {FeatureAppDefinition} from '@feature-hub/core';
+import {FeatureAppDefinition, FeatureServices} from '@feature-hub/core';
 import {HistoryServiceV2} from '@feature-hub/history-service';
 import {ReactFeatureApp} from '@feature-hub/react';
 import * as React from 'react';
 import {HistoryConsumer} from './history-consumer';
 
-interface Dependencies {
+interface Dependencies extends FeatureServices {
   readonly 's2:history': HistoryServiceV2;
 }
 

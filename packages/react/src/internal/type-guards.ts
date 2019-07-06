@@ -4,16 +4,16 @@ import {
   ReactFeatureApp
 } from '../feature-app-container';
 
-export function isDomFeatureApp(featureApp: {
-  [key: string]: unknown;
-}): featureApp is DomFeatureApp {
-  return typeof featureApp.attachTo === 'function';
+export function isDomFeatureApp(
+  featureApp: object
+): featureApp is DomFeatureApp {
+  return typeof (featureApp as DomFeatureApp).attachTo === 'function';
 }
 
-export function isReactFeatureApp(featureApp: {
-  [key: string]: unknown;
-}): featureApp is ReactFeatureApp {
-  return typeof featureApp.render === 'function';
+export function isReactFeatureApp(
+  featureApp: object
+): featureApp is ReactFeatureApp {
+  return typeof (featureApp as ReactFeatureApp).render === 'function';
 }
 
 export function isFeatureApp(featureApp: unknown): featureApp is FeatureApp {

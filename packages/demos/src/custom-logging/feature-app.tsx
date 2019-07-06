@@ -1,10 +1,10 @@
 import {Card, Label} from '@blueprintjs/core';
-import {FeatureAppDefinition} from '@feature-hub/core';
+import {FeatureAppDefinition, FeatureServices} from '@feature-hub/core';
 import {Logger} from '@feature-hub/logger';
 import {ReactFeatureApp} from '@feature-hub/react';
 import * as React from 'react';
 
-interface Dependencies {
+interface Dependencies extends FeatureServices {
   readonly 's2:logger': Logger;
 }
 

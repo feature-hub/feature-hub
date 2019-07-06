@@ -1,11 +1,11 @@
 import {Card, Text} from '@blueprintjs/core';
 import {AsyncSsrManagerV1} from '@feature-hub/async-ssr-manager';
-import {FeatureAppDefinition} from '@feature-hub/core';
+import {FeatureAppDefinition, FeatureServices} from '@feature-hub/core';
 import {ReactFeatureApp} from '@feature-hub/react';
 import {SerializedStateManagerV1} from '@feature-hub/serialized-state-manager';
 import * as React from 'react';
 
-interface Dependencies {
+interface Dependencies extends FeatureServices {
   readonly 's2:async-ssr-manager': AsyncSsrManagerV1 | undefined;
   readonly 's2:serialized-state-manager': SerializedStateManagerV1;
 }
