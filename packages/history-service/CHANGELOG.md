@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.1](https://github.com/sinnerschrader/feature-hub/compare/v2.1.0...v2.1.1) (2019-07-06)
+
+
+### Bug Fixes
+
+* **history-service:** allow LocationDescriptorObject in more places ([#522](https://github.com/sinnerschrader/feature-hub/issues/522)) ([656eeb0](https://github.com/sinnerschrader/feature-hub/commit/656eeb0))
+
+
+
+
+
 # [2.1.0](https://github.com/sinnerschrader/feature-hub/compare/v2.0.0...v2.1.0) (2019-07-05)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "@feature-hub/logger",
-  "version": "2.0.0",
+  "version": "2.1.1",
   "description": "A Feature Service for providing a common logging integration to all Feature Hub consumers.",
   "homepage": "https://feature-hub.io/",
   "bugs": {
@@ -21,7 +21,7 @@
   "module": "lib/esm/index.js",
   "typings": "lib/cjs/index.d.ts",
   "dependencies": {
-    "@feature-hub/core": "^2.0.0"
+    "@feature-hub/core": "^2.1.1"
   },
   "publishConfig": {
     "access": "public"
