@@ -81,7 +81,7 @@ the same argument that is passed to the Feature App's `create` method.
 * **all:** The option `featureAppConfigs` has been removed
 from the options of `createFeatureHub` and from the options of the
 `FeatureAppManager` constructor. The `env` that is passed to a
-Feature App's `create` method does not include a `config` property
+Feature App's `create` method does not include an `instanceConfig` property
 anymore. If a Feature App must be configured, the integrator needs to
 specify the `config` prop of the `FeatureAppLoader` or
 `FeatureAppContainer`. Furthermore, the `FeatureAppLoader` or
