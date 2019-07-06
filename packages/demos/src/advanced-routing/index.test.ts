@@ -7,12 +7,9 @@ import {AddressInfo} from 'net';
 import {ElementHandle} from 'puppeteer';
 import {Browser} from '../browser';
 import {startServer} from '../start-server';
-import {stubConsole} from '../stub-console';
 import webpackConfigs from './webpack-config';
 
 jest.setTimeout(120000);
-
-stubConsole();
 
 class HelloWorldUi {
   public constructor(private readonly browser: Browser) {}

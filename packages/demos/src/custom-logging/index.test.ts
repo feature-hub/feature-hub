@@ -7,12 +7,9 @@ import {AddressInfo} from 'net';
 import {ConsoleMessage} from 'puppeteer';
 import {Browser} from '../browser';
 import {startServer} from '../start-server';
-import {stubConsole} from '../stub-console';
 import webpackConfigs from './webpack-config';
 
 jest.setTimeout(120000);
-
-stubConsole();
 
 describe('integration test: "custom logging"', () => {
   const browser = new Browser(5000);

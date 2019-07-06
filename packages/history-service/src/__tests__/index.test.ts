@@ -8,7 +8,6 @@ import {
   FeatureServiceProviderDefinition
 } from '@feature-hub/core';
 import {History} from 'history';
-import {Stubbed, stubMethods} from 'jest-stub-methods';
 import {
   HistoryServiceDependencies,
   HistoryServiceV1,
@@ -603,15 +602,15 @@ describe('defineHistoryService', () => {
     });
 
     describe('when no Logger Feature Service is provided', () => {
-      let stubbedConsole: Stubbed<Console>;
+      let consoleWarnSpy: jest.SpyInstance;
 
       beforeEach(() => {
-        stubbedConsole = stubMethods(console);
+        consoleWarnSpy = jest.spyOn(console, 'warn');
         mockEnv.featureServices['s2:logger'] = undefined;
       });
 
       afterEach(() => {
-        stubbedConsole.restore();
+        consoleWarnSpy.mockRestore();
       });
 
       it('logs messages using the console', () => {
@@ -621,7 +620,7 @@ describe('defineHistoryService', () => {
 
         browserHistory.go(-1);
 
-        expect(stubbedConsole.stub.warn).toHaveBeenCalledWith(
+        expect(consoleWarnSpy).toHaveBeenCalledWith(
           'history.go() is not supported.'
         );
       });
@@ -1481,15 +1480,15 @@ describe('defineHistoryService', () => {
     });
 
     describe('when no Logger Feature Service is provided', () => {
-      let stubbedConsole: Stubbed<Console>;
+      let consoleWarnSpy: jest.SpyInstance;
 
       beforeEach(() => {
-        stubbedConsole = stubMethods(console);
+        consoleWarnSpy = jest.spyOn(console, 'warn');
         mockEnv.featureServices['s2:logger'] = undefined;
       });
 
       afterEach(() => {
-        stubbedConsole.restore();
+        consoleWarnSpy.mockRestore();
       });
 
       it('logs messages using the console', () => {
@@ -1499,7 +1498,7 @@ describe('defineHistoryService', () => {
 
         browserHistory.go(-1);
 
-        expect(stubbedConsole.stub.warn).toHaveBeenCalledWith(
+        expect(consoleWarnSpy).toHaveBeenCalledWith(
           'history.go() is not supported.'
         );
       });

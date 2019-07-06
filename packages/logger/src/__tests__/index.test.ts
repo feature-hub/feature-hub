@@ -4,7 +4,6 @@ import {
   FeatureServiceEnvironment,
   FeatureServiceProviderDefinition
 } from '@feature-hub/core';
-import {Stub, Stubbed, stubMethods} from 'jest-stub-methods';
 import {Logger, SharedLogger, defineLogger} from '..';
 
 describe('defineLogger', () => {
@@ -34,17 +33,9 @@ describe('defineLogger', () => {
     let logger: Logger;
 
     describe('with the default createConsumerLogger function', () => {
-      let stubbedConsole: Stubbed<Console>;
-
       beforeEach(() => {
-        stubbedConsole = stubMethods(console);
-
         logger = loggerDefinition.create(mockEnv)['1.0.0']('test:id')
           .featureService;
-      });
-
-      afterEach(() => {
-        stubbedConsole.restore();
       });
 
       const loggerMethods: (keyof Logger)[] = [
@@ -55,38 +46,42 @@ describe('defineLogger', () => {
         'error'
       ];
 
-      for (const method of loggerMethods) {
-        describe(`#${method}`, () => {
-          it(`delegates to console.${method}`, () => {
-            logger[method]('test');
+      describe.each(loggerMethods)('#%s', method => {
+        let stubbedConsoleMethod: jest.SpyInstance;
 
-            expect(stubbedConsole.stub[method].mock.calls).toEqual([['test']]);
-          });
-
-          it('preserves the call stack', () => {
-            stubbedConsole.stub[method].mockImplementationOnce(() => {
-              throw new Error(`mock error for ${method}}`);
-            });
-
-            expect.assertions(2);
-
-            try {
-              logger[method]('test');
-            } catch (error) {
-              expect(error.stack).toMatch(
-                /logger\/src\/__tests__\/index.test\.(js|ts)/
-              );
-
-              expect(error.stack).not.toMatch(/logger\/src\/index\.(js|ts)/);
-            }
-          });
+        beforeEach(() => {
+          stubbedConsoleMethod = jest.spyOn(console, method);
         });
-      }
+
+        it(`delegates to console.${method}`, () => {
+          logger[method]('test');
+
+          expect(stubbedConsoleMethod.mock.calls).toEqual([['test']]);
+        });
+
+        it('preserves the call stack', () => {
+          stubbedConsoleMethod.mockImplementationOnce(() => {
+            throw new Error(`mock error for ${method}}`);
+          });
+
+          expect.assertions(2);
+
+          try {
+            logger[method]('test');
+          } catch (error) {
+            expect(error.stack).toMatch(
+              /logger\/src\/__tests__\/index.test\.(js|ts)/
+            );
+
+            expect(error.stack).not.toMatch(/logger\/src\/index\.(js|ts)/);
+          }
+        });
+      });
     });
 
     describe('with a custom createConsumerLogger function', () => {
-      let mockConsumerLogger: Stub<Logger>;
-      let mockCreateConsumerLogger: jest.Mock<Stub<Logger>>;
+      let mockConsumerLogger: Logger;
+      let mockCreateConsumerLogger: jest.Mock<Logger>;
 
       beforeEach(() => {
         mockConsumerLogger = {

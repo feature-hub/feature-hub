@@ -5,7 +5,6 @@ import {
   FeatureServiceEnvironment,
   FeatureServiceProviderDefinition
 } from '@feature-hub/core';
-import {Stubbed, stubMethods} from 'jest-stub-methods';
 import {
   AsyncSsrManagerV1,
   SharedAsyncSsrManager,
@@ -293,7 +292,6 @@ describe('defineAsyncSsrManager', () => {
         it('logs a warning', async () => {
           const asyncSsrManager = asyncSsrManagerBinder('test').featureService;
           const mockRender = jest.fn(() => 'testHtml');
-          const stubbedConsole = stubMethods(console);
 
           await useFakeTimers(async () =>
             asyncSsrManager.renderUntilCompleted(mockRender)
@@ -304,17 +302,15 @@ describe('defineAsyncSsrManager', () => {
               'No timeout is configured for the Async SSR Manager. This could lead to unexpectedly long render times or, in the worst case, never resolving render calls!'
             ]
           ]);
-
-          stubbedConsole.restore();
         });
       });
     });
 
     describe('when no Logger Feature Service is provided', () => {
-      let stubbedConsole: Stubbed<Console>;
+      let consoleWarnSpy: jest.SpyInstance;
 
       beforeEach(() => {
-        stubbedConsole = stubMethods(console);
+        consoleWarnSpy = jest.spyOn(console, 'warn');
 
         asyncSsrManagerDefinition = defineAsyncSsrManager();
 
@@ -324,7 +320,7 @@ describe('defineAsyncSsrManager', () => {
       });
 
       afterEach(() => {
-        stubbedConsole.restore();
+        consoleWarnSpy.mockRestore();
       });
 
       it('logs messages using the console', async () => {
@@ -335,7 +331,7 @@ describe('defineAsyncSsrManager', () => {
           asyncSsrManager.renderUntilCompleted(mockRender)
         );
 
-        expect(stubbedConsole.stub.warn.mock.calls).toEqual([
+        expect(consoleWarnSpy.mock.calls).toEqual([
           [
             'No timeout is configured for the Async SSR Manager. This could lead to unexpectedly long render times or, in the worst case, never resolving render calls!'
           ]

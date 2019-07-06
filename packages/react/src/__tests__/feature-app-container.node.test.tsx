@@ -9,7 +9,6 @@ import {
   FeatureAppManager,
   FeatureAppScope
 } from '@feature-hub/core';
-import {Stubbed, stubMethods} from 'jest-stub-methods';
 import * as React from 'react';
 import TestRenderer from 'react-test-renderer';
 import {FeatureApp, FeatureAppContainer, FeatureHubContextProvider} from '..';
@@ -19,15 +18,13 @@ describe('FeatureAppContainer (on Node.js)', () => {
   let mockCreateFeatureAppScope: jest.Mock;
   let mockFeatureAppDefinition: FeatureAppDefinition<FeatureApp>;
   let mockFeatureAppScope: FeatureAppScope<unknown>;
-  let stubbedConsole: Stubbed<Console>;
+  let consoleErrorSpy: jest.SpyInstance;
 
   const expectConsoleErrorCalls = (expectedConsoleErrorCalls: unknown[][]) => {
     try {
-      expect(stubbedConsole.stub.error.mock.calls).toEqual(
-        expectedConsoleErrorCalls
-      );
+      expect(consoleErrorSpy.mock.calls).toEqual(expectedConsoleErrorCalls);
     } finally {
-      stubbedConsole.stub.error.mockClear();
+      consoleErrorSpy.mockClear();
     }
   };
 
@@ -42,12 +39,12 @@ describe('FeatureAppContainer (on Node.js)', () => {
       preloadFeatureApp: jest.fn()
     } as Partial<FeatureAppManager>) as FeatureAppManager;
 
-    stubbedConsole = stubMethods(console);
+    consoleErrorSpy = jest.spyOn(console, 'error');
   });
 
   afterEach(() => {
-    expect(stubbedConsole.stub.error).not.toHaveBeenCalled();
-    stubbedConsole.restore();
+    expect(consoleErrorSpy).not.toHaveBeenCalled();
+    consoleErrorSpy.mockRestore();
   });
 
   const renderWithFeatureHubContext = (node: React.ReactNode) =>

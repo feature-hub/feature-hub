@@ -1,6 +1,5 @@
 // tslint:disable:no-implicit-dependencies
 
-import {Stubbed, stubMethods} from 'jest-stub-methods';
 import {
   FeatureAppDefinition,
   FeatureAppManager,
@@ -629,15 +628,15 @@ describe('FeatureAppManager', () => {
   });
 
   describe('without a custom logger', () => {
-    let stubbedConsole: Stubbed<Console>;
+    let consoleInfoSpy: jest.SpyInstance;
 
     beforeEach(() => {
-      stubbedConsole = stubMethods(console);
+      consoleInfoSpy = jest.spyOn(console, 'info');
       featureAppManager = new FeatureAppManager(mockFeatureServiceRegistry);
     });
 
     afterEach(() => {
-      stubbedConsole.restore();
+      consoleInfoSpy.mockRestore();
     });
 
     it('logs messages using the console', () => {
@@ -646,7 +645,7 @@ describe('FeatureAppManager', () => {
         mockFeatureAppDefinition
       );
 
-      expect(stubbedConsole.stub.info.mock.calls).toEqual([
+      expect(consoleInfoSpy.mock.calls).toEqual([
         ['The Feature App with the ID "testId" has been successfully created.']
       ]);
     });
