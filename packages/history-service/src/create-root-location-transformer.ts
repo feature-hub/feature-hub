@@ -24,7 +24,7 @@ export type RootLocationDescriptorObject = history.LocationDescriptorObject<
 
 export interface RootLocationTransformer {
   getConsumerPathFromRootLocation(
-    rootLocation: RootLocation,
+    rootLocation: RootLocationDescriptorObject,
     historyKey: string
   ): string | undefined;
 
@@ -66,7 +66,7 @@ export function getConsumerPath(
 }
 
 export function createSearchParams(
-  location: history.Location
+  location: history.LocationDescriptorObject
 ): URLSearchParams {
   return new URLSearchParams(location.search);
 }
@@ -76,8 +76,8 @@ export function serializeSearchParams(searchParams: URLSearchParams): string {
 }
 
 export function createRootLocationForPrimaryConsumer(
-  currentRootLocation: history.Location,
-  primaryConsumerLocation: history.Location,
+  currentRootLocation: RootLocationDescriptorObject,
+  primaryConsumerLocation: history.LocationDescriptorObject,
   consumerPathsQueryParamName: string
 ): history.LocationDescriptorObject {
   const allSearchParams = createSearchParams(currentRootLocation);
@@ -93,7 +93,7 @@ export function createRootLocationForPrimaryConsumer(
 
   const consumerPaths = allSearchParams.get(consumerPathsQueryParamName);
 
-  let search: string;
+  let search: string | undefined;
 
   if (consumerPaths) {
     newSearchParams.set(consumerPathsQueryParamName, consumerPaths);
@@ -108,8 +108,8 @@ export function createRootLocationForPrimaryConsumer(
 }
 
 export function createRootLocationForOtherConsumer(
-  currentRootLocation: history.Location,
-  consumerLocation: history.Location,
+  currentRootLocation: RootLocationDescriptorObject,
+  consumerLocation: history.LocationDescriptorObject,
   historyKey: string,
   consumerPathsQueryParamName: string
 ): history.LocationDescriptorObject {
@@ -143,7 +143,7 @@ export function createRootLocationTransformer(
 ): RootLocationTransformer {
   return {
     getConsumerPathFromRootLocation: (
-      rootLocation: history.Location,
+      rootLocation: RootLocationDescriptorObject,
       historyKey: string
     ): string | undefined => {
       const {consumerPathsQueryParamName} = options;
@@ -170,8 +170,8 @@ export function createRootLocationTransformer(
     },
 
     createRootLocation: (
-      currentRootLocation: history.Location,
-      consumerLocation: history.Location,
+      currentRootLocation: RootLocationDescriptorObject,
+      consumerLocation: history.LocationDescriptorObject,
       historyKey: string
     ): history.LocationDescriptorObject => {
       const primaryConsumerHistoryKey = getPrimaryConsumerHistoryKey(options);
