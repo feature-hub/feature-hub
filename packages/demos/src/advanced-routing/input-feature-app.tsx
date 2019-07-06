@@ -1,10 +1,10 @@
 import {Button, Card, ControlGroup, InputGroup} from '@blueprintjs/core';
-import {FeatureAppDefinition} from '@feature-hub/core';
+import {FeatureAppDefinition, FeatureServices} from '@feature-hub/core';
 import {ReactFeatureApp} from '@feature-hub/react';
 import * as React from 'react';
 import {NavigationServiceV1} from './navigation-service';
 
-interface Dependencies {
+interface Dependencies extends FeatureServices {
   readonly 'test:navigation-service': NavigationServiceV1;
 }
 

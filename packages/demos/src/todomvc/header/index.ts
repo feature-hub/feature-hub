@@ -1,9 +1,9 @@
-import {FeatureAppDefinition} from '@feature-hub/core';
+import {FeatureAppDefinition, FeatureServices} from '@feature-hub/core';
 import {DomFeatureApp} from '@feature-hub/react';
 import {TodoManagerV1} from '../todo-manager';
 import {TodoMvcHeader} from './todomvc-header';
 
-export interface HeaderFeatureServices {
+export interface HeaderFeatureServices extends FeatureServices {
   readonly 'test:todomvc-todo-manager': TodoManagerV1;
 }
 

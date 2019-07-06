@@ -1,10 +1,10 @@
-import {FeatureAppDefinition} from '@feature-hub/core';
+import {FeatureAppDefinition, FeatureServices} from '@feature-hub/core';
 import {ReactFeatureApp} from '@feature-hub/react';
 import * as React from 'react';
 import {TodoManagerV1} from '../todo-manager';
 import {TodoMvcFooter} from './todomvc-footer';
 
-export interface FooterFeatureServices {
+export interface FooterFeatureServices extends FeatureServices {
   readonly 'test:todomvc-todo-manager': TodoManagerV1;
 }
 
