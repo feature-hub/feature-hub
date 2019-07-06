@@ -5,7 +5,6 @@ import {
   FeatureAppScope,
   FeatureAppScopeOptions
 } from '@feature-hub/core';
-import {Stubbed, stubMethods} from 'jest-stub-methods';
 import * as React from 'react';
 import TestRenderer from 'react-test-renderer';
 import {FeatureApp, FeatureAppContainer, FeatureHubContextProvider} from '..';
@@ -16,7 +15,7 @@ describe('FeatureAppContainer', () => {
   let mockCreateFeatureAppScope: jest.Mock;
   let mockFeatureAppDefinition: FeatureAppDefinition<FeatureApp>;
   let mockFeatureAppScope: FeatureAppScope<unknown>;
-  let stubbedConsole: Stubbed<Console>;
+  let consoleErrorSpy: jest.SpyInstance;
 
   const usingErrorBoundaryConsoleErrorCalls = [
     [expect.any(String), expect.any(Error)],
@@ -37,16 +36,14 @@ describe('FeatureAppContainer', () => {
 
   const expectConsoleErrorCalls = (expectedConsoleErrorCalls: unknown[][]) => {
     try {
-      expect(stubbedConsole.stub.error.mock.calls).toEqual(
-        expectedConsoleErrorCalls
-      );
+      expect(consoleErrorSpy.mock.calls).toEqual(expectedConsoleErrorCalls);
     } finally {
-      stubbedConsole.stub.error.mockClear();
+      consoleErrorSpy.mockClear();
     }
   };
 
   beforeEach(() => {
-    stubbedConsole = stubMethods(console);
+    consoleErrorSpy = jest.spyOn(console, 'error');
     mockFeatureAppDefinition = {create: jest.fn()};
     mockFeatureAppScope = {featureApp: {}, release: jest.fn()};
     mockCreateFeatureAppScope = jest.fn(() => ({...mockFeatureAppScope}));
@@ -59,8 +56,8 @@ describe('FeatureAppContainer', () => {
   });
 
   afterEach(() => {
-    expect(stubbedConsole.stub.error).not.toHaveBeenCalled();
-    stubbedConsole.restore();
+    expect(consoleErrorSpy).not.toHaveBeenCalled();
+    consoleErrorSpy.mockRestore();
   });
 
   it('throws an error when rendered without a FeatureHubContextProvider', () => {

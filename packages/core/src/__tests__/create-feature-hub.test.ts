@@ -1,6 +1,5 @@
 // tslint:disable:no-implicit-dependencies
 
-import {Stubbed, stubMethods} from 'jest-stub-methods';
 import {FeatureHubOptions, createFeatureHub} from '../create-feature-hub';
 import {FeatureAppDefinition, FeatureAppManager} from '../feature-app-manager';
 import {
@@ -263,14 +262,14 @@ describe('createFeatureHub()', () => {
     });
 
     describe('without a custom logger', () => {
-      let stubbedConsole: Stubbed<Console>;
+      let consoleInfoSpy: jest.SpyInstance;
 
       beforeEach(() => {
-        stubbedConsole = stubMethods(console);
+        consoleInfoSpy = jest.spyOn(console, 'info');
       });
 
       afterEach(() => {
-        stubbedConsole.restore();
+        consoleInfoSpy.mockRestore();
       });
 
       it('logs messages using the console', () => {
@@ -283,7 +282,7 @@ describe('createFeatureHub()', () => {
           featureAppDefinition
         );
 
-        expect(stubbedConsole.stub.info.mock.calls).toEqual(expectedLogCalls);
+        expect(consoleInfoSpy.mock.calls).toEqual(expectedLogCalls);
       });
     });
   });

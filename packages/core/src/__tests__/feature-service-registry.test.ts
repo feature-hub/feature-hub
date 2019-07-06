@@ -1,6 +1,5 @@
 // tslint:disable:no-implicit-dependencies
 
-import {Stubbed, stubMethods} from 'jest-stub-methods';
 import {
   FeatureServiceBinding,
   FeatureServiceProviderDefinition,
@@ -722,15 +721,15 @@ describe('FeatureServiceRegistry', () => {
   });
 
   describe('without a custom logger', () => {
-    let stubbedConsole: Stubbed<Console>;
+    let consoleInfoSpy: jest.SpyInstance;
 
     beforeEach(() => {
-      stubbedConsole = stubMethods(console);
+      consoleInfoSpy = jest.spyOn(console, 'info');
       featureServiceRegistry = new FeatureServiceRegistry();
     });
 
     afterEach(() => {
-      stubbedConsole.restore();
+      consoleInfoSpy.mockRestore();
     });
 
     it('logs messages using the console', () => {
@@ -739,7 +738,7 @@ describe('FeatureServiceRegistry', () => {
         'test'
       );
 
-      expect(stubbedConsole.stub.info.mock.calls).toEqual([
+      expect(consoleInfoSpy.mock.calls).toEqual([
         [
           'The Feature Service "a" has been successfully registered by registrant "test".'
         ]

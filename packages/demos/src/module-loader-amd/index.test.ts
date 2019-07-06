@@ -6,12 +6,9 @@ import {Server} from 'http';
 import {AddressInfo} from 'net';
 import {Browser} from '../browser';
 import {startServer} from '../start-server';
-import {stubConsole} from '../stub-console';
 import webpackConfigs from './webpack-config';
 
 jest.setTimeout(120000);
-
-stubConsole();
 
 describe('integration test: "amd module loader"', () => {
   const browser = new Browser(5000);
