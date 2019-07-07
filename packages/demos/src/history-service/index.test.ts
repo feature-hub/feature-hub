@@ -27,24 +27,22 @@ class HistoryConsumerUi {
   }
 
   public async push(pathname: string): Promise<void> {
-    await (await this.getNewPathnameInput()).type(pathname);
+    await (await this.getNewPathInput()).type(pathname);
 
     await this.browser.waitForNavigation((await this.getPushButton()).click());
   }
 
   public async replace(pathname: string): Promise<void> {
-    await (await this.getNewPathnameInput()).type(pathname);
+    await (await this.getNewPathInput()).type(pathname);
 
     await this.browser.waitForNavigation(
       (await this.getReplaceButton()).click()
     );
   }
 
-  private async getNewPathnameInput(): Promise<
-    ElementHandle<HTMLInputElement>
-  > {
+  private async getNewPathInput(): Promise<ElementHandle<HTMLInputElement>> {
     // tslint:disable-next-line:no-non-null-assertion
-    return (await page.$(`#new-pathname-${this.specifier}`))!;
+    return (await page.$(`#new-path-${this.specifier}`))!;
   }
 
   private async getPathnameInput(): Promise<ElementHandle<HTMLInputElement>> {

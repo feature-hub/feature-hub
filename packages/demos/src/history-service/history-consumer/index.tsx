@@ -2,6 +2,7 @@ import {FeatureAppDefinition, FeatureServices} from '@feature-hub/core';
 import {HistoryServiceV2} from '@feature-hub/history-service';
 import {ReactFeatureApp} from '@feature-hub/react';
 import * as React from 'react';
+import {Router} from 'react-router';
 import {HistoryConsumer} from './history-consumer';
 
 interface Dependencies extends FeatureServices {
@@ -23,13 +24,10 @@ export const historyConsumerDefinition: FeatureAppDefinition<
 
     return {
       render: () => (
-        <HistoryConsumer
-          history={historyService.history}
-          historyKey={historyService.historyKey}
-        />
+        <Router history={historyService.history}>
+          <HistoryConsumer historyKey={historyService.historyKey} />
+        </Router>
       )
     };
   }
 };
-
-export default historyConsumerDefinition;
