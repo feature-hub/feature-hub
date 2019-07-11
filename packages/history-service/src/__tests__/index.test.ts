@@ -198,7 +198,7 @@ describe('defineHistoryService', () => {
           destroyHistories();
 
           const consumerStates = {test1: 'foo state', test2: 'bar state'};
-          const url = createUrl({test1: '/foo', test2: 'bar'});
+          const url = createUrl({test1: '/foo#some-anchor', test2: 'bar'});
 
           window.history.pushState({state: consumerStates}, '', url);
 
@@ -206,7 +206,8 @@ describe('defineHistoryService', () => {
 
           expect(history1.location).toMatchObject({
             pathname: '/foo',
-            state: 'foo state'
+            state: 'foo state',
+            hash: '#some-anchor'
           });
 
           expect(history2.location).toMatchObject({

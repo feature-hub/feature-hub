@@ -154,10 +154,10 @@ export function createRootLocationTransformer(
       if (isPrimaryConsumer) {
         searchParams.delete(consumerPathsQueryParamName);
 
-        const pathname = rootLocation.pathname;
+        const {pathname, hash} = rootLocation;
         const search = serializeSearchParams(searchParams);
 
-        return history.createPath({pathname, search});
+        return history.createPath({pathname, search, hash});
       }
 
       const consumerPaths = searchParams.get(consumerPathsQueryParamName);
