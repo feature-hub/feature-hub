@@ -116,7 +116,7 @@ describe('#createRootLocationTransformer', () => {
 
   describe('#getConsumerPathFromRootLocation', () => {
     describe('with consumers encoded into the query parameter', () => {
-      it('returns the consumer-specific locations', () => {
+      it('returns the consumer-specific locations including a hash for the primary consumer', () => {
         const locationTransformer = createRootLocationTransformer({
           consumerPathsQueryParamName: '---',
           primaryConsumerHistoryKey: 'testPri'
@@ -124,7 +124,8 @@ describe('#createRootLocationTransformer', () => {
 
         const rootLocation = {
           pathname: '/foo',
-          search: `?bar=1&---=${encodeConsumerPaths({test1: '/baz?qux=3'})}`
+          search: `?bar=1&---=${encodeConsumerPaths({test1: '/baz?qux=3'})}`,
+          hash: '#some-anchor'
         };
 
         expect(
@@ -132,7 +133,7 @@ describe('#createRootLocationTransformer', () => {
             rootLocation as Location,
             'testPri'
           )
-        ).toEqual('/foo?bar=1');
+        ).toEqual('/foo?bar=1#some-anchor');
 
         expect(
           locationTransformer.getConsumerPathFromRootLocation(
