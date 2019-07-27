@@ -22,12 +22,10 @@
   "typings": "lib/cjs/index.d.ts",
   "dependencies": {
     "@feature-hub/core": "^2.2.0",
-    "fs-extra": "^8.0.0",
-    "node-fetch": "^2.3.0"
+    "node-fetch": "^2.6.0"
   },
   "devDependencies": {
-    "@types/fs-extra": "^8.0.0",
-    "@types/node-fetch": "^2.1.4"
+    "@types/node-fetch": "^2.3.7"
   },
   "publishConfig": {
     "access": "public"

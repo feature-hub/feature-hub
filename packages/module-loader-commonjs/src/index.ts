@@ -1,42 +1,32 @@
 import {ModuleLoader} from '@feature-hub/core';
-import crypto from 'crypto';
-import fs from 'fs-extra';
 import fetch from 'node-fetch';
-import path from 'path';
 
-// This must be a local directory to make node module resolution possible.
-const tmpDirname = path.join(__dirname, '.tmp');
-
-function createHash(data: string): string {
-  return crypto
-    .createHash('md5')
-    .update(data)
-    .digest('hex');
+export interface Externals {
+  readonly [externalName: string]: unknown;
 }
 
-async function writeFile(url: string, data: Buffer): Promise<string> {
-  /* istanbul ignore next */
-  if (!(await fs.pathExists(tmpDirname))) {
-    await fs.mkdirp(tmpDirname);
-  }
+export function createCommonJsModuleLoader(
+  // The externals param is referenced in the eval call, see below.
+  _externals: Externals = {}
+): ModuleLoader {
+  return async (url: string): Promise<unknown> => {
+    const response = await fetch(url);
+    const source = await response.text();
+    const mod = {exports: {}};
 
-  const filename = path.join(tmpDirname, `${createHash(url)}.js`);
+    // tslint:disable-next-line:no-eval
+    eval(
+      // The source text must start in the first line to retain the original line
+      // numbers in error stacks and console traces.
+      `(function (module, exports, require) { ${source}
+    })(mod, mod.exports, function (dep) {
+        return _externals.hasOwnProperty(dep) ? _externals[dep] : require(dep);
+      });
+    //# sourceURL=${url}`
+    );
 
-  await fs.writeFile(filename, data);
-
-  return filename;
+    return mod.exports;
+  };
 }
 
-async function requireAsync(url: string): Promise<unknown> {
-  const response = await fetch(url);
-  const data = await response.buffer();
-  const filename = await writeFile(url, data);
-
-  // Make sure no stale version of the module is loaded from the require cache!
-  // tslint:disable-next-line:no-dynamic-delete
-  delete require.cache[require.resolve(filename)];
-
-  return require(filename);
-}
-
-export const loadCommonJsModule: ModuleLoader = async url => requireAsync(url);
+export const loadCommonJsModule: ModuleLoader = createCommonJsModuleLoader();

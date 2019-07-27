@@ -39,10 +39,13 @@ added:
 ```
 
 And the integrator must provide `@feature-hub/react` and `react` as shared
-dependencies:
+dependencies.
+
+On the client:
 
 ```js
-import {defineExternals} from '@feature-hub/module-loader-amd';
+import {createFeatureHub} from '@feature-hub/core';
+import {defineExternals, loadAmdModule} from '@feature-hub/module-loader-amd';
 import * as FeatureHubReact from '@feature-hub/react';
 import * as React from 'react';
 ```
@@ -51,6 +54,28 @@ import * as React from 'react';
 defineExternals({
   react: React,
   '@feature-hub/react': FeatureHubReact
+});
+
+const {featureAppManager} = createFeatureHub('acme:integrator', {
+  moduleLoader: loadAmdModule
+});
+```
+
+On the server:
+
+```js
+import {createFeatureHub} from '@feature-hub/core';
+import {createCommonJsModuleLoader} from '@feature-hub/module-loader-commonjs';
+import * as FeatureHubReact from '@feature-hub/react';
+import * as React from 'react';
+```
+
+```js
+const {featureAppManager} = createFeatureHub('acme:integrator', {
+  moduleLoader: createCommonJsModuleLoader({
+    react: React,
+    '@feature-hub/react': FeatureHubReact
+  })
 });
 ```
 
