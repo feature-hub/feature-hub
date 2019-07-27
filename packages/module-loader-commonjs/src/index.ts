@@ -6,23 +6,23 @@ export interface Externals {
 }
 
 export function createCommonJsModuleLoader(
-  // The externals param is referenced in the eval call, see below.
-  _externals: Externals = {}
+  externals: Externals = {}
 ): ModuleLoader {
   return async (url: string): Promise<unknown> => {
     const response = await fetch(url);
     const source = await response.text();
     const mod = {exports: {}};
 
-    // tslint:disable-next-line:no-eval
-    eval(
-      // The source text must start in the first line to retain the original line
-      // numbers in error stacks and console traces.
-      `(function (module, exports, require) { ${source}
-    })(mod, mod.exports, function (dep) {
-        return _externals.hasOwnProperty(dep) ? _externals[dep] : require(dep);
-      });
-    //# sourceURL=${url}`
+    // tslint:disable-next-line:function-constructor
+    Function(
+      'module',
+      'exports',
+      'require',
+      `${source}
+      //# sourceURL=${url}`
+    )(mod, mod.exports, (dep: string) =>
+      // tslint:disable-next-line:no-eval https://stackoverflow.com/a/41063795/10385541
+      externals.hasOwnProperty(dep) ? externals[dep] : eval('require')(dep)
     );
 
     return mod.exports;
