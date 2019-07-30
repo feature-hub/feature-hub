@@ -2194,13 +2194,6 @@
     "@types/express-serve-static-core" "*"
     "@types/serve-static" "*"
 
-"@types/fs-extra@^8.0.0":
-  version "8.0.0"
-  resolved "https://registry.yarnpkg.com/@types/fs-extra/-/fs-extra-8.0.0.tgz#d3e2c313ca29f95059f198dd60d1f774642d4b25"
-  integrity sha512-bCtL5v9zdbQW86yexOlXWTEGvLNqWxMFyi7gQA7Gcthbezr2cPSOb8SkESVKA937QD5cIwOFLDFt0MQoXOEr9Q==
-  dependencies:
-    "@types/node" "*"
-
 "@types/get-port@^4.0.0":
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/@types/get-port/-/get-port-4.2.0.tgz#4fc44616c737d37d3ee7926d86fa975d0afba5e4"
@@ -2288,10 +2281,10 @@
   resolved "https://registry.yarnpkg.com/@types/minimatch/-/minimatch-3.0.3.tgz#3dca0e3f33b200fc7d1139c0cd96c1268cadfd9d"
   integrity sha512-tHq6qdbT9U1IRSGf14CL0pUlULksvY9OZ+5eEgl1N7t+OA3tGvNpxJCzuKQlsNgCVwbAs670L1vcVQi8j9HjnA==
 
-"@types/node-fetch@^2.1.4":
-  version "2.3.7"
-  resolved "https://registry.yarnpkg.com/@types/node-fetch/-/node-fetch-2.3.7.tgz#b7212e895100f8642dbdab698472bab5f3c1d2f1"
-  integrity sha512-+bKtuxhj/TYSSP1r4CZhfmyA0vm/aDRQNo7vbAgf6/cZajn0SAniGGST07yvI4Q+q169WTa2/x9gEHfJrkcALw==
+"@types/node-fetch@^2.3.7":
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/@types/node-fetch/-/node-fetch-2.5.0.tgz#1c55616a4591bdd15a389fbd0da4a55b9502add5"
+  integrity sha512-TLFRywthBgL68auWj+ziWu+vnmmcHCDFC/sqCOQf1xTz4hRq8cu79z8CtHU9lncExGBsB8fXA4TiLDLt6xvMzw==
   dependencies:
     "@types/node" "*"
 
@@ -6243,7 +6236,7 @@ fs-extra@^7.0.0:
     jsonfile "^4.0.0"
     universalify "^0.1.0"
 
-fs-extra@^8.0.0, fs-extra@^8.1.0:
+fs-extra@^8.1.0:
   version "8.1.0"
   resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-8.1.0.tgz#49d43c45a88cd9677668cb7be1b46efdb8d2e1c0"
   integrity sha512-yhlQgA6mnOJUKOsRUFsgJdQCvkKhcz8tlZG5HBQfReYZy46OwLcY+Zia0mtdHsOo9y/hP+CxMN0TU9QxoOtG4g==
@@ -9414,7 +9407,7 @@ node-fetch@^1.0.1:
     encoding "^0.1.11"
     is-stream "^1.0.1"
 
-node-fetch@^2.3.0, node-fetch@^2.5.0:
+node-fetch@^2.3.0, node-fetch@^2.5.0, node-fetch@^2.6.0:
   version "2.6.0"
   resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.0.tgz#e633456386d4aa55863f676a7ab0daa8fdecb0fd"
   integrity sha512-8dG4H5ujfvFiqDmVu9fQ5bOHUC15JMjMY/Zumv26oOvvVJjM67KF8koCWIabKQ1GJIa9r2mMZscBq/TbdOcmNA==
