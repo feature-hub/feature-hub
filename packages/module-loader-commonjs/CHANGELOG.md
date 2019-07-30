@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.2.1](https://github.com/sinnerschrader/feature-hub/compare/v2.2.0...v2.2.1) (2019-07-30)
+
+
+### Bug Fixes
+
+* **module-loader-commonjs:** avoid using fs to require commonjs module ([#533](https://github.com/sinnerschrader/feature-hub/issues/533)) ([5be4e18](https://github.com/sinnerschrader/feature-hub/commit/5be4e18)), closes [#503](https://github.com/sinnerschrader/feature-hub/issues/503)
+
+
+
+
+
 # [2.2.0](https://github.com/sinnerschrader/feature-hub/compare/v2.1.1...v2.2.0) (2019-07-11)
 
 **Note:** Version bump only for package @feature-hub/module-loader-commonjs

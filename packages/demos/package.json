@@ -1,6 +1,6 @@
 {
   "name": "@feature-hub/demos",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "private": true,
   "license": "MIT",
   "scripts": {
@@ -14,7 +14,7 @@
     "@feature-hub/history-service": "^2.2.0",
     "@feature-hub/logger": "^2.2.0",
     "@feature-hub/module-loader-amd": "^2.2.0",
-    "@feature-hub/module-loader-commonjs": "^2.2.0",
+    "@feature-hub/module-loader-commonjs": "^2.2.1",
     "@feature-hub/react": "^2.2.0",
     "@feature-hub/serialized-state-manager": "^2.2.0",
     "@feature-hub/server-request": "^2.2.0",
