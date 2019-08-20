@@ -16,13 +16,14 @@ import {
   createRootLocationTransformer,
   defineHistoryService
 } from '..';
+import {RootLocation} from '../create-root-location-transformer';
+import {Writable} from '../internal/writable';
 import {
   consumerPathsQueryParamName,
   createSearch,
   createUrl
 } from './root-location-helpers';
 import {stubbedLogger} from './stubbed-logger';
-import {Writable} from './writable';
 
 const simulateOnPopState = (state: unknown, url: string) => {
   // We need to use pushState to change to the URL that should set by the popstate event.
@@ -642,9 +643,7 @@ describe('defineHistoryService', () => {
         featureServices: {'s2:logger': stubbedLogger}
       };
 
-      createHistoryServiceBinder = (): FeatureServiceBinder<
-        HistoryServiceV2
-      > => {
+      createHistoryServiceBinder = () => {
         const sharedHistoryService = defineHistoryService(
           createRootLocationTransformer({consumerPathsQueryParamName})
         ).create(mockEnv);
@@ -1476,6 +1475,67 @@ describe('defineHistoryService', () => {
           pathname: '/',
           search: createSearch({test1: '/test', test2: '/xxx'}),
           state: {test1: 42, test2: 'foo'}
+        });
+      });
+
+      describe('with a createNewRootLocationForMultipleConsumers method defined in the root location transformer', () => {
+        let createNewRootLocationForMultipleConsumersMock: jest.Mock;
+        let historyServiceTest1: HistoryServiceV2;
+
+        beforeEach(() => {
+          createNewRootLocationForMultipleConsumersMock = jest.fn(() => ({
+            pathname: 'root-test'
+          }));
+
+          createHistoryServiceBinder = () => {
+            const sharedHistoryService = defineHistoryService({
+              createRootLocation: jest.fn(),
+              getConsumerPathFromRootLocation: jest.fn(),
+              createNewRootLocationForMultipleConsumers: createNewRootLocationForMultipleConsumersMock
+            }).create(mockEnv);
+
+            return sharedHistoryService['2.0.0'];
+          };
+
+          const historyServiceBinder = createHistoryServiceBinder();
+          historyServiceTest1 = historyServiceBinder('test1').featureService;
+        });
+
+        it('uses the custom createNewRootLocationForMultipleConsumers method', () => {
+          const consumerLocation = {
+            historyKey: 'test1',
+            location: {pathname: '/test1'}
+          };
+
+          historyServiceTest1.createNewRootLocationForMultipleConsumers(
+            consumerLocation
+          );
+
+          expect(
+            createNewRootLocationForMultipleConsumersMock.mock.calls
+          ).toEqual([[consumerLocation]]);
+        });
+
+        it('sets the consumer states on the new root location', () => {
+          const consumerLocation = {
+            historyKey: 'test1',
+            location: {pathname: '/test1', state: 42}
+          };
+
+          const location = historyServiceTest1.createNewRootLocationForMultipleConsumers(
+            consumerLocation
+          );
+
+          const expectedRootLocation: RootLocation = {
+            pathname: 'root-test',
+            search: '',
+            hash: '',
+            state: {
+              test1: 42
+            }
+          };
+
+          expect(location).toEqual(expectedRootLocation);
         });
       });
     });

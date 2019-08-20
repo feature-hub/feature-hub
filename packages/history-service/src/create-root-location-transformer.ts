@@ -1,4 +1,5 @@
 import * as history from 'history';
+import {ConsumerLocation} from '.';
 import {URLSearchParams} from './internal/url-search-params';
 
 export interface ConsumerHistoryStates {
@@ -33,6 +34,10 @@ export interface RootLocationTransformer {
     consumerLocation: history.LocationDescriptorObject,
     historyKey: string
   ): history.LocationDescriptorObject;
+
+  createNewRootLocationForMultipleConsumers?(
+    ...consumerLocations: ConsumerLocation[]
+  ): RootLocationDescriptorObject;
 }
 
 export interface ConsumerPaths {
