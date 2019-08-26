@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.3.0](https://github.com/sinnerschrader/feature-hub/compare/v2.2.1...v2.3.0) (2019-08-26)
+
+
+### Features
+
+* **history-service:** root location transformer createNewRootLocationForMultipleConsumers ([#539](https://github.com/sinnerschrader/feature-hub/issues/539)) ([42691cf](https://github.com/sinnerschrader/feature-hub/commit/42691cf))
+
+
+
+
+
 # [2.2.0](https://github.com/sinnerschrader/feature-hub/compare/v2.1.1...v2.2.0) (2019-07-11)
 
 
