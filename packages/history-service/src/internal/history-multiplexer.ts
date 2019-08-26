@@ -6,6 +6,20 @@ import {
   RootLocationDescriptorObject,
   RootLocationTransformer
 } from '../create-root-location-transformer';
+import {Writable} from './writable';
+
+function setConsumerStates(
+  rootLocation: RootLocationDescriptorObject,
+  ...consumerLocations: ConsumerLocation[]
+): RootLocation {
+  const consumerStates: Writable<ConsumerHistoryStates> = {};
+
+  for (const {historyKey, location} of consumerLocations) {
+    consumerStates[historyKey] = location.state;
+  }
+
+  return history.createLocation({...rootLocation, state: consumerStates});
+}
 
 export class HistoryMultiplexer {
   public constructor(
@@ -72,17 +86,25 @@ export class HistoryMultiplexer {
   public createNewRootLocationForMultipleConsumers(
     ...consumerLocations: ConsumerLocation[]
   ): RootLocationDescriptorObject {
-    let rootlocation: RootLocationDescriptorObject = {pathname: '/'};
+    let newRootLocation: RootLocationDescriptorObject = {pathname: '/'};
 
-    for (const consumerLocation of consumerLocations) {
-      rootlocation = this.createRootLocation(
-        consumerLocation.historyKey,
-        consumerLocation.location,
-        rootlocation
+    if (
+      this.rootLocationTransformer.createNewRootLocationForMultipleConsumers
+    ) {
+      newRootLocation = this.rootLocationTransformer.createNewRootLocationForMultipleConsumers(
+        ...consumerLocations
       );
+    } else {
+      for (const consumerLocation of consumerLocations) {
+        newRootLocation = this.rootLocationTransformer.createRootLocation(
+          newRootLocation,
+          consumerLocation.location,
+          consumerLocation.historyKey
+        );
+      }
     }
 
-    return rootlocation;
+    return setConsumerStates(newRootLocation, ...consumerLocations);
   }
 
   private createRootLocation(

@@ -19,13 +19,13 @@ import {
   createRootLocationTransformer,
   defineHistoryService
 } from '..';
+import {Writable} from '../internal/writable';
 import {
   consumerPathsQueryParamName,
   createSearch,
   createUrl
 } from './root-location-helpers';
 import {stubbedLogger} from './stubbed-logger';
-import {Writable} from './writable';
 
 describe('defineHistoryService', () => {
   describe('HistoryServiceV1 (on Node.js)', () => {
