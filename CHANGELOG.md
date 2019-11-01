@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.3.1](https://github.com/sinnerschrader/feature-hub/compare/v2.3.0...v2.3.1) (2019-11-01)
+
+
+### Bug Fixes
+
+* **core:** coerce dependency versions to caret ranges ([#543](https://github.com/sinnerschrader/feature-hub/issues/543)) ([915012f](https://github.com/sinnerschrader/feature-hub/commit/915012f))
+
+
+
+
+
 # [2.3.0](https://github.com/sinnerschrader/feature-hub/compare/v2.2.1...v2.3.0) (2019-08-26)
 
 
