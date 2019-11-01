@@ -53,7 +53,9 @@ The `dependencies` map can contain two types of required dependencies:
    version range][semver] as value, e.g.
    `{'acme:other-feature-service': '^2.0.0'}`. Since
    [Feature Services only provide the latest minor version for each major version](#providing-a-versioned-api),
-   a [caret range][semver-caret-range] should be used here.
+   a [caret range][semver-caret-range] should be used here. If instead an exact
+   version or a [tilde range][semver-tilde-range] is used, this will be coerced
+   to a caret range by the `Feature ServiceRegistry`.
 
 1. With `dependencies.externals` all required external dependencies are
    declared. This may include [shared npm
@@ -240,8 +242,10 @@ const myFeatureServiceDefinition = {
 > A Feature Service needs to provide only one implementation per major version,
 > since minor versions only add new features, and thus the latest minor version
 > also satisfies the consumers of all previous minor versions of the same major
-> version. For this reason, consumers should specify [caret
-> ranges][semver-caret-range] for their [dependencies](#dependencies).
+> version. For this reason, the `FeatureServiceRegistry` coerces the versions
+> that consumers define in their [dependencies](#dependencies) to [caret
+> ranges][semver-caret-range]. Thus, it is safe to to provide only one
+> implementation per major version.
 
 ## Managing Consumer-specific State
 
@@ -308,6 +312,7 @@ const myFeatureServiceDefinition = {
 [semver]: https://semver.org
 [semver-caret-range]:
   https://docs.npmjs.com/misc/semver#caret-ranges-123-025-004
+[semver-tilde-range]: https://docs.npmjs.com/misc/semver#tilde-ranges-123-12-1
 [own-feature-service-definitions]:
   /docs/guides/writing-a-feature-app#ownfeatureservicedefinitions
 [issue-245]: https://github.com/sinnerschrader/feature-hub/issues/245
