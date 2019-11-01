@@ -49,7 +49,12 @@ The `dependencies` map can contain two types of required dependencies:
 
    Feature Service dependencies are declared with their ID as key, and a [semver
    version range][semver] as value, e.g.
-   `{'acme:some-feature-service': '^2.0.0'}`.
+   `{'acme:some-feature-service': '^2.0.0'}`. Since [Feature Services only
+   provide the latest minor version for each major
+   version][providing-a-versioned-api], a [caret range][semver-caret-range]
+   should be used here. If instead an exact version or a [tilde
+   range][semver-tilde-range] is used, this will be coerced to a caret range by
+   the `Feature ServiceRegistry`.
 
 1. With `dependencies.externals` all required external dependencies are
    declared. This may include [shared npm
@@ -67,6 +72,10 @@ log an info message.
 
 Feature Service dependencies are declared with their ID as key, and a [semver
 version range][semver] as value, e.g. `{'acme:some-feature-service': '^2.0.0'}`.
+Since [Feature Services only provide the latest minor version for each major
+version][providing-a-versioned-api], a [caret range][semver-caret-range] should
+be used here. If instead an exact version or a [tilde range][semver-tilde-range]
+is used, this will be coerced to a caret range by the `Feature ServiceRegistry`.
 
 > **Note:**  
 > Optional external dependencies (i.e. `optionalDependencies.externals`) are not
@@ -257,4 +266,9 @@ const myFeatureAppDefinition = {
 [react-feature-app]: /docs/guides/writing-a-feature-app#react-feature-app
 [sharing-npm-dependencies]: /docs/guides/sharing-npm-dependencies
 [semver]: https://semver.org
+[semver-caret-range]:
+  https://docs.npmjs.com/misc/semver#caret-ranges-123-025-004
+[semver-tilde-range]: https://docs.npmjs.com/misc/semver#tilde-ranges-123-12-1
 [issue-245]: https://github.com/sinnerschrader/feature-hub/issues/245
+[providing-a-versioned-api]:
+  /docs/guides/writing-a-feature-service#providing-a-versioned-api
