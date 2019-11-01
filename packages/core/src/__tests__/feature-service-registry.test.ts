@@ -216,7 +216,7 @@ describe('FeatureServiceRegistry', () => {
     it('fails to register a Feature Service due to an unsupported dependency version', () => {
       const stateProviderD = {
         id: 'd',
-        dependencies: {featureServices: {a: '~1.0'}},
+        dependencies: {featureServices: {a: '^2.0.0'}},
         create: jest.fn()
       };
 
@@ -227,7 +227,7 @@ describe('FeatureServiceRegistry', () => {
         )
       ).toThrowError(
         new Error(
-          'The required Feature Service "a" in the unsupported version range "~1.0" could not be bound to consumer "d". The supported versions are ["1.1.0"].'
+          'The required Feature Service "a" in the unsupported version range "^2.0.0" could not be bound to consumer "d". The supported versions are ["1.1.0"].'
         )
       );
     });
@@ -235,7 +235,7 @@ describe('FeatureServiceRegistry', () => {
     it('does not fail to register a Feature Service due to an unsupported optional dependency version', () => {
       const stateProviderD = {
         id: 'd',
-        optionalDependencies: {featureServices: {a: '~1.0'}},
+        optionalDependencies: {featureServices: {a: '^2.0.0'}},
         create: jest.fn(() => ({}))
       };
 
@@ -251,7 +251,7 @@ describe('FeatureServiceRegistry', () => {
           'The Feature Service "a" has been successfully registered by registrant "test".'
         ],
         [
-          'The optional Feature Service "a" in the unsupported version range "~1.0" could not be bound to consumer "d". The supported versions are ["1.1.0"].'
+          'The optional Feature Service "a" in the unsupported version range "^2.0.0" could not be bound to consumer "d". The supported versions are ["1.1.0"].'
         ],
         [
           'The Feature Service "d" has been successfully registered by registrant "test".'
@@ -465,7 +465,7 @@ describe('FeatureServiceRegistry', () => {
       });
     });
 
-    describe('for a Feature Service consumer with dependencies', () => {
+    describe('for a Feature Service consumer with caret range dependencies', () => {
       it('creates a bindings object with Feature Services', () => {
         featureServiceRegistry = new FeatureServiceRegistry({logger});
 
@@ -478,7 +478,57 @@ describe('FeatureServiceRegistry', () => {
 
         expect(
           featureServiceRegistry.bindFeatureServices(
-            {dependencies: {featureServices: {a: '1.1.0'}}},
+            {dependencies: {featureServices: {a: '^1.0.0'}}},
+            'foo'
+          )
+        ).toEqual({
+          featureServices: {a: featureServiceA},
+          unbind: expect.any(Function)
+        });
+
+        expect(binderA.mock.calls).toEqual([['foo']]);
+      });
+    });
+
+    describe('for a Feature Service consumer with tilde range dependencies', () => {
+      it('creates a bindings object with Feature Services', () => {
+        featureServiceRegistry = new FeatureServiceRegistry({logger});
+
+        featureServiceRegistry.registerFeatureServices(
+          [providerDefinitionA],
+          'test'
+        );
+
+        expect(binderA.mock.calls).toEqual([]);
+
+        expect(
+          featureServiceRegistry.bindFeatureServices(
+            {dependencies: {featureServices: {a: '~1.0.0'}}},
+            'foo'
+          )
+        ).toEqual({
+          featureServices: {a: featureServiceA},
+          unbind: expect.any(Function)
+        });
+
+        expect(binderA.mock.calls).toEqual([['foo']]);
+      });
+    });
+
+    describe('for a Feature Service consumer with exact dependencies', () => {
+      it('creates a bindings object with Feature Services', () => {
+        featureServiceRegistry = new FeatureServiceRegistry({logger});
+
+        featureServiceRegistry.registerFeatureServices(
+          [providerDefinitionA],
+          'test'
+        );
+
+        expect(binderA.mock.calls).toEqual([]);
+
+        expect(
+          featureServiceRegistry.bindFeatureServices(
+            {dependencies: {featureServices: {a: '1.0.0'}}},
             'foo'
           )
         ).toEqual({
