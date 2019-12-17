@@ -99,8 +99,9 @@ describe('FeatureAppContainer', () => {
       testRendererOptions
     );
 
-  it('calls the Feature App manager with the given featureAppDefinition, featureAppId, config, baseUrl, and beforeCreate callback', () => {
+  it('calls the Feature App manager with the given featureAppDefinition, featureAppId, config, baseUrl, beforeCreate callback, and done callback', () => {
     const mockBeforeCreate = jest.fn();
+    const mockDone = jest.fn();
 
     renderWithFeatureHubContext(
       <FeatureAppContainer
@@ -109,13 +110,15 @@ describe('FeatureAppContainer', () => {
         config="testConfig"
         baseUrl="/base"
         beforeCreate={mockBeforeCreate}
+        done={mockDone}
       />
     );
 
     const expectedOptions: FeatureAppScopeOptions<{}, string> = {
       baseUrl: '/base',
       config: 'testConfig',
-      beforeCreate: mockBeforeCreate
+      beforeCreate: mockBeforeCreate,
+      done: mockDone
     };
 
     expect(mockCreateFeatureAppScope.mock.calls).toEqual([

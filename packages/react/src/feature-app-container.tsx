@@ -87,6 +87,14 @@ export interface FeatureAppContainerProps<
     env: FeatureAppEnvironment<TFeatureServices, TConfig>
   ) => void;
 
+  /**
+   * A callback that is passed to the Feature App's `create` method. A
+   * short-lived Feature App can call this function when it has completed its
+   * task. The Integrator (or parent Feature App) can then decide to e.g.
+   * unmount the Feature App.
+   */
+  readonly done?: () => void;
+
   readonly onError?: (error: Error) => void;
 
   readonly renderError?: (error: Error) => React.ReactNode;
@@ -129,14 +137,15 @@ class InternalFeatureAppContainer<
       config,
       featureAppDefinition,
       featureAppId,
-      featureAppManager
+      featureAppManager,
+      done
     } = props;
 
     try {
       this.featureAppScope = featureAppManager.createFeatureAppScope(
         featureAppId,
         featureAppDefinition,
-        {baseUrl, config, beforeCreate}
+        {baseUrl, config, beforeCreate, done}
       );
 
       if (!isFeatureApp(this.featureAppScope.featureApp)) {
