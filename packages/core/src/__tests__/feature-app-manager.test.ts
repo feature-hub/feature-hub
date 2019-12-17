@@ -206,6 +206,30 @@ describe('FeatureAppManager', () => {
       });
     });
 
+    describe('with a done callback', () => {
+      it('passes the done callback as part of the env to the Feature App', () => {
+        const featureAppId = 'testId';
+
+        featureAppManager = new FeatureAppManager(mockFeatureServiceRegistry, {
+          logger
+        });
+
+        const mockDone = jest.fn();
+
+        featureAppManager.createFeatureAppScope(
+          featureAppId,
+          mockFeatureAppDefinition,
+          {done: mockDone}
+        );
+
+        const {featureServices} = mockFeatureServicesBinding;
+
+        expect(mockFeatureAppCreate.mock.calls).toEqual([
+          [{featureServices, featureAppId, done: mockDone}]
+        ]);
+      });
+    });
+
     describe('without an ExternalsValidator provided to the FeatureAppManager', () => {
       describe('with a Feature App definition that is declaring external dependencies', () => {
         beforeEach(() => {

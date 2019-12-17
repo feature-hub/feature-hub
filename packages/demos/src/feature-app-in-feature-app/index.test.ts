@@ -44,4 +44,13 @@ describe('integration test: "Feature App in Feature App"', () => {
   it('renders a Feature App with another nested Feature App', async () => {
     await expect(page).toMatch('Hello, World!');
   });
+
+  it("unmounts the nested Feature App when it has signaled that it's done", async () => {
+    // tslint:disable-next-line:no-non-null-assertion
+    const button = (await page.$('button'))!;
+
+    await button.click();
+
+    await expect(page).toMatch('Bye!');
+  });
 });

@@ -58,6 +58,14 @@ export interface FeatureAppLoaderProps<TConfig = unknown> {
     env: FeatureAppEnvironment<FeatureServices, TConfig>
   ) => void;
 
+  /**
+   * A callback that is passed to the Feature App's `create` method. A
+   * short-lived Feature App can call this function when it has completed its
+   * task. The Integrator (or parent Feature App) can then decide to e.g.
+   * unmount the Feature App.
+   */
+  readonly done?: () => void;
+
   readonly onError?: (error: Error) => void;
 
   readonly renderError?: (error: Error) => React.ReactNode;
@@ -175,7 +183,8 @@ class InternalFeatureAppLoader<TConfig = unknown> extends React.PureComponent<
       config,
       featureAppId,
       onError,
-      renderError
+      renderError,
+      done
     } = this.props;
 
     const {error, failedToHandleAsyncError, featureAppDefinition} = this.state;
@@ -204,6 +213,7 @@ class InternalFeatureAppLoader<TConfig = unknown> extends React.PureComponent<
         }
         onError={onError}
         renderError={renderError}
+        done={done}
       />
     );
   }

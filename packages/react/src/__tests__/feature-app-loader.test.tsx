@@ -289,6 +289,7 @@ describe('FeatureAppLoader', () => {
       const onError = jest.fn();
       const renderError = jest.fn();
       const beforeCreate = jest.fn();
+      const done = jest.fn();
 
       const testRenderer = renderWithFeatureHubContext(
         <FeatureAppLoader
@@ -296,6 +297,7 @@ describe('FeatureAppLoader', () => {
           featureAppId="testId"
           config="testConfig"
           beforeCreate={beforeCreate}
+          done={done}
           onError={onError}
           renderError={renderError}
           baseUrl="/base"
@@ -307,6 +309,7 @@ describe('FeatureAppLoader', () => {
       const expectedProps = {
         baseUrl: '/base',
         beforeCreate,
+        done,
         config: 'testConfig',
         featureAppDefinition: mockFeatureAppDefinition,
         featureAppId: 'testId',

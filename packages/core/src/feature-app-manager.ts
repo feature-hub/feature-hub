@@ -34,6 +34,13 @@ export interface FeatureAppEnvironment<
    * The absolute or relative base URL of the Feature App's assets and/or BFF.
    */
   readonly baseUrl: string | undefined;
+
+  /**
+   * If this callback is defined, a short-lived Feature App can call this
+   * function when it has completed its task. The Integrator (or parent Feature
+   * App) can then decide to e.g. unmount the Feature App.
+   */
+  readonly done?: () => void;
 }
 
 export interface FeatureAppDefinition<
@@ -81,6 +88,14 @@ export interface FeatureAppScopeOptions<
   readonly beforeCreate?: (
     env: FeatureAppEnvironment<TFeatureServices, TConfig>
   ) => void;
+
+  /**
+   * A callback that is passed to the Feature App's `create` method. A
+   * short-lived Feature App can call this function when it has completed its
+   * task. The Integrator (or parent Feature App) can then decide to e.g.
+   * unmount the Feature App.
+   */
+  readonly done?: () => void;
 }
 
 export interface FeatureAppManagerOptions {
@@ -347,7 +362,7 @@ export class FeatureAppManager {
   ): FeatureAppRetainer<TFeatureApp> {
     this.validateExternals(featureAppDefinition);
 
-    const {baseUrl, beforeCreate, config} = options;
+    const {baseUrl, beforeCreate, config, done} = options;
 
     const binding = this.featureServiceRegistry.bindFeatureServices(
       featureAppDefinition,
@@ -358,7 +373,8 @@ export class FeatureAppManager {
       baseUrl,
       config,
       featureAppId,
-      featureServices: binding.featureServices as TFeatureServices
+      featureServices: binding.featureServices as TFeatureServices,
+      done
     };
 
     if (beforeCreate) {
