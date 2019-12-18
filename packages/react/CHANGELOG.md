@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.4.0](https://github.com/sinnerschrader/feature-hub/compare/v2.3.1...v2.4.0) (2019-12-18)
+
+
+### Features
+
+* **all:** add done callback ([#549](https://github.com/sinnerschrader/feature-hub/issues/549)) ([dd9f6db](https://github.com/sinnerschrader/feature-hub/commit/dd9f6db)), closes [#545](https://github.com/sinnerschrader/feature-hub/issues/545)
+
+
+
+
+
 ## [2.3.1](https://github.com/sinnerschrader/feature-hub/compare/v2.3.0...v2.3.1) (2019-11-01)
 
 **Note:** Version bump only for package @feature-hub/react
