@@ -308,32 +308,38 @@ export class FeatureServiceRegistry {
   ): void {
     const providerDefinition = providerDefinitionsById.get(providerId);
 
+    if (!providerDefinition) {
+      return;
+    }
+
     if (this.sharedFeatureServices.has(providerId)) {
       this.logger.warn(
         Messages.featureServiceAlreadyRegistered(providerId, registrantId)
       );
-    } else if (providerDefinition) {
-      this.validateExternals(providerDefinition);
 
-      const {featureServices} = this.bindFeatureServices(
-        providerDefinition,
-        providerId
-      );
-
-      const sharedFeatureService = providerDefinition.create({featureServices});
-
-      this.validateFeatureServiceVersions(
-        sharedFeatureService,
-        providerId,
-        registrantId
-      );
-
-      this.sharedFeatureServices.set(providerId, sharedFeatureService);
-
-      this.logger.info(
-        Messages.featureServiceSuccessfullyRegistered(providerId, registrantId)
-      );
+      return;
     }
+
+    this.validateExternals(providerDefinition);
+
+    const {featureServices} = this.bindFeatureServices(
+      providerDefinition,
+      providerId
+    );
+
+    const sharedFeatureService = providerDefinition.create({featureServices});
+
+    this.validateFeatureServiceVersions(
+      sharedFeatureService,
+      providerId,
+      registrantId
+    );
+
+    this.sharedFeatureServices.set(providerId, sharedFeatureService);
+
+    this.logger.info(
+      Messages.featureServiceSuccessfullyRegistered(providerId, registrantId)
+    );
   }
 
   private bindFeatureService(
