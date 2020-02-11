@@ -155,7 +155,7 @@ describe('defineHistoryService', () => {
           });
         });
 
-        it('retrieves consumer specific locations from the server request path', () => {
+        it('retrieves consumer specific locations from the server request url', () => {
           destroyHistories();
 
           const serverRequest: ServerRequestV1 = {
@@ -415,6 +415,27 @@ describe('defineHistoryService', () => {
       HistoryServiceV2
     >;
 
+    let historyBinding1: FeatureServiceBinding<HistoryServiceV2>;
+    let historyBinding2: FeatureServiceBinding<HistoryServiceV2>;
+    let historyService1: HistoryServiceV2;
+    let historyService2: HistoryServiceV2;
+    let history1: History;
+    let history2: History;
+
+    const createHistories = (serverRequest: ServerRequestV1 | undefined) => {
+      mockEnv.featureServices['s2:server-request'] = serverRequest;
+
+      const historyServiceBinder = createHistoryServiceBinder();
+
+      historyBinding1 = historyServiceBinder('test1');
+      historyService1 = historyBinding1.featureService;
+      history1 = historyService1.history;
+
+      historyBinding2 = historyServiceBinder('test2');
+      historyService2 = historyBinding2.featureService;
+      history2 = historyService2.history;
+    };
+
     beforeEach(() => {
       mockEnv = {featureServices: {'s2:logger': stubbedLogger}};
 
@@ -426,34 +447,11 @@ describe('defineHistoryService', () => {
 
         return sharedHistoryService['2.0.0'];
       };
+
+      createHistories({url: '/example', cookies: {}, headers: {}});
     });
 
     describe('#history', () => {
-      let historyBinding1: FeatureServiceBinding<HistoryServiceV2>;
-      let historyBinding2: FeatureServiceBinding<HistoryServiceV2>;
-      let historyService1: HistoryServiceV2;
-      let historyService2: HistoryServiceV2;
-      let history1: History;
-      let history2: History;
-
-      const createHistories = (serverRequest: ServerRequestV1 | undefined) => {
-        mockEnv.featureServices['s2:server-request'] = serverRequest;
-
-        const historyServiceBinder = createHistoryServiceBinder();
-
-        historyBinding1 = historyServiceBinder('test1');
-        historyService1 = historyBinding1.featureService;
-        history1 = historyService1.history;
-
-        historyBinding2 = historyServiceBinder('test2');
-        historyService2 = historyBinding2.featureService;
-        history2 = historyService2.history;
-      };
-
-      beforeEach(() =>
-        createHistories({url: '/example', cookies: {}, headers: {}})
-      );
-
       describe('when no server request is provided', () => {
         it('throws an error', () => {
           expect(() => createHistories(undefined)).toThrowError(
@@ -509,9 +507,22 @@ describe('defineHistoryService', () => {
           });
         });
 
-        it('retrieves consumer specific locations from the server request path', () => {
+        it('retrieves consumer specific locations from a relative server request url', () => {
           const serverRequest: ServerRequestV1 = {
             url: createUrl({test1: '/foo', test2: 'bar'}, {relative: true}),
+            cookies: {},
+            headers: {}
+          };
+
+          createHistories(serverRequest);
+
+          expect(history1.location).toMatchObject({pathname: '/foo'});
+          expect(history2.location).toMatchObject({pathname: '/bar'});
+        });
+
+        it('retrieves consumer specific locations from an absolute server request url', () => {
+          const serverRequest: ServerRequestV1 = {
+            url: createUrl({test1: '/foo', test2: 'bar'}, {relative: false}),
             cookies: {},
             headers: {}
           };
@@ -721,6 +732,40 @@ describe('defineHistoryService', () => {
               {pathname: '/example', relative: true}
             )
           );
+        });
+      });
+    });
+
+    describe('#rootHistory', () => {
+      describe('#location', () => {
+        it('returns the root location containing all consumer locations for a server request with a relative url', () => {
+          const serverRequest: ServerRequestV1 = {
+            url: createUrl({test1: '/foo', test2: 'bar'}, {relative: true}),
+            cookies: {},
+            headers: {}
+          };
+
+          createHistories(serverRequest);
+
+          expect(historyService1.rootHistory.location).toMatchObject({
+            pathname: '/',
+            search: createSearch({test1: '/foo', test2: 'bar'})
+          });
+        });
+
+        it('returns the root location containing all consumer locations for a server request with an absolute url', () => {
+          const serverRequest: ServerRequestV1 = {
+            url: createUrl({test1: '/foo', test2: 'bar'}, {relative: false}),
+            cookies: {},
+            headers: {}
+          };
+
+          createHistories(serverRequest);
+
+          expect(historyService1.rootHistory.location).toMatchObject({
+            pathname: '/',
+            search: createSearch({test1: '/foo', test2: 'bar'})
+          });
         });
       });
     });
