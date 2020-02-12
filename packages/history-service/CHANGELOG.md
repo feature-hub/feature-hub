@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.4.1](https://github.com/sinnerschrader/feature-hub/compare/v2.4.0...v2.4.1) (2020-02-12)
+
+
+### Bug Fixes
+
+* **history-service:** handle absolute server request urls ([#561](https://github.com/sinnerschrader/feature-hub/issues/561)) ([be84e93](https://github.com/sinnerschrader/feature-hub/commit/be84e93))
+
+
+
+
+
 # [2.4.0](https://github.com/sinnerschrader/feature-hub/compare/v2.3.1...v2.4.0) (2019-12-18)
 
 **Note:** Version bump only for package @feature-hub/history-service

@@ -1,6 +1,6 @@
 {
   "name": "@feature-hub/serialized-state-manager",
-  "version": "2.4.0",
+  "version": "2.4.1",
   "description": "A Feature Service for managing the state transfer to the client when rendering on the server.",
   "homepage": "https://feature-hub.io/",
   "bugs": {
@@ -21,7 +21,7 @@
   "module": "lib/esm/index.js",
   "typings": "lib/cjs/index.d.ts",
   "dependencies": {
-    "@feature-hub/core": "^2.4.0"
+    "@feature-hub/core": "^2.4.1"
   },
   "publishConfig": {
     "access": "public"
