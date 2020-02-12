@@ -5,13 +5,23 @@ import {
   RootLocation,
   RootLocationDescriptorObject
 } from '../create-root-location-transformer';
+import {URL} from './url';
+
+function isAbsolute(url: string): boolean {
+  return /^https?:\/\//.test(url);
+}
 
 export class StaticRootHistory implements RootHistory {
   public readonly length = 1;
   public location: RootLocation;
 
   public constructor(serverRequest: ServerRequestV1) {
-    this.location = history.createLocation(serverRequest.url);
+    if (isAbsolute(serverRequest.url)) {
+      const {pathname, search} = new URL(serverRequest.url);
+      this.location = history.createLocation({pathname, search});
+    } else {
+      this.location = history.createLocation(serverRequest.url);
+    }
   }
 
   /* istanbul ignore next */
