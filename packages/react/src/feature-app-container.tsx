@@ -15,10 +15,22 @@ import {
   isReactFeatureApp
 } from './internal/type-guards';
 
+export interface BaseFeatureApp {
+  /**
+   * Client-side only: A Feature App can define a promise that is resolved when
+   * it is ready to render its content, e.g. after fetching required data
+   * first. If the integrator has defined a loading UI, it will be rendered
+   * until the promise is resolved.
+   * For a similar behaviour during server-side rendering, one must handle this
+   * using the async-ssr-manager.
+   */
+  readonly loadingPromise?: Promise<void>;
+}
+
 /**
  * The recommended way of writing a Feature App for a React integrator.
  */
-export interface ReactFeatureApp {
+export interface ReactFeatureApp extends BaseFeatureApp {
   /**
    * A React Feature App must define a `render` method that returns a React
    * element. Since this element is directly rendered by React, the standard
@@ -32,7 +44,7 @@ export interface ReactFeatureApp {
  * A DOM Feature App allows the use of other frontend technologies such as
  * Vue.js or Angular, although it is placed on a web page using React.
  */
-export interface DomFeatureApp {
+export interface DomFeatureApp extends BaseFeatureApp {
   /**
    * @param container The container element to which the Feature App can attach
    * itself.
@@ -46,6 +58,41 @@ export interface DomFeatureApp {
  * (recommended) or a [[DomFeatureApp]].
  */
 export type FeatureApp = ReactFeatureApp | DomFeatureApp;
+
+export interface CustomFeatureAppRenderingParams {
+  /**
+   * The Feature App node is a rendered React node, that can be inserted into
+   * the react tree.
+   *
+   * **Caution!** If `featureAppNode` is defined it has to be rendered, even
+   * when `loading=true`. A Feature App might depend on being rendered before
+   * resolving its loading promise.
+   *
+   * **Caution!** The Feature App node should always be rendered into the same
+   * position of the tree. Otherwise React can re-mount the Feature App, which
+   * is resource-expensive and can break DOM Feature Apps.
+   */
+  featureAppNode?: React.ReactNode;
+
+  /**
+   * The Error can be used to render a custom error UI. If there is an error,
+   * the Feature App will stop rendering and `featureAppNode` is `undefined`.
+   */
+  error?: Error;
+
+  /**
+   * The loading boolean indicates if the Feature App is still loading, and can
+   * be used to render a custom loading UI.
+   *
+   * **Caution!** If `featureAppNode` is defined it has to be rendered, even
+   * when `loading=true`. A Feature App might depend on being rendered before
+   * resolving its loading promise.
+   *
+   * To not show the Feature App in favour of a loading UI, it must be hidden
+   * visually (e.g. via `display: none;`).
+   */
+  loading: boolean;
+}
 
 export interface FeatureAppContainerProps<
   TFeatureApp,
@@ -97,7 +144,18 @@ export interface FeatureAppContainerProps<
 
   readonly onError?: (error: Error) => void;
 
+  /**
+   * @deprecated Use the `children` render function instead to render an error.
+   */
   readonly renderError?: (error: Error) => React.ReactNode;
+
+  /**
+   * A children function can be provided to customize rendering of the
+   * Feature App and provide Error or Loading UIs.
+   */
+  readonly children?: (
+    params: CustomFeatureAppRenderingParams
+  ) => React.ReactNode;
 }
 
 type InternalFeatureAppContainerProps<
@@ -108,8 +166,17 @@ type InternalFeatureAppContainerProps<
   Pick<FeatureHubContextConsumerValue, 'featureAppManager' | 'logger'>;
 
 type InternalFeatureAppContainerState<TFeatureApp extends FeatureApp> =
-  | {readonly featureAppError: Error}
-  | {readonly featureApp: TFeatureApp};
+  | {
+      readonly error: Error;
+      readonly featureApp?: TFeatureApp;
+      readonly failedToHandleAsyncError?: boolean;
+      readonly loading: boolean;
+    }
+  | {
+      readonly featureApp: TFeatureApp;
+      readonly failedToHandleAsyncError?: boolean;
+      readonly loading: boolean;
+    };
 
 class InternalFeatureAppContainer<
   TFeatureApp extends FeatureApp,
@@ -121,6 +188,7 @@ class InternalFeatureAppContainer<
 > {
   private readonly featureAppScope?: FeatureAppScope<TFeatureApp>;
   private readonly containerRef = React.createRef<HTMLDivElement>();
+  private mounted = false;
 
   public constructor(
     props: InternalFeatureAppContainerProps<
@@ -148,32 +216,64 @@ class InternalFeatureAppContainer<
         {baseUrl, config, beforeCreate, done}
       );
 
-      if (!isFeatureApp(this.featureAppScope.featureApp)) {
+      const {featureApp} = this.featureAppScope;
+
+      if (!isFeatureApp(featureApp)) {
         throw new Error(
           'Invalid Feature App found. The Feature App must be an object with either 1) a `render` method that returns a React element, or 2) an `attachTo` method that accepts a container DOM element.'
         );
       }
 
-      this.state = {featureApp: this.featureAppScope.featureApp};
+      // If no loading promise was given, "loading" should always be false
+      this.state = {
+        featureApp,
+        loading: Boolean(featureApp.loadingPromise)
+      };
     } catch (error) {
       this.handleError(error);
 
-      this.state = {featureAppError: error};
+      this.state = {loading: false, error};
     }
   }
 
   public componentDidCatch(error: Error): void {
     this.handleError(error);
 
-    this.setState({featureAppError: error});
+    this.setState({error, loading: false});
   }
 
   public componentDidMount(): void {
+    this.mounted = true;
+
     const container = this.containerRef.current;
+
+    if (!('error' in this.state) && this.state.featureApp.loadingPromise) {
+      this.state.featureApp.loadingPromise
+        .then(() => {
+          this.setState({loading: false});
+        })
+        .catch(loadingError => {
+          try {
+            this.handleError(loadingError);
+
+            if (this.mounted) {
+              this.setState({error: loadingError, loading: false});
+            }
+          } catch (handlerError) {
+            if (this.mounted) {
+              this.setState({
+                error: handlerError,
+                failedToHandleAsyncError: true,
+                loading: false
+              });
+            }
+          }
+        });
+    }
 
     if (
       container &&
-      'featureApp' in this.state &&
+      !('error' in this.state) &&
       isDomFeatureApp(this.state.featureApp)
     ) {
       try {
@@ -185,6 +285,8 @@ class InternalFeatureAppContainer<
   }
 
   public componentWillUnmount(): void {
+    this.mounted = false;
+
     if (this.featureAppScope) {
       try {
         this.featureAppScope.release();
@@ -195,25 +297,48 @@ class InternalFeatureAppContainer<
   }
 
   public render(): React.ReactNode {
-    if ('featureAppError' in this.state) {
-      return this.renderError(this.state.featureAppError);
+    if ('error' in this.state) {
+      if (this.state.failedToHandleAsyncError) {
+        throw this.state.error;
+      }
+
+      return this.renderError(this.state.error);
     }
 
-    if (isReactFeatureApp(this.state.featureApp)) {
+    const {featureApp, loading} = this.state;
+
+    let featureAppNode: React.ReactNode;
+
+    if (isReactFeatureApp(featureApp)) {
       try {
-        return this.state.featureApp.render();
+        featureAppNode = featureApp.render();
       } catch (error) {
         this.handleError(error);
 
         return this.renderError(error);
       }
+    } else {
+      featureAppNode = <div ref={this.containerRef} />;
     }
 
-    return <div ref={this.containerRef} />;
+    return this.props.children
+      ? this.props.children({featureAppNode, loading})
+      : featureAppNode;
   }
 
   private renderError(error: Error): React.ReactNode {
-    return this.props.renderError ? this.props.renderError(error) : null;
+    // tslint:disable-next-line: deprecation
+    const {children, renderError} = this.props;
+
+    if (children) {
+      return children({error, loading: false});
+    }
+
+    if (renderError) {
+      return renderError(error);
+    }
+
+    return null;
   }
 
   private handleError(error: Error): void {

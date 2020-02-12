@@ -318,6 +318,15 @@ be provided:
 For more details please refer to the the
 ["Feature App Configs" section](#feature-app-configs).
 
+#### `children`
+
+One can pass a rendering function as the React Children (i.e. the `children`
+prop) that allows custom rendering of the Feature App during loading and error
+states.
+
+For more details please refer to the the
+["Custom Loading and Error UI" section](#custom-loading-and-error-ui).
+
 ### React Feature App Container
 
 The `FeatureAppContainer` component allows the integrator to bundle Feature Apps
@@ -395,6 +404,15 @@ be provided:
 For more details please refer to the the
 ["Feature App Configs" section](#feature-app-configs).
 
+#### `children`
+
+One can pass a rendering function as the React Children (i.e. the `children`
+prop) that allows custom rendering of the Feature App during loading and error
+states.
+
+For more details please refer to the the
+["Custom Loading and Error UI" section](#custom-loading-and-error-ui).
+
 ### Error Handling
 
 When a Feature App throws an error while rendering or, in the case of a
@@ -402,6 +420,63 @@ When a Feature App throws an error while rendering or, in the case of a
 `FeatureAppContainer` and `FeatureAppLoader` render `null`. On the server,
 however, rendering errors are not caught and must therefore be handled by the
 integrator.
+
+### Custom Loading and Error UI
+
+An integrator can customize the rendering of Loading states and Errors, using
+the `children` "render prop" in `FeatureAppContainer` or `FeatureAppLoader`.
+
+The `children` prop is a function that receives parameters in form of an object
+and returns rendered React children (a React Node).
+
+Please [look at the API reference][custom-rendering-param-api], to learn more
+about the passed params:
+
+- [`error`][custom-rendering-param-error-api]
+- [`loading`][custom-rendering-param-loading-api]
+- [`featureAppNode`][custom-rendering-param-featureappnode-api]
+
+> This API allows full control over the rendering output, and must therefore
+> abide a set of rules that need to be followed carefully:
+>
+> - **The `featureAppNode` might be passed and has to be rendered, even when
+>   `loading=true`.**  
+>   A Feature App might depend on being rendered, before resolving its loading
+>   promise. To not show the Feature App in favour of a loading UI, it must be
+>   **hidden visually** (e.g. via `display: none;`).
+> - **The `featureAppNode` should always be rendered into the same position of
+>   the returned tree.**  
+>   Otherwise it could occur, that React re-mounts the Feature App, which is
+>   resource-expensive and can break DOM Feature Apps.
+
+#### Custom UI Example
+
+> The following example can also be seen with more context in the ["React
+> Loading UI"][react-loading-ui-demo] and ["React Error
+> Handling"][react-error-handling-demo] demos.
+
+```jsx
+<FeatureAppContainer
+  featureAppId="some-feature-app"
+  featureAppDefinition={someFeatureAppDefinition}
+  //...
+>
+  {({ error, loading, featureAppNode }) => {
+    if (error) {
+      return <ErrorUi error={error}>
+    }
+
+    return (
+      <div>
+        <div style={{display: loading ? 'none' : 'initial'}}>
+          {featureAppNode}
+        </div>
+        {loading && <Spinner />}
+      </div>
+    );
+  }}
+</FeatureAppContainer>
+```
 
 ## Placing Feature Apps on a Web Page Using Web Components
 
@@ -743,3 +818,15 @@ someFeatureService2.foo(42);
 [own-feature-service-definitions]:
   /docs/guides/writing-a-feature-app#ownfeatureservicedefinitions
 [sharing-npm-dependencies]: /docs/guides/sharing-npm-dependencies
+[custom-rendering-param-api]:
+  /@feature-hub/interfaces/react.customfeatureapprenderingparams.html
+[custom-rendering-param-error-api]:
+  /@feature-hub/interfaces/react.customfeatureapprenderingparams.html#error
+[custom-rendering-param-loading-api]:
+  /@feature-hub/interfaces/react.customfeatureapprenderingparams.html#loading
+[custom-rendering-param-featureappnode-api]:
+  /@feature-hub/interfaces/react.customfeatureapprenderingparams.html#featureappnode
+[react-loading-ui-demo]:
+  https://github.com/sinnerschrader/feature-hub/tree/master/packages/demos/src/react-loading-ui
+[react-error-handling-demo]:
+  https://github.com/sinnerschrader/feature-hub/tree/master/packages/demos/src/react-error-handling

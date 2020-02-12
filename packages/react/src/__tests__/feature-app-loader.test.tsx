@@ -8,7 +8,11 @@ import {
 } from '@feature-hub/core';
 import * as React from 'react';
 import TestRenderer from 'react-test-renderer';
-import {FeatureAppContainer, FeatureAppLoader} from '..';
+import {
+  CustomFeatureAppRenderingParams,
+  FeatureAppContainer,
+  FeatureAppLoader
+} from '..';
 import {FeatureHubContextProvider} from '../feature-hub-context';
 import {logger} from './logger';
 import {TestErrorBoundary} from './test-error-boundary';
@@ -137,12 +141,51 @@ describe('FeatureAppLoader', () => {
     expectConsoleErrorCalls(usingTestErrorBoundaryConsoleErrorCalls);
   });
 
-  it('initially renders nothing', () => {
-    const testRenderer = renderWithFeatureHubContext(
-      <FeatureAppLoader featureAppId="testId" src="example.js" />
-    );
+  describe('when rendering initially', () => {
+    describe('when given no children function', () => {
+      it('renders nothing', () => {
+        const testRenderer = renderWithFeatureHubContext(
+          <FeatureAppLoader featureAppId="testId" src="example.js" />
+        );
 
-    expect(testRenderer.toJSON()).toBeNull();
+        expect(testRenderer.toJSON()).toBeNull();
+      });
+    });
+
+    describe('when given a children function', () => {
+      it('calls children with only loading=true', () => {
+        const children = jest.fn().mockReturnValue(null);
+
+        renderWithFeatureHubContext(
+          <FeatureAppLoader
+            featureAppId="testId"
+            src="example.js"
+            children={children}
+          />
+        );
+
+        const expectedParameter: CustomFeatureAppRenderingParams = {
+          featureAppNode: undefined,
+          error: undefined,
+          loading: true
+        };
+
+        expect(children.mock.calls).toEqual([[expectedParameter]]);
+      });
+      it('renders what children function returns', () => {
+        const children = jest.fn(() => 'Custom Loading UI');
+
+        const testRenderer = renderWithFeatureHubContext(
+          <FeatureAppLoader
+            featureAppId="testId"
+            src="example.js"
+            children={children}
+          />
+        );
+
+        expect(testRenderer.toJSON()).toBe('Custom Loading UI');
+      });
+    });
   });
 
   describe('without a css prop', () => {
@@ -290,6 +333,7 @@ describe('FeatureAppLoader', () => {
       const renderError = jest.fn();
       const beforeCreate = jest.fn();
       const done = jest.fn();
+      const children = jest.fn();
 
       const testRenderer = renderWithFeatureHubContext(
         <FeatureAppLoader
@@ -301,6 +345,7 @@ describe('FeatureAppLoader', () => {
           onError={onError}
           renderError={renderError}
           baseUrl="/base"
+          children={children}
         />
       );
 
@@ -314,7 +359,8 @@ describe('FeatureAppLoader', () => {
         featureAppDefinition: mockFeatureAppDefinition,
         featureAppId: 'testId',
         onError,
-        renderError
+        renderError,
+        children
       };
 
       expect(FeatureAppContainer).toHaveBeenCalledWith(expectedProps, {});
@@ -489,6 +535,21 @@ describe('FeatureAppLoader', () => {
       });
 
       describe('when onError is also provided', () => {
+        it('calls onError with the error', () => {
+          const onError = jest.fn();
+
+          renderWithFeatureHubContext(
+            <FeatureAppLoader
+              featureAppId="testId"
+              src="example.js"
+              onError={onError}
+              renderError={jest.fn().mockReturnValue(null)}
+            />
+          );
+
+          expect(onError.mock.calls).toEqual([[mockError]]);
+        });
+
         it('renders what the renderError function returns', () => {
           const testRenderer = renderWithFeatureHubContext(
             <FeatureAppLoader
@@ -526,6 +587,150 @@ describe('FeatureAppLoader', () => {
             );
 
             expect(renderError).not.toHaveBeenCalled();
+            expect(handleError.mock.calls).toEqual([[onErrorMockError]]);
+            expect(testRenderer.toJSON()).toBe('test error boundary');
+            expectConsoleErrorCalls(usingTestErrorBoundaryConsoleErrorCalls);
+          });
+        });
+      });
+    });
+
+    describe('with children function provided', () => {
+      it('calls children with error and loading=false', () => {
+        const children = jest.fn().mockReturnValue(null);
+
+        renderWithFeatureHubContext(
+          <FeatureAppLoader
+            featureAppId="testId"
+            src="example.js"
+            children={children}
+          />
+        );
+
+        const expectedParameter: CustomFeatureAppRenderingParams = {
+          featureAppNode: undefined,
+          error: mockError,
+          loading: false
+        };
+
+        expect(children.mock.calls).toEqual([[expectedParameter]]);
+      });
+
+      it('renders what children returns', () => {
+        const children = jest.fn(() => 'Custom Error UI');
+
+        const testRenderer = renderWithFeatureHubContext(
+          <FeatureAppLoader
+            featureAppId="testId"
+            src="example.js"
+            children={children}
+          />
+        );
+
+        expect(testRenderer.toJSON()).toBe('Custom Error UI');
+      });
+
+      describe('when children function throws an error', () => {
+        let childrenMockError: Error;
+
+        beforeEach(() => {
+          childrenMockError = new Error('Throwing in children.');
+        });
+
+        it('throws the error in render', () => {
+          const handleError = jest.fn();
+
+          const testRenderer = renderWithFeatureHubContext(
+            <FeatureAppLoader
+              featureAppId="testId"
+              src="example.js"
+              children={() => {
+                throw childrenMockError;
+              }}
+            />,
+            {handleError}
+          );
+
+          expect(handleError.mock.calls).toEqual([[childrenMockError]]);
+          expect(testRenderer.toJSON()).toBe('test error boundary');
+          expectConsoleErrorCalls(usingTestErrorBoundaryConsoleErrorCalls);
+        });
+      });
+
+      describe('when (deprecated) renderError is also provided', () => {
+        it('favours children over renderError', () => {
+          const children = jest.fn(() => 'Custom Error UI via children');
+          const renderError = jest.fn(() => 'Custom Error UI via renderError');
+
+          const testRenderer = renderWithFeatureHubContext(
+            <FeatureAppLoader
+              featureAppId="testId"
+              src="example.js"
+              children={children}
+              renderError={renderError}
+            />
+          );
+
+          expect(children).toHaveBeenCalled();
+          expect(renderError).not.toHaveBeenCalled();
+
+          expect(testRenderer.toJSON()).toBe('Custom Error UI via children');
+        });
+      });
+
+      describe('when onError is also provided', () => {
+        it('calls onError with the error', () => {
+          const onError = jest.fn();
+
+          renderWithFeatureHubContext(
+            <FeatureAppLoader
+              featureAppId="testId"
+              src="example.js"
+              onError={onError}
+              children={jest.fn().mockReturnValue(null)}
+            />
+          );
+
+          expect(onError.mock.calls).toEqual([[mockError]]);
+        });
+
+        it('renders what the renderError function returns', () => {
+          const testRenderer = renderWithFeatureHubContext(
+            <FeatureAppLoader
+              featureAppId="testId"
+              src="example.js"
+              onError={jest.fn()}
+              children={() => 'Custom Error UI'}
+            />
+          );
+
+          expect(testRenderer.toJSON()).toBe('Custom Error UI');
+        });
+
+        describe('and throws an error', () => {
+          let onErrorMockError: Error;
+
+          beforeEach(() => {
+            onErrorMockError = new Error('Throwing in onError.');
+          });
+
+          it('does not call children and throws the error in render', () => {
+            const handleError = jest.fn();
+            const children = jest.fn();
+
+            const testRenderer = renderWithFeatureHubContext(
+              <FeatureAppLoader
+                featureAppId="testId"
+                src="example.js"
+                onError={() => {
+                  throw onErrorMockError;
+                }}
+                children={children}
+              />,
+              {handleError}
+            );
+
+            expect(children).not.toHaveBeenCalled();
             expect(handleError.mock.calls).toEqual([[onErrorMockError]]);
             expect(testRenderer.toJSON()).toBe('test error boundary');
             expectConsoleErrorCalls(usingTestErrorBoundaryConsoleErrorCalls);

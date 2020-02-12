@@ -10,7 +10,7 @@ import {
   FeatureAppScope
 } from '@feature-hub/core';
 import * as React from 'react';
-import TestRenderer from 'react-test-renderer';
+import ReactDOM from 'react-dom/server';
 import {FeatureApp, FeatureAppContainer, FeatureHubContextProvider} from '..';
 
 describe('FeatureAppContainer (on Node.js)', () => {
@@ -19,6 +19,7 @@ describe('FeatureAppContainer (on Node.js)', () => {
   let mockFeatureAppDefinition: FeatureAppDefinition<FeatureApp>;
   let mockFeatureAppScope: FeatureAppScope<unknown>;
   let consoleErrorSpy: jest.SpyInstance;
+  let consoleWarnSpy: jest.SpyInstance;
 
   const expectConsoleErrorCalls = (expectedConsoleErrorCalls: unknown[][]) => {
     try {
@@ -40,15 +41,19 @@ describe('FeatureAppContainer (on Node.js)', () => {
     } as Partial<FeatureAppManager>) as FeatureAppManager;
 
     consoleErrorSpy = jest.spyOn(console, 'error');
+    consoleWarnSpy = jest.spyOn(console, 'warn');
   });
 
   afterEach(() => {
     expect(consoleErrorSpy).not.toHaveBeenCalled();
     consoleErrorSpy.mockRestore();
+
+    expect(consoleWarnSpy).not.toHaveBeenCalled();
+    consoleWarnSpy.mockRestore();
   });
 
   const renderWithFeatureHubContext = (node: React.ReactNode) =>
-    TestRenderer.create(
+    ReactDOM.renderToString(
       <FeatureHubContextProvider
         value={{featureAppManager: mockFeatureAppManager}}
       >
@@ -138,6 +143,73 @@ describe('FeatureAppContainer (on Node.js)', () => {
       );
 
       expectConsoleErrorCalls([[mockError]]);
+    });
+  });
+
+  describe('when using a loading promise', () => {
+    let resolveLoadingPromise: () => Promise<void>;
+    let rejectLoadingPromise: (reason?: Error) => Promise<void>;
+
+    beforeEach(() => {
+      const loadingPromise: Promise<void> = new Promise((resolve, reject) => {
+        resolveLoadingPromise = async () => {
+          resolve();
+          // promsise returns itself so we don't forget to await next
+          // async tick in tests
+
+          return loadingPromise;
+        };
+        rejectLoadingPromise = async (e?: Error) => {
+          reject(e);
+
+          return loadingPromise.catch(() => undefined);
+        };
+      });
+
+      mockFeatureAppScope = {
+        ...mockFeatureAppScope,
+        featureApp: {
+          loadingPromise,
+          render: () => 'Rendered a Feature App'
+        }
+      };
+    });
+
+    it('renders with loading=true, resolved loading promise is ignored', async () => {
+      const children = jest.fn(() => null);
+
+      renderWithFeatureHubContext(
+        <FeatureAppContainer
+          featureAppId="testId"
+          featureAppDefinition={mockFeatureAppDefinition}
+          children={children}
+        />
+      );
+
+      expect(children).toHaveBeenCalledTimes(1);
+      expect(children.mock.calls[0]).toMatchObject([{loading: true}]);
+
+      await resolveLoadingPromise();
+
+      expect(children).toHaveBeenCalledTimes(1);
+    });
+
+    it('ignores a rejected loading promise', async () => {
+      const children = jest.fn(() => null);
+
+      renderWithFeatureHubContext(
+        <FeatureAppContainer
+          featureAppId="testId"
+          featureAppDefinition={mockFeatureAppDefinition}
+          children={children}
+        />
+      );
+
+      expect(children).toHaveBeenCalledTimes(1);
+
+      await rejectLoadingPromise();
+
+      expect(children).toHaveBeenCalledTimes(1);
     });
   });
 });

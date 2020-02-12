@@ -4,7 +4,11 @@ import {
   FeatureServices
 } from '@feature-hub/core';
 import * as React from 'react';
-import {FeatureApp, FeatureAppContainer} from './feature-app-container';
+import {
+  CustomFeatureAppRenderingParams,
+  FeatureApp,
+  FeatureAppContainer
+} from './feature-app-container';
 import {
   Css,
   FeatureHubContextConsumer,
@@ -68,7 +72,18 @@ export interface FeatureAppLoaderProps<TConfig = unknown> {
 
   readonly onError?: (error: Error) => void;
 
+  /**
+   * @deprecated Use the `children` render function instead to render an error.
+   */
   readonly renderError?: (error: Error) => React.ReactNode;
+
+  /**
+   * A children function can be provided to customize rendering of the
+   * Feature App and provide Error or Loading UIs.
+   */
+  readonly children?: (
+    params: CustomFeatureAppRenderingParams
+  ) => React.ReactNode;
 }
 
 type InternalFeatureAppLoaderProps<TConfig> = FeatureAppLoaderProps<TConfig> &
@@ -168,7 +183,17 @@ class InternalFeatureAppLoader<TConfig = unknown> extends React.PureComponent<
         this.setState({featureAppDefinition});
       }
     } catch (error) {
-      this.handleAsyncError(error);
+      try {
+        this.handleError(error);
+
+        if (this.mounted) {
+          this.setState({error});
+        }
+      } catch (handlerError) {
+        if (this.mounted) {
+          this.setState({error: handlerError, failedToHandleAsyncError: true});
+        }
+      }
     }
   }
 
@@ -180,9 +205,11 @@ class InternalFeatureAppLoader<TConfig = unknown> extends React.PureComponent<
     const {
       baseUrl,
       beforeCreate,
+      children,
       config,
       featureAppId,
       onError,
+      // tslint:disable-next-line: deprecation
       renderError,
       done
     } = this.props;
@@ -194,16 +221,24 @@ class InternalFeatureAppLoader<TConfig = unknown> extends React.PureComponent<
         throw error;
       }
 
-      return renderError ? renderError(error) : null;
+      if (children) {
+        return children({error, loading: false});
+      }
+
+      if (renderError) {
+        return renderError(error);
+      }
+
+      return null;
     }
 
     if (!featureAppDefinition) {
-      // A loading UI could be rendered here.
-      return null;
+      return children ? children({loading: true}) : null;
     }
 
     return (
       <FeatureAppContainer
+        children={children}
         baseUrl={baseUrl}
         beforeCreate={beforeCreate}
         config={config}
@@ -262,20 +297,6 @@ class InternalFeatureAppLoader<TConfig = unknown> extends React.PureComponent<
       this.props.onError(error);
     } else {
       this.logError(error);
-    }
-  }
-
-  private handleAsyncError(error: Error): void {
-    try {
-      this.handleError(error);
-
-      if (this.mounted) {
-        this.setState({error});
-      }
-    } catch (handlerError) {
-      if (this.mounted) {
-        this.setState({error: handlerError, failedToHandleAsyncError: true});
-      }
     }
   }
 
