@@ -147,31 +147,38 @@ describe('FeatureServiceRegistry', () => {
       testRegistrationOrderABC();
     });
 
-    it('does not register the already existing Feature Service "a"', () => {
+    it('does not register the already existing Feature Service "b"', () => {
       featureServiceRegistry.registerFeatureServices(
-        [providerDefinitionA],
+        [providerDefinitionA, providerDefinitionB],
         'test'
       );
       featureServiceRegistry.registerFeatureServices(
-        [providerDefinitionA],
+        [providerDefinitionB],
         'test'
       );
 
-      expect(providerDefinitionA.create.mock.calls).toEqual([
-        [{featureServices: {}}]
+      expect(providerDefinitionB.create.mock.calls).toEqual([
+        [{featureServices: {a: featureServiceA}}]
       ]);
 
-      expect(binderA.mock.calls).toEqual([]);
+      expect(binderA.mock.calls).toEqual([['b']]);
+      expect(binderB.mock.calls).toEqual([]);
 
       expect(logger.info.mock.calls).toEqual([
         [
           'The Feature Service "a" has been successfully registered by registrant "test".'
+        ],
+        [
+          'The required Feature Service "a" has been successfully bound to consumer "b".'
+        ],
+        [
+          'The Feature Service "b" has been successfully registered by registrant "test".'
         ]
       ]);
 
       expect(logger.warn.mock.calls).toEqual([
         [
-          'The already registered Feature Service "a" could not be re-registered by registrant "test".'
+          'The already registered Feature Service "b" could not be re-registered by registrant "test".'
         ]
       ]);
     });
