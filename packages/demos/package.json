@@ -1,6 +1,6 @@
 {
   "name": "@feature-hub/demos",
-  "version": "2.4.1",
+  "version": "2.5.0",
   "private": true,
   "license": "MIT",
   "scripts": {
@@ -15,7 +15,7 @@
     "@feature-hub/logger": "^2.4.1",
     "@feature-hub/module-loader-amd": "^2.4.1",
     "@feature-hub/module-loader-commonjs": "^2.4.1",
-    "@feature-hub/react": "^2.4.1",
+    "@feature-hub/react": "^2.5.0",
     "@feature-hub/serialized-state-manager": "^2.4.1",
     "@feature-hub/server-request": "^2.4.1",
     "@types/copy-webpack-plugin": "^5.0.0",
