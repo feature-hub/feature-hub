@@ -222,6 +222,48 @@ const myFeatureAppDefinition = {
 };
 ```
 
+### Loading UIs provided by the React Integrator
+
+Both kinds of Feature Apps can specify a loading stage for Feature Apps, which
+are used to allow an Integrator to hide an already rendered Feature App visually
+and display a custom loading UI instead. This feature is for client-side
+rendering only.
+
+A Feature App can declare this loading stage by passing a `Promise` in the
+object returned from their `create` function with the key `loadingPromise`. Once
+the promise resolves, the loading is considered done. If it rejects, the Feature
+App will be considered as crashed, and the Integrator can use the rejection
+payload to display a custom Error UI.
+
+```js
+const myFeatureAppDefinition = {
+  create(env) {
+    const dataPromise = fetchDataFromAPI();
+
+    return {
+      loadingPromise: dataPromise,
+
+      render() {
+        return <App dataPromise={dataPromise}>;
+      }
+    };
+  }
+};
+```
+
+> **Note:**  
+> If you want the rendered App to control when it is done loading, you can pass
+> the promise `resolve` and `reject` functions into the App using your render
+> method. An example for this is implemented in the [`react-loading-ui`
+> demo][demo-react-loading-ui].
+
+> **Note:**  
+> If a similar loading stage (after rendering started) is needed for server-side
+> rendering, for example to wait for a data layer like a router to resolve all
+> dependencies, it can be implemented using the
+> [`@feature-hub/async-ssr-manager`][async-ssr-manager-api]'s `scheduleRerender`
+> API.
+
 ## Implementing a Feature App for an Integrator That Uses Web Components
 
 If the targeted integrator is using the [`@feature-hub/dom`][dom-api] package, a
@@ -272,3 +314,6 @@ const myFeatureAppDefinition = {
 [issue-245]: https://github.com/sinnerschrader/feature-hub/issues/245
 [providing-a-versioned-api]:
   /docs/guides/writing-a-feature-service#providing-a-versioned-api
+[async-ssr-manager-api]: /@feature-hub/modules/async_ssr_manager.html
+[demo-react-loading-ui]:
+  https://github.com/sinnerschrader/feature-hub/tree/master/packages/demos/src/react-loading-ui

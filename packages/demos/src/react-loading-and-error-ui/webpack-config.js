@@ -9,7 +9,7 @@ const webpackBaseConfig = require('../webpack-base-config');
  */
 const configs = [
   merge.smart(webpackBaseConfig, {
-    entry: path.join(__dirname, './feature-app.ts'),
+    entry: path.join(__dirname, './feature-app.tsx'),
     externals: {
       react: 'react'
     },
