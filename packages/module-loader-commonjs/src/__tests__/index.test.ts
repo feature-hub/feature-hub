@@ -2,16 +2,22 @@
  * @jest-environment node
  */
 
+import {RequestInit} from 'node-fetch';
 import {createCommonJsModuleLoader, loadCommonJsModule} from '..';
 
 let mockResponse: string;
+let requestUrl: RequestInfo;
+let requestInit: RequestInit;
 
 // tslint:disable promise-function-async
-jest.mock('node-fetch', () => () =>
-  Promise.resolve({
+jest.mock('node-fetch', () => (url: RequestInfo, init: RequestInit) => {
+  requestUrl = url;
+  requestInit = init;
+
+  return Promise.resolve({
     text: () => Promise.resolve(Buffer.from(mockResponse))
-  })
-);
+  });
+});
 // tslint:enable promise-function-async
 
 describe('loadCommonJsModule (on Node.js)', () => {
@@ -35,6 +41,9 @@ describe('loadCommonJsModule (on Node.js)', () => {
 describe('createCommonJsModuleLoader', () => {
   it('creates a CommonJS module loader with custom-defined externals', async () => {
     const url = 'http://example.com/test.js';
+    const init: RequestInit = {
+      method: 'post'
+    };
 
     mockResponse = `
 			var foo = require('foo');
@@ -43,13 +52,18 @@ describe('createCommonJsModuleLoader', () => {
 			};
 		`;
 
-    const loadCommonJsModuleWithExternals = createCommonJsModuleLoader({
-      foo: () => 42
-    });
+    const loadCommonJsModuleWithExternals = createCommonJsModuleLoader(
+      {
+        foo: () => 42
+      },
+      init
+    );
 
     const loadedModule = await loadCommonJsModuleWithExternals(url);
     const expectedModule = {default: {test: 42}};
 
     expect(loadedModule).toEqual(expectedModule);
+    expect(requestUrl).toEqual(url);
+    expect(requestInit).toEqual(init);
   });
 });
