@@ -42,7 +42,7 @@
     "@commitlint/travis-cli": "^8.0.0",
     "@strictsoftware/typedoc-plugin-monorepo": "^0.2.1",
     "@types/cheerio": "^0.22.9",
-    "@types/expect-puppeteer": "^3.3.0",
+    "@types/expect-puppeteer": "^4.0.0",
     "@types/git-rev-sync": "^1.12.0",
     "@types/jest": "^24.0.0",
     "@types/jest-environment-puppeteer": "^4.0.0",
