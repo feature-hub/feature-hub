@@ -89,17 +89,18 @@ Demonstrates:
 yarn watch:demo custom-logging
 ```
 
-### [React Error Handling](src/react-error-handling)
+### [React Loading And Error UI](src/react-loading-and-error-ui)
 
 Demonstrates:
 
-- how to define a `renderError` prop for the React `FeatureAppLoader` to render
-  a custom error UI when a Feature App can not be rendered
+- how to define a custom `children` render prop for the React `FeatureAppLoader`
+  to render a custom loading and error UI when a Feature App is loading or can
+  not be rendered
 - how to define an `onError` prop for the React `FeatureAppLoader` to customize
   error handling (e.g. logging) for a Feature App that can not be rendered
 
 ```sh
-yarn watch:demo react-error-handling
+yarn watch:demo react-loading-and-error-ui
 ```
 
 ### [TodoMVC](src/todomvc)

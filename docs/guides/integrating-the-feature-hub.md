@@ -452,14 +452,12 @@ about the passed params:
 #### Custom UI Example
 
 > The following example can also be seen with more context in the ["React
-> Loading UI"][react-loading-ui-demo] and ["React Error
-> Handling"][react-error-handling-demo] demos.
+> Loading And Error UI" demo][react-loading-and-error-ui-demo].
 
 ```jsx
 <FeatureAppContainer
   featureAppId="some-feature-app"
   featureAppDefinition={someFeatureAppDefinition}
-  //...
 >
   {({ error, loading, featureAppNode }) => {
     if (error) {
@@ -826,7 +824,5 @@ someFeatureService2.foo(42);
   /@feature-hub/interfaces/react.customfeatureapprenderingparams.html#loading
 [custom-rendering-param-featureappnode-api]:
   /@feature-hub/interfaces/react.customfeatureapprenderingparams.html#featureappnode
-[react-loading-ui-demo]:
-  https://github.com/sinnerschrader/feature-hub/tree/master/packages/demos/src/react-loading-ui
-[react-error-handling-demo]:
-  https://github.com/sinnerschrader/feature-hub/tree/master/packages/demos/src/react-error-handling
+[react-loading-and-error-ui-demo]:
+  https://github.com/sinnerschrader/feature-hub/tree/master/packages/demos/src/react-loading-and-error-ui
