@@ -24,7 +24,7 @@
     "@feature-hub/core": "^2.4.1",
     "@feature-hub/logger": "^2.4.1",
     "@feature-hub/server-request": "^2.4.1",
-    "fast-deep-equal": "^2.0.1"
+    "fast-deep-equal": "^3.0.0"
   },
   "devDependencies": {
     "@types/history": "^4.7.2",
