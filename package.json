@@ -54,7 +54,7 @@
     "cheerio": "^1.0.0-rc.2",
     "commitlint-azure-pipelines-cli": "^1.0.1",
     "fast-glob": "^3.0.0",
-    "git-rev-sync": "^1.12.0",
+    "git-rev-sync": "^2.0.0",
     "husky": "^3.0.0",
     "jest": "^24.0.0",
     "jest-puppeteer": "^4.0.0",
