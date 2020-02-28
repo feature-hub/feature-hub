@@ -2405,10 +2405,10 @@
     "@types/react-native" "*"
     csstype "^2.2.0"
 
-"@types/systemjs@^0.20.6":
-  version "0.20.6"
-  resolved "https://registry.yarnpkg.com/@types/systemjs/-/systemjs-0.20.6.tgz#79838d2b4bce9c014330efa0b4c7b9345e830a72"
-  integrity sha512-p3yv9sBBJXi3noUG216BpUI7VtVBUAvBIfZNTiDROUY31YBfsFHM4DreS7XMekN8IjtX0ysvCnm6r3WnirnNeA==
+"@types/systemjs@^6.0.0":
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/@types/systemjs/-/systemjs-6.1.0.tgz#eb92e3181391b6f49b8310077fe65bfa3db9392a"
+  integrity sha512-akhlviqwowzRNiz3ooAbkjvyMO8cikBqap9z/0yfvMAb6vIsp91Rfox67qtgIhZosWP01MVSTwsgSFYWo4SWQA==
 
 "@types/tapable@*":
   version "1.0.4"
@@ -12848,10 +12848,10 @@ symbol-tree@^3.2.2:
   resolved "https://registry.yarnpkg.com/symbol-tree/-/symbol-tree-3.2.4.tgz#430637d248ba77e078883951fb9aa0eed7c63fa2"
   integrity sha512-9QNk5KwDF+Bvz+PyObkmSYjI5ksVUYtjW7AU22r2NKcfLJcXp96hkDWU3+XndOsUb+AQ9QhfzfCT2O+CNWT5Tw==
 
-systemjs@^0.21.5:
-  version "0.21.6"
-  resolved "https://registry.yarnpkg.com/systemjs/-/systemjs-0.21.6.tgz#9d15e79d9f60abbac23f0d179f887ec01f260a1b"
-  integrity sha512-R+5S9eV9vcQgWOoS4D87joZ4xkFJHb19ZsyKY07D1+VBDE9bwYcU+KXE0r5XlDA8mFoJGyuWDbfrNoh90JsA8g==
+systemjs@^6.0.0:
+  version "6.2.5"
+  resolved "https://registry.yarnpkg.com/systemjs/-/systemjs-6.2.5.tgz#6b01928066704af8d12c56dfb04dd9d8fabcbb36"
+  integrity sha512-Jw1FOgzxG+wIi+ewEPyYKsqxR3IQOQWMwFh1o7C0VfLYoBcVDYSg8EFrKCisUD+5+/KecrDC+NSy4exkl7QRdw==
 
 tapable@^1.0.0, tapable@^1.1.0:
   version "1.1.3"
