@@ -28,11 +28,11 @@
   "module": "lib/esm/index.js",
   "typings": "lib/cjs/index.d.ts",
   "dependencies": {
-    "semver": "^6.0.0",
+    "semver": "^7.0.0",
     "toposort": "^2.0.2"
   },
   "devDependencies": {
-    "@types/semver": "^6.0.0",
+    "@types/semver": "^7.0.0",
     "@types/toposort": "^2.0.1"
   },
   "publishConfig": {
