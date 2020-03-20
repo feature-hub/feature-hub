@@ -1,15 +1,16 @@
 import {ModuleLoader} from '@feature-hub/core';
-import fetch from 'node-fetch';
+import fetch, {RequestInit} from 'node-fetch';
 
 export interface Externals {
   readonly [externalName: string]: unknown;
 }
 
 export function createCommonJsModuleLoader(
-  externals: Externals = {}
+  externals: Externals = {},
+  requestInit?: RequestInit
 ): ModuleLoader {
   return async (url: string): Promise<unknown> => {
-    const response = await fetch(url);
+    const response = await fetch(url, requestInit);
     const source = await response.text();
     const mod = {exports: {}};
 
