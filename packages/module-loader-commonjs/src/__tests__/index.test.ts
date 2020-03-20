@@ -25,11 +25,11 @@ describe('loadCommonJsModule (on Node.js)', () => {
     const url = 'http://example.com/test.js';
 
     mockResponse = `
-			var semver = require('semver');
-			module.exports = {
-				default: {test: semver.coerce('1').version}
-			};
-		`;
+      var semver = require('semver');
+      module.exports = {
+        default: {test: semver.coerce('1').version}
+      };
+    `;
 
     const loadedModule = await loadCommonJsModule(url);
     const expectedModule = {default: {test: '1.0.0'}};
@@ -41,21 +41,17 @@ describe('loadCommonJsModule (on Node.js)', () => {
 describe('createCommonJsModuleLoader', () => {
   it('creates a CommonJS module loader with custom-defined externals', async () => {
     const url = 'http://example.com/test.js';
-    const init: RequestInit = {
-      method: 'post'
-    };
+    const init: RequestInit = {method: 'post'};
 
     mockResponse = `
-			var foo = require('foo');
-			module.exports = {
-				default: {test: foo()}
-			};
-		`;
+      var foo = require('foo');
+      module.exports = {
+        default: {test: foo()}
+      };
+    `;
 
     const loadCommonJsModuleWithExternals = createCommonJsModuleLoader(
-      {
-        foo: () => 42
-      },
+      {foo: () => 42},
       init
     );
 
