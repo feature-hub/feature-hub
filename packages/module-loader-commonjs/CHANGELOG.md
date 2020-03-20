@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.6.0](https://github.com/sinnerschrader/feature-hub/compare/v2.5.0...v2.6.0) (2020-03-20)
+
+
+### Features
+
+* **module-loader-commonjs:** parameterize the HTTP(S) request ([#567](https://github.com/sinnerschrader/feature-hub/issues/567)) ([d5cab0e](https://github.com/sinnerschrader/feature-hub/commit/d5cab0e))
+
+
+
+
+
 ## [2.4.1](https://github.com/sinnerschrader/feature-hub/compare/v2.4.0...v2.4.1) (2020-02-12)
 
 **Note:** Version bump only for package @feature-hub/module-loader-commonjs
