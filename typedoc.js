@@ -2,6 +2,9 @@
 
 const git = require('git-rev-sync');
 
+/**
+ * @type {import('typedoc').TypeDocOptions}
+ */
 module.exports = {
   'external-modulemap': '.*packages/([^/]+)/src/.*',
   'sourcefile-url-prefix': `https://github.com/sinnerschrader/feature-hub/tree/${git.short()}/packages/`,
