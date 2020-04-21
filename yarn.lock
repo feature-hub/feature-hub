@@ -12848,10 +12848,10 @@ symbol-tree@^3.2.2:
   resolved "https://registry.yarnpkg.com/symbol-tree/-/symbol-tree-3.2.4.tgz#430637d248ba77e078883951fb9aa0eed7c63fa2"
   integrity sha512-9QNk5KwDF+Bvz+PyObkmSYjI5ksVUYtjW7AU22r2NKcfLJcXp96hkDWU3+XndOsUb+AQ9QhfzfCT2O+CNWT5Tw==
 
-systemjs@^0.21.5:
-  version "0.21.6"
-  resolved "https://registry.yarnpkg.com/systemjs/-/systemjs-0.21.6.tgz#9d15e79d9f60abbac23f0d179f887ec01f260a1b"
-  integrity sha512-R+5S9eV9vcQgWOoS4D87joZ4xkFJHb19ZsyKY07D1+VBDE9bwYcU+KXE0r5XlDA8mFoJGyuWDbfrNoh90JsA8g==
+systemjs@^2.0.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/systemjs/-/systemjs-2.1.0.tgz#46c64b890338f3cbe2ff684beae30ce71cd118ff"
+  integrity sha512-FouU9ZDEhF9DoYgEKQEt9ckT4S4OcF0lTtOzQffHpCkssOWH6BWU1ZnOQz5It02e5E/YKej0O+1GtYg6GJiOCg==
 
 tapable@^1.0.0, tapable@^1.1.0:
   version "1.1.3"
