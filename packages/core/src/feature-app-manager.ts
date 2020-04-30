@@ -308,7 +308,8 @@ export class FeatureAppManager {
     if (featureAppDefinition.ownFeatureServiceDefinitions) {
       this.featureServiceRegistry.registerFeatureServices(
         featureAppDefinition.ownFeatureServiceDefinitions,
-        featureAppId
+        featureAppId,
+        true
       );
     }
 

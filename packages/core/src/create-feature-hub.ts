@@ -103,7 +103,8 @@ export function createFeatureHub(
   if (featureServiceDefinitions) {
     featureServiceRegistry.registerFeatureServices(
       featureServiceDefinitions,
-      integratorId
+      integratorId,
+      false
     );
   }
 

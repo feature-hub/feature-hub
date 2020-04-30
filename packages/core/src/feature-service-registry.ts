@@ -199,7 +199,8 @@ export class FeatureServiceRegistry {
     providerDefinitions: FeatureServiceProviderDefinition<
       SharedFeatureService
     >[],
-    registrantId: string
+    registrantId: string,
+    failIfFeatureServiceNotAvailable: boolean = true
   ): void {
     const providerDefinitionsById = createProviderDefinitionsById(
       providerDefinitions
@@ -211,7 +212,8 @@ export class FeatureServiceRegistry {
       this.registerFeatureService(
         providerDefinitionsById,
         providerId,
-        registrantId
+        registrantId,
+        failIfFeatureServiceNotAvailable
       );
     }
   }
@@ -304,7 +306,8 @@ export class FeatureServiceRegistry {
   private registerFeatureService(
     providerDefinitionsById: ProviderDefinitionsById,
     providerId: string,
-    registrantId: string
+    registrantId: string,
+    failIfFeatureServiceNotAvailable: boolean
   ): void {
     const providerDefinition = providerDefinitionsById.get(providerId);
 
@@ -322,24 +325,34 @@ export class FeatureServiceRegistry {
 
     this.validateExternals(providerDefinition);
 
-    const {featureServices} = this.bindFeatureServices(
-      providerDefinition,
-      providerId
-    );
+    try {
+      const {featureServices} = this.bindFeatureServices(
+        providerDefinition,
+        providerId
+      );
+      const sharedFeatureService = providerDefinition.create({featureServices});
+      if (sharedFeatureService) {
+        this.validateFeatureServiceVersions(
+          sharedFeatureService,
+          providerId,
+          registrantId
+        );
 
-    const sharedFeatureService = providerDefinition.create({featureServices});
+        this.sharedFeatureServices.set(providerId, sharedFeatureService);
 
-    this.validateFeatureServiceVersions(
-      sharedFeatureService,
-      providerId,
-      registrantId
-    );
-
-    this.sharedFeatureServices.set(providerId, sharedFeatureService);
-
-    this.logger.info(
-      Messages.featureServiceSuccessfullyRegistered(providerId, registrantId)
-    );
+        this.logger.info(
+          Messages.featureServiceSuccessfullyRegistered(
+            providerId,
+            registrantId
+          )
+        );
+      }
+    } catch (e) {
+      if (failIfFeatureServiceNotAvailable) {
+        throw e;
+      }
+      console.warn("feature service couldn't be instantiated");
+    }
   }
 
   private bindFeatureService(

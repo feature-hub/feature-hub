@@ -421,7 +421,11 @@ describe('FeatureAppManager', () => {
         expect(
           mockFeatureServiceRegistry.registerFeatureServices.mock.calls
         ).toEqual([
-          [mockFeatureAppDefinition.ownFeatureServiceDefinitions, featureAppId]
+          [
+            mockFeatureAppDefinition.ownFeatureServiceDefinitions,
+            featureAppId,
+            true
+          ]
         ]);
 
         expect(
