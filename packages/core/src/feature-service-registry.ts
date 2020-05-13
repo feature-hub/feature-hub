@@ -66,7 +66,8 @@ export interface FeatureServiceBinding<TFeatureService> {
 }
 
 export type FeatureServiceBinder<TFeatureService> = (
-  consumerId: string
+  consumerId: string,
+  featureAppConfigurationId?: string
 ) => FeatureServiceBinding<TFeatureService>;
 
 export interface SharedFeatureService {
@@ -200,7 +201,8 @@ export class FeatureServiceRegistry {
       SharedFeatureService
     >[],
     registrantId: string,
-    failIfFeatureServiceNotAvailable: boolean = true
+    failIfFeatureServiceNotAvailable: boolean = true,
+    registrantConfigId?: string
   ): void {
     const providerDefinitionsById = createProviderDefinitionsById(
       providerDefinitions
@@ -213,7 +215,8 @@ export class FeatureServiceRegistry {
         providerDefinitionsById,
         providerId,
         registrantId,
-        failIfFeatureServiceNotAvailable
+        failIfFeatureServiceNotAvailable,
+        registrantConfigId
       );
     }
   }
@@ -231,8 +234,14 @@ export class FeatureServiceRegistry {
    */
   public bindFeatureServices(
     consumerDefinition: FeatureServiceConsumerDefinition,
-    consumerId: string
+    consumerId: string,
+    featureAppConfigurationId?: string
   ): FeatureServicesBinding {
+    if (!featureAppConfigurationId) {
+      this.logger.warn(
+        `the consumer ${consumerId} didn't provide a feature app configuration id. This can degrade funtionality of feature services. Provide featureAppConfigurationId in FeatureAppLoader and FeatureAppContainer `
+      );
+    }
     if (this.consumerIds.has(consumerId)) {
       throw new Error(Messages.featureServicesAlreadyBound(consumerId));
     }
@@ -252,6 +261,7 @@ export class FeatureServiceRegistry {
       const binding = this.bindFeatureService(
         providerId,
         consumerId,
+        featureAppConfigurationId,
         versionRange,
         {optional}
       );
@@ -307,7 +317,8 @@ export class FeatureServiceRegistry {
     providerDefinitionsById: ProviderDefinitionsById,
     providerId: string,
     registrantId: string,
-    failIfFeatureServiceNotAvailable: boolean
+    failIfFeatureServiceNotAvailable: boolean,
+    featureAppConfigurationId?: string
   ): void {
     const providerDefinition = providerDefinitionsById.get(providerId);
 
@@ -328,7 +339,8 @@ export class FeatureServiceRegistry {
     try {
       const {featureServices} = this.bindFeatureServices(
         providerDefinition,
-        providerId
+        providerId,
+        featureAppConfigurationId
       );
       const sharedFeatureService = providerDefinition.create({featureServices});
       if (sharedFeatureService) {
@@ -358,6 +370,7 @@ export class FeatureServiceRegistry {
   private bindFeatureService(
     providerId: string,
     consumerId: string,
+    featureAppConfigurationId: string | undefined,
     versionRange: string | undefined,
     {optional}: {optional: boolean}
   ): FeatureServiceBinding<unknown> | undefined {
@@ -424,7 +437,7 @@ export class FeatureServiceRegistry {
       throw new Error(message);
     }
 
-    return bindFeatureService(consumerId);
+    return bindFeatureService(consumerId, featureAppConfigurationId);
   }
 
   private validateExternals(

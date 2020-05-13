@@ -358,6 +358,7 @@ describe('FeatureAppLoader', () => {
         config: 'testConfig',
         featureAppDefinition: mockFeatureAppDefinition,
         featureAppId: 'testId',
+        featureAppConfigurationId: '/base/example.js',
         onError,
         renderError,
         children

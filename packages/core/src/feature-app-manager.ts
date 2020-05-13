@@ -30,6 +30,8 @@ export interface FeatureAppEnvironment<
    */
   readonly featureAppId: string;
 
+  readonly featureAppConfigurationId?: string;
+
   /**
    * The absolute or relative base URL of the Feature App's assets and/or BFF.
    */
@@ -76,6 +78,8 @@ export interface FeatureAppScopeOptions<
    * The absolute or relative base URL of the Feature App's assets and/or BFF.
    */
   readonly baseUrl?: string;
+
+  readonly featureAppConfigurationId?: string;
 
   /**
    * A config object that is intended for a specific Feature App instance.
@@ -216,6 +220,7 @@ export class FeatureAppManager {
     TConfig = unknown
   >(
     featureAppId: string,
+
     featureAppDefinition: FeatureAppDefinition<
       TFeatureApp,
       TFeatureServices,
@@ -324,6 +329,7 @@ export class FeatureAppManager {
     TConfig = unknown
   >(
     featureAppId: string,
+
     featureAppDefinition: FeatureAppDefinition<
       TFeatureApp,
       TFeatureServices,
@@ -367,13 +373,15 @@ export class FeatureAppManager {
 
     const binding = this.featureServiceRegistry.bindFeatureServices(
       featureAppDefinition,
-      featureAppId
+      featureAppId,
+      options.featureAppConfigurationId
     );
 
     const env: FeatureAppEnvironment<TFeatureServices, TConfig> = {
       baseUrl,
       config,
       featureAppId,
+      featureAppConfigurationId: options.featureAppConfigurationId,
       featureServices: binding.featureServices as TFeatureServices,
       done
     };

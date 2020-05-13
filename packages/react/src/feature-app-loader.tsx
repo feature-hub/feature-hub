@@ -27,6 +27,11 @@ export interface FeatureAppLoaderProps<TConfig = unknown> {
   readonly featureAppId: string;
 
   /**
+   * The Feature App Configuration ID should be the same for feature apps from the same source.
+   */
+  readonly featureAppConfigurationId?: string;
+
+  /**
    * The absolute or relative base URL of the Feature App's assets and/or BFF.
    */
   readonly baseUrl?: string;
@@ -208,6 +213,7 @@ class InternalFeatureAppLoader<TConfig = unknown> extends React.PureComponent<
       children,
       config,
       featureAppId,
+      featureAppConfigurationId,
       onError,
       // tslint:disable-next-line: deprecation
       renderError,
@@ -236,6 +242,8 @@ class InternalFeatureAppLoader<TConfig = unknown> extends React.PureComponent<
       return children ? children({loading: true}) : null;
     }
 
+    const url = prependBaseUrl(baseUrl, this.props.src);
+
     return (
       <FeatureAppContainer
         children={children}
@@ -243,6 +251,7 @@ class InternalFeatureAppLoader<TConfig = unknown> extends React.PureComponent<
         beforeCreate={beforeCreate}
         config={config}
         featureAppId={featureAppId}
+        featureAppConfigurationId={featureAppConfigurationId || url}
         featureAppDefinition={
           featureAppDefinition as FeatureAppDefinition<FeatureApp>
         }

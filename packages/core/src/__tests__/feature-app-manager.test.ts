@@ -150,6 +150,7 @@ describe('FeatureAppManager', () => {
       const featureAppId = 'testId';
       const config = 'testConfig';
       const baseUrl = '/base';
+      const featureAppConfigurationId = 'testConfigId';
 
       featureAppManager = new FeatureAppManager(mockFeatureServiceRegistry, {
         logger
@@ -158,11 +159,11 @@ describe('FeatureAppManager', () => {
       featureAppManager.createFeatureAppScope(
         featureAppId,
         mockFeatureAppDefinition,
-        {baseUrl, config}
+        {baseUrl, config, featureAppConfigurationId}
       );
 
       expect(mockFeatureServiceRegistry.bindFeatureServices.mock.calls).toEqual(
-        [[mockFeatureAppDefinition, featureAppId]]
+        [[mockFeatureAppDefinition, featureAppId, featureAppConfigurationId]]
       );
 
       const {featureServices} = mockFeatureServicesBinding;
@@ -412,10 +413,12 @@ describe('FeatureAppManager', () => {
 
       it("registers the Feature App's own Feature Services before binding its required Feature Services", () => {
         const featureAppId = 'testId';
+        const featureAppConfigurationId = 'testIdConfig';
 
         featureAppManager.createFeatureAppScope(
           featureAppId,
-          mockFeatureAppDefinition
+          mockFeatureAppDefinition,
+          featureAppConfigurationId
         );
 
         expect(
@@ -430,7 +433,9 @@ describe('FeatureAppManager', () => {
 
         expect(
           mockFeatureServiceRegistry.bindFeatureServices.mock.calls
-        ).toEqual([[mockFeatureAppDefinition, featureAppId]]);
+        ).toEqual([
+          [mockFeatureAppDefinition, featureAppId, featureAppConfigurationId]
+        ]);
 
         expect(featureServiceRegistryMethodCalls).toEqual([
           'registerFeatureServices',

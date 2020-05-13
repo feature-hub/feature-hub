@@ -209,6 +209,7 @@ describe('createFeatureHub()', () => {
         );
 
         expect(mockFeatureServiceV1Binder).toHaveBeenCalledWith(
+          'test:integrator',
           'test:integrator'
         );
 

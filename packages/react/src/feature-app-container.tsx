@@ -107,6 +107,7 @@ export interface FeatureAppContainerProps<
    * App, different IDs must be used.
    */
   readonly featureAppId: string;
+  readonly featureAppConfigurationId?: string;
 
   /**
    * The absolute or relative base URL of the Feature App's assets and/or BFF.
@@ -205,6 +206,7 @@ class InternalFeatureAppContainer<
       config,
       featureAppDefinition,
       featureAppId,
+      featureAppConfigurationId,
       featureAppManager,
       done
     } = props;
@@ -213,7 +215,7 @@ class InternalFeatureAppContainer<
       this.featureAppScope = featureAppManager.createFeatureAppScope(
         featureAppId,
         featureAppDefinition,
-        {baseUrl, config, beforeCreate, done}
+        {baseUrl, config, beforeCreate, done, featureAppConfigurationId}
       );
 
       const {featureApp} = this.featureAppScope;
