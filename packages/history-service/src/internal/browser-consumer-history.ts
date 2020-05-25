@@ -84,6 +84,10 @@ export class BrowserConsumerHistory extends ConsumerHistory {
       return false;
     }
 
+    if (Boolean(location.hash)) {
+      return false;
+    }
+
     return equal(location.state, this.location.state);
   }
 }
