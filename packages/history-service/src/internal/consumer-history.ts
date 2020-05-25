@@ -31,14 +31,15 @@ export abstract class ConsumerHistory implements history.History {
     pathOrLocation: history.LocationDescriptor,
     state?: history.LocationState
   ): void {
-    this.location = history.createLocation(
+    const newLocation = history.createLocation(
       pathOrLocation,
       state,
       undefined,
       this.location
     );
+    this.historyMultiplexer.push(this.historyKey, newLocation);
+    this.location = newLocation;
 
-    this.historyMultiplexer.push(this.historyKey, this.location);
     this.action = 'PUSH';
   }
 
@@ -46,14 +47,16 @@ export abstract class ConsumerHistory implements history.History {
     pathOrLocation: history.LocationDescriptor,
     state?: history.LocationState
   ): void {
-    this.location = history.createLocation(
+    const newLocation = history.createLocation(
       pathOrLocation,
       state,
       undefined,
       this.location
     );
+    this.historyMultiplexer.replace(this.historyKey, newLocation);
 
-    this.historyMultiplexer.replace(this.historyKey, this.location);
+    this.location = newLocation;
+
     this.action = 'REPLACE';
   }
 

@@ -1387,6 +1387,60 @@ describe('defineHistoryService', () => {
           ]);
         });
 
+        it('calls listeners for consumer history changes if anchor is set every time', () => {
+          const listenerSpy1 = jest.fn();
+          const listenerSpy2 = jest.fn();
+
+          historyService2.history.listen(listenerSpy2);
+          historyService1.history.listen(listenerSpy1);
+          historyService1.history.push('/bar#xxx');
+          historyService1.history.push('/bar#xxx');
+
+          expect(listenerSpy2).toHaveBeenCalledTimes(0);
+          expect(listenerSpy1).toHaveBeenCalledTimes(2);
+
+          expect(listenerSpy1.mock.calls[0]).toEqual([
+            {pathname: '/bar', search: '', hash: '#xxx', state: undefined},
+            'PUSH'
+          ]);
+        });
+
+        it('calls listeners for consumer history if root history anchor changes', () => {
+          const listenerSpy1 = jest.fn();
+          const listenerSpy2 = jest.fn();
+
+          const href = historyService1.createNewRootLocationForMultipleConsumers(
+            {historyKey: 'test1', location: {pathname: '/bar', hash: '#xxx'}}
+          );
+          historyService2.history.listen(listenerSpy2);
+          historyService1.history.listen(listenerSpy1);
+          historyService1.rootHistory.push(href);
+          historyService1.rootHistory.push(href);
+
+          expect(listenerSpy2).toHaveBeenCalledTimes(0);
+          expect(listenerSpy1).toHaveBeenCalledTimes(2);
+
+          expect(listenerSpy1.mock.calls[0]).toEqual([
+            {pathname: '/bar', search: '', hash: '#xxx', state: undefined},
+            'PUSH'
+          ]);
+        });
+
+        it('calls listeners for consumer history changes once only if anchor is not set', () => {
+          const listenerSpy = jest.fn();
+
+          historyService1.history.listen(listenerSpy);
+          historyService1.history.push('/bar');
+          historyService1.history.push('/bar');
+
+          expect(listenerSpy).toHaveBeenCalledTimes(1);
+
+          expect(listenerSpy.mock.calls[0]).toEqual([
+            {pathname: '/bar', search: '', hash: '', state: undefined},
+            'PUSH'
+          ]);
+        });
+
         it('calls listeners for root history changes', () => {
           const listenerSpy = jest.fn();
 

@@ -112,8 +112,13 @@ export class HistoryMultiplexer {
     consumerLocation: history.LocationDescriptorObject,
     rootLocation: RootLocationDescriptorObject = this.rootLocation
   ): RootLocation {
+    const rootLocationWithoutAnchor = {
+      pathname: rootLocation.pathname,
+      state: rootLocation.state,
+      search: rootLocation.search
+    };
     const newRootLocation = this.rootLocationTransformer.createRootLocation(
-      rootLocation,
+      rootLocationWithoutAnchor,
       consumerLocation,
       historyKey
     );

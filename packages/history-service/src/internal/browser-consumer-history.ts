@@ -47,7 +47,7 @@ export class BrowserConsumerHistory extends ConsumerHistory {
     state?: history.LocationState
   ): void {
     super.push(pathOrLocation, state);
-    this.notifyListeners();
+    // this.notifyListeners();
   }
 
   public replace(
@@ -55,7 +55,7 @@ export class BrowserConsumerHistory extends ConsumerHistory {
     state?: history.LocationState
   ): void {
     super.replace(pathOrLocation, state);
-    this.notifyListeners();
+    // this.notifyListeners();
   }
 
   private notifyListeners(): void {
