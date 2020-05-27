@@ -1,4 +1,5 @@
 // tslint:disable:no-implicit-dependencies
+// tslint:disable:no-non-null-assertion
 
 import {
   FeatureServiceBinder,
@@ -49,7 +50,7 @@ describe('defineAsyncSsrManager', () => {
     it('creates a shared Feature Service containing version 1.0.0', () => {
       const sharedAsyncSsrManager = asyncSsrManagerDefinition.create(mockEnv);
 
-      expect(sharedAsyncSsrManager['1.0.0']).toBeDefined();
+      expect(sharedAsyncSsrManager!['1.0.0']).toBeDefined();
     });
   });
 
@@ -57,7 +58,7 @@ describe('defineAsyncSsrManager', () => {
     let asyncSsrManagerBinder: FeatureServiceBinder<AsyncSsrManagerV1>;
 
     beforeEach(() => {
-      asyncSsrManagerBinder = asyncSsrManagerDefinition.create(mockEnv)[
+      asyncSsrManagerBinder = asyncSsrManagerDefinition.create(mockEnv)![
         '1.0.0'
       ];
     });
@@ -284,7 +285,7 @@ describe('defineAsyncSsrManager', () => {
         beforeEach(() => {
           asyncSsrManagerDefinition = defineAsyncSsrManager();
 
-          asyncSsrManagerBinder = asyncSsrManagerDefinition.create(mockEnv)[
+          asyncSsrManagerBinder = asyncSsrManagerDefinition.create(mockEnv)![
             '1.0.0'
           ];
         });
@@ -316,7 +317,7 @@ describe('defineAsyncSsrManager', () => {
 
         asyncSsrManagerBinder = asyncSsrManagerDefinition.create({
           featureServices: {}
-        })['1.0.0'];
+        })!['1.0.0'];
       });
 
       afterEach(() => {

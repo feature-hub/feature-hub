@@ -114,16 +114,19 @@ following properties:
    };
    ```
 
-## Feature Service Binder
-
 The `create` method must return an object that provides an implementation of the
 `FeatureServiceBinder` type of the [`@feature-hub/core`][core-api] package for
 each supported major version. The Feature Service binder is a function that is
-called for each consumer with its `consumerUid` string as the first argument. It
+called for each consumer with its `consumerId` string as the first argument. It
 returns a Feature Service binding with a consumer-bound `featureService` and an
 optional `unbind` method. The `FeatureServiceRegistry` passes this
 consumer-bound `featureService` to the consumer's `create` method via the
 `env.featureServices` argument.
+
+If within its `create` method a Feature Service concludes that it can not be
+created, e.g. because of a certain configuration or missing requirement, it
+might also return `undefined`. Such a Feature Service should document for its
+consumers that they must declare the dependency in `optionalDependencies`.
 
 ## Providing a Versioned API
 
@@ -138,7 +141,7 @@ const myFeatureServiceDefinition = {
   create(env) {
     let count = 0;
 
-    const v1 = consumerUid => ({
+    const v1 = consumerId => ({
       featureService: {
         plus() {
           count += 1;
@@ -166,7 +169,7 @@ const myFeatureServiceDefinition = {
   create(env) {
     let count = 0;
 
-    const v1 = consumerUid => ({
+    const v1 = consumerId => ({
       featureService: {
         plus() {
           count += 1;
@@ -213,7 +216,7 @@ const myFeatureServiceDefinition = {
     const decrement = () => void --count;
     const increment = () => void ++count;
 
-    const v1 = consumerUid => ({
+    const v1 = consumerId => ({
       featureService: {
         getCount,
 
@@ -229,7 +232,7 @@ const myFeatureServiceDefinition = {
       }
     });
 
-    const v2 = consumerUid => ({
+    const v2 = consumerId => ({
       featureService: {getCount, increment, decrement}
     });
 
@@ -266,21 +269,21 @@ const myFeatureServiceDefinition = {
     // Shared state lives here.
     let consumerCounts = {};
 
-    const v1 = consumerUid => {
+    const v1 = consumerId => {
       // Consumer-specific state lives here.
-      consumerCounts[consumerUid] = 0;
+      consumerCounts[consumerId] = 0;
 
       const featureService = {
         increment() {
-          consumerCounts[consumerUid] += 1;
+          consumerCounts[consumerId] += 1;
         },
 
         decrement() {
-          consumerCounts[consumerUid] -= 1;
+          consumerCounts[consumerId] -= 1;
         },
 
         getCount() {
-          return consumerCounts[consumerUid];
+          return consumerCounts[consumerId];
         },
 
         getTotalCount() {
@@ -293,7 +296,7 @@ const myFeatureServiceDefinition = {
 
       const unbind = () => {
         // Cleaning up the consumer-specific state.
-        delete consumerCounts[consumerUid];
+        delete consumerCounts[consumerId];
       };
 
       return {featureService, unbind};

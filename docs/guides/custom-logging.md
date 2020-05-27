@@ -71,10 +71,9 @@ defineFeatureAppLoader(featureAppManager, {logger});
 To provide a custom logger to Feature Apps and Feature Services, the integrator
 can provide the Logger Feature Service from the
 [`@feature-hub/logger`][logger-api] package. It must be defined with a function
-that takes the `consumerUid` of the consuming Feature App or Feature Service,
-and returns a [`Logger`][core-logger-interface] instance. This makes it possible
-to augment the consumer logs with the `consumerUid`, e.g. using pino's child
-logger:
+that takes the `consumerId` of the consuming Feature App or Feature Service, and
+returns a [`Logger`][core-logger-interface] instance. This makes it possible to
+augment the consumer logs with the `consumerId`, e.g. using pino's child logger:
 
 ```js
 import {defineLogger} from '@feature-hub/logger';
@@ -84,7 +83,7 @@ import {defineLogger} from '@feature-hub/logger';
 const {featureAppManager} = createFeatureHub('acme:integrator', {
   logger,
   featureServiceDefinitions: [
-    defineLogger(consumerUid => logger.child({consumerUid}))
+    defineLogger(consumerId => logger.child({consumerId}))
   ]
 });
 ```

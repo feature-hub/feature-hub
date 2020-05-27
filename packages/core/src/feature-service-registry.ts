@@ -56,7 +56,7 @@ export interface FeatureServiceProviderDefinition<
 
   create(
     env: FeatureServiceEnvironment<TFeatureServices>
-  ): TSharedFeatureService;
+  ): TSharedFeatureService | undefined;
 }
 
 export interface FeatureServiceBinding<TFeatureService> {
@@ -329,17 +329,23 @@ export class FeatureServiceRegistry {
 
     const sharedFeatureService = providerDefinition.create({featureServices});
 
-    this.validateFeatureServiceVersions(
-      sharedFeatureService,
-      providerId,
-      registrantId
-    );
+    if (sharedFeatureService) {
+      this.validateFeatureServiceVersions(
+        sharedFeatureService,
+        providerId,
+        registrantId
+      );
 
-    this.sharedFeatureServices.set(providerId, sharedFeatureService);
+      this.sharedFeatureServices.set(providerId, sharedFeatureService);
 
-    this.logger.info(
-      Messages.featureServiceSuccessfullyRegistered(providerId, registrantId)
-    );
+      this.logger.info(
+        Messages.featureServiceSuccessfullyRegistered(providerId, registrantId)
+      );
+    } else {
+      this.logger.info(
+        Messages.featureServiceReturnedUndefined(providerId, registrantId)
+      );
+    }
   }
 
   private bindFeatureService(

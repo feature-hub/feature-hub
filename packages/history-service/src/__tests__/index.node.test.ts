@@ -46,7 +46,7 @@ describe('defineHistoryService', () => {
           {mode: 'static'}
         ).create(mockEnv);
 
-        return sharedHistoryService['1.0.0'];
+        return sharedHistoryService!['1.0.0'];
       };
     });
 
@@ -445,7 +445,7 @@ describe('defineHistoryService', () => {
           {mode: 'static'}
         ).create(mockEnv);
 
-        return sharedHistoryService['2.0.0'];
+        return sharedHistoryService!['2.0.0'];
       };
 
       createHistories({url: '/example', cookies: {}, headers: {}});

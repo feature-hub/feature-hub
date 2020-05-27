@@ -126,10 +126,12 @@ describe('FeatureServiceRegistry', () => {
         [providerDefinitionA],
         'test'
       );
+
       featureServiceRegistry.registerFeatureServices(
         [providerDefinitionB],
         'test'
       );
+
       featureServiceRegistry.registerFeatureServices(
         [providerDefinitionC],
         'test'
@@ -152,6 +154,7 @@ describe('FeatureServiceRegistry', () => {
         [providerDefinitionA, providerDefinitionB],
         'test'
       );
+
       featureServiceRegistry.registerFeatureServices(
         [providerDefinitionB],
         'test'
@@ -183,6 +186,25 @@ describe('FeatureServiceRegistry', () => {
       ]);
     });
 
+    it('does not register a Feature Service that returns undefined from create', () => {
+      providerDefinitionA.create.mockReturnValue(undefined);
+
+      featureServiceRegistry.registerFeatureServices(
+        [providerDefinitionA],
+        'test'
+      );
+
+      expect(providerDefinitionA.create.mock.calls).toEqual([
+        [{featureServices: {}}]
+      ]);
+
+      expect(logger.info.mock.calls).toEqual([
+        [
+          'The Feature Service "a" could not be registered by registrant "test" because it returned undefined.'
+        ]
+      ]);
+    });
+
     it('fails to register the Feature Service "c" due to the lack of dependency "a"', () => {
       expect(() =>
         featureServiceRegistry.registerFeatureServices(
@@ -196,7 +218,7 @@ describe('FeatureServiceRegistry', () => {
       );
     });
 
-    it('doesnt fail to register the Feature Service "b" due to the lack of optional dependency "a"', () => {
+    it('does not fail to register the Feature Service "b" due to the lack of optional dependency "a"', () => {
       providerDefinitionB = {
         id: 'b',
         optionalDependencies: {featureServices: {a: '^1.0.0'}},
@@ -544,6 +566,30 @@ describe('FeatureServiceRegistry', () => {
         });
 
         expect(binderA.mock.calls).toEqual([['foo']]);
+      });
+    });
+
+    describe('for a Feature Service consumer and an optional dependency to a Feature Service that returned undefined in create', () => {
+      it('creates a bindings object without Feature Services', () => {
+        featureServiceRegistry = new FeatureServiceRegistry({logger});
+
+        providerDefinitionA.create.mockReturnValue(undefined);
+
+        featureServiceRegistry.registerFeatureServices(
+          [providerDefinitionA],
+          'test'
+        );
+
+        expect(binderA.mock.calls).toEqual([]);
+
+        expect(
+          featureServiceRegistry.bindFeatureServices(
+            {optionalDependencies: {featureServices: {a: '1.1.0'}}},
+            'foo'
+          )
+        ).toEqual({featureServices: {}, unbind: expect.any(Function)});
+
+        expect(binderA.mock.calls).toEqual([]);
       });
     });
 
