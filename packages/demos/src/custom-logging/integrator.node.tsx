@@ -6,10 +6,12 @@ import pino from 'pino';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom/server';
 import {getPkgVersion} from '../get-pkg-version';
-import {AppRendererResult} from '../start-server';
+import {AppRendererOptions, AppRendererResult} from '../start-server';
 import {App} from './app';
 
-export default async function renderApp(): Promise<AppRendererResult> {
+export default async function renderApp({
+  req
+}: AppRendererOptions): Promise<AppRendererResult> {
   const logger = pino({prettyPrint: {translateTime: true}, level: 'trace'});
 
   const {featureAppManager} = createFeatureHub('test:integrator', {
@@ -17,13 +19,17 @@ export default async function renderApp(): Promise<AppRendererResult> {
     moduleLoader: loadCommonJsModule,
     providedExternals: {react: getPkgVersion('react')},
     featureServiceDefinitions: [
-      defineLogger(consumerId => logger.child({consumerId}))
+      defineLogger((consumerId, consumerName) =>
+        logger.child({consumerId, consumerName})
+      )
     ]
   });
 
+  const useConsumerName = Boolean(req.query.consumerName);
+
   const html = ReactDOM.renderToString(
     <FeatureHubContextProvider value={{featureAppManager, logger}}>
-      <App />
+      <App useConsumerName={useConsumerName} />
     </FeatureHubContextProvider>
   );
 

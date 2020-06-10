@@ -31,6 +31,11 @@ export interface FeatureAppEnvironment<
   readonly featureAppId: string;
 
   /**
+   * The name that the integrator might have assigned to the Feature App.
+   */
+  readonly featureAppName: string | undefined;
+
+  /**
    * The absolute or relative base URL of the Feature App's assets and/or BFF.
    */
   readonly baseUrl: string | undefined;
@@ -72,6 +77,13 @@ export interface FeatureAppScopeOptions<
   TFeatureServices extends FeatureServices,
   TConfig
 > {
+  /**
+   * The Feature App's name. In contrast to the `featureAppId`, the name must
+   * not be unique. It can be used by required Feature Services for display
+   * purposes, logging, looking up Feature App configuration meta data, etc.
+   */
+  readonly featureAppName?: string;
+
   /**
    * The absolute or relative base URL of the Feature App's assets and/or BFF.
    */
@@ -362,17 +374,19 @@ export class FeatureAppManager {
   ): FeatureAppRetainer<TFeatureApp> {
     this.validateExternals(featureAppDefinition);
 
-    const {baseUrl, beforeCreate, config, done} = options;
+    const {featureAppName, baseUrl, beforeCreate, config, done} = options;
 
     const binding = this.featureServiceRegistry.bindFeatureServices(
       featureAppDefinition,
-      featureAppId
+      featureAppId,
+      featureAppName
     );
 
     const env: FeatureAppEnvironment<TFeatureServices, TConfig> = {
       baseUrl,
       config,
       featureAppId,
+      featureAppName,
       featureServices: binding.featureServices as TFeatureServices,
       done
     };

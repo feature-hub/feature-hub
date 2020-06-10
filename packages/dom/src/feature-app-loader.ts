@@ -29,6 +29,13 @@ export interface FeatureAppLoaderElement extends HTMLElement {
   featureAppId: string;
 
   /**
+   * The Feature App's name. In contrast to the `featureAppId`, the name must
+   * not be unique. It can be used by required Feature Services for display
+   * purposes, logging, looking up Feature App configuration meta data, etc.
+   */
+  featureAppName?: string;
+
+  /**
    * The absolute or relative base URL of the Feature App's assets and/or BFF.
    */
   baseUrl?: string;
@@ -74,6 +81,9 @@ export function defineFeatureAppLoader(
     public featureAppId!: string;
 
     @property({type: String})
+    public featureAppName?: string;
+
+    @property({type: String})
     public baseUrl?: string;
 
     @property({type: String})
@@ -106,6 +116,7 @@ export function defineFeatureAppLoader(
         return html`
           <feature-app-container
             featureAppId=${this.featureAppId}
+            featureAppName=${ifDefined(this.featureAppName)}
             baseUrl=${ifDefined(this.baseUrl)}
             .featureAppDefinition=${definition}
             .config=${this.config}

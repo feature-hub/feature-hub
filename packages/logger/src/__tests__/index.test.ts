@@ -97,12 +97,15 @@ describe('defineLogger', () => {
 
         loggerDefinition = defineLogger(mockCreateConsumerLogger);
 
-        logger = loggerDefinition.create(mockEnv)!['1.0.0']('test:id')
-          .featureService;
+        logger = loggerDefinition
+          .create(mockEnv)!
+          ['1.0.0']('test:id', 'test:name').featureService;
       });
 
-      it('calls the given createConsumerLogger with the consumerId', () => {
-        expect(mockCreateConsumerLogger.mock.calls).toEqual([['test:id']]);
+      it('calls the given createConsumerLogger with the consumerId and consumerName', () => {
+        expect(mockCreateConsumerLogger.mock.calls).toEqual([
+          ['test:id', 'test:name']
+        ]);
       });
 
       it('uses the defined consumer logger as Feature Service', () => {
