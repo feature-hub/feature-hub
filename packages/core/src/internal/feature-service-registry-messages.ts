@@ -56,6 +56,17 @@ export function featureServiceNotRegistered(
   )}.`;
 }
 
+export function featureServiceReturnedUndefined(
+  providerId: string,
+  registrantId: string
+): string {
+  return `The Feature Service ${JSON.stringify(
+    providerId
+  )} could not be registered by registrant ${JSON.stringify(
+    registrantId
+  )} because it returned undefined.`;
+}
+
 export function featureServiceSuccessfullyRegistered(
   providerId: string,
   registrantId: string

@@ -76,8 +76,8 @@ describe('defineHistoryService', () => {
         featureServices: {}
       });
 
-      expect(sharedHistoryService['1.0.0']).toBeDefined();
-      expect(sharedHistoryService['2.0.0']).toBeDefined();
+      expect(sharedHistoryService!['1.0.0']).toBeDefined();
+      expect(sharedHistoryService!['2.0.0']).toBeDefined();
     });
   });
 
@@ -98,7 +98,7 @@ describe('defineHistoryService', () => {
           createRootLocationTransformer({consumerPathsQueryParamName})
         ).create(mockEnv);
 
-        return sharedHistoryService['1.0.0'];
+        return sharedHistoryService!['1.0.0'];
       };
     });
 
@@ -648,7 +648,7 @@ describe('defineHistoryService', () => {
           createRootLocationTransformer({consumerPathsQueryParamName})
         ).create(mockEnv);
 
-        return sharedHistoryService['2.0.0'];
+        return sharedHistoryService!['2.0.0'];
       };
     });
 
@@ -1494,7 +1494,7 @@ describe('defineHistoryService', () => {
               createNewRootLocationForMultipleConsumers: createNewRootLocationForMultipleConsumersMock
             }).create(mockEnv);
 
-            return sharedHistoryService['2.0.0'];
+            return sharedHistoryService!['2.0.0'];
           };
 
           const historyServiceBinder = createHistoryServiceBinder();

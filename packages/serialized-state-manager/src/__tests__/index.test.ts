@@ -1,3 +1,5 @@
+// tslint:disable:no-non-null-assertion
+
 import {FeatureServiceEnvironment} from '@feature-hub/core';
 import {SerializedStateManagerV1, serializedStateManagerDefinition} from '..';
 
@@ -28,7 +30,7 @@ describe('serializedStateManagerDefinition', () => {
         mockEnv
       );
 
-      expect(sharedSerializedStateManager['1.0.0']).toBeDefined();
+      expect(sharedSerializedStateManager!['1.0.0']).toBeDefined();
     });
   });
 
@@ -40,7 +42,7 @@ describe('serializedStateManagerDefinition', () => {
     beforeEach(() => {
       const serializedStateManagerBinder = serializedStateManagerDefinition.create(
         mockEnv
-      )['1.0.0'];
+      )!['1.0.0'];
 
       integratorSerializedStateManager = serializedStateManagerBinder(
         'test:integrator'

@@ -1,4 +1,5 @@
 // tslint:disable:no-implicit-dependencies
+// tslint:disable:no-non-null-assertion
 
 import {
   FeatureServiceEnvironment,
@@ -25,7 +26,7 @@ describe('defineLogger', () => {
     it('creates a shared Feature Service containing version 1.0.0', () => {
       const sharedLogger = loggerDefinition.create(mockEnv);
 
-      expect(sharedLogger['1.0.0']).toBeDefined();
+      expect(sharedLogger!['1.0.0']).toBeDefined();
     });
   });
 
@@ -34,7 +35,7 @@ describe('defineLogger', () => {
 
     describe('with the default createConsumerLogger function', () => {
       beforeEach(() => {
-        logger = loggerDefinition.create(mockEnv)['1.0.0']('test:id')
+        logger = loggerDefinition.create(mockEnv)!['1.0.0']('test:id')
           .featureService;
       });
 
@@ -96,7 +97,7 @@ describe('defineLogger', () => {
 
         loggerDefinition = defineLogger(mockCreateConsumerLogger);
 
-        logger = loggerDefinition.create(mockEnv)['1.0.0']('test:id')
+        logger = loggerDefinition.create(mockEnv)!['1.0.0']('test:id')
           .featureService;
       });
 
