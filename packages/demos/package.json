@@ -35,7 +35,7 @@
     "history": "^4.7.2",
     "lit-html": "^1.0.0",
     "pino": "^5.11.1",
-    "pino-pretty": "^3.0.0",
+    "pino-pretty": "^4.0.0",
     "postcss-loader": "^3.0.0",
     "postcss-preset-env": "^6.5.0",
     "puppeteer": "^1.11.0",
