@@ -116,7 +116,7 @@ export interface FeatureAppContainerProps<
   /**
    * The consumer definition of the Feature App.
    */
-  readonly featureAppDefinition: FeatureAppDefinition<
+  readonly featureAppDefinition?: FeatureAppDefinition<
     TFeatureApp,
     TFeatureServices,
     TConfig
@@ -209,6 +209,10 @@ class InternalFeatureAppContainer<
       done
     } = props;
 
+    if (!featureAppDefinition) {
+      return;
+    }
+
     try {
       this.featureAppScope = featureAppManager.createFeatureAppScope(
         featureAppId,
@@ -246,6 +250,10 @@ class InternalFeatureAppContainer<
     this.mounted = true;
 
     const container = this.containerRef.current;
+
+    if (!this.props.featureAppDefinition) {
+      return;
+    }
 
     if (!('error' in this.state) && this.state.featureApp.loadingPromise) {
       this.state.featureApp.loadingPromise
@@ -297,6 +305,10 @@ class InternalFeatureAppContainer<
   }
 
   public render(): React.ReactNode {
+    if (!this.props.featureAppDefinition) {
+      return this.props.children ? this.props.children({loading: true}) : null;
+    }
+
     if ('error' in this.state) {
       if (this.state.failedToHandleAsyncError) {
         throw this.state.error;

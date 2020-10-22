@@ -16,6 +16,7 @@ import {
 import {FeatureHubContextProvider} from '../feature-hub-context';
 import {logger} from './logger';
 import {TestErrorBoundary} from './test-error-boundary';
+import {FeatureAppContainerProps} from '../feature-app-container';
 
 interface MockAsyncSsrManager extends AsyncSsrManagerV1 {
   scheduleRerender: ((promise: Promise<unknown>) => void) & jest.Mock;
@@ -24,6 +25,13 @@ interface MockAsyncSsrManager extends AsyncSsrManagerV1 {
 jest.mock('../feature-app-container', () => ({
   FeatureAppContainer: jest.fn(() => 'mocked FeatureAppContainer')
 }));
+
+const FeatureAppContainerMock = (FeatureAppContainer as any) as jest.Mock;
+
+beforeEach(() => {
+  // Clear all instances and calls to constructor and all methods:
+  FeatureAppContainerMock.mockClear();
+});
 
 describe('FeatureAppLoader', () => {
   let mockFeatureAppManager: FeatureAppManager;
@@ -153,8 +161,8 @@ describe('FeatureAppLoader', () => {
     });
 
     describe('when given a children function', () => {
-      it('calls children with only loading=true', () => {
-        const children = jest.fn().mockReturnValue(null);
+      it('renders feature app container with no feature app definition', () => {
+        const children = jest.fn().mockReturnValue('hello');
 
         renderWithFeatureHubContext(
           <FeatureAppLoader
@@ -164,26 +172,21 @@ describe('FeatureAppLoader', () => {
           />
         );
 
-        const expectedParameter: CustomFeatureAppRenderingParams = {
-          featureAppNode: undefined,
-          error: undefined,
-          loading: true
+        const expectedParameter: FeatureAppContainerProps<{}> = {
+          baseUrl: undefined,
+          beforeCreate: undefined,
+          children,
+          config: undefined,
+          done: undefined,
+          featureAppDefinition: undefined,
+          featureAppId: 'testId',
+          onError: undefined,
+          renderError: undefined
         };
-
-        expect(children.mock.calls).toEqual([[expectedParameter]]);
-      });
-      it('renders what children function returns', () => {
-        const children = jest.fn(() => 'Custom Loading UI');
-
-        const testRenderer = renderWithFeatureHubContext(
-          <FeatureAppLoader
-            featureAppId="testId"
-            src="example.js"
-            children={children}
-          />
+        expect(FeatureAppContainerMock.mock.calls).toHaveLength(1);
+        expect(FeatureAppContainerMock.mock.calls[0][0]).toEqual(
+          expectedParameter
         );
-
-        expect(testRenderer.toJSON()).toBe('Custom Loading UI');
       });
     });
   });

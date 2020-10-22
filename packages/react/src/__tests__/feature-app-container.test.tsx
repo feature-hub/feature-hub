@@ -394,6 +394,17 @@ describe('FeatureAppContainer', () => {
           expect(testRenderer.toJSON()).toBe('Custom Error UI');
         });
 
+        it('renders what the children function returns if feature app definition is undefined', () => {
+          const testRenderer = renderWithFeatureHubContext(
+            <FeatureAppContainer
+              featureAppId="testId"
+              children={() => 'loading UI'}
+            />
+          );
+
+          expect(testRenderer.toJSON()).toBe('loading UI');
+        });
+
         describe('when children throws an error', () => {
           let childrenMockError: Error;
 

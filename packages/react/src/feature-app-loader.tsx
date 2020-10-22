@@ -232,8 +232,8 @@ class InternalFeatureAppLoader<TConfig = unknown> extends React.PureComponent<
       return null;
     }
 
-    if (!featureAppDefinition) {
-      return children ? children({loading: true}) : null;
+    if (!featureAppDefinition && !children) {
+      return null;
     }
 
     return (
