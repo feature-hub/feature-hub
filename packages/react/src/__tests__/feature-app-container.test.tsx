@@ -13,6 +13,7 @@ import {
   FeatureAppContainer,
   FeatureHubContextProvider
 } from '..';
+import {InternalFeatureAppContainer} from '../internal/feature-app-container';
 import {logger} from './logger';
 import {TestErrorBoundary} from './test-error-boundary';
 
@@ -396,9 +397,11 @@ describe('FeatureAppContainer', () => {
 
         it('renders what the children function returns if feature app definition is undefined', () => {
           const testRenderer = renderWithFeatureHubContext(
-            <FeatureAppContainer
+            <InternalFeatureAppContainer
               featureAppId="testId"
               children={() => 'loading UI'}
+              logger={logger}
+              featureAppManager={mockFeatureAppManager}
             />
           );
 
@@ -722,7 +725,11 @@ describe('FeatureAppContainer', () => {
         describe('when no feature app definition is passed', () => {
           it('renders null', () => {
             const testRenderer = renderWithFeatureHubContext(
-              <FeatureAppContainer featureAppId="testId" />
+              <InternalFeatureAppContainer
+                featureAppId="testId"
+                logger={logger}
+                featureAppManager={mockFeatureAppManager}
+              />
             );
 
             expect(testRenderer.getInstance()).toBeNull();

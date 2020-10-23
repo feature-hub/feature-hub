@@ -4,33 +4,36 @@ import {AsyncSsrManagerV1} from '@feature-hub/async-ssr-manager';
 import {
   AsyncValue,
   FeatureAppDefinition,
-  FeatureAppManager
+  FeatureAppManager,
+  FeatureServices
 } from '@feature-hub/core';
 import * as React from 'react';
 import TestRenderer from 'react-test-renderer';
-import {
-  CustomFeatureAppRenderingParams,
-  FeatureAppContainer,
-  FeatureAppLoader
-} from '..';
+import {CustomFeatureAppRenderingParams, FeatureAppLoader} from '..';
 import {FeatureHubContextProvider} from '../feature-hub-context';
+import {
+  InternalFeatureAppContainer,
+  InternalFeatureAppContainerProps
+} from '../internal/feature-app-container';
 import {logger} from './logger';
 import {TestErrorBoundary} from './test-error-boundary';
-import {FeatureAppContainerProps} from '../feature-app-container';
 
 interface MockAsyncSsrManager extends AsyncSsrManagerV1 {
   scheduleRerender: ((promise: Promise<unknown>) => void) & jest.Mock;
 }
 
-jest.mock('../feature-app-container', () => ({
-  FeatureAppContainer: jest.fn(() => 'mocked FeatureAppContainer')
+jest.mock('../internal/feature-app-container', () => ({
+  InternalFeatureAppContainer: jest.fn(
+    () => 'mocked InternalFeatureAppContainer'
+  )
 }));
 
-const FeatureAppContainerMock = (FeatureAppContainer as any) as jest.Mock;
+// tslint:disable-next-line: no-any
+const InternalFeatureAppContainerMock = (InternalFeatureAppContainer as any) as jest.Mock;
 
 beforeEach(() => {
   // Clear all instances and calls to constructor and all methods:
-  FeatureAppContainerMock.mockClear();
+  InternalFeatureAppContainerMock.mockClear();
 });
 
 describe('FeatureAppLoader', () => {
@@ -172,7 +175,11 @@ describe('FeatureAppLoader', () => {
           />
         );
 
-        const expectedParameter: FeatureAppContainerProps<{}> = {
+        const expectedParameter: InternalFeatureAppContainerProps<
+          unknown,
+          FeatureServices,
+          unknown
+        > = {
           baseUrl: undefined,
           beforeCreate: undefined,
           children,
@@ -181,10 +188,12 @@ describe('FeatureAppLoader', () => {
           featureAppDefinition: undefined,
           featureAppId: 'testId',
           onError: undefined,
-          renderError: undefined
+          renderError: undefined,
+          featureAppManager: mockFeatureAppManager,
+          logger
         };
-        expect(FeatureAppContainerMock.mock.calls).toHaveLength(1);
-        expect(FeatureAppContainerMock.mock.calls[0][0]).toEqual(
+        expect(InternalFeatureAppContainerMock.mock.calls).toHaveLength(1);
+        expect(InternalFeatureAppContainerMock.mock.calls[0][0]).toEqual(
           expectedParameter
         );
       });
@@ -352,7 +361,7 @@ describe('FeatureAppLoader', () => {
         />
       );
 
-      expect(testRenderer.toJSON()).toBe('mocked FeatureAppContainer');
+      expect(testRenderer.toJSON()).toBe('mocked InternalFeatureAppContainer');
 
       const expectedProps = {
         baseUrl: '/base',
@@ -363,10 +372,15 @@ describe('FeatureAppLoader', () => {
         featureAppId: 'testId',
         onError,
         renderError,
-        children
+        children,
+        featureAppManager: mockFeatureAppManager,
+        logger
       };
 
-      expect(FeatureAppContainer).toHaveBeenCalledWith(expectedProps, {});
+      expect(InternalFeatureAppContainer).toHaveBeenCalledWith(
+        expectedProps,
+        {}
+      );
     });
 
     it('does not schedule a rerender on the Async SSR Manager', () => {
@@ -817,7 +831,7 @@ describe('FeatureAppLoader', () => {
 
       await mockAsyncFeatureAppDefinition.promise;
 
-      expect(testRenderer.toJSON()).toBe('mocked FeatureAppContainer');
+      expect(testRenderer.toJSON()).toBe('mocked InternalFeatureAppContainer');
     });
 
     it('does not schedule a rerender on the Async SSR Manager', () => {

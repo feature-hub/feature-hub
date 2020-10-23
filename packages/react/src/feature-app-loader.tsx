@@ -6,14 +6,14 @@ import {
 import * as React from 'react';
 import {
   CustomFeatureAppRenderingParams,
-  FeatureApp,
-  FeatureAppContainer
+  FeatureApp
 } from './feature-app-container';
 import {
   Css,
   FeatureHubContextConsumer,
   FeatureHubContextConsumerValue
 } from './feature-hub-context';
+import {InternalFeatureAppContainer} from './internal/feature-app-container';
 import {prependBaseUrl} from './internal/prepend-base-url';
 
 export interface FeatureAppLoaderProps<TConfig = unknown> {
@@ -237,19 +237,25 @@ class InternalFeatureAppLoader<TConfig = unknown> extends React.PureComponent<
     }
 
     return (
-      <FeatureAppContainer
-        children={children}
-        baseUrl={baseUrl}
-        beforeCreate={beforeCreate}
-        config={config}
-        featureAppId={featureAppId}
-        featureAppDefinition={
-          featureAppDefinition as FeatureAppDefinition<FeatureApp>
-        }
-        onError={onError}
-        renderError={renderError}
-        done={done}
-      />
+      <FeatureHubContextConsumer>
+        {({featureAppManager, logger}) => (
+          <InternalFeatureAppContainer
+            children={children}
+            baseUrl={baseUrl}
+            beforeCreate={beforeCreate}
+            config={config}
+            featureAppId={featureAppId}
+            featureAppDefinition={
+              featureAppDefinition as FeatureAppDefinition<FeatureApp>
+            }
+            onError={onError}
+            renderError={renderError}
+            done={done}
+            featureAppManager={featureAppManager}
+            logger={logger}
+          />
+        )}
+      </FeatureHubContextConsumer>
     );
   }
 
