@@ -719,6 +719,15 @@ describe('FeatureAppContainer', () => {
       });
 
       describe('when no children function is passed', () => {
+        describe('when no feature app definition is passed', () => {
+          it('renders null', () => {
+            const testRenderer = renderWithFeatureHubContext(
+              <FeatureAppContainer featureAppId="testId" />
+            );
+
+            expect(testRenderer.getInstance()).toBeNull();
+          });
+        });
         describe('when the promise resolves', () => {
           it('renders the feature app', async () => {
             const testRenderer = renderWithFeatureHubContext(
@@ -764,8 +773,9 @@ describe('FeatureAppContainer', () => {
 
               await rejectLoadingPromise(loadingPromiseMockError);
 
-              expect(logger.error.mock.calls).toEqual([
-                [loadingPromiseMockError]
+              expect(logger.error.mock.calls).toHaveLength(1);
+              expect(logger.error.mock.calls[0]).toEqual([
+                loadingPromiseMockError
               ]);
             });
           });
