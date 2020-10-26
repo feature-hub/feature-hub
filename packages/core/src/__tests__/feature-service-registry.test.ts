@@ -30,12 +30,15 @@ describe('FeatureServiceRegistry', () => {
   let providerDefinitionB: MockProviderDefinition;
   let providerDefinitionC: MockProviderDefinition;
   let binderA: jest.Mock;
+  let binderA2: jest.Mock;
   let binderB: jest.Mock;
   let binderC: jest.Mock;
   let bindingA: MockFeatureServiceBinding;
+  let bindingA2: MockFeatureServiceBinding;
   let bindingB: MockFeatureServiceBinding;
   let bindingC: MockFeatureServiceBinding;
   let featureServiceA: MockFeatureService;
+  let featureServiceA2: MockFeatureService;
   let featureServiceB: MockFeatureService;
   let featureServiceC: MockFeatureService;
 
@@ -47,12 +50,15 @@ describe('FeatureServiceRegistry', () => {
     featureServiceRegistry = new FeatureServiceRegistry({logger});
 
     featureServiceA = {kind: 'featureServiceA'};
+    featureServiceA2 = {kind: 'featureServiceA2'};
     bindingA = {featureService: featureServiceA};
+    bindingA2 = {featureService: featureServiceA2};
     binderA = jest.fn(() => bindingA);
+    binderA2 = jest.fn(() => bindingA2);
 
     providerDefinitionA = {
       id: 'a',
-      create: jest.fn(() => ({'1.1.0': binderA}))
+      create: jest.fn(() => ({'1.1.0': binderA, '2.0.0': binderA2}))
     };
 
     featureServiceB = {kind: 'featureServiceB'};
@@ -245,7 +251,7 @@ describe('FeatureServiceRegistry', () => {
     it('fails to register a Feature Service due to an unsupported dependency version', () => {
       const stateProviderD = {
         id: 'd',
-        dependencies: {featureServices: {a: '^2.0.0'}},
+        dependencies: {featureServices: {a: '^3.0.0'}},
         create: jest.fn()
       };
 
@@ -256,7 +262,7 @@ describe('FeatureServiceRegistry', () => {
         )
       ).toThrowError(
         new Error(
-          'The required Feature Service "a" in the unsupported version range "^2.0.0" could not be bound to consumer "d". The supported versions are ["1.1.0"].'
+          'The required Feature Service "a" in the unsupported version range "^3.0.0" could not be bound to consumer "d". The supported versions are ["1.1.0","2.0.0"].'
         )
       );
     });
@@ -264,7 +270,7 @@ describe('FeatureServiceRegistry', () => {
     it('does not fail to register a Feature Service due to an unsupported optional dependency version', () => {
       const stateProviderD = {
         id: 'd',
-        optionalDependencies: {featureServices: {a: '^2.0.0'}},
+        optionalDependencies: {featureServices: {a: '^3.0.0'}},
         create: jest.fn(() => ({}))
       };
 
@@ -280,7 +286,7 @@ describe('FeatureServiceRegistry', () => {
           'The Feature Service "a" has been successfully registered by registrant "test".'
         ],
         [
-          'The optional Feature Service "a" in the unsupported version range "^2.0.0" could not be bound to consumer "d". The supported versions are ["1.1.0"].'
+          'The optional Feature Service "a" in the unsupported version range "^3.0.0" could not be bound to consumer "d". The supported versions are ["1.1.0","2.0.0"].'
         ],
         [
           'The Feature Service "d" has been successfully registered by registrant "test".'
@@ -533,6 +539,81 @@ describe('FeatureServiceRegistry', () => {
         expect(
           featureServiceRegistry.bindFeatureServices(
             {dependencies: {featureServices: {a: '~1.0.0'}}},
+            'foo'
+          )
+        ).toEqual({
+          featureServices: {a: featureServiceA},
+          unbind: expect.any(Function)
+        });
+
+        expect(binderA.mock.calls).toEqual([['foo']]);
+      });
+    });
+
+    describe('for a Feature Service consumer with OR dependencies (1)', () => {
+      it('creates a bindings object with Feature Services', () => {
+        featureServiceRegistry = new FeatureServiceRegistry({logger});
+
+        featureServiceRegistry.registerFeatureServices(
+          [providerDefinitionA],
+          'test'
+        );
+
+        expect(binderA.mock.calls).toEqual([]);
+
+        expect(
+          featureServiceRegistry.bindFeatureServices(
+            {dependencies: {featureServices: {a: '^2.0.0 || ^3.0.0'}}},
+            'foo'
+          )
+        ).toEqual({
+          featureServices: {a: featureServiceA2},
+          unbind: expect.any(Function)
+        });
+
+        expect(binderA2.mock.calls).toEqual([['foo']]);
+      });
+    });
+
+    describe('for a Feature Service consumer with OR dependencies (2)', () => {
+      it('creates a bindings object with Feature Services', () => {
+        featureServiceRegistry = new FeatureServiceRegistry({logger});
+
+        featureServiceRegistry.registerFeatureServices(
+          [providerDefinitionA],
+          'test'
+        );
+
+        expect(binderA.mock.calls).toEqual([]);
+
+        expect(
+          featureServiceRegistry.bindFeatureServices(
+            {dependencies: {featureServices: {a: '^1.0.0 || ^2.0.0'}}},
+            'foo'
+          )
+        ).toEqual({
+          featureServices: {a: featureServiceA2},
+          unbind: expect.any(Function)
+        });
+
+        expect(binderA2.mock.calls).toEqual([['foo']]);
+      });
+    });
+
+    describe('for a Feature Service consumer with OR dependencies (3)', () => {
+      it('creates a bindings object with Feature Services', () => {
+        featureServiceRegistry = new FeatureServiceRegistry({logger});
+
+        featureServiceRegistry.registerFeatureServices(
+          [providerDefinitionA],
+          'test'
+        );
+
+        expect(binderA.mock.calls).toEqual([]);
+
+        expect(
+          featureServiceRegistry.bindFeatureServices(
+            {dependencies: {featureServices: {a: '^1.0.0 || ^3.0.0'}}},
             'foo'
           )
         ).toEqual({

@@ -1,6 +1,7 @@
-import {coerce, satisfies, valid} from 'semver';
+import {maxSatisfying, valid} from 'semver';
 import {ExternalsValidator, RequiredExternals} from './externals-validator';
 import * as Messages from './internal/feature-service-registry-messages';
+import {getVersionRange} from './internal/get-version-range';
 import {
   Dependencies,
   DependencyGraph,
@@ -351,12 +352,12 @@ export class FeatureServiceRegistry {
   private bindFeatureService(
     providerId: string,
     consumerId: string,
-    versionRange: string | undefined,
+    versionOrRange: string | undefined,
     {optional}: {optional: boolean}
   ): FeatureServiceBinding<unknown> | undefined {
-    const coercedVersion = versionRange && coerce(versionRange);
+    const versionRange = getVersionRange(versionOrRange);
 
-    if (!coercedVersion) {
+    if (!versionRange) {
       const message = Messages.featureServiceDependencyVersionInvalid(
         optional,
         providerId,
@@ -372,7 +373,6 @@ export class FeatureServiceRegistry {
       throw new Error(message);
     }
 
-    const caretRange = `^${coercedVersion.version}`;
     const sharedFeatureService = this.sharedFeatureServices.get(providerId);
 
     if (!sharedFeatureService) {
@@ -392,11 +392,7 @@ export class FeatureServiceRegistry {
     }
 
     const supportedVersions = Object.keys(sharedFeatureService);
-
-    const version = supportedVersions.find(supportedVersion =>
-      satisfies(supportedVersion, caretRange)
-    );
-
+    const version = maxSatisfying(supportedVersions, versionRange);
     const bindFeatureService = version && sharedFeatureService[version];
 
     if (!bindFeatureService) {
@@ -404,7 +400,8 @@ export class FeatureServiceRegistry {
         optional,
         providerId,
         consumerId,
-        caretRange,
+        // tslint:disable-next-line:no-non-null-assertion
+        versionOrRange!,
         supportedVersions
       );
 
