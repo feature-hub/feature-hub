@@ -1,7 +1,12 @@
-import {FeatureServices, Logger} from '@feature-hub/core';
+import {
+  FeatureAppDefinition,
+  FeatureAppEnvironment,
+  FeatureServices,
+  Logger
+} from '@feature-hub/core';
 import * as React from 'react';
 import {
-  BaseFeatureAppContainerProps,
+  CustomFeatureAppRenderingParams,
   FeatureApp
 } from '../feature-app-container';
 import {FeatureHubContextConsumerValue} from '../feature-hub-context';
@@ -19,6 +24,70 @@ export const handleError = (
   }
 };
 
+export interface BaseFeatureAppContainerProps<
+  TFeatureApp,
+  TFeatureServices extends FeatureServices = FeatureServices,
+  TConfig = unknown
+> {
+  /**
+   * The Feature App ID is used to identify the Feature App instance. Multiple
+   * Feature App Loaders with the same `featureAppId` will render the same
+   * Feature app instance. The ID is also used as a consumer ID for dependent
+   * Feature Services. To render multiple instances of the same kind of Feature
+   * App, different IDs must be used.
+   */
+  readonly featureAppId: string;
+
+  /**
+   * The absolute or relative base URL of the Feature App's assets and/or BFF.
+   */
+  readonly baseUrl?: string;
+
+  /**
+   * The consumer definition of the Feature App.
+   */
+  readonly featureAppDefinition?: FeatureAppDefinition<
+    TFeatureApp,
+    TFeatureServices,
+    TConfig
+  >;
+
+  /**
+   * A config object that is passed to the Feature App's `create` method.
+   */
+  readonly config?: TConfig;
+
+  /**
+   * A callback that is called before the Feature App is created.
+   */
+  readonly beforeCreate?: (
+    env: FeatureAppEnvironment<TFeatureServices, TConfig>
+  ) => void;
+
+  /**
+   * A callback that is passed to the Feature App's `create` method. A
+   * short-lived Feature App can call this function when it has completed its
+   * task. The Integrator (or parent Feature App) can then decide to e.g.
+   * unmount the Feature App.
+   */
+  readonly done?: () => void;
+
+  readonly onError?: (error: Error) => void;
+
+  /**
+   * @deprecated Use the `children` render function instead to render an error.
+   */
+  readonly renderError?: (error: Error) => React.ReactNode;
+
+  /**
+   * A children function can be provided to customize rendering of the
+   * Feature App and provide Error or Loading UIs.
+   */
+  readonly children?: (
+    params: CustomFeatureAppRenderingParams
+  ) => React.ReactNode;
+}
+
 export type InternalFeatureAppContainerProps<
   TFeatureApp,
   TFeatureServices extends FeatureServices,
@@ -26,13 +95,14 @@ export type InternalFeatureAppContainerProps<
 > = BaseFeatureAppContainerProps<TFeatureApp, TFeatureServices, TConfig> &
   Pick<FeatureHubContextConsumerValue, 'featureAppManager' | 'logger'>;
 
-export interface InternalFeatureAppContainerState<
-  TFeatureApp extends FeatureApp
-> {
+interface InternalFeatureAppContainerState<TFeatureApp extends FeatureApp> {
   readonly error?: Error;
   readonly featureApp?: TFeatureApp;
   readonly release?: () => void;
   readonly failedToHandleAsyncError?: boolean;
+  /**
+   * If no loading promise was given, "loading" should always be false.
+   */
   readonly loading: boolean;
 }
 
@@ -59,26 +129,23 @@ export class InternalFeatureAppContainer<
       logger,
       onError
     } = props;
+
     if (featureAppDefinition && !state.featureApp && !state.error) {
       try {
         const featureAppScope = featureAppManager.createFeatureAppScope(
           featureAppId,
           featureAppDefinition,
-          {
-            baseUrl,
-            config,
-            beforeCreate,
-            done
-          }
+          {baseUrl, config, beforeCreate, done}
         );
+
         const {featureApp, release} = featureAppScope;
+
         if (!isFeatureApp(featureApp)) {
           throw new Error(
             'Invalid Feature App found. The Feature App must be an object with either 1) a `render` method that returns a React element, or 2) an `attachTo` method that accepts a container DOM element.'
           );
         }
 
-        // If no loading promise was given, "loading" should always be false
         return {
           featureApp,
           release,
@@ -102,23 +169,11 @@ export class InternalFeatureAppContainer<
     return null;
   }
 
+  public state: InternalFeatureAppContainerState<TFeatureApp> = {loading: true};
+
   private readonly containerRef = React.createRef<HTMLDivElement>();
   private mounted = false;
   private loadingPromiseHandled = false;
-
-  public constructor(
-    props: InternalFeatureAppContainerProps<
-      TFeatureApp,
-      TFeatureServices,
-      TConfig
-    >
-  ) {
-    super(props);
-
-    this.state = {
-      loading: true
-    };
-  }
 
   public componentDidCatch(error: Error): void {
     this.handleError(error);
@@ -150,6 +205,10 @@ export class InternalFeatureAppContainer<
     this.handleLoading();
   }
 
+  public componentDidUpdate(): void {
+    this.handleLoading();
+  }
+
   public componentWillUnmount(): void {
     this.mounted = false;
 
@@ -160,10 +219,6 @@ export class InternalFeatureAppContainer<
         this.handleError(error);
       }
     }
-  }
-
-  public componentDidUpdate(): void {
-    this.handleLoading();
   }
 
   public render(): React.ReactNode {
@@ -202,12 +257,14 @@ export class InternalFeatureAppContainer<
 
   private handleLoading(): void {
     const {featureApp} = this.state;
+
     if (
       featureApp &&
-      !this.loadingPromiseHandled &&
-      featureApp.loadingPromise
+      featureApp.loadingPromise &&
+      !this.loadingPromiseHandled
     ) {
       this.loadingPromiseHandled = true;
+
       featureApp.loadingPromise
         .then(() => {
           this.setState({loading: false});
@@ -215,6 +272,14 @@ export class InternalFeatureAppContainer<
         .catch(loadingError => {
           try {
             this.handleError(loadingError);
+
+            if (this.mounted) {
+              this.setState({
+                error: loadingError,
+                failedToHandleAsyncError: false,
+                loading: false
+              });
+            }
           } catch (handlerError) {
             if (this.mounted) {
               this.setState({
@@ -223,13 +288,6 @@ export class InternalFeatureAppContainer<
                 loading: false
               });
             }
-          }
-          if (this.mounted) {
-            this.setState({
-              error: loadingError,
-              failedToHandleAsyncError: false,
-              loading: false
-            });
           }
         });
     }

@@ -13,7 +13,7 @@ import {
   FeatureAppContainer,
   FeatureHubContextProvider
 } from '..';
-import {InternalFeatureAppContainer} from '../internal/feature-app-container';
+import {InternalFeatureAppContainer} from '../internal/internal-feature-app-container';
 import {logger} from './logger';
 import {TestErrorBoundary} from './test-error-boundary';
 
@@ -735,6 +735,7 @@ describe('FeatureAppContainer', () => {
             expect(testRenderer.getInstance()).toBeNull();
           });
         });
+
         describe('when the promise resolves', () => {
           it('renders the feature app', async () => {
             const testRenderer = renderWithFeatureHubContext(
@@ -780,9 +781,8 @@ describe('FeatureAppContainer', () => {
 
               await rejectLoadingPromise(loadingPromiseMockError);
 
-              expect(logger.error.mock.calls).toHaveLength(1);
-              expect(logger.error.mock.calls[0]).toEqual([
-                loadingPromiseMockError
+              expect(logger.error.mock.calls).toEqual([
+                [loadingPromiseMockError]
               ]);
             });
           });

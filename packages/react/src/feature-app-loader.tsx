@@ -13,7 +13,7 @@ import {
   FeatureHubContextConsumer,
   FeatureHubContextConsumerValue
 } from './feature-hub-context';
-import {InternalFeatureAppContainer} from './internal/feature-app-container';
+import {InternalFeatureAppContainer} from './internal/internal-feature-app-container';
 import {prependBaseUrl} from './internal/prepend-base-url';
 
 export interface FeatureAppLoaderProps<TConfig = unknown> {
@@ -211,7 +211,9 @@ class InternalFeatureAppLoader<TConfig = unknown> extends React.PureComponent<
       onError,
       // tslint:disable-next-line: deprecation
       renderError,
-      done
+      done,
+      featureAppManager,
+      logger
     } = this.props;
 
     const {error, failedToHandleAsyncError, featureAppDefinition} = this.state;
@@ -237,25 +239,21 @@ class InternalFeatureAppLoader<TConfig = unknown> extends React.PureComponent<
     }
 
     return (
-      <FeatureHubContextConsumer>
-        {({featureAppManager, logger}) => (
-          <InternalFeatureAppContainer
-            children={children}
-            baseUrl={baseUrl}
-            beforeCreate={beforeCreate}
-            config={config}
-            featureAppId={featureAppId}
-            featureAppDefinition={
-              featureAppDefinition as FeatureAppDefinition<FeatureApp>
-            }
-            onError={onError}
-            renderError={renderError}
-            done={done}
-            featureAppManager={featureAppManager}
-            logger={logger}
-          />
-        )}
-      </FeatureHubContextConsumer>
+      <InternalFeatureAppContainer
+        children={children}
+        baseUrl={baseUrl}
+        beforeCreate={beforeCreate}
+        config={config}
+        featureAppId={featureAppId}
+        featureAppDefinition={
+          featureAppDefinition as FeatureAppDefinition<FeatureApp>
+        }
+        onError={onError}
+        renderError={renderError}
+        done={done}
+        featureAppManager={featureAppManager}
+        logger={logger}
+      />
     );
   }
 

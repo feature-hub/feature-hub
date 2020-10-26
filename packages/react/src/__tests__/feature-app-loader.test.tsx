@@ -4,17 +4,13 @@ import {AsyncSsrManagerV1} from '@feature-hub/async-ssr-manager';
 import {
   AsyncValue,
   FeatureAppDefinition,
-  FeatureAppManager,
-  FeatureServices
+  FeatureAppManager
 } from '@feature-hub/core';
 import * as React from 'react';
 import TestRenderer from 'react-test-renderer';
 import {CustomFeatureAppRenderingParams, FeatureAppLoader} from '..';
 import {FeatureHubContextProvider} from '../feature-hub-context';
-import {
-  InternalFeatureAppContainer,
-  InternalFeatureAppContainerProps
-} from '../internal/feature-app-container';
+import {InternalFeatureAppContainer} from '../internal/internal-feature-app-container';
 import {logger} from './logger';
 import {TestErrorBoundary} from './test-error-boundary';
 
@@ -22,19 +18,11 @@ interface MockAsyncSsrManager extends AsyncSsrManagerV1 {
   scheduleRerender: ((promise: Promise<unknown>) => void) & jest.Mock;
 }
 
-jest.mock('../internal/feature-app-container', () => ({
+jest.mock('../internal/internal-feature-app-container', () => ({
   InternalFeatureAppContainer: jest.fn(
     () => 'mocked InternalFeatureAppContainer'
   )
 }));
-
-// tslint:disable-next-line: no-any
-const InternalFeatureAppContainerMock = (InternalFeatureAppContainer as any) as jest.Mock;
-
-beforeEach(() => {
-  // Clear all instances and calls to constructor and all methods:
-  InternalFeatureAppContainerMock.mockClear();
-});
 
 describe('FeatureAppLoader', () => {
   let mockFeatureAppManager: FeatureAppManager;
@@ -160,42 +148,6 @@ describe('FeatureAppLoader', () => {
         );
 
         expect(testRenderer.toJSON()).toBeNull();
-      });
-    });
-
-    describe('when given a children function', () => {
-      it('renders feature app container with no feature app definition', () => {
-        const children = jest.fn().mockReturnValue('hello');
-
-        renderWithFeatureHubContext(
-          <FeatureAppLoader
-            featureAppId="testId"
-            src="example.js"
-            children={children}
-          />
-        );
-
-        const expectedParameter: InternalFeatureAppContainerProps<
-          unknown,
-          FeatureServices,
-          unknown
-        > = {
-          baseUrl: undefined,
-          beforeCreate: undefined,
-          children,
-          config: undefined,
-          done: undefined,
-          featureAppDefinition: undefined,
-          featureAppId: 'testId',
-          onError: undefined,
-          renderError: undefined,
-          featureAppManager: mockFeatureAppManager,
-          logger
-        };
-        expect(InternalFeatureAppContainerMock.mock.calls).toHaveLength(1);
-        expect(InternalFeatureAppContainerMock.mock.calls[0][0]).toEqual(
-          expectedParameter
-        );
       });
     });
   });
@@ -340,7 +292,7 @@ describe('FeatureAppLoader', () => {
       });
     });
 
-    it('renders a FeatureAppContainer', () => {
+    it('renders an InternalFeatureAppContainer', () => {
       const onError = jest.fn();
       const renderError = jest.fn();
       const beforeCreate = jest.fn();

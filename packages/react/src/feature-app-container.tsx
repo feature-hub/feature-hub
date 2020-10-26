@@ -1,11 +1,10 @@
-import {
-  FeatureAppDefinition,
-  FeatureAppEnvironment,
-  FeatureServices
-} from '@feature-hub/core';
+import {FeatureAppDefinition, FeatureServices} from '@feature-hub/core';
 import * as React from 'react';
 import {FeatureHubContextConsumer} from './feature-hub-context';
-import {InternalFeatureAppContainer} from './internal/feature-app-container';
+import {
+  BaseFeatureAppContainerProps,
+  InternalFeatureAppContainer
+} from './internal/internal-feature-app-container';
 
 export interface BaseFeatureApp {
   /**
@@ -99,70 +98,6 @@ export interface FeatureAppContainerProps<
     TFeatureServices,
     TConfig
   >;
-}
-
-export interface BaseFeatureAppContainerProps<
-  TFeatureApp,
-  TFeatureServices extends FeatureServices = FeatureServices,
-  TConfig = unknown
-> {
-  /**
-   * The Feature App ID is used to identify the Feature App instance. Multiple
-   * Feature App Loaders with the same `featureAppId` will render the same
-   * Feature app instance. The ID is also used as a consumer ID for dependent
-   * Feature Services. To render multiple instances of the same kind of Feature
-   * App, different IDs must be used.
-   */
-  readonly featureAppId: string;
-
-  /**
-   * The absolute or relative base URL of the Feature App's assets and/or BFF.
-   */
-  readonly baseUrl?: string;
-
-  /**
-   * The consumer definition of the Feature App.
-   */
-  readonly featureAppDefinition?: FeatureAppDefinition<
-    TFeatureApp,
-    TFeatureServices,
-    TConfig
-  >;
-
-  /**
-   * A config object that is passed to the Feature App's `create` method.
-   */
-  readonly config?: TConfig;
-
-  /**
-   * A callback that is called before the Feature App is created.
-   */
-  readonly beforeCreate?: (
-    env: FeatureAppEnvironment<TFeatureServices, TConfig>
-  ) => void;
-
-  /**
-   * A callback that is passed to the Feature App's `create` method. A
-   * short-lived Feature App can call this function when it has completed its
-   * task. The Integrator (or parent Feature App) can then decide to e.g.
-   * unmount the Feature App.
-   */
-  readonly done?: () => void;
-
-  readonly onError?: (error: Error) => void;
-
-  /**
-   * @deprecated Use the `children` render function instead to render an error.
-   */
-  readonly renderError?: (error: Error) => React.ReactNode;
-
-  /**
-   * A children function can be provided to customize rendering of the
-   * Feature App and provide Error or Loading UIs.
-   */
-  readonly children?: (
-    params: CustomFeatureAppRenderingParams
-  ) => React.ReactNode;
 }
 
 /**
