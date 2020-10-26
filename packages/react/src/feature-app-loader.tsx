@@ -6,14 +6,14 @@ import {
 import * as React from 'react';
 import {
   CustomFeatureAppRenderingParams,
-  FeatureApp,
-  FeatureAppContainer
+  FeatureApp
 } from './feature-app-container';
 import {
   Css,
   FeatureHubContextConsumer,
   FeatureHubContextConsumerValue
 } from './feature-hub-context';
+import {InternalFeatureAppContainer} from './internal/internal-feature-app-container';
 import {prependBaseUrl} from './internal/prepend-base-url';
 
 export interface FeatureAppLoaderProps<TConfig = unknown> {
@@ -211,7 +211,9 @@ class InternalFeatureAppLoader<TConfig = unknown> extends React.PureComponent<
       onError,
       // tslint:disable-next-line: deprecation
       renderError,
-      done
+      done,
+      featureAppManager,
+      logger
     } = this.props;
 
     const {error, failedToHandleAsyncError, featureAppDefinition} = this.state;
@@ -232,12 +234,12 @@ class InternalFeatureAppLoader<TConfig = unknown> extends React.PureComponent<
       return null;
     }
 
-    if (!featureAppDefinition) {
-      return children ? children({loading: true}) : null;
+    if (!featureAppDefinition && !children) {
+      return null;
     }
 
     return (
-      <FeatureAppContainer
+      <InternalFeatureAppContainer
         children={children}
         baseUrl={baseUrl}
         beforeCreate={beforeCreate}
@@ -249,6 +251,8 @@ class InternalFeatureAppLoader<TConfig = unknown> extends React.PureComponent<
         onError={onError}
         renderError={renderError}
         done={done}
+        featureAppManager={featureAppManager}
+        logger={logger}
       />
     );
   }

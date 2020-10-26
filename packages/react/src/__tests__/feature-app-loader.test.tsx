@@ -8,12 +8,9 @@ import {
 } from '@feature-hub/core';
 import * as React from 'react';
 import TestRenderer from 'react-test-renderer';
-import {
-  CustomFeatureAppRenderingParams,
-  FeatureAppContainer,
-  FeatureAppLoader
-} from '..';
+import {CustomFeatureAppRenderingParams, FeatureAppLoader} from '..';
 import {FeatureHubContextProvider} from '../feature-hub-context';
+import {InternalFeatureAppContainer} from '../internal/internal-feature-app-container';
 import {logger} from './logger';
 import {TestErrorBoundary} from './test-error-boundary';
 
@@ -21,8 +18,10 @@ interface MockAsyncSsrManager extends AsyncSsrManagerV1 {
   scheduleRerender: ((promise: Promise<unknown>) => void) & jest.Mock;
 }
 
-jest.mock('../feature-app-container', () => ({
-  FeatureAppContainer: jest.fn(() => 'mocked FeatureAppContainer')
+jest.mock('../internal/internal-feature-app-container', () => ({
+  InternalFeatureAppContainer: jest.fn(
+    () => 'mocked InternalFeatureAppContainer'
+  )
 }));
 
 describe('FeatureAppLoader', () => {
@@ -149,41 +148,6 @@ describe('FeatureAppLoader', () => {
         );
 
         expect(testRenderer.toJSON()).toBeNull();
-      });
-    });
-
-    describe('when given a children function', () => {
-      it('calls children with only loading=true', () => {
-        const children = jest.fn().mockReturnValue(null);
-
-        renderWithFeatureHubContext(
-          <FeatureAppLoader
-            featureAppId="testId"
-            src="example.js"
-            children={children}
-          />
-        );
-
-        const expectedParameter: CustomFeatureAppRenderingParams = {
-          featureAppNode: undefined,
-          error: undefined,
-          loading: true
-        };
-
-        expect(children.mock.calls).toEqual([[expectedParameter]]);
-      });
-      it('renders what children function returns', () => {
-        const children = jest.fn(() => 'Custom Loading UI');
-
-        const testRenderer = renderWithFeatureHubContext(
-          <FeatureAppLoader
-            featureAppId="testId"
-            src="example.js"
-            children={children}
-          />
-        );
-
-        expect(testRenderer.toJSON()).toBe('Custom Loading UI');
       });
     });
   });
@@ -328,7 +292,7 @@ describe('FeatureAppLoader', () => {
       });
     });
 
-    it('renders a FeatureAppContainer', () => {
+    it('renders an InternalFeatureAppContainer', () => {
       const onError = jest.fn();
       const renderError = jest.fn();
       const beforeCreate = jest.fn();
@@ -349,7 +313,7 @@ describe('FeatureAppLoader', () => {
         />
       );
 
-      expect(testRenderer.toJSON()).toBe('mocked FeatureAppContainer');
+      expect(testRenderer.toJSON()).toBe('mocked InternalFeatureAppContainer');
 
       const expectedProps = {
         baseUrl: '/base',
@@ -360,10 +324,15 @@ describe('FeatureAppLoader', () => {
         featureAppId: 'testId',
         onError,
         renderError,
-        children
+        children,
+        featureAppManager: mockFeatureAppManager,
+        logger
       };
 
-      expect(FeatureAppContainer).toHaveBeenCalledWith(expectedProps, {});
+      expect(InternalFeatureAppContainer).toHaveBeenCalledWith(
+        expectedProps,
+        {}
+      );
     });
 
     it('does not schedule a rerender on the Async SSR Manager', () => {
@@ -814,7 +783,7 @@ describe('FeatureAppLoader', () => {
 
       await mockAsyncFeatureAppDefinition.promise;
 
-      expect(testRenderer.toJSON()).toBe('mocked FeatureAppContainer');
+      expect(testRenderer.toJSON()).toBe('mocked InternalFeatureAppContainer');
     });
 
     it('does not schedule a rerender on the Async SSR Manager', () => {

@@ -13,6 +13,7 @@ import {
   FeatureAppContainer,
   FeatureHubContextProvider
 } from '..';
+import {InternalFeatureAppContainer} from '../internal/internal-feature-app-container';
 import {logger} from './logger';
 import {TestErrorBoundary} from './test-error-boundary';
 
@@ -394,6 +395,19 @@ describe('FeatureAppContainer', () => {
           expect(testRenderer.toJSON()).toBe('Custom Error UI');
         });
 
+        it('renders what the children function returns if feature app definition is undefined', () => {
+          const testRenderer = renderWithFeatureHubContext(
+            <InternalFeatureAppContainer
+              featureAppId="testId"
+              children={() => 'loading UI'}
+              logger={logger}
+              featureAppManager={mockFeatureAppManager}
+            />
+          );
+
+          expect(testRenderer.toJSON()).toBe('loading UI');
+        });
+
         describe('when children throws an error', () => {
           let childrenMockError: Error;
 
@@ -708,6 +722,20 @@ describe('FeatureAppContainer', () => {
       });
 
       describe('when no children function is passed', () => {
+        describe('when no feature app definition is passed', () => {
+          it('renders null', () => {
+            const testRenderer = renderWithFeatureHubContext(
+              <InternalFeatureAppContainer
+                featureAppId="testId"
+                logger={logger}
+                featureAppManager={mockFeatureAppManager}
+              />
+            );
+
+            expect(testRenderer.getInstance()).toBeNull();
+          });
+        });
+
         describe('when the promise resolves', () => {
           it('renders the feature app', async () => {
             const testRenderer = renderWithFeatureHubContext(
