@@ -65,8 +65,15 @@ export interface FeatureServiceBinding<TFeatureService> {
   unbind?(): void;
 }
 
+/**
+ * @param consumerId The ID of the consumer to which dependencies should be
+ * bound.
+ * @param consumerName The name of the consumer to which dependencies should be
+ * bound.
+ */
 export type FeatureServiceBinder<TFeatureService> = (
-  consumerId: string
+  consumerId: string,
+  consumerName?: string
 ) => FeatureServiceBinding<TFeatureService>;
 
 export interface SharedFeatureService {
@@ -226,10 +233,13 @@ export class FeatureServiceRegistry {
    * dependencies should be bound.
    * @param consumerId The ID of the consumer to which dependencies should be
    * bound.
+   * @param consumerName The name of the consumer to which dependencies should be
+   * bound.
    */
   public bindFeatureServices(
     consumerDefinition: FeatureServiceConsumerDefinition,
-    consumerId: string
+    consumerId: string,
+    consumerName?: string
   ): FeatureServicesBinding {
     if (this.consumerIds.has(consumerId)) {
       throw new Error(Messages.featureServicesAlreadyBound(consumerId));
@@ -250,6 +260,7 @@ export class FeatureServiceRegistry {
       const binding = this.bindFeatureService(
         providerId,
         consumerId,
+        consumerName,
         versionRange,
         {optional}
       );
@@ -351,6 +362,7 @@ export class FeatureServiceRegistry {
   private bindFeatureService(
     providerId: string,
     consumerId: string,
+    consumerName: string | undefined,
     versionRange: string | undefined,
     {optional}: {optional: boolean}
   ): FeatureServiceBinding<unknown> | undefined {
@@ -397,7 +409,9 @@ export class FeatureServiceRegistry {
       satisfies(supportedVersion, caretRange)
     );
 
-    const bindFeatureService = version && sharedFeatureService[version];
+    const bindFeatureService = version
+      ? sharedFeatureService[version]
+      : undefined;
 
     if (!bindFeatureService) {
       const message = Messages.featureServiceUnsupported(
@@ -417,7 +431,7 @@ export class FeatureServiceRegistry {
       throw new Error(message);
     }
 
-    return bindFeatureService(consumerId);
+    return bindFeatureService(consumerId, consumerName);
   }
 
   private validateExternals(

@@ -82,13 +82,13 @@ describe('FeatureServiceRegistry', () => {
         [{featureServices: {}}]
       ]);
 
-      expect(binderA.mock.calls).toEqual([['b'], ['c']]);
+      expect(binderA.mock.calls).toEqual([['b', undefined], ['c', undefined]]);
 
       expect(providerDefinitionB.create.mock.calls).toEqual([
         [{featureServices: {a: featureServiceA}}]
       ]);
 
-      expect(binderB.mock.calls).toEqual([['c']]);
+      expect(binderB.mock.calls).toEqual([['c', undefined]]);
 
       expect(providerDefinitionC.create.mock.calls).toEqual([
         [{featureServices: {a: featureServiceA, b: featureServiceB}}]
@@ -164,7 +164,7 @@ describe('FeatureServiceRegistry', () => {
         [{featureServices: {a: featureServiceA}}]
       ]);
 
-      expect(binderA.mock.calls).toEqual([['b']]);
+      expect(binderA.mock.calls).toEqual([['b', undefined]]);
       expect(binderB.mock.calls).toEqual([]);
 
       expect(logger.info.mock.calls).toEqual([
@@ -515,7 +515,7 @@ describe('FeatureServiceRegistry', () => {
           unbind: expect.any(Function)
         });
 
-        expect(binderA.mock.calls).toEqual([['foo']]);
+        expect(binderA.mock.calls).toEqual([['foo', undefined]]);
       });
     });
 
@@ -540,7 +540,7 @@ describe('FeatureServiceRegistry', () => {
           unbind: expect.any(Function)
         });
 
-        expect(binderA.mock.calls).toEqual([['foo']]);
+        expect(binderA.mock.calls).toEqual([['foo', undefined]]);
       });
     });
 
@@ -565,7 +565,7 @@ describe('FeatureServiceRegistry', () => {
           unbind: expect.any(Function)
         });
 
-        expect(binderA.mock.calls).toEqual([['foo']]);
+        expect(binderA.mock.calls).toEqual([['foo', undefined]]);
       });
     });
 
@@ -619,7 +619,7 @@ describe('FeatureServiceRegistry', () => {
             unbind: expect.any(Function)
           });
 
-          expect(binderA.mock.calls).toEqual([['foo']]);
+          expect(binderA.mock.calls).toEqual([['foo', undefined]]);
         });
       });
 
@@ -648,7 +648,7 @@ describe('FeatureServiceRegistry', () => {
             unbind: expect.any(Function)
           });
 
-          expect(binderA.mock.calls).toEqual([['foo']]);
+          expect(binderA.mock.calls).toEqual([['foo', undefined]]);
         });
       });
 
@@ -661,7 +661,7 @@ describe('FeatureServiceRegistry', () => {
             'test'
           );
 
-          expect(binderA.mock.calls).toEqual([['b']]);
+          expect(binderA.mock.calls).toEqual([['b', undefined]]);
 
           expect(
             featureServiceRegistry.bindFeatureServices(
@@ -677,9 +677,42 @@ describe('FeatureServiceRegistry', () => {
             unbind: expect.any(Function)
           });
 
-          expect(binderA.mock.calls).toEqual([['b'], ['foo']]);
-          expect(binderB.mock.calls).toEqual([['foo']]);
+          expect(binderA.mock.calls).toEqual([
+            ['b', undefined],
+            ['foo', undefined]
+          ]);
+
+          expect(binderB.mock.calls).toEqual([['foo', undefined]]);
         });
+      });
+    });
+
+    describe('when a consumerName is provided', () => {
+      it('passes the consumerName to the Feature Service binders of all dependencies', () => {
+        featureServiceRegistry = new FeatureServiceRegistry({logger});
+
+        featureServiceRegistry.registerFeatureServices(
+          [providerDefinitionA, providerDefinitionB],
+          'testId'
+        );
+
+        expect(
+          featureServiceRegistry.bindFeatureServices(
+            {dependencies: {featureServices: {a: '^1.0.0', b: '^1.0.0'}}},
+            'testId',
+            'testName'
+          )
+        ).toEqual({
+          featureServices: {a: featureServiceA, b: featureServiceB},
+          unbind: expect.any(Function)
+        });
+
+        expect(binderA.mock.calls).toEqual([
+          ['b', undefined],
+          ['testId', 'testName']
+        ]);
+
+        expect(binderB.mock.calls).toEqual([['testId', 'testName']]);
       });
     });
 

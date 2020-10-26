@@ -162,7 +162,7 @@ describe('FeatureAppManager', () => {
       );
 
       expect(mockFeatureServiceRegistry.bindFeatureServices.mock.calls).toEqual(
-        [[mockFeatureAppDefinition, featureAppId]]
+        [[mockFeatureAppDefinition, featureAppId, undefined]]
       );
 
       const {featureServices} = mockFeatureServicesBinding;
@@ -226,6 +226,48 @@ describe('FeatureAppManager', () => {
 
         expect(mockFeatureAppCreate.mock.calls).toEqual([
           [{featureServices, featureAppId, done: mockDone}]
+        ]);
+      });
+    });
+
+    describe('with a featureAppName', () => {
+      it('passes the featureAppName as consumerName to bindFeatureServices', () => {
+        const featureAppId = 'testId';
+        const featureAppName = 'testName';
+
+        featureAppManager = new FeatureAppManager(mockFeatureServiceRegistry, {
+          logger
+        });
+
+        featureAppManager.createFeatureAppScope(
+          featureAppId,
+          mockFeatureAppDefinition,
+          {featureAppName}
+        );
+
+        expect(
+          mockFeatureServiceRegistry.bindFeatureServices.mock.calls
+        ).toEqual([[mockFeatureAppDefinition, featureAppId, featureAppName]]);
+      });
+
+      it('creates a Feature App with a consumer environment that includes the featureAppName', () => {
+        const featureAppId = 'testId';
+        const featureAppName = 'testName';
+
+        featureAppManager = new FeatureAppManager(mockFeatureServiceRegistry, {
+          logger
+        });
+
+        featureAppManager.createFeatureAppScope(
+          featureAppId,
+          mockFeatureAppDefinition,
+          {featureAppName}
+        );
+
+        const {featureServices} = mockFeatureServicesBinding;
+
+        expect(mockFeatureAppCreate.mock.calls).toEqual([
+          [{featureServices, featureAppId, featureAppName}]
         ]);
       });
     });
@@ -426,7 +468,7 @@ describe('FeatureAppManager', () => {
 
         expect(
           mockFeatureServiceRegistry.bindFeatureServices.mock.calls
-        ).toEqual([[mockFeatureAppDefinition, featureAppId]]);
+        ).toEqual([[mockFeatureAppDefinition, featureAppId, undefined]]);
 
         expect(featureServiceRegistryMethodCalls).toEqual([
           'registerFeatureServices',

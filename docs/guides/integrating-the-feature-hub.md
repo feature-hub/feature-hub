@@ -318,6 +318,32 @@ be provided:
 For more details please refer to the the
 ["Feature App Configs" section](#feature-app-configs).
 
+#### `featureAppName`
+
+The `featureAppName` is used as a consumer name for dependent Feature Services
+that can use it for display purposes, logging, looking up Feature App
+configuration meta data, etc. In contrast to the `featureAppId`, the
+`featureAppName` must not be unique, e.g.:
+
+```jsx
+<section>
+  <div>
+    <FeatureAppLoader
+      featureAppId="some-feature-app:main"
+      featureAppName="some-feature-app"
+      src="https://example.com/some-feature-app.js"
+    />
+  </div>
+  <aside>
+    <FeatureAppLoader
+      featureAppId="some-feature-app:aside"
+      featureAppName="some-feature-app"
+      src="https://example.com/some-feature-app.js"
+    />
+  </aside>
+</section>
+```
+
 #### `children`
 
 One can pass a rendering function as the React Children (i.e. the `children`
@@ -403,6 +429,32 @@ be provided:
 
 For more details please refer to the the
 ["Feature App Configs" section](#feature-app-configs).
+
+#### `featureAppName`
+
+The `featureAppName` is used as a consumer name for dependent Feature Services
+that can use it for display purposes, logging, looking up Feature App
+configuration meta data, etc. In contrast to the `featureAppId`, the
+`featureAppName` must not be unique, e.g.:
+
+```jsx
+<section>
+  <div>
+    <FeatureAppContainer
+      featureAppId="some-feature-app:main"
+      featureAppName="some-feature-app"
+      featureAppDefinition={someFeatureAppDefinition}
+    />
+  </div>
+  <aside>
+    <FeatureAppContainer
+      featureAppId="some-feature-app:aside"
+      featureAppName="some-feature-app"
+      featureAppDefinition={someFeatureAppDefinition}
+    />
+  </aside>
+</section>
+```
 
 #### `children`
 
@@ -575,6 +627,32 @@ document.querySelector('#app').appendChild(featureAppLoader);
 For more details please refer to the the
 ["Feature App Configs" section](#feature-app-configs).
 
+#### `featureAppName`
+
+The `featureAppName` is used as a consumer name for dependent Feature Services
+that can use it for display purposes, logging, looking up Feature App
+configuration meta data, etc. In contrast to the `featureAppId`, the
+`featureAppName` must not be unique, e.g.:
+
+```html
+<section>
+  <div>
+    <feature-app-loader
+      featureAppId="some-feature-app:main"
+      featureAppName="some-feature-app"
+      src="https://example.com/some-feature-app.js"
+    ></feature-app-loader>
+  </div>
+  <aside>
+    <feature-app-loader
+      featureAppId="some-feature-app:aside"
+      featureAppName="some-feature-app"
+      src="https://example.com/some-feature-app.js"
+    ></feature-app-loader>
+  </aside>
+</section>
+```
+
 #### `loading` Slot
 
 The `feature-app-loader` custom element renders a slot named `loading` while the
@@ -689,6 +767,33 @@ document.querySelector('#app').appendChild(featureAppContainer);
 
 For more details please refer to the the
 ["Feature App Configs" section](#feature-app-configs).
+
+#### `featureAppName`
+
+The `featureAppName` is used as a consumer name for dependent Feature Services
+that can use it for display purposes, logging, looking up Feature App
+configuration meta data, etc. In contrast to the `featureAppId`, the
+`featureAppName` must not be unique, e.g.:
+
+```js
+const mainFeatureAppContainer = document.createElement('feature-app-container');
+
+mainFeatureAppContainer.setAttribute('featureAppId', 'some-feature-app:main');
+mainFeatureAppContainer.setAttribute('featureAppName', 'some-feature-app');
+mainFeatureAppContainer.featureAppDefinition = someFeatureAppDefinition;
+
+document.querySelector('main').appendChild(mainFeatureAppContainer);
+
+const asideFeatureAppContainer = document.createElement(
+  'feature-app-container'
+);
+
+asideFeatureAppContainer.setAttribute('featureAppId', 'some-feature-app:aside');
+asideFeatureAppContainer.setAttribute('featureAppName', 'some-feature-app');
+asideFeatureAppContainer.featureAppDefinition = someFeatureAppDefinition;
+
+document.querySelector('aside').appendChild(asideFeatureAppContainer);
+```
 
 #### `error` Slot
 

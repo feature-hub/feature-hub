@@ -3,6 +3,7 @@ import {FeatureAppDefinition, FeatureServices} from '@feature-hub/core';
 import {Logger} from '@feature-hub/logger';
 import {ReactFeatureApp} from '@feature-hub/react';
 import * as React from 'react';
+import {Monowidth} from './monowidth';
 
 interface Dependencies extends FeatureServices {
   readonly 's2:logger': Logger;
@@ -29,7 +30,11 @@ const featureAppDefinition: FeatureAppDefinition<
     return {
       render: () => (
         <Card style={{margin: '20px'}}>
-          <Label>This is the Feature App {env.featureAppId}.</Label>
+          <Label>
+            This is the Feature App with the name{' '}
+            <Monowidth>{env.featureAppName}</Monowidth> and the ID{' '}
+            <Monowidth>{env.featureAppId}</Monowidth>.
+          </Label>
         </Card>
       )
     };

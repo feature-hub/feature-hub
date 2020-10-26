@@ -27,6 +27,13 @@ export interface FeatureAppLoaderProps<TConfig = unknown> {
   readonly featureAppId: string;
 
   /**
+   * The Feature App's name. In contrast to the `featureAppId`, the name must
+   * not be unique. It can be used by required Feature Services for display
+   * purposes, logging, looking up Feature App configuration meta data, etc.
+   */
+  readonly featureAppName?: string;
+
+  /**
    * The absolute or relative base URL of the Feature App's assets and/or BFF.
    */
   readonly baseUrl?: string;
@@ -208,6 +215,7 @@ class InternalFeatureAppLoader<TConfig = unknown> extends React.PureComponent<
       children,
       config,
       featureAppId,
+      featureAppName,
       onError,
       // tslint:disable-next-line: deprecation
       renderError,
@@ -245,6 +253,7 @@ class InternalFeatureAppLoader<TConfig = unknown> extends React.PureComponent<
         beforeCreate={beforeCreate}
         config={config}
         featureAppId={featureAppId}
+        featureAppName={featureAppName}
         featureAppDefinition={
           featureAppDefinition as FeatureAppDefinition<FeatureApp>
         }

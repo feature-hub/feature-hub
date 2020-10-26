@@ -208,9 +208,9 @@ describe('createFeatureHub()', () => {
           featureHubOptions
         );
 
-        expect(mockFeatureServiceV1Binder).toHaveBeenCalledWith(
-          'test:integrator'
-        );
+        expect(mockFeatureServiceV1Binder.mock.calls).toEqual([
+          ['test:integrator', undefined]
+        ]);
 
         expect(featureServices['test:feature-service']).toBe(
           mockFeatureServiceV1

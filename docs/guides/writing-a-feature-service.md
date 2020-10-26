@@ -117,11 +117,12 @@ following properties:
 The `create` method must return an object that provides an implementation of the
 `FeatureServiceBinder` type of the [`@feature-hub/core`][core-api] package for
 each supported major version. The Feature Service binder is a function that is
-called for each consumer with its `consumerId` string as the first argument. It
-returns a Feature Service binding with a consumer-bound `featureService` and an
-optional `unbind` method. The `FeatureServiceRegistry` passes this
-consumer-bound `featureService` to the consumer's `create` method via the
-`env.featureServices` argument.
+called for each consumer with its `consumerId` string as the first argument, and
+optionally its `consumerName` string as the second argument. It returns a
+Feature Service binding with a consumer-bound `featureService` and an optional
+`unbind` method. The `FeatureServiceRegistry` passes this consumer-bound
+`featureService` to the consumer's `create` method via the `env.featureServices`
+argument.
 
 If within its `create` method a Feature Service concludes that it can not be
 created, e.g. because of a certain configuration or missing requirement, it
@@ -305,6 +306,36 @@ const myFeatureServiceDefinition = {
     return {'1.0.0': v1};
   }
 };
+```
+
+## When to use the `consumerName` instead of the `consumerId`
+
+In contrast to the `consumerId`, the `consumerName` must not be unique. It can
+be used for display purposes, logging, looking up Feature App configuration meta
+data, etc., e.g. a Logger Feature Service could use it like this:
+
+```js
+const createConsumerConsole = consumer => {
+  const prefixArgs = [`%c${consumer}`, 'font-weight: bold'];
+
+  return {
+    trace: console.trace.bind(console, ...prefixArgs),
+    debug: console.debug.bind(console, ...prefixArgs),
+    info: console.info.bind(console, ...prefixArgs),
+    warn: console.warn.bind(console, ...prefixArgs),
+    error: console.error.bind(console, ...prefixArgs)
+  };
+};
+
+const defineLogger = (createConsumerLogger = createConsumerConsole) => ({
+  id: 'demo:logger',
+
+  create: () => ({
+    '1.0.0': (consumerId, consumerName = consumerId) => ({
+      featureService: createConsumerLogger(consumerName)
+    })
+  })
+});
 ```
 
 [core-api]: /@feature-hub/modules/core.html
