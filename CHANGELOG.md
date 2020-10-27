@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.8.0](https://github.com/sinnerschrader/feature-hub/compare/v2.7.0...v2.8.0) (2020-10-27)
+
+
+### Bug Fixes
+
+* avoid unmounting of elements in children render function when feature app is loaded ([#604](https://github.com/sinnerschrader/feature-hub/issues/604)) ([1709b7d](https://github.com/sinnerschrader/feature-hub/commit/1709b7d))
+
+
+### Features
+
+* **all:** pass featureAppName as consumerName to Feature Service binder ([#589](https://github.com/sinnerschrader/feature-hub/issues/589)) ([44b019f](https://github.com/sinnerschrader/feature-hub/commit/44b019f))
+
+
+
+
+
 # [2.7.0](https://github.com/sinnerschrader/feature-hub/compare/v2.6.0...v2.7.0) (2020-06-11)
 
 
