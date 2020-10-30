@@ -15,7 +15,7 @@ steps:
     inputs:
       versionSpec: $(node_version)
 
-  - script: yarn
+  - script: yarn install --ignore-engines
     displayName: install
 
   - bash: ./scripts/ci/test-azure.sh
