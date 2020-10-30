@@ -2201,10 +2201,10 @@
   dependencies:
     get-port "*"
 
-"@types/git-rev-sync@^1.12.0":
-  version "1.12.0"
-  resolved "https://registry.yarnpkg.com/@types/git-rev-sync/-/git-rev-sync-1.12.0.tgz#b2281e3a370a0da2a13dfd19524d063e7022d2c5"
-  integrity sha512-JiYuezujtbA9dcyQKp8BdzEB3V4/9B9/CSyZrxP+S07xXXCBPEFScyXQPhz3Li+Ai9SV1DJE1hxRNU9nAxxtjQ==
+"@types/git-rev-sync@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@types/git-rev-sync/-/git-rev-sync-2.0.0.tgz#9de6e18cb01e65f769de77175bbe93254664023e"
+  integrity sha512-qGYApbb0m8Ofy3pwYks+kYVIZQAN/cqNucJGbl5O5GpLw9JSzp74rkTWDhPv3brrJfJb5/ixtimLJpo4tfh2QA==
 
 "@types/glob@^7.1.1":
   version "7.1.1"
