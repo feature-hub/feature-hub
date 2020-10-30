@@ -7,15 +7,15 @@ import '../blueprint-css';
 
 defineExternals({
   react: React,
-  '@feature-hub/react': FeatureHubReact
+  '@feature-hub/react': FeatureHubReact,
 });
 
 const {featureAppManager} = createFeatureHub('test:integrator', {
   moduleLoader: loadAmdModule,
   providedExternals: {
     react: process.env.REACT_VERSION as string,
-    '@feature-hub/react': process.env.FEATURE_HUB_REACT_VERSION as string
-  }
+    '@feature-hub/react': process.env.FEATURE_HUB_REACT_VERSION as string,
+  },
 });
 
 const {FeatureHubContextProvider, FeatureAppLoader} = FeatureHubReact;

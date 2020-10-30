@@ -57,7 +57,7 @@ functions:
 ```js
 import {
   defineFeatureAppContainer,
-  defineFeatureAppLoader
+  defineFeatureAppLoader,
 } from '@feature-hub/dom';
 ```
 
@@ -86,8 +86,8 @@ const {featureAppManager} = createFeatureHub('acme:integrator', {
   featureServiceDefinitions: [
     defineLogger((consumerId, consumerName) =>
       logger.child({consumerId, consumerName})
-    )
-  ]
+    ),
+  ],
 });
 ```
 
@@ -99,8 +99,8 @@ const myFeatureAppDefinition = {
 
   dependencies: {
     featureServices: {
-      's2:logger': '^1.0.0'
-    }
+      's2:logger': '^1.0.0',
+    },
   },
 
   create(env) {
@@ -109,7 +109,7 @@ const myFeatureAppDefinition = {
     logger.debug('foo');
 
     // ...
-  }
+  },
 };
 ```
 
@@ -121,8 +121,8 @@ const myFeatureServiceDefinition = {
 
   dependencies: {
     featureServices: {
-      's2:logger': '^1.0.0'
-    }
+      's2:logger': '^1.0.0',
+    },
   },
 
   create(env) {
@@ -131,7 +131,7 @@ const myFeatureServiceDefinition = {
     logger.debug('foo');
 
     // ...
-  }
+  },
 };
 ```
 

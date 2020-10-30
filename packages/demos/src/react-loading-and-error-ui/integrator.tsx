@@ -10,7 +10,7 @@ defineExternals({react: React});
 
 const {featureAppManager} = createFeatureHub('test:integrator', {
   moduleLoader: loadAmdModule,
-  providedExternals: {react: process.env.REACT_VERSION as string}
+  providedExternals: {react: process.env.REACT_VERSION as string},
 });
 
 function ErrorUi({error}: {error: Error}): JSX.Element {

@@ -11,7 +11,7 @@ export interface NewPathControlProps {
 export function NewPathControl({
   history,
   specifier,
-  vertical
+  vertical,
 }: NewPathControlProps): JSX.Element {
   const inputElement = React.useRef<HTMLInputElement | null>(null);
 
@@ -29,7 +29,7 @@ export function NewPathControl({
       <InputGroup
         id={`new-path-${specifier}`}
         placeholder="Enter a new path..."
-        inputRef={ref => (inputElement.current = ref)}
+        inputRef={(ref) => (inputElement.current = ref)}
       />
       <Button
         id={`push-${specifier}`}

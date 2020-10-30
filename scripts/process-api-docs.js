@@ -11,7 +11,7 @@ const apiDocsDirname = path.join(
 
 // Rename "External Modules" to "Packages" on the index page.
 
-updateHtmlFile(path.join(apiDocsDirname, 'index.html'), $ => {
+updateHtmlFile(path.join(apiDocsDirname, 'index.html'), ($) => {
   $('.tsd-index-section h3').text('Packages');
 });
 
@@ -20,7 +20,7 @@ updateHtmlFile(path.join(apiDocsDirname, 'index.html'), $ => {
 const filenames = glob.sync(path.join(apiDocsDirname, '**/*.html')).map(String);
 
 for (const filename of filenames) {
-  updateHtmlFile(filename, $ => {
+  updateHtmlFile(filename, ($) => {
     $('.tsd-sources')
       .filter((_index, element) => /node_modules/.test($(element).text()))
       .remove();

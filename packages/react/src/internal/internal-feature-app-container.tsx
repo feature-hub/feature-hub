@@ -2,12 +2,12 @@ import {
   FeatureAppDefinition,
   FeatureAppEnvironment,
   FeatureServices,
-  Logger
+  Logger,
 } from '@feature-hub/core';
 import * as React from 'react';
 import {
   CustomFeatureAppRenderingParams,
-  FeatureApp
+  FeatureApp,
 } from '../feature-app-container';
 import {FeatureHubContextConsumerValue} from '../feature-hub-context';
 import {isDomFeatureApp, isFeatureApp, isReactFeatureApp} from './type-guards';
@@ -135,7 +135,7 @@ export class InternalFeatureAppContainer<
       featureAppDefinition,
       done,
       logger,
-      onError
+      onError,
     } = props;
 
     if (featureAppDefinition && !state.featureApp && !state.error) {
@@ -157,7 +157,7 @@ export class InternalFeatureAppContainer<
         return {
           featureApp,
           release,
-          loading: Boolean(featureApp.loadingPromise)
+          loading: Boolean(featureApp.loadingPromise),
         };
       } catch (error) {
         try {
@@ -166,7 +166,7 @@ export class InternalFeatureAppContainer<
           return {
             error: handlerError,
             loading: false,
-            failedToHandleAsyncError: true
+            failedToHandleAsyncError: true,
           };
         }
 
@@ -277,7 +277,7 @@ export class InternalFeatureAppContainer<
         .then(() => {
           this.setState({loading: false});
         })
-        .catch(loadingError => {
+        .catch((loadingError) => {
           try {
             this.handleError(loadingError);
 
@@ -285,7 +285,7 @@ export class InternalFeatureAppContainer<
               this.setState({
                 error: loadingError,
                 failedToHandleAsyncError: false,
-                loading: false
+                loading: false,
               });
             }
           } catch (handlerError) {
@@ -293,7 +293,7 @@ export class InternalFeatureAppContainer<
               this.setState({
                 error: handlerError,
                 failedToHandleAsyncError: true,
-                loading: false
+                loading: false,
               });
             }
           }

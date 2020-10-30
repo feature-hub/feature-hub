@@ -4,7 +4,7 @@ import {
   ConsumerHistoryStates,
   RootLocation,
   RootLocationDescriptorObject,
-  RootLocationTransformer
+  RootLocationTransformer,
 } from '../create-root-location-transformer';
 import {Writable} from './writable';
 
@@ -122,12 +122,12 @@ export class HistoryMultiplexer {
 
     const newConsumerStates: ConsumerHistoryStates = {
       ...consumerStates,
-      [historyKey]: consumerLocation.state
+      [historyKey]: consumerLocation.state,
     };
 
     return history.createLocation({
       ...newRootLocation,
-      state: newConsumerStates
+      state: newConsumerStates,
     });
   }
 }

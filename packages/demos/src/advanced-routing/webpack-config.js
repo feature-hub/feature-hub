@@ -11,32 +11,32 @@ const configs = [
   merge.smart(webpackBaseConfig, {
     entry: path.join(__dirname, './input-feature-app.tsx'),
     externals: {
-      react: 'react'
+      react: 'react',
     },
     output: {
       filename: 'input-feature-app.umd.js',
       libraryTarget: 'umd',
-      publicPath: '/'
-    }
+      publicPath: '/',
+    },
   }),
   merge.smart(webpackBaseConfig, {
     entry: path.join(__dirname, './hello-world-feature-app.tsx'),
     externals: {
-      react: 'react'
+      react: 'react',
     },
     output: {
       filename: 'hello-world-feature-app.umd.js',
       libraryTarget: 'umd',
-      publicPath: '/'
-    }
+      publicPath: '/',
+    },
   }),
   merge.smart(webpackBaseConfig, {
     entry: path.join(__dirname, './integrator.tsx'),
     output: {
       filename: 'integrator.js',
-      publicPath: '/'
-    }
-  })
+      publicPath: '/',
+    },
+  }),
 ];
 
 module.exports = configs;

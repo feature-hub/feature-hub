@@ -1,17 +1,17 @@
 import {
   FeatureAppDefinition,
   FeatureAppEnvironment,
-  FeatureServices
+  FeatureServices,
 } from '@feature-hub/core';
 import * as React from 'react';
 import {
   CustomFeatureAppRenderingParams,
-  FeatureApp
+  FeatureApp,
 } from './feature-app-container';
 import {
   Css,
   FeatureHubContextConsumer,
-  FeatureHubContextConsumerValue
+  FeatureHubContextConsumerValue,
 } from './feature-hub-context';
 import {InternalFeatureAppContainer} from './internal/internal-feature-app-container';
 import {prependBaseUrl} from './internal/prepend-base-url';
@@ -126,7 +126,7 @@ class InternalFeatureAppLoader<TConfig = unknown> extends React.PureComponent<
       serverSrc,
       asyncSsrManager,
       addUrlForHydration,
-      addStylesheetsForSsr
+      addStylesheetsForSsr,
     } = props;
 
     const src = inBrowser ? clientSrc : serverSrc;
@@ -156,7 +156,7 @@ class InternalFeatureAppLoader<TConfig = unknown> extends React.PureComponent<
     const {
       error,
       promise: loadingPromise,
-      value: featureAppDefinition
+      value: featureAppDefinition,
     } = featureAppManager.getAsyncFeatureAppDefinition(url);
 
     if (error) {
@@ -221,7 +221,7 @@ class InternalFeatureAppLoader<TConfig = unknown> extends React.PureComponent<
       renderError,
       done,
       featureAppManager,
-      logger
+      logger,
     } = this.props;
 
     const {error, failedToHandleAsyncError, featureAppDefinition} = this.state;
@@ -279,7 +279,7 @@ class InternalFeatureAppLoader<TConfig = unknown> extends React.PureComponent<
           Object.assign(document.createElement('link'), {
             rel: 'stylesheet',
             href,
-            media
+            media,
           })
         );
       }
@@ -295,7 +295,7 @@ class InternalFeatureAppLoader<TConfig = unknown> extends React.PureComponent<
 
     return css.map(({href, media}) => ({
       href: prependBaseUrl(baseUrl, href),
-      media
+      media,
     }));
   }
 
@@ -319,7 +319,7 @@ class InternalFeatureAppLoader<TConfig = unknown> extends React.PureComponent<
       featureAppId,
       logger,
       src: clientSrc,
-      serverSrc
+      serverSrc,
     } = this.props;
 
     const src = inBrowser ? clientSrc : serverSrc;
@@ -348,7 +348,7 @@ export function FeatureAppLoader<TConfig>(
 ): JSX.Element {
   return (
     <FeatureHubContextConsumer>
-      {featureHubContextValue => (
+      {(featureHubContextValue) => (
         <InternalFeatureAppLoader<TConfig>
           {...featureHubContextValue}
           {...props}

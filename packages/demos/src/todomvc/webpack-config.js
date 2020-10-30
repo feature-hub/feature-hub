@@ -19,40 +19,40 @@ const configs = [
   merge.smart(webpackBaseConfig, {
     entry: path.join(__dirname, './header/index.ts'),
     externals: {
-      react: 'react'
+      react: 'react',
     },
     output: {
       path: path.join(websiteBuildDirname, 'header'),
       filename: 'feature-app-header.umd.js',
       libraryTarget: 'umd',
-      publicPath: '/header'
+      publicPath: '/header',
     },
     plugins: [
-      new CopyPlugin([{from: path.join(__dirname, './header/index.css')}])
-    ]
+      new CopyPlugin([{from: path.join(__dirname, './header/index.css')}]),
+    ],
   }),
   merge.smart(webpackBaseConfig, {
     entry: path.join(__dirname, './main/index.tsx'),
     externals: {
-      react: 'react'
+      react: 'react',
     },
     output: {
       path: path.join(websiteBuildDirname, 'main'),
       filename: 'feature-app-main.umd.js',
       libraryTarget: 'umd',
-      publicPath: '/main'
-    }
+      publicPath: '/main',
+    },
   }),
   merge.smart(webpackBaseConfig, {
     entry: path.join(__dirname, './footer/index.tsx'),
     externals: {
-      react: 'react'
+      react: 'react',
     },
     output: {
       path: path.join(websiteBuildDirname, 'footer'),
       filename: 'feature-app-footer.umd.js',
       libraryTarget: 'umd',
-      publicPath: '/footer'
+      publicPath: '/footer',
     },
     module: {
       rules: [
@@ -65,38 +65,38 @@ const configs = [
               options: {
                 importLoaders: 1,
                 modules: {
-                  localIdentName: '[path][name]__[local]--[hash:base64:5]'
+                  localIdentName: '[path][name]__[local]--[hash:base64:5]',
                 },
-                sourceMap: true
-              }
+                sourceMap: true,
+              },
             },
 
             {
               loader: 'postcss-loader',
               options: {
                 ident: 'postcss',
-                plugins: () => [postcssPresetEnv({stage: 0})]
-              }
-            }
-          ]
-        }
-      ]
-    }
+                plugins: () => [postcssPresetEnv({stage: 0})],
+              },
+            },
+          ],
+        },
+      ],
+    },
   }),
   merge.smart(webpackBaseConfig, {
     entry: path.join(__dirname, './integrator.tsx'),
     output: {
       path: websiteBuildDirname,
       filename: 'integrator.js',
-      publicPath: '/'
+      publicPath: '/',
     },
     plugins: [
       new CopyPlugin([
         path.join(__dirname, './index.css'),
-        path.join(__dirname, './index.html')
-      ])
-    ]
-  })
+        path.join(__dirname, './index.html'),
+      ]),
+    ],
+  }),
 ];
 
 module.exports = configs;

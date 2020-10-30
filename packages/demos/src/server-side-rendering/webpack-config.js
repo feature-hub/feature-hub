@@ -11,8 +11,8 @@ const webpackBaseConfig = require('../webpack-base-config');
 const featureAppConfig = merge.smart(webpackBaseConfig, {
   entry: path.join(__dirname, './feature-app.tsx'),
   externals: {
-    react: 'react'
-  }
+    react: 'react',
+  },
 });
 
 /**
@@ -23,33 +23,33 @@ const configs = [
     output: {
       filename: 'feature-app.umd.js',
       libraryTarget: 'umd',
-      publicPath: '/'
-    }
+      publicPath: '/',
+    },
   }),
   merge.smart(featureAppConfig, {
     output: {
       filename: 'feature-app.commonjs.js',
       libraryTarget: 'commonjs2',
-      publicPath: '/'
+      publicPath: '/',
     },
-    target: 'node'
+    target: 'node',
   }),
   merge.smart(webpackBaseConfig, {
     entry: path.join(__dirname, './integrator.tsx'),
     output: {
       filename: 'integrator.js',
-      publicPath: '/'
+      publicPath: '/',
     },
     plugins: [
       new CopyPlugin(
         [
           'normalize.css/normalize.css',
           '@blueprintjs/icons/lib/css/blueprint-icons.css',
-          '@blueprintjs/core/lib/css/blueprint.css'
-        ].map(cssPath => ({from: require.resolve(cssPath)}))
-      )
-    ]
-  })
+          '@blueprintjs/core/lib/css/blueprint.css',
+        ].map((cssPath) => ({from: require.resolve(cssPath)}))
+      ),
+    ],
+  }),
 ];
 
 module.exports = configs;

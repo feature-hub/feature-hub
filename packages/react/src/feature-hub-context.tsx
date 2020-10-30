@@ -83,7 +83,7 @@ export const FeatureHubContextConsumer = (
   props: React.ConsumerProps<FeatureHubContextConsumerValue>
 ) => (
   <FeatureHubContext.Consumer>
-    {featureHubContextValue => {
+    {(featureHubContextValue) => {
       if (featureHubContextValue === dummyDefaultFeatureHubContextValue) {
         throw new Error(noFeatureHubContextValueErrorMessage);
       }

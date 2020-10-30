@@ -3,15 +3,13 @@
 import {
   FeatureServiceBinder,
   FeatureServiceEnvironment,
-  FeatureServiceProviderDefinition
+  FeatureServiceProviderDefinition,
 } from '@feature-hub/core';
 import {ServerRequestV1, SharedServerRequest, defineServerRequest} from '..';
 
 describe('defineServerRequest', () => {
   let mockEnv: FeatureServiceEnvironment<{}>;
-  let serverRequestDefinition: FeatureServiceProviderDefinition<
-    SharedServerRequest
-  >;
+  let serverRequestDefinition: FeatureServiceProviderDefinition<SharedServerRequest>;
   let serverRequest: ServerRequestV1;
 
   beforeEach(() => {
@@ -20,7 +18,7 @@ describe('defineServerRequest', () => {
     serverRequest = {
       url: '/app',
       cookies: {},
-      headers: {}
+      headers: {},
     };
 
     serverRequestDefinition = defineServerRequest(serverRequest);

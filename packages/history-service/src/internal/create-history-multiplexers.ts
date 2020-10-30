@@ -43,6 +43,6 @@ export function createHistoryMultiplexers(
       }
 
       return staticHistoryMultiplexer;
-    }
+    },
   };
 }

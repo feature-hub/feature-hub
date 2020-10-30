@@ -29,7 +29,7 @@ export class TodoMvcFooter extends React.Component<
       return null;
     }
 
-    const itemsLeft = todos.filter(todo => !todo.completed).length;
+    const itemsLeft = todos.filter((todo) => !todo.completed).length;
     const hasCompletedTodos = todos.length - itemsLeft > 0;
 
     return (

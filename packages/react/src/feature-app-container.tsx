@@ -3,7 +3,7 @@ import * as React from 'react';
 import {FeatureHubContextConsumer} from './feature-hub-context';
 import {
   BaseFeatureAppContainerProps,
-  InternalFeatureAppContainer
+  InternalFeatureAppContainer,
 } from './internal/internal-feature-app-container';
 
 export interface BaseFeatureApp {

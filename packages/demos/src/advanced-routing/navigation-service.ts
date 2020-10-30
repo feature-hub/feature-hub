@@ -2,7 +2,7 @@ import {
   FeatureServiceBinder,
   FeatureServiceProviderDefinition,
   FeatureServices,
-  SharedFeatureService
+  SharedFeatureService,
 } from '@feature-hub/core';
 import {ConsumerLocation, HistoryServiceV2} from '@feature-hub/history-service';
 import * as history from 'history';
@@ -31,8 +31,8 @@ export const navigationServiceDefinition: FeatureServiceProviderDefinition<
   dependencies: {
     featureServices: {
       's2:history': '^2.0.0',
-      'test:hello-world-service': '^1.0.0'
-    }
+      'test:hello-world-service': '^1.0.0',
+    },
   },
 
   create: ({featureServices}) => {
@@ -47,7 +47,7 @@ export const navigationServiceDefinition: FeatureServiceProviderDefinition<
           navigateToHelloWorld(name: string): void {
             const pageLocation: ConsumerLocation = {
               historyKey: historyService.historyKey,
-              location: {pathname: '/page2'}
+              location: {pathname: '/page2'},
             };
 
             const helloWorldLocation = helloWorldService.createLocation(name);
@@ -58,9 +58,9 @@ export const navigationServiceDefinition: FeatureServiceProviderDefinition<
             );
 
             historyService.rootHistory.push(rootLocation);
-          }
-        }
-      })
+          },
+        },
+      }),
     };
-  }
+  },
 };

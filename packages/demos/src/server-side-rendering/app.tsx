@@ -14,7 +14,7 @@ export function App({port}: AppProps): JSX.Element {
       css={[
         {href: 'normalize.css'},
         {href: 'blueprint-icons.css'},
-        {href: 'blueprint.css'}
+        {href: 'blueprint.css'},
       ]}
     />
   );

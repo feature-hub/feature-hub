@@ -6,12 +6,12 @@ import * as ReactDOM from 'react-dom/server';
 import {AppRendererOptions, AppRendererResult} from '../start-server';
 
 export default async function renderApp({
-  port
+  port,
 }: AppRendererOptions): Promise<AppRendererResult> {
   const featureAppNodeUrl = `http://localhost:${port}/feature-app.commonjs.js`;
 
   const {featureAppManager} = createFeatureHub('test:integrator', {
-    moduleLoader: loadCommonJsModule
+    moduleLoader: loadCommonJsModule,
   });
 
   // In a real-world integrator, instead of preloading a Feature App manually

@@ -80,7 +80,7 @@ describe('integration test: "history-service"', () => {
     await browser.goto(url, 120000);
   });
 
-  afterAll(done => server.close(done));
+  afterAll((done) => server.close(done));
 
   test('Scenario 1: The user loads a page without consumer-specific pathnames', async () => {
     await browser.goto(url);

@@ -7,7 +7,7 @@
 import {
   FeatureAppDefinition,
   FeatureAppManager,
-  FeatureAppScope
+  FeatureAppScope,
 } from '@feature-hub/core';
 import * as React from 'react';
 import ReactDOM from 'react-dom/server';
@@ -37,7 +37,7 @@ describe('FeatureAppContainer (on Node.js)', () => {
     mockFeatureAppManager = ({
       getAsyncFeatureAppDefinition: jest.fn(),
       createFeatureAppScope: mockCreateFeatureAppScope,
-      preloadFeatureApp: jest.fn()
+      preloadFeatureApp: jest.fn(),
     } as Partial<FeatureAppManager>) as FeatureAppManager;
 
     consoleErrorSpy = jest.spyOn(console, 'error');
@@ -66,7 +66,7 @@ describe('FeatureAppContainer (on Node.js)', () => {
     null,
     {},
     {attachTo: 'foo'},
-    {render: 'foo'}
+    {render: 'foo'},
   ]) {
     describe(`when an invalid Feature App (${JSON.stringify(
       invalidFeatureApp
@@ -74,7 +74,7 @@ describe('FeatureAppContainer (on Node.js)', () => {
       beforeEach(() => {
         mockFeatureAppScope = {
           featureApp: invalidFeatureApp,
-          release: jest.fn()
+          release: jest.fn(),
         };
       });
 
@@ -129,8 +129,8 @@ describe('FeatureAppContainer (on Node.js)', () => {
         featureApp: {
           render: () => {
             throw mockError;
-          }
-        }
+          },
+        },
       };
     });
 
@@ -170,8 +170,8 @@ describe('FeatureAppContainer (on Node.js)', () => {
         ...mockFeatureAppScope,
         featureApp: {
           loadingPromise,
-          render: () => 'Rendered a Feature App'
-        }
+          render: () => 'Rendered a Feature App',
+        },
       };
     });
 

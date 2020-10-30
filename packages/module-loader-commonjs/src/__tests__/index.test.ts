@@ -15,7 +15,7 @@ jest.mock('node-fetch', () => (url: RequestInfo, init: RequestInit) => {
   requestInit = init;
 
   return Promise.resolve({
-    text: () => Promise.resolve(Buffer.from(mockResponse))
+    text: () => Promise.resolve(Buffer.from(mockResponse)),
   });
 });
 // tslint:enable promise-function-async

@@ -3,7 +3,7 @@
 
 import {
   FeatureServiceEnvironment,
-  FeatureServiceProviderDefinition
+  FeatureServiceProviderDefinition,
 } from '@feature-hub/core';
 import {Logger, SharedLogger, defineLogger} from '..';
 
@@ -44,10 +44,10 @@ describe('defineLogger', () => {
         'debug',
         'info',
         'warn',
-        'error'
+        'error',
       ];
 
-      describe.each(loggerMethods)('#%s', method => {
+      describe.each(loggerMethods)('#%s', (method) => {
         let stubbedConsoleMethod: jest.SpyInstance;
 
         beforeEach(() => {
@@ -90,7 +90,7 @@ describe('defineLogger', () => {
           debug: jest.fn(),
           info: jest.fn(),
           warn: jest.fn(),
-          error: jest.fn()
+          error: jest.fn(),
         };
 
         mockCreateConsumerLogger = jest.fn(() => mockConsumerLogger);
@@ -104,7 +104,7 @@ describe('defineLogger', () => {
 
       it('calls the given createConsumerLogger with the consumerId and consumerName', () => {
         expect(mockCreateConsumerLogger.mock.calls).toEqual([
-          ['test:id', 'test:name']
+          ['test:id', 'test:name'],
         ]);
       });
 

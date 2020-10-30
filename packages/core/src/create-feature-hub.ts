@@ -6,7 +6,7 @@ import {
   FeatureServiceProviderDefinition,
   FeatureServiceRegistry,
   FeatureServices,
-  SharedFeatureService
+  SharedFeatureService,
 } from './feature-service-registry';
 import {Logger} from './logger';
 
@@ -82,7 +82,7 @@ export function createFeatureHub(
     featureServiceDependencies,
     providedExternals,
     moduleLoader,
-    logger
+    logger,
   } = options;
 
   let externalsValidator: ExternalsValidator | undefined;
@@ -93,11 +93,11 @@ export function createFeatureHub(
 
   const featureServiceRegistry = new FeatureServiceRegistry({
     externalsValidator,
-    logger
+    logger,
   });
 
   const integratorDefinition: FeatureServiceConsumerDefinition = {
-    dependencies: {featureServices: featureServiceDependencies}
+    dependencies: {featureServices: featureServiceDependencies},
   };
 
   if (featureServiceDefinitions) {
@@ -110,7 +110,7 @@ export function createFeatureHub(
   const featureAppManager = new FeatureAppManager(featureServiceRegistry, {
     externalsValidator,
     moduleLoader,
-    logger
+    logger,
   });
 
   const {featureServices} = featureServiceRegistry.bindFeatureServices(

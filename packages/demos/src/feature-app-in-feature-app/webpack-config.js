@@ -11,8 +11,8 @@ const featureAppConfig = merge.smart(webpackBaseConfig, {
   entry: path.join(__dirname, './feature-app-outer.tsx'),
   externals: {
     react: 'react',
-    '@feature-hub/react': '@feature-hub/react'
-  }
+    '@feature-hub/react': '@feature-hub/react',
+  },
 });
 
 /**
@@ -23,24 +23,24 @@ const configs = [
     output: {
       filename: 'feature-app.umd.js',
       libraryTarget: 'umd',
-      publicPath: '/'
-    }
+      publicPath: '/',
+    },
   }),
   merge.smart(featureAppConfig, {
     output: {
       filename: 'feature-app.commonjs.js',
       libraryTarget: 'commonjs2',
-      publicPath: '/'
+      publicPath: '/',
     },
-    target: 'node'
+    target: 'node',
   }),
   merge.smart(webpackBaseConfig, {
     entry: path.join(__dirname, './integrator.tsx'),
     output: {
       filename: 'integrator.js',
-      publicPath: '/'
-    }
-  })
+      publicPath: '/',
+    },
+  }),
 ];
 
 module.exports = configs;

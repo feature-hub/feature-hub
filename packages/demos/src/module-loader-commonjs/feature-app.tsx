@@ -10,9 +10,9 @@ const featureAppDefinition: FeatureAppDefinition<ReactFeatureApp> = {
         <Card style={{margin: '20px'}}>
           <Text>Hello, World!</Text>
         </Card>
-      )
+      ),
     };
-  }
+  },
 };
 
 export default featureAppDefinition;

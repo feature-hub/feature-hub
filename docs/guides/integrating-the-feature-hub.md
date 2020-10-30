@@ -36,8 +36,8 @@ const {featureAppManager, featureServiceRegistry} = createFeatureHub(
   {
     featureServiceDefinitions: [
       someFeatureServiceDefinition1,
-      someFeatureServiceDefinition2
-    ]
+      someFeatureServiceDefinition2,
+    ],
   }
 );
 ```
@@ -103,7 +103,7 @@ import {loadAmdModule} from '@feature-hub/module-loader-amd';
 
 ```js
 const {featureAppManager} = createFeatureHub('acme:integrator', {
-  moduleLoader: loadAmdModule
+  moduleLoader: loadAmdModule,
 });
 ```
 
@@ -115,7 +115,7 @@ import {loadCommonJsModule} from '@feature-hub/module-loader-commonjs';
 
 ```js
 const {featureAppManager} = createFeatureHub('acme:integrator', {
-  moduleLoader: loadCommonJsModule
+  moduleLoader: loadCommonJsModule,
 });
 ```
 
@@ -145,7 +145,7 @@ defineExternals({react: React});
 
 const {featureAppManager} = createFeatureHub('acme:integrator', {
   moduleLoader: loadAmdModule,
-  providedExternals: {react: '16.7.0'}
+  providedExternals: {react: '16.7.0'},
 });
 ```
 
@@ -159,7 +159,7 @@ import {loadCommonJsModule} from '@feature-hub/module-loader-commonjs';
 ```js
 const {featureAppManager} = createFeatureHub('acme:integrator', {
   moduleLoader: loadCommonJsModule,
-  providedExternals: {react: '16.7.0'}
+  providedExternals: {react: '16.7.0'},
 });
 ```
 
@@ -274,7 +274,7 @@ You can also define a `css` prop to add stylesheets to the document:
   src="https://example.com/some-feature-app.js"
   css={[
     {href: 'https://example.com/some-feature-app.css'},
-    {href: 'https://example.com/some-feature-app-print.css', media: 'print'}
+    {href: 'https://example.com/some-feature-app-print.css', media: 'print'},
   ]}
 />
 ```
@@ -538,7 +538,7 @@ make them available:
 ```js
 import {
   defineFeatureAppContainer,
-  defineFeatureAppLoader
+  defineFeatureAppLoader,
 } from '@feature-hub/dom';
 ```
 
@@ -829,11 +829,11 @@ export function defineSomeFeatureService(options = {}) {
           featureService: {
             foo() {
               return 42 + options.someConfig;
-            }
-          }
-        })
+            },
+          },
+        }),
       };
-    }
+    },
   };
 }
 ```
@@ -866,7 +866,7 @@ const someFeatureAppDefinition = {
     const {someConfig} = env.config; // someConfig is 'foo'
 
     // ...
-  }
+  },
 };
 ```
 
@@ -895,11 +895,11 @@ import {someFeatureServiceDefinition2} from './some-feature-service-2';
 const {featureServices} = createFeatureHub('acme:integrator', {
   featureServiceDefinitions: [
     someFeatureServiceDefinition1,
-    someFeatureServiceDefinition2
+    someFeatureServiceDefinition2,
   ],
   featureServiceDependencies: {
-    [someFeatureServiceDefinition2.id]: '^1.0.0'
-  }
+    [someFeatureServiceDefinition2.id]: '^1.0.0',
+  },
 });
 
 const someFeatureService2 = featureServices[someFeatureServiceDefinition2.id];

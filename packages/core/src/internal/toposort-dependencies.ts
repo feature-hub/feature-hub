@@ -11,7 +11,7 @@ type DependencyEdges = [string, string][];
 function createTuple<TFirst, TSecond>(
   first: TFirst
 ): (second: TSecond) => [TFirst, TSecond] {
-  return second => [first, second];
+  return (second) => [first, second];
 }
 
 function createDependencyEdges(
@@ -55,7 +55,7 @@ export function toposortDependencies(
   // don't have dependencies and are not a dependency.
   sortedDependencyNames.push(
     ...dependencyNames.filter(
-      dependencyName =>
+      (dependencyName) =>
         dependencyGraph.has(dependencyName) &&
         sortedDependencyNames.indexOf(dependencyName) === -1
     )

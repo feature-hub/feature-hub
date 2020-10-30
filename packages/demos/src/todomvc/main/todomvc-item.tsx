@@ -58,11 +58,11 @@ const DestroyButton = styled.button`
 const ListItem = styled.li<ListItemProps>`
   position: relative;
   font-size: 24px;
-  border-bottom: ${props => (props.editing ? 'none' : '1px solid #ededed')};
+  border-bottom: ${(props) => (props.editing ? 'none' : '1px solid #ededed')};
 
   :last-child {
     border-bottom: none;
-    margin-bottom: ${props => (props.editing ? '-1px' : '0')};
+    margin-bottom: ${(props) => (props.editing ? '-1px' : '0')};
   }
 
   :hover {
@@ -73,7 +73,7 @@ const ListItem = styled.li<ListItemProps>`
 `;
 
 const View = styled.div<ViewProps>`
-  display: ${props => (props.editing ? 'none' : 'initial')};
+  display: ${(props) => (props.editing ? 'none' : 'initial')};
 `;
 
 const Label = styled.label<LabelProps>`
@@ -82,9 +82,9 @@ const Label = styled.label<LabelProps>`
   display: block;
   line-height: 1.2;
   transition: color 0.4s;
-  color: ${props => (props.completed ? '#d9d9d9' : 'inherit')};
-  text-decoration: ${props => (props.completed ? 'line-through' : 'none')};
-  background-image: ${props =>
+  color: ${(props) => (props.completed ? '#d9d9d9' : 'inherit')};
+  text-decoration: ${(props) => (props.completed ? 'line-through' : 'none')};
+  background-image: ${(props) =>
     props.completed ? `url(${checkboxCompleted})` : `url(${checkbox})`};
   background-repeat: no-repeat;
   background-position: center left;
@@ -106,7 +106,7 @@ const Toggle = styled.input`
 `;
 
 const EditInput = styled.input<EditInputProps>`
-  display: ${props => (props.editing ? 'block' : 'none')};
+  display: ${(props) => (props.editing ? 'block' : 'none')};
   position: relative;
   font-size: 24px;
   font-family: inherit;
@@ -154,7 +154,7 @@ export class TodoMvcItem extends React.PureComponent<
           <Toggle
             type="checkbox"
             checked={completed}
-            onChange={event => onToggle(id, event.currentTarget.checked)}
+            onChange={(event) => onToggle(id, event.currentTarget.checked)}
           />
           <Label
             completed={completed}

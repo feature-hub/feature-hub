@@ -5,8 +5,8 @@ const featureAppDefinition: FeatureAppDefinition<DomFeatureApp> = {
   create: () => ({
     attachTo(element: HTMLElement): void {
       element.replaceWith('Hello, World!');
-    }
-  })
+    },
+  }),
 };
 
 export default featureAppDefinition;

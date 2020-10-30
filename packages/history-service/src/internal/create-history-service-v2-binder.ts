@@ -20,7 +20,7 @@ function createHistoryServiceV2(
     createNewRootLocationForMultipleConsumers: (...consumerLocations) =>
       historyMultiplexer.createNewRootLocationForMultipleConsumers(
         ...consumerLocations
-      )
+      ),
   };
 }
 
@@ -44,7 +44,7 @@ function createBrowserHistoryServiceV2Binding(
 
     unbind: () => {
       consumerHistory.destroy();
-    }
+    },
   };
 }
 
@@ -64,7 +64,7 @@ function createStaticHistoryServiceV2Binding(
       consumerId,
       consumerHistory,
       historyMultiplexers.staticHistoryMultiplexer
-    )
+    ),
   };
 }
 

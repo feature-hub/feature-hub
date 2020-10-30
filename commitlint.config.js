@@ -4,7 +4,7 @@ const {readdirSync} = require('fs');
 const path = require('path');
 
 const pkgScopes = readdirSync(path.join(__dirname, 'packages')).filter(
-  scope => !/^\./.test(scope)
+  (scope) => !/^\./.test(scope)
 );
 
 const scopes = ['all', ...pkgScopes];
@@ -14,6 +14,6 @@ module.exports = {
   rules: {
     'header-max-length': [2, 'always', 140],
     'scope-empty': [2, 'never'],
-    'scope-enum': [2, 'always', scopes]
-  }
+    'scope-enum': [2, 'always', scopes],
+  },
 };

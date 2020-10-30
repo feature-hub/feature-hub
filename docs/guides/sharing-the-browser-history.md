@@ -52,8 +52,8 @@ const myFeatureAppDefinition = {
 
   dependencies: {
     featureServices: {
-      's2:history': '^2.0.0'
-    }
+      's2:history': '^2.0.0',
+    },
   },
 
   create(env) {
@@ -64,9 +64,9 @@ const myFeatureAppDefinition = {
         <Router history={historyService.history}>
           <App />
         </Router>
-      )
+      ),
     };
-  }
+  },
 };
 ```
 
@@ -86,17 +86,17 @@ On the client:
 import {createFeatureHub} from '@feature-hub/core';
 import {
   createRootLocationTransformer,
-  defineHistoryService
+  defineHistoryService,
 } from '@feature-hub/history-service';
 ```
 
 ```js
 const rootLocationTransformer = createRootLocationTransformer({
-  consumerPathsQueryParamName: '---'
+  consumerPathsQueryParamName: '---',
 });
 
 const featureHub = createFeatureHub('acme:integrator', {
-  featureServiceDefinitions: [defineHistoryService(rootLocationTransformer)]
+  featureServiceDefinitions: [defineHistoryService(rootLocationTransformer)],
 });
 ```
 
@@ -109,14 +109,14 @@ to `'static'`:
 import {createFeatureHub} from '@feature-hub/core';
 import {
   createRootLocationTransformer,
-  defineHistoryService
+  defineHistoryService,
 } from '@feature-hub/history-service';
 import {defineServerRequest} from '@feature-hub/server-request';
 ```
 
 ```js
 const rootLocationTransformer = createRootLocationTransformer({
-  consumerPathsQueryParamName: '---'
+  consumerPathsQueryParamName: '---',
 });
 
 const request = {
@@ -126,8 +126,8 @@ const request = {
 const featureHub = createFeatureHub('acme:integrator', {
   featureServiceDefinitions: [
     defineServerRequest(request),
-    defineHistoryService(rootLocationTransformer, {mode: 'static'})
-  ]
+    defineHistoryService(rootLocationTransformer, {mode: 'static'}),
+  ],
 });
 ```
 
@@ -158,7 +158,7 @@ const rootLocationTransformer = {
     const {pathname, state} = currentRootLocation;
 
     return {pathname, search: searchParams.toString(), state};
-  }
+  },
 };
 ```
 

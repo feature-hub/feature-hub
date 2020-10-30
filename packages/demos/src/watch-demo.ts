@@ -26,11 +26,11 @@ function loadNodeIntegrator(): AppRenderer | undefined {
 }
 
 startServer(loadWebpackConfigs(), loadNodeIntegrator(), demoName)
-  .then(server => {
+  .then((server) => {
     const {port} = server.address() as AddressInfo;
 
     console.log(`The ${demoName} demo is running at: http://localhost:${port}`);
   })
-  .catch(error => {
+  .catch((error) => {
     console.error(error);
   });

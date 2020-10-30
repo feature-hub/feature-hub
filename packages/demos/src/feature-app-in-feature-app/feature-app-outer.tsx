@@ -30,13 +30,13 @@ const featureAppDefinition: FeatureAppDefinition<ReactFeatureApp> = {
   dependencies: {
     externals: {
       react: '^16.7.0',
-      '@feature-hub/react': '^2.0.0'
-    }
+      '@feature-hub/react': '^2.0.0',
+    },
   },
 
   create: ({featureAppId}) => ({
-    render: () => <OuterFeatureApp featureAppId={featureAppId} />
-  })
+    render: () => <OuterFeatureApp featureAppId={featureAppId} />,
+  }),
 };
 
 export default featureAppDefinition;

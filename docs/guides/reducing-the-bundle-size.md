@@ -39,7 +39,7 @@ two settings need to be made:
        __webpack_public_path__ = env.baseUrl;
 
        // ...
-     }
+     },
    };
    ```
 
@@ -51,7 +51,7 @@ two settings need to be made:
        __webpack_public_path__ = env.baseUrl;
 
        // ...
-     }
+     },
    };
    ```
 

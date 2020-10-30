@@ -4,7 +4,7 @@ import * as Messages from './internal/feature-service-registry-messages';
 import {
   Dependencies,
   DependencyGraph,
-  toposortDependencies
+  toposortDependencies,
 } from './internal/toposort-dependencies';
 import {Logger} from './logger';
 
@@ -118,11 +118,11 @@ type ProviderDefinitionsById = Map<
 
 function mergeFeatureServiceDependencies({
   dependencies,
-  optionalDependencies
+  optionalDependencies,
 }: FeatureServiceConsumerDefinition): Dependencies {
   return {
     ...(dependencies && dependencies.featureServices),
-    ...(optionalDependencies && optionalDependencies.featureServices)
+    ...(optionalDependencies && optionalDependencies.featureServices),
   };
 }
 
@@ -405,7 +405,7 @@ export class FeatureServiceRegistry {
 
     const supportedVersions = Object.keys(sharedFeatureService);
 
-    const version = supportedVersions.find(supportedVersion =>
+    const version = supportedVersions.find((supportedVersion) =>
       satisfies(supportedVersion, caretRange)
     );
 

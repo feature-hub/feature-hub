@@ -28,13 +28,13 @@ describe('integration test: "custom logging"', () => {
     await browser.goto(`http://localhost:${port}`, 120000);
   });
 
-  afterAll(done => server.close(done));
+  afterAll((done) => server.close(done));
 
   it('logs with the custom logger', async () => {
     const messages = await Promise.all(
-      consoleMessages.map(async consoleMessage =>
+      consoleMessages.map(async (consoleMessage) =>
         Promise.all(
-          consoleMessage.args().map(async handle => handle.jsonValue())
+          consoleMessage.args().map(async (handle) => handle.jsonValue())
         )
       )
     );
@@ -42,13 +42,13 @@ describe('integration test: "custom logging"', () => {
     expect(messages).toContainEqual([
       '%ctest:integrator',
       'font-weight: bold',
-      'Creating Feature App "test:logging-app:first"...'
+      'Creating Feature App "test:logging-app:first"...',
     ]);
 
     expect(messages).toContainEqual([
       '%ctest:integrator',
       'font-weight: bold',
-      'Creating Feature App "test:logging-app:second"...'
+      'Creating Feature App "test:logging-app:second"...',
     ]);
   });
 });

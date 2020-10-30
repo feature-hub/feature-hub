@@ -11,21 +11,21 @@ const configs = [
   merge.smart(webpackBaseConfig, {
     entry: path.join(__dirname, './feature-app.tsx'),
     externals: {
-      react: 'react'
+      react: 'react',
     },
     output: {
       filename: 'feature-app.umd.js',
       libraryTarget: 'umd',
-      publicPath: '/'
-    }
+      publicPath: '/',
+    },
   }),
   merge.smart(webpackBaseConfig, {
     entry: path.join(__dirname, './integrator.tsx'),
     output: {
       filename: 'integrator.js',
-      publicPath: '/'
-    }
-  })
+      publicPath: '/',
+    },
+  }),
 ];
 
 module.exports = configs;

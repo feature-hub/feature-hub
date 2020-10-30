@@ -1,7 +1,7 @@
 import {
   DomFeatureApp,
   FeatureApp,
-  ReactFeatureApp
+  ReactFeatureApp,
 } from '../feature-app-container';
 
 export function isDomFeatureApp(

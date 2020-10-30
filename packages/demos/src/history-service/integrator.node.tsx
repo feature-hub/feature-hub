@@ -8,13 +8,13 @@ import {App} from './app';
 import {rootLocationTransformer} from './root-location-transformer';
 
 export default async function renderApp({
-  req
+  req,
 }: AppRendererOptions): Promise<AppRendererResult> {
   const {featureAppManager} = createFeatureHub('test:integrator', {
     featureServiceDefinitions: [
       defineServerRequest(req),
-      defineHistoryService(rootLocationTransformer, {mode: 'static'})
-    ]
+      defineHistoryService(rootLocationTransformer, {mode: 'static'}),
+    ],
   });
 
   const html = ReactDOM.renderToString(

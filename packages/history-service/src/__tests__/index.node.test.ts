@@ -8,7 +8,7 @@
 import {
   FeatureServiceBinder,
   FeatureServiceBinding,
-  FeatureServiceEnvironment
+  FeatureServiceEnvironment,
 } from '@feature-hub/core';
 import {ServerRequestV1} from '@feature-hub/server-request';
 import {History} from 'history';
@@ -17,21 +17,21 @@ import {
   HistoryServiceV1,
   HistoryServiceV2,
   createRootLocationTransformer,
-  defineHistoryService
+  defineHistoryService,
 } from '..';
 import {Writable} from '../internal/writable';
 import {
   consumerPathsQueryParamName,
   createSearch,
-  createUrl
+  createUrl,
 } from './root-location-helpers';
 import {stubbedLogger} from './stubbed-logger';
 
 describe('defineHistoryService', () => {
   describe('HistoryServiceV1 (on Node.js)', () => {
-    let mockEnv: FeatureServiceEnvironment<
-      Writable<HistoryServiceDependencies>
-    >;
+    let mockEnv: FeatureServiceEnvironment<Writable<
+      HistoryServiceDependencies
+    >>;
 
     let createHistoryServiceBinder: () => FeatureServiceBinder<
       HistoryServiceV1
@@ -82,7 +82,7 @@ describe('defineHistoryService', () => {
         createHistories({
           url: '/example',
           cookies: {},
-          headers: {}
+          headers: {},
         })
       );
 
@@ -146,12 +146,12 @@ describe('defineHistoryService', () => {
 
           expect(history1.location).toMatchObject({
             pathname: '/foo',
-            state: {test: 'foo'}
+            state: {test: 'foo'},
           });
 
           expect(history2.location).toMatchObject({
             pathname: '/bar',
-            state: {test: 'bar'}
+            state: {test: 'bar'},
           });
         });
 
@@ -161,7 +161,7 @@ describe('defineHistoryService', () => {
           const serverRequest: ServerRequestV1 = {
             url: createUrl({test1: '/foo', test2: 'bar'}, {relative: true}),
             cookies: {},
-            headers: {}
+            headers: {},
           };
 
           createHistories(serverRequest);
@@ -174,7 +174,7 @@ describe('defineHistoryService', () => {
           it('returns the default location', () => {
             expect(history1.location).toMatchObject({
               pathname: '/',
-              search: ''
+              search: '',
             });
           });
         });
@@ -185,13 +185,13 @@ describe('defineHistoryService', () => {
           history1.push('/foo');
 
           expect(historyService1.staticRootLocation).toMatchObject({
-            search: createSearch({test1: '/foo'})
+            search: createSearch({test1: '/foo'}),
           });
 
           history2.push('/bar?baz=1');
 
           expect(historyService1.staticRootLocation).toMatchObject({
-            search: createSearch({test1: '/foo', test2: '/bar?baz=1'})
+            search: createSearch({test1: '/foo', test2: '/bar?baz=1'}),
           });
         });
 
@@ -199,7 +199,7 @@ describe('defineHistoryService', () => {
           history1.push('foo');
 
           expect(historyService1.staticRootLocation).toMatchObject({
-            search: createSearch({test1: '/foo'})
+            search: createSearch({test1: '/foo'}),
           });
         });
 
@@ -208,7 +208,7 @@ describe('defineHistoryService', () => {
           history1.push('baz');
 
           expect(historyService1.staticRootLocation).toMatchObject({
-            search: createSearch({test1: '/foo/baz'})
+            search: createSearch({test1: '/foo/baz'}),
           });
         });
       });
@@ -218,13 +218,13 @@ describe('defineHistoryService', () => {
           history1.replace('/foo');
 
           expect(historyService1.staticRootLocation).toMatchObject({
-            search: createSearch({test1: '/foo'})
+            search: createSearch({test1: '/foo'}),
           });
 
           history2.replace('/bar?baz=1');
 
           expect(historyService1.staticRootLocation).toMatchObject({
-            search: createSearch({test1: '/foo', test2: '/bar?baz=1'})
+            search: createSearch({test1: '/foo', test2: '/bar?baz=1'}),
           });
         });
 
@@ -232,7 +232,7 @@ describe('defineHistoryService', () => {
           history1.replace('foo');
 
           expect(historyService1.staticRootLocation).toMatchObject({
-            search: createSearch({test1: '/foo'})
+            search: createSearch({test1: '/foo'}),
           });
         });
 
@@ -241,7 +241,7 @@ describe('defineHistoryService', () => {
           history1.replace('baz');
 
           expect(historyService1.staticRootLocation).toMatchObject({
-            search: createSearch({test1: '/foo/baz'})
+            search: createSearch({test1: '/foo/baz'}),
           });
         });
       });
@@ -302,7 +302,7 @@ describe('defineHistoryService', () => {
           history1.push('/foo?bar=1');
 
           expect(historyService1.staticRootLocation).toMatchObject({
-            search: createSearch({test1: '/foo?bar=1'})
+            search: createSearch({test1: '/foo?bar=1'}),
           });
 
           expect(promptHookSpy).not.toHaveBeenCalled();
@@ -384,7 +384,7 @@ describe('defineHistoryService', () => {
         mockEnv.featureServices['s2:server-request'] = {
           url: '/',
           cookies: {},
-          headers: {}
+          headers: {},
         };
       });
 
@@ -407,9 +407,9 @@ describe('defineHistoryService', () => {
   });
 
   describe('HistoryServiceV2 (on Node.js)', () => {
-    let mockEnv: FeatureServiceEnvironment<
-      Writable<HistoryServiceDependencies>
-    >;
+    let mockEnv: FeatureServiceEnvironment<Writable<
+      HistoryServiceDependencies
+    >>;
 
     let createHistoryServiceBinder: () => FeatureServiceBinder<
       HistoryServiceV2
@@ -498,12 +498,12 @@ describe('defineHistoryService', () => {
 
           expect(history1.location).toMatchObject({
             pathname: '/foo',
-            state: {test: 'foo'}
+            state: {test: 'foo'},
           });
 
           expect(history2.location).toMatchObject({
             pathname: '/bar',
-            state: {test: 'bar'}
+            state: {test: 'bar'},
           });
         });
 
@@ -511,7 +511,7 @@ describe('defineHistoryService', () => {
           const serverRequest: ServerRequestV1 = {
             url: createUrl({test1: '/foo', test2: 'bar'}, {relative: true}),
             cookies: {},
-            headers: {}
+            headers: {},
           };
 
           createHistories(serverRequest);
@@ -524,7 +524,7 @@ describe('defineHistoryService', () => {
           const serverRequest: ServerRequestV1 = {
             url: createUrl({test1: '/foo', test2: 'bar'}, {relative: false}),
             cookies: {},
-            headers: {}
+            headers: {},
           };
 
           createHistories(serverRequest);
@@ -537,7 +537,7 @@ describe('defineHistoryService', () => {
           it('returns the default location', () => {
             expect(history1.location).toMatchObject({
               pathname: '/',
-              search: ''
+              search: '',
             });
           });
         });
@@ -548,13 +548,13 @@ describe('defineHistoryService', () => {
           history1.push('/foo');
 
           expect(historyService1.rootHistory.location).toMatchObject({
-            search: createSearch({test1: '/foo'})
+            search: createSearch({test1: '/foo'}),
           });
 
           history2.push('/bar?baz=1');
 
           expect(historyService1.rootHistory.location).toMatchObject({
-            search: createSearch({test1: '/foo', test2: '/bar?baz=1'})
+            search: createSearch({test1: '/foo', test2: '/bar?baz=1'}),
           });
         });
 
@@ -562,7 +562,7 @@ describe('defineHistoryService', () => {
           history1.push('foo');
 
           expect(historyService1.rootHistory.location).toMatchObject({
-            search: createSearch({test1: '/foo'})
+            search: createSearch({test1: '/foo'}),
           });
         });
 
@@ -571,7 +571,7 @@ describe('defineHistoryService', () => {
           history1.push('baz');
 
           expect(historyService1.rootHistory.location).toMatchObject({
-            search: createSearch({test1: '/foo/baz'})
+            search: createSearch({test1: '/foo/baz'}),
           });
         });
       });
@@ -581,13 +581,13 @@ describe('defineHistoryService', () => {
           history1.replace('/foo');
 
           expect(historyService1.rootHistory.location).toMatchObject({
-            search: createSearch({test1: '/foo'})
+            search: createSearch({test1: '/foo'}),
           });
 
           history2.replace('/bar?baz=1');
 
           expect(historyService1.rootHistory.location).toMatchObject({
-            search: createSearch({test1: '/foo', test2: '/bar?baz=1'})
+            search: createSearch({test1: '/foo', test2: '/bar?baz=1'}),
           });
         });
 
@@ -595,7 +595,7 @@ describe('defineHistoryService', () => {
           history1.replace('foo');
 
           expect(historyService1.rootHistory.location).toMatchObject({
-            search: createSearch({test1: '/foo'})
+            search: createSearch({test1: '/foo'}),
           });
         });
 
@@ -604,7 +604,7 @@ describe('defineHistoryService', () => {
           history1.replace('baz');
 
           expect(historyService1.rootHistory.location).toMatchObject({
-            search: createSearch({test1: '/foo/baz'})
+            search: createSearch({test1: '/foo/baz'}),
           });
         });
       });
@@ -665,7 +665,7 @@ describe('defineHistoryService', () => {
           history1.push('/foo?bar=1');
 
           expect(historyService1.rootHistory.location).toMatchObject({
-            search: createSearch({test1: '/foo?bar=1'})
+            search: createSearch({test1: '/foo?bar=1'}),
           });
 
           expect(promptHookSpy).not.toHaveBeenCalled();
@@ -742,14 +742,14 @@ describe('defineHistoryService', () => {
           const serverRequest: ServerRequestV1 = {
             url: createUrl({test1: '/foo', test2: 'bar'}, {relative: true}),
             cookies: {},
-            headers: {}
+            headers: {},
           };
 
           createHistories(serverRequest);
 
           expect(historyService1.rootHistory.location).toMatchObject({
             pathname: '/',
-            search: createSearch({test1: '/foo', test2: 'bar'})
+            search: createSearch({test1: '/foo', test2: 'bar'}),
           });
         });
 
@@ -757,14 +757,14 @@ describe('defineHistoryService', () => {
           const serverRequest: ServerRequestV1 = {
             url: createUrl({test1: '/foo', test2: 'bar'}, {relative: false}),
             cookies: {},
-            headers: {}
+            headers: {},
           };
 
           createHistories(serverRequest);
 
           expect(historyService1.rootHistory.location).toMatchObject({
             pathname: '/',
-            search: createSearch({test1: '/foo', test2: 'bar'})
+            search: createSearch({test1: '/foo', test2: 'bar'}),
           });
         });
       });
@@ -781,7 +781,7 @@ describe('defineHistoryService', () => {
         mockEnv.featureServices['s2:server-request'] = {
           url: '/',
           cookies: {},
-          headers: {}
+          headers: {},
         };
       });
 

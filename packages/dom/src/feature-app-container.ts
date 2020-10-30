@@ -2,7 +2,7 @@ import {
   FeatureAppDefinition,
   FeatureAppManager,
   FeatureAppScope,
-  Logger
+  Logger,
 } from '@feature-hub/core';
 import {LitElement, html, property} from 'lit-element';
 import {TemplateResult} from 'lit-html';
@@ -84,7 +84,8 @@ export function defineFeatureAppContainer(
 
   const {logger = console} = options;
 
-  class FeatureAppContainer extends LitElement
+  class FeatureAppContainer
+    extends LitElement
     implements FeatureAppContainerElement {
     @property({type: String})
     public featureAppId!: string;
@@ -120,7 +121,7 @@ export function defineFeatureAppContainer(
           {
             featureAppName: this.featureAppName,
             baseUrl: this.baseUrl,
-            config: this.config
+            config: this.config,
           }
         );
 
@@ -134,14 +135,10 @@ export function defineFeatureAppContainer(
 
     public render(): TemplateResult {
       if (this.error) {
-        return html`
-          <slot name="error"></slot>
-        `;
+        return html` <slot name="error"></slot> `;
       }
 
-      return html`
-        ${this.appElement}
-      `;
+      return html` ${this.appElement} `;
     }
 
     public disconnectedCallback(): void {

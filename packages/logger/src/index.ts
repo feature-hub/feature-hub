@@ -2,7 +2,7 @@ import {
   FeatureServiceBinder,
   FeatureServiceProviderDefinition,
   Logger,
-  SharedFeatureService
+  SharedFeatureService,
 } from '@feature-hub/core';
 
 export {Logger} from '@feature-hub/core';
@@ -24,8 +24,8 @@ export function defineLogger(
 
     create: () => ({
       '1.0.0': (consumerId, consumerName) => ({
-        featureService: createConsumerLogger(consumerId, consumerName)
-      })
-    })
+        featureService: createConsumerLogger(consumerId, consumerName),
+      }),
+    }),
   };
 }

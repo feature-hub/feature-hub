@@ -1,7 +1,7 @@
 import {FeatureAppManager} from '@feature-hub/core';
 import {
   FeatureAppContainer,
-  FeatureHubContextProvider
+  FeatureHubContextProvider,
 } from '@feature-hub/react';
 import * as React from 'react';
 import {historyConsumerDefinition} from './history-consumer';

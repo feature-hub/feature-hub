@@ -4,7 +4,7 @@ import {ReactFeatureApp} from '@feature-hub/react';
 import * as React from 'react';
 
 const getFakeServerLag = async (ms: number) =>
-  new Promise(resolve => setTimeout(resolve, ms));
+  new Promise((resolve) => setTimeout(resolve, ms));
 
 async function fetchDataFromServer(): Promise<string> {
   await getFakeServerLag(3000);
@@ -25,7 +25,7 @@ interface AppProps {
 
 const App: React.FunctionComponent<AppProps> = ({
   loadingDone,
-  loadingError
+  loadingError,
 }) => {
   const [serverResponse, setServerResponse] = React.useState<string | null>(
     null
@@ -61,9 +61,9 @@ const featureAppDefinition: FeatureAppDefinition<ReactFeatureApp> = {
 
     return {
       loadingPromise,
-      render: () => <App loadingDone={resolve} loadingError={reject} />
+      render: () => <App loadingDone={resolve} loadingError={reject} />,
     };
-  }
+  },
 };
 
 export default featureAppDefinition;

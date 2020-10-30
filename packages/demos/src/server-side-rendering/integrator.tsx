@@ -3,7 +3,7 @@ import {defineExternals, loadAmdModule} from '@feature-hub/module-loader-amd';
 import {FeatureHubContextProvider} from '@feature-hub/react';
 import {
   SerializedStateManagerV1,
-  serializedStateManagerDefinition
+  serializedStateManagerDefinition,
 } from '@feature-hub/serialized-state-manager';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
@@ -39,8 +39,8 @@ function getUrlsForHydrationFromDom(): string[] {
       providedExternals: {react: process.env.REACT_VERSION as string},
       featureServiceDefinitions: [serializedStateManagerDefinition],
       featureServiceDependencies: {
-        [serializedStateManagerDefinition.id]: '^1.0.0'
-      }
+        [serializedStateManagerDefinition.id]: '^1.0.0',
+      },
     }
   );
 
@@ -55,7 +55,7 @@ function getUrlsForHydrationFromDom(): string[] {
   }
 
   await Promise.all(
-    getUrlsForHydrationFromDom().map(async url =>
+    getUrlsForHydrationFromDom().map(async (url) =>
       featureAppManager.preloadFeatureApp(url)
     )
   );

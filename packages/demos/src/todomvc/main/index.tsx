@@ -14,16 +14,16 @@ const featureAppDefinition: FeatureAppDefinition<
 > = {
   dependencies: {
     externals: {react: '^16.7.0'},
-    featureServices: {'test:todomvc-todo-manager': '^1.0.0'}
+    featureServices: {'test:todomvc-todo-manager': '^1.0.0'},
   },
 
   create: ({featureServices}) => {
     const todoManager = featureServices['test:todomvc-todo-manager'];
 
     return {
-      render: () => <TodoMvcMain todoManager={todoManager} />
+      render: () => <TodoMvcMain todoManager={todoManager} />,
     };
-  }
+  },
 };
 
 export default featureAppDefinition;
