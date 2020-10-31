@@ -7,6 +7,20 @@ on:
       - v*
 
 jobs:
+  commitlint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Commitlint
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: wagoid/commitlint-github-action@v2
+
   tests:
     runs-on: ubuntu-latest
     env:
@@ -15,8 +29,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
 
       - name: Setup node
         uses: actions/setup-node@v1
@@ -25,11 +37,6 @@ jobs:
 
       - name: Install
         run: yarn install
-
-      - name: Commitlint
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        uses: wagoid/commitlint-github-action@v2
 
       - name: Lint
         run: yarn lint
