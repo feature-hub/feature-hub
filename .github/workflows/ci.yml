@@ -1,0 +1,44 @@
+name: CI
+on:
+  push:
+    branches:
+      - '**'
+    tags-ignore:
+      - v*
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    env:
+      CI: true
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 10.x
+
+      - name: Install
+        run: yarn install
+
+      - name: Commitlint
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: wagoid/commitlint-github-action@v2
+
+      - name: Lint
+        run: yarn lint
+
+      - name: Compile
+        run: yarn compile
+
+      - name: Unit Tests
+        run: yarn test:unit --no-cache --maxWorkers 2 --no-verbose
+
+      - name: Integration Tests
+        run: find packages/demos -iname '*test.ts*' | xargs -n 2 yarn jest --silent --no-cache --no-verbose --no-coverage --maxWorkers 2 --forceExit
