@@ -58,6 +58,9 @@ jobs:
       - name: Compile
         run: yarn compile
 
+      - name: Verify
+        run: yarn verify
+
       - name: Unit Tests
         run: yarn test:unit --no-cache --maxWorkers 2 --no-verbose
 
