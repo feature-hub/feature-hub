@@ -23,6 +23,8 @@ jobs:
 
   word-blacklist:
     runs-on: ubuntu-latest
+    env:
+      CI: true
 
     steps:
       - name: Checkout
