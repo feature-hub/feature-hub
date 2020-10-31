@@ -21,6 +21,18 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         uses: wagoid/commitlint-github-action@v2
 
+  word-blacklist:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Word Blacklist
+        env:
+          BLACKLIST: ${{ secrets.BLACKLIST }}
+        run: ./scripts/ci/word-blacklist.sh
+
   tests:
     runs-on: ubuntu-latest
     env:
