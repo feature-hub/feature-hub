@@ -64,5 +64,19 @@ jobs:
       - name: Unit Tests
         run: yarn test:unit --no-cache --maxWorkers 2 --no-verbose
 
+  itests:
+    runs-on: ubuntu-latest
+    env:
+      CI: true
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 10.x
+
       - name: Integration Tests
         run: find packages/demos -iname '*test.ts*' | xargs -n 2 yarn jest --silent --no-cache --no-verbose --no-coverage --maxWorkers 2 --forceExit
