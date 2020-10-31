@@ -79,4 +79,6 @@ jobs:
           node-version: 10.x
 
       - name: Integration Tests
-        run: find packages/demos -iname '*test.ts*' | xargs -n 2 yarn jest --silent --no-cache --no-verbose --no-coverage --maxWorkers 2 --forceExit
+        run:
+          find packages/demos -iname '*test.ts*' | xargs -n 2 yarn jest --silent
+          --no-cache --no-verbose --no-coverage --maxWorkers 2 --forceExit
