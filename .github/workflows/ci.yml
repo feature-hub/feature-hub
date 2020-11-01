@@ -80,6 +80,9 @@ jobs:
       - name: Compile
         run: yarn compile
 
+      - name: Size Limit
+        run: yarn size-limit
+
   lint:
     runs-on: ubuntu-latest
     env:
