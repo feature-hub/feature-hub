@@ -61,7 +61,7 @@ describe('integration test: "dom integrator"', () => {
         'document.querySelector("feature-app-loader").shadowRoot.querySelector("slot").name'
       );
 
-      await expect(slotName).toBe('error');
+      expect(slotName).toBe('error');
     });
   });
 
@@ -87,7 +87,7 @@ describe('integration test: "dom integrator"', () => {
         'document.querySelector("feature-app-loader").shadowRoot.querySelector("slot").name'
       );
 
-      await expect(slotName).toBe('loading');
+      expect(slotName).toBe('loading');
     });
   });
 });
