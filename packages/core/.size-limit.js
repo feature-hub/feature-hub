@@ -3,6 +3,6 @@
 module.exports = [
   {
     path: 'lib/cjs/index.js',
-    limit: '9 KB',
+    limit: '8 KB',
   },
 ];

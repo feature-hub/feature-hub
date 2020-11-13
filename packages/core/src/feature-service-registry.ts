@@ -1,4 +1,6 @@
-import {coerce, satisfies, valid} from 'semver';
+import semverCoerce from 'semver/functions/coerce';
+import semverSatisfies from 'semver/functions/satisfies';
+import semverValid from 'semver/functions/valid';
 import {ExternalsValidator, RequiredExternals} from './externals-validator';
 import * as Messages from './internal/feature-service-registry-messages';
 import {
@@ -366,7 +368,7 @@ export class FeatureServiceRegistry {
     versionRange: string | undefined,
     {optional}: {optional: boolean}
   ): FeatureServiceBinding<unknown> | undefined {
-    const coercedVersion = versionRange && coerce(versionRange);
+    const coercedVersion = versionRange && semverCoerce(versionRange);
 
     if (!coercedVersion) {
       const message = Messages.featureServiceDependencyVersionInvalid(
@@ -406,7 +408,7 @@ export class FeatureServiceRegistry {
     const supportedVersions = Object.keys(sharedFeatureService);
 
     const version = supportedVersions.find((supportedVersion) =>
-      satisfies(supportedVersion, caretRange)
+      semverSatisfies(supportedVersion, caretRange)
     );
 
     const bindFeatureService = version
@@ -456,7 +458,7 @@ export class FeatureServiceRegistry {
     registrantId: string
   ): void {
     for (const version of Object.keys(sharedFeatureService)) {
-      if (!valid(version)) {
+      if (!semverValid(version)) {
         throw new Error(
           Messages.featureServiceVersionInvalid(
             providerId,

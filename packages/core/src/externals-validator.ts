@@ -1,4 +1,5 @@
-import {satisfies, valid} from 'semver';
+import semverSatisfies from 'semver/functions/satisfies';
+import semverValid from 'semver/functions/valid';
 
 /**
  * A map of provided external names as keys and strict semver versions as
@@ -28,7 +29,7 @@ export class ExternalsValidator {
     for (const [externalName, providedVersion] of Object.entries(
       providedExternals
     )) {
-      if (!valid(providedVersion)) {
+      if (!semverValid(providedVersion)) {
         throw new Error(
           `The provided version ${JSON.stringify(
             providedVersion
@@ -57,7 +58,7 @@ export class ExternalsValidator {
         );
       }
 
-      if (!satisfies(providedVersion, versionRange)) {
+      if (!semverSatisfies(providedVersion, versionRange)) {
         throw new Error(
           `The external dependency ${JSON.stringify(
             externalName
