@@ -275,7 +275,9 @@ export class InternalFeatureAppContainer<
 
       featureApp.loadingPromise
         .then(() => {
-          this.setState({loading: false});
+          if (this.mounted) {
+            this.setState({loading: false});
+          }
         })
         .catch((loadingError) => {
           try {

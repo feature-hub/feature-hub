@@ -1090,6 +1090,22 @@ describe('FeatureAppContainer', () => {
           });
         });
       });
+
+      describe('when unmounted before loading promise is resolved', () => {
+        it('does not try to set state', async () => {
+          const testRenderer = renderWithFeatureHubContext(
+            <FeatureAppContainer
+              featureAppId="testId"
+              featureAppDefinition={mockFeatureAppDefinition}
+            />
+          );
+
+          testRenderer.unmount();
+          await resolveLoadingPromise();
+
+          expect(consoleErrorSpy).not.toHaveBeenCalled();
+        });
+      });
     });
   });
 
