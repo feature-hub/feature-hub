@@ -53,7 +53,7 @@ export function createHistoryServiceV1Binder(
 
       get staticRootLocation(): history.Location {
         return historyMultiplexers.staticHistoryMultiplexer.rootLocation;
-      }
+      },
     };
 
     const unbind = () => {

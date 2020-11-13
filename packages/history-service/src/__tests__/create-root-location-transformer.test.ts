@@ -10,7 +10,7 @@ describe('#createRootLocationTransformer', () => {
     describe('without a primary', () => {
       it('joins all consumer locations together as a single encoded query param', () => {
         const locationTransformer = createRootLocationTransformer({
-          consumerPathsQueryParamName: '---'
+          consumerPathsQueryParamName: '---',
         });
 
         let rootLocation = locationTransformer.createRootLocation(
@@ -29,8 +29,8 @@ describe('#createRootLocationTransformer', () => {
           pathname: '/',
           search: `?---=${encodeConsumerPaths({
             test1: '/foo',
-            test2: '/bar?baz=1'
-          })}`
+            test2: '/bar?baz=1',
+          })}`,
         });
       });
     });
@@ -39,7 +39,7 @@ describe('#createRootLocationTransformer', () => {
       it('puts the location pathname, query params, and hash directly to the root location', () => {
         const locationTransformer = createRootLocationTransformer({
           consumerPathsQueryParamName: '---',
-          primaryConsumerHistoryKey: 'testPri'
+          primaryConsumerHistoryKey: 'testPri',
         });
 
         const rootLocation = locationTransformer.createRootLocation(
@@ -51,7 +51,7 @@ describe('#createRootLocationTransformer', () => {
         expect(rootLocation).toMatchObject({
           pathname: '/foo',
           search: '?bar=1&baz=2',
-          hash: '#qux'
+          hash: '#qux',
         });
       });
 
@@ -59,7 +59,7 @@ describe('#createRootLocationTransformer', () => {
         it('throws an error', () => {
           const locationTransformer = createRootLocationTransformer({
             consumerPathsQueryParamName: '---',
-            primaryConsumerHistoryKey: 'testPri'
+            primaryConsumerHistoryKey: 'testPri',
           });
 
           expect(() =>
@@ -81,7 +81,7 @@ describe('#createRootLocationTransformer', () => {
       it('takes the pathname, query params, and hash of the primary consumer directly, and the pathname and query params of the other consumers encoded as a single query param, into the root location', () => {
         const locationTransformer = createRootLocationTransformer({
           consumerPathsQueryParamName: '---',
-          primaryConsumerHistoryKey: 'testPri'
+          primaryConsumerHistoryKey: 'testPri',
         });
 
         let rootLocation = locationTransformer.createRootLocation(
@@ -106,9 +106,9 @@ describe('#createRootLocationTransformer', () => {
           pathname: '/foo',
           search: `?bar=1&---=${encodeConsumerPaths({
             test1: '/baz?qux=3',
-            test2: '/some?thing=else'
+            test2: '/some?thing=else',
           })}`,
-          hash: '#qux'
+          hash: '#qux',
         });
       });
     });
@@ -119,13 +119,13 @@ describe('#createRootLocationTransformer', () => {
       it('returns the consumer-specific locations including a hash for the primary consumer', () => {
         const locationTransformer = createRootLocationTransformer({
           consumerPathsQueryParamName: '---',
-          primaryConsumerHistoryKey: 'testPri'
+          primaryConsumerHistoryKey: 'testPri',
         });
 
         const rootLocation = {
           pathname: '/foo',
           search: `?bar=1&---=${encodeConsumerPaths({test1: '/baz?qux=3'})}`,
-          hash: '#some-anchor'
+          hash: '#some-anchor',
         };
 
         expect(
@@ -155,12 +155,12 @@ describe('#createRootLocationTransformer', () => {
       it('returns undefined for a non-primary consumer', () => {
         const locationTransformer = createRootLocationTransformer({
           consumerPathsQueryParamName: '---',
-          primaryConsumerHistoryKey: 'testPri'
+          primaryConsumerHistoryKey: 'testPri',
         });
 
         const rootLocation = {
           pathname: '/foo',
-          search: '?bar=1'
+          search: '?bar=1',
         };
 
         expect(

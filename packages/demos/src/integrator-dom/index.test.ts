@@ -25,7 +25,7 @@ describe('integration test: "dom integrator"', () => {
     await browser.goto(url, 120000);
   });
 
-  afterAll(done => server.close(done));
+  afterAll((done) => server.close(done));
 
   describe('if the Feature App loads successfully', () => {
     it('renders the Feature App', async () => {
@@ -45,7 +45,7 @@ describe('integration test: "dom integrator"', () => {
 
       await interceptedPage.setRequestInterception(true);
 
-      interceptedPage.on('request', async request => {
+      interceptedPage.on('request', async (request) => {
         if (request.url().endsWith('feature-app.umd.js')) {
           await request.abort();
         } else {
@@ -73,7 +73,7 @@ describe('integration test: "dom integrator"', () => {
 
       await interceptedPage.setRequestInterception(true);
 
-      interceptedPage.on('request', async request => {
+      interceptedPage.on('request', async (request) => {
         if (!request.url().endsWith('feature-app.umd.js')) {
           await request.continue();
         }

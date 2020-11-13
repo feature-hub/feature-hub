@@ -10,7 +10,7 @@ interface HistoryConsumerProps {
 }
 
 export function HistoryConsumer({
-  historyKey
+  historyKey,
 }: HistoryConsumerProps): JSX.Element {
   const specifier = historyKey.slice(historyKey.length - 1);
 
@@ -25,7 +25,7 @@ export function HistoryConsumer({
       </Route>
 
       <Media query="(max-width: 370px)">
-        {matches => (
+        {(matches) => (
           <Route>
             {({history}) => (
               <NewPathControl

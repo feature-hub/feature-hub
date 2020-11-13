@@ -4,12 +4,12 @@
 import {
   FeatureServiceBinder,
   FeatureServiceEnvironment,
-  FeatureServiceProviderDefinition
+  FeatureServiceProviderDefinition,
 } from '@feature-hub/core';
 import {
   AsyncSsrManagerV1,
   SharedAsyncSsrManager,
-  defineAsyncSsrManager
+  defineAsyncSsrManager,
 } from '..';
 import {stubbedLogger} from './stubbed-logger';
 import {useFakeTimers} from './use-fake-timers';
@@ -25,9 +25,7 @@ async function simulateAsyncOperation(result: number): Promise<number> {
 describe('defineAsyncSsrManager', () => {
   let mockEnv: FeatureServiceEnvironment<{}>;
 
-  let asyncSsrManagerDefinition: FeatureServiceProviderDefinition<
-    SharedAsyncSsrManager
-  >;
+  let asyncSsrManagerDefinition: FeatureServiceProviderDefinition<SharedAsyncSsrManager>;
 
   beforeEach(() => {
     asyncSsrManagerDefinition = defineAsyncSsrManager({timeout: 5});
@@ -42,7 +40,7 @@ describe('defineAsyncSsrManager', () => {
     expect(asyncSsrManagerDefinition.dependencies).toBeUndefined();
 
     expect(asyncSsrManagerDefinition.optionalDependencies).toEqual({
-      featureServices: {'s2:logger': '^1.0.0'}
+      featureServices: {'s2:logger': '^1.0.0'},
     });
   });
 
@@ -169,7 +167,7 @@ describe('defineAsyncSsrManager', () => {
       });
 
       describe('with an integrator, and a consumer that first schedules a rerender with a custom promise, awaits the promise, and then schedules a rerender with another promise', () => {
-        it('resolves with an html string after the second render pass', async done => {
+        it('resolves with an html string after the second render pass', async (done) => {
           const asyncSsrManagerIntegrator = asyncSsrManagerBinder(
             'test:integrator'
           ).featureService;
@@ -300,8 +298,8 @@ describe('defineAsyncSsrManager', () => {
 
           expect(stubbedLogger.warn.mock.calls).toEqual([
             [
-              'No timeout is configured for the Async SSR Manager. This could lead to unexpectedly long render times or, in the worst case, never resolving render calls!'
-            ]
+              'No timeout is configured for the Async SSR Manager. This could lead to unexpectedly long render times or, in the worst case, never resolving render calls!',
+            ],
           ]);
         });
       });
@@ -316,7 +314,7 @@ describe('defineAsyncSsrManager', () => {
         asyncSsrManagerDefinition = defineAsyncSsrManager();
 
         asyncSsrManagerBinder = asyncSsrManagerDefinition.create({
-          featureServices: {}
+          featureServices: {},
         })!['1.0.0'];
       });
 
@@ -334,8 +332,8 @@ describe('defineAsyncSsrManager', () => {
 
         expect(consoleWarnSpy.mock.calls).toEqual([
           [
-            'No timeout is configured for the Async SSR Manager. This could lead to unexpectedly long render times or, in the worst case, never resolving render calls!'
-          ]
+            'No timeout is configured for the Async SSR Manager. This could lead to unexpectedly long render times or, in the worst case, never resolving render calls!',
+          ],
         ]);
       });
     });

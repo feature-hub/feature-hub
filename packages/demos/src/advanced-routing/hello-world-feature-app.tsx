@@ -33,11 +33,11 @@ const featureAppDefinition: FeatureAppDefinition<
 > = {
   dependencies: {
     featureServices: {
-      'test:hello-world-service': '^1.0.0'
+      'test:hello-world-service': '^1.0.0',
     },
     externals: {
-      react: '^16.7.0'
-    }
+      react: '^16.7.0',
+    },
   },
 
   create: ({featureServices}) => ({
@@ -47,8 +47,8 @@ const featureAppDefinition: FeatureAppDefinition<
           helloWorldService={featureServices['test:hello-world-service']}
         />
       </Card>
-    )
-  })
+    ),
+  }),
 };
 
 export default featureAppDefinition;

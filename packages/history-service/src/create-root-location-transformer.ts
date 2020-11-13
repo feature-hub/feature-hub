@@ -59,7 +59,7 @@ export function addConsumerPath(
 ): string {
   return encodeConsumerPaths({
     ...decodeConsumerPaths(encodedConsumerPaths || '{}'),
-    [historyKey]: path
+    [historyKey]: path,
   });
 }
 
@@ -132,7 +132,7 @@ export function createRootLocationForOtherConsumer(
   return {
     pathname: currentRootLocation.pathname,
     search: serializeSearchParams(allSearchParams),
-    hash: currentRootLocation.hash
+    hash: currentRootLocation.hash,
   };
 }
 
@@ -197,6 +197,6 @@ export function createRootLocationTransformer(
         historyKey,
         consumerPathsQueryParamName
       );
-    }
+    },
   };
 }

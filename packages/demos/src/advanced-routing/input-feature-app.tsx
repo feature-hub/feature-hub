@@ -20,7 +20,7 @@ function NameControlGroup({onSubmit}: NameControlGroupProps): JSX.Element {
       <InputGroup
         id="name-input"
         placeholder="Enter a name..."
-        inputRef={element => (inputRef.current = element)}
+        inputRef={(element) => (inputRef.current = element)}
       />
       <Button
         id="submit-button"
@@ -37,11 +37,11 @@ const featureAppDefinition: FeatureAppDefinition<
 > = {
   dependencies: {
     featureServices: {
-      'test:navigation-service': '^1.0.0'
+      'test:navigation-service': '^1.0.0',
     },
     externals: {
-      react: '^16.7.0'
-    }
+      react: '^16.7.0',
+    },
   },
 
   create: ({featureServices}) => {
@@ -51,12 +51,12 @@ const featureAppDefinition: FeatureAppDefinition<
       render: () => (
         <Card style={{margin: '20px'}}>
           <NameControlGroup
-            onSubmit={name => navigationService.navigateToHelloWorld(name)}
+            onSubmit={(name) => navigationService.navigateToHelloWorld(name)}
           />
         </Card>
-      )
+      ),
     };
-  }
+  },
 };
 
 export default featureAppDefinition;

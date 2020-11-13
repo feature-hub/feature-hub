@@ -15,8 +15,8 @@ export const historyConsumerDefinition: FeatureAppDefinition<
 > = {
   dependencies: {
     featureServices: {
-      's2:history': '^2.0.0'
-    }
+      's2:history': '^2.0.0',
+    },
   },
 
   create: ({featureServices}) => {
@@ -27,7 +27,7 @@ export const historyConsumerDefinition: FeatureAppDefinition<
         <Router history={historyService.history}>
           <HistoryConsumer historyKey={historyService.historyKey} />
         </Router>
-      )
+      ),
     };
-  }
+  },
 };

@@ -3,7 +3,7 @@ import * as history from 'history';
 import {RootHistory} from '..';
 import {
   RootLocation,
-  RootLocationDescriptorObject
+  RootLocationDescriptorObject,
 } from '../create-root-location-transformer';
 import {URL} from './url';
 

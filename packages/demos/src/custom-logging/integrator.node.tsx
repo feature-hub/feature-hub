@@ -10,7 +10,7 @@ import {AppRendererOptions, AppRendererResult} from '../start-server';
 import {App} from './app';
 
 export default async function renderApp({
-  req
+  req,
 }: AppRendererOptions): Promise<AppRendererResult> {
   const logger = pino({prettyPrint: {translateTime: true}, level: 'trace'});
 
@@ -21,8 +21,8 @@ export default async function renderApp({
     featureServiceDefinitions: [
       defineLogger((consumerId, consumerName) =>
         logger.child({consumerId, consumerName})
-      )
-    ]
+      ),
+    ],
   });
 
   const useConsumerName = Boolean(req.query.consumerName);

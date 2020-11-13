@@ -1,7 +1,7 @@
 import {
   FeatureServiceBinder,
   FeatureServiceProviderDefinition,
-  SharedFeatureService
+  SharedFeatureService,
 } from '@feature-hub/core';
 import {ClientSideStateManager} from './internal/client-side-state-manager';
 import {SerializedStateManager} from './internal/serialized-state-manager';
@@ -53,9 +53,7 @@ export interface SharedSerializedStateManager extends SharedFeatureService {
 /**
  * @see [[SerializedStateManagerV1]] for further information.
  */
-export const serializedStateManagerDefinition: FeatureServiceProviderDefinition<
-  SharedSerializedStateManager
-> = {
+export const serializedStateManagerDefinition: FeatureServiceProviderDefinition<SharedSerializedStateManager> = {
   id: 's2:serialized-state-manager',
 
   create: () => {
@@ -63,13 +61,13 @@ export const serializedStateManagerDefinition: FeatureServiceProviderDefinition<
     const clientSideStateManager = new ClientSideStateManager();
 
     return {
-      '1.0.0': consumerId => ({
+      '1.0.0': (consumerId) => ({
         featureService: new SerializedStateManager(
           consumerId,
           serverSideStateManager,
           clientSideStateManager
-        )
-      })
+        ),
+      }),
     };
-  }
+  },
 };

@@ -82,7 +82,7 @@ describe('serializedStateManagerDefinition', () => {
             encodeURI(
               JSON.stringify({
                 'test:consumer:1': JSON.stringify({kind: 'foo'}),
-                'test:consumer:2': JSON.stringify({kind: 'bar'})
+                'test:consumer:2': JSON.stringify({kind: 'bar'}),
               })
             )
           );
@@ -108,7 +108,7 @@ describe('serializedStateManagerDefinition', () => {
           integratorSerializedStateManager.setSerializedStates(
             encodeURI(
               JSON.stringify({
-                'test:consumer:1': JSON.stringify({kind: 'foo'})
+                'test:consumer:1': JSON.stringify({kind: 'foo'}),
               })
             )
           );

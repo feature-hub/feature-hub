@@ -44,7 +44,7 @@ const ToggleAllLabel = styled.label<ToggleAllProps>`
   :before {
     content: '❯';
     font-size: 22px;
-    color: ${props => (props.checked ? '#737373' : '#e6e6e6')};
+    color: ${(props) => (props.checked ? '#737373' : '#e6e6e6')};
     padding: 10px 27px 10px 27px;
   }
 `;
@@ -72,7 +72,7 @@ export class TodoMvcMain extends React.Component<
       return null;
     }
 
-    const allCompleted = this.state.todos.every(todo => todo.completed);
+    const allCompleted = this.state.todos.every((todo) => todo.completed);
 
     return (
       <MainSection>
@@ -80,13 +80,15 @@ export class TodoMvcMain extends React.Component<
           id="toggle-all"
           type="checkbox"
           checked={allCompleted}
-          onChange={event => this.handleToggleAll(event.currentTarget.checked)}
+          onChange={(event) =>
+            this.handleToggleAll(event.currentTarget.checked)
+          }
         />
         <ToggleAllLabel htmlFor="toggle-all" checked={allCompleted}>
           Mark all as complete
         </ToggleAllLabel>
         <List>
-          {this.state.todos.map(todo => (
+          {this.state.todos.map((todo) => (
             <TodoMvcItem
               key={todo.id}
               id={todo.id}
@@ -107,7 +109,7 @@ export class TodoMvcMain extends React.Component<
   };
 
   private readonly handleToggleAll = (checked: boolean) => {
-    this.state.todos.forEach(todo => {
+    this.state.todos.forEach((todo) => {
       this.props.todoManager.setCompleted(todo.id, checked);
     });
   };

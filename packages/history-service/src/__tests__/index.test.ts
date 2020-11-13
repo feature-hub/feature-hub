@@ -5,7 +5,7 @@ import {
   FeatureServiceBinder,
   FeatureServiceBinding,
   FeatureServiceEnvironment,
-  FeatureServiceProviderDefinition
+  FeatureServiceProviderDefinition,
 } from '@feature-hub/core';
 import {History} from 'history';
 import {
@@ -14,14 +14,14 @@ import {
   HistoryServiceV2,
   SharedHistoryService,
   createRootLocationTransformer,
-  defineHistoryService
+  defineHistoryService,
 } from '..';
 import {RootLocation} from '../create-root-location-transformer';
 import {Writable} from '../internal/writable';
 import {
   consumerPathsQueryParamName,
   createSearch,
-  createUrl
+  createUrl,
 } from './root-location-helpers';
 import {stubbedLogger} from './stubbed-logger';
 
@@ -36,9 +36,7 @@ describe('defineHistoryService', () => {
   let pushStateSpy: jest.SpyInstance;
   let replaceStateSpy: jest.SpyInstance;
 
-  let historyServiceDefinition: FeatureServiceProviderDefinition<
-    SharedHistoryService
-  >;
+  let historyServiceDefinition: FeatureServiceProviderDefinition<SharedHistoryService>;
 
   beforeEach(() => {
     // ensure the window.location.href is the same before each test
@@ -49,7 +47,7 @@ describe('defineHistoryService', () => {
 
     historyServiceDefinition = defineHistoryService({
       createRootLocation: jest.fn(),
-      getConsumerPathFromRootLocation: jest.fn()
+      getConsumerPathFromRootLocation: jest.fn(),
     });
   });
 
@@ -65,15 +63,15 @@ describe('defineHistoryService', () => {
     expect(historyServiceDefinition.optionalDependencies).toEqual({
       featureServices: {
         's2:logger': '^1.0.0',
-        's2:server-request': '^1.0.0'
-      }
+        's2:server-request': '^1.0.0',
+      },
     });
   });
 
   describe('#create', () => {
     it('creates a shared Feature Service containing versions 1.0.0 and 2.0.0', () => {
       const sharedHistoryService = historyServiceDefinition.create({
-        featureServices: {}
+        featureServices: {},
       });
 
       expect(sharedHistoryService!['1.0.0']).toBeDefined();
@@ -82,9 +80,9 @@ describe('defineHistoryService', () => {
   });
 
   describe('HistoryServiceV1', () => {
-    let mockEnv: FeatureServiceEnvironment<
-      Writable<HistoryServiceDependencies>
-    >;
+    let mockEnv: FeatureServiceEnvironment<Writable<
+      HistoryServiceDependencies
+    >>;
 
     let createHistoryServiceBinder: () => FeatureServiceBinder<
       HistoryServiceV1
@@ -186,12 +184,12 @@ describe('defineHistoryService', () => {
 
           expect(history1.location).toMatchObject({
             pathname: '/foo',
-            state: {test: 'foo'}
+            state: {test: 'foo'},
           });
 
           expect(history2.location).toMatchObject({
             pathname: '/bar',
-            state: {test: 'bar'}
+            state: {test: 'bar'},
           });
         });
 
@@ -208,12 +206,12 @@ describe('defineHistoryService', () => {
           expect(history1.location).toMatchObject({
             pathname: '/foo',
             state: 'foo state',
-            hash: '#some-anchor'
+            hash: '#some-anchor',
           });
 
           expect(history2.location).toMatchObject({
             pathname: '/bar',
-            state: 'bar state'
+            state: 'bar state',
           });
         });
 
@@ -518,7 +516,7 @@ describe('defineHistoryService', () => {
                 expect.objectContaining({
                   pathname: '/foo',
                   search: '?a=1',
-                  state: consumerState
+                  state: consumerState,
                 }),
                 'POP'
               );
@@ -630,9 +628,9 @@ describe('defineHistoryService', () => {
   });
 
   describe('HistoryServiceV2', () => {
-    let mockEnv: FeatureServiceEnvironment<
-      Writable<HistoryServiceDependencies>
-    >;
+    let mockEnv: FeatureServiceEnvironment<Writable<
+      HistoryServiceDependencies
+    >>;
 
     let createHistoryServiceBinder: (
       mode?: 'browser' | 'static'
@@ -640,7 +638,7 @@ describe('defineHistoryService', () => {
 
     beforeEach(() => {
       mockEnv = {
-        featureServices: {'s2:logger': stubbedLogger}
+        featureServices: {'s2:logger': stubbedLogger},
       };
 
       createHistoryServiceBinder = () => {
@@ -727,12 +725,12 @@ describe('defineHistoryService', () => {
 
           expect(history1.location).toMatchObject({
             pathname: '/foo',
-            state: {test: 'foo'}
+            state: {test: 'foo'},
           });
 
           expect(history2.location).toMatchObject({
             pathname: '/bar',
-            state: {test: 'bar'}
+            state: {test: 'bar'},
           });
         });
 
@@ -748,12 +746,12 @@ describe('defineHistoryService', () => {
 
           expect(history1.location).toMatchObject({
             pathname: '/foo',
-            state: 'foo state'
+            state: 'foo state',
           });
 
           expect(history2.location).toMatchObject({
             pathname: '/bar',
-            state: 'bar state'
+            state: 'bar state',
           });
         });
 
@@ -761,7 +759,7 @@ describe('defineHistoryService', () => {
           it('returns the default location', () => {
             expect(history1.location).toMatchObject({
               pathname: '/',
-              search: ''
+              search: '',
             });
           });
         });
@@ -1067,7 +1065,7 @@ describe('defineHistoryService', () => {
                 expect.objectContaining({
                   pathname: '/foo',
                   search: '?a=1',
-                  state: consumerState
+                  state: consumerState,
                 }),
                 'POP'
               );
@@ -1198,7 +1196,7 @@ describe('defineHistoryService', () => {
           expect(historyService1.rootHistory.location).toMatchObject({
             pathname: '/',
             search: createSearch({test1: '/foo', test2: '/bar'}),
-            state: {test1: {test: 'foo'}, test2: {test: 'bar'}}
+            state: {test1: {test: 'foo'}, test2: {test: 'bar'}},
           });
         });
 
@@ -1213,7 +1211,7 @@ describe('defineHistoryService', () => {
           expect(historyService1.rootHistory.location).toMatchObject({
             pathname: '/',
             search: createSearch({test1: '/foo', test2: 'bar'}),
-            state: consumerStates
+            state: consumerStates,
           });
         });
 
@@ -1231,7 +1229,7 @@ describe('defineHistoryService', () => {
             expect(historyService1.rootHistory.location).toMatchObject({
               pathname: '/',
               search: createSearch({test1: '/foo'}),
-              state: state.state
+              state: state.state,
             });
           });
         });
@@ -1266,13 +1264,13 @@ describe('defineHistoryService', () => {
           historyService1.rootHistory.push(rootLocation);
 
           expect(historyService1.history.location).toMatchObject({
-            pathname: '/'
+            pathname: '/',
           });
 
           expect(historyService1.history.action).toBe('POP');
 
           expect(historyService2.history.location).toMatchObject({
-            pathname: '/test2'
+            pathname: '/test2',
           });
 
           expect(historyService2.history.action).toBe('PUSH');
@@ -1294,14 +1292,14 @@ describe('defineHistoryService', () => {
           historyService1.rootHistory.push(rootLocation);
 
           expect(listener1.mock.calls).toEqual([
-            [{pathname: '/', search: '', hash: '', state: undefined}, 'PUSH']
+            [{pathname: '/', search: '', hash: '', state: undefined}, 'PUSH'],
           ]);
 
           expect(listener2.mock.calls).toEqual([
             [
               {pathname: '/test2', search: '', hash: '', state: undefined},
-              'PUSH'
-            ]
+              'PUSH',
+            ],
           ]);
         });
       });
@@ -1322,7 +1320,7 @@ describe('defineHistoryService', () => {
 
         it('handles relative pathnames', () => {
           historyService1.rootHistory.replace({
-            pathname: '/foo/bar'
+            pathname: '/foo/bar',
           });
 
           historyService1.rootHistory.replace({pathname: 'baz'});
@@ -1338,13 +1336,13 @@ describe('defineHistoryService', () => {
           historyService1.rootHistory.replace(rootLocation);
 
           expect(historyService1.history.location).toMatchObject({
-            pathname: '/'
+            pathname: '/',
           });
 
           expect(historyService1.history.action).toBe('POP');
 
           expect(historyService2.history.location).toMatchObject({
-            pathname: '/test2'
+            pathname: '/test2',
           });
 
           expect(historyService2.history.action).toBe('REPLACE');
@@ -1380,10 +1378,10 @@ describe('defineHistoryService', () => {
               expect.objectContaining({
                 pathname: '/',
                 search: createSearch({test1: '/bar'}),
-                state: {test1: undefined}
+                state: {test1: undefined},
               }),
-              'PUSH'
-            ]
+              'PUSH',
+            ],
           ]);
         });
 
@@ -1394,7 +1392,7 @@ describe('defineHistoryService', () => {
           historyService1.rootHistory.push({pathname: '/foo'});
 
           expect(listenerSpy.mock.calls).toEqual([
-            [expect.objectContaining({pathname: '/foo'}), 'PUSH']
+            [expect.objectContaining({pathname: '/foo'}), 'PUSH'],
           ]);
         });
 
@@ -1452,7 +1450,7 @@ describe('defineHistoryService', () => {
         expect(location).toMatchObject({
           pathname: '/',
           search: createSearch({test1: '/test1'}),
-          state: {test1: 42}
+          state: {test1: 42},
         });
       });
 
@@ -1463,18 +1461,18 @@ describe('defineHistoryService', () => {
         const location = historyService.createNewRootLocationForMultipleConsumers(
           {
             historyKey: 'test1',
-            location: {pathname: '/test', state: 42}
+            location: {pathname: '/test', state: 42},
           },
           {
             historyKey: 'test2',
-            location: {pathname: '/xxx', state: 'foo'}
+            location: {pathname: '/xxx', state: 'foo'},
           }
         );
 
         expect(location).toMatchObject({
           pathname: '/',
           search: createSearch({test1: '/test', test2: '/xxx'}),
-          state: {test1: 42, test2: 'foo'}
+          state: {test1: 42, test2: 'foo'},
         });
       });
 
@@ -1484,14 +1482,14 @@ describe('defineHistoryService', () => {
 
         beforeEach(() => {
           createNewRootLocationForMultipleConsumersMock = jest.fn(() => ({
-            pathname: 'root-test'
+            pathname: 'root-test',
           }));
 
           createHistoryServiceBinder = () => {
             const sharedHistoryService = defineHistoryService({
               createRootLocation: jest.fn(),
               getConsumerPathFromRootLocation: jest.fn(),
-              createNewRootLocationForMultipleConsumers: createNewRootLocationForMultipleConsumersMock
+              createNewRootLocationForMultipleConsumers: createNewRootLocationForMultipleConsumersMock,
             }).create(mockEnv);
 
             return sharedHistoryService!['2.0.0'];
@@ -1504,7 +1502,7 @@ describe('defineHistoryService', () => {
         it('uses the custom createNewRootLocationForMultipleConsumers method', () => {
           const consumerLocation = {
             historyKey: 'test1',
-            location: {pathname: '/test1'}
+            location: {pathname: '/test1'},
           };
 
           historyServiceTest1.createNewRootLocationForMultipleConsumers(
@@ -1519,7 +1517,7 @@ describe('defineHistoryService', () => {
         it('sets the consumer states on the new root location', () => {
           const consumerLocation = {
             historyKey: 'test1',
-            location: {pathname: '/test1', state: 42}
+            location: {pathname: '/test1', state: 42},
           };
 
           const location = historyServiceTest1.createNewRootLocationForMultipleConsumers(
@@ -1531,8 +1529,8 @@ describe('defineHistoryService', () => {
             search: '',
             hash: '',
             state: {
-              test1: 42
-            }
+              test1: 42,
+            },
           };
 
           expect(location).toEqual(expectedRootLocation);

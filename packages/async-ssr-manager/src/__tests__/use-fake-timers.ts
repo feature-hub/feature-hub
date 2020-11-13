@@ -11,7 +11,10 @@ export async function useFakeTimers<TResult>(
 
     let pending = true;
 
-    promise.then(() => (pending = false), () => (pending = false));
+    promise.then(
+      () => (pending = false),
+      () => (pending = false)
+    );
 
     await new Promise(queueMacroTask);
 

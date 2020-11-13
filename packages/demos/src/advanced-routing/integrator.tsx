@@ -1,7 +1,7 @@
 import {createFeatureHub} from '@feature-hub/core';
 import {
   createRootLocationTransformer,
-  defineHistoryService
+  defineHistoryService,
 } from '@feature-hub/history-service';
 import {defineExternals, loadAmdModule} from '@feature-hub/module-loader-amd';
 import {FeatureAppLoader, FeatureHubContextProvider} from '@feature-hub/react';
@@ -12,7 +12,7 @@ import '../blueprint-css';
 import {helloWorldServiceDefinition} from './hello-world-service';
 import {
   NavigationServiceV1,
-  navigationServiceDefinition
+  navigationServiceDefinition,
 } from './navigation-service';
 
 defineExternals({react: React});
@@ -27,11 +27,11 @@ const {featureAppManager, featureServices} = createFeatureHub(
         createRootLocationTransformer({consumerPathsQueryParamName: '---'})
       ),
       navigationServiceDefinition,
-      helloWorldServiceDefinition
+      helloWorldServiceDefinition,
     ],
     featureServiceDependencies: {
-      [navigationServiceDefinition.id]: '^1.0.0'
-    }
+      [navigationServiceDefinition.id]: '^1.0.0',
+    },
   }
 );
 

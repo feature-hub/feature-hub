@@ -28,8 +28,8 @@ const myFeatureServiceDefinition = {
 
   dependencies: {
     featureServices: {
-      's2:serialized-state-manager': '^1.0.0'
-    }
+      's2:serialized-state-manager': '^1.0.0',
+    },
   },
 
   create(env) {
@@ -57,11 +57,11 @@ const myFeatureServiceDefinition = {
 
           getCount() {
             return count;
-          }
-        }
-      })
+          },
+        },
+      }),
     };
-  }
+  },
 };
 ```
 
@@ -123,7 +123,7 @@ element][demos-extract-serialized-states-script], and then preloaded using the
 const urlsForHydration = getUrlsForHydrationFromDom();
 
 await Promise.all(
-  urlsForHydration.map(async url => featureAppManager.preloadFeatureApp(url))
+  urlsForHydration.map(async (url) => featureAppManager.preloadFeatureApp(url))
 );
 ```
 
@@ -135,7 +135,7 @@ Feature Apps to populate a set of URLs for hydration on the client:
 
 ```js
 const urlsForHydration = new Set();
-const addUrlForHydration = url => urlsForHydration.add(url);
+const addUrlForHydration = (url) => urlsForHydration.add(url);
 ```
 
 ```jsx
@@ -163,7 +163,7 @@ document head:
 ```js
 const stylesheetsForSsr = new Map();
 
-const addStylesheetsForSsr = stylesheets => {
+const addStylesheetsForSsr = (stylesheets) => {
   for (const stylesheet of stylesheets) {
     stylesheetsForSsr.set(stylesheet.href, stylesheet);
   }
@@ -205,8 +205,8 @@ const myFeatureAppDefinition = {
 
   optionalDependencies: {
     featureServices: {
-      's2:async-ssr-manager': '^1.0.0'
-    }
+      's2:async-ssr-manager': '^1.0.0',
+    },
   },
 
   create(env) {
@@ -231,9 +231,9 @@ const myFeatureAppDefinition = {
     return {
       render() {
         return <div>{data}</div>;
-      }
+      },
     };
-  }
+  },
 };
 ```
 
@@ -261,8 +261,8 @@ const myFeatureServiceDefinition = {
 
   optionalDependencies: {
     featureServices: {
-      's2:async-ssr-manager': '^1.0.0'
-    }
+      's2:async-ssr-manager': '^1.0.0',
+    },
   },
 
   create(env) {
@@ -285,11 +285,11 @@ const myFeatureServiceDefinition = {
 
           getCount() {
             return count;
-          }
-        }
-      })
+          },
+        },
+      }),
     };
-  }
+  },
 };
 ```
 

@@ -34,7 +34,7 @@ function createDocumentHtml(
   {
     serializedStates,
     stylesheetsForSsr,
-    urlsForHydration
+    urlsForHydration,
   }: Partial<AppRendererResult> = {}
 ): string {
   const stylesheetLinks = stylesheetsForSsr
@@ -103,7 +103,7 @@ export async function startServer(
 
   app.use(devMiddleware(webpack(webpackConfigs), {publicPath: '/'}));
 
-  return new Promise<Server>(resolve => {
+  return new Promise<Server>((resolve) => {
     const server = app.listen(port, () => resolve(server));
   });
 }

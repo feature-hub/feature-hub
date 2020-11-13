@@ -10,7 +10,7 @@ const siteConfig = {
   headerLinks: [
     {search: true},
     {label: 'API', href: '/@feature-hub/'},
-    {label: 'GitHub', href: 'https://github.com/sinnerschrader/feature-hub'}
+    {label: 'GitHub', href: 'https://github.com/sinnerschrader/feature-hub'},
   ],
   colors: {primaryColor: '#500dc5', secondaryColor: '#ea3458'},
   copyright: `Copyright (c) 2018-${new Date().getFullYear()} SinnerSchrader Deutschland GmbH`,
@@ -27,8 +27,8 @@ const siteConfig = {
   scrollToTop: true,
   algolia: {
     apiKey: 'bead2cf16cd4c92a9223c21b579d0d27',
-    indexName: 'feature-hub'
-  }
+    indexName: 'feature-hub',
+  },
 };
 
 module.exports = siteConfig;

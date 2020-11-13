@@ -1,17 +1,17 @@
 import {
   AsyncSsrManagerV1,
-  defineAsyncSsrManager
+  defineAsyncSsrManager,
 } from '@feature-hub/async-ssr-manager';
 import {createFeatureHub} from '@feature-hub/core';
 import {loadCommonJsModule} from '@feature-hub/module-loader-commonjs';
 import {
   Css,
   FeatureHubContextProvider,
-  FeatureHubContextProviderValue
+  FeatureHubContextProviderValue,
 } from '@feature-hub/react';
 import {
   SerializedStateManagerV1,
-  serializedStateManagerDefinition
+  serializedStateManagerDefinition,
 } from '@feature-hub/serialized-state-manager';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom/server';
@@ -20,7 +20,7 @@ import {AppRendererOptions, AppRendererResult} from '../start-server';
 import {App} from './app';
 
 export default async function renderApp({
-  port
+  port,
 }: AppRendererOptions): Promise<AppRendererResult> {
   const asyncSsrManagerDefinition = defineAsyncSsrManager();
 
@@ -31,12 +31,12 @@ export default async function renderApp({
       providedExternals: {react: getPkgVersion('react')},
       featureServiceDefinitions: [
         asyncSsrManagerDefinition,
-        serializedStateManagerDefinition
+        serializedStateManagerDefinition,
       ],
       featureServiceDependencies: {
         [asyncSsrManagerDefinition.id]: '^1.0.0',
-        [serializedStateManagerDefinition.id]: '^1.0.0'
-      }
+        [serializedStateManagerDefinition.id]: '^1.0.0',
+      },
     }
   );
 
@@ -51,13 +51,13 @@ export default async function renderApp({
     featureAppManager,
     asyncSsrManager,
 
-    addUrlForHydration: url => urlsForHydration.add(url),
+    addUrlForHydration: (url) => urlsForHydration.add(url),
 
-    addStylesheetsForSsr: stylesheets => {
+    addStylesheetsForSsr: (stylesheets) => {
       for (const stylesheet of stylesheets) {
         stylesheetsForSsr.set(stylesheet.href, stylesheet);
       }
-    }
+    },
   };
 
   const html = await asyncSsrManager.renderUntilCompleted(() =>

@@ -5,7 +5,7 @@ import {
   FeatureAppManager,
   FeatureServiceRegistry,
   FeatureServicesBinding,
-  ModuleLoader
+  ModuleLoader,
 } from '..';
 import {ExternalsValidator} from '../externals-validator';
 import {FeatureAppModule} from '../internal/is-feature-app-module';
@@ -32,12 +32,12 @@ describe('FeatureAppManager', () => {
 
     mockFeatureServicesBinding = {
       featureServices: {foo: {}},
-      unbind: mockFeatureServicesBindingUnbind
+      unbind: mockFeatureServicesBindingUnbind,
     };
 
     mockFeatureServiceRegistry = {
       registerFeatureServices: jest.fn(),
-      bindFeatureServices: jest.fn(() => mockFeatureServicesBinding)
+      bindFeatureServices: jest.fn(() => mockFeatureServicesBinding),
     } as MockFeatureServiceRegistry;
 
     mockFeatureAppCreate = jest.fn(() => ({}));
@@ -49,7 +49,7 @@ describe('FeatureAppManager', () => {
     >) as ExternalsValidator;
 
     featureAppManager = new FeatureAppManager(mockFeatureServiceRegistry, {
-      logger
+      logger,
     });
   });
 
@@ -57,7 +57,7 @@ describe('FeatureAppManager', () => {
     beforeEach(() => {
       featureAppManager = new FeatureAppManager(mockFeatureServiceRegistry, {
         logger,
-        moduleLoader: mockModuleLoader
+        moduleLoader: mockModuleLoader,
       });
     });
 
@@ -72,8 +72,8 @@ describe('FeatureAppManager', () => {
 
       expect(logger.info.mock.calls).toEqual([
         [
-          'The Feature App module at the url "/example.js" has been successfully loaded.'
-        ]
+          'The Feature App module at the url "/example.js" has been successfully loaded.',
+        ],
       ]);
     });
 
@@ -96,10 +96,10 @@ describe('FeatureAppManager', () => {
       null,
       {},
       {default: {}},
-      {default: {create: 'notAFunction'}}
+      {default: {create: 'notAFunction'}},
     ])(
       'when an invalid Feature App module (%o) has been loaded',
-      invalidFeatureAppModule => {
+      (invalidFeatureAppModule) => {
         beforeEach(() => {
           // tslint:disable-next-line:no-any
           mockFeatureAppModule = invalidFeatureAppModule as any;
@@ -124,7 +124,7 @@ describe('FeatureAppManager', () => {
 
     it('throws an error if no module loader was provided', () => {
       featureAppManager = new FeatureAppManager(mockFeatureServiceRegistry, {
-        logger
+        logger,
       });
 
       expect(() =>
@@ -152,7 +152,7 @@ describe('FeatureAppManager', () => {
       const baseUrl = '/base';
 
       featureAppManager = new FeatureAppManager(mockFeatureServiceRegistry, {
-        logger
+        logger,
       });
 
       featureAppManager.createFeatureAppScope(
@@ -161,14 +161,14 @@ describe('FeatureAppManager', () => {
         {baseUrl, config}
       );
 
-      expect(mockFeatureServiceRegistry.bindFeatureServices.mock.calls).toEqual(
-        [[mockFeatureAppDefinition, featureAppId, undefined]]
-      );
+      expect(
+        mockFeatureServiceRegistry.bindFeatureServices.mock.calls
+      ).toEqual([[mockFeatureAppDefinition, featureAppId, undefined]]);
 
       const {featureServices} = mockFeatureServicesBinding;
 
       expect(mockFeatureAppCreate.mock.calls).toEqual([
-        [{baseUrl, config, featureServices, featureAppId}]
+        [{baseUrl, config, featureServices, featureAppId}],
       ]);
     });
 
@@ -177,7 +177,7 @@ describe('FeatureAppManager', () => {
         const featureAppId = 'testId';
 
         featureAppManager = new FeatureAppManager(mockFeatureServiceRegistry, {
-          logger
+          logger,
         });
 
         let beforeCreateCalled = false;
@@ -211,7 +211,7 @@ describe('FeatureAppManager', () => {
         const featureAppId = 'testId';
 
         featureAppManager = new FeatureAppManager(mockFeatureServiceRegistry, {
-          logger
+          logger,
         });
 
         const mockDone = jest.fn();
@@ -225,7 +225,7 @@ describe('FeatureAppManager', () => {
         const {featureServices} = mockFeatureServicesBinding;
 
         expect(mockFeatureAppCreate.mock.calls).toEqual([
-          [{featureServices, featureAppId, done: mockDone}]
+          [{featureServices, featureAppId, done: mockDone}],
         ]);
       });
     });
@@ -236,7 +236,7 @@ describe('FeatureAppManager', () => {
         const featureAppName = 'testName';
 
         featureAppManager = new FeatureAppManager(mockFeatureServiceRegistry, {
-          logger
+          logger,
         });
 
         featureAppManager.createFeatureAppScope(
@@ -255,7 +255,7 @@ describe('FeatureAppManager', () => {
         const featureAppName = 'testName';
 
         featureAppManager = new FeatureAppManager(mockFeatureServiceRegistry, {
-          logger
+          logger,
         });
 
         featureAppManager.createFeatureAppScope(
@@ -267,7 +267,7 @@ describe('FeatureAppManager', () => {
         const {featureServices} = mockFeatureServicesBinding;
 
         expect(mockFeatureAppCreate.mock.calls).toEqual([
-          [{featureServices, featureAppId, featureAppName}]
+          [{featureServices, featureAppId, featureAppName}],
         ]);
       });
     });
@@ -279,9 +279,9 @@ describe('FeatureAppManager', () => {
             ...mockFeatureAppDefinition,
             dependencies: {
               externals: {
-                react: '^16.0.0'
-              }
-            }
+                react: '^16.0.0',
+              },
+            },
           };
         });
 
@@ -300,7 +300,7 @@ describe('FeatureAppManager', () => {
       beforeEach(() => {
         featureAppManager = new FeatureAppManager(mockFeatureServiceRegistry, {
           externalsValidator: mockExternalsValidator,
-          logger
+          logger,
         });
       });
 
@@ -318,9 +318,9 @@ describe('FeatureAppManager', () => {
             ...mockFeatureAppDefinition,
             dependencies: {
               externals: {
-                react: '^16.0.0'
-              }
-            }
+                react: '^16.0.0',
+              },
+            },
           };
         });
 
@@ -333,7 +333,7 @@ describe('FeatureAppManager', () => {
           } catch {}
 
           expect(mockExternalsValidator.validate).toHaveBeenCalledWith({
-            react: '^16.0.0'
+            react: '^16.0.0',
           });
         });
 
@@ -353,9 +353,9 @@ describe('FeatureAppManager', () => {
             ...mockFeatureAppDefinition,
             dependencies: {
               externals: {
-                react: '^16.0.0'
-              }
-            }
+                react: '^16.0.0',
+              },
+            },
           };
         });
 
@@ -366,7 +366,7 @@ describe('FeatureAppManager', () => {
           );
 
           expect(mockExternalsValidator.validate).toHaveBeenCalledWith({
-            react: '^16.0.0'
+            react: '^16.0.0',
           });
         });
 
@@ -447,8 +447,8 @@ describe('FeatureAppManager', () => {
         mockFeatureAppDefinition = {
           ...mockFeatureAppDefinition,
           ownFeatureServiceDefinitions: [
-            {id: 'ownFeatureServiceId', create: jest.fn()}
-          ]
+            {id: 'ownFeatureServiceId', create: jest.fn()},
+          ],
         };
       });
 
@@ -463,7 +463,7 @@ describe('FeatureAppManager', () => {
         expect(
           mockFeatureServiceRegistry.registerFeatureServices.mock.calls
         ).toEqual([
-          [mockFeatureAppDefinition.ownFeatureServiceDefinitions, featureAppId]
+          [mockFeatureAppDefinition.ownFeatureServiceDefinitions, featureAppId],
         ]);
 
         expect(
@@ -472,7 +472,7 @@ describe('FeatureAppManager', () => {
 
         expect(featureServiceRegistryMethodCalls).toEqual([
           'registerFeatureServices',
-          'bindFeatureServices'
+          'bindFeatureServices',
         ]);
       });
     });
@@ -550,8 +550,8 @@ describe('FeatureAppManager', () => {
 
         expect(logger.info.mock.calls).toEqual([
           [
-            'The Feature App with the ID "testId" has been successfully created.'
-          ]
+            'The Feature App with the ID "testId" has been successfully created.',
+          ],
         ]);
       });
 
@@ -657,8 +657,8 @@ describe('FeatureAppManager', () => {
 
         expect(logger.warn.mock.calls).toEqual([
           [
-            'The Feature App with the ID "testId" has already been released for this scope.'
-          ]
+            'The Feature App with the ID "testId" has already been released for this scope.',
+          ],
         ]);
       });
     });
@@ -668,7 +668,7 @@ describe('FeatureAppManager', () => {
     beforeEach(() => {
       featureAppManager = new FeatureAppManager(mockFeatureServiceRegistry, {
         moduleLoader: mockModuleLoader,
-        logger
+        logger,
       });
     });
 
@@ -684,7 +684,7 @@ describe('FeatureAppManager', () => {
 
     it('throws an error if no module loader was provided', () => {
       featureAppManager = new FeatureAppManager(mockFeatureServiceRegistry, {
-        logger
+        logger,
       });
 
       expect(() =>
@@ -712,7 +712,7 @@ describe('FeatureAppManager', () => {
       );
 
       expect(consoleInfoSpy.mock.calls).toEqual([
-        ['The Feature App with the ID "testId" has been successfully created.']
+        ['The Feature App with the ID "testId" has been successfully created.'],
       ]);
     });
   });

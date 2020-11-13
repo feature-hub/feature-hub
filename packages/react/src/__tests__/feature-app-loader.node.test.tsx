@@ -8,7 +8,7 @@ import {AsyncSsrManagerV1} from '@feature-hub/async-ssr-manager';
 import {
   AsyncValue,
   FeatureAppDefinition,
-  FeatureAppManager
+  FeatureAppManager,
 } from '@feature-hub/core';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom/server';
@@ -19,7 +19,7 @@ interface MockAsyncSsrManager extends AsyncSsrManagerV1 {
 }
 
 jest.mock('../feature-app-container', () => ({
-  FeatureAppContainer: jest.fn(() => 'mocked FeatureAppContainer')
+  FeatureAppContainer: jest.fn(() => 'mocked FeatureAppContainer'),
 }));
 
 describe('FeatureAppLoader (on Node.js)', () => {
@@ -43,12 +43,12 @@ describe('FeatureAppLoader (on Node.js)', () => {
     mockFeatureAppManager = ({
       getAsyncFeatureAppDefinition: mockGetAsyncFeatureAppDefinition,
       createFeatureAppScope: jest.fn(),
-      preloadFeatureApp: jest.fn()
+      preloadFeatureApp: jest.fn(),
     } as Partial<FeatureAppManager>) as FeatureAppManager;
 
     mockAsyncSsrManager = {
       scheduleRerender: jest.fn(),
-      renderUntilCompleted: jest.fn()
+      renderUntilCompleted: jest.fn(),
     };
 
     mockAddUrlForHydration = jest.fn();
@@ -68,7 +68,7 @@ describe('FeatureAppLoader (on Node.js)', () => {
           featureAppManager: mockFeatureAppManager,
           asyncSsrManager: mockAsyncSsrManager,
           addUrlForHydration: mockAddUrlForHydration,
-          addStylesheetsForSsr: mockAddStylesheetsForSsr
+          addStylesheetsForSsr: mockAddStylesheetsForSsr,
         }}
       >
         {node}
@@ -112,7 +112,7 @@ describe('FeatureAppLoader (on Node.js)', () => {
       );
 
       expect(mockGetAsyncFeatureAppDefinition.mock.calls).toEqual([
-        ['example-node.js']
+        ['example-node.js'],
       ]);
     });
 
@@ -128,7 +128,7 @@ describe('FeatureAppLoader (on Node.js)', () => {
         );
 
         expect(mockGetAsyncFeatureAppDefinition.mock.calls).toEqual([
-          ['http://example.com/example-node.js']
+          ['http://example.com/example-node.js'],
         ]);
       });
     });
@@ -143,7 +143,7 @@ describe('FeatureAppLoader (on Node.js)', () => {
       );
 
       expect(mockAsyncSsrManager.scheduleRerender.mock.calls).toEqual([
-        [mockAsyncFeatureAppDefinition.promise]
+        [mockAsyncFeatureAppDefinition.promise],
       ]);
     });
 
@@ -220,8 +220,8 @@ describe('FeatureAppLoader (on Node.js)', () => {
         expect(consoleErrorSpy.mock.calls).toEqual([
           [
             'The Feature App for the src "example-node.js" and the ID "testId" could not be rendered.',
-            mockError
-          ]
+            mockError,
+          ],
         ]);
       });
 
@@ -281,7 +281,7 @@ describe('FeatureAppLoader (on Node.js)', () => {
       );
 
       expect(mockAddStylesheetsForSsr.mock.calls).toEqual([
-        [[{href: 'foo.css'}]]
+        [[{href: 'foo.css'}]],
       ]);
     });
 
@@ -295,7 +295,7 @@ describe('FeatureAppLoader (on Node.js)', () => {
             serverSrc="example-node.js"
             css={[
               {href: 'http://example.com/foo.css'},
-              {href: 'bar.css', media: 'print'}
+              {href: 'bar.css', media: 'print'},
             ]}
           />
         );
@@ -304,9 +304,9 @@ describe('FeatureAppLoader (on Node.js)', () => {
           [
             [
               {href: 'http://example.com/foo.css'},
-              {href: 'http://feature-hub.io/bar.css', media: 'print'}
-            ]
-          ]
+              {href: 'http://feature-hub.io/bar.css', media: 'print'},
+            ],
+          ],
         ]);
       });
     });

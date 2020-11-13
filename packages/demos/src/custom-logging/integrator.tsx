@@ -25,7 +25,7 @@ const createConsumerConsole: ConsumerLoggerCreator = (
     debug: console.debug.bind(console, ...prefixArgs),
     info: console.info.bind(console, ...prefixArgs),
     warn: console.warn.bind(console, ...prefixArgs),
-    error: console.error.bind(console, ...prefixArgs)
+    error: console.error.bind(console, ...prefixArgs),
   };
 };
 
@@ -35,7 +35,7 @@ const {featureAppManager, featureServices} = createFeatureHub(
     moduleLoader: loadAmdModule,
     providedExternals: {react: process.env.REACT_VERSION as string},
     featureServiceDefinitions: [defineLogger(createConsumerConsole)],
-    featureServiceDependencies: {'s2:logger': '^1.0.0'}
+    featureServiceDependencies: {'s2:logger': '^1.0.0'},
   }
 );
 

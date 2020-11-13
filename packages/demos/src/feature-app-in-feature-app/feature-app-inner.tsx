@@ -7,8 +7,8 @@ const featureAppDefinition: FeatureAppDefinition<ReactFeatureApp> = {
   dependencies: {
     externals: {
       react: '^16.7.0',
-      '@feature-hub/react': '^2.0.0'
-    }
+      '@feature-hub/react': '^2.0.0',
+    },
   },
 
   create: ({done}) => ({
@@ -17,8 +17,8 @@ const featureAppDefinition: FeatureAppDefinition<ReactFeatureApp> = {
         <p>Hello, World!</p>
         <Button text="I'm done" onClick={() => done && done()}></Button>
       </>
-    )
-  })
+    ),
+  }),
 };
 
 export default featureAppDefinition;

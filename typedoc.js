@@ -19,5 +19,5 @@ module.exports = {
   out: 'packages/website/build/feature-hub/@feature-hub',
   readme: 'README.md',
   theme: 'minimal',
-  tsconfig: 'tsconfig.json'
+  tsconfig: 'tsconfig.json',
 };

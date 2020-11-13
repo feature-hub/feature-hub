@@ -8,7 +8,7 @@ export interface PathnameLabelProps {
 
 export function PathnameLabel({
   specifier,
-  pathname
+  pathname,
 }: PathnameLabelProps): JSX.Element {
   return (
     <Label>

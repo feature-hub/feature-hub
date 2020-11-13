@@ -17,7 +17,7 @@ export class BrowserConsumerHistory extends ConsumerHistory {
     super(context, historyKey, historyMultiplexer);
 
     this.browserUnregister = historyMultiplexer.listenForRootLocationChange(
-      action => {
+      (action) => {
         this.handleRootLocationChange(action);
       }
     );
@@ -25,7 +25,7 @@ export class BrowserConsumerHistory extends ConsumerHistory {
 
   public destroy(): void {
     this.browserUnregister();
-    this.unregisterCallbacks.forEach(unregister => unregister());
+    this.unregisterCallbacks.forEach((unregister) => unregister());
   }
 
   public listen(

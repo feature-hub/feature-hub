@@ -3,7 +3,7 @@ import {defineFeatureAppLoader} from '@feature-hub/dom';
 import {loadAmdModule} from '@feature-hub/module-loader-amd';
 
 const {featureAppManager} = createFeatureHub('test:integrator', {
-  moduleLoader: loadAmdModule
+  moduleLoader: loadAmdModule,
 });
 
 defineFeatureAppLoader(featureAppManager);

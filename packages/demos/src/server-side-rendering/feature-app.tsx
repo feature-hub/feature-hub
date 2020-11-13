@@ -20,14 +20,14 @@ const featureAppDefinition: FeatureAppDefinition<
 > = {
   dependencies: {
     externals: {react: '^16.7.0'},
-    featureServices: {'s2:serialized-state-manager': '^1.0.0'}
+    featureServices: {'s2:serialized-state-manager': '^1.0.0'},
   },
 
   optionalDependencies: {
-    featureServices: {'s2:async-ssr-manager': '^1.0.0'}
+    featureServices: {'s2:async-ssr-manager': '^1.0.0'},
   },
 
-  create: env => {
+  create: (env) => {
     let subject = 'World';
 
     const asyncSsrManager = env.featureServices['s2:async-ssr-manager'];
@@ -56,9 +56,9 @@ const featureAppDefinition: FeatureAppDefinition<
         <Card style={{margin: '20px'}}>
           <Text>Hello, {subject}!</Text>
         </Card>
-      )
+      ),
     };
-  }
+  },
 };
 
 export default featureAppDefinition;

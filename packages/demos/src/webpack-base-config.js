@@ -15,37 +15,37 @@ const webpackBaseConfig = {
     rules: [
       {
         test: /\.tsx?$/,
-        use: {loader: 'ts-loader', options: {transpileOnly: true}}
+        use: {loader: 'ts-loader', options: {transpileOnly: true}},
       },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader']
+        use: ['style-loader', 'css-loader'],
       },
       {
         test: /\.(png|woff|woff2|eot|ttf|svg)$/,
-        use: 'url-loader'
-      }
-    ]
+        use: 'url-loader',
+      },
+    ],
   },
   resolve: {
     extensions: ['.js', '.json', '.ts', '.tsx'],
     plugins: [
       new TsConfigPathsPlugin({
-        configFile: path.join(__dirname, '../tsconfig.json')
-      })
-    ]
+        configFile: path.join(__dirname, '../tsconfig.json'),
+      }),
+    ],
   },
   resolveLoader: {
-    modules: [path.join(__dirname, '../node_modules'), 'node_modules']
+    modules: [path.join(__dirname, '../node_modules'), 'node_modules'],
   },
   plugins: [
     new webpack.DefinePlugin({
       'process.env.REACT_VERSION': JSON.stringify(getPkgVersion('react')),
       'process.env.FEATURE_HUB_REACT_VERSION': JSON.stringify(
         getPkgVersion('@feature-hub/react')
-      )
-    })
-  ]
+      ),
+    }),
+  ],
 };
 
 module.exports = webpackBaseConfig;

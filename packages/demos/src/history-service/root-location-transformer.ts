@@ -19,7 +19,7 @@ export const rootLocationTransformer: RootLocationTransformer = {
     return {
       pathname,
       search: searchParams.toString(),
-      state
+      state,
     };
-  }
+  },
 };

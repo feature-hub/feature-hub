@@ -9,6 +9,8 @@ export class AsyncValue<TValue> {
     public value?: TValue,
     public error?: Error
   ) {
-    promise.then(val => (this.value = val)).catch(err => (this.error = err));
+    promise
+      .then((val) => (this.value = val))
+      .catch((err) => (this.error = err));
   }
 }

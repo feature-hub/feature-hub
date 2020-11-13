@@ -4,7 +4,7 @@ import {AsyncSsrManagerV1} from '@feature-hub/async-ssr-manager';
 import {
   AsyncValue,
   FeatureAppDefinition,
-  FeatureAppManager
+  FeatureAppManager,
 } from '@feature-hub/core';
 import * as React from 'react';
 import TestRenderer from 'react-test-renderer';
@@ -21,7 +21,7 @@ interface MockAsyncSsrManager extends AsyncSsrManagerV1 {
 jest.mock('../internal/internal-feature-app-container', () => ({
   InternalFeatureAppContainer: jest.fn(
     () => 'mocked InternalFeatureAppContainer'
-  )
+  ),
 }));
 
 describe('FeatureAppLoader', () => {
@@ -37,16 +37,16 @@ describe('FeatureAppLoader', () => {
     [
       expect.stringContaining(
         'React will try to recreate this component tree from scratch using the error boundary you provided, TestErrorBoundary.'
-      )
-    ]
+      ),
+    ],
   ];
 
   const noErrorBoundaryConsoleErrorCalls = [
     [
       expect.stringContaining(
         'Consider adding an error boundary to your tree to customize error handling behavior.'
-      )
-    ]
+      ),
+    ],
   ];
 
   const expectConsoleErrorCalls = (expectedConsoleErrorCalls: unknown[][]) => {
@@ -75,12 +75,12 @@ describe('FeatureAppLoader', () => {
     mockFeatureAppManager = ({
       getAsyncFeatureAppDefinition: mockGetAsyncFeatureAppDefinition,
       createFeatureAppScope: jest.fn(),
-      preloadFeatureApp: jest.fn()
+      preloadFeatureApp: jest.fn(),
     } as Partial<FeatureAppManager>) as FeatureAppManager;
 
     mockAsyncSsrManager = {
       scheduleRerender: jest.fn(),
-      renderUntilCompleted: jest.fn()
+      renderUntilCompleted: jest.fn(),
     };
 
     mockAddUrlForHydration = jest.fn();
@@ -119,7 +119,7 @@ describe('FeatureAppLoader', () => {
           asyncSsrManager: mockAsyncSsrManager,
           addUrlForHydration: mockAddUrlForHydration,
           addStylesheetsForSsr: mockAddStylesheetsForSsr,
-          logger: customLogger ? logger : undefined
+          logger: customLogger ? logger : undefined,
         }}
       >
         <TestErrorBoundary handleError={handleError}>{node}</TestErrorBoundary>
@@ -178,7 +178,7 @@ describe('FeatureAppLoader', () => {
           src="example.js"
           css={[
             {href: 'https://example.com/foo.css'},
-            {href: 'bar.css', media: 'print'}
+            {href: 'bar.css', media: 'print'},
           ]}
         />
       );
@@ -229,7 +229,7 @@ describe('FeatureAppLoader', () => {
             src="example.js"
             css={[
               {href: 'https://example.com/foo.css'},
-              {href: 'bar.css', media: 'print'}
+              {href: 'bar.css', media: 'print'},
             ]}
           />
         );
@@ -256,7 +256,7 @@ describe('FeatureAppLoader', () => {
       );
 
       expect(mockGetAsyncFeatureAppDefinition.mock.calls).toEqual([
-        ['example.js']
+        ['example.js'],
       ]);
     });
 
@@ -271,7 +271,7 @@ describe('FeatureAppLoader', () => {
         );
 
         expect(mockGetAsyncFeatureAppDefinition.mock.calls).toEqual([
-          ['/base/example.js']
+          ['/base/example.js'],
         ]);
       });
     });
@@ -287,7 +287,7 @@ describe('FeatureAppLoader', () => {
         );
 
         expect(mockGetAsyncFeatureAppDefinition.mock.calls).toEqual([
-          ['http://example.com/foo.js']
+          ['http://example.com/foo.js'],
         ]);
       });
     });
@@ -326,7 +326,7 @@ describe('FeatureAppLoader', () => {
         renderError,
         children,
         featureAppManager: mockFeatureAppManager,
-        logger
+        logger,
       };
 
       expect(InternalFeatureAppContainer).toHaveBeenCalledWith(
@@ -388,8 +388,8 @@ describe('FeatureAppLoader', () => {
         expect(logger.error.mock.calls).toEqual([
           [
             'The Feature App for the src "example.js" and the ID "testId" could not be rendered.',
-            mockError
-          ]
+            mockError,
+          ],
         ]);
       }
     });
@@ -579,7 +579,7 @@ describe('FeatureAppLoader', () => {
         const expectedParameter: CustomFeatureAppRenderingParams = {
           featureAppNode: undefined,
           error: mockError,
-          loading: false
+          loading: false,
         };
 
         expect(children.mock.calls).toEqual([[expectedParameter]]);
@@ -716,7 +716,7 @@ describe('FeatureAppLoader', () => {
       mockFeatureAppDefinition = {create: jest.fn()};
 
       mockAsyncFeatureAppDefinition = new AsyncValue(
-        new Promise<FeatureAppDefinition<unknown>>(resolve =>
+        new Promise<FeatureAppDefinition<unknown>>((resolve) =>
           // defer to next event loop turn to guarantee asynchronism
           setImmediate(() => resolve(mockFeatureAppDefinition))
         )
@@ -730,7 +730,7 @@ describe('FeatureAppLoader', () => {
 
       expect(mockGetAsyncFeatureAppDefinition.mock.calls).toEqual([
         ['example.js'],
-        ['example.js']
+        ['example.js'],
       ]);
     });
 
@@ -746,7 +746,7 @@ describe('FeatureAppLoader', () => {
 
         expect(mockGetAsyncFeatureAppDefinition.mock.calls).toEqual([
           ['/base/example.js'],
-          ['/base/example.js']
+          ['/base/example.js'],
         ]);
       });
     });
@@ -763,7 +763,7 @@ describe('FeatureAppLoader', () => {
 
         expect(mockGetAsyncFeatureAppDefinition.mock.calls).toEqual([
           ['http://example.com/foo.js'],
-          ['http://example.com/foo.js']
+          ['http://example.com/foo.js'],
         ]);
       });
     });
@@ -857,8 +857,8 @@ describe('FeatureAppLoader', () => {
       expect(logger.error.mock.calls).toEqual([
         [
           'The Feature App for the src "example.js" and the ID "testId" could not be rendered.',
-          mockError
-        ]
+          mockError,
+        ],
       ]);
     });
 
@@ -1059,8 +1059,8 @@ describe('FeatureAppLoader', () => {
         expect(logger.error.mock.calls).toEqual([
           [
             'The Feature App for the src "example.js" and the ID "testId" could not be rendered.',
-            mockError
-          ]
+            mockError,
+          ],
         ]);
       });
     });
@@ -1084,8 +1084,8 @@ describe('FeatureAppLoader', () => {
       expectConsoleErrorCalls([
         [
           'The Feature App for the src "example.js" and the ID "testId" could not be rendered.',
-          mockError
-        ]
+          mockError,
+        ],
       ]);
     });
   });

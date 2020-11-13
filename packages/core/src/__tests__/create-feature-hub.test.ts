@@ -5,7 +5,7 @@ import {FeatureAppDefinition, FeatureAppManager} from '../feature-app-manager';
 import {
   FeatureServiceProviderDefinition,
   FeatureServiceRegistry,
-  SharedFeatureService
+  SharedFeatureService,
 } from '../feature-service-registry';
 import {logger} from './logger';
 
@@ -57,7 +57,7 @@ describe('createFeatureHub()', () => {
 
         featureHubOptions = {
           ...featureHubOptions,
-          moduleLoader: mockModuleLoader
+          moduleLoader: mockModuleLoader,
         };
       });
 
@@ -87,7 +87,7 @@ describe('createFeatureHub()', () => {
 
       mockFeatureAppDefinition = {
         dependencies: {externals: {foo: '^1.0.0'}},
-        create: mockFeatureAppCreate
+        create: mockFeatureAppCreate,
       };
     });
 
@@ -104,7 +104,7 @@ describe('createFeatureHub()', () => {
 
       expect(mockFeatureAppCreate).toHaveBeenCalledWith({
         featureAppId: 'test:feature-app',
-        featureServices: {}
+        featureServices: {},
       });
 
       expect(featureApp).toBe(mockFeatureApp);
@@ -142,11 +142,11 @@ describe('createFeatureHub()', () => {
       mockFeatureServiceV1 = {};
 
       mockFeatureServiceV1Binder = jest.fn(() => ({
-        featureService: mockFeatureServiceV1
+        featureService: mockFeatureServiceV1,
       }));
 
       mockFeatureServiceCreate = jest.fn(() => ({
-        '1.0.0': mockFeatureServiceV1Binder
+        '1.0.0': mockFeatureServiceV1Binder,
       }));
 
       featureHubOptions = {
@@ -155,9 +155,9 @@ describe('createFeatureHub()', () => {
           {
             id: 'test:feature-service',
             dependencies: {externals: {foo: '^1.0.0'}},
-            create: mockFeatureServiceCreate
-          }
-        ]
+            create: mockFeatureServiceCreate,
+          },
+        ],
       };
     });
 
@@ -165,7 +165,7 @@ describe('createFeatureHub()', () => {
       createFeatureHub('test:integrator', featureHubOptions);
 
       expect(mockFeatureServiceCreate).toHaveBeenCalledWith({
-        featureServices: {}
+        featureServices: {},
       });
     });
 
@@ -198,7 +198,7 @@ describe('createFeatureHub()', () => {
       beforeEach(() => {
         featureHubOptions = {
           ...featureHubOptions,
-          featureServiceDependencies: {'test:feature-service': '^1.0.0'}
+          featureServiceDependencies: {'test:feature-service': '^1.0.0'},
         };
       });
 
@@ -209,7 +209,7 @@ describe('createFeatureHub()', () => {
         );
 
         expect(mockFeatureServiceV1Binder.mock.calls).toEqual([
-          ['test:integrator', undefined]
+          ['test:integrator', undefined],
         ]);
 
         expect(featureServices['test:feature-service']).toBe(
@@ -232,16 +232,16 @@ describe('createFeatureHub()', () => {
       featureAppDefinition = {create: jest.fn(() => ({}))};
 
       featureServiceDefinitions = [
-        {id: 'test:feature-service', create: () => ({'1.0.0': jest.fn()})}
+        {id: 'test:feature-service', create: () => ({'1.0.0': jest.fn()})},
       ];
 
       expectedLogCalls = [
         [
-          'The Feature Service "test:feature-service" has been successfully registered by registrant "test:integrator".'
+          'The Feature Service "test:feature-service" has been successfully registered by registrant "test:integrator".',
         ],
         [
-          'The Feature App with the ID "test:feature-app" has been successfully created.'
-        ]
+          'The Feature App with the ID "test:feature-app" has been successfully created.',
+        ],
       ];
     });
 
@@ -249,7 +249,7 @@ describe('createFeatureHub()', () => {
       it('logs messages using the custom logger', () => {
         const {featureAppManager} = createFeatureHub('test:integrator', {
           featureServiceDefinitions,
-          logger
+          logger,
         });
 
         featureAppManager.createFeatureAppScope(
@@ -274,7 +274,7 @@ describe('createFeatureHub()', () => {
 
       it('logs messages using the console', () => {
         const {featureAppManager} = createFeatureHub('test:integrator', {
-          featureServiceDefinitions
+          featureServiceDefinitions,
         });
 
         featureAppManager.createFeatureAppScope(

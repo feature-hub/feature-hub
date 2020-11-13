@@ -13,16 +13,16 @@ const configs = [
     output: {
       filename: 'feature-app.umd.js',
       libraryTarget: 'umd',
-      publicPath: '/'
-    }
+      publicPath: '/',
+    },
   }),
   merge.smart(webpackBaseConfig, {
     entry: path.join(__dirname, './integrator.ts'),
     output: {
       filename: 'integrator.js',
-      publicPath: '/'
-    }
-  })
+      publicPath: '/',
+    },
+  }),
 ];
 
 module.exports = configs;

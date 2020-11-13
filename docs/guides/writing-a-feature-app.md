@@ -12,22 +12,22 @@ method:
 const myFeatureAppDefinition = {
   dependencies: {
     featureServices: {
-      'acme:some-feature-service': '^2.0.0'
+      'acme:some-feature-service': '^2.0.0',
     },
     externals: {
-      react: '^16.7.0'
-    }
+      react: '^16.7.0',
+    },
   },
 
   optionalDependencies: {
     featureServices: {
-      'acme:optional-feature-service': '^1.3.0'
-    }
+      'acme:optional-feature-service': '^1.3.0',
+    },
   },
 
   create(env) {
     // ...
-  }
+  },
 };
 ```
 
@@ -95,7 +95,7 @@ properties:
        const {foo} = env.config;
 
        // ...
-     }
+     },
    };
    ```
 
@@ -107,8 +107,8 @@ properties:
    const myFeatureAppDefinition = {
      dependencies: {
        featureServices: {
-         'acme:some-feature-service': '^2.0.0'
-       }
+         'acme:some-feature-service': '^2.0.0',
+       },
      },
 
      create(env) {
@@ -118,7 +118,7 @@ properties:
        someFeatureService.foo(42);
 
        // ...
-     }
+     },
    };
    ```
 
@@ -150,8 +150,8 @@ import {myFeatureServiceDefinition} from './my-feature-service';
 const myFeatureAppDefinition = {
   dependencies: {
     featureServices: {
-      'acme:my-feature-service': '^1.0.0'
-    }
+      'acme:my-feature-service': '^1.0.0',
+    },
   },
 
   ownFeatureServiceDefinitions: [myFeatureServiceDefinition],
@@ -160,7 +160,7 @@ const myFeatureAppDefinition = {
     const myFeatureService = env.featureServices['acme:my-feature-service'];
 
     // ...
-  }
+  },
 };
 ```
 
@@ -192,9 +192,9 @@ const myFeatureAppDefinition = {
     return {
       render() {
         return <div>Foo</div>;
-      }
+      },
     };
-  }
+  },
 };
 ```
 
@@ -216,9 +216,9 @@ const myFeatureAppDefinition = {
     return {
       attachTo(container) {
         container.innerText = 'Foo';
-      }
+      },
     };
-  }
+  },
 };
 ```
 
@@ -285,9 +285,9 @@ const myFeatureAppDefinition = {
     return {
       attachTo(container) {
         container.innerText = 'Foo';
-      }
+      },
     };
-  }
+  },
 };
 ```
 

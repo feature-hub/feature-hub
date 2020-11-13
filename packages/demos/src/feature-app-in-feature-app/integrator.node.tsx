@@ -7,7 +7,7 @@ import {getPkgVersion} from '../get-pkg-version';
 import {AppRendererOptions, AppRendererResult} from '../start-server';
 
 export default async function renderApp({
-  port
+  port,
 }: AppRendererOptions): Promise<AppRendererResult> {
   const featureAppNodeUrl = `http://localhost:${port}/feature-app.commonjs.js`;
 
@@ -15,8 +15,8 @@ export default async function renderApp({
     moduleLoader: loadCommonJsModule,
     providedExternals: {
       react: getPkgVersion('react'),
-      '@feature-hub/react': getPkgVersion('@feature-hub/react')
-    }
+      '@feature-hub/react': getPkgVersion('@feature-hub/react'),
+    },
   });
 
   // In a real-world integrator, instead of preloading a Feature App manually

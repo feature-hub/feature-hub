@@ -2,7 +2,7 @@ import {
   FeatureServiceBinder,
   FeatureServiceProviderDefinition,
   FeatureServices,
-  SharedFeatureService
+  SharedFeatureService,
 } from '@feature-hub/core';
 import {Logger} from '@feature-hub/logger';
 import {ServerRequestV1} from '@feature-hub/server-request';
@@ -10,7 +10,7 @@ import * as history from 'history';
 import {
   RootLocation,
   RootLocationDescriptorObject,
-  RootLocationTransformer
+  RootLocationTransformer,
 } from './create-root-location-transformer';
 import {createHistoryMultiplexers} from './internal/create-history-multiplexers';
 import {createHistoryServiceV1Binder} from './internal/create-history-service-v1-binder';
@@ -100,11 +100,11 @@ export function defineHistoryService(
     optionalDependencies: {
       featureServices: {
         's2:logger': '^1.0.0',
-        's2:server-request': '^1.0.0'
-      }
+        's2:server-request': '^1.0.0',
+      },
     },
 
-    create: env => {
+    create: (env) => {
       const context = createHistoryServiceContext(env.featureServices);
 
       const historyMultiplexers = createHistoryMultiplexers(
@@ -119,8 +119,8 @@ export function defineHistoryService(
           context,
           historyMultiplexers,
           mode
-        )
+        ),
       };
-    }
+    },
   };
 }

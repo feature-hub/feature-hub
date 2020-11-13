@@ -2,7 +2,7 @@ import {
   FeatureServiceBinder,
   FeatureServiceProviderDefinition,
   FeatureServices,
-  SharedFeatureService
+  SharedFeatureService,
 } from '@feature-hub/core';
 import {Logger} from '@feature-hub/logger';
 import {AsyncSsrManager} from './internal/async-ssr-manager';
@@ -98,17 +98,17 @@ export function defineAsyncSsrManager(
 
     optionalDependencies: {
       featureServices: {
-        's2:logger': '^1.0.0'
-      }
+        's2:logger': '^1.0.0',
+      },
     },
 
-    create: env => {
+    create: (env) => {
       const context = createAsyncSsrManagerContext(env.featureServices);
       const asyncSsrManager = new AsyncSsrManager(context, options.timeout);
 
       return {
-        '1.0.0': () => ({featureService: asyncSsrManager})
+        '1.0.0': () => ({featureService: asyncSsrManager}),
       };
-    }
+    },
   };
 }

@@ -1,7 +1,7 @@
 import {
   FeatureServiceBinder,
   FeatureServiceProviderDefinition,
-  SharedFeatureService
+  SharedFeatureService,
 } from '@feature-hub/core';
 
 export interface ServerRequestV1 {
@@ -21,7 +21,7 @@ export function defineServerRequest(
     id: 's2:server-request',
 
     create: () => ({
-      '1.0.0': () => ({featureService: serverRequest})
-    })
+      '1.0.0': () => ({featureService: serverRequest}),
+    }),
   };
 }

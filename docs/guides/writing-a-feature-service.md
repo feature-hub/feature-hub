@@ -14,22 +14,22 @@ const myFeatureServiceDefinition = {
 
   dependencies: {
     featureServices: {
-      'acme:other-feature-service': '^2.0.0'
+      'acme:other-feature-service': '^2.0.0',
     },
     externals: {
-      rxjs: '^6.4.0'
-    }
+      rxjs: '^6.4.0',
+    },
   },
 
   optionalDependencies: {
     featureServices: {
-      'acme:optional-feature-service': '^1.3.0'
-    }
+      'acme:optional-feature-service': '^1.3.0',
+    },
   },
 
   create(env) {
     // ...
-  }
+  },
 };
 ```
 
@@ -99,8 +99,8 @@ following properties:
 
      dependencies: {
        featureServices: {
-         'acme:other-feature-service': '^2.0.0'
-       }
+         'acme:other-feature-service': '^2.0.0',
+       },
      },
 
      create(env) {
@@ -110,7 +110,7 @@ following properties:
        otherFeatureService.foo(42);
 
        // ...
-     }
+     },
    };
    ```
 
@@ -142,7 +142,7 @@ const myFeatureServiceDefinition = {
   create(env) {
     let count = 0;
 
-    const v1 = consumerId => ({
+    const v1 = (consumerId) => ({
       featureService: {
         plus() {
           count += 1;
@@ -150,12 +150,12 @@ const myFeatureServiceDefinition = {
 
         minus() {
           count -= 1;
-        }
-      }
+        },
+      },
     });
 
     return {'1.0.0': v1};
-  }
+  },
 };
 ```
 
@@ -170,7 +170,7 @@ const myFeatureServiceDefinition = {
   create(env) {
     let count = 0;
 
-    const v1 = consumerId => ({
+    const v1 = (consumerId) => ({
       featureService: {
         plus() {
           count += 1;
@@ -182,12 +182,12 @@ const myFeatureServiceDefinition = {
 
         getCount() {
           return count;
-        }
-      }
+        },
+      },
     });
 
     return {'1.1.0': v1};
-  }
+  },
 };
 ```
 
@@ -217,7 +217,7 @@ const myFeatureServiceDefinition = {
     const decrement = () => void --count;
     const increment = () => void ++count;
 
-    const v1 = consumerId => ({
+    const v1 = (consumerId) => ({
       featureService: {
         getCount,
 
@@ -229,16 +229,16 @@ const myFeatureServiceDefinition = {
         minus() {
           console.warn('Deprecation warning: use decrement instead of minus.');
           decrement();
-        }
-      }
+        },
+      },
     });
 
-    const v2 = consumerId => ({
-      featureService: {getCount, increment, decrement}
+    const v2 = (consumerId) => ({
+      featureService: {getCount, increment, decrement},
     });
 
     return {'1.1.0': v1, '2.0.0': v2};
-  }
+  },
 };
 ```
 
@@ -270,7 +270,7 @@ const myFeatureServiceDefinition = {
     // Shared state lives here.
     let consumerCounts = {};
 
-    const v1 = consumerId => {
+    const v1 = (consumerId) => {
       // Consumer-specific state lives here.
       consumerCounts[consumerId] = 0;
 
@@ -292,7 +292,7 @@ const myFeatureServiceDefinition = {
             (totalCount, consumerCount) => totalCount + consumerCount,
             0
           );
-        }
+        },
       };
 
       const unbind = () => {
@@ -304,7 +304,7 @@ const myFeatureServiceDefinition = {
     };
 
     return {'1.0.0': v1};
-  }
+  },
 };
 ```
 
@@ -315,7 +315,7 @@ be used for display purposes, logging, looking up Feature App configuration meta
 data, etc., e.g. a Logger Feature Service could use it like this:
 
 ```js
-const createConsumerConsole = consumer => {
+const createConsumerConsole = (consumer) => {
   const prefixArgs = [`%c${consumer}`, 'font-weight: bold'];
 
   return {
@@ -323,7 +323,7 @@ const createConsumerConsole = consumer => {
     debug: console.debug.bind(console, ...prefixArgs),
     info: console.info.bind(console, ...prefixArgs),
     warn: console.warn.bind(console, ...prefixArgs),
-    error: console.error.bind(console, ...prefixArgs)
+    error: console.error.bind(console, ...prefixArgs),
   };
 };
 
@@ -332,9 +332,9 @@ const defineLogger = (createConsumerLogger = createConsumerConsole) => ({
 
   create: () => ({
     '1.0.0': (consumerId, consumerName = consumerId) => ({
-      featureService: createConsumerLogger(consumerName)
-    })
-  })
+      featureService: createConsumerLogger(consumerName),
+    }),
+  }),
 });
 ```
 

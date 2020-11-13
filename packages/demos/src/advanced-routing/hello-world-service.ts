@@ -2,7 +2,7 @@ import {
   FeatureServiceBinder,
   FeatureServiceProviderDefinition,
   FeatureServices,
-  SharedFeatureService
+  SharedFeatureService,
 } from '@feature-hub/core';
 import {ConsumerLocation, HistoryServiceV2} from '@feature-hub/history-service';
 import * as history from 'history';
@@ -29,8 +29,8 @@ export const helloWorldServiceDefinition: FeatureServiceProviderDefinition<
 
   dependencies: {
     featureServices: {
-      's2:history': '^2.0.0'
-    }
+      's2:history': '^2.0.0',
+    },
   },
 
   create: ({featureServices}) => {
@@ -55,11 +55,11 @@ export const helloWorldServiceDefinition: FeatureServiceProviderDefinition<
           createLocation(name: string): ConsumerLocation {
             return {
               historyKey: historyService.historyKey,
-              location: history.createLocation(`/${name}`)
+              location: history.createLocation(`/${name}`),
             };
-          }
-        }
-      })
+          },
+        },
+      }),
     };
-  }
+  },
 };

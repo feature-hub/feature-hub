@@ -21,7 +21,7 @@ import * as React from 'react';
 defineExternals({react: React});
 
 const {featureAppManager} = createFeatureHub('acme:integrator', {
-  moduleLoader: loadAmdModule
+  moduleLoader: loadAmdModule,
 });
 ```
 
@@ -55,7 +55,7 @@ the integrator either
 
    ```js
    const {featureAppManager} = createFeatureHub('acme:integrator', {
-     moduleLoader: createCommonJsModuleLoader({react: React})
+     moduleLoader: createCommonJsModuleLoader({react: React}),
    });
    ```
 

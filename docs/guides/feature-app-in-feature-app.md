@@ -53,11 +53,11 @@ import * as React from 'react';
 ```js
 defineExternals({
   react: React,
-  '@feature-hub/react': FeatureHubReact
+  '@feature-hub/react': FeatureHubReact,
 });
 
 const {featureAppManager} = createFeatureHub('acme:integrator', {
-  moduleLoader: loadAmdModule
+  moduleLoader: loadAmdModule,
 });
 ```
 
@@ -74,8 +74,8 @@ import * as React from 'react';
 const {featureAppManager} = createFeatureHub('acme:integrator', {
   moduleLoader: createCommonJsModuleLoader({
     react: React,
-    '@feature-hub/react': FeatureHubReact
-  })
+    '@feature-hub/react': FeatureHubReact,
+  }),
 });
 ```
 

@@ -13,17 +13,17 @@ const configs = [
     output: {
       filename: 'feature-app.commonjs.js',
       libraryTarget: 'commonjs2',
-      publicPath: '/'
+      publicPath: '/',
     },
-    target: 'node'
+    target: 'node',
   }),
   merge.smart(webpackBaseConfig, {
     entry: path.join(__dirname, './integrator.ts'),
     output: {
       filename: 'integrator.js',
-      publicPath: '/'
-    }
-  })
+      publicPath: '/',
+    },
+  }),
 ];
 
 module.exports = configs;

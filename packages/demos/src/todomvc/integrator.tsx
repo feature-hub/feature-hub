@@ -10,8 +10,8 @@ const {featureAppManager} = createFeatureHub('test:todomvc-integrator', {
   featureServiceDefinitions: [defineLogger(), todoManagerDefinition],
   moduleLoader: loadAmdModule,
   providedExternals: {
-    react: process.env.REACT_VERSION as string
-  }
+    react: process.env.REACT_VERSION as string,
+  },
 });
 
 defineExternals({react: React});
@@ -19,7 +19,7 @@ defineExternals({react: React});
 document.head.appendChild(
   Object.assign(document.createElement('link'), {
     rel: 'stylesheet',
-    href: 'index.css'
+    href: 'index.css',
   })
 );
 

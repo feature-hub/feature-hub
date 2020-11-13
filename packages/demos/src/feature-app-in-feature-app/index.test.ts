@@ -27,7 +27,7 @@ describe('integration test: "Feature App in Feature App"', () => {
     await browser.goto(`http://localhost:${port}`, 120000);
   });
 
-  afterAll(done => server.close(done));
+  afterAll((done) => server.close(done));
 
   it('loads the server-side rendered HTML of the Feature App with another nested Feature App', async () => {
     // We need to disable JavaScript for this test to ensure that the server-rendered HTML is observed.

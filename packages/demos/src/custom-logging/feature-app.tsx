@@ -15,10 +15,10 @@ const featureAppDefinition: FeatureAppDefinition<
 > = {
   dependencies: {
     externals: {react: '^16.7.0'},
-    featureServices: {'s2:logger': '^1.0.0'}
+    featureServices: {'s2:logger': '^1.0.0'},
   },
 
-  create: env => {
+  create: (env) => {
     const logger = env.featureServices['s2:logger'];
 
     logger.trace('logger trace test');
@@ -36,9 +36,9 @@ const featureAppDefinition: FeatureAppDefinition<
             <Monowidth>{env.featureAppId}</Monowidth>.
           </Label>
         </Card>
-      )
+      ),
     };
-  }
+  },
 };
 
 export default featureAppDefinition;

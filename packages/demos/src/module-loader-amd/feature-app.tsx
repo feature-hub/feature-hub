@@ -5,7 +5,7 @@ import * as React from 'react';
 
 const featureAppDefinition: FeatureAppDefinition<ReactFeatureApp> = {
   dependencies: {
-    externals: {react: '^16.7.0'}
+    externals: {react: '^16.7.0'},
   },
 
   create: () => ({
@@ -13,8 +13,8 @@ const featureAppDefinition: FeatureAppDefinition<ReactFeatureApp> = {
       <Card style={{margin: '20px'}}>
         <Text>Hello, World!</Text>
       </Card>
-    )
-  })
+    ),
+  }),
 };
 
 export default featureAppDefinition;

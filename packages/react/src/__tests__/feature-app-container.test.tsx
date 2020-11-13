@@ -3,7 +3,7 @@ import {
   FeatureAppDefinition,
   FeatureAppManager,
   FeatureAppScope,
-  FeatureAppScopeOptions
+  FeatureAppScopeOptions,
 } from '@feature-hub/core';
 import * as React from 'react';
 import TestRenderer from 'react-test-renderer';
@@ -11,7 +11,7 @@ import {
   CustomFeatureAppRenderingParams,
   FeatureApp,
   FeatureAppContainer,
-  FeatureHubContextProvider
+  FeatureHubContextProvider,
 } from '..';
 import {InternalFeatureAppContainer} from '../internal/internal-feature-app-container';
 import {logger} from './logger';
@@ -29,24 +29,24 @@ describe('FeatureAppContainer', () => {
     [
       expect.stringContaining(
         'React will try to recreate this component tree from scratch using the error boundary you provided'
-      )
-    ]
+      ),
+    ],
   ];
 
   const noErrorBoundaryConsoleErrorCalls = [
     [
       expect.stringContaining(
         'Consider adding an error boundary to your tree to customize error handling behavior.'
-      )
-    ]
+      ),
+    ],
   ];
 
   const usingTestErrorBoundaryConsoleErrorCalls = [
     [
       expect.stringContaining(
         'React will try to recreate this component tree from scratch using the error boundary you provided, TestErrorBoundary.'
-      )
-    ]
+      ),
+    ],
   ];
 
   const expectConsoleErrorCalls = (expectedConsoleErrorCalls: unknown[][]) => {
@@ -66,7 +66,7 @@ describe('FeatureAppContainer', () => {
     mockFeatureAppManager = ({
       getAsyncFeatureAppDefinition: jest.fn(),
       createFeatureAppScope: mockCreateFeatureAppScope,
-      preloadFeatureApp: jest.fn()
+      preloadFeatureApp: jest.fn(),
     } as Partial<FeatureAppManager>) as FeatureAppManager;
   });
 
@@ -96,7 +96,7 @@ describe('FeatureAppContainer', () => {
     node: React.ReactNode,
     {
       customLogger = true,
-      testRendererOptions
+      testRendererOptions,
     }: {
       customLogger?: boolean;
       testRendererOptions?: TestRenderer.TestRendererOptions;
@@ -106,7 +106,7 @@ describe('FeatureAppContainer', () => {
       <FeatureHubContextProvider
         value={{
           featureAppManager: mockFeatureAppManager,
-          logger: customLogger ? logger : undefined
+          logger: customLogger ? logger : undefined,
         }}
       >
         {node}
@@ -133,11 +133,11 @@ describe('FeatureAppContainer', () => {
       baseUrl: '/base',
       config: 'testConfig',
       beforeCreate: mockBeforeCreate,
-      done: mockDone
+      done: mockDone,
     };
 
     expect(mockCreateFeatureAppScope.mock.calls).toEqual([
-      ['testId', mockFeatureAppDefinition, expectedOptions]
+      ['testId', mockFeatureAppDefinition, expectedOptions],
     ]);
   });
 
@@ -145,9 +145,9 @@ describe('FeatureAppContainer', () => {
     beforeEach(() => {
       mockFeatureAppScope = {
         featureApp: {
-          render: () => <div>This is the React Feature App.</div>
+          render: () => <div>This is the React Feature App.</div>,
         },
-        release: jest.fn()
+        release: jest.fn(),
       };
     });
 
@@ -216,8 +216,8 @@ describe('FeatureAppContainer', () => {
           featureApp: {
             render: () => {
               throw mockError;
-            }
-          }
+            },
+          },
         };
       });
 
@@ -377,7 +377,7 @@ describe('FeatureAppContainer', () => {
           const expected: CustomFeatureAppRenderingParams = {
             featureAppNode: undefined,
             loading: false,
-            error: mockError
+            error: mockError,
           };
 
           expect(children.mock.calls).toEqual([[expected]]);
@@ -453,8 +453,8 @@ describe('FeatureAppContainer', () => {
         mockFeatureAppScope = {
           ...mockFeatureAppScope,
           featureApp: {
-            render: () => <FeatureAppComponent />
-          }
+            render: () => <FeatureAppComponent />,
+          },
         };
       });
 
@@ -535,7 +535,7 @@ describe('FeatureAppContainer', () => {
             expectConsoleErrorCalls([
               ...usingErrorBoundaryConsoleErrorCalls,
               [expect.any(String), onErrorMockError],
-              ...noErrorBoundaryConsoleErrorCalls
+              ...noErrorBoundaryConsoleErrorCalls,
             ]);
           });
         });
@@ -681,7 +681,7 @@ describe('FeatureAppContainer', () => {
 
               expectConsoleErrorCalls([
                 [expect.any(String), onErrorMockError],
-                ...noErrorBoundaryConsoleErrorCalls
+                ...noErrorBoundaryConsoleErrorCalls,
               ]);
             });
           });
@@ -716,8 +716,8 @@ describe('FeatureAppContainer', () => {
             render: () => (
               <div>This is the React Feature App with a loading promise.</div>
             ),
-            loadingPromise
-          }
+            loadingPromise,
+          },
         };
       });
 
@@ -782,7 +782,7 @@ describe('FeatureAppContainer', () => {
               await rejectLoadingPromise(loadingPromiseMockError);
 
               expect(logger.error.mock.calls).toEqual([
-                [loadingPromiseMockError]
+                [loadingPromiseMockError],
               ]);
             });
           });
@@ -886,7 +886,7 @@ describe('FeatureAppContainer', () => {
                   await rejectLoadingPromise(loadingPromiseMockError);
 
                   expect(onError.mock.calls).toEqual([
-                    [loadingPromiseMockError]
+                    [loadingPromiseMockError],
                   ]);
                 });
               });
@@ -1099,9 +1099,9 @@ describe('FeatureAppContainer', () => {
         featureApp: {
           attachTo(container: HTMLElement): void {
             container.innerHTML = 'This is the DOM Feature App.';
-          }
+          },
         },
-        release: jest.fn()
+        release: jest.fn(),
       };
     });
 
@@ -1118,9 +1118,9 @@ describe('FeatureAppContainer', () => {
             createNodeMock: () => ({
               set innerHTML(html: string) {
                 mockSetInnerHtml(html);
-              }
-            })
-          }
+              },
+            }),
+          },
         }
       );
 
@@ -1152,9 +1152,9 @@ describe('FeatureAppContainer', () => {
               createNodeMock: () => ({
                 set innerHTML(html: string) {
                   mockSetInnerHtml(html);
-                }
-              })
-            }
+                },
+              }),
+            },
           }
         );
 
@@ -1192,8 +1192,8 @@ describe('FeatureAppContainer', () => {
           featureApp: {
             attachTo: () => {
               throw mockError;
-            }
-          }
+            },
+          },
         };
       });
 
@@ -1260,7 +1260,7 @@ describe('FeatureAppContainer', () => {
 
             expectConsoleErrorCalls([
               [expect.any(String), onErrorMockError],
-              ...noErrorBoundaryConsoleErrorCalls
+              ...noErrorBoundaryConsoleErrorCalls,
             ]);
           });
         });
@@ -1316,7 +1316,7 @@ describe('FeatureAppContainer', () => {
 
           const expectedAfterMount: CustomFeatureAppRenderingParams = {
             error: mockError,
-            loading: false
+            loading: false,
           };
 
           expect(children).toHaveBeenLastCalledWith(expectedAfterMount);
@@ -1424,7 +1424,7 @@ describe('FeatureAppContainer', () => {
     null,
     {},
     {attachTo: 'foo'},
-    {render: 'foo'}
+    {render: 'foo'},
   ]) {
     describe(`when an invalid Feature App (${JSON.stringify(
       invalidFeatureApp
@@ -1432,7 +1432,7 @@ describe('FeatureAppContainer', () => {
       beforeEach(() => {
         mockFeatureAppScope = {
           featureApp: invalidFeatureApp,
-          release: jest.fn()
+          release: jest.fn(),
         };
       });
 
@@ -1607,8 +1607,8 @@ describe('FeatureAppContainer', () => {
         featureApp: {
           render: () => {
             throw mockError;
-          }
-        }
+          },
+        },
       };
 
       renderWithFeatureHubContext(

@@ -2,7 +2,7 @@ import {
   FeatureServiceBinder,
   FeatureServiceProviderDefinition,
   FeatureServices,
-  SharedFeatureService
+  SharedFeatureService,
 } from '@feature-hub/core';
 import {Logger} from '@feature-hub/logger';
 
@@ -56,7 +56,7 @@ class TodoManagerV1Impl implements TodoManagerV1 {
   }
 
   public remove(id: string): void {
-    const index = this.todos.findIndex(todo => todo.id === id);
+    const index = this.todos.findIndex((todo) => todo.id === id);
     const deletedTodo = this.todos[index];
 
     if (!deletedTodo) {
@@ -65,7 +65,7 @@ class TodoManagerV1Impl implements TodoManagerV1 {
 
     this.todos = [
       ...this.todos.slice(0, index),
-      ...this.todos.slice(index + 1)
+      ...this.todos.slice(index + 1),
     ];
 
     this.logger.info('Removed todo:', deletedTodo);
@@ -87,7 +87,7 @@ class TodoManagerV1Impl implements TodoManagerV1 {
   }
 
   private notifyListeners(): void {
-    this.listeners.forEach(listener => listener());
+    this.listeners.forEach((listener) => listener());
   }
 
   private nextId(): string {
@@ -103,7 +103,7 @@ class TodoManagerV1Impl implements TodoManagerV1 {
     key: Key,
     value: Todo[Key]
   ): void {
-    const index = this.todos.findIndex(todo => todo.id === id);
+    const index = this.todos.findIndex((todo) => todo.id === id);
     const oldTodo = this.todos[index];
 
     if (!oldTodo || oldTodo[key] === value) {
@@ -115,7 +115,7 @@ class TodoManagerV1Impl implements TodoManagerV1 {
     this.todos = [
       ...this.todos.slice(0, index),
       newTodo,
-      ...this.todos.slice(index + 1)
+      ...this.todos.slice(index + 1),
     ];
 
     this.logger.info('Changed todo from:', oldTodo, 'to:', newTodo);
@@ -131,16 +131,16 @@ export const todoManagerDefinition: FeatureServiceProviderDefinition<
 
   dependencies: {
     featureServices: {
-      's2:logger': '^1.0.0'
-    }
+      's2:logger': '^1.0.0',
+    },
   },
 
-  create: env => {
+  create: (env) => {
     const logger = env.featureServices['s2:logger'];
     const todoManager = new TodoManagerV1Impl(logger);
 
     return {
-      '1.0.0': () => ({featureService: todoManager})
+      '1.0.0': () => ({featureService: todoManager}),
     };
-  }
+  },
 };

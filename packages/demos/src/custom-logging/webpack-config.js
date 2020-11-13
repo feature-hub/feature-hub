@@ -12,9 +12,9 @@ const configs = [
     entry: path.join(__dirname, './integrator.tsx'),
     output: {
       filename: 'integrator.js',
-      publicPath: '/'
-    }
-  })
+      publicPath: '/',
+    },
+  }),
 ];
 
 module.exports = configs;

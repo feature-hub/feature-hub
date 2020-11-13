@@ -94,12 +94,7 @@ export function defineFeatureAppLoader(
 
     public render(): TemplateResult {
       return html`
-        ${until(
-          this.loadFeatureApp(),
-          html`
-            <slot name="loading"></slot>
-          `
-        )}
+        ${until(this.loadFeatureApp(), html` <slot name="loading"></slot> `)}
       `;
     }
 
@@ -127,9 +122,7 @@ export function defineFeatureAppLoader(
       } catch (error) {
         logger.error(error);
 
-        return html`
-          <slot name="error"></slot>
-        `;
+        return html` <slot name="error"></slot> `;
       }
     }
   }
