@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.8.1](https://github.com/sinnerschrader/feature-hub/compare/v2.8.0...v2.8.1) (2020-11-14)
+
+
+### Bug Fixes
+
+* **react:** do not set state after FeatureAppContainer has been unmounted ([#613](https://github.com/sinnerschrader/feature-hub/issues/613)) ([ba42b6a](https://github.com/sinnerschrader/feature-hub/commit/ba42b6a0d40426c5f71df338aea504ed3858ae29))
+
+
+
+
+
 # [2.8.0](https://github.com/sinnerschrader/feature-hub/compare/v2.7.0...v2.8.0) (2020-10-27)
 
 

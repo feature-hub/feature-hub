@@ -1,6 +1,6 @@
 {
   "name": "@feature-hub/website",
-  "version": "2.2.0",
+  "version": "2.8.1",
   "private": true,
   "license": "MIT",
   "dependencies": {

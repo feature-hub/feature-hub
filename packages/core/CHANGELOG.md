@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.8.1](https://github.com/sinnerschrader/feature-hub/compare/v2.8.0...v2.8.1) (2020-11-14)
+
+
+### Bug Fixes
+
+* **core:** update semver to reduce size ([#616](https://github.com/sinnerschrader/feature-hub/issues/616)) ([e257e9a](https://github.com/sinnerschrader/feature-hub/commit/e257e9a44b2ed292f610c0f1b325cc4f2e2012dc)), closes [#130](https://github.com/sinnerschrader/feature-hub/issues/130)
+
+
+
+
+
 # [2.8.0](https://github.com/sinnerschrader/feature-hub/compare/v2.7.0...v2.8.0) (2020-10-27)
 
 
