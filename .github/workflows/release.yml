@@ -25,20 +25,21 @@ jobs:
           yarn compile:esm
 
       - name: Create Version
-        env:
-          GITHUB_TOKEN: ${{ secrets.CI_GITHUB_TOKEN }}
         run: |
           git config --global user.email "s2-feature-hub@accenture.com"
           git config --global user.name "Feature Hub CI"
-          git remote set-url origin https://x-access-token:$GITHUB_TOKEN@github.com/sinnerschrader/feature-hub
           yarn lerna version --conventional-commits --no-push --yes
 
-      - name: Publish Version
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: |
-          npm config set "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}"
-          yarn lerna publish from-git --yes --no-verify-access
+      # - name: Publish Version
+      #   env:
+      #     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      #   run: |
+      #     npm config set "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}"
+      #     yarn lerna publish from-git --yes --no-verify-access
 
       - name: Push Changes
-        run: git push --follow-tags
+        env:
+          GITHUB_TOKEN: ${{ secrets.CI_GITHUB_TOKEN }}
+        run: |
+          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/sinnerschrader/feature-hub
+          git push --follow-tags
