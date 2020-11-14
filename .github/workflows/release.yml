@@ -31,13 +31,12 @@ jobs:
           git config --global user.email "s2-feature-hub@accenture.com"
           git config --global user.name "Feature Hub CI"
           git remote set-url origin https://x-access-token:$GITHUB_TOKEN@github.com/sinnerschrader/feature-hub
-          npx lerna version --conventional-commits --no-push --yes
+          yarn lerna version --conventional-commits --no-push --yes
 
       - name: Publish Version
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run:
-          npx lerna publish from-git --npm-client npm --yes --no-verify-access
+        run: yarn lerna publish from-git --yes --no-verify-access
 
       - name: Push Changes
         run: git push --follow-tags
