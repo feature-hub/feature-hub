@@ -32,12 +32,12 @@ jobs:
           git config --global user.name "Feature Hub CI"
           yarn lerna version --conventional-commits --no-push --yes
 
-      # - name: Publish Version
-      #   env:
-      #     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      #   run: |
-      #     npm config set "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}"
-      #     yarn lerna publish from-git --yes --no-verify-access
+      - name: Publish Version
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          npm config set "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}"
+          yarn lerna publish from-git --yes --no-verify-access
 
       - name: Push Changes
         run: git push --follow-tags
