@@ -36,7 +36,8 @@ jobs:
       - name: Publish Version
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npx lerna publish from-git --npm-client npm --yes
+        run:
+          npx lerna publish from-git --npm-client npm --yes --no-verify-access
 
       - name: Push Changes
         run: git push --follow-tags
