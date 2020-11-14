@@ -36,7 +36,9 @@ jobs:
       - name: Publish Version
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: yarn lerna publish from-git --yes --no-verify-access
+        run: |
+          npm config set "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}"
+          yarn lerna publish from-git --yes --no-verify-access
 
       - name: Push Changes
         run: git push --follow-tags
