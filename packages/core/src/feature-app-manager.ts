@@ -5,7 +5,7 @@ import {
   FeatureServiceProviderDefinition,
   FeatureServiceRegistry,
   FeatureServices,
-  SharedFeatureService,
+  SharedFeatureService
 } from './feature-service-registry';
 import {isFeatureAppModule} from './internal/is-feature-app-module';
 import {Logger} from './logger';
@@ -60,7 +60,7 @@ export interface FeatureAppDefinition<
   create(env: FeatureAppEnvironment<TFeatureServices, TConfig>): TFeatureApp;
 }
 
-export type ModuleLoader = (url: string) => Promise<unknown>;
+export type ModuleLoader = (url: string, scope?: string) => Promise<unknown>;
 
 export interface FeatureAppScope<TFeatureApp> {
   readonly featureApp: TFeatureApp;
@@ -257,7 +257,7 @@ export class FeatureAppManager {
           released = true;
           featureAppRetainer.release();
         }
-      },
+      }
     };
   }
 
@@ -285,7 +285,7 @@ export class FeatureAppManager {
     }
 
     return new AsyncValue(
-      loadModule(url).then((featureAppModule) => {
+      loadModule(url).then(featureAppModule => {
         if (!isFeatureAppModule(featureAppModule)) {
           throw new Error(
             `The Feature App module at the url ${JSON.stringify(
@@ -388,7 +388,7 @@ export class FeatureAppManager {
       featureAppId,
       featureAppName,
       featureServices: binding.featureServices as TFeatureServices,
-      done,
+      done
     };
 
     if (beforeCreate) {
@@ -419,7 +419,7 @@ export class FeatureAppManager {
           this.featureAppRetainers.delete(featureAppId);
           binding.unbind();
         }
-      },
+      }
     };
 
     this.featureAppRetainers.set(featureAppId, featureAppRetainer);

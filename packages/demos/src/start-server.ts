@@ -101,7 +101,8 @@ export async function startServer(
     }
   });
 
-  app.use(devMiddleware(webpack(webpackConfigs), {publicPath: '/'}));
+  const compiler = webpack(webpackConfigs) as any;
+  app.use(devMiddleware(compiler, {publicPath: '/'}));
 
   return new Promise<Server>((resolve) => {
     const server = app.listen(port, () => resolve(server));

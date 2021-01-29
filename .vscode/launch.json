@@ -1,0 +1,23 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Jest react",
+      "type": "node",
+      "request": "launch",
+      "address": "localhost",
+      "protocol": "inspector",
+      "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/lerna",
+      "runtimeArgs": ["exec", "--scope", "@feature-hub/react", "--", "node"],
+      "args": [
+        "${workspaceRoot}/node_modules/jest/bin/jest.js",
+        "--runInBand",
+        "--no-cache",
+        "packages/react"
+      ]
+    }
+  ]
+}

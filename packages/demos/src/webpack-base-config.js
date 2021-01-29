@@ -8,6 +8,7 @@ const {getPkgVersion} = require('./get-pkg-version');
 /**
  * @type {webpack.Configuration}
  */
+
 const webpackBaseConfig = {
   devtool: false,
   mode: 'development',
@@ -30,13 +31,12 @@ const webpackBaseConfig = {
   resolve: {
     extensions: ['.js', '.json', '.ts', '.tsx'],
     plugins: [
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       new TsConfigPathsPlugin({
         configFile: path.join(__dirname, '../tsconfig.json'),
       }),
     ],
-  },
-  resolveLoader: {
-    modules: [path.join(__dirname, '../node_modules'), 'node_modules'],
   },
   plugins: [
     new webpack.DefinePlugin({
