@@ -8,7 +8,7 @@ const webpackBaseConfig = require('../webpack-base-config');
  * @type {webpack.Configuration[]}
  */
 const configs = [
-  merge.smart(webpackBaseConfig, {
+  merge.merge(webpackBaseConfig, {
     entry: path.join(__dirname, './integrator.tsx'),
     output: {
       filename: 'integrator.js',

@@ -55,6 +55,10 @@
     "webpack": "^5.14.0",
     "webpack-cli": "^4.3.1",
     "webpack-dev-middleware": "^4.1.0",
-    "webpack-merge": "^5.7.3"
+    "webpack-merge": "^5.7.3",
+    "@babel/core": "7.12.10",
+    "@babel/preset-react": "7.12.10",
+    "@babel/preset-typescript": "7.12.7",
+    "babel-loader": "8.2.2"
   }
 }
