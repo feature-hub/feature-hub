@@ -7,6 +7,9 @@
     "build:todomvc": "yarn webpack --config src/todomvc/webpack-config.js --mode production"
   },
   "dependencies": {
+    "@babel/core": "7.12.10",
+    "@babel/preset-react": "7.12.10",
+    "@babel/preset-typescript": "7.12.7",
     "@blueprintjs/core": "^3.10.0",
     "@feature-hub/async-ssr-manager": "^2.8.1",
     "@feature-hub/core": "^2.8.1",
@@ -18,17 +21,15 @@
     "@feature-hub/react": "^2.8.1",
     "@feature-hub/serialized-state-manager": "^2.8.1",
     "@feature-hub/server-request": "^2.8.1",
-    "@types/copy-webpack-plugin": "^5.0.0",
     "@types/express": "^4.16.0",
     "@types/get-port": "^4.0.0",
     "@types/history": "^4.7.2",
     "@types/pino": "^5.8.5",
     "@types/react-router": "^5.0.2",
     "@types/styled-components": "^5.1.4",
-    "@types/webpack": "^4.41.26",
-    "@types/webpack-dev-middleware": "^4.1.0",
-    "@types/webpack-merge": "^4.1.5",
-    "copy-webpack-plugin": "^5.0.0",
+    "babel-loader": "8.2.2",
+    "bundle-loader": "^0.5.6",
+    "copy-webpack-plugin": "^7.0.0",
     "css-loader": "^3.0.0",
     "express": "^4.16.4",
     "get-port": "^5.0.0",
@@ -51,6 +52,10 @@
     "webpack": "^4.46.0",
     "webpack-cli": "^4.5.0",
     "webpack-dev-middleware": "^4.1.0",
-    "webpack-merge": "^4.2.1"
+    "webpack-merge": "^5.7.3"
+  },
+  "devDependencies": {
+    "@types/copy-webpack-plugin": "^6.4.0",
+    "@types/webpack-dev-middleware": "^4.1.0"
   }
 }

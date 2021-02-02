@@ -16,7 +16,7 @@ const websiteBuildDirname = path.resolve(
  * @type {webpack.Configuration[]}
  */
 const configs = [
-  merge.smart(webpackBaseConfig, {
+  merge.merge(webpackBaseConfig, {
     entry: path.join(__dirname, './header/index.ts'),
     externals: {
       react: 'react',
@@ -28,10 +28,12 @@ const configs = [
       publicPath: '/header',
     },
     plugins: [
-      new CopyPlugin([{from: path.join(__dirname, './header/index.css')}]),
+      new CopyPlugin({
+        patterns: [{from: path.join(__dirname, './header/index.css')}],
+      }),
     ],
   }),
-  merge.smart(webpackBaseConfig, {
+  merge.merge(webpackBaseConfig, {
     entry: path.join(__dirname, './main/index.tsx'),
     externals: {
       react: 'react',
@@ -43,7 +45,7 @@ const configs = [
       publicPath: '/main',
     },
   }),
-  merge.smart(webpackBaseConfig, {
+  merge.merge(webpackBaseConfig, {
     entry: path.join(__dirname, './footer/index.tsx'),
     externals: {
       react: 'react',
@@ -83,7 +85,7 @@ const configs = [
       ],
     },
   }),
-  merge.smart(webpackBaseConfig, {
+  merge.merge(webpackBaseConfig, {
     entry: path.join(__dirname, './integrator.tsx'),
     output: {
       path: websiteBuildDirname,
@@ -91,10 +93,12 @@ const configs = [
       publicPath: '/',
     },
     plugins: [
-      new CopyPlugin([
-        path.join(__dirname, './index.css'),
-        path.join(__dirname, './index.html'),
-      ]),
+      new CopyPlugin({
+        patterns: [
+          path.join(__dirname, './index.css'),
+          path.join(__dirname, './index.html'),
+        ],
+      }),
     ],
   }),
 ];
