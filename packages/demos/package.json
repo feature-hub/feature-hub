@@ -18,6 +18,7 @@
     "@feature-hub/logger": "^2.8.1",
     "@feature-hub/module-loader-amd": "^2.8.1",
     "@feature-hub/module-loader-commonjs": "^2.8.1",
+    "@feature-hub/module-loader-federation": "^2.8.1",
     "@feature-hub/react": "^2.8.1",
     "@feature-hub/serialized-state-manager": "^2.8.1",
     "@feature-hub/server-request": "^2.8.1",

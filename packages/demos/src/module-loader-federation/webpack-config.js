@@ -3,15 +3,15 @@ const ModuleFederationPlugin = require('webpack').container
   .ModuleFederationPlugin;
 
 const path = require('path');
-//const webpackBaseConfig = require('../webpack-base-config');
+// const webpackBaseConfig = require('../webpack-base-config');
 
 const configs = [
   {
     entry: path.join(__dirname, './feature-app.tsx'),
     mode: 'development',
     output: {
-      //filename: 'feature-app.umd.js',
-      //libraryTarget: 'umd',
+      // filename: 'feature-app.umd.js',
+      // libraryTarget: 'umd',
       publicPath: '/',
     },
     resolve: {
