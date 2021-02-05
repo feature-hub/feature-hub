@@ -1,6 +1,6 @@
 import {AddressInfo} from 'net';
 import {Configuration} from 'webpack';
-import {AppRenderer, startServer} from './start-server';
+import {startServer} from './start-server';
 
 const demoName = process.argv[2];
 
@@ -15,17 +15,7 @@ function loadWebpackConfigs(): Configuration[] {
   return configs;
 }
 
-function loadNodeIntegrator(): AppRenderer | undefined {
-  const nodeIntegratorPath = `./${demoName}/integrator.node`;
-
-  try {
-    return require(nodeIntegratorPath).default;
-  } catch {
-    return;
-  }
-}
-
-startServer(loadWebpackConfigs(), loadNodeIntegrator(), demoName)
+startServer(loadWebpackConfigs(), demoName)
   .then((server) => {
     const {port} = server.address() as AddressInfo;
 

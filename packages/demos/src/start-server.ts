@@ -4,22 +4,11 @@ import getPort from 'get-port';
 import {Server} from 'http';
 import webpack from 'webpack';
 import devMiddleware from 'webpack-dev-middleware';
-
-export interface AppRendererOptions {
-  port: number;
-  req: express.Request;
-}
-
-export interface AppRendererResult {
-  html: string;
-  serializedStates?: string;
-  stylesheetsForSsr?: Map<string, Css>;
-  urlsForHydration?: Set<string>;
-}
-
-export type AppRenderer = (
-  options: AppRendererOptions
-) => Promise<AppRendererResult>;
+import {
+  AppRendererResult,
+  loadNodeIntegrator,
+  nodeIntegratorFilename,
+} from './node-integrator';
 
 function createStylesheetLink({href, media = 'all'}: Css): string {
   return `<link href="${href}" media="${media}" rel="stylesheet" />`;
@@ -70,14 +59,22 @@ function createDocumentHtml(
 
 export async function startServer(
   webpackConfigs: webpack.Configuration[],
-  renderApp: AppRenderer | undefined,
   demoName?: string
 ): Promise<Server> {
   const port = await getPort(demoName ? {port: 3000} : undefined);
   const app = express();
 
+  for (const compiler of webpack(webpackConfigs).compilers) {
+    const serverSideRender =
+      compiler.options.output?.filename === nodeIntegratorFilename;
+
+    app.use(devMiddleware(compiler, {serverSideRender}));
+  }
+
   app.get('/', async (req, res) => {
     try {
+      const renderApp = loadNodeIntegrator(res);
+
       if (renderApp) {
         const renderResult = await renderApp({port, req});
 
@@ -100,8 +97,6 @@ export async function startServer(
       res.send(documentHtml).status(500);
     }
   });
-
-  app.use(devMiddleware(webpack(webpackConfigs), {publicPath: '/'}));
 
   return new Promise<Server>((resolve) => {
     const server = app.listen(port, () => resolve(server));

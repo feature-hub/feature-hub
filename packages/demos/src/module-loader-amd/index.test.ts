@@ -16,7 +16,7 @@ describe('integration test: "amd module loader"', () => {
   let server: Server;
 
   beforeAll(async () => {
-    server = await startServer(webpackConfigs, undefined);
+    server = await startServer(webpackConfigs);
 
     const {port} = server.address() as AddressInfo;
 

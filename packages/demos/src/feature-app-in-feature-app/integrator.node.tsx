@@ -1,10 +1,10 @@
 import {createFeatureHub} from '@feature-hub/core';
-import {loadCommonJsModule} from '@feature-hub/module-loader-commonjs';
+import {createCommonJsModuleLoader} from '@feature-hub/module-loader-commonjs';
 import {FeatureAppLoader, FeatureHubContextProvider} from '@feature-hub/react';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom/server';
-import {getPkgVersion} from '../get-pkg-version';
-import {AppRendererOptions, AppRendererResult} from '../start-server';
+import {AppRendererOptions, AppRendererResult} from '../node-integrator';
+import {externals} from './externals';
 
 export default async function renderApp({
   port,
@@ -12,10 +12,10 @@ export default async function renderApp({
   const featureAppNodeUrl = `http://localhost:${port}/feature-app.commonjs.js`;
 
   const {featureAppManager} = createFeatureHub('test:integrator', {
-    moduleLoader: loadCommonJsModule,
+    moduleLoader: createCommonJsModuleLoader(externals),
     providedExternals: {
-      react: getPkgVersion('react'),
-      '@feature-hub/react': getPkgVersion('@feature-hub/react'),
+      react: process.env.REACT_VERSION as string,
+      '@feature-hub/react': process.env.FEATURE_HUB_REACT_VERSION as string,
     },
   });
 

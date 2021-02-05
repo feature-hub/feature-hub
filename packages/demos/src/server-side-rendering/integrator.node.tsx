@@ -3,7 +3,7 @@ import {
   defineAsyncSsrManager,
 } from '@feature-hub/async-ssr-manager';
 import {createFeatureHub} from '@feature-hub/core';
-import {loadCommonJsModule} from '@feature-hub/module-loader-commonjs';
+import {createCommonJsModuleLoader} from '@feature-hub/module-loader-commonjs';
 import {
   Css,
   FeatureHubContextProvider,
@@ -15,8 +15,7 @@ import {
 } from '@feature-hub/serialized-state-manager';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom/server';
-import {getPkgVersion} from '../get-pkg-version';
-import {AppRendererOptions, AppRendererResult} from '../start-server';
+import {AppRendererOptions, AppRendererResult} from '../node-integrator';
 import {App} from './app';
 
 export default async function renderApp({
@@ -27,8 +26,8 @@ export default async function renderApp({
   const {featureAppManager, featureServices} = createFeatureHub(
     'test:integrator',
     {
-      moduleLoader: loadCommonJsModule,
-      providedExternals: {react: getPkgVersion('react')},
+      moduleLoader: createCommonJsModuleLoader({react: React}),
+      providedExternals: {react: process.env.REACT_VERSION as string},
       featureServiceDefinitions: [
         asyncSsrManagerDefinition,
         serializedStateManagerDefinition,

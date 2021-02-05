@@ -3,6 +3,7 @@ const CopyPlugin = require('copy-webpack-plugin');
 const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
+const {nodeIntegratorFilename} = require('../node-integrator');
 const webpackBaseConfig = require('../webpack-base-config');
 
 /**
@@ -49,6 +50,15 @@ const configs = [
         ].map((cssPath) => ({from: require.resolve(cssPath)}))
       ),
     ],
+  }),
+  merge.smart(webpackBaseConfig, {
+    entry: path.join(__dirname, './integrator.node.tsx'),
+    output: {
+      filename: nodeIntegratorFilename,
+      libraryTarget: 'commonjs2',
+      publicPath: '/',
+    },
+    target: 'node',
   }),
 ];
 

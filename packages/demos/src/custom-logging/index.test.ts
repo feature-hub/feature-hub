@@ -18,7 +18,7 @@ describe('integration test: "custom logging"', () => {
   let consoleMessages: ConsoleMessage[];
 
   beforeAll(async () => {
-    server = await startServer(webpackConfigs, undefined);
+    server = await startServer(webpackConfigs);
     consoleMessages = [];
 
     page.on('console', consoleMessages.push.bind(consoleMessages));
