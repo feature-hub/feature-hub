@@ -5,7 +5,7 @@ const path = require('path');
 const postcssPresetEnv = require('postcss-preset-env');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
-const webpackBaseConfig = require('../webpack-base-config');
+const {webpackBaseConfig} = require('../webpack-base-config');
 
 const websiteBuildDirname = path.resolve(
   __dirname,
