@@ -1,7 +1,6 @@
 // @ts-check
 
 const path = require('path');
-const TsConfigPathsPlugin = require('tsconfig-paths-webpack-plugin').default;
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 const {getPkgVersion} = require('./get-pkg-version');
@@ -30,11 +29,6 @@ const webpackBaseConfig = {
   },
   resolve: {
     extensions: ['.js', '.json', '.ts', '.tsx'],
-    plugins: [
-      new TsConfigPathsPlugin({
-        configFile: path.join(__dirname, '../tsconfig.json'),
-      }),
-    ],
   },
   resolveLoader: {
     modules: [path.join(__dirname, '../node_modules'), 'node_modules'],

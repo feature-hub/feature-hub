@@ -48,8 +48,6 @@
     "styled-components": "^5.2.0",
     "ts-loader": "^6.0.0",
     "ts-node": "^8.0.0",
-    "tsconfig-paths": "^3.7.0",
-    "tsconfig-paths-webpack-plugin": "^3.2.0",
     "url-loader": "^2.0.0",
     "webpack": "^4.46.0",
     "webpack-cli": "^4.5.0",

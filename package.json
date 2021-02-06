@@ -6,9 +6,9 @@
     "packages/*"
   ],
   "scripts": {
-    "precompile": "lerna exec --parallel -- rimraf lib",
-    "compile": "lerna exec -- tsc --project tsconfig.cjs.json",
-    "compile:esm": "lerna exec --no-private -- tsc --project tsconfig.esm.json",
+    "clean": "tsc --build --clean && lerna exec --parallel -- rimraf lib",
+    "compile": "tsc --build --pretty",
+    "compile:esm": "lerna exec --no-private -- tsc --build --project tsconfig.esm.json",
     "format": "prettier --write '**/*.{js,json,md,ts,tsx,yml}'",
     "generate:api-docs": "typedoc --options typedoc.js .",
     "postgenerate:api-docs": "node scripts/process-api-docs.js",
@@ -24,8 +24,8 @@
     "verify:install": "git diff --exit-code yarn.lock",
     "preverify:sort-package-jsons": "yarn sort-package-jsons",
     "verify:sort-package-jsons": "git diff --exit-code package.json packages/*/package.json",
-    "watch:compile": "lerna exec --parallel -- tsc --project tsconfig.cjs.json --watch --preserveWatchOutput --pretty",
-    "watch:demo": "lerna exec --scope @feature-hub/demos -- ts-node -r tsconfig-paths/register src/watch-demo.ts",
+    "watch:compile": "yarn compile --watch",
+    "watch:demo": "lerna exec --scope @feature-hub/demos -- ts-node src/watch-demo.ts",
     "watch:test": "yarn test --watch --no-coverage --no-verbose",
     "watch:test:integration": "yarn watch:test --testPathPattern packages/demos",
     "watch:test:unit": "yarn watch:test --testPathIgnorePatterns packages/demos",
