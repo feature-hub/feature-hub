@@ -3,8 +3,8 @@
   "include": ["src/**/*", "types/**/*"],
   "compilerOptions": {
     "allowJs": true,
-    "noEmit": true,
-    "outDir": "lib"
+    "outDir": "lib",
+    "rootDir": "src"
   },
   "references": [
     {"path": "../async-ssr-manager"},

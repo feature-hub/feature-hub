@@ -1,27 +1,36 @@
-import {Css} from '@feature-hub/react';
-import express from 'express';
-import getPort from 'get-port';
-import {Server} from 'http';
-import webpack from 'webpack';
-import devMiddleware from 'webpack-dev-middleware';
-import {AppRendererResult, loadNodeIntegrator} from './node-integrator';
+// @ts-check
 
-function createStylesheetLink({href, media = 'all'}: Css): string {
+const express = require('express');
+const getPort = require('get-port');
+const webpack = require('webpack');
+const devMiddleware = require('webpack-dev-middleware');
+const {loadNodeIntegrator} = require('./node-integrator');
+
+/**
+ * @param {import('@feature-hub/react').Css} stylesheet
+ * @return {string}
+ */
+function createStylesheetLink({href, media = 'all'}) {
   return `<link href="${href}" media="${media}" rel="stylesheet" />`;
 }
 
-function createStylesheetLinks(stylesheets: Css[]): string {
+/**
+ * @param {import('@feature-hub/react').Css[]} stylesheets
+ * @return {string}
+ */
+function createStylesheetLinks(stylesheets) {
   return stylesheets.map(createStylesheetLink).join('\n');
 }
 
+/**
+ * @param {string} bodyHtml
+ * @param {Partial<import('./app-renderer').AppRendererResult>} appRenderResult
+ * @return {string}
+ */
 function createDocumentHtml(
-  bodyHtml: string,
-  {
-    serializedStates,
-    stylesheetsForSsr,
-    urlsForHydration,
-  }: Partial<AppRendererResult> = {}
-): string {
+  bodyHtml,
+  {serializedStates, stylesheetsForSsr, urlsForHydration} = {}
+) {
   const stylesheetLinks = stylesheetsForSsr
     ? createStylesheetLinks(Array.from(stylesheetsForSsr.values()))
     : '';
@@ -53,11 +62,17 @@ function createDocumentHtml(
   `;
 }
 
-export async function startServer(
-  webpackConfigs: webpack.Configuration[],
-  nodeIntegratorWebpackConfig?: webpack.Configuration,
-  demoName?: string
-): Promise<Server> {
+/**
+ * @param {import('webpack').Configuration[]} webpackConfigs
+ * @param {webpack.Configuration=} nodeIntegratorWebpackConfig
+ * @param {string=} demoName
+ * @return {Promise<import('http').Server>}
+ */
+async function startServer(
+  webpackConfigs,
+  nodeIntegratorWebpackConfig,
+  demoName
+) {
   const port = await getPort(demoName ? {port: 3000} : undefined);
   const app = express();
 
@@ -104,7 +119,9 @@ export async function startServer(
     }
   });
 
-  return new Promise<Server>((resolve) => {
+  return new Promise((resolve) => {
     const server = app.listen(port, () => resolve(server));
   });
 }
+
+module.exports = {startServer};

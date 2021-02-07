@@ -3,7 +3,7 @@ import {loadCommonJsModule} from '@feature-hub/module-loader-commonjs';
 import {FeatureAppLoader, FeatureHubContextProvider} from '@feature-hub/react';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom/server';
-import {AppRendererOptions, AppRendererResult} from '../node-integrator';
+import {AppRendererOptions, AppRendererResult} from '../app-renderer';
 
 export default async function renderApp({
   port,

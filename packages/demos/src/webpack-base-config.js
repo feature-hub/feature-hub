@@ -6,6 +6,14 @@ const merge = require('webpack-merge');
 const {getPkgVersion} = require('./get-pkg-version');
 
 /**
+ * @type {Partial<import('ts-loader').Options>}
+ */
+const tsLoaderOptions = {
+  projectReferences: true,
+  onlyCompileBundledFiles: true,
+};
+
+/**
  * @type {webpack.Configuration}
  */
 const webpackBaseConfig = {
@@ -15,7 +23,7 @@ const webpackBaseConfig = {
     rules: [
       {
         test: /\.tsx?$/,
-        use: {loader: 'ts-loader', options: {transpileOnly: true}},
+        use: {loader: 'ts-loader', options: tsLoaderOptions},
       },
       {
         test: /\.css$/,

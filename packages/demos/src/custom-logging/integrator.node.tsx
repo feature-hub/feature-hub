@@ -5,7 +5,7 @@ import {FeatureHubContextProvider} from '@feature-hub/react';
 import pino from 'pino';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom/server';
-import {AppRendererOptions, AppRendererResult} from '../node-integrator';
+import {AppRendererOptions, AppRendererResult} from '../app-renderer';
 import {App} from './app';
 
 export default async function renderApp({

@@ -25,7 +25,7 @@
     "preverify:sort-package-jsons": "yarn sort-package-jsons",
     "verify:sort-package-jsons": "git diff --exit-code package.json packages/*/package.json",
     "watch:compile": "yarn compile --watch",
-    "watch:demo": "lerna exec --scope @feature-hub/demos -- ts-node src/watch-demo.ts",
+    "watch:demo": "lerna exec --scope @feature-hub/demos -- node src/watch-demo.js",
     "watch:test": "yarn test --watch --no-coverage --no-verbose",
     "watch:test:integration": "yarn watch:test --testPathPattern packages/demos",
     "watch:test:unit": "yarn watch:test --testPathIgnorePatterns packages/demos",
