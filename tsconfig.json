@@ -1,4 +1,17 @@
 {
   "files": [],
-  "references": [{"path": "./packages/demos"}, {"path": "./packages/website"}]
+  "references": [
+    {"path": "./packages/async-ssr-manager"},
+    {"path": "./packages/core"},
+    {"path": "./packages/demos"},
+    {"path": "./packages/dom"},
+    {"path": "./packages/history-service"},
+    {"path": "./packages/logger"},
+    {"path": "./packages/module-loader-amd"},
+    {"path": "./packages/module-loader-commonjs"},
+    {"path": "./packages/react"},
+    {"path": "./packages/serialized-state-manager"},
+    {"path": "./packages/server-request"},
+    {"path": "./packages/website"}
+  ]
 }
