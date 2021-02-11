@@ -40,7 +40,7 @@ const configs = [
     plugins: [
       new ModuleFederationPlugin({
         filename: 'remoteEntry.js',
-        name: 'remoteEntry',
+        name: 'featureHubGlobal',
         exposes: {
           './featureAppDefinition':
             './src/module-loader-federation/feature-app',

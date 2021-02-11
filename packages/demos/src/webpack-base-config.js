@@ -38,9 +38,6 @@ const webpackBaseConfig = {
   resolve: {
     extensions: ['.js', '.json', '.ts', '.tsx'],
   },
-  resolveLoader: {
-    modules: [path.join(__dirname, '../node_modules'), 'node_modules'],
-  },
   plugins: [
     new webpack.DefinePlugin({
       'process.env.REACT_VERSION': JSON.stringify(getPkgVersion('react')),
@@ -56,7 +53,7 @@ const webpackBaseConfig = {
  * @return {webpack.Configuration}
  */
 const createNodeIntegratorWebpackConfig = (dirname) =>
-  merge.smart(webpackBaseConfig, {
+  merge.merge(webpackBaseConfig, {
     entry: path.join(dirname, './integrator.node.tsx'),
     output: {
       filename: 'integrator.node.js',

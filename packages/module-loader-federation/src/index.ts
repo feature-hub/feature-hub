@@ -1,19 +1,21 @@
 function loadComponent(
-  scope: string,
-  module: string,
+  options: FederationOptions,
   webpackInitSharing: WebpackInitSharing,
   webpackShareScopes: WebpackShareScopes
 ): () => Promise<unknown> {
   return async () => {
     // Initializes the share scope. This fills it with known provided modules from this build and all remotes
     await webpackInitSharing('default');
-    const container = window[scope]; // or get the container somewhere else
+    const container = window[options.globalScopeName]; // or get the container somewhere else
     if (!container) {
-      throw new Error('cannot find container for scope ' + scope);
+      throw new Error(
+        'cannot find container for scope ' + options.globalScopeName
+      );
     }
+    window[options.globalScopeName] = undefined;
     // Initialize the container, it may provide shared modules
     await container.init(webpackShareScopes.default);
-    const factory = await window[scope].get(module);
+    const factory = await container.get(options.featureAppDefinitionImportName);
     const Module = factory();
 
     return Module;
@@ -21,7 +23,7 @@ function loadComponent(
 }
 
 declare var window: {
-  [scope: string]: GlobalScope;
+  [key: string]: GlobalScope | undefined;
 };
 
 type SharedModules = unknown;
@@ -35,25 +37,20 @@ export interface GlobalScope {
   init: (sharedModules: SharedModules) => Promise<void>;
 }
 
-function getScope(url: string, scope?: string): string {
-  if (scope) {
-    return scope;
-  }
-  const name = url.match(/(https?:\/\/)?(.*)\.\w+/);
-  if (name == null || name.length < 3) {
-    throw new Error('cannot extract scope from url: ' + url);
-  }
-
-  return name[2].split('/').join('_');
+export interface FederationOptions {
+  globalScopeName: string;
+  featureAppDefinitionImportName: string;
 }
 
 export const loadFederationModuleFactory = (
   webpackInitSharing: WebpackInitSharing,
-  webpackShareScopes: WebpackShareScopes
-) => async (url: string, scope?: string) => {
-  const realScope = getScope(url, scope);
-
-  return new Promise((resolve, reject) => {
+  webpackShareScopes: WebpackShareScopes,
+  options: FederationOptions = {
+    featureAppDefinitionImportName: './featureAppDefinition',
+    globalScopeName: 'featureHubGlobal',
+  }
+) => async (url: string) =>
+  new Promise((resolve, reject) => {
     const element = document.createElement('script');
 
     element.src = url;
@@ -62,16 +59,9 @@ export const loadFederationModuleFactory = (
 
     element.onload = () => {
       console.log(`Dynamic Script Loaded: ${url}`);
-      loadComponent(
-        realScope,
-        './featureAppDefinition',
-        webpackInitSharing,
-        webpackShareScopes
-      )()
-        .then((moduleObject) => {
-          resolve(moduleObject);
-        })
-        .catch((e) => reject(e));
+      loadComponent(options, webpackInitSharing, webpackShareScopes)()
+        .then(resolve)
+        .catch(reject);
     };
 
     element.onerror = () => {
@@ -86,4 +76,3 @@ export const loadFederationModuleFactory = (
       document.head.removeChild(element);
     };
   });
-};
