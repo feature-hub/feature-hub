@@ -1,0 +1,29 @@
+{
+  "name": "@feature-hub/module-loader-federation-cjs",
+  "version": "2.8.1",
+  "description": "A FeatureAppManager-compatible AMD module loader.",
+  "homepage": "https://feature-hub.io/",
+  "bugs": {
+    "url": "https://github.com/sinnerschrader/feature-hub/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sinnerschrader/feature-hub.git"
+  },
+  "license": "MIT",
+  "author": "SinnerSchrader Deutschland GmbH",
+  "files": [
+    "lib",
+    "!__tests__"
+  ],
+  "sideEffects": false,
+  "main": "lib/cjs/index.js",
+  "module": "lib/esm/index.js",
+  "typings": "lib/cjs/index.d.ts",
+  "dependencies": {
+    "@feature-hub/core": "^2.8.1"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
