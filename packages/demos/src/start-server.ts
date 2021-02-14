@@ -4,11 +4,7 @@ import getPort from 'get-port';
 import {Server} from 'http';
 import webpack from 'webpack';
 import devMiddleware from 'webpack-dev-middleware';
-import {
-  AppRendererResult,
-  loadNodeIntegrator,
-  nodeIntegratorFilename,
-} from './node-integrator';
+import {AppRendererResult, loadNodeIntegrator} from './node-integrator';
 
 function createStylesheetLink({href, media = 'all'}: Css): string {
   return `<link href="${href}" media="${media}" rel="stylesheet" />`;
@@ -59,21 +55,27 @@ function createDocumentHtml(
 
 export async function startServer(
   webpackConfigs: webpack.Configuration[],
+  nodeWebpackConfig?: webpack.Configuration,
   demoName?: string
 ): Promise<Server> {
   const port = await getPort(demoName ? {port: 3000} : undefined);
   const app = express();
+  const nodeCompiler = nodeWebpackConfig && webpack(nodeWebpackConfig);
+  const nodeIntegratorFilename = nodeCompiler?.options.output?.filename;
 
   for (const compiler of webpack(webpackConfigs).compilers) {
-    const serverSideRender =
-      compiler.options.output?.filename === nodeIntegratorFilename;
+    app.use(devMiddleware(compiler));
+  }
 
-    app.use(devMiddleware(compiler, {serverSideRender}));
+  if (nodeCompiler) {
+    app.use(devMiddleware(nodeCompiler, {serverSideRender: true}));
   }
 
   app.get('/', async (req, res) => {
     try {
-      const renderApp = loadNodeIntegrator(res);
+      const renderApp =
+        typeof nodeIntegratorFilename === 'string' &&
+        loadNodeIntegrator(res, nodeIntegratorFilename);
 
       if (renderApp) {
         const renderResult = await renderApp({port, req});

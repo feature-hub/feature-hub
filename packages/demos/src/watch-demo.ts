@@ -5,8 +5,7 @@ import {startServer} from './start-server';
 const demoName = process.argv[2];
 
 function loadWebpackConfigs(): Configuration[] {
-  const configPath = `./${demoName}/webpack-config`;
-  const configs: Configuration[] = require(configPath);
+  const configs: Configuration[] = require(`./${demoName}/webpack-config`);
 
   for (const config of configs) {
     config.devtool = 'source-map';
@@ -15,7 +14,19 @@ function loadWebpackConfigs(): Configuration[] {
   return configs;
 }
 
-startServer(loadWebpackConfigs(), demoName)
+function loadNodeWebpackConfig(): Configuration | undefined {
+  try {
+    const config: Configuration = require(`./${demoName}/webpack-config.node`);
+
+    config.devtool = 'source-map';
+
+    return config;
+  } catch {
+    return undefined;
+  }
+}
+
+startServer(loadWebpackConfigs(), loadNodeWebpackConfig(), demoName)
   .then((server) => {
     const {port} = server.address() as AddressInfo;
 
