@@ -7,6 +7,7 @@ import {AddressInfo} from 'net';
 import {Browser} from '../browser';
 import {startServer} from '../start-server';
 import webpackConfigs from './webpack-config';
+import nodeWebpackConfig from './webpack-config.node';
 
 jest.setTimeout(120000);
 
@@ -16,7 +17,7 @@ describe('integration test: "commonjs module loader"', () => {
   let server: Server;
 
   beforeAll(async () => {
-    server = await startServer(webpackConfigs);
+    server = await startServer(webpackConfigs, nodeWebpackConfig);
 
     const {port} = server.address() as AddressInfo;
 

@@ -28,10 +28,9 @@ function evalNodeSource(source: string): any {
   return mod.exports;
 }
 
-export const nodeIntegratorFilename = 'integrator.node.js';
-
 export function loadNodeIntegrator(
-  res: express.Response
+  res: express.Response,
+  nodeIntegratorFilename: string
 ): AppRenderer | undefined {
   try {
     const outputFileSystem: webpack.InputFileSystem & webpack.OutputFileSystem =
