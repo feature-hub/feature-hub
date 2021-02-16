@@ -2345,12 +2345,12 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@strictsoftware/typedoc-plugin-monorepo@^0.3.1":
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/@strictsoftware/typedoc-plugin-monorepo/-/typedoc-plugin-monorepo-0.3.1.tgz#83a704bad2cf90a05f62f1c2587b0be09693a9a0"
-  integrity sha512-b7oolCeKZ40jyEfQrDd/Z216M5ZE4tRML0B0bV35tUIALoQsBBA7dz3Kr+X6DtbZA7FQmaqNGS6WAt7zxLL7wg==
+"@strictsoftware/typedoc-plugin-monorepo@^0.4.0":
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/@strictsoftware/typedoc-plugin-monorepo/-/typedoc-plugin-monorepo-0.4.2.tgz#7fbd039b0e2f56f736cc90da207efa7e5eb660f5"
+  integrity sha512-J2YFhz6wrLHKhHjkrzg7906mXQ3TfwbZGtsuyaM+6X4YkvX8kfyj6T3xa5ZoGNW6eBlGBwfwHB3IDg8B29A3dQ==
   dependencies:
-    highlight.js "^9.15.6"
+    find-up "^5.0.0"
 
 "@types/anymatch@*":
   version "1.3.1"
@@ -7372,7 +7372,7 @@ highlight.js@^10.2.0:
   resolved "https://registry.yarnpkg.com/highlight.js/-/highlight.js-10.3.2.tgz#135fd3619a00c3cbb8b4cd6dbc78d56bfcbc46f1"
   integrity sha512-3jRT7OUYsVsKvukNKZCtnvRcFyCJqSEIuIMsEybAXRiFSwpt65qjPd/Pr+UOdYt7WJlt+lj3+ypUsHiySBp/Jw==
 
-highlight.js@^9.15.6, highlight.js@^9.15.8:
+highlight.js@^9.15.8:
   version "9.18.1"
   resolved "https://registry.yarnpkg.com/highlight.js/-/highlight.js-9.18.1.tgz#ed21aa001fe6252bb10a3d76d47573c6539fe13c"
   integrity sha512-OrVKYz70LHsnCgmbXctv/bfuvntIKDz177h0Co37DQ5jamGZLVmoCVMtjMtNZY3X9DrCcKfklHPNeA0uPZhSJg==
