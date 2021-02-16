@@ -3,15 +3,15 @@ import express from 'express';
 import webpack from 'webpack';
 
 export interface AppRendererOptions {
-  port: number;
-  req: express.Request;
+  readonly port: number;
+  readonly req: express.Request;
 }
 
 export interface AppRendererResult {
-  html: string;
-  serializedStates?: string;
-  stylesheetsForSsr?: Map<string, Css>;
-  urlsForHydration?: Set<string>;
+  readonly html: string;
+  readonly serializedStates?: string;
+  readonly stylesheetsForSsr?: Map<string, Css>;
+  readonly urlsForHydration?: Set<string>;
 }
 
 export type AppRenderer = (
