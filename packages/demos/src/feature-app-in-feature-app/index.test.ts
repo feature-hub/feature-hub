@@ -6,8 +6,8 @@ import {Server} from 'http';
 import {AddressInfo} from 'net';
 import {Browser} from '../browser';
 import {startServer} from '../start-server';
-import renderApp from './integrator.node';
 import webpackConfigs from './webpack-config';
+import nodeIntegratorWebpackConfig from './webpack-config.node';
 
 jest.setTimeout(120000);
 
@@ -18,7 +18,7 @@ describe('integration test: "Feature App in Feature App"', () => {
   let url: string;
 
   beforeAll(async () => {
-    server = await startServer(webpackConfigs, renderApp);
+    server = await startServer(webpackConfigs, nodeIntegratorWebpackConfig);
 
     const {port} = server.address() as AddressInfo;
 

@@ -3,7 +3,7 @@ const CopyPlugin = require('copy-webpack-plugin');
 const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
-const webpackBaseConfig = require('../webpack-base-config');
+const {webpackBaseConfig} = require('../webpack-base-config');
 
 /**
  * @type {webpack.Configuration}

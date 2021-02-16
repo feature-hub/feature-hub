@@ -3,6 +3,7 @@
 const path = require('path');
 const TsConfigPathsPlugin = require('tsconfig-paths-webpack-plugin').default;
 const webpack = require('webpack');
+const merge = require('webpack-merge');
 const {getPkgVersion} = require('./get-pkg-version');
 
 /**
@@ -48,4 +49,19 @@ const webpackBaseConfig = {
   ],
 };
 
-module.exports = webpackBaseConfig;
+/**
+ * @param {string} dirname name of the directory that contains integrator.node.tsx
+ * @return {webpack.Configuration}
+ */
+const createNodeIntegratorWebpackConfig = (dirname) =>
+  merge.smart(webpackBaseConfig, {
+    entry: path.join(dirname, './integrator.node.tsx'),
+    output: {
+      filename: 'integrator.node.js',
+      libraryTarget: 'commonjs2',
+      publicPath: '/',
+    },
+    target: 'node',
+  });
+
+module.exports = {webpackBaseConfig, createNodeIntegratorWebpackConfig};

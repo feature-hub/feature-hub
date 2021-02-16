@@ -48,7 +48,7 @@ describe('integration test: "advanced-routing"', () => {
   let url: string;
 
   beforeAll(async () => {
-    server = await startServer(webpackConfigs, undefined);
+    server = await startServer(webpackConfigs);
 
     const {port} = server.address() as AddressInfo;
 

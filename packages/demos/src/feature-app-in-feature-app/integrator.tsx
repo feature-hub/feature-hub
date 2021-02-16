@@ -4,11 +4,9 @@ import * as FeatureHubReact from '@feature-hub/react';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import '../blueprint-css';
+import {externals} from './externals';
 
-defineExternals({
-  react: React,
-  '@feature-hub/react': FeatureHubReact,
-});
+defineExternals(externals);
 
 const {featureAppManager} = createFeatureHub('test:integrator', {
   moduleLoader: loadAmdModule,

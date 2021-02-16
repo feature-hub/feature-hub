@@ -1,12 +1,11 @@
 import {AddressInfo} from 'net';
 import {Configuration} from 'webpack';
-import {AppRenderer, startServer} from './start-server';
+import {startServer} from './start-server';
 
 const demoName = process.argv[2];
 
 function loadWebpackConfigs(): Configuration[] {
-  const configPath = `./${demoName}/webpack-config`;
-  const configs: Configuration[] = require(configPath);
+  const configs: Configuration[] = require(`./${demoName}/webpack-config`);
 
   for (const config of configs) {
     config.devtool = 'source-map';
@@ -15,17 +14,19 @@ function loadWebpackConfigs(): Configuration[] {
   return configs;
 }
 
-function loadNodeIntegrator(): AppRenderer | undefined {
-  const nodeIntegratorPath = `./${demoName}/integrator.node`;
-
+function loadNodeIntegratorWebpackConfig(): Configuration | undefined {
   try {
-    return require(nodeIntegratorPath).default;
+    const config: Configuration = require(`./${demoName}/webpack-config.node`);
+
+    config.devtool = 'source-map';
+
+    return config;
   } catch {
-    return;
+    return undefined;
   }
 }
 
-startServer(loadWebpackConfigs(), loadNodeIntegrator(), demoName)
+startServer(loadWebpackConfigs(), loadNodeIntegratorWebpackConfig(), demoName)
   .then((server) => {
     const {port} = server.address() as AddressInfo;
 

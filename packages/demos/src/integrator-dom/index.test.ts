@@ -18,7 +18,7 @@ describe('integration test: "dom integrator"', () => {
   let url: string;
 
   beforeAll(async () => {
-    server = await startServer(webpackConfigs, undefined);
+    server = await startServer(webpackConfigs);
     const {port} = server.address() as AddressInfo;
     url = `http://localhost:${port}`;
 

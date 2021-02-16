@@ -5,8 +5,7 @@ import {FeatureHubContextProvider} from '@feature-hub/react';
 import pino from 'pino';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom/server';
-import {getPkgVersion} from '../get-pkg-version';
-import {AppRendererOptions, AppRendererResult} from '../start-server';
+import {AppRendererOptions, AppRendererResult} from '../node-integrator';
 import {App} from './app';
 
 export default async function renderApp({
@@ -17,7 +16,7 @@ export default async function renderApp({
   const {featureAppManager} = createFeatureHub('test:integrator', {
     logger,
     moduleLoader: loadCommonJsModule,
-    providedExternals: {react: getPkgVersion('react')},
+    providedExternals: {react: process.env.REACT_VERSION as string},
     featureServiceDefinitions: [
       defineLogger((consumerId, consumerName) =>
         logger.child({consumerId, consumerName})

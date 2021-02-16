@@ -7,8 +7,8 @@ import {AddressInfo} from 'net';
 import {ElementHandle} from 'puppeteer';
 import {Browser} from '../browser';
 import {startServer} from '../start-server';
-import renderApp from './integrator.node';
 import webpackConfigs from './webpack-config';
+import nodeIntegratorWebpackConfig from './webpack-config.node';
 
 jest.setTimeout(120000);
 
@@ -70,7 +70,7 @@ describe('integration test: "history-service"', () => {
   let url: string;
 
   beforeAll(async () => {
-    server = await startServer(webpackConfigs, renderApp);
+    server = await startServer(webpackConfigs, nodeIntegratorWebpackConfig);
 
     const {port} = server.address() as AddressInfo;
 
