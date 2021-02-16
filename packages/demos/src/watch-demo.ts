@@ -14,7 +14,7 @@ function loadWebpackConfigs(): Configuration[] {
   return configs;
 }
 
-function loadNodeWebpackConfig(): Configuration | undefined {
+function loadNodeIntegratorWebpackConfig(): Configuration | undefined {
   try {
     const config: Configuration = require(`./${demoName}/webpack-config.node`);
 
@@ -26,7 +26,7 @@ function loadNodeWebpackConfig(): Configuration | undefined {
   }
 }
 
-startServer(loadWebpackConfigs(), loadNodeWebpackConfig(), demoName)
+startServer(loadWebpackConfigs(), loadNodeIntegratorWebpackConfig(), demoName)
   .then((server) => {
     const {port} = server.address() as AddressInfo;
 

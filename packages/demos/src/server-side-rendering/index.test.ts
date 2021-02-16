@@ -7,7 +7,7 @@ import {AddressInfo} from 'net';
 import {Browser} from '../browser';
 import {startServer} from '../start-server';
 import webpackConfigs from './webpack-config';
-import nodeWebpackConfig from './webpack-config.node';
+import nodeIntegratorWebpackConfig from './webpack-config.node';
 
 jest.setTimeout(120000);
 
@@ -18,7 +18,7 @@ describe('integration test: "server-side rendering"', () => {
   let url: string;
 
   beforeAll(async () => {
-    server = await startServer(webpackConfigs, nodeWebpackConfig);
+    server = await startServer(webpackConfigs, nodeIntegratorWebpackConfig);
 
     const {port} = server.address() as AddressInfo;
 

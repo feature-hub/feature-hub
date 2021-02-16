@@ -55,20 +55,24 @@ function createDocumentHtml(
 
 export async function startServer(
   webpackConfigs: webpack.Configuration[],
-  nodeWebpackConfig?: webpack.Configuration,
+  nodeIntegratorWebpackConfig?: webpack.Configuration,
   demoName?: string
 ): Promise<Server> {
   const port = await getPort(demoName ? {port: 3000} : undefined);
   const app = express();
-  const nodeCompiler = nodeWebpackConfig && webpack(nodeWebpackConfig);
-  const nodeIntegratorFilename = nodeCompiler?.options.output?.filename;
 
   for (const compiler of webpack(webpackConfigs).compilers) {
     app.use(devMiddleware(compiler));
   }
 
-  if (nodeCompiler) {
-    app.use(devMiddleware(nodeCompiler, {serverSideRender: true}));
+  const nodeIntegratorCompiler =
+    nodeIntegratorWebpackConfig && webpack(nodeIntegratorWebpackConfig);
+
+  const nodeIntegratorFilename =
+    nodeIntegratorCompiler?.options.output?.filename;
+
+  if (nodeIntegratorCompiler) {
+    app.use(devMiddleware(nodeIntegratorCompiler, {serverSideRender: true}));
   }
 
   app.get('/', async (req, res) => {

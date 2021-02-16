@@ -8,7 +8,7 @@ import {ConsoleMessage} from 'puppeteer';
 import {Browser} from '../browser';
 import {startServer} from '../start-server';
 import webpackConfigs from './webpack-config';
-import nodeWebpackConfig from './webpack-config.node';
+import nodeIntegratorWebpackConfig from './webpack-config.node';
 
 jest.setTimeout(120000);
 
@@ -19,7 +19,7 @@ describe('integration test: "custom logging"', () => {
   let consoleMessages: ConsoleMessage[];
 
   beforeAll(async () => {
-    server = await startServer(webpackConfigs, nodeWebpackConfig);
+    server = await startServer(webpackConfigs, nodeIntegratorWebpackConfig);
     consoleMessages = [];
 
     page.on('console', consoleMessages.push.bind(consoleMessages));
