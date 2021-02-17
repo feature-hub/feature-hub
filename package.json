@@ -10,7 +10,7 @@
     "compile": "tsc --build --pretty",
     "compile:esm": "lerna exec --no-private -- tsc --build tsconfig.esm.json",
     "format": "prettier --write '**/*.{js,json,md,ts,tsx,yml}'",
-    "generate:api-docs": "typedoc --options typedoc.js .",
+    "generate:api-docs": "node --max_old_space_size=8048 $(npm bin)/typedoc --options typedoc.js .",
     "postgenerate:api-docs": "node scripts/process-api-docs.js",
     "lint": "cross-env FORCE_COLOR=1 lerna exec --parallel -- tslint --config tslint.json --project tsconfig.json --format stylish",
     "size-limit": "lerna exec --no-private --ignore @feature-hub/module-loader-commonjs --parallel -- size-limit",
