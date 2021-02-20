@@ -70,9 +70,4 @@ export const loadFederationModuleFactory = (
     };
 
     document.head.appendChild(element);
-
-    return () => {
-      console.log(`Dynamic Script Removed: ${url}`);
-      document.head.removeChild(element);
-    };
   });
