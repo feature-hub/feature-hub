@@ -44,6 +44,7 @@ const webpackBaseConfig = {
       'process.env.FEATURE_HUB_REACT_VERSION': JSON.stringify(
         getPkgVersion('@feature-hub/react')
       ),
+      'process.env.BLUEPRINT_NAMESPACE': "'bp3'",
     }),
   ],
 };
