@@ -24,9 +24,11 @@ describe('integration test: "federation module loader"', () => {
     await browser.goto(`http://localhost:${port}`, 120000);
   });
 
-  afterAll((done) => server.close(done));
+  afterAll((done) => {
+    server.close(done);
+  });
 
-  it('loads the Feature App with React as external', async () => {
+  it('loads the Feature App with module federation', async () => {
     await expect(page).toMatch('Hello, World!');
   });
 });
