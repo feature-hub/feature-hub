@@ -84,7 +84,9 @@ async function startServer(
     nodeIntegratorWebpackConfig && webpack(nodeIntegratorWebpackConfig);
 
   const nodeIntegratorFilename =
-    nodeIntegratorCompiler?.options.output?.filename;
+    nodeIntegratorCompiler &&
+    nodeIntegratorCompiler.options.output &&
+    nodeIntegratorCompiler.options.output.filename;
 
   if (nodeIntegratorCompiler) {
     app.use(devMiddleware(nodeIntegratorCompiler, {serverSideRender: true}));
