@@ -2,7 +2,7 @@
 
 /**
  * @param {string} source
- * @return {any}
+ * @return {unknown}
  */
 function evalNodeSource(source) {
   const mod = {exports: {}};
@@ -11,6 +11,22 @@ function evalNodeSource(source) {
   Function('module', 'exports', 'require', source)(mod, mod.exports, require);
 
   return mod.exports;
+}
+
+/**
+ * @param {unknown} value
+ * @return {value is Record<string, unknown>}
+ */
+function isObject(value) {
+  return typeof value === 'object' && value !== null;
+}
+
+/**
+ * @param {unknown} value
+ * @return {value is {default: Function}}
+ */
+function hasDefaultFunction(value) {
+  return isObject(value) && typeof value.default === 'function';
 }
 
 /**
@@ -34,7 +50,12 @@ function loadNodeIntegrator(res, nodeIntegratorFilename) {
       .readFileSync(outputFileSystem.join(outputPath, nodeIntegratorFilename))
       .toString();
 
-    return evalNodeSource(source).default;
+    const evaluatedModule = evalNodeSource(source);
+
+    return hasDefaultFunction(evaluatedModule)
+      ? /** @type {import('./app-renderer').AppRenderer} */
+        (evaluatedModule.default)
+      : undefined;
   } catch {
     return undefined;
   }
