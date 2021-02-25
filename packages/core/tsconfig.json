@@ -1,4 +1,8 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "../../tsconfig.settings.json",
+  "compilerOptions": {
+    "outDir": "lib/cjs",
+    "rootDir": "src"
+  },
   "include": ["src/**/*"]
 }

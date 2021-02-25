@@ -64,7 +64,7 @@ jobs:
           find packages/demos -iname '*test.ts*' | xargs -n 2 yarn jest --silent
           --no-cache --no-verbose --no-coverage --maxWorkers 2 --forceExit
 
-  compile:
+  compile-lint-verify:
     runs-on: ubuntu-latest
     env:
       CI: true
@@ -88,32 +88,11 @@ jobs:
       - name: Compile
         run: yarn compile
 
-      - name: Size Limit
-        run: yarn size-limit
-
-  lint:
-    runs-on: ubuntu-latest
-    env:
-      CI: true
-
-    strategy:
-      matrix:
-        node-version: [10.x, 12.x]
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Setup node
-        uses: actions/setup-node@v2
-        with:
-          node-version: ${{ matrix.node-version }}
-
-      - name: Install
-        run: yarn install
-
       - name: Lint
         run: yarn lint
 
       - name: Verify
         run: yarn verify
+
+      - name: Size Limit
+        run: yarn size-limit

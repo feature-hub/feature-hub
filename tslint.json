@@ -14,6 +14,7 @@
       "semver"
     ],
     "prefer-method-signature": false,
-    "strict-string-expressions": false
+    "strict-string-expressions": false,
+    "no-redundant-jsdoc": false
   }
 }

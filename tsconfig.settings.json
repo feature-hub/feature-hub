@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "declaration": true,
+    "declarationMap": true,
+    "composite": true,
+    "sourceMap": true,
+    "inlineSources": true,
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "forceConsistentCasingInFileNames": true,
+    "esModuleInterop": true,
+    "lib": ["dom", "es2017"],
+    "jsx": "react",
+    "experimentalDecorators": true
+  }
+}

@@ -1,6 +1,6 @@
 {
   "extends": "../../tslint.json",
-  "rules": {
-    "file-name-casing": false
+  "linterOptions": {
+    "exclude": ["core/**", "pages/**"]
   }
 }

@@ -1,23 +1,17 @@
 {
-  "compilerOptions": {
-    "target": "ES2017",
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "declaration": true,
-    "sourceMap": true,
-    "inlineSources": true,
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "forceConsistentCasingInFileNames": true,
-    "esModuleInterop": true,
-    "lib": ["dom", "es2017"],
-    "jsx": "react",
-    "experimentalDecorators": true,
-    "baseUrl": ".",
-    "paths": {"@feature-hub/*": ["packages/*/src/index.ts"]},
-    "plugins": [{"name": "typescript-tslint-plugin"}]
-  }
+  "files": [],
+  "references": [
+    {"path": "./packages/async-ssr-manager"},
+    {"path": "./packages/core"},
+    {"path": "./packages/demos"},
+    {"path": "./packages/dom"},
+    {"path": "./packages/history-service"},
+    {"path": "./packages/logger"},
+    {"path": "./packages/module-loader-amd"},
+    {"path": "./packages/module-loader-commonjs"},
+    {"path": "./packages/react"},
+    {"path": "./packages/serialized-state-manager"},
+    {"path": "./packages/server-request"},
+    {"path": "./packages/website"}
+  ]
 }

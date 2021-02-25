@@ -10,4 +10,4 @@ function getPkgVersion(pkgName) {
   return require(pkgJsonPath).version;
 }
 
-exports.getPkgVersion = getPkgVersion;
+module.exports = {getPkgVersion};

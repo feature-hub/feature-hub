@@ -1,9 +1,21 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "../../tsconfig.settings.json",
   "include": ["src/**/*", "types/**/*"],
   "compilerOptions": {
     "allowJs": true,
-    "declaration": false,
-    "outDir": "dist"
-  }
+    "outDir": "lib",
+    "rootDir": "src"
+  },
+  "references": [
+    {"path": "../async-ssr-manager"},
+    {"path": "../core"},
+    {"path": "../dom"},
+    {"path": "../history-service"},
+    {"path": "../logger"},
+    {"path": "../module-loader-amd"},
+    {"path": "../module-loader-commonjs"},
+    {"path": "../react"},
+    {"path": "../serialized-state-manager"},
+    {"path": "../server-request"}
+  ]
 }

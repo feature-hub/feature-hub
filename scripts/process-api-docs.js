@@ -9,7 +9,7 @@ const apiDocsDirname = path.join(
   '../packages/website/build/feature-hub/@feature-hub'
 );
 
-// Rename "External Modules" to "Packages" on the index page.
+// Rename "Modules" to "Packages" on the index page.
 
 updateHtmlFile(path.join(apiDocsDirname, 'index.html'), ($) => {
   $('.tsd-index-section h3').text('Packages');
