@@ -48,7 +48,7 @@
     "styled-components": "^5.2.0",
     "ts-loader": "^8.0.16",
     "url-loader": "^2.0.0",
-    "webpack": "^4.46.0",
+    "webpack": "^5.0.0",
     "webpack-cli": "^4.5.0",
     "webpack-dev-middleware": "^4.1.0",
     "webpack-merge": "^4.2.1"
