@@ -56,6 +56,9 @@ jobs:
       - name: Install
         run: yarn install
 
+      - name: Compile
+        run: yarn compile
+
       - name: Unit Tests
         run: yarn test:unit --no-cache --maxWorkers 2 --no-verbose
 

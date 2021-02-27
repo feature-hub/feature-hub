@@ -1,3 +1,5 @@
+import {ModuleLoader} from '@feature-hub/core';
+
 function loadComponent(
   options: FederationOptions,
   webpackInitSharing: WebpackInitSharing,
@@ -49,7 +51,7 @@ export const loadFederationModuleFactory = (
     featureAppDefinitionImportName: './featureAppDefinition',
     globalScopeName: 'featureHubGlobal',
   }
-) => async (url: string) =>
+): ModuleLoader => async (url: string) =>
   new Promise((resolve, reject) => {
     const element = document.createElement('script');
 
