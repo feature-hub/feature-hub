@@ -1,4 +1,3 @@
-// @ts-check
 const ModuleFederationPlugin = require('webpack').container
   .ModuleFederationPlugin;
 
@@ -42,8 +41,7 @@ const configs = [
         filename: 'remoteEntry.js',
         name: 'featureHubGlobal',
         exposes: {
-          './featureAppDefinition':
-            './src/module-loader-federation/feature-app',
+          './featureAppDefinition': path.join(__dirname, './feature-app'),
         },
         shared: {
           react: {singleton: true},

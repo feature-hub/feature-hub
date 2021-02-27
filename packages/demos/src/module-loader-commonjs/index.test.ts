@@ -17,7 +17,10 @@ describe('integration test: "commonjs module loader"', () => {
   let server: Server;
 
   beforeAll(async () => {
-    server = await startServer(webpackConfigs, nodeIntegratorWebpackConfig);
+    server = await startServer(
+      webpackConfigs, // tslint:disable-next-line: no-any
+      nodeIntegratorWebpackConfig as any
+    );
 
     const {port} = server.address() as AddressInfo;
 

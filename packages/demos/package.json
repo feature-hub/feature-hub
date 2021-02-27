@@ -28,7 +28,6 @@
     "@types/pino": "^5.8.5",
     "@types/react-router": "^5.0.2",
     "@types/styled-components": "^5.1.4",
-    "babel-loader": "8.2.2",
     "bundle-loader": "^0.5.6",
     "copy-webpack-plugin": "^7.0.0",
     "css-loader": "^3.0.0",

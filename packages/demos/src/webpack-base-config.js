@@ -1,21 +1,13 @@
-// @ts-check
-
 const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 const {getPkgVersion} = require('./get-pkg-version');
 
-/**
- * @type {Partial<import('ts-loader').Options>}
- */
 const tsLoaderOptions = {
   projectReferences: true,
   onlyCompileBundledFiles: true,
 };
 
-/**
- * @type {webpack.Configuration}
- */
 const webpackBaseConfig = {
   devtool: false,
   mode: 'development',
@@ -51,7 +43,6 @@ const webpackBaseConfig = {
 
 /**
  * @param {string} dirname name of the directory that contains integrator.node.tsx
- * @return {webpack.Configuration}
  */
 const createNodeIntegratorWebpackConfig = (dirname) =>
   merge.merge(webpackBaseConfig, {

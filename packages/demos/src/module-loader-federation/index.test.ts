@@ -17,7 +17,7 @@ describe('integration test: "federation module loader"', () => {
 
   beforeAll(async () => {
     // tslint:disable-next-line: no-any
-    server = await startServer(webpackConfigs as any, undefined);
+    server = await startServer(webpackConfigs as any[]);
 
     const {port} = server.address() as AddressInfo;
 

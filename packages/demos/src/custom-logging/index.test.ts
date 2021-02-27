@@ -19,7 +19,11 @@ describe('integration test: "custom logging"', () => {
   let consoleMessages: ConsoleMessage[];
 
   beforeAll(async () => {
-    server = await startServer(webpackConfigs, nodeIntegratorWebpackConfig);
+    server = await startServer(
+      webpackConfigs,
+      // tslint:disable-next-line: no-any
+      nodeIntegratorWebpackConfig as any
+    );
     consoleMessages = [];
 
     page.on('console', consoleMessages.push.bind(consoleMessages));

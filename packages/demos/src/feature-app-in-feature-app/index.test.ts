@@ -18,7 +18,10 @@ describe('integration test: "Feature App in Feature App"', () => {
   let url: string;
 
   beforeAll(async () => {
-    server = await startServer(webpackConfigs, nodeIntegratorWebpackConfig);
+    server = await startServer(
+      webpackConfigs, // tslint:disable-next-line: no-any
+      nodeIntegratorWebpackConfig as any
+    );
 
     const {port} = server.address() as AddressInfo;
 
