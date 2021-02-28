@@ -4,6 +4,11 @@ import {
 } from '@feature-hub/async-ssr-manager';
 import {createFeatureHub} from '@feature-hub/core';
 import {
+  WebpackInitSharing,
+  WebpackShareScopes,
+  loadFederationModuleSsrFactory,
+} from '@feature-hub/module-loader-federation-cjs';
+import {
   Css,
   FeatureHubContextProvider,
   FeatureHubContextProviderValue,
@@ -12,28 +17,23 @@ import {
   SerializedStateManagerV1,
   serializedStateManagerDefinition,
 } from '@feature-hub/serialized-state-manager';
-import {
-  loadFederationModuleSsrFactory,
-  WebpackInitSharing,
-  WebpackShareScopes,
-} from '@feature-hub/module-loader-federation-cjs';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom/server';
-import {AppRendererOptions, AppRendererResult} from '../start-server';
+import {AppRendererOptions, AppRendererResult} from '../app-renderer';
 import {App} from './app';
 
 declare const __webpack_init_sharing__: WebpackInitSharing;
 declare const __webpack_share_scopes__: WebpackShareScopes;
 
-const moduleLoader = loadFederationModuleSsrFactory(
-  __webpack_init_sharing__,
-  __webpack_share_scopes__
-);
-
 export default async function renderApp({
   port,
 }: AppRendererOptions): Promise<AppRendererResult> {
   const asyncSsrManagerDefinition = defineAsyncSsrManager();
+
+  const moduleLoader = loadFederationModuleSsrFactory(
+    __webpack_init_sharing__,
+    __webpack_share_scopes__
+  );
 
   const {featureAppManager, featureServices} = createFeatureHub(
     'test:integrator',

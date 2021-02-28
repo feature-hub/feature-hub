@@ -4,7 +4,8 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "build:todomvc": "yarn webpack --config src/todomvc/webpack-config.js --mode production"
+    "build:todomvc": "yarn webpack --config src/todomvc/webpack-config.js --mode production",
+    "build:federation-ssr": "yarn webpack --config src/server-side-rendering-federation/webpack-config.node.js"
   },
   "dependencies": {
     "@babel/core": "7.12.10",

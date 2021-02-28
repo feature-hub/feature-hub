@@ -1,4 +1,3 @@
-// @ts-check
 const ModuleFederationPlugin = require('webpack').container
   .ModuleFederationPlugin;
 
@@ -9,109 +8,13 @@ const configs = [
   {
     entry: path.join(__dirname, './feature-app.tsx'),
     mode: 'development',
-    output: {
-      // filename: 'feature-app.umd.js',
-      // libraryTarget: 'umd',
-      publicPath: '/',
-    },
-    resolve: {
-      extensions: ['.ts', '.tsx', '.js'],
-    },
-    module: {
-      rules: [
-        {
-          test: /\.tsx?$/,
-          loader: 'babel-loader',
-          exclude: /node_modules/,
-          options: {
-            presets: ['@babel/preset-react', '@babel/preset-typescript'],
-          },
-        },
-        {
-          test: /\.css$/,
-          use: ['style-loader', 'css-loader'],
-        },
-        {
-          test: /\.(png|woff|woff2|eot|ttf|svg)$/,
-          use: 'url-loader',
-        },
-      ],
-    },
-    plugins: [
-      new ModuleFederationPlugin({
-        filename: 'feature-app.js',
-        name: 'featurehubGlobal',
-        exposes: {
-          './featureAppDefinition':
-            './src/module-loader-federation/feature-app',
-        },
-        shared: {
-          react: {singleton: true},
-          'react-dom': {singleton: true},
-        },
-      }),
-    ],
-  },
-  {
-    entry: path.join(__dirname, './feature-app.tsx'),
-    mode: 'development',
-    output: {
-      // filename: 'feature-app.umd.js',
-      // libraryTarget: 'umd',
-      publicPath: '/',
-    },
-    resolve: {
-      extensions: ['.ts', '.tsx', '.js'],
-    },
-    module: {
-      rules: [
-        {
-          test: /\.tsx?$/,
-          loader: 'babel-loader',
-          exclude: /node_modules/,
-          options: {
-            presets: ['@babel/preset-react', '@babel/preset-typescript'],
-          },
-        },
-        {
-          test: /\.css$/,
-          use: ['style-loader', 'css-loader'],
-        },
-        {
-          test: /\.(png|woff|woff2|eot|ttf|svg)$/,
-          use: 'url-loader',
-        },
-      ],
-    },
-    plugins: [
-      new ModuleFederationPlugin({
-        filename: 'feature-app-ssr.js',
-        library: {type: 'commonjs-module'},
-        name: 'featurehubGlobal',
-        exposes: {
-          './featureAppDefinition':
-            './src/module-loader-federation/feature-app',
-        },
-        shared: {
-          react: {singleton: true},
-          'react-dom': {singleton: true},
-        },
-      }),
-    ],
-  },
-  {
-    entry: path.join(__dirname, '../watch-demo-fed.ts'),
-    mode: 'production',
     target: 'node',
-    optimization: {
-      minimize: false,
-    },
-    devtool: 'source-map',
     output: {
-      filename: 'integrator.node.js',
+      filename: 'feature-app.commonjs.js',
+      //libraryTarget: 'commonjs2',
       publicPath: '/',
     },
-
+    externals: ['enhanced-resolve'],
     resolve: {
       extensions: ['.ts', '.tsx', '.js'],
     },
@@ -137,11 +40,15 @@ const configs = [
     },
     plugins: [
       new ModuleFederationPlugin({
-        name: 'integrator-node',
+        filename: 'remoteEntry.js',
+        name: 'featureHubGlobal',
+        exposes: {
+          './featureAppDefinition': path.join(__dirname, './feature-app'),
+        },
         library: {type: 'commonjs-module'},
         shared: {
-          react: {singleton: true, eager: true},
-          'react-dom': {singleton: true, eager: true},
+          react: {singleton: true},
+          'react-dom': {singleton: true},
         },
       }),
     ],

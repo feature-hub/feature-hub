@@ -36,10 +36,8 @@ function hasDefaultFunction(value) {
  */
 function loadNodeIntegrator(res, nodeIntegratorFilename) {
   try {
-    /** @type {import('webpack').InputFileSystem & import('webpack').OutputFileSystem} */
     const outputFileSystem = res.locals.webpack.devMiddleware.outputFileSystem;
 
-    /** @type {import('webpack').Stats.ToJsonOutput} */
     const {outputPath} = res.locals.webpack.devMiddleware.stats.toJson();
 
     if (!outputPath) {
@@ -50,6 +48,7 @@ function loadNodeIntegrator(res, nodeIntegratorFilename) {
       .readFileSync(outputFileSystem.join(outputPath, nodeIntegratorFilename))
       .toString();
 
+    // for debugging const evaluatedModule = require(outputPath + '/' + nodeIntegratorFilename);
     const evaluatedModule = evalNodeSource(source);
 
     return hasDefaultFunction(evaluatedModule)

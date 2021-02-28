@@ -10,7 +10,7 @@ export function App({port}: AppProps): JSX.Element {
     <FeatureAppLoader
       featureAppId="test:hello-world"
       src="feature-app.js"
-      serverSrc={port ? `http://localhost:${port}/feature-app-ssr.js` : ''}
+      serverSrc={port ? `http://localhost:${port}/remoteEntry.js` : ''}
       css={[
         {href: 'normalize.css'},
         {href: 'blueprint-icons.css'},

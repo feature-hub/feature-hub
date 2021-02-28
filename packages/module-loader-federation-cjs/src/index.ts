@@ -1,3 +1,5 @@
+import fetch from 'node-fetch';
+
 function loadComponent(
   container: GlobalScope,
   module: string,

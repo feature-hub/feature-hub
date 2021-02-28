@@ -10,6 +10,7 @@
     {"path": "./packages/module-loader-amd"},
     {"path": "./packages/module-loader-commonjs"},
     {"path": "./packages/module-loader-federation"},
+    {"path": "./packages/module-loader-federation-cjs"},
     {"path": "./packages/react"},
     {"path": "./packages/serialized-state-manager"},
     {"path": "./packages/server-request"},

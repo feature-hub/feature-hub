@@ -77,7 +77,7 @@ async function startServer(
   const app = express();
 
   for (const compiler of webpack(webpackConfigs).compilers) {
-    app.use(devMiddleware(compiler));
+    app.use(devMiddleware(compiler, {writeToDisk: true}));
   }
 
   const nodeIntegratorCompiler =
@@ -89,7 +89,12 @@ async function startServer(
     nodeIntegratorCompiler.options.output.filename;
 
   if (nodeIntegratorCompiler) {
-    app.use(devMiddleware(nodeIntegratorCompiler, {serverSideRender: true}));
+    app.use(
+      devMiddleware(nodeIntegratorCompiler, {
+        // TODO for debugging: writeToDisk: true,
+        serverSideRender: true,
+      })
+    );
   }
 
   app.get('/', async (req, res) => {

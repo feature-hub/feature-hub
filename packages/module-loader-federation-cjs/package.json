@@ -21,7 +21,11 @@
   "module": "lib/esm/index.js",
   "typings": "lib/cjs/index.d.ts",
   "dependencies": {
-    "@feature-hub/core": "^2.8.1"
+    "@feature-hub/core": "^2.8.1",
+    "node-fetch": "^2.6.0"
+  },
+  "devDependencies": {
+    "@types/node-fetch": "^2.3.7"
   },
   "publishConfig": {
     "access": "public"
