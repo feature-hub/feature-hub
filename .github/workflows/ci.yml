@@ -19,7 +19,7 @@ jobs:
       - name: Commitlint
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        uses: wagoid/commitlint-github-action@v2
+        uses: wagoid/commitlint-github-action@v3
 
   word-blacklist:
     runs-on: ubuntu-latest
