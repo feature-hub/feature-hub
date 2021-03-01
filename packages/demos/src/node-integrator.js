@@ -36,13 +36,15 @@ function hasDefaultFunction(value) {
  */
 function loadNodeIntegrator(res, nodeIntegratorFilename) {
   try {
-    /** @type {import('webpack').InputFileSystem & import('webpack').OutputFileSystem} */
+    /** @type {import('webpack').Compiler['outputFileSystem'] & import('fs')} */
     const outputFileSystem = res.locals.webpack.devMiddleware.outputFileSystem;
+    const statsJson = res.locals.webpack.devMiddleware.stats.toJson();
 
-    /** @type {import('webpack').Stats.ToJsonOutput} */
-    const {outputPath} = res.locals.webpack.devMiddleware.stats.toJson();
+    /** @type {string | undefined} */
+    const outputPath =
+      typeof statsJson === 'object' ? statsJson.outputPath : undefined;
 
-    if (!outputPath) {
+    if (!outputPath || !outputFileSystem.join) {
       return undefined;
     }
 

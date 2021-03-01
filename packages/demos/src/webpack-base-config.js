@@ -2,7 +2,7 @@
 
 const path = require('path');
 const webpack = require('webpack');
-const merge = require('webpack-merge');
+const {merge} = require('webpack-merge');
 const {getPkgVersion} = require('./get-pkg-version');
 
 /**
@@ -43,6 +43,7 @@ const webpackBaseConfig = {
   },
   plugins: [
     new webpack.DefinePlugin({
+      'process.env.BLUEPRINT_NAMESPACE': '""',
       'process.env.REACT_VERSION': JSON.stringify(getPkgVersion('react')),
       'process.env.FEATURE_HUB_REACT_VERSION': JSON.stringify(
         getPkgVersion('@feature-hub/react')
@@ -56,7 +57,7 @@ const webpackBaseConfig = {
  * @return {webpack.Configuration}
  */
 const createNodeIntegratorWebpackConfig = (dirname) =>
-  merge.smart(webpackBaseConfig, {
+  merge(webpackBaseConfig, {
     entry: path.join(dirname, './integrator.node.tsx'),
     output: {
       filename: 'integrator.node.js',

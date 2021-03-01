@@ -1,10 +1,8 @@
 // @ts-check
 const CopyPlugin = require('copy-webpack-plugin');
 const path = require('path');
-// @ts-ignore
-const postcssPresetEnv = require('postcss-preset-env');
 const webpack = require('webpack');
-const merge = require('webpack-merge');
+const {merge, mergeWithRules} = require('webpack-merge');
 const {webpackBaseConfig} = require('../webpack-base-config');
 
 const websiteBuildDirname = path.resolve(
@@ -16,7 +14,7 @@ const websiteBuildDirname = path.resolve(
  * @type {webpack.Configuration[]}
  */
 const configs = [
-  merge.smart(webpackBaseConfig, {
+  merge(webpackBaseConfig, {
     entry: path.join(__dirname, './header/index.ts'),
     externals: {
       react: 'react',
@@ -28,10 +26,12 @@ const configs = [
       publicPath: '/header',
     },
     plugins: [
-      new CopyPlugin([{from: path.join(__dirname, './header/index.css')}]),
+      new CopyPlugin({
+        patterns: [{from: path.join(__dirname, './header/index.css')}],
+      }),
     ],
   }),
-  merge.smart(webpackBaseConfig, {
+  merge(webpackBaseConfig, {
     entry: path.join(__dirname, './main/index.tsx'),
     externals: {
       react: 'react',
@@ -43,7 +43,14 @@ const configs = [
       publicPath: '/main',
     },
   }),
-  merge.smart(webpackBaseConfig, {
+  mergeWithRules({
+    module: {
+      rules: {
+        test: /** @type {import('webpack-merge').CustomizeRule.Match} */ ('match'),
+        use: /** @type {import('webpack-merge').CustomizeRule.Replace} */ ('replace'),
+      },
+    },
+  })(webpackBaseConfig, {
     entry: path.join(__dirname, './footer/index.tsx'),
     externals: {
       react: 'react',
@@ -70,12 +77,12 @@ const configs = [
                 sourceMap: true,
               },
             },
-
             {
               loader: 'postcss-loader',
               options: {
-                ident: 'postcss',
-                plugins: () => [postcssPresetEnv({stage: 0})],
+                postcssOptions: {
+                  plugins: [['postcss-preset-env']],
+                },
               },
             },
           ],
@@ -83,7 +90,7 @@ const configs = [
       ],
     },
   }),
-  merge.smart(webpackBaseConfig, {
+  merge(webpackBaseConfig, {
     entry: path.join(__dirname, './integrator.tsx'),
     output: {
       path: websiteBuildDirname,
@@ -91,10 +98,12 @@ const configs = [
       publicPath: '/',
     },
     plugins: [
-      new CopyPlugin([
-        path.join(__dirname, './index.css'),
-        path.join(__dirname, './index.html'),
-      ]),
+      new CopyPlugin({
+        patterns: [
+          path.join(__dirname, './index.css'),
+          path.join(__dirname, './index.html'),
+        ],
+      }),
     ],
   }),
 ];

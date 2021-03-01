@@ -1,13 +1,13 @@
 // @ts-check
 const path = require('path');
 const webpack = require('webpack');
-const merge = require('webpack-merge');
+const {merge} = require('webpack-merge');
 const {webpackBaseConfig} = require('../webpack-base-config');
 
 /**
  * @type {webpack.Configuration}
  */
-const featureAppConfig = merge.smart(webpackBaseConfig, {
+const featureAppConfig = merge(webpackBaseConfig, {
   entry: path.join(__dirname, './feature-app-outer.tsx'),
   externals: {
     react: 'react',
@@ -19,14 +19,14 @@ const featureAppConfig = merge.smart(webpackBaseConfig, {
  * @type {webpack.Configuration[]}
  */
 const configs = [
-  merge.smart(featureAppConfig, {
+  merge(featureAppConfig, {
     output: {
       filename: 'feature-app.umd.js',
       libraryTarget: 'umd',
       publicPath: '/',
     },
   }),
-  merge.smart(featureAppConfig, {
+  merge(featureAppConfig, {
     output: {
       filename: 'feature-app.commonjs.js',
       libraryTarget: 'commonjs2',
@@ -34,7 +34,7 @@ const configs = [
     },
     target: 'node',
   }),
-  merge.smart(webpackBaseConfig, {
+  merge(webpackBaseConfig, {
     entry: path.join(__dirname, './integrator.tsx'),
     output: {
       filename: 'integrator.js',
