@@ -91,12 +91,15 @@ async function startServer(
   if (nodeIntegratorCompiler) {
     app.use(
       devMiddleware(nodeIntegratorCompiler, {
-        // TODO for debugging: writeToDisk: true,
+        writeToDisk: true,
         serverSideRender: true,
       })
     );
   }
 
+  const cache = new Map();
+
+  let firstRender = true;
   app.get('/', async (req, res) => {
     try {
       const renderApp =
@@ -104,7 +107,8 @@ async function startServer(
         loadNodeIntegrator(res, nodeIntegratorFilename);
 
       if (renderApp) {
-        const renderResult = await renderApp({port, req});
+        const renderResult = await renderApp({port, req, cache});
+        firstRender = false;
 
         res.send(
           createDocumentHtml(`<main>${renderResult.html}</main>`, renderResult)

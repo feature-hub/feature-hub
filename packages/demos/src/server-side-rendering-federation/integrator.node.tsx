@@ -27,12 +27,18 @@ declare const __webpack_share_scopes__: WebpackShareScopes;
 
 export default async function renderApp({
   port,
+  cache,
 }: AppRendererOptions): Promise<AppRendererResult> {
   const asyncSsrManagerDefinition = defineAsyncSsrManager();
 
+  const shareScopeName = 'default';
+
+  await (__webpack_init_sharing__ as any)(shareScopeName);
+
   const moduleLoader = loadFederationModuleSsrFactory(
     __webpack_init_sharing__,
-    __webpack_share_scopes__
+    __webpack_share_scopes__,
+    {basePath: '/tmp', shareScopeName, cache}
   );
 
   const {featureAppManager, featureServices} = createFeatureHub(

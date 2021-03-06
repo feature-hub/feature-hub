@@ -24,6 +24,7 @@
     "verify:install": "git diff --exit-code yarn.lock",
     "preverify:sort-package-jsons": "yarn sort-package-jsons",
     "verify:sort-package-jsons": "git diff --exit-code package.json packages/*/package.json",
+    "build:demo": "yarn webpack --config packages/demos/src/server-side-rendering-federation/webpack-config.js --json=compilation-stats.json",
     "watch:compile": "yarn compile --watch",
     "watch:demo": "lerna exec --scope @feature-hub/demos -- node src/watch-demo.js",
     "watch:test": "yarn test --watch --no-coverage --no-verbose",

@@ -21,9 +21,13 @@
   "module": "lib/esm/index.js",
   "typings": "lib/cjs/index.d.ts",
   "dependencies": {
-    "@feature-hub/core": "^2.8.1"
+    "@feature-hub/core": "^2.8.1",
+    "lodash": "^4.17.21"
   },
   "publishConfig": {
     "access": "public"
+  },
+  "devDependencies": {
+    "yauzl": "^2.10.0"
   }
 }

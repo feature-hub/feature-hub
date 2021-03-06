@@ -9,13 +9,8 @@ export function App({port}: AppProps): JSX.Element {
   return (
     <FeatureAppLoader
       featureAppId="test:hello-world"
-      src="feature-app.js"
-      serverSrc={port ? `http://localhost:${port}/remoteEntry.js` : ''}
-      css={[
-        {href: 'normalize.css'},
-        {href: 'blueprint-icons.css'},
-        {href: 'blueprint.css'},
-      ]}
+      src="remoteEntry-client.js"
+      serverSrc={port ? `http://localhost:${port}/bundle.zip` : ''}
     />
   );
 }

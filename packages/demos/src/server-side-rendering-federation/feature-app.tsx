@@ -1,9 +1,9 @@
-import {Card, Text} from '@blueprintjs/core';
 import {AsyncSsrManagerV1} from '@feature-hub/async-ssr-manager';
 import {FeatureAppDefinition, FeatureServices} from '@feature-hub/core';
 import {ReactFeatureApp} from '@feature-hub/react';
 import {SerializedStateManagerV1} from '@feature-hub/serialized-state-manager';
 import * as React from 'react';
+import * as _ from 'lodash';
 
 interface Dependencies extends FeatureServices {
   readonly 's2:async-ssr-manager': AsyncSsrManagerV1 | undefined;
@@ -11,7 +11,7 @@ interface Dependencies extends FeatureServices {
 }
 
 async function fetchSubject(): Promise<string> {
-  return 'Universe';
+  return _.camelCase('Universal Rendering');
 }
 
 const featureAppDefinition: FeatureAppDefinition<
@@ -53,9 +53,9 @@ const featureAppDefinition: FeatureAppDefinition<
 
     return {
       render: () => (
-        <Card style={{margin: '20px'}}>
-          <Text>Hello, {subject}!</Text>
-        </Card>
+        <div>
+          <span>Hello, {subject}!</span>
+        </div>
       ),
     };
   },

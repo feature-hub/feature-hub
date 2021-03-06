@@ -22,7 +22,8 @@
   "typings": "lib/cjs/index.d.ts",
   "dependencies": {
     "@feature-hub/core": "^2.8.1",
-    "node-fetch": "^2.6.0"
+    "node-fetch": "^2.6.0",
+    "extract-zip": "^2.0.1"
   },
   "devDependencies": {
     "@types/node-fetch": "^2.3.7"

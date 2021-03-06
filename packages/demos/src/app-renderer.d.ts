@@ -4,6 +4,7 @@ import express from 'express';
 export interface AppRendererOptions {
   readonly port: number;
   readonly req: express.Request;
+  readonly cache: Map<string, unknown>;
 }
 
 export interface AppRendererResult {

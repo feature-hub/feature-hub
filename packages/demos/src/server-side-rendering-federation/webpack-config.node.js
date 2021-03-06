@@ -1,5 +1,7 @@
 const ModuleFederationPlugin = require('webpack').container
   .ModuleFederationPlugin;
+const ZipPlugin = require('zip-webpack-plugin');
+
 const path = require('path');
 const {createNodeIntegratorWebpackConfig} = require('../webpack-base-config');
 
@@ -16,6 +18,9 @@ const webpackConfigIntegrator = {
     extensions: ['.ts', '.tsx', '.js'],
   },
   target: 'node',
+  stats: {
+    assets: true,
+  },
   module: {
     rules: [
       {
@@ -40,10 +45,11 @@ const webpackConfigIntegrator = {
     new ModuleFederationPlugin({
       name: 'integrator.node',
       library: {type: 'commonjs-module'},
-      shared: {
+      shared: [],
+      /* {
         react: {singleton: true, eager: true},
         'react-dom': {singleton: true, eager: true},
-      },
+      },*/
     }),
   ],
 };

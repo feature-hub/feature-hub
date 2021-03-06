@@ -48,7 +48,7 @@ function loadNodeIntegrator(res, nodeIntegratorFilename) {
       .readFileSync(outputFileSystem.join(outputPath, nodeIntegratorFilename))
       .toString();
 
-    // for debugging const evaluatedModule = require(outputPath + '/' + nodeIntegratorFilename);
+    // TODO for debugging const evaluatedModule = require(outputPath + '/' + nodeIntegratorFilename);
     const evaluatedModule = evalNodeSource(source);
 
     return hasDefaultFunction(evaluatedModule)
