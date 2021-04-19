@@ -14,7 +14,7 @@
     "build:todomvc": "yarn webpack --config src/todomvc/webpack-config.js --mode production"
   },
   "dependencies": {
-    "@blueprintjs/core": "^3.10.0",
+    "@blueprintjs/core": "^3.43.0",
     "@feature-hub/async-ssr-manager": "^2.8.1",
     "@feature-hub/core": "^2.8.1",
     "@feature-hub/dom": "^2.8.1",
