@@ -29,7 +29,8 @@ function loadNodeIntegratorWebpackConfig() {
     config.devtool = 'source-map';
 
     return config;
-  } catch {
+  } catch (e) {
+    console.error('error when loading node ', e);
     return undefined;
   }
 }

@@ -87,12 +87,13 @@ async function startServer(
     nodeIntegratorCompiler &&
     nodeIntegratorCompiler.options.output &&
     nodeIntegratorCompiler.options.output.filename;
+  console.log('node integrator ', nodeIntegratorFilename);
 
   if (nodeIntegratorCompiler) {
     app.use(
       devMiddleware(nodeIntegratorCompiler, {
-        writeToDisk: true,
         serverSideRender: true,
+        writeToDisk: true,
       })
     );
   }
@@ -106,6 +107,7 @@ async function startServer(
         typeof nodeIntegratorFilename === 'string' &&
         loadNodeIntegrator(res, nodeIntegratorFilename);
 
+      console.log('renderApp', !!renderApp, nodeIntegratorFilename);
       if (renderApp) {
         const renderResult = await renderApp({port, req, cache});
         firstRender = false;
