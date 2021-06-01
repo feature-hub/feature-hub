@@ -55,7 +55,8 @@ function loadNodeIntegrator(res, nodeIntegratorFilename) {
       ? /** @type {import('./app-renderer').AppRenderer} */
         (evaluatedModule.default)
       : undefined;
-  } catch {
+  } catch (e) {
+    console.error('cannot load integrator', e);
     return undefined;
   }
 }

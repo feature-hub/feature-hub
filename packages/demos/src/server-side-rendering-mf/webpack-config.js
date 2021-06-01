@@ -95,12 +95,14 @@ const configs = [
   {
     entry: path.join(__dirname, './feature-app.tsx'),
     mode: 'development',
+    devtool: 'inline-source-map',
+    target: 'node',
     output: {
       // filename: 'feature-app.umd.js',
       // libraryTarget: 'umd',
       libraryTarget: 'commonjs-module',
       chunkLoading: 'async-http-node',
-      publicPath: '/',
+      publicPath: 'http://localhost:3000/',
     },
     resolve: {
       extensions: ['.ts', '.tsx', '.js'],

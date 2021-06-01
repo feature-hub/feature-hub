@@ -19,7 +19,7 @@ const featureAppDefinition: FeatureAppDefinition<
   Dependencies
 > = {
   dependencies: {
-    externals: {react: '^16.7.0'},
+    externals: {},
     featureServices: {'s2:serialized-state-manager': '^1.0.0'},
   },
 

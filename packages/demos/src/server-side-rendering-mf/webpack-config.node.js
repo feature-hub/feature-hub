@@ -6,7 +6,8 @@ const path = require('path');
 const config = {
   entry: path.join(__dirname, './integrator.node.tsx'),
   mode: 'development',
-
+  devtool: 'inline-source-map',
+  target: 'node',
   output: {
     libraryTarget: 'commonjs-module',
     chunkLoading: 'async-http-node',
@@ -43,8 +44,8 @@ const config = {
         type: 'commonjs-module',
       },
       shared: {
-        // react: {singleton: true, eager: true},
-        // 'react-dom': {singleton: true, eager: true},
+        react: {singleton: true, eager: true},
+        'react-dom': {singleton: true, eager: true},
       },
     }),
   ],

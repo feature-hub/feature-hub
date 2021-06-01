@@ -1,13 +1,16 @@
 import {ModuleLoader} from '@feature-hub/core';
 import fetch from 'node-fetch';
 
-function loadComponent(
+async function loadComponent(
   container: any,
-  options: FederationOptions,
+  _options: FederationOptions,
   webpackInitSharing: WebpackInitSharing,
   webpackShareScopes: WebpackShareScopes
-): () => Promise<unknown> {
-  return async () => {
+): Promise<unknown> {
+  console.log('container', container);
+
+  console.log('getmodule', container);
+  try {
     // Initializes the share scope. This fills it with known provided modules from this build and all remotes
     await webpackInitSharing('default');
     if (!container) {
@@ -16,11 +19,14 @@ function loadComponent(
     // Initialize the container, it may provide shared modules
     console.log('container', container);
     await container.init(webpackShareScopes.default);
-    const factory = await container.get(options.featureAppDefinitionImportName);
+    const factory = await container.get('./featureAppDefinition'); //options.featureAppDefinitionImportName);
     const Module = factory();
-
+    console.log('Module ', Object.keys(Module));
     return Module;
-  };
+  } catch (e) {
+    console.error('cannot load module', e);
+    throw e;
+  }
 }
 
 type SharedModules = unknown;
@@ -48,29 +54,35 @@ export function createModuleFederationSsrModuleLoader(
 ): ModuleLoader {
   console.log('create ssr module loader');
   return async (url: string): Promise<unknown> => {
-    console.log('fetch', url);
-    const response = await fetch(url);
-    const source = await response.text();
-    const mod = {exports: {}};
+    try {
+      console.log('fetch', url);
+      const response = await fetch(url);
+      const source = await response.text();
+      const mod = {exports: {}};
 
-    // tslint:disable-next-line:function-constructor
-    Function(
-      'module',
-      'exports',
-      'require',
-      `${source}
+      // tslint:disable-next-line:function-constructor
+      Function(
+        'module',
+        'exports',
+        'require',
+        `${source}
       //# sourceURL=${url}`
-    )(mod, mod.exports, (dep: string) =>
-      // tslint:disable-next-line:no-eval https://stackoverflow.com/a/41063795/10385541
-      eval('require')(dep)
-    );
-    return await loadComponent(
-      mod.exports,
-      {
-        featureAppDefinitionImportName: 'featureAppDefinition',
-      },
-      webpackInitSharing,
-      webpackShareScopes
-    );
+      )(mod, mod.exports, (dep: string) =>
+        // tslint:disable-next-line:no-eval https://stackoverflow.com/a/41063795/10385541
+        eval('require')(dep)
+      );
+      console.log('+++++++', Object.keys(mod.exports));
+      return await loadComponent(
+        mod.exports,
+        {
+          featureAppDefinitionImportName: 'featureAppDefinition',
+        },
+        webpackInitSharing,
+        webpackShareScopes
+      );
+    } catch (e) {
+      console.error('cannot load module', e);
+      throw e;
+    }
   };
 }
