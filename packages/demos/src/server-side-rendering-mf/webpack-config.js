@@ -93,7 +93,10 @@ const configs = [
     ],
   },*/
   {
-    entry: path.join(__dirname, './feature-app.tsx'),
+    entry: {
+      main: path.join(__dirname, './feature-app.tsx'),
+      featureHubGlobal: path.join(__dirname, './startup.js'),
+    },
     mode: 'development',
     devtool: 'inline-source-map',
     target: 'node',
@@ -102,7 +105,7 @@ const configs = [
       // libraryTarget: 'umd',
       libraryTarget: 'commonjs-module',
       chunkLoading: 'async-http-node',
-      publicPath: 'http://localhost:3000/',
+      publicPath: '',
     },
     resolve: {
       extensions: ['.ts', '.tsx', '.js'],

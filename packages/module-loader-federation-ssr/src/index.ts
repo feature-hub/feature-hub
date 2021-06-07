@@ -21,7 +21,7 @@ async function loadComponent(
     await container.init(webpackShareScopes.default);
     const factory = await container.get('./featureAppDefinition'); //options.featureAppDefinitionImportName);
     const Module = factory();
-    console.log('Module ', Object.keys(Module));
+
     return Module;
   } catch (e) {
     console.error('cannot load module', e);
@@ -52,7 +52,6 @@ export function createModuleFederationSsrModuleLoader(
   webpackInitSharing: WebpackInitSharing,
   webpackShareScopes: WebpackShareScopes
 ): ModuleLoader {
-  console.log('create ssr module loader');
   return async (url: string): Promise<unknown> => {
     try {
       console.log('fetch', url);
@@ -60,18 +59,24 @@ export function createModuleFederationSsrModuleLoader(
       const source = await response.text();
       const mod = {exports: {}};
 
+      const baseUrl = url.split('/').slice(0, -1).join('/');
       // tslint:disable-next-line:function-constructor
       Function(
         'module',
         'exports',
         'require',
+        'MyGlobalBaseUrl',
         `${source}
       //# sourceURL=${url}`
-      )(mod, mod.exports, (dep: string) =>
-        // tslint:disable-next-line:no-eval https://stackoverflow.com/a/41063795/10385541
-        eval('require')(dep)
+      )(
+        mod,
+        mod.exports,
+        (dep: string) =>
+          // tslint:disable-next-line:no-eval https://stackoverflow.com/a/41063795/10385541
+          eval('require')(dep),
+        baseUrl + '/'
       );
-      console.log('+++++++', Object.keys(mod.exports));
+
       return await loadComponent(
         mod.exports,
         {
