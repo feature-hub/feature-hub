@@ -14,6 +14,7 @@
     {"path": "../logger"},
     {"path": "../module-loader-amd"},
     {"path": "../module-loader-commonjs"},
+    {"path": "../module-loader-federation"},
     {"path": "../react"},
     {"path": "../serialized-state-manager"},
     {"path": "../server-request"}
