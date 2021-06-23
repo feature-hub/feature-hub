@@ -16,17 +16,14 @@ describe('integration test: "federation module loader"', () => {
   let server: Server;
 
   beforeAll(async () => {
-    // tslint:disable-next-line: no-any
-    server = await startServer(webpackConfigs as any[]);
+    server = await startServer(webpackConfigs);
 
     const {port} = server.address() as AddressInfo;
 
     await browser.goto(`http://localhost:${port}`, 120000);
   });
 
-  afterAll((done) => {
-    server.close(done);
-  });
+  afterAll((done) => server.close(done));
 
   it('loads the Feature App with module federation', async () => {
     await expect(page).toMatch('Hello, World!');
