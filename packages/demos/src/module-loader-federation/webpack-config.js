@@ -1,43 +1,20 @@
-const ModuleFederationPlugin = require('webpack').container
-  .ModuleFederationPlugin;
-
+// @ts-check
+const webpack = require('webpack');
+const {merge} = require('webpack-merge');
 const path = require('path');
-// const webpackBaseConfig = require('../webpack-base-config');
+const {webpackBaseConfig} = require('../webpack-base-config');
 
+/**
+ * @type {webpack.Configuration[]}
+ */
 const configs = [
-  {
+  merge(webpackBaseConfig, {
     entry: path.join(__dirname, './feature-app.tsx'),
-    mode: 'development',
     output: {
-      // filename: 'feature-app.umd.js',
-      // libraryTarget: 'umd',
       publicPath: '/',
     },
-    resolve: {
-      extensions: ['.ts', '.tsx', '.js'],
-    },
-    module: {
-      rules: [
-        {
-          test: /\.tsx?$/,
-          loader: 'babel-loader',
-          exclude: /node_modules/,
-          options: {
-            presets: ['@babel/preset-react', '@babel/preset-typescript'],
-          },
-        },
-        {
-          test: /\.css$/,
-          use: ['style-loader', 'css-loader'],
-        },
-        {
-          test: /\.(png|woff|woff2|eot|ttf|svg)$/,
-          use: 'url-loader',
-        },
-      ],
-    },
     plugins: [
-      new ModuleFederationPlugin({
+      new webpack.container.ModuleFederationPlugin({
         filename: 'remoteEntry.js',
         name: 'featureHubGlobal',
         exposes: {
@@ -49,40 +26,15 @@ const configs = [
         },
       }),
     ],
-  },
-  {
+  }),
+  merge(webpackBaseConfig, {
     entry: path.join(__dirname, './integrator.tsx'),
-    mode: 'development',
-
     output: {
       filename: 'integrator.js',
       publicPath: '/',
     },
-    resolve: {
-      extensions: ['.ts', '.tsx', '.js'],
-    },
-    module: {
-      rules: [
-        {
-          test: /\.tsx?$/,
-          loader: 'babel-loader',
-          exclude: /node_modules/,
-          options: {
-            presets: ['@babel/preset-react', '@babel/preset-typescript'],
-          },
-        },
-        {
-          test: /\.css$/,
-          use: ['style-loader', 'css-loader'],
-        },
-        {
-          test: /\.(png|woff|woff2|eot|ttf|svg)$/,
-          use: 'url-loader',
-        },
-      ],
-    },
     plugins: [
-      new ModuleFederationPlugin({
+      new webpack.container.ModuleFederationPlugin({
         name: 'integrator',
         shared: {
           react: {singleton: true, eager: true},
@@ -90,7 +42,7 @@ const configs = [
         },
       }),
     ],
-  },
+  }),
 ];
 
 module.exports = configs;
