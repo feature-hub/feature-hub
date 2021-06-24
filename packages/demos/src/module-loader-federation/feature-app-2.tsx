@@ -7,7 +7,7 @@ const featureAppDefinition: FeatureAppDefinition<ReactFeatureApp> = {
   create: () => ({
     render: () => (
       <Card style={{margin: '20px'}}>
-        <Text>Hello, World from Feature App 2!</Text>
+        <Text>Hello from Feature App 2!</Text>
       </Card>
     ),
   }),

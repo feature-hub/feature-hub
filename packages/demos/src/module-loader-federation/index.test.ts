@@ -26,6 +26,7 @@ describe('integration test: "federation module loader"', () => {
   afterAll((done) => server.close(done));
 
   it('loads the Feature App with module federation', async () => {
-    await expect(page).toMatch('Hello, World!');
+    await expect(page).toMatch('Hello from Feature App 1!');
+    await expect(page).toMatch('Hello from Feature App 2!');
   });
 });

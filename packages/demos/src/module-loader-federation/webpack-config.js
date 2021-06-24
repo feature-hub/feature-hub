@@ -23,7 +23,7 @@ const configs = [
         shared: {
           react: {singleton: true},
           'react-dom': {singleton: true},
-          // '@blueprintjs/core': {},
+          '@blueprintjs/core': {},
         },
       }),
     ],
@@ -43,7 +43,7 @@ const configs = [
         shared: {
           react: {singleton: true},
           'react-dom': {singleton: true},
-          // '@blueprintjs/core': {},
+          '@blueprintjs/core': {},
         },
       }),
     ],
