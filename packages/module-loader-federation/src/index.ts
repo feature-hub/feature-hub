@@ -22,6 +22,10 @@ declare const __webpack_share_scopes__: {
 type SharedModules = unknown;
 
 async function loadComponent(): Promise<unknown> {
+  // Initializing the default share scope is needed, in case the integrator has
+  // not declared any shared modules. If it has declared a shared module,
+  // __webpack_init_sharing__ will return early without executing any side
+  // effects.
   await __webpack_init_sharing__('default');
 
   const container = window.__feature_hub_feature_app_module_container__;
@@ -36,8 +40,8 @@ async function loadComponent(): Promise<unknown> {
 
   await container.init(__webpack_share_scopes__.default);
 
-  // container.get will be rejected when the module can not be found in the
-  // module map of the container.
+  // The container.get call will be rejected when the module can not be found in
+  // the module map of the container.
   const factory = await container.get('featureAppModule');
   const Module = factory();
 
