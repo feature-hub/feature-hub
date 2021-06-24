@@ -9,20 +9,41 @@ const {webpackBaseConfig} = require('../webpack-base-config');
  */
 const configs = [
   merge(webpackBaseConfig, {
-    entry: path.join(__dirname, './feature-app.tsx'),
+    entry: path.join(__dirname, './feature-app-1.tsx'),
     output: {
       publicPath: '/',
     },
     plugins: [
       new webpack.container.ModuleFederationPlugin({
-        filename: 'remoteEntry.js',
-        name: 'featureHubGlobal',
+        filename: 'remoteEntry-1.js',
+        name: '__feature_hub_feature_app_module_container__',
         exposes: {
-          './featureAppDefinition': path.join(__dirname, './feature-app'),
+          featureAppModule: path.join(__dirname, './feature-app-1'),
         },
         shared: {
           react: {singleton: true},
           'react-dom': {singleton: true},
+          // '@blueprintjs/core': {},
+        },
+      }),
+    ],
+  }),
+  merge(webpackBaseConfig, {
+    entry: path.join(__dirname, './feature-app-2.tsx'),
+    output: {
+      publicPath: '/',
+    },
+    plugins: [
+      new webpack.container.ModuleFederationPlugin({
+        filename: 'remoteEntry-2.js',
+        name: '__feature_hub_feature_app_module_container__',
+        exposes: {
+          featureAppModule: path.join(__dirname, './feature-app-2'),
+        },
+        shared: {
+          react: {singleton: true},
+          'react-dom': {singleton: true},
+          // '@blueprintjs/core': {},
         },
       }),
     ],

@@ -1,68 +1,50 @@
-import {loadFederationModuleFactory} from '..';
+import {loadFederatedModule} from '..';
 
-const webpackInitSharing = jest.fn();
-const webpackShareScopes = {default: {}};
+declare global {
+  interface Window {
+    __webpack_init_sharing__: (name: string) => Promise<void>;
+    __webpack_share_scopes__: {default: {}};
+  }
+}
 
 describe('load featureapp via webpack module federation', () => {
-  it('when a module is loaded successfully', async () => {
-    const featureAppDefinition = {};
-    const loadModule = loadFederationModuleFactory(
-      webpackInitSharing,
-      webpackShareScopes
-    );
-    const url = 'featureapp.js';
-    const modulePromise = loadModule(url);
+  beforeEach(() => {
+    window.__webpack_init_sharing__ = jest.fn();
+    window.__webpack_share_scopes__ = {default: {}};
+  });
 
-    // start simulation of script loading
+  it('returns the feature app module when the module is loaded successfully', async () => {
+    const featureAppModule = {};
+    const modulePromise = loadFederatedModule('feature-app.js');
     const script = document.querySelector('head script');
-    // set container to global variable
 
-    // tslint:disable-next-line:no-any
-    (window as any).featureHubGlobal = {
+    window.__feature_hub_feature_app_module_container__ = {
       init: jest.fn(),
-      get: () => Promise.resolve(() => featureAppDefinition),
+      get: () => Promise.resolve(() => featureAppModule),
     };
-    // dispatch load event
+
     script?.dispatchEvent(new Event('load'));
-    // end simulation
 
     const module = await modulePromise;
-    expect(module).toEqual(featureAppDefinition);
+    expect(module).toEqual(featureAppModule);
   });
 
-  it('when a module cannot be loaded', () => {
-    const loadModule = loadFederationModuleFactory(
-      webpackInitSharing,
-      webpackShareScopes
-    );
-    const url = 'featureapp.js';
-    const modulePromise = loadModule(url);
-
-    // start simulation of script loading
+  it('rejects when the module cannot be loaded', async () => {
+    const modulePromise = loadFederatedModule('feature-app.js');
     const script = document.querySelector('head script');
-    // dispatch load event
+
     script?.dispatchEvent(new Event('error'));
-    // end simulation
 
-    // tslint:disable-next-line:no-floating-promises
-    expect(modulePromise).rejects.toThrow();
+    return expect(modulePromise).rejects.toThrowError();
   });
 
-  it('when a module cannot be loaded because the global variable is not set', () => {
-    const loadModule = loadFederationModuleFactory(
-      webpackInitSharing,
-      webpackShareScopes
-    );
+  it('rejects when __feature_hub_feature_app_module_container__ is not defined', async () => {
     const url = 'featureapp.js';
-    const modulePromise = loadModule(url);
-
-    // start simulation of script loading
+    const modulePromise = loadFederatedModule(url);
     const script = document.querySelector('head script');
-    // dispatch load event
-    script?.dispatchEvent(new Event('load'));
-    // end simulation
 
-    // tslint:disable-next-line:no-floating-promises
-    expect(modulePromise).rejects.toThrow();
+    script?.dispatchEvent(new Event('load'));
+
+    return expect(modulePromise).rejects.toThrowError();
   });
 });

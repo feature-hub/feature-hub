@@ -1,57 +1,50 @@
 import {ModuleLoader} from '@feature-hub/core';
 
-function loadComponent(
-  options: FederationOptions,
-  webpackInitSharing: WebpackInitSharing,
-  webpackShareScopes: WebpackShareScopes
-): () => Promise<unknown> {
-  return async () => {
-    // Initializes the share scope. This fills it with known provided modules from this build and all remotes
-    await webpackInitSharing('default');
-    const container = window[options.globalScopeName]; // or get the container somewhere else
-    if (!container) {
-      throw new Error(
-        'cannot find container for scope ' + options.globalScopeName
-      );
-    }
-    window[options.globalScopeName] = undefined;
-    // Initialize the container, it may provide shared modules
-    await container.init(webpackShareScopes.default);
-    const factory = await container.get(options.featureAppDefinitionImportName);
-    const Module = factory();
-
-    return Module;
-  };
-}
-
-declare var window: {
-  [key: string]: GlobalScope | undefined;
-};
-
-type SharedModules = unknown;
-
-export type WebpackInitSharing = (name: string) => Promise<void>;
-export interface WebpackShareScopes {
-  default: SharedModules;
-}
-export interface GlobalScope {
+interface GlobalScope {
   get: (module: string) => Promise<() => unknown>;
   init: (sharedModules: SharedModules) => Promise<void>;
 }
 
-export interface FederationOptions {
-  globalScopeName: string;
-  featureAppDefinitionImportName: string;
+declare global {
+  interface Window {
+    __feature_hub_feature_app_module_container__: GlobalScope | undefined;
+  }
 }
 
-export const loadFederationModuleFactory = (
-  webpackInitSharing: WebpackInitSharing,
-  webpackShareScopes: WebpackShareScopes,
-  options: FederationOptions = {
-    featureAppDefinitionImportName: './featureAppDefinition',
-    globalScopeName: 'featureHubGlobal',
+// Will be replaced by Webpack with a custom property of __webpack_require__.
+declare const __webpack_init_sharing__: (name: string) => Promise<void>;
+
+// Will be replaced by Webpack with a custom property of __webpack_require__.
+declare const __webpack_share_scopes__: {
+  default: SharedModules;
+};
+
+type SharedModules = unknown;
+
+async function loadComponent(): Promise<unknown> {
+  await __webpack_init_sharing__('default');
+
+  const container = window.__feature_hub_feature_app_module_container__;
+
+  if (!container) {
+    throw new Error(
+      `The name in the ModuleFederationPlugin must be "__feature_hub_feature_app_module_container__".`
+    );
   }
-): ModuleLoader => async (url: string) =>
+
+  window.__feature_hub_feature_app_module_container__ = undefined;
+
+  await container.init(__webpack_share_scopes__.default);
+
+  // container.get will be rejected when the module can not be found in the
+  // module map of the container.
+  const factory = await container.get('featureAppModule');
+  const Module = factory();
+
+  return Module;
+}
+
+export const loadFederatedModule: ModuleLoader = async (url: string) =>
   new Promise((resolve, reject) => {
     const element = document.createElement('script');
 
@@ -60,15 +53,13 @@ export const loadFederationModuleFactory = (
     element.async = true;
 
     element.onload = () => {
-      console.log(`Dynamic Script Loaded: ${url}`);
-      loadComponent(options, webpackInitSharing, webpackShareScopes)()
-        .then(resolve)
-        .catch(reject);
+      loadComponent().then(resolve).catch(reject);
+      document.head.removeChild(element);
     };
 
     element.onerror = () => {
-      console.error(`Dynamic Script Error: ${url}`);
-      reject(`Dynamic Script Error: ${url}`);
+      reject(new Error('Could not load federated module.'));
+      document.head.removeChild(element);
     };
 
     document.head.appendChild(element);
