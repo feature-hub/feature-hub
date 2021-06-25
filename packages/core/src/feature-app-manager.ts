@@ -60,7 +60,10 @@ export interface FeatureAppDefinition<
   create(env: FeatureAppEnvironment<TFeatureServices, TConfig>): TFeatureApp;
 }
 
-export type ModuleLoader = (url: string) => Promise<unknown>;
+export type ModuleLoader = (
+  url: string,
+  moduleType?: string
+) => Promise<unknown>;
 
 export interface FeatureAppScope<TFeatureApp> {
   readonly featureApp: TFeatureApp;
@@ -135,7 +138,6 @@ export interface FeatureAppManagerOptions {
   readonly logger?: Logger;
 }
 
-type FeatureAppModuleUrl = string;
 type FeatureAppId = string;
 
 interface FeatureAppRetainer<TFeatureApp> {
@@ -149,7 +151,7 @@ interface FeatureAppRetainer<TFeatureApp> {
  */
 export class FeatureAppManager {
   private readonly asyncFeatureAppDefinitions = new Map<
-    FeatureAppModuleUrl,
+    string,
     AsyncValue<FeatureAppDefinition<unknown>>
   >();
 
@@ -187,14 +189,19 @@ export class FeatureAppManager {
    * as default.
    */
   public getAsyncFeatureAppDefinition(
-    url: string
+    url: string,
+    moduleType?: string
   ): AsyncValue<FeatureAppDefinition<unknown>> {
-    let asyncFeatureAppDefinition = this.asyncFeatureAppDefinitions.get(url);
+    const key = `${url}${moduleType}`;
+    let asyncFeatureAppDefinition = this.asyncFeatureAppDefinitions.get(key);
 
     if (!asyncFeatureAppDefinition) {
-      asyncFeatureAppDefinition = this.createAsyncFeatureAppDefinition(url);
+      asyncFeatureAppDefinition = this.createAsyncFeatureAppDefinition(
+        url,
+        moduleType
+      );
 
-      this.asyncFeatureAppDefinitions.set(url, asyncFeatureAppDefinition);
+      this.asyncFeatureAppDefinitions.set(key, asyncFeatureAppDefinition);
     }
 
     return asyncFeatureAppDefinition;
@@ -276,7 +283,8 @@ export class FeatureAppManager {
   }
 
   private createAsyncFeatureAppDefinition(
-    url: string
+    url: string,
+    moduleType?: string
   ): AsyncValue<FeatureAppDefinition<unknown>> {
     const {moduleLoader: loadModule} = this.options;
 
@@ -285,7 +293,7 @@ export class FeatureAppManager {
     }
 
     return new AsyncValue(
-      loadModule(url).then((featureAppModule) => {
+      loadModule(url, moduleType).then((featureAppModule) => {
         if (!isFeatureAppModule(featureAppModule)) {
           throw new Error(
             `The Feature App module at the url ${JSON.stringify(

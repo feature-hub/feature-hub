@@ -89,6 +89,72 @@ describe('FeatureAppManager', () => {
 
       expect(asyncFeatureAppDefinition.value).toBe(featureAppDefinition);
       expect(asyncFeatureAppDefinition.error).toBeUndefined();
+      expect(featureAppDefinition).toBe(mockFeatureAppDefinition);
+    });
+
+    describe('with a custom module loader that handles multiple module types', () => {
+      let mockFeatureAppDefinitionA: FeatureAppDefinition<unknown>;
+      let mockFeatureAppDefinitionB: FeatureAppDefinition<unknown>;
+      let mockFeatureAppModuleA: FeatureAppModule | undefined;
+      let mockFeatureAppModuleB: FeatureAppModule | undefined;
+
+      beforeEach(() => {
+        mockFeatureAppDefinitionA = {create: mockFeatureAppCreate};
+        mockFeatureAppDefinitionB = {create: mockFeatureAppCreate};
+        mockFeatureAppModuleA = {default: mockFeatureAppDefinitionA};
+        mockFeatureAppModuleB = {default: mockFeatureAppDefinitionB};
+
+        featureAppManager = new FeatureAppManager(mockFeatureServiceRegistry, {
+          logger,
+          moduleLoader: async (_url, moduleType) =>
+            moduleType === 'a'
+              ? mockFeatureAppModuleA
+              : moduleType === 'b'
+              ? mockFeatureAppModuleB
+              : undefined,
+        });
+      });
+
+      it('returns an async value containing the Feature App definition for the correct module type', async () => {
+        // Intentionally used for both module types to show that this is handled
+        // correctly by the Feature App Manager.
+        const url = '/example.js';
+
+        const asyncFeatureAppDefinitionA = featureAppManager.getAsyncFeatureAppDefinition(
+          url,
+          'a'
+        );
+
+        const featureAppDefinitionA = await asyncFeatureAppDefinitionA.promise;
+
+        expect(featureAppDefinitionA).toBe(mockFeatureAppDefinitionA);
+
+        const asyncFeatureAppDefinitionB = featureAppManager.getAsyncFeatureAppDefinition(
+          url,
+          'b'
+        );
+
+        const featureAppDefinitionB = await asyncFeatureAppDefinitionB.promise;
+
+        expect(featureAppDefinitionB).toBe(mockFeatureAppDefinitionB);
+      });
+
+      it('returns an async value containing an error for an unknown module type', async () => {
+        const expectedError = new Error(
+          'The Feature App module at the url "/example.js" is invalid. A Feature App module must have a Feature App definition as default export. A Feature App definition is an object with at least a `create` method.'
+        );
+
+        await expect(
+          featureAppManager.getAsyncFeatureAppDefinition('/example.js').promise
+        ).rejects.toEqual(expectedError);
+
+        await expect(
+          featureAppManager.getAsyncFeatureAppDefinition(
+            '/example.js',
+            'unknown'
+          ).promise
+        ).rejects.toEqual(expectedError);
+      });
     });
 
     describe.each([

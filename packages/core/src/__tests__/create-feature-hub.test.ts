@@ -69,9 +69,9 @@ describe('createFeatureHub()', () => {
 
         const url = 'http://example.com/test.js';
 
-        featureAppManager.getAsyncFeatureAppDefinition(url);
+        featureAppManager.getAsyncFeatureAppDefinition(url, 'a');
 
-        expect(mockModuleLoader).toHaveBeenCalledWith(url);
+        expect(mockModuleLoader).toHaveBeenCalledWith(url, 'a');
       });
     });
   });
