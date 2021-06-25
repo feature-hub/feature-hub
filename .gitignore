@@ -11,4 +11,3 @@ packages/website/i18n
 todo.tasks
 yarn-error.log
 tsconfig.tsbuildinfo
-dist
