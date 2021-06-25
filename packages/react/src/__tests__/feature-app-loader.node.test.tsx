@@ -112,7 +112,7 @@ describe('FeatureAppLoader (on Node.js)', () => {
       );
 
       expect(mockGetAsyncFeatureAppDefinition.mock.calls).toEqual([
-        ['example-node.js'],
+        ['example-node.js', undefined],
       ]);
     });
 
@@ -128,8 +128,23 @@ describe('FeatureAppLoader (on Node.js)', () => {
         );
 
         expect(mockGetAsyncFeatureAppDefinition.mock.calls).toEqual([
-          ['http://example.com/example-node.js'],
+          ['http://example.com/example-node.js', undefined],
         ]);
+      });
+
+      it('adds the prepended src URL for hydration', () => {
+        renderWithFeatureHubContext(
+          <FeatureAppLoader
+            featureAppId="testId"
+            baseUrl="http://example.com"
+            src="example.js"
+            serverSrc="example-node.js"
+          />
+        );
+
+        expect(mockAddUrlForHydration).toHaveBeenCalledWith(
+          'http://example.com/example.js'
+        );
       });
     });
 
@@ -159,20 +174,21 @@ describe('FeatureAppLoader (on Node.js)', () => {
       expect(mockAddUrlForHydration).toHaveBeenCalledWith('example.js');
     });
 
-    describe('with a baseUrl', () => {
-      it('adds the prepended src URL for hydration', () => {
+    describe('with a moduleType prop', () => {
+      it('calls getAsyncFeatureAppDefinition with the given src and moduleType', () => {
         renderWithFeatureHubContext(
           <FeatureAppLoader
             featureAppId="testId"
-            baseUrl="http://example.com"
             src="example.js"
             serverSrc="example-node.js"
+            moduleType="a"
+            serverModuleType="b"
           />
         );
 
-        expect(mockAddUrlForHydration).toHaveBeenCalledWith(
-          'http://example.com/example.js'
-        );
+        expect(mockGetAsyncFeatureAppDefinition.mock.calls).toEqual([
+          ['example-node.js', 'b'],
+        ]);
       });
     });
 
