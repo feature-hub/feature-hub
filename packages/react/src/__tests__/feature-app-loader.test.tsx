@@ -256,7 +256,7 @@ describe('FeatureAppLoader', () => {
       );
 
       expect(mockGetAsyncFeatureAppDefinition.mock.calls).toEqual([
-        ['example.js'],
+        ['example.js', undefined],
       ]);
     });
 
@@ -271,7 +271,7 @@ describe('FeatureAppLoader', () => {
         );
 
         expect(mockGetAsyncFeatureAppDefinition.mock.calls).toEqual([
-          ['/base/example.js'],
+          ['/base/example.js', undefined],
         ]);
       });
     });
@@ -287,7 +287,24 @@ describe('FeatureAppLoader', () => {
         );
 
         expect(mockGetAsyncFeatureAppDefinition.mock.calls).toEqual([
-          ['http://example.com/foo.js'],
+          ['http://example.com/foo.js', undefined],
+        ]);
+      });
+    });
+
+    describe('with a moduleType', () => {
+      it('calls getAsyncFeatureAppDefinition with the given src and moduleType', () => {
+        renderWithFeatureHubContext(
+          <FeatureAppLoader
+            featureAppId="testId"
+            src="example.js"
+            moduleType="a"
+            serverModuleType="b"
+          />
+        );
+
+        expect(mockGetAsyncFeatureAppDefinition.mock.calls).toEqual([
+          ['example.js', 'a'],
         ]);
       });
     });
@@ -729,8 +746,8 @@ describe('FeatureAppLoader', () => {
       );
 
       expect(mockGetAsyncFeatureAppDefinition.mock.calls).toEqual([
-        ['example.js'],
-        ['example.js'],
+        ['example.js', undefined],
+        ['example.js', undefined],
       ]);
     });
 
@@ -745,8 +762,8 @@ describe('FeatureAppLoader', () => {
         );
 
         expect(mockGetAsyncFeatureAppDefinition.mock.calls).toEqual([
-          ['/base/example.js'],
-          ['/base/example.js'],
+          ['/base/example.js', undefined],
+          ['/base/example.js', undefined],
         ]);
       });
     });
@@ -762,8 +779,26 @@ describe('FeatureAppLoader', () => {
         );
 
         expect(mockGetAsyncFeatureAppDefinition.mock.calls).toEqual([
-          ['http://example.com/foo.js'],
-          ['http://example.com/foo.js'],
+          ['http://example.com/foo.js', undefined],
+          ['http://example.com/foo.js', undefined],
+        ]);
+      });
+    });
+
+    describe('with a moduleType prop', () => {
+      it('calls getAsyncFeatureAppDefinition with the given src and moduleType', () => {
+        renderWithFeatureHubContext(
+          <FeatureAppLoader
+            featureAppId="testId"
+            src="example.js"
+            moduleType="a"
+            serverModuleType="b"
+          />
+        );
+
+        expect(mockGetAsyncFeatureAppDefinition.mock.calls).toEqual([
+          ['example.js', 'a'],
+          ['example.js', 'a'],
         ]);
       });
     });

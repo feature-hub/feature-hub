@@ -44,12 +44,16 @@ export interface FeatureAppLoaderProps<TConfig = unknown> {
    */
   readonly src: string;
 
+  readonly moduleType?: string;
+
   /**
    * The URL of the Feature App's server module bundle. If [[baseUrl]] is
    * specified, it will be prepended, unless `serverSrc` is an absolute URL.
    * Either [[baseUrl]] or `serverSrc` must be an absolute URL.
    */
   readonly serverSrc?: string;
+
+  readonly serverModuleType?: string;
 
   /**
    * A list of stylesheets to be added to the document. If [[baseUrl]] is
@@ -127,9 +131,12 @@ class InternalFeatureAppLoader<TConfig = unknown> extends React.PureComponent<
       asyncSsrManager,
       addUrlForHydration,
       addStylesheetsForSsr,
+      moduleType: clientModuleType,
+      serverModuleType,
     } = props;
 
     const src = inBrowser ? clientSrc : serverSrc;
+    const moduleType = inBrowser ? clientModuleType : serverModuleType;
 
     if (!src) {
       if (inBrowser) {
@@ -157,7 +164,7 @@ class InternalFeatureAppLoader<TConfig = unknown> extends React.PureComponent<
       error,
       promise: loadingPromise,
       value: featureAppDefinition,
-    } = featureAppManager.getAsyncFeatureAppDefinition(url);
+    } = featureAppManager.getAsyncFeatureAppDefinition(url, moduleType);
 
     if (error) {
       this.handleError(error);
@@ -179,11 +186,12 @@ class InternalFeatureAppLoader<TConfig = unknown> extends React.PureComponent<
       return;
     }
 
-    const {baseUrl, featureAppManager, src} = this.props;
+    const {baseUrl, featureAppManager, src, moduleType} = this.props;
 
     try {
       const featureAppDefinition = await featureAppManager.getAsyncFeatureAppDefinition(
-        prependBaseUrl(baseUrl, src)
+        prependBaseUrl(baseUrl, src),
+        moduleType
       ).promise;
 
       if (this.mounted) {

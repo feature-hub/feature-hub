@@ -11,21 +11,13 @@ const configs = [
   merge(webpackBaseConfig, {
     entry: path.join(__dirname, './feature-app-1.tsx'),
     output: {
+      filename: 'feature-app-1.umd.js',
+      libraryTarget: 'umd',
       publicPath: '/',
     },
-    plugins: [
-      new webpack.container.ModuleFederationPlugin({
-        filename: 'feature-app-1.federated.js',
-        name: '__feature_hub_feature_app_module_container__',
-        exposes: {
-          featureAppModule: path.join(__dirname, './feature-app-1'),
-        },
-        shared: {
-          react: {singleton: true},
-          '@blueprintjs/core': {},
-        },
-      }),
-    ],
+    externals: {
+      react: 'react',
+    },
   }),
   merge(webpackBaseConfig, {
     entry: path.join(__dirname, './feature-app-2.tsx'),
@@ -41,7 +33,6 @@ const configs = [
         },
         shared: {
           react: {singleton: true},
-          '@blueprintjs/core': {},
         },
       }),
     ],
