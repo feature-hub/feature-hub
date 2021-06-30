@@ -54,7 +54,7 @@
     "react-is": "^16.8.6",
     "react-media": "^1.9.2",
     "react-router": "^5.0.1",
-    "style-loader": "^2.0.0",
+    "style-loader": "^3.0.0",
     "styled-components": "^5.2.0",
     "ts-loader": "^8.0.17",
     "url-loader": "^4.1.1",
