@@ -22,8 +22,8 @@ npm install @feature-hub/logger
 
 ---
 
-Copyright (c) 2019-2021 SinnerSchrader Deutschland GmbH. Released under the terms of
-the [MIT License][license].
+Copyright (c) 2019-2021 SinnerSchrader Deutschland GmbH. Released under the
+terms of the [MIT License][license].
 
 [api]: https://feature-hub.io/@feature-hub/logger/
 [api-badge]:
