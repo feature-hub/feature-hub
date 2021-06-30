@@ -19,7 +19,7 @@ Now run one of the following demos:
 Demonstrates:
 
 - how the AMD module loader can be provided to the `FeatureAppManager` so that
-  Feature Apps that are deployed as AMD bundles can be loaded on the client
+  Feature Apps that are deployed as AMD bundles can be loaded in the client
 
 ```sh
 yarn watch:demo module-loader-amd
@@ -35,6 +35,34 @@ Demonstrates:
 
 ```sh
 yarn watch:demo module-loader-commonjs
+```
+
+### [Webpack Module Federation Loader](src/module-loader-federation)
+
+Demonstrates:
+
+- how the Module Federation loader can be provided to the `FeatureAppManager` so
+  that Feature Apps that are deployed as federated modules can be loaded in the
+  client
+- how libraries can be shared by the Integrator to be consumed by the Feature
+  Apps
+- how Feature Apps can share libraries with each other that are not provided by
+  the Integrator
+
+```sh
+yarn watch:demo module-loader-federation
+```
+
+### [Multiple Module Loaders](src/module-loader-multiple)
+
+Demonstrates:
+
+- how multiple module loaders can be provided to the `FeatureAppManager` so that
+  Feature Apps that are deployed as federated or AMD modules can be loaded
+  simultaneously in the client
+
+```sh
+yarn watch:demo module-loader-multiple
 ```
 
 ### [Feature App in Feature App](src/feature-app-in-feature-app)
@@ -65,7 +93,7 @@ yarn watch:demo history-service
 
 Demonstrates:
 
-- how the Async SSR Manager can be used to manage aysnchronous server-side
+- how the Async SSR Manager can be used to manage asynchronous server-side
   rendering with React
 - how the Serialized State Manager can be used to transfer the state of
   server-rendered Feature Apps to the client
@@ -138,7 +166,7 @@ yarn watch:demo advanced-routing
 
 ---
 
-Copyright (c) 2018-2019 SinnerSchrader Deutschland GmbH. Released under the
+Copyright (c) 2018-2021 SinnerSchrader Deutschland GmbH. Released under the
 terms of the [MIT License][license].
 
 [license]: https://github.com/sinnerschrader/feature-hub/blob/master/LICENSE

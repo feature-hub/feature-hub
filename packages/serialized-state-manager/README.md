@@ -22,8 +22,8 @@ npm install @feature-hub/serialized-state-manager
 
 ---
 
-Copyright (c) 2019 SinnerSchrader Deutschland GmbH. Released under the terms of
-the [MIT License][license].
+Copyright (c) 2019-2021 SinnerSchrader Deutschland GmbH. Released under the
+terms of the [MIT License][license].
 
 [api]: https://feature-hub.io/@feature-hub/serialized-state-manager/
 [api-badge]:
