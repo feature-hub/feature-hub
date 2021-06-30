@@ -48,7 +48,7 @@
     "@types/jest-environment-puppeteer": "^4.0.0",
     "@types/node": "^12.x.x",
     "@types/puppeteer": "^1.10.2",
-    "@types/react": "^16.7.6",
+    "@types/react": "^17.0.0",
     "@types/react-dom": "^16.0.11",
     "babel-jest": "^26.6.3",
     "cheerio": "^1.0.0-rc.2",
