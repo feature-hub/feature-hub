@@ -21,7 +21,7 @@ npm install @feature-hub/dom
 
 ---
 
-Copyright (c) 2018-2019 SinnerSchrader Deutschland GmbH. Released under the
+Copyright (c) 2018-2021 SinnerSchrader Deutschland GmbH. Released under the
 terms of the [MIT License][license].
 
 [api]: https://feature-hub.io/@feature-hub/dom/

@@ -138,7 +138,7 @@ yarn watch:demo advanced-routing
 
 ---
 
-Copyright (c) 2018-2019 SinnerSchrader Deutschland GmbH. Released under the
+Copyright (c) 2018-2021 SinnerSchrader Deutschland GmbH. Released under the
 terms of the [MIT License][license].
 
 [license]: https://github.com/sinnerschrader/feature-hub/blob/master/LICENSE
