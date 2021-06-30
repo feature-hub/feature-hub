@@ -28,11 +28,11 @@
   "devDependencies": {
     "@types/react-test-renderer": "^16.0.3",
     "@types/url-join": "^4.0.0",
-    "react": "^16.8.6",
-    "react-test-renderer": "^16.7.0"
+    "react": "^17.0.0",
+    "react-test-renderer": "^17.0.0"
   },
   "peerDependencies": {
-    "react": "^16.3.0"
+    "react": "^17.0.0"
   },
   "publishConfig": {
     "access": "public"

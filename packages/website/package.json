@@ -4,7 +4,7 @@
   "private": true,
   "license": "MIT",
   "dependencies": {
-    "react": "^16.8.6"
+    "react": "^17.0.0"
   },
   "devDependencies": {
     "docusaurus": "^1.6.2"
