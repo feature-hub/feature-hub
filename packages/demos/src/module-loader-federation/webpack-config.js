@@ -11,11 +11,11 @@ const configs = [
   merge(webpackBaseConfig, {
     entry: {},
     output: {
+      filename: 'feature-app-1.federated.js',
       publicPath: '/',
     },
     plugins: [
       new webpack.container.ModuleFederationPlugin({
-        filename: 'feature-app-1.federated.js',
         name: '__feature_hub_feature_app_module_container__',
         exposes: {
           featureAppModule: path.join(__dirname, './feature-app-1'),
@@ -30,11 +30,11 @@ const configs = [
   merge(webpackBaseConfig, {
     entry: {},
     output: {
+      filename: 'feature-app-2.federated.js',
       publicPath: '/',
     },
     plugins: [
       new webpack.container.ModuleFederationPlugin({
-        filename: 'feature-app-2.federated.js',
         name: '__feature_hub_feature_app_module_container__',
         exposes: {
           featureAppModule: path.join(__dirname, './feature-app-2'),
@@ -54,7 +54,6 @@ const configs = [
     },
     plugins: [
       new webpack.container.ModuleFederationPlugin({
-        name: 'integrator',
         shared: {
           react: {singleton: true, eager: true},
         },

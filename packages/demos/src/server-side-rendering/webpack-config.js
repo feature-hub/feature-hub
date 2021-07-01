@@ -23,11 +23,11 @@ const configs = [
   merge(webpackBaseConfig, {
     entry: {},
     output: {
+      filename: 'feature-app.federated.js',
       publicPath: '/',
     },
     plugins: [
       new webpack.container.ModuleFederationPlugin({
-        filename: 'feature-app.federated.js',
         name: '__feature_hub_feature_app_module_container__',
         exposes: {
           featureAppModule: path.join(__dirname, './feature-app'),
@@ -57,6 +57,11 @@ const configs = [
       publicPath: '/',
     },
     plugins: [
+      new webpack.container.ModuleFederationPlugin({
+        shared: {
+          react: {singleton: true, eager: true},
+        },
+      }),
       new CopyPlugin({
         patterns: [
           'normalize.css/normalize.css',
