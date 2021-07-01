@@ -7,6 +7,7 @@ import {
   FeatureServices,
   SharedFeatureService,
 } from './feature-service-registry';
+import * as Messages from './internal/feature-app-manager-messages';
 import {isFeatureAppModule} from './internal/is-feature-app-module';
 import {Logger} from './logger';
 
@@ -299,17 +300,11 @@ export class FeatureAppManager {
       loadModule(url, moduleType).then((featureAppModule) => {
         if (!isFeatureAppModule(featureAppModule)) {
           throw new Error(
-            `The Feature App module at the url ${JSON.stringify(url)} ${
-              moduleType
-                ? `with the module type ${JSON.stringify(moduleType)}`
-                : `with no specific module type`
-            } is invalid. A Feature App module must have a Feature App definition as default export. A Feature App definition is an object with at least a \`create\` method.${
-              this.options.moduleLoader &&
-              this.options.moduleLoader.length > 1 &&
-              !moduleType
-                ? ` Hint: The provided module loader expects an optional second parameter \`moduleType\`. It might need to be provided for this Feature App.`
-                : ''
-            }`
+            Messages.invalidFeatureAppModule(
+              url,
+              moduleType,
+              this.options.moduleLoader
+            )
           );
         }
 
