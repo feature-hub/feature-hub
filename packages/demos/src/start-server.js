@@ -29,7 +29,7 @@ function createStylesheetLinks(stylesheets) {
  */
 function createDocumentHtml(
   bodyHtml,
-  {serializedStates, stylesheetsForSsr, urlsForHydration} = {}
+  {serializedStates, stylesheetsForSsr, hydrationSources} = {}
 ) {
   const stylesheetLinks = stylesheetsForSsr
     ? createStylesheetLinks(Array.from(stylesheetsForSsr.values()))
@@ -40,9 +40,9 @@ function createDocumentHtml(
     : '';
 
   const urlsForHydrationScript =
-    urlsForHydration && urlsForHydration.size
+    hydrationSources && hydrationSources.size
       ? `<script type="x-feature-hub/urls-for-hydration">${JSON.stringify(
-          Array.from(urlsForHydration)
+          Array.from(hydrationSources.values())
         )}</script>`
       : '';
 

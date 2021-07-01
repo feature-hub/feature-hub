@@ -147,7 +147,7 @@ class InternalFeatureAppLoader<TConfig = unknown> extends React.PureComponent<
     }
 
     if (!inBrowser && addUrlForHydration) {
-      addUrlForHydration(prependBaseUrl(baseUrl, clientSrc));
+      addUrlForHydration(prependBaseUrl(baseUrl, clientSrc), clientModuleType);
     }
 
     if (!inBrowser && addStylesheetsForSsr) {

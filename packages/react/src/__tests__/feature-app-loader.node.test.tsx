@@ -132,18 +132,21 @@ describe('FeatureAppLoader (on Node.js)', () => {
         ]);
       });
 
-      it('adds the prepended src URL for hydration', () => {
+      it('adds the prepended src URL and moduleType for hydration', () => {
         renderWithFeatureHubContext(
           <FeatureAppLoader
             featureAppId="testId"
             baseUrl="http://example.com"
             src="example.js"
             serverSrc="example-node.js"
+            moduleType="a"
+            serverModuleType="b"
           />
         );
 
         expect(mockAddUrlForHydration).toHaveBeenCalledWith(
-          'http://example.com/example.js'
+          'http://example.com/example.js',
+          'a'
         );
       });
     });
@@ -171,7 +174,10 @@ describe('FeatureAppLoader (on Node.js)', () => {
         />
       );
 
-      expect(mockAddUrlForHydration).toHaveBeenCalledWith('example.js');
+      expect(mockAddUrlForHydration).toHaveBeenCalledWith(
+        'example.js',
+        undefined
+      );
     });
 
     describe('with a moduleType prop', () => {
@@ -266,7 +272,10 @@ describe('FeatureAppLoader (on Node.js)', () => {
           );
         } catch {}
 
-        expect(mockAddUrlForHydration).toHaveBeenCalledWith('example.js');
+        expect(mockAddUrlForHydration).toHaveBeenCalledWith(
+          'example.js',
+          undefined
+        );
       });
     });
   });

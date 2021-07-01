@@ -9,7 +9,7 @@ const {webpackBaseConfig} = require('../webpack-base-config');
  */
 const configs = [
   merge(webpackBaseConfig, {
-    entry: path.join(__dirname, './feature-app-1.tsx'),
+    entry: {},
     output: {
       publicPath: '/',
     },
@@ -28,7 +28,7 @@ const configs = [
     ],
   }),
   merge(webpackBaseConfig, {
-    entry: path.join(__dirname, './feature-app-2.tsx'),
+    entry: {},
     output: {
       publicPath: '/',
     },

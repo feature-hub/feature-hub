@@ -6,33 +6,49 @@ const {merge} = require('webpack-merge');
 const {webpackBaseConfig} = require('../webpack-base-config');
 
 /**
- * @type {webpack.Configuration}
- */
-const featureAppConfig = merge(webpackBaseConfig, {
-  entry: path.join(__dirname, './feature-app.tsx'),
-  externals: {
-    react: 'react',
-  },
-});
-
-/**
  * @type {webpack.Configuration[]}
  */
 const configs = [
-  merge(featureAppConfig, {
+  merge(webpackBaseConfig, {
+    entry: path.join(__dirname, './feature-app.tsx'),
     output: {
       filename: 'feature-app.umd.js',
       libraryTarget: 'umd',
       publicPath: '/',
     },
+    externals: {
+      react: 'react',
+    },
   }),
-  merge(featureAppConfig, {
+  merge(webpackBaseConfig, {
+    entry: {},
+    output: {
+      publicPath: '/',
+    },
+    plugins: [
+      new webpack.container.ModuleFederationPlugin({
+        filename: 'feature-app.federated.js',
+        name: '__feature_hub_feature_app_module_container__',
+        exposes: {
+          featureAppModule: path.join(__dirname, './feature-app'),
+        },
+        shared: {
+          react: {singleton: true},
+        },
+      }),
+    ],
+  }),
+  merge(webpackBaseConfig, {
+    entry: path.join(__dirname, './feature-app.tsx'),
     output: {
       filename: 'feature-app.commonjs.js',
       libraryTarget: 'commonjs2',
       publicPath: '/',
     },
     target: 'node',
+    externals: {
+      react: 'react',
+    },
   }),
   merge(webpackBaseConfig, {
     entry: path.join(__dirname, './integrator.tsx'),

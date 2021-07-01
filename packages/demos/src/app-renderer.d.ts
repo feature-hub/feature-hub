@@ -6,11 +6,16 @@ export interface AppRendererOptions {
   readonly req: express.Request;
 }
 
+export interface FeatureAppModuleSource {
+  readonly url: string;
+  readonly moduleType?: string;
+}
+
 export interface AppRendererResult {
   readonly html: string;
   readonly serializedStates?: string;
   readonly stylesheetsForSsr?: Map<string, Css>;
-  readonly urlsForHydration?: Set<string>;
+  readonly hydrationSources?: Map<string, FeatureAppModuleSource>;
 }
 
 export type AppRenderer = (
