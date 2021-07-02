@@ -99,6 +99,7 @@ Demonstrates:
   server-rendered Feature Apps to the client
 - how server-rendered Feature Apps can be preloaded in the client before
   hydration
+- how multiple Feature App module types can be handled during hydration
 - how external stylesheets of Feature Apps can be added to the document during
   SSR
 

@@ -15,7 +15,11 @@ import {
 } from '@feature-hub/serialized-state-manager';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom/server';
-import {AppRendererOptions, AppRendererResult} from '../app-renderer';
+import {
+  AppRendererOptions,
+  AppRendererResult,
+  FeatureAppModuleSource,
+} from '../app-renderer';
 import {App} from './app';
 
 export default async function renderApp({
@@ -43,14 +47,15 @@ export default async function renderApp({
     asyncSsrManagerDefinition.id
   ] as AsyncSsrManagerV1;
 
-  const urlsForHydration = new Set<string>();
+  const hydrationSources = new Map<string, FeatureAppModuleSource>();
   const stylesheetsForSsr = new Map<string, Css>();
 
   const featureHubContextValue: FeatureHubContextProviderValue = {
     featureAppManager,
     asyncSsrManager,
 
-    addUrlForHydration: (url) => urlsForHydration.add(url),
+    addUrlForHydration: (url, moduleType) =>
+      hydrationSources.set(url + moduleType, {url, moduleType}),
 
     addStylesheetsForSsr: (stylesheets) => {
       for (const stylesheet of stylesheets) {
@@ -73,5 +78,5 @@ export default async function renderApp({
 
   const serializedStates = serializedStateManager.serializeStates();
 
-  return {html, serializedStates, stylesheetsForSsr, urlsForHydration};
+  return {html, serializedStates, stylesheetsForSsr, hydrationSources};
 }

@@ -139,14 +139,20 @@ describe('FeatureAppManager', () => {
         expect(featureAppDefinitionB).toBe(mockFeatureAppDefinitionB);
       });
 
-      it('returns an async value containing an error for an unknown module type', async () => {
+      it('returns an async value containing an error for an missing module type', async () => {
         const expectedError = new Error(
-          'The Feature App module at the url "/example.js" is invalid. A Feature App module must have a Feature App definition as default export. A Feature App definition is an object with at least a `create` method.'
+          'The Feature App module at the url "/example.js" with no specific module type is invalid. A Feature App module must have a Feature App definition as default export. A Feature App definition is an object with at least a `create` method. Hint: The provided module loader expects an optional second parameter `moduleType`. It might need to be provided for this Feature App.'
         );
 
         await expect(
           featureAppManager.getAsyncFeatureAppDefinition('/example.js').promise
         ).rejects.toEqual(expectedError);
+      });
+
+      it('returns an async value containing an error for an unknown module type', async () => {
+        const expectedError = new Error(
+          'The Feature App module at the url "/example.js" with the module type "unknown" is invalid. A Feature App module must have a Feature App definition as default export. A Feature App definition is an object with at least a `create` method.'
+        );
 
         await expect(
           featureAppManager.getAsyncFeatureAppDefinition(
@@ -173,7 +179,7 @@ describe('FeatureAppManager', () => {
 
         it('throws an error (and stores it on the async value)', async () => {
           const expectedError = new Error(
-            'The Feature App module at the url "/example.js" is invalid. A Feature App module must have a Feature App definition as default export. A Feature App definition is an object with at least a `create` method.'
+            'The Feature App module at the url "/example.js" with no specific module type is invalid. A Feature App module must have a Feature App definition as default export. A Feature App definition is an object with at least a `create` method.'
           );
 
           await expect(

@@ -1,5 +1,6 @@
 import {createFeatureHub} from '@feature-hub/core';
 import {defineExternals, loadAmdModule} from '@feature-hub/module-loader-amd';
+import {loadFederatedModule} from '@feature-hub/module-loader-federation';
 import {FeatureHubContextProvider} from '@feature-hub/react';
 import {
   SerializedStateManagerV1,
@@ -7,6 +8,7 @@ import {
 } from '@feature-hub/serialized-state-manager';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import {FeatureAppModuleSource} from '../app-renderer';
 import {App} from './app';
 
 function getSerializedStatesFromDom(): string | undefined {
@@ -17,7 +19,7 @@ function getSerializedStatesFromDom(): string | undefined {
   return (scriptElement && scriptElement.textContent) || undefined;
 }
 
-function getUrlsForHydrationFromDom(): string[] {
+function getUrlsForHydrationFromDom(): FeatureAppModuleSource[] {
   const scriptElement = document.querySelector(
     'script[type="x-feature-hub/urls-for-hydration"]'
   );
@@ -35,7 +37,10 @@ function getUrlsForHydrationFromDom(): string[] {
   const {featureAppManager, featureServices} = createFeatureHub(
     'test:integrator',
     {
-      moduleLoader: loadAmdModule,
+      moduleLoader: async (url, moduleType) =>
+        moduleType === 'federated'
+          ? loadFederatedModule(url)
+          : loadAmdModule(url),
       providedExternals: {react: process.env.REACT_VERSION as string},
       featureServiceDefinitions: [serializedStateManagerDefinition],
       featureServiceDependencies: {
@@ -55,8 +60,8 @@ function getUrlsForHydrationFromDom(): string[] {
   }
 
   await Promise.all(
-    getUrlsForHydrationFromDom().map(async (url) =>
-      featureAppManager.preloadFeatureApp(url)
+    getUrlsForHydrationFromDom().map(async ({url, moduleType}) =>
+      featureAppManager.preloadFeatureApp(url, moduleType)
     )
   );
 

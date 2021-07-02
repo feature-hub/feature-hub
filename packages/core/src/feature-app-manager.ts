@@ -7,6 +7,7 @@ import {
   FeatureServices,
   SharedFeatureService,
 } from './feature-service-registry';
+import * as Messages from './internal/feature-app-manager-messages';
 import {isFeatureAppModule} from './internal/is-feature-app-module';
 import {Logger} from './logger';
 
@@ -278,8 +279,11 @@ export class FeatureAppManager {
    *
    * @see [[getAsyncFeatureAppDefinition]] for further information.
    */
-  public async preloadFeatureApp(url: string): Promise<void> {
-    await this.getAsyncFeatureAppDefinition(url).promise;
+  public async preloadFeatureApp(
+    url: string,
+    moduleType?: string
+  ): Promise<void> {
+    await this.getAsyncFeatureAppDefinition(url, moduleType).promise;
   }
 
   private createAsyncFeatureAppDefinition(
@@ -296,9 +300,11 @@ export class FeatureAppManager {
       loadModule(url, moduleType).then((featureAppModule) => {
         if (!isFeatureAppModule(featureAppModule)) {
           throw new Error(
-            `The Feature App module at the url ${JSON.stringify(
-              url
-            )} is invalid. A Feature App module must have a Feature App definition as default export. A Feature App definition is an object with at least a \`create\` method.`
+            Messages.invalidFeatureAppModule(
+              url,
+              moduleType,
+              this.options.moduleLoader
+            )
           );
         }
 

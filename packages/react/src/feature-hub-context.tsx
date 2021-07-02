@@ -36,7 +36,7 @@ export interface FeatureHubContextProviderValue {
    *
    * @param url The client URL of a Feature App that is rendered on the server.
    */
-  addUrlForHydration?(url: string): void;
+  addUrlForHydration?(url: string, moduleType?: string): void;
 
   /**
    * A callback that the integrator provides on the server, mainly for the

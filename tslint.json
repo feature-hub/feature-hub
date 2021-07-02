@@ -15,6 +15,7 @@
     ],
     "prefer-method-signature": false,
     "strict-string-expressions": false,
-    "no-redundant-jsdoc": false
+    "no-redundant-jsdoc": false,
+    "restrict-plus-operands": false
   }
 }
