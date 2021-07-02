@@ -51,10 +51,11 @@ export interface FeatureHubOptions {
   readonly providedExternals?: ProvidedExternals;
 
   /**
-   * For the [[FeatureAppManager]] to be able to load Feature Apps from a
-   * remote location, a module loader must be provided, (e.g. the
-   * `@feature-hub/module-loader-amd` package or the
-   * `@feature-hub/module-loader-commonjs` package).
+   * For the `FeatureAppManager` to be able to load Feature Apps from a remote
+   * location, a module loader must be provided. This can either be one of the
+   * module loaders that are provided by @feature-hub, i.e.
+   * `@feature-hub/module-loader-amd`, `@feature-hub/module-loader-federation`,
+   * and `@feature-hub/module-loader-commonjs`, or a custom loader.
    */
   readonly moduleLoader?: ModuleLoader;
 

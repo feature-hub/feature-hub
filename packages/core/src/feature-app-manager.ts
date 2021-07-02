@@ -61,6 +61,14 @@ export interface FeatureAppDefinition<
   create(env: FeatureAppEnvironment<TFeatureServices, TConfig>): TFeatureApp;
 }
 
+/**
+ * @param url A URL pointing to a [[FeatureAppDefinition]] bundle in a module
+ * format compatible with the module loader.
+ *
+ * @param moduleType The module type of the [[FeatureAppDefinition]] bundle.
+ * This can be used to choose different loading strategies based on the module
+ * type of the Feature App.
+ */
 export type ModuleLoader = (
   url: string,
   moduleType?: string
@@ -117,9 +125,10 @@ export interface FeatureAppScopeOptions<
 export interface FeatureAppManagerOptions {
   /**
    * For the `FeatureAppManager` to be able to load Feature Apps from a remote
-   * location, a module loader must be provided, (e.g. the
-   * `@feature-hub/module-loader-amd` package or the
-   * `@feature-hub/module-loader-commonjs` package).
+   * location, a module loader must be provided. This can either be one of the
+   * module loaders that are provided by @feature-hub, i.e.
+   * `@feature-hub/module-loader-amd`, `@feature-hub/module-loader-federation`,
+   * and `@feature-hub/module-loader-commonjs`, or a custom loader.
    */
   readonly moduleLoader?: ModuleLoader;
 
@@ -180,14 +189,18 @@ export class FeatureAppManager {
    *
    * @throws Throws an error if no module loader was provided on initilization.
    *
-   * @param url A URL pointing to a [[FeatureAppDefinition]] bundle in a
-   * module format compatible with the module loader.
+   * @param url A URL pointing to a [[FeatureAppDefinition]] bundle in a module
+   * format compatible with the module loader.
+   *
+   * @param moduleType The module type of the [[FeatureAppDefinition]] bundle.
+   * This value can be used by the provided
+   * [[FeatureAppManagerOptions.moduleLoader]].
    *
    * @returns An [[AsyncValue]] containing a promise that resolves with the
    * loaded [[FeatureAppDefinition]]. If called again with the same URL it
-   * returns the same [[AsyncValue]]. The promise rejects when loading
-   * fails, or when the loaded bundle doesn't export a [[FeatureAppDefinition]]
-   * as default.
+   * returns the same [[AsyncValue]]. The promise rejects when loading fails, or
+   * when the loaded bundle doesn't export a [[FeatureAppDefinition]] as
+   * default.
    */
   public getAsyncFeatureAppDefinition(
     url: string,
@@ -277,7 +290,12 @@ export class FeatureAppManager {
    *
    * @throws Throws an error if no module loader was provided on initilization.
    *
-   * @see [[getAsyncFeatureAppDefinition]] for further information.
+   * @param url A URL pointing to a [[FeatureAppDefinition]] bundle in a module
+   * format compatible with the module loader.
+   *
+   * @param moduleType The module type of the [[FeatureAppDefinition]] bundle.
+   * This value can be used by the provided
+   * [[FeatureAppManagerOptions.moduleLoader]].
    */
   public async preloadFeatureApp(
     url: string,
