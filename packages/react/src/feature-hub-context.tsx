@@ -29,12 +29,17 @@ export interface FeatureHubContextProviderValue {
 
   /**
    * A callback that the integrator provides on the server, mainly for the
-   * [[FeatureAppLoader]], to add client URLs of those Feature Apps that
-   * are rendered on the server, so that they can be preloaded on the client
-   * before hydration. Calling it more than once with the same URL must not have
-   * any impact.
+   * [[FeatureAppLoader]], to add client URLs of those Feature Apps that are
+   * rendered on the server, so that they can be preloaded on the client before
+   * hydration. This method might be called multiple times with the same URL
+   * during server-side rendering. Therefore deduplication should be considered.
    *
-   * @param url The client URL of a Feature App that is rendered on the server.
+   * @param url The **client** URL of a Feature App that is rendered on the
+   * server.
+   *
+   * @param moduleType The **client** module type of the Feature App that is
+   * rendered on the server. This value can be used by the provided
+   * [[FeatureAppManagerOptions.moduleLoader]].
    */
   addUrlForHydration?(url: string, moduleType?: string): void;
 
@@ -42,8 +47,9 @@ export interface FeatureHubContextProviderValue {
    * A callback that the integrator provides on the server, mainly for the
    * [[FeatureAppLoader]], to add stylesheets for those Feature Apps that are
    * rendered on the server, so that they can be added to the document before
-   * being sent to the client. Calling it more than once with the same `href`
-   * must not have any impact.
+   * being sent to the client. This method might be called multiple times with
+   * the same list of stylesheets (per Feature App) during server-side
+   * rendering. Therefore deduplication should be considered.
    *
    * @param stylesheets A list of stylesheets for a Feature App that is rendered
    * on the server.

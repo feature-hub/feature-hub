@@ -44,6 +44,11 @@ export interface FeatureAppLoaderProps<TConfig = unknown> {
    */
   readonly src: string;
 
+  /**
+   * The module type of the Feature App's client module bundle. It is passed to
+   * the module loader that was provided as part of
+   * [[FeatureAppManagerOptions.moduleLoader]].
+   */
   readonly moduleType?: string;
 
   /**
@@ -53,6 +58,11 @@ export interface FeatureAppLoaderProps<TConfig = unknown> {
    */
   readonly serverSrc?: string;
 
+  /**
+   * The module type of the Feature App's server module bundle. It is passed to
+   * the module loader that was provided as part of
+   * [[FeatureAppManagerOptions.moduleLoader]].
+   */
   readonly serverModuleType?: string;
 
   /**
