@@ -64,8 +64,8 @@ Apps][feature-app-dependencies] against the shared npm dependencies that are
 provided by the integrator, [the `ExternalsValidator` can be
 used][validating-externals].
 
-[module-loader-amd-api]: /@feature-hub/modules/module_loader_amd.html
-[module-loader-commonjs-api]: /@feature-hub/modules/module_loader_commonjs.html
+[module-loader-amd-api]: /api/modules/module_loader_amd.html
+[module-loader-commonjs-api]: /api/modules/module_loader_commonjs.html
 [amd-module-loader-demo]:
   https://github.com/sinnerschrader/feature-hub/tree/master/packages/demos/src/module-loader-amd
 [serversrc]: /docs/guides/integrating-the-feature-hub#serversrc

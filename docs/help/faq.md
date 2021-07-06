@@ -81,13 +81,13 @@ integrating a service like [Polyfill.io][]:
 ```
 
 [angular-feature-app]: https://github.com/feature-hub/angular-feature-app
-[dom-api]: /@feature-hub/modules/dom.html
+[dom-api]: /api/modules/dom.html
 [dom-feature-app]: /docs/guides/writing-a-feature-app#dom-feature-app
 [dynamic-code-splitting]:
   /docs/guides/reducing-the-bundle-size#dynamic-code-splitting-with-webpack
 [own-feature-service-definitions]:
   /docs/guides/writing-a-feature-app#ownfeatureservicedefinitions
-[react-api]: /@feature-hub/modules/react.html
+[react-api]: /api/modules/react.html
 [writing-a-feature-app]: /docs/guides/writing-a-feature-app
 [vue-feature-app]: https://github.com/feature-hub/vue-feature-app
 [feature-app-in-feature-app]: /docs/guides/feature-app-in-feature-app

@@ -58,11 +58,11 @@ There are three different personas in a Feature Hub environment:
 3.  A **consumer** is everyone who consumes Feature Services. This can be a
     Feature App, other Feature Services, or even the integrator.
 
-[core-api]: /@feature-hub/modules/core.html
-[dom-api]: /@feature-hub/modules/dom.html
+[core-api]: /api/modules/core.html
+[dom-api]: /api/modules/dom.html
 [our-requirements-for-micro-frontends]:
   /docs/getting-started/motivation#our-requirements-for-micro-frontends
 [thoughtworks]: https://www.thoughtworks.com/de/radar/techniques/micro-frontends
 [providing-a-versioned-api]:
   /docs/guides/writing-a-feature-service#providing-a-versioned-api
-[react-api]: /@feature-hub/modules/react.html
+[react-api]: /api/modules/react.html

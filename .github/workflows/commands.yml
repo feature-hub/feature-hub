@@ -1,0 +1,127 @@
+name: Commands
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  rebase:
+    if: |
+      github.event.issue.pull_request && github.event.comment.body == '/rebase'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check user permission
+        id: check
+        uses: scherermichael-oss/action-has-permission@1.0.6
+        with:
+          required-permission: write
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Abort if prohibited
+        if: '! steps.check.outputs.has-permission'
+        run: |
+          echo "Permissions are insufficient."
+          exit 1
+
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.CI_GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Automatic Rebase
+        uses: cirrus-actions/rebase@1.4
+        env:
+          GITHUB_TOKEN: ${{ secrets.CI_GITHUB_TOKEN }}
+
+  deploy:
+    if: |
+      github.event.issue.pull_request && github.event.comment.body == '/deploy'
+    runs-on: ubuntu-latest
+    env:
+      CI: true
+
+    steps:
+      - name: Check user permission
+        id: check
+        uses: scherermichael-oss/action-has-permission@1.0.6
+        with:
+          required-permission: write
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Abort if prohibited
+        if: '! steps.check.outputs.has-permission'
+        run: |
+          echo "Permissions are insufficient."
+          exit 1
+
+      - name: Get PR Head SHA
+        uses: actions/github-script@v4
+        id: gitSha
+        with:
+          github-token: ${{ github.token }}
+          result-encoding: string
+          script: |
+            const {issue, repository} = context.payload;
+
+            const pull_request = await github.pulls.get({
+              owner: repository.owner.login,
+              repo: repository.name,
+              pull_number: issue.number
+            });
+
+            const {sha} = pull_request.data.head;
+            core.setOutput('short', sha.slice(0, 8));
+            return sha;
+
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ steps.gitSha.outputs.result }}
+
+      - name: Setup node
+        uses: actions/setup-node@v2
+        with:
+          node-version: 12.x
+
+      - name: Install
+        run: yarn install
+
+      - name: Build Website
+        run: yarn lerna exec --scope @feature-hub/website 'docusaurus-build'
+
+      - name: Compile
+        run: yarn compile
+
+      - name: Generate API Docs
+        run: yarn run generate:api-docs
+
+      - name: Build TodoMVC
+        run: yarn lerna run --scope @feature-hub/demos build:todomvc
+
+      - name: Deploy
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_CERTIFICATE_ARN: ${{ secrets.AWS_CERTIFICATE_ARN }}
+          AWS_HOSTED_ZONE_ID: ${{ secrets.AWS_HOSTED_ZONE_ID }}
+          AWS_HOSTED_ZONE_NAME: ${{ secrets.AWS_HOSTED_ZONE_NAME }}
+          AWS_ALIAS_RECORD_NAME: ${{ steps.gitSha.outputs.short }}
+        run: yarn deploy --require-approval never
+
+      - name: Add PR Comment
+        uses: actions/github-script@v4
+        with:
+          github-token: ${{ github.token }}
+          script: |
+            const {issue, repository} = context.payload;
+
+            github.issues.createComment({
+              owner: repository.owner.login,
+              repo: repository.name,
+              issue_number: issue.number,
+              body: 'Deployed to https://${{ steps.gitSha.outputs.short }}.${{ secrets.AWS_HOSTED_ZONE_NAME }}'
+            });

@@ -908,11 +908,11 @@ someFeatureService2.foo(42);
 ```
 
 [amd]: https://github.com/amdjs/amdjs-api/blob/master/AMD.md
-[core-api]: /@feature-hub/modules/core.html
-[dom-api]: /@feature-hub/modules/dom.html
-[module-loader-amd-api]: /@feature-hub/modules/module_loader_amd.html
-[module-loader-commonjs-api]: /@feature-hub/modules/module_loader_commonjs.html
-[react-api]: /@feature-hub/modules/react.html
+[core-api]: /api/modules/core.html
+[dom-api]: /api/modules/dom.html
+[module-loader-amd-api]: /api/modules/module_loader_amd.html
+[module-loader-commonjs-api]: /api/modules/module_loader_commonjs.html
+[react-api]: /api/modules/react.html
 [feature-app-dependencies]: /docs/guides/writing-a-feature-app#dependencies
 [feature-service-dependencies]:
   /docs/guides/writing-a-feature-service#dependencies
@@ -922,12 +922,12 @@ someFeatureService2.foo(42);
   /docs/guides/writing-a-feature-app#ownfeatureservicedefinitions
 [sharing-npm-dependencies]: /docs/guides/sharing-npm-dependencies
 [custom-rendering-param-api]:
-  /@feature-hub/interfaces/react.customfeatureapprenderingparams.html
+  /api/interfaces/react.customfeatureapprenderingparams.html
 [custom-rendering-param-error-api]:
-  /@feature-hub/interfaces/react.customfeatureapprenderingparams.html#error
+  /api/interfaces/react.customfeatureapprenderingparams.html#error
 [custom-rendering-param-loading-api]:
-  /@feature-hub/interfaces/react.customfeatureapprenderingparams.html#loading
+  /api/interfaces/react.customfeatureapprenderingparams.html#loading
 [custom-rendering-param-featureappnode-api]:
-  /@feature-hub/interfaces/react.customfeatureapprenderingparams.html#featureappnode
+  /api/interfaces/react.customfeatureapprenderingparams.html#featureappnode
 [react-loading-and-error-ui-demo]:
   https://github.com/sinnerschrader/feature-hub/tree/master/packages/demos/src/react-loading-and-error-ui

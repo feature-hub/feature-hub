@@ -1,5 +1,6 @@
 .cache
 .tmp
+cdk.out
 coverage
 lerna-debug.log
 lib

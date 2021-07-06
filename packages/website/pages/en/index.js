@@ -21,7 +21,7 @@ const SplashContainer = ({children}) => (
   <div className="homeContainer">
     <div className="homeSplashFade">
       <div className="projectLogo">
-        <img src="/img/logo.svg" alt="Logo" />
+        <img src="/img/svg/logo.svg" alt="Feature Hub" role="presentation" />
       </div>
       <div className="wrapper homeWrapper">{children}</div>
     </div>
@@ -68,9 +68,7 @@ const HomeSplash = ({config}) => (
     <div className="inner">
       <ProjectTitle config={config} />
       <PromoSection>
-        <Button
-          href={createDocUrl('getting-started/introduction.html', config)}
-        >
+        <Button href={createDocUrl('getting-started/introduction', config)}>
           Get Started
         </Button>
         <Button href="https://github.com/sinnerschrader/feature-hub">
