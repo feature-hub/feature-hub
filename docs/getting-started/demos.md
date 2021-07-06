@@ -10,7 +10,8 @@ the [Feature Hub organization][github-org] on GitHub.
 
 ## TodoMVC Live Demo
 
-> See the TodoMVC Demo in action at [feature-hub.io/todomvc][todomvc-live-demo].
+> See the TodoMVC Demo in action at
+> [feature-hub.io/todomvc/][todomvc-live-demo].
 
 The [TodoMVC demo][todomvc-demo-src] is a partial implementation of the [TodoMVC
 project][todomvc.com]. Although micro frontends wouldn't and shouldn't really be
@@ -47,4 +48,4 @@ independently, and a single Feature Service:
   https://github.com/sinnerschrader/feature-hub/tree/master/packages/demos/src/todomvc/todo-manager
 [github-org]: https://github.com/feature-hub
 [todomvc.com]: http://todomvc.com
-[todomvc-live-demo]: /todomvc
+[todomvc-live-demo]: /todomvc/
