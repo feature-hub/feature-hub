@@ -56,16 +56,19 @@ for (const dirname of nonBinaryDirnames) {
   };
 }
 
+const aliasRecordName = process.env.AWS_ALIAS_RECORD_NAME || undefined;
+
 /**
  * @type {import('aws-simple').App}
  */
 exports.default = {
   appName: 'featurehub',
+  appVersion: aliasRecordName,
   customDomain: {
     certificateArn: process.env.AWS_CERTIFICATE_ARN,
     hostedZoneId: process.env.AWS_HOSTED_ZONE_ID,
     hostedZoneName: process.env.AWS_HOSTED_ZONE_NAME,
-    aliasRecordName: process.env.AWS_ALIAS_RECORD_NAME || undefined,
+    aliasRecordName,
   },
   routes: () => routes,
 };
