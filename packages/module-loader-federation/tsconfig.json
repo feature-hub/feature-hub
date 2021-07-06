@@ -4,6 +4,5 @@
   "compilerOptions": {
     "outDir": "lib/cjs",
     "rootDir": "src"
-  },
-  "references": [{"path": "../core"}]
+  }
 }
