@@ -20,14 +20,13 @@ jobs:
 
       - name: Add comment reaction
         uses: actions/github-script@v4
-        id: gitSha
         with:
           github-token: ${{ github.token }}
           result-encoding: string
           script: |
             const {comment, repository} = context.payload;
 
-            const pull_request = await github.reactions.createForIssueComment({
+            await github.reactions.createForIssueComment({
               owner: repository.owner.login,
               repo: repository.name,
               comment_id: comment.id,
@@ -69,14 +68,13 @@ jobs:
 
       - name: Add comment reaction
         uses: actions/github-script@v4
-        id: gitSha
         with:
           github-token: ${{ github.token }}
           result-encoding: string
           script: |
             const {comment, repository} = context.payload;
 
-            const pull_request = await github.reactions.createForIssueComment({
+            await github.reactions.createForIssueComment({
               owner: repository.owner.login,
               repo: repository.name,
               comment_id: comment.id,
