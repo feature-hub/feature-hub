@@ -1,14 +1,25 @@
-import {ModuleLoader} from '@feature-hub/core';
 import fetch, {RequestInit} from 'node-fetch';
 
 export interface Externals {
   readonly [externalName: string]: unknown;
 }
 
+/**
+ * @param externals An object with shared npm dependencies that the integrator
+ * wants to provide to Feature Apps. The keys are the names of the dependencies
+ * that are used in import/require statements. The values are the modules.
+ *
+ * @param requestInit An object containing any custom settings that should be
+ * applied to the request when fetching a module with node-fetch.
+ *
+ * @returns A function that accepts a URL pointing to a bundle that was built as
+ * a CommonJS module, and that returns a promise that resolves with the loaded
+ * module, or is rejected if the module can not be loaded.
+ */
 export function createCommonJsModuleLoader(
   externals: Externals = {},
   requestInit?: RequestInit
-): ModuleLoader {
+): (url: string) => Promise<unknown> {
   return async (url: string): Promise<unknown> => {
     const response = await fetch(url, requestInit);
     const source = await response.text();
@@ -30,4 +41,12 @@ export function createCommonJsModuleLoader(
   };
 }
 
-export const loadCommonJsModule: ModuleLoader = createCommonJsModuleLoader();
+/**
+ * @param url A URL pointing to a bundle that was built as a CommonJS module.
+ *
+ * @returns A promise that resolves with the loaded module, or is rejected if
+ * the module can not be loaded.
+ */
+export const loadCommonJsModule: (
+  url: string
+) => Promise<unknown> = createCommonJsModuleLoader();
