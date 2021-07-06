@@ -18,6 +18,22 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Add comment reaction
+        uses: actions/github-script@v4
+        id: gitSha
+        with:
+          github-token: ${{ github.token }}
+          result-encoding: string
+          script: |
+            const {comment, repository} = context.payload;
+
+            const pull_request = await github.reactions.createForIssueComment({
+              owner: repository.owner.login,
+              repo: repository.name,
+              comment_id: comment.id,
+              content: ${{ steps.check.outputs.has-permission }} ? '+1' : '-1'
+            });
+
       - name: Abort if prohibited
         if: '! steps.check.outputs.has-permission'
         run: |
@@ -50,6 +66,22 @@ jobs:
           required-permission: write
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Add comment reaction
+        uses: actions/github-script@v4
+        id: gitSha
+        with:
+          github-token: ${{ github.token }}
+          result-encoding: string
+          script: |
+            const {comment, repository} = context.payload;
+
+            const pull_request = await github.reactions.createForIssueComment({
+              owner: repository.owner.login,
+              repo: repository.name,
+              comment_id: comment.id,
+              content: ${{ steps.check.outputs.has-permission }} ? '+1' : '-1'
+            });
 
       - name: Abort if prohibited
         if: '! steps.check.outputs.has-permission'
