@@ -13,7 +13,7 @@ module.exports = {
   excludePrivate: true,
   gitRevision: 'master',
   name: '@feature-hub',
-  out: 'packages/website/build/feature-hub/@feature-hub',
+  out: 'packages/website/build/feature-hub/api',
   readme: 'README.md',
   theme: 'minimal',
   tsconfig: 'tsconfig.json',

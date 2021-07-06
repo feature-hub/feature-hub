@@ -303,8 +303,8 @@ const myFeatureAppDefinition = {
   /docs/guides/integrating-the-feature-hub/#placing-feature-apps-on-a-web-page-using-web-components
 [feature-app-configs]:
   /docs/guides/integrating-the-feature-hub#feature-app-configs
-[dom-api]: /@feature-hub/modules/dom.html
-[react-api]: /@feature-hub/modules/react.html
+[dom-api]: /api/modules/dom.html
+[react-api]: /api/modules/react.html
 [react-feature-app]: /docs/guides/writing-a-feature-app#react-feature-app
 [sharing-npm-dependencies]: /docs/guides/sharing-npm-dependencies
 [semver]: https://semver.org
@@ -314,6 +314,6 @@ const myFeatureAppDefinition = {
 [issue-245]: https://github.com/sinnerschrader/feature-hub/issues/245
 [providing-a-versioned-api]:
   /docs/guides/writing-a-feature-service#providing-a-versioned-api
-[async-ssr-manager-api]: /@feature-hub/modules/async_ssr_manager.html
+[async-ssr-manager-api]: /api/modules/async_ssr_manager.html
 [demo-react-loading-ui]:
   https://github.com/sinnerschrader/feature-hub/tree/master/packages/demos/src/react-loading-ui

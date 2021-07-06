@@ -33,7 +33,7 @@ jobs:
       - name: Word Blacklist
         env:
           BLACKLIST: ${{ secrets.BLACKLIST }}
-        run: ./scripts/ci/word-blacklist.sh
+        run: ./scripts/word-blacklist.sh
 
   test:
     runs-on: ubuntu-latest

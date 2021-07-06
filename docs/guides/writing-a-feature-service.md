@@ -338,7 +338,7 @@ const defineLogger = (createConsumerLogger = createConsumerConsole) => ({
 });
 ```
 
-[core-api]: /@feature-hub/modules/core.html
+[core-api]: /api/modules/core.html
 [feature-service-binder]:
   /docs/guides/writing-a-feature-service#feature-service-binder
 [providing-configs]: /docs/guides/integrating-the-feature-hub#providing-configs
