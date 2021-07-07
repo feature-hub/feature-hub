@@ -112,11 +112,11 @@ server.
 On the server, the integrator must gather a list of all client module bundle
 URLs for the server-rendered Feature Apps, and transfer those URLs to the
 client, e.g. via the HTML document [as text content of a custom script
-element][demos-inject-serialized-states-script].
+element][demos-inject-hydration-urls-script].
 
 On the client, before hydrating, the URLs must be extracted from the HTML
 document, e.g. [from the text content of the custom script
-element][demos-extract-serialized-states-script], and then preloaded using the
+element][demos-extract-hydration-urls-script], and then preloaded using the
 `FeatureAppManager`'s `preloadFeatureApp` method:
 
 ```js
@@ -142,6 +142,33 @@ const addUrlForHydration = (url) => urlsForHydration.add(url);
 <FeatureHubContextProvider value={{featureAppManager, addUrlForHydration}}>
   {/* render Feature Apps here */}
 </FeatureHubContextProvider>
+```
+
+### Handling Module Types
+
+If, on the client, the integrator has provided [a module loader that handles
+multiple module types][custom-module-loader], the module type of a Feature App's
+client module bundle must be used when preloading the Feature App.
+
+On the server:
+
+```js
+const hydrationSources = new Set();
+
+const addUrlForHydration = (url, moduleType) =>
+  hydrationSources.set(url + moduleType, {url, moduleType});
+```
+
+On the client:
+
+```js
+const hydrationSources = getHydrationSourcesFromDom();
+
+await Promise.all(
+  hydrationSources.map(async ({url, moduleType}) =>
+    featureAppManager.preloadFeatureApp(url, moduleType)
+  )
+);
 ```
 
 ## Adding Stylesheets to the Document
@@ -328,11 +355,17 @@ const html = await asyncSsrManager.renderUntilCompleted(() =>
   /api/interfaces/async_ssr_manager.asyncssrmanagerv1.html#schedulererender
 [serialized-state-manager-api]: /api/modules/serialized_state_manager.html
 [demos-inject-serialized-states-script]:
-  https://github.com/sinnerschrader/feature-hub/blob/50a883a744d69f28980e46130bf2a1bdda415216/packages/demos/src/start-server.ts#L26
+  https://github.com/sinnerschrader/feature-hub/blob/093b6273b903477f2ab0aaccb4e0502e0dae79dc/packages/demos/src/start-server.js#L39
 [demos-extract-serialized-states-script]:
-  https://github.com/sinnerschrader/feature-hub/blob/70cdf840eafd5ae7e189758bd5d70003da2fd392/packages/demos/src/server-side-rendering/integrator.tsx#L14-L20
+  https://github.com/sinnerschrader/feature-hub/blob/093b6273b903477f2ab0aaccb4e0502e0dae79dc/packages/demos/src/server-side-rendering/integrator.tsx#L14-L20
+[demos-inject-hydration-urls-script]:
+  https://github.com/sinnerschrader/feature-hub/blob/093b6273b903477f2ab0aaccb4e0502e0dae79dc/packages/demos/src/start-server.js#L44-L46
+[demos-extract-hydration-urls-script]:
+  https://github.com/sinnerschrader/feature-hub/blob/093b6273b903477f2ab0aaccb4e0502e0dae79dc/packages/demos/src/server-side-rendering/integrator.tsx#L22-L32
 [consuming-feature-services]:
   /docs/guides/integrating-the-feature-hub#consuming-feature-services
 [server-side-rendering-demo]:
   https://github.com/sinnerschrader/feature-hub/tree/master/packages/demos/src/server-side-rendering
 [feature-app-loader-css]: /docs/guides/integrating-the-feature-hub#css
+[custom-module-loader]:
+  /docs/guides/integrating-the-feature-hub#custom-module-loader
