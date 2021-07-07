@@ -30,7 +30,7 @@ jobs:
               owner: repository.owner.login,
               repo: repository.name,
               comment_id: comment.id,
-              content: ${{ steps.check.outputs.has-permission }} ? '+1' : '-1'
+              content: '${{ steps.check.outputs.has-permission }}' ? '+1' : '-1'
             });
 
       - name: Abort if prohibited
@@ -78,7 +78,7 @@ jobs:
               owner: repository.owner.login,
               repo: repository.name,
               comment_id: comment.id,
-              content: ${{ steps.check.outputs.has-permission }} ? '+1' : '-1'
+              content: '${{ steps.check.outputs.has-permission }}' ? '+1' : '-1'
             });
 
       - name: Abort if prohibited
