@@ -89,11 +89,25 @@ the client.
 For the `FeatureAppManager` to be able to load Feature Apps from a remote
 location, it needs to be configured with an implementation of the `ModuleLoader`
 interface of the [`@feature-hub/core`][core-api] package by the integrator (e.g.
-the [`@feature-hub/module-loader-amd`][module-loader-amd-api] package or the
-[`@feature-hub/module-loader-commonjs`][module-loader-commonjs-api] package).
+the [`@feature-hub/module-loader-amd`][module-loader-amd-api] package, the
+[`@feature-hub/module-loader-federation`][module-loader-federation-api], the
+[`@feature-hub/module-loader-commonjs`][module-loader-commonjs-api] package, or
+a custom loader).
 
 The module loader can be provided with the `moduleLoader` option of the
 `createFeatureHub` function.
+
+On the server:
+
+```js
+import {loadCommonJsModule} from '@feature-hub/module-loader-commonjs';
+```
+
+```js
+const {featureAppManager} = createFeatureHub('acme:integrator', {
+  moduleLoader: loadCommonJsModule,
+});
+```
 
 On the client:
 
@@ -107,17 +121,43 @@ const {featureAppManager} = createFeatureHub('acme:integrator', {
 });
 ```
 
-On the server:
+or:
 
 ```js
-import {loadCommonJsModule} from '@feature-hub/module-loader-commonjs';
+import {loadFederatedModule} from '@feature-hub/module-loader-federation';
 ```
 
 ```js
 const {featureAppManager} = createFeatureHub('acme:integrator', {
-  moduleLoader: loadCommonJsModule,
+  moduleLoader: loadFederatedModule,
 });
 ```
+
+### Custom Module Loader
+
+The integrator can also provide a custom module loader that can handle multiple
+module types:
+
+```js
+import {loadAmdModule} from '@feature-hub/module-loader-amd';
+import {loadFederatedModule} from '@feature-hub/module-loader-federation';
+```
+
+```js
+const {featureAppManager} = createFeatureHub('acme:integrator', {
+  moduleLoader: (url, moduleType) =>
+    moduleType === 'federated' ? loadFederatedModule(url) : loadAmdModule(url),
+});
+```
+
+In this example AMD is regarded as the default module type. If a Feature App
+uses a different module type than the default, it must be specified as the
+[`moduleType`](#moduletype) prop of the `FeatureAppLoader`, matching the usage
+in the custom module loader.
+
+> **Note:**  
+> Specifying the module type of a Feature App module is currently only supported
+> by the [React Feature App Loader](#react-feature-app-loader).
 
 ### Validating Externals
 
@@ -243,6 +283,21 @@ import {FeatureAppLoader} from '@feature-hub/react';
 >  If the integrator has configured the AMD module loader on the client, the Feature
 > App to be loaded via `src` must be provided as an [AMD module][amd].
 
+#### `moduleType`
+
+The module type of the Feature App's client module bundle. It is passed to the
+module loader that was provided by the integrator. It can be omited if the
+provided module loader can only handle a single module type, or if it handles a
+default module type (see [Custom Module Loader](#custom-module-loader)).
+
+```jsx
+<FeatureAppLoader
+  featureAppId="some-feature-app"
+  src="https://example.com/some-federated-feature-app.js"
+  moduleType="federated"
+/>
+```
+
 #### `serverSrc`
 
 Additionally, when a Feature App needs to be rendered on the server, its
@@ -263,6 +318,22 @@ Additionally, when a Feature App needs to be rendered on the server, its
 >   module.
 > - If `baseUrl` is specified as well, it will be prepended if `serverSrc` is a
 >   relative URL. In this case `baseUrl` must be an absolute URL.
+
+#### `serverModuleType`
+
+The module type of the Feature App's server module. It is passed to the module
+loader that was provided by the integrator. It can be omited if the provided
+module loader can only handle a single module type, or if it handles a default
+module type (see [Custom Module Loader](#custom-module-loader)).
+
+```jsx
+<FeatureAppLoader
+  featureAppId="some-feature-app"
+  src="https://example.com/some-feature-app.js"
+  serverSrc="https://example.com/some-feature-app-node.mjs"
+  serverModuleType="esm"
+/>
+```
 
 #### `css`
 
@@ -911,6 +982,7 @@ someFeatureService2.foo(42);
 [core-api]: /api/modules/core.html
 [dom-api]: /api/modules/dom.html
 [module-loader-amd-api]: /api/modules/module_loader_amd.html
+[module-loader-federation-api]: /api/modules/module_loader_federation.html
 [module-loader-commonjs-api]: /api/modules/module_loader_commonjs.html
 [react-api]: /api/modules/react.html
 [feature-app-dependencies]: /docs/guides/writing-a-feature-app#dependencies
