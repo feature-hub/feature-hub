@@ -16,6 +16,9 @@ const configs = [
       publicPath: '/',
     },
     target: 'node',
+    externals: {
+      react: 'react',
+    },
   }),
   merge(webpackBaseConfig, {
     entry: path.join(__dirname, './integrator.ts'),

@@ -13,7 +13,7 @@ A library for building a Feature Hub integrator with React.
 yarn add @feature-hub/react
 ```
 
-### Using NPM
+### Using npm
 
 ```sh
 npm install @feature-hub/react

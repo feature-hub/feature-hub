@@ -318,6 +318,9 @@ Out of the box, the Feature Hub provides two client-side module loaders.
 To build an AMD Feature App module bundle, any module bundler can be used that
 can produce an AMD or UMD bundle.
 
+How npm dependencies can be shared using AMD is described in the ["Sharing npm
+Dependencies" guide][sharing-npm-dependencies-amd].
+
 #### Webpack Module Federation Loader
 
 To build a [federated module][module-federation], Webpack must be used as module
@@ -343,6 +346,9 @@ module.exports = {
 };
 ```
 
+How npm dependencies can be shared using Webpack Module Federation is described
+in the ["Sharing npm Dependencies" guide][sharing-npm-dependencies-federation].
+
 > **There are two important naming conventions a Feature App's Webpack config
 > must follow:**
 >
@@ -357,6 +363,9 @@ module.exports = {
 To build a CommonJS Feature App module bundle for [server-side
 rendering][server-side-rendering], any module bundler can be used that can
 produce a CommonJS or UMD bundle. The target of this bundle must be Node.js.
+
+How npm dependencies can be shared on the server is described in the ["Sharing
+npm Dependencies" guide][sharing-npm-dependencies-commonjs].
 
 ---
 
@@ -376,6 +385,12 @@ produce a CommonJS or UMD bundle. The target of this bundle must be Node.js.
   /docs/guides/integrating-the-feature-hub/#placing-feature-apps-on-a-web-page-using-web-components
 [server-side-rendering]: /docs/guides/server-side-rendering
 [sharing-npm-dependencies]: /docs/guides/sharing-npm-dependencies
+[sharing-npm-dependencies-amd]:
+  http://localhost:3000/docs/guides/sharing-npm-dependencies#amd
+[sharing-npm-dependencies-federation]:
+  http://localhost:3000/docs/guides/sharing-npm-dependencies#webpack-module-federation
+[sharing-npm-dependencies-commonjs]:
+  http://localhost:3000/docs/guides/sharing-npm-dependencies#commonjs
 [feature-service-create]: /docs/guides/writing-a-feature-service#create
 [providing-a-versioned-api]:
   /docs/guides/writing-a-feature-service#providing-a-versioned-api

@@ -14,7 +14,7 @@ server-side rendered.
 yarn add @feature-hub/server-request
 ```
 
-### Using NPM
+### Using npm
 
 ```sh
 npm install @feature-hub/server-request

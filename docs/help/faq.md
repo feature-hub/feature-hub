@@ -50,7 +50,7 @@ The Feature Hub's published source code includes ES2017 language features.
 Therefore, only evergreen browsers (and Node >= 8) are supported out-of-the-box.
 
 An integrator could still choose to support IE11 though, by transpiling the
-published sources to ES5 while creating its bundle. For example, if webpack is
+published sources to ES5 while creating its bundle. For example, if Webpack is
 used, the [babel-loader][] can be configured with an `exclude` option like this:
 
 ```js

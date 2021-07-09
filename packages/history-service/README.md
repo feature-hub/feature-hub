@@ -13,7 +13,7 @@ A history facade guaranteeing safe access for multiple consumers.
 yarn add @feature-hub/history-service
 ```
 
-### Using NPM
+### Using npm
 
 ```sh
 npm install @feature-hub/history-service

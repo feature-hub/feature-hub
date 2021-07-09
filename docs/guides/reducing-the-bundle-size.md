@@ -15,7 +15,7 @@ this is not recommended because it increases the bundle size significantly.
 
 ## Dynamic Code Splitting With Webpack
 
-Feature Apps and Feature Services can use [webpack's dynamic code
+Feature Apps and Feature Services can use [Webpack's dynamic code
 splitting][dynamic-imports] technique using the `import()` syntax.
 
 To make this work for multiple inhabitants living together on the Feature Hub

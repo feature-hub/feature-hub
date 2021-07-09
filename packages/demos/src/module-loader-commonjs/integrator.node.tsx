@@ -1,5 +1,5 @@
 import {createFeatureHub} from '@feature-hub/core';
-import {loadCommonJsModule} from '@feature-hub/module-loader-commonjs';
+import {createCommonJsModuleLoader} from '@feature-hub/module-loader-commonjs';
 import {FeatureAppLoader, FeatureHubContextProvider} from '@feature-hub/react';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom/server';
@@ -11,7 +11,8 @@ export default async function renderApp({
   const featureAppNodeUrl = `http://localhost:${port}/feature-app.commonjs.js`;
 
   const {featureAppManager} = createFeatureHub('test:integrator', {
-    moduleLoader: loadCommonJsModule,
+    moduleLoader: createCommonJsModuleLoader({react: React}),
+    providedExternals: {react: process.env.REACT_VERSION as string},
   });
 
   // In a real-world integrator, instead of preloading a Feature App manually
