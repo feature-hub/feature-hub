@@ -1,5 +1,3 @@
-import {ModuleLoader} from '@feature-hub/core';
-
 interface GlobalScope {
   get: (module: string) => Promise<() => unknown>;
   init: (sharedModules: SharedModules) => Promise<void>;
@@ -48,8 +46,14 @@ async function loadComponent(): Promise<unknown> {
   return Module;
 }
 
-export const loadFederatedModule: ModuleLoader = async (url: string) =>
-  new Promise((resolve, reject) => {
+/**
+ * @param url A URL pointing to a bundle that was built as a federated module.
+ *
+ * @returns A promise that resolves with the loaded module, or is rejected if
+ * the module can not be loaded.
+ */
+export async function loadFederatedModule(url: string): Promise<unknown> {
+  return new Promise((resolve, reject) => {
     const element = document.createElement('script');
 
     element.src = url;
@@ -68,3 +72,4 @@ export const loadFederatedModule: ModuleLoader = async (url: string) =>
 
     document.head.appendChild(element);
   });
+}

@@ -21,7 +21,6 @@
   "module": "lib/esm/index.js",
   "typings": "lib/cjs/index.d.ts",
   "dependencies": {
-    "@feature-hub/core": "^2.8.1",
     "node-fetch": "^2.6.0"
   },
   "devDependencies": {
