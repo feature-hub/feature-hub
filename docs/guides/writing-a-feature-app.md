@@ -145,8 +145,8 @@ properties:
 
 The return value of the `create` method can vary depending on the integration
 solution used. Assuming the [`@feature-hub/react`][react-api] package is used, a
-Feature App can be either a [React Feature App][react-feature-app] or a [DOM
-Feature App][dom-feature-app].
+Feature App can be either a [React Feature App](#react-feature-app) or a
+[DOM Feature App](#dom-feature-app).
 
 ## `ownFeatureServiceDefinitions`
 
@@ -302,34 +302,91 @@ const myFeatureAppDefinition = {
 };
 ```
 
+## Bundling a Feature App
+
+For the `FeatureAppManager` to be able to load Feature Apps from a remote
+location, Feature App modules must be bundled. The module type of a Feature App
+bundle must be chosen based on the [provided module loaders of the
+integrators][module-loader] it intends to be loaded into.
+
+### Client Bundles
+
+Out of the box, the Feature Hub provides two client-side module loaders.
+
+#### AMD Module Loader
+
+To build an AMD Feature App module bundle, any module bundler can be used that
+can produce an AMD or UMD bundle.
+
+#### Webpack Module Federation Loader
+
+To build a [federated module][module-federation], Webpack must be used as module
+bundler.
+
+Here is an example of a Webpack config for a federated Feature App module:
+
+```js
+module.exports = {
+  entry: {}, // intentionally left empty
+  output: {
+    filename: 'some-federated-feature-app.js',
+    publicPath: 'auto',
+  },
+  plugins: [
+    new webpack.container.ModuleFederationPlugin({
+      name: '__feature_hub_feature_app_module_container__',
+      exposes: {
+        featureAppModule: path.join(__dirname, './some-feature-app'),
+      },
+    }),
+  ],
+};
+```
+
+> **There are two important naming conventions a Feature App's Webpack config
+> must follow:**
+>
+> 1. The `name` of the remote Feature App module container must be
+>    `'__feature_hub_feature_app_module_container__'`.
+>
+> 1. The Feature App module (containing the Feature App definition as default
+>    export) must be exposed by the container as `featureAppModule`.
+
+### Server Bundles
+
+To build a CommonJS Feature App module bundle for [server-side
+rendering][server-side-rendering], any module bundler can be used that can
+produce a CommonJS or UMD bundle. The target of this bundle must be Node.js.
+
 ---
 
 1. The "integrator" in this case can also be [another Feature
    App][feature-app-in-feature-app].
 
 [feature-app-in-feature-app]: /docs/guides/feature-app-in-feature-app
-[dom-feature-app]: /docs/guides/writing-a-feature-app#dom-feature-app
-[feature-service-create]: /docs/guides/writing-a-feature-service#create
 [feature-app-loader-base-url]: /docs/guides/integrating-the-feature-hub#baseurl
 [feature-app-container-base-url]:
   /docs/guides/integrating-the-feature-hub#baseurl-1
+[feature-app-configs]:
+  /docs/guides/integrating-the-feature-hub#feature-app-configs
+[module-loader]: /docs/guides/integrating-the-feature-hub#module-loader
 [placing-feature-apps-on-a-web-page-using-react]:
   /docs/guides/integrating-the-feature-hub#placing-feature-apps-on-a-web-page-using-react
 [placing-feature-apps-on-a-web-page-using-web-components]:
   /docs/guides/integrating-the-feature-hub/#placing-feature-apps-on-a-web-page-using-web-components
-[feature-app-configs]:
-  /docs/guides/integrating-the-feature-hub#feature-app-configs
+[server-side-rendering]: /docs/guides/server-side-rendering
+[sharing-npm-dependencies]: /docs/guides/sharing-npm-dependencies
+[feature-service-create]: /docs/guides/writing-a-feature-service#create
+[providing-a-versioned-api]:
+  /docs/guides/writing-a-feature-service#providing-a-versioned-api
+[async-ssr-manager-api]: /api/modules/async_ssr_manager.html
 [dom-api]: /api/modules/dom.html
 [react-api]: /api/modules/react.html
-[react-feature-app]: /docs/guides/writing-a-feature-app#react-feature-app
-[sharing-npm-dependencies]: /docs/guides/sharing-npm-dependencies
 [semver]: https://semver.org
 [semver-caret-range]:
   https://docs.npmjs.com/misc/semver#caret-ranges-123-025-004
 [semver-tilde-range]: https://docs.npmjs.com/misc/semver#tilde-ranges-123-12-1
 [issue-245]: https://github.com/sinnerschrader/feature-hub/issues/245
-[providing-a-versioned-api]:
-  /docs/guides/writing-a-feature-service#providing-a-versioned-api
-[async-ssr-manager-api]: /api/modules/async_ssr_manager.html
 [demo-react-loading-ui]:
   https://github.com/sinnerschrader/feature-hub/tree/master/packages/demos/src/react-loading-ui
+[module-federation]: https://webpack.js.org/concepts/module-federation/
