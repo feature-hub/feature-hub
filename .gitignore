@@ -2,6 +2,7 @@
 .tmp
 cdk.out
 coverage
+dist
 lerna-debug.log
 lib
 node_modules
