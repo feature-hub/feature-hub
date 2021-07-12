@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.9.0](https://github.com/sinnerschrader/feature-hub/compare/v2.8.1...v2.9.0) (2021-07-12)
+
+
+### Bug Fixes
+
+* **all:** handle module type during hydration ([5cd3373](https://github.com/sinnerschrader/feature-hub/commit/5cd3373bd84466a187177be22f68fb0d27029e94))
+
+
+### Features
+
+* **core:** enhance module loader with module type ([ed56640](https://github.com/sinnerschrader/feature-hub/commit/ed5664083c02a2e2f849e1ab914b7253074a7ea2))
+
+
+
+
+
 ## [2.8.1](https://github.com/sinnerschrader/feature-hub/compare/v2.8.0...v2.8.1) (2020-11-14)
 
 

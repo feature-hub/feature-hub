@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.9.0](https://github.com/sinnerschrader/feature-hub/compare/v2.8.1...v2.9.0) (2021-07-12)
+
+
+### Bug Fixes
+
+* **all:** handle module type during hydration ([5cd3373](https://github.com/sinnerschrader/feature-hub/commit/5cd3373bd84466a187177be22f68fb0d27029e94))
+* **react:** increase `react` peer dependency range ([4257bf2](https://github.com/sinnerschrader/feature-hub/commit/4257bf29fb34e5cd245db9b5ae5334e84d789808))
+
+
+### Features
+
+* **react:** add module type to FeatureAppLoader ([bed5484](https://github.com/sinnerschrader/feature-hub/commit/bed5484bd8d17407cafcd1d0c8a481ec5e86e9de))
+
+
+
+
+
 ## [2.8.1](https://github.com/sinnerschrader/feature-hub/compare/v2.8.0...v2.8.1) (2020-11-14)
 
 

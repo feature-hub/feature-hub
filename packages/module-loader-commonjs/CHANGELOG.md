@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.9.0](https://github.com/sinnerschrader/feature-hub/compare/v2.8.1...v2.9.0) (2021-07-12)
+
+
+### Bug Fixes
+
+* **module-loader-commonjs:** remove unused `moduleType` from signature ([f39cd0d](https://github.com/sinnerschrader/feature-hub/commit/f39cd0d8de394d03b1a243226769a58e4e19652d))
+
+
+
+
+
 ## [2.8.1](https://github.com/sinnerschrader/feature-hub/compare/v2.8.0...v2.8.1) (2020-11-14)
 
 **Note:** Version bump only for package @feature-hub/module-loader-commonjs

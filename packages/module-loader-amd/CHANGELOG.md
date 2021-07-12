@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.9.0](https://github.com/sinnerschrader/feature-hub/compare/v2.8.1...v2.9.0) (2021-07-12)
+
+
+### Bug Fixes
+
+* **module-loader-amd:** remove unused `moduleType` from signature ([c4edc8d](https://github.com/sinnerschrader/feature-hub/commit/c4edc8db7550265d456d635429b5fe27a06605ec))
+
+
+
+
+
 ## [2.8.1](https://github.com/sinnerschrader/feature-hub/compare/v2.8.0...v2.8.1) (2020-11-14)
 
 **Note:** Version bump only for package @feature-hub/module-loader-amd

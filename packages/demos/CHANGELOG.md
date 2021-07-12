@@ -3,6 +3,36 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.9.0](https://github.com/sinnerschrader/feature-hub/compare/v2.8.1...v2.9.0) (2021-07-12)
+
+
+### Bug Fixes
+
+* **all:** handle module type during hydration ([5cd3373](https://github.com/sinnerschrader/feature-hub/commit/5cd3373bd84466a187177be22f68fb0d27029e94))
+* **demos:** add missing readonly modifiers ([4b6fdb9](https://github.com/sinnerschrader/feature-hub/commit/4b6fdb9b6683a4f1e3db4310f53620ab0dc90ace))
+* **demos:** add runtime check to loadNodeIntegrator ([1c9d7d3](https://github.com/sinnerschrader/feature-hub/commit/1c9d7d3f97a48cb7ba33821bad09e7a2e8ab067d))
+* **demos:** avoid optional chaining operator ([83aa522](https://github.com/sinnerschrader/feature-hub/commit/83aa522ce5db5cabc7181e4f9103c6366c430302))
+* **demos:** clean up unnecessary stuff ([0f5a728](https://github.com/sinnerschrader/feature-hub/commit/0f5a72876bbfb7610c95f8b8d3b7d53b152e6681))
+* **demos:** postcss webpack config for todomvc ([f98a155](https://github.com/sinnerschrader/feature-hub/commit/f98a1554893da989a870d0075d6fc34e3aa4d546))
+* **demos:** remove any cast from federation itest ([0059fe3](https://github.com/sinnerschrader/feature-hub/commit/0059fe380cf60736c99223f79a949392839c4ec6))
+* **demos:** share React as module federation singleton ([05c159b](https://github.com/sinnerschrader/feature-hub/commit/05c159b7cc78f2430928095d92954a11d8b7b32f))
+* **demos:** use blueprintjs in federation demo ([7d914b8](https://github.com/sinnerschrader/feature-hub/commit/7d914b8e2da59d8d28147687a7b7089ef80aea17))
+* **demos:** use empty entry in federated module webpack config ([95073f0](https://github.com/sinnerschrader/feature-hub/commit/95073f0ea8f8454426dc350c77aad33d0d6348e2))
+* **demos:** use js files for the demo server code ([a5d1fed](https://github.com/sinnerschrader/feature-hub/commit/a5d1fed4e5b4ffd086e620d7e31f9488ec116129))
+* **demos:** watch node integrator ([ddb29bf](https://github.com/sinnerschrader/feature-hub/commit/ddb29bff8f2ad93559faad5d025c2169cdb0fc0d)), closes [#250](https://github.com/sinnerschrader/feature-hub/issues/250)
+
+
+### Features
+
+* **demos:** add demo with multiple module loaders ([dd4db94](https://github.com/sinnerschrader/feature-hub/commit/dd4db94473c6dca3e58e19d1bc3891e8fa7c464b))
+* **demos:** update to webpack 5 ([d25da20](https://github.com/sinnerschrader/feature-hub/commit/d25da20b4d758647ff549c47e7eabb3e1d1001ea))
+* **module-loader-federation:** add webpack module federation loader ([f477b17](https://github.com/sinnerschrader/feature-hub/commit/f477b17327ada133887ef57874b3c4f83cabbfe2))
+* **module-loader-federation:** avoid using a factory ([16bd0d0](https://github.com/sinnerschrader/feature-hub/commit/16bd0d01403e7128407e0fa6469a275f5d85e4fb))
+
+
+
+
+
 ## [2.8.1](https://github.com/sinnerschrader/feature-hub/compare/v2.8.0...v2.8.1) (2020-11-14)
 
 **Note:** Version bump only for package @feature-hub/demos
