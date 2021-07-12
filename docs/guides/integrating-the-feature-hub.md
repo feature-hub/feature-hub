@@ -97,19 +97,9 @@ a custom loader).
 The module loader can be provided with the `moduleLoader` option of the
 `createFeatureHub` function.
 
-On the server:
+### Client
 
-```js
-import {loadCommonJsModule} from '@feature-hub/module-loader-commonjs';
-```
-
-```js
-const {featureAppManager} = createFeatureHub('acme:integrator', {
-  moduleLoader: loadCommonJsModule,
-});
-```
-
-On the client:
+#### AMD Module Loader
 
 ```js
 import {loadAmdModule} from '@feature-hub/module-loader-amd';
@@ -121,7 +111,7 @@ const {featureAppManager} = createFeatureHub('acme:integrator', {
 });
 ```
 
-or:
+#### Webpack Module Federation Loader
 
 ```js
 import {loadFederatedModule} from '@feature-hub/module-loader-federation';
@@ -130,6 +120,18 @@ import {loadFederatedModule} from '@feature-hub/module-loader-federation';
 ```js
 const {featureAppManager} = createFeatureHub('acme:integrator', {
   moduleLoader: loadFederatedModule,
+});
+```
+
+### Server
+
+```js
+import {loadCommonJsModule} from '@feature-hub/module-loader-commonjs';
+```
+
+```js
+const {featureAppManager} = createFeatureHub('acme:integrator', {
+  moduleLoader: loadCommonJsModule,
 });
 ```
 
