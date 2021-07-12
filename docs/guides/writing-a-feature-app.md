@@ -140,8 +140,10 @@ properties:
    [`FeatureAppContainer`][feature-app-container-base-url].
 
 1. `done` — A callback that the integrator^1^ might have defined. A short-lived
-   Feature App can call this function when it has completed its task. The
-   integrator^1^ can then decide to e.g. unmount the Feature App.
+   Feature App can call this function when it has completed its task, thus
+   giving the integrator^1^ a hint, that it can be removed. For example, if the
+   Feature App was opened in a layer, the integrator^1^ could close the layer
+   when `done()` is called.
 
 The return value of the `create` method can vary depending on the integration
 solution used. Assuming the [`@feature-hub/react`][react-api] package is used, a
