@@ -145,7 +145,9 @@ and available to other Feature Apps in each loaded version.
 > A large library of which only a small portion is used, might not be a good
 > candidate to provide as a shared module. In this case it might be more
 > efficient to include the library in each Feature App bundle, while making use
-> of [Webpack's tree shaking capabilities][tree-shaking].
+> of [Webpack's tree shaking capabilities][tree-shaking]. Furthermore, the
+> loading of a library can also be deferred by using [dynamic code
+> splitting][reducing-the-bundle-size].
 
 ## CommonJS
 
@@ -208,6 +210,7 @@ used][validating-externals].
 [module-federation-loader-demo]:
   https://github.com/sinnerschrader/feature-hub/tree/master/packages/demos/src/module-loader-federation
 [module-loader]: /docs/guides/integrating-the-feature-hub#module-loader
+[reducing-the-bundle-size]: /docs/guides/reducing-the-bundle-size
 [feature-app-dependencies]: /docs/guides/writing-a-feature-app#dependencies
 [server-bundles]: /docs/guides/writing-a-feature-app#server-bundles
 [validating-externals]:
