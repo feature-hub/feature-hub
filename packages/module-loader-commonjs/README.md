@@ -13,7 +13,7 @@ A `FeatureAppManager`-compatible CommonJS module loader.
 yarn add @feature-hub/module-loader-commonjs
 ```
 
-### Using NPM
+### Using npm
 
 ```sh
 npm install @feature-hub/module-loader-commonjs

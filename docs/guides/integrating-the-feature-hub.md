@@ -415,6 +415,33 @@ configuration meta data, etc. In contrast to the `featureAppId`, the
 </section>
 ```
 
+#### `done`
+
+For a short-lived Feature App a `done` callback can be defined, which the
+Feature App can call when it has completed its task. For example, if the Feature
+App was opened in a layer, the layer could be closed when `done()` is called.
+
+```jsx
+function FeatureAppInALayerExample() {
+  const [isOpen, setIsOpen] = React.useState(false);
+
+  return (
+    <div>
+      {isOpen && (
+        <Layer>
+          <FeatureAppLoader
+            featureAppId="some-feature-app"
+            src="https://example.com/some-feature-app.js"
+            done={() => setIsOpen(false)}
+          />
+        </Layer>
+      )}
+      <button onClick={() => setIsOpen(true)}>Open</button>
+    </div>
+  );
+}
+```
+
 #### `children`
 
 One can pass a rendering function as the React Children (i.e. the `children`
@@ -525,6 +552,33 @@ configuration meta data, etc. In contrast to the `featureAppId`, the
     />
   </aside>
 </section>
+```
+
+#### `done`
+
+For a short-lived Feature App a `done` callback can be defined, which the
+Feature App can call when it has completed its task. For example, if the Feature
+App was opened in a layer, the layer could be closed when `done()` is called.
+
+```jsx
+function FeatureAppInALayerExample() {
+  const [isOpen, setIsOpen] = React.useState(false);
+
+  return (
+    <div>
+      {isOpen && (
+        <Layer>
+          <FeatureAppContainer
+            featureAppId="some-feature-app"
+            featureAppDefinition={someFeatureAppDefinition}
+            done={() => setIsOpen(false)}
+          />
+        </Layer>
+      )}
+      <button onClick={() => setIsOpen(true)}>Open</button>
+    </div>
+  );
+}
 ```
 
 #### `children`

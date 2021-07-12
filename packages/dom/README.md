@@ -13,7 +13,7 @@ A library for building a Feature Hub integrator using Web Components.
 yarn add @feature-hub/dom
 ```
 
-### Using NPM
+### Using npm
 
 ```sh
 npm install @feature-hub/dom

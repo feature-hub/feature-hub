@@ -14,7 +14,7 @@ on the server.
 yarn add @feature-hub/serialized-state-manager
 ```
 
-### Using NPM
+### Using npm
 
 ```sh
 npm install @feature-hub/serialized-state-manager

@@ -26,7 +26,7 @@ integrator provides with the
 `FeatureHubContextProvider`][placing-feature-apps-on-a-web-page-using-react]
 from the [`@feature-hub/react`][react-api] package. Therefore the parent Feature
 App must define `@feature-hub/react` and `react` as [external
-dependencies][sharing-npm-dependencies]. In a webpack config, this needs to be
+dependencies][sharing-npm-dependencies]. In a Webpack config, this needs to be
 added:
 
 ```json

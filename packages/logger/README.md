@@ -14,7 +14,7 @@ consumers.
 yarn add @feature-hub/logger
 ```
 
-### Using NPM
+### Using npm
 
 ```sh
 npm install @feature-hub/logger

@@ -29,6 +29,11 @@ const siteConfig = {
     apiKey: 'bead2cf16cd4c92a9223c21b579d0d27',
     indexName: 'feature-hub',
   },
+  markdownPlugins: [
+    (md) => {
+      md.inline.ruler.enable(['sub', 'sup']);
+    },
+  ],
 };
 
 module.exports = siteConfig;

@@ -47,3 +47,12 @@ body:not(.sideNavVisible) .button:hover {
 blockquote {
   color: #24292e;
 }
+
+sup {
+  vertical-align: super;
+  font-size: smaller;
+}
+
+.footnote-backref {
+  font-family: initial;
+}

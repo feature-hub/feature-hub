@@ -13,7 +13,7 @@ A Feature Service to manage asynchronous server-side rendering.
 yarn add @feature-hub/async-ssr-manager
 ```
 
-### Using NPM
+### Using npm
 
 ```sh
 npm install @feature-hub/async-ssr-manager

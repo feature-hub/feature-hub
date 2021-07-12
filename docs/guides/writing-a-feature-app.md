@@ -87,7 +87,7 @@ The `create` method takes the single argument `env`, which has the following
 properties:
 
 1. `config` — A [config object that is provided by the
-   integrator][feature-app-configs]:
+   integrator][feature-app-configs]^1^:
 
    ```js
    const myFeatureAppDefinition = {
@@ -122,20 +122,33 @@ properties:
    };
    ```
 
-1. `featureAppId` — The ID that the integrator has assigned to the Feature App
-   instance. This ID is used as a consumer ID for [binding the required Feature
-   Services][feature-service-binder] to the Feature App.
+1. `featureAppId` — The ID that the integrator^1^ has assigned to the Feature
+   App instance. This ID is used as a consumer ID for [binding the required
+   Feature Services][feature-service-create] to the Feature App.
+
+1. `featureAppName` — The name that the integrator^1^ might have assigned to the
+   Feature App. This name is used as a consumer name for [binding the required
+   Feature Services][feature-service-create] to the Feature App. In contrast to
+   the `featureAppId`, the name must not be unique. It can be used by required
+   Feature Services for display purposes, logging, looking up Feature App
+   configuration meta data, etc.
 
 1. `baseUrl` — A base URL to be used for referencing the Feature App's own
-   resources. It is only set in the `env` if the integrator has defined a
+   resources. It is only set in the `env` if the integrator^1^ has defined a
    `baseUrl` on the corresponding
    [`FeatureAppLoader`][feature-app-loader-base-url] or
    [`FeatureAppContainer`][feature-app-container-base-url].
 
+1. `done` — A callback that the integrator^1^ might have defined. A short-lived
+   Feature App can call this function when it has completed its task, thus
+   giving the integrator^1^ a hint, that it can be removed. For example, if the
+   Feature App was opened in a layer, the integrator^1^ could close the layer
+   when `done()` is called.
+
 The return value of the `create` method can vary depending on the integration
 solution used. Assuming the [`@feature-hub/react`][react-api] package is used, a
-Feature App can be either a [React Feature App][react-feature-app] or a [DOM
-Feature App][dom-feature-app].
+Feature App can be either a [React Feature App](#react-feature-app) or a
+[DOM Feature App](#dom-feature-app).
 
 ## `ownFeatureServiceDefinitions`
 
@@ -225,14 +238,14 @@ const myFeatureAppDefinition = {
 ### Loading UIs provided by the React Integrator
 
 Both kinds of Feature Apps can specify a loading stage for Feature Apps, which
-are used to allow an Integrator to hide an already rendered Feature App visually
-and display a custom loading UI instead. This feature is for client-side
-rendering only.
+are used to allow an integrator^1^ to hide an already rendered Feature App
+visually and display a custom loading UI instead. This feature is for
+client-side rendering only.
 
 A Feature App can declare this loading stage by passing a `Promise` in the
 object returned from their `create` function with the key `loadingPromise`. Once
 the promise resolves, the loading is considered done. If it rejects, the Feature
-App will be considered as crashed, and the Integrator can use the rejection
+App will be considered as crashed, and the integrator^1^ can use the rejection
 payload to display a custom Error UI.
 
 ```js
@@ -291,29 +304,106 @@ const myFeatureAppDefinition = {
 };
 ```
 
-[dom-feature-app]: /docs/guides/writing-a-feature-app#dom-feature-app
-[feature-service-binder]:
-  /docs/guides/writing-a-feature-service#feature-service-binder
+## Bundling a Feature App
+
+For the `FeatureAppManager` to be able to load Feature Apps from a remote
+location, Feature App modules must be bundled. The module type of a Feature App
+bundle must be chosen based on the [provided module loaders of the
+integrators][module-loader] it intends to be loaded into.
+
+### Client Bundles
+
+Out of the box, the Feature Hub provides two client-side module loaders.
+
+#### AMD Module Loader
+
+To build an AMD Feature App module bundle, any module bundler can be used that
+can produce an AMD or UMD bundle.
+
+How npm dependencies can be shared using AMD is described in the ["Sharing npm
+Dependencies" guide][sharing-npm-dependencies-amd].
+
+#### Webpack Module Federation Loader
+
+To build a [federated module][module-federation], Webpack must be used as module
+bundler.
+
+Here is an example of a Webpack config for a federated Feature App module:
+
+```js
+module.exports = {
+  entry: {}, // intentionally left empty
+  output: {
+    filename: 'some-federated-feature-app.js',
+    publicPath: 'auto',
+  },
+  plugins: [
+    new webpack.container.ModuleFederationPlugin({
+      name: '__feature_hub_feature_app_module_container__',
+      exposes: {
+        featureAppModule: path.join(__dirname, './some-feature-app'),
+      },
+    }),
+  ],
+};
+```
+
+How npm dependencies can be shared using Webpack Module Federation is described
+in the ["Sharing npm Dependencies" guide][sharing-npm-dependencies-federation].
+
+> **There are two important naming conventions a Feature App's Webpack config
+> must follow:**
+>
+> 1. The `name` of the remote Feature App module container must be
+>    `'__feature_hub_feature_app_module_container__'`.
+>
+> 1. The Feature App module (containing the Feature App definition as default
+>    export) must be exposed by the container as `featureAppModule`.
+
+### Server Bundles
+
+To build a CommonJS Feature App module bundle for [server-side
+rendering][server-side-rendering], any module bundler can be used that can
+produce a CommonJS or UMD bundle. The target of this bundle must be Node.js.
+
+How npm dependencies can be shared on the server is described in the ["Sharing
+npm Dependencies" guide][sharing-npm-dependencies-commonjs].
+
+---
+
+1. The "integrator" in this case can also be [another Feature
+   App][feature-app-in-feature-app].
+
+[feature-app-in-feature-app]: /docs/guides/feature-app-in-feature-app
 [feature-app-loader-base-url]: /docs/guides/integrating-the-feature-hub#baseurl
 [feature-app-container-base-url]:
   /docs/guides/integrating-the-feature-hub#baseurl-1
+[feature-app-configs]:
+  /docs/guides/integrating-the-feature-hub#feature-app-configs
+[module-loader]: /docs/guides/integrating-the-feature-hub#module-loader
 [placing-feature-apps-on-a-web-page-using-react]:
   /docs/guides/integrating-the-feature-hub#placing-feature-apps-on-a-web-page-using-react
 [placing-feature-apps-on-a-web-page-using-web-components]:
   /docs/guides/integrating-the-feature-hub/#placing-feature-apps-on-a-web-page-using-web-components
-[feature-app-configs]:
-  /docs/guides/integrating-the-feature-hub#feature-app-configs
+[server-side-rendering]: /docs/guides/server-side-rendering
+[sharing-npm-dependencies]: /docs/guides/sharing-npm-dependencies
+[sharing-npm-dependencies-amd]:
+  http://localhost:3000/docs/guides/sharing-npm-dependencies#amd
+[sharing-npm-dependencies-federation]:
+  http://localhost:3000/docs/guides/sharing-npm-dependencies#webpack-module-federation
+[sharing-npm-dependencies-commonjs]:
+  http://localhost:3000/docs/guides/sharing-npm-dependencies#commonjs
+[feature-service-create]: /docs/guides/writing-a-feature-service#create
+[providing-a-versioned-api]:
+  /docs/guides/writing-a-feature-service#providing-a-versioned-api
+[async-ssr-manager-api]: /api/modules/async_ssr_manager.html
 [dom-api]: /api/modules/dom.html
 [react-api]: /api/modules/react.html
-[react-feature-app]: /docs/guides/writing-a-feature-app#react-feature-app
-[sharing-npm-dependencies]: /docs/guides/sharing-npm-dependencies
 [semver]: https://semver.org
 [semver-caret-range]:
   https://docs.npmjs.com/misc/semver#caret-ranges-123-025-004
 [semver-tilde-range]: https://docs.npmjs.com/misc/semver#tilde-ranges-123-12-1
 [issue-245]: https://github.com/sinnerschrader/feature-hub/issues/245
-[providing-a-versioned-api]:
-  /docs/guides/writing-a-feature-service#providing-a-versioned-api
-[async-ssr-manager-api]: /api/modules/async_ssr_manager.html
 [demo-react-loading-ui]:
   https://github.com/sinnerschrader/feature-hub/tree/master/packages/demos/src/react-loading-ui
+[module-federation]: https://webpack.js.org/concepts/module-federation/
