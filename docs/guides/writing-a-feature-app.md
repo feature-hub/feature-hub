@@ -387,12 +387,11 @@ npm Dependencies" guide][sharing-npm-dependencies-commonjs].
   /docs/guides/integrating-the-feature-hub/#placing-feature-apps-on-a-web-page-using-web-components
 [server-side-rendering]: /docs/guides/server-side-rendering
 [sharing-npm-dependencies]: /docs/guides/sharing-npm-dependencies
-[sharing-npm-dependencies-amd]:
-  http://localhost:3000/docs/guides/sharing-npm-dependencies#amd
+[sharing-npm-dependencies-amd]: /docs/guides/sharing-npm-dependencies#amd
 [sharing-npm-dependencies-federation]:
-  http://localhost:3000/docs/guides/sharing-npm-dependencies#webpack-module-federation
+  /docs/guides/sharing-npm-dependencies#webpack-module-federation
 [sharing-npm-dependencies-commonjs]:
-  http://localhost:3000/docs/guides/sharing-npm-dependencies#commonjs
+  /docs/guides/sharing-npm-dependencies#commonjs
 [feature-service-create]: /docs/guides/writing-a-feature-service#create
 [providing-a-versioned-api]:
   /docs/guides/writing-a-feature-service#providing-a-versioned-api
