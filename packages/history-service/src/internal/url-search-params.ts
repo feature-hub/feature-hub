@@ -1,4 +1,4 @@
-/* istanbul ignore next (not fully coverable on Node 10) */
+/* istanbul ignore next (not fully coverable on Node versions > 8) */
 const URLSearchParamsPonyfill: typeof URLSearchParams =
   typeof URLSearchParams === 'undefined' && typeof window === 'undefined'
     ? // tslint:disable-next-line:no-eval https://stackoverflow.com/a/41063795/10385541
