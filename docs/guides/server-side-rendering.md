@@ -153,7 +153,7 @@ client module bundle must be used when preloading the Feature App.
 On the server:
 
 ```js
-const hydrationSources = new Set();
+const hydrationSources = new Map();
 
 const addUrlForHydration = (url, moduleType) =>
   hydrationSources.set(url + moduleType, {url, moduleType});
