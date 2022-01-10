@@ -45,8 +45,11 @@ export interface FeatureAppEnvironment<
    * If this callback is defined, a short-lived Feature App can call this
    * function when it has completed its task. The Integrator (or parent Feature
    * App) can then decide to e.g. unmount the Feature App.
+   *
+   * By default it is assumed that the FA exited successfully, but it can signal
+   * that it failed. It is up to the integrator to handle this.
    */
-  readonly done?: () => void;
+  readonly done?: (failed?: boolean) => void;
 }
 
 export interface FeatureAppDefinition<
@@ -118,8 +121,11 @@ export interface FeatureAppScopeOptions<
    * short-lived Feature App can call this function when it has completed its
    * task. The Integrator (or parent Feature App) can then decide to e.g.
    * unmount the Feature App.
+   *
+   * By default it is assumed that the FA exited successfully, but it can signal
+   * that it failed. It is up to the integrator to handle this.
    */
-  readonly done?: () => void;
+  readonly done?: (failed?: boolean) => void;
 }
 
 export interface FeatureAppManagerOptions {
