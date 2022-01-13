@@ -37,7 +37,7 @@ export interface AsyncSsrManagerV1 {
    *
    * @param render A render function that is called for each render pass.
    */
-  renderUntilCompleted(render: () => string): Promise<string>;
+  renderUntilCompleted(render: () => Promise<string> | string): Promise<string>;
 
   /**
    * This method is intended for consumers, i.e. Feature Apps and Feature
