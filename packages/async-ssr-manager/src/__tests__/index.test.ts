@@ -74,6 +74,22 @@ describe('defineAsyncSsrManager', () => {
           expect(html).toEqual('testHtml');
           expect(mockRender).toHaveBeenCalledTimes(1);
         });
+
+        describe('when the given render function returns a promise', () => {
+          it('resolves with the html string that is resolved from the render function', async () => {
+            const asyncSsrManager = asyncSsrManagerBinder('test')
+              .featureService;
+
+            const mockRender = jest.fn(async () => 'testHtml');
+
+            const html = await useFakeTimers(async () =>
+              asyncSsrManager.renderUntilCompleted(mockRender)
+            );
+
+            expect(html).toEqual('testHtml');
+            expect(mockRender).toHaveBeenCalledTimes(1);
+          });
+        });
       });
 
       describe('with an integrator, and a consumer that schedules a rerender with a custom promise', () => {

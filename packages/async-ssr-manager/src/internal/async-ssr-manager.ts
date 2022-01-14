@@ -16,7 +16,9 @@ export class AsyncSsrManager implements AsyncSsrManagerV1 {
     private readonly timeout?: number
   ) {}
 
-  public async renderUntilCompleted(render: () => string): Promise<string> {
+  public async renderUntilCompleted(
+    render: () => Promise<string> | string
+  ): Promise<string> {
     const renderPromise = this.renderingLoop(render);
 
     if (typeof this.timeout !== 'number') {
@@ -36,8 +38,10 @@ export class AsyncSsrManager implements AsyncSsrManagerV1 {
     this.asyncOperations.add(asyncOperation);
   }
 
-  private async renderingLoop(render: () => string): Promise<string> {
-    let html = render();
+  private async renderingLoop(
+    render: () => Promise<string> | string
+  ): Promise<string> {
+    let html = await render();
 
     while (this.asyncOperations.size > 0) {
       while (this.asyncOperations.size > 0) {
@@ -54,7 +58,7 @@ export class AsyncSsrManager implements AsyncSsrManagerV1 {
         await Promise.all(asyncOperationsSnapshot);
       }
 
-      html = render();
+      html = await render();
     }
 
     return html;
