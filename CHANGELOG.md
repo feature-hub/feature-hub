@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.10.0](https://github.com/sinnerschrader/feature-hub/compare/v2.9.0...v2.10.0) (2022-01-14)
+
+
+### Bug Fixes
+
+* **website:** set strict response headers ([63ff878](https://github.com/sinnerschrader/feature-hub/commit/63ff87859fd839d67fd5d7402c5fb481dec4abb3))
+
+
+### Features
+
+* **async-ssr-manager:** async render inside renderUntilCompleted ([99b80ce](https://github.com/sinnerschrader/feature-hub/commit/99b80ce75c84554d8550c1c874e738084b09bc99))
+
+
+
+
+
 # [2.9.0](https://github.com/sinnerschrader/feature-hub/compare/v2.8.1...v2.9.0) (2021-07-12)
 
 
