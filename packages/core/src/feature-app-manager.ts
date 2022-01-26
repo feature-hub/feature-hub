@@ -49,7 +49,7 @@ export interface FeatureAppEnvironment<
    * By default it is assumed that the FA exited successfully, but it can signal
    * that it failed. It is up to the integrator to handle this.
    */
-  readonly done?: (failed?: boolean) => void;
+  readonly done?: (result?: unknown) => void;
 }
 
 export interface FeatureAppDefinition<
@@ -125,7 +125,7 @@ export interface FeatureAppScopeOptions<
    * By default it is assumed that the FA exited successfully, but it can signal
    * that it failed. It is up to the integrator to handle this.
    */
-  readonly done?: (failed?: boolean) => void;
+  readonly done?: (result?: unknown) => void;
 }
 
 export interface FeatureAppManagerOptions {
