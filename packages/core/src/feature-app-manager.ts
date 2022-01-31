@@ -45,8 +45,12 @@ export interface FeatureAppEnvironment<
    * If this callback is defined, a short-lived Feature App can call this
    * function when it has completed its task. The Integrator (or parent Feature
    * App) can then decide to e.g. unmount the Feature App.
+   *
+   * Optionally, the Feature App can pass a result into the done callback. The
+   * type/structure of the result must be agreed between the Integrator (or
+   * parent Feature App) and the Feature App.
    */
-  readonly done?: () => void;
+  readonly done?: (result?: unknown) => void;
 }
 
 export interface FeatureAppDefinition<
@@ -118,8 +122,12 @@ export interface FeatureAppScopeOptions<
    * short-lived Feature App can call this function when it has completed its
    * task. The Integrator (or parent Feature App) can then decide to e.g.
    * unmount the Feature App.
+   *
+   * Optionally, the Feature App can pass a result into the done callback. The
+   * type/structure of the result must be agreed between the Integrator (or
+   * parent Feature App) and the Feature App.
    */
-  readonly done?: () => void;
+  readonly done?: (result?: unknown) => void;
 }
 
 export interface FeatureAppManagerOptions {
