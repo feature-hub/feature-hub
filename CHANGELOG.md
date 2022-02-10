@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.11.0](https://github.com/sinnerschrader/feature-hub/compare/v2.10.0...v2.11.0) (2022-02-10)
+
+
+### Bug Fixes
+
+* **history-service:** compatibility with react-router-dom ([#704](https://github.com/sinnerschrader/feature-hub/issues/704)) ([9c1913f](https://github.com/sinnerschrader/feature-hub/commit/9c1913f4a64f501b97c32ae3a91a20e5ceb55d09))
+
+
+### Features
+
+* **all:** add optional result parameter to done callback ([#701](https://github.com/sinnerschrader/feature-hub/issues/701)) ([86feace](https://github.com/sinnerschrader/feature-hub/commit/86feace74abcd513caaa35b3da2562ef02cb6075))
+
+
+
+
+
 # [2.10.0](https://github.com/sinnerschrader/feature-hub/compare/v2.9.0...v2.10.0) (2022-01-14)
 
 
