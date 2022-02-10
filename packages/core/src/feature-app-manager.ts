@@ -431,40 +431,46 @@ export class FeatureAppManager {
       done,
     };
 
-    if (beforeCreate) {
-      beforeCreate(env);
+    try {
+      if (beforeCreate) {
+        beforeCreate(env);
+      }
+
+      const featureApp = featureAppDefinition.create(env);
+
+      this.logger.info(
+        `The Feature App with the ID ${JSON.stringify(
+          featureAppId
+        )} has been successfully created.`
+      );
+
+      let retainCount = 1;
+
+      const featureAppRetainer: FeatureAppRetainer<TFeatureApp> = {
+        featureApp,
+
+        retain: () => {
+          retainCount += 1;
+        },
+
+        release: () => {
+          retainCount -= 1;
+
+          if (retainCount === 0) {
+            this.featureAppRetainers.delete(featureAppId);
+            binding.unbind();
+          }
+        },
+      };
+
+      this.featureAppRetainers.set(featureAppId, featureAppRetainer);
+
+      return featureAppRetainer;
+    } catch (error) {
+      binding.unbind();
+
+      throw error;
     }
-
-    const featureApp = featureAppDefinition.create(env);
-
-    this.logger.info(
-      `The Feature App with the ID ${JSON.stringify(
-        featureAppId
-      )} has been successfully created.`
-    );
-
-    let retainCount = 1;
-
-    const featureAppRetainer: FeatureAppRetainer<TFeatureApp> = {
-      featureApp,
-
-      retain: () => {
-        retainCount += 1;
-      },
-
-      release: () => {
-        retainCount -= 1;
-
-        if (retainCount === 0) {
-          this.featureAppRetainers.delete(featureAppId);
-          binding.unbind();
-        }
-      },
-    };
-
-    this.featureAppRetainers.set(featureAppId, featureAppRetainer);
-
-    return featureAppRetainer;
   }
 
   private validateExternals(

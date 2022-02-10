@@ -276,6 +276,26 @@ describe('FeatureAppManager', () => {
           mockFeatureAppCreate.mock.calls
         );
       });
+
+      describe('that throws an error', () => {
+        it('throws the same error and unbinds the bound Feature Services', () => {
+          const mockError = new Error('mockError');
+
+          expect(() =>
+            featureAppManager.createFeatureAppScope(
+              'testId',
+              mockFeatureAppDefinition,
+              {
+                beforeCreate: () => {
+                  throw mockError;
+                },
+              }
+            )
+          ).toThrowError(mockError);
+
+          expect(mockFeatureServicesBindingUnbind).toHaveBeenCalledTimes(1);
+        });
+      });
     });
 
     describe('with a done callback', () => {
@@ -493,6 +513,25 @@ describe('FeatureAppManager', () => {
             mockFeatureAppDefinition
           )
         ).toThrowError(mockError);
+      });
+    });
+
+    describe("when the FeatureApp's create method throws an error", () => {
+      it('throws the same error and unbinds the bound Feature Services', () => {
+        const mockError = new Error('mockError');
+
+        mockFeatureAppCreate.mockImplementation(() => {
+          throw mockError;
+        });
+
+        expect(() =>
+          featureAppManager.createFeatureAppScope(
+            'testId',
+            mockFeatureAppDefinition
+          )
+        ).toThrowError(mockError);
+
+        expect(mockFeatureServicesBindingUnbind).toHaveBeenCalledTimes(1);
       });
     });
 
