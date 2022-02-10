@@ -27,17 +27,17 @@ export function NewPathControl({
   return (
     <ControlGroup vertical={vertical}>
       <InputGroup
-        id={`new-path-${specifier}`}
+        id={`new-path-input-${specifier}`}
         placeholder="Enter a new path..."
         inputRef={(ref) => (inputElement.current = ref)}
       />
       <Button
-        id={`push-${specifier}`}
+        id={`push-button-${specifier}`}
         text="Push"
         onClick={() => changePath('push')}
       />
       <Button
-        id={`replace-${specifier}`}
+        id={`replace-button-${specifier}`}
         text="Replace"
         onClick={() => changePath('replace')}
       />

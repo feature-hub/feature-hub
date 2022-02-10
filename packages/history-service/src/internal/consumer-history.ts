@@ -17,6 +17,19 @@ export abstract class ConsumerHistory implements history.History {
       undefined,
       history.createLocation('/')
     );
+
+    /**
+     * The methods of `history.History` must be bound explicitly, because
+     * components like `Link` from the `react-router-dom` package deconstruct
+     * methods like `push` and `replace` from the `history`.
+     */
+    this.push = this.push.bind(this);
+    this.replace = this.replace.bind(this);
+    this.go = this.go.bind(this);
+    this.goBack = this.goBack.bind(this);
+    this.goForward = this.goForward.bind(this);
+    this.block = this.block.bind(this);
+    this.createHref = this.createHref.bind(this);
   }
 
   public get length(): number {
