@@ -19,45 +19,60 @@ class HistoryConsumerUi {
   ) {}
 
   public async getPathname(): Promise<string> {
-    const pathnameInput = await this.getPathnameInput();
-
+    const pathnameInput = await this.getElement('pathname-input');
     const value = await pathnameInput.getProperty('value');
 
     return value.jsonValue();
   }
 
   public async push(pathname: string): Promise<void> {
-    await (await this.getNewPathInput()).type(pathname);
-
-    await this.browser.waitForNavigation((await this.getPushButton()).click());
-  }
-
-  public async replace(pathname: string): Promise<void> {
-    await (await this.getNewPathInput()).type(pathname);
+    await (await this.getElement('new-path-input')).type(pathname);
 
     await this.browser.waitForNavigation(
-      (await this.getReplaceButton()).click()
+      (await this.getElement('push-button')).click()
     );
   }
 
-  private async getNewPathInput(): Promise<ElementHandle<HTMLInputElement>> {
-    // tslint:disable-next-line:no-non-null-assertion
-    return (await page.$(`#new-path-${this.specifier}`))!;
+  public async replace(pathname: string): Promise<void> {
+    await (await this.getElement('new-path-input')).type(pathname);
+
+    await this.browser.waitForNavigation(
+      (await this.getElement('replace-button')).click()
+    );
   }
 
-  private async getPathnameInput(): Promise<ElementHandle<HTMLInputElement>> {
-    // tslint:disable-next-line:no-non-null-assertion
-    return (await page.$(`#pathname-${this.specifier}`))!;
+  public async clickPushLink(): Promise<void> {
+    await this.browser.waitForNavigation(
+      (await this.getElement('push-link')).click()
+    );
   }
 
-  private async getPushButton(): Promise<ElementHandle<HTMLButtonElement>> {
-    // tslint:disable-next-line:no-non-null-assertion
-    return (await page.$(`#push-${this.specifier}`))!;
+  public async clickReplaceLink(): Promise<void> {
+    await this.browser.waitForNavigation(
+      (await this.getElement('replace-link')).click()
+    );
   }
 
-  private async getReplaceButton(): Promise<ElementHandle<HTMLButtonElement>> {
+  private async getElement(
+    prefix: 'new-path-input' | 'pathname-input'
+  ): Promise<ElementHandle<HTMLInputElement>>;
+  private async getElement(
+    prefix: 'push-button' | 'replace-button'
+  ): Promise<ElementHandle<HTMLButtonElement>>;
+  private async getElement(
+    prefix: 'push-link' | 'replace-link'
+  ): Promise<ElementHandle<HTMLAnchorElement>>;
+  private async getElement(
+    prefix:
+      | 'new-path-input'
+      | 'pathname-input'
+      | 'push-button'
+      | 'replace-button'
+      | 'push-link'
+      | 'replace-link'
+  ): Promise<ElementHandle<HTMLElement>> {
     // tslint:disable-next-line:no-non-null-assertion
-    return (await page.$(`#replace-${this.specifier}`))!;
+    return (await page.$(`#${prefix}-${this.specifier}`))!;
   }
 }
 
@@ -139,7 +154,7 @@ describe('integration test: "history-service"', () => {
     expect(await b.getPathname()).toBe('/');
   });
 
-  test('Scenario 6: Consumer A and B both push new pathnames', async () => {
+  test('Scenario 6: Consumers A and B both push new pathnames', async () => {
     await browser.goto(url);
 
     expect(await browser.getPath()).toBe('/');
@@ -210,5 +225,26 @@ describe('integration test: "history-service"', () => {
 
     // Re-enable JavaScript to restore the default behavior for all other tests.
     await page.setJavaScriptEnabled(true);
+  });
+
+  test('Scenario 11: Consumers A and B push/replace a new pathnames using the Link component from react-router-dom', async () => {
+    await browser.goto(url);
+
+    expect(await browser.getPath()).toBe('/');
+
+    await a.clickPushLink();
+
+    expect(await browser.getPath()).toBe('/?test:history-consumer:a=/foo');
+    expect(await a.getPathname()).toBe('/foo');
+    expect(await b.getPathname()).toBe('/');
+
+    await b.clickReplaceLink();
+
+    expect(await browser.getPath()).toBe(
+      '/?test:history-consumer:a=/foo&test:history-consumer:b=/bar'
+    );
+
+    expect(await a.getPathname()).toBe('/foo');
+    expect(await b.getPathname()).toBe('/bar');
   });
 });

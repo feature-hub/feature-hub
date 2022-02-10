@@ -13,7 +13,11 @@ export function PathnameLabel({
   return (
     <Label>
       Pathname
-      <InputGroup id={`pathname-${specifier}`} value={pathname} disabled />
+      <InputGroup
+        id={`pathname-input-${specifier}`}
+        value={pathname}
+        disabled
+      />
     </Label>
   );
 }

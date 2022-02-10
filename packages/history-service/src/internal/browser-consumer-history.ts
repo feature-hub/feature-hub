@@ -21,6 +21,10 @@ export class BrowserConsumerHistory extends ConsumerHistory {
         this.handleRootLocationChange(action);
       }
     );
+
+    this.listen = this.listen.bind(this);
+    this.push = this.push.bind(this);
+    this.replace = this.replace.bind(this);
   }
 
   public destroy(): void {
