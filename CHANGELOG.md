@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.11.1](https://github.com/sinnerschrader/feature-hub/compare/v2.11.0...v2.11.1) (2022-02-10)
+
+
+### Bug Fixes
+
+* **core:** unbind Feature Services if Feature App fails to be created ([#705](https://github.com/sinnerschrader/feature-hub/issues/705)) ([98970ce](https://github.com/sinnerschrader/feature-hub/commit/98970ce313af0de7568ba39d5ee754773b904925))
+
+
+
+
+
 # [2.11.0](https://github.com/sinnerschrader/feature-hub/compare/v2.10.0...v2.11.0) (2022-02-10)
 
 
