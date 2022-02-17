@@ -10,7 +10,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {FeatureAppModuleSource} from '../app-renderer';
 import {App} from './app';
-import {countServiceDefinition} from "./count-service";
+import {countServiceDefinition} from './count-service';
 
 function getSerializedStatesFromDom(): string | undefined {
   const scriptElement = document.querySelector(
@@ -35,24 +35,21 @@ function getUrlsForHydrationFromDom(): FeatureAppModuleSource[] {
 (async () => {
   defineExternals({react: React});
 
-  const {featureAppManager, featureServices} = createFeatureHub(
-    'test:integrator',
-    {
-      moduleLoader: async (url, moduleType) =>
-        moduleType === 'federated'
-          ? loadFederatedModule(url)
-          : loadAmdModule(url),
-      providedExternals: {react: process.env.REACT_VERSION as string},
-      featureServiceDefinitions: [
-        serializedStateManagerDefinition,
-        countServiceDefinition
-      ],
-      featureServiceDependencies: {
-        [serializedStateManagerDefinition.id]: '^1.0.0',
-        [countServiceDefinition.id]: '^1.0.0'
-      },
-    }
-  );
+  const {
+    featureAppManager,
+    featureServiceRegistry,
+    featureServices,
+  } = createFeatureHub('test:integrator', {
+    moduleLoader: async (url, moduleType) =>
+      moduleType === 'federated'
+        ? loadFederatedModule(url)
+        : loadAmdModule(url),
+    providedExternals: {react: process.env.REACT_VERSION as string},
+    featureServiceDefinitions: [serializedStateManagerDefinition],
+    featureServiceDependencies: {
+      [serializedStateManagerDefinition.id]: '^1.0.0',
+    },
+  });
 
   const serializedStateManager = featureServices[
     serializedStateManagerDefinition.id
@@ -63,6 +60,11 @@ function getUrlsForHydrationFromDom(): FeatureAppModuleSource[] {
   if (serializedStates) {
     serializedStateManager.setSerializedStates(serializedStates);
   }
+
+  featureServiceRegistry.registerFeatureServices(
+    [countServiceDefinition],
+    'test:integrator'
+  );
 
   await Promise.all(
     getUrlsForHydrationFromDom().map(async ({url, moduleType}) =>

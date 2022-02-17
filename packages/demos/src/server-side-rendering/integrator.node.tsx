@@ -21,7 +21,7 @@ import {
   FeatureAppModuleSource,
 } from '../app-renderer';
 import {App} from './app';
-import {countServiceDefinition} from "./count-service";
+import {countServiceDefinition} from './count-service';
 
 export default async function renderApp({
   port,
@@ -36,12 +36,11 @@ export default async function renderApp({
       featureServiceDefinitions: [
         asyncSsrManagerDefinition,
         serializedStateManagerDefinition,
-        countServiceDefinition
+        countServiceDefinition,
       ],
       featureServiceDependencies: {
         [asyncSsrManagerDefinition.id]: '^1.0.0',
         [serializedStateManagerDefinition.id]: '^1.0.0',
-        [countServiceDefinition.id]: '^1.0.0'
       },
     }
   );
