@@ -10,6 +10,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {FeatureAppModuleSource} from '../app-renderer';
 import {App} from './app';
+import {countServiceDefinition} from "./count-service";
 
 function getSerializedStatesFromDom(): string | undefined {
   const scriptElement = document.querySelector(
@@ -42,9 +43,13 @@ function getUrlsForHydrationFromDom(): FeatureAppModuleSource[] {
           ? loadFederatedModule(url)
           : loadAmdModule(url),
       providedExternals: {react: process.env.REACT_VERSION as string},
-      featureServiceDefinitions: [serializedStateManagerDefinition],
+      featureServiceDefinitions: [
+        serializedStateManagerDefinition,
+        countServiceDefinition
+      ],
       featureServiceDependencies: {
         [serializedStateManagerDefinition.id]: '^1.0.0',
+        [countServiceDefinition.id]: '^1.0.0'
       },
     }
   );
