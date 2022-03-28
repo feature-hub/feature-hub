@@ -5,6 +5,7 @@ import {
   FeatureServiceProviderDefinition,
   FeatureServiceRegistry,
   FeatureServices,
+  FeatureServicesBinding,
   SharedFeatureService,
 } from './feature-service-registry';
 import * as Messages from './internal/feature-app-manager-messages';
@@ -421,6 +422,12 @@ export class FeatureAppManager {
       featureAppId,
       featureAppName
     );
+
+    this.logger.track({
+      type: 'FeatureAppCreation',
+      dependencies: featureAppDefinition.dependencies,
+      optionalDependencies: featureAppDefinition.optionalDependencies,
+    });
 
     const env: FeatureAppEnvironment<TFeatureServices, TConfig> = {
       baseUrl,
