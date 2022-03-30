@@ -3,7 +3,7 @@
 import {FeatureServiceEnvironment} from '@feature-hub/core';
 import {SerializedStateManagerV1, serializedStateManagerDefinition} from '..';
 
-describe('serializedStateManagerDefinition', () => {
+describe('defineSerializedStateManager', () => {
   let mockEnv: FeatureServiceEnvironment<{}>;
 
   beforeEach(() => {

@@ -94,7 +94,7 @@ element][demos-inject-serialized-states-script].
 On the client, before hydrating, this string must be extracted from the HTML
 document, e.g. [from the text content of the custom script
 element][demos-extract-serialized-states-script], and passed unmodified into the
-`setSerializedStates` method, where it will be decoded again:
+`defineSerializedStateManager` function, where it will be decoded again:
 
 ```js
 serializedStateManager.setSerializedStates(serializedStates);
