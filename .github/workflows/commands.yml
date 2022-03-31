@@ -155,3 +155,100 @@ jobs:
               issue_number: issue.number,
               body: 'Deployed to https://${{ steps.gitSha.outputs.short }}.${{ secrets.AWS_HOSTED_ZONE_NAME }}'
             });
+
+  prerelease:
+    if: |
+      github.event.issue.pull_request && github.event.comment.body == '/prerelease'
+    runs-on: ubuntu-latest
+    env:
+      CI: true
+
+    steps:
+      - name: Check user permission
+        id: check
+        uses: scherermichael-oss/action-has-permission@1.0.6
+        with:
+          required-permission: write
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Add comment reaction
+        uses: actions/github-script@v4
+        with:
+          github-token: ${{ github.token }}
+          result-encoding: string
+          script: |
+            const {comment, repository} = context.payload;
+
+            await github.reactions.createForIssueComment({
+              owner: repository.owner.login,
+              repo: repository.name,
+              comment_id: comment.id,
+              content: '${{ steps.check.outputs.has-permission }}' ? '+1' : '-1'
+            });
+
+      - name: Abort if prohibited
+        if: '! steps.check.outputs.has-permission'
+        run: |
+          echo "Permissions are insufficient."
+          exit 1
+
+      - name: Get Git Ref
+        uses: actions/github-script@v4
+        id: gitRef
+        with:
+          github-token: ${{ github.token }}
+          result-encoding: string
+          script: |
+            const {issue, repository} = context.payload;
+
+            const pull_request = await github.pulls.get({
+              owner: repository.owner.login,
+              repo: repository.name,
+              pull_number: issue.number
+            });
+
+            const {ref, label} = pull_request.data.head;
+            console.log({ref, label});
+            return ref;
+
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ steps.gitRef.outputs.result }}
+
+      - name: Setup node
+        uses: actions/setup-node@v2
+        with:
+          node-version: 12.x
+
+      - name: Install
+        run: yarn install
+
+      - name: Compile
+        run: |
+          yarn compile
+          yarn compile:esm
+
+      - name: Publish Version
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          git config --global user.email "s2-feature-hub@accenture.com"
+          git config --global user.name "Feature Hub CI"
+          npm config set "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}"
+          yarn lerna publish --canary --preid ${{ steps.gitRef.outputs.result }} --dist-tag ${{ steps.gitRef.outputs.result }} --yes --no-verify-access
+
+      - name: Add PR Comment
+        uses: actions/github-script@v4
+        with:
+          github-token: ${{ github.token }}
+          script: |
+            const {issue, repository} = context.payload;
+
+            github.issues.createComment({
+              owner: repository.owner.login,
+              repo: repository.name,
+              issue_number: issue.number,
+              body: 'Prereleased with npm dist-tag "${{ steps.gitRef.outputs.result }}"'
+            });
