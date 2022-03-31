@@ -97,7 +97,7 @@ element][demos-extract-serialized-states-script], and passed unmodified into the
 `defineSerializedStateManager` function, where it will be decoded again:
 
 ```js
-serializedStateManager.setSerializedStates(serializedStates);
+defineSerializedStateManager(serializedStates);
 ```
 
 Now the hydration can be started, and consumers will be able to

@@ -1,7 +1,11 @@
 // tslint:disable:no-non-null-assertion
 
 import {FeatureServiceEnvironment} from '@feature-hub/core';
-import {SerializedStateManagerV1, serializedStateManagerDefinition} from '..';
+import {
+  SerializedStateManagerV1,
+  defineSerializedStateManager,
+  serializedStateManagerDefinition,
+} from '..';
 
 describe('defineSerializedStateManager', () => {
   let mockEnv: FeatureServiceEnvironment<{}>;
@@ -117,6 +121,36 @@ describe('defineSerializedStateManager', () => {
         it('returns the serialized state for the first consumer', () => {
           expect(consumer1SerializedStateManager.getSerializedState()).toBe(
             JSON.stringify({kind: 'foo'})
+          );
+        });
+
+        it('returns undefined for the second consumer', () => {
+          expect(
+            consumer2SerializedStateManager.getSerializedState()
+          ).toBeUndefined();
+        });
+      });
+
+      describe('when the integrator has passed serialized states into the definition factory function', () => {
+        const serializedStateConsumer1 = JSON.stringify({kind: 'foo'});
+
+        beforeEach(() => {
+          const serializedStateManagerBinder = defineSerializedStateManager(
+            JSON.stringify({'test:consumer:1': serializedStateConsumer1})
+          ).create(mockEnv)!['1.0.0'];
+
+          consumer1SerializedStateManager = serializedStateManagerBinder(
+            'test:consumer:1'
+          ).featureService;
+
+          consumer2SerializedStateManager = serializedStateManagerBinder(
+            'test:consumer:2'
+          ).featureService;
+        });
+
+        it('returns the serialized state for the first consumer', () => {
+          expect(consumer1SerializedStateManager.getSerializedState()).toBe(
+            serializedStateConsumer1
           );
         });
 
