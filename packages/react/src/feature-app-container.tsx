@@ -93,7 +93,7 @@ export interface FeatureAppContainerProps<
   /**
    * The consumer definition of the Feature App.
    */
-  readonly featureAppDefinition: FeatureAppDefinition<
+  readonly featureAppDefinition?: FeatureAppDefinition<
     TFeatureApp,
     TFeatureServices,
     TConfig

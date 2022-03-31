@@ -1195,6 +1195,61 @@ describe('FeatureAppContainer', () => {
           </div>
         `);
       });
+
+      describe('with a feature app definition that is provided after the first render', () => {
+        it('renders what the feature app returns after the featureAppDefinition is provided', () => {
+          const mockSetInnerHtml = jest.fn();
+
+          const children = jest.fn(
+            ({featureAppNode, error}: CustomFeatureAppRenderingParams) => {
+              if (error) {
+                return <p>Error: {error}</p>;
+              }
+
+              return <div>{featureAppNode}</div>;
+            }
+          );
+
+          const testRenderer = TestRenderer.create(
+            <FeatureHubContextProvider
+              value={{
+                featureAppManager: mockFeatureAppManager,
+              }}
+            >
+              <FeatureAppContainer
+                featureAppId="testId"
+                featureAppDefinition={undefined}
+                children={children}
+              />
+            </FeatureHubContextProvider>,
+            {
+              createNodeMock: () => ({
+                set innerHTML(html: string) {
+                  mockSetInnerHtml(html);
+                },
+              }),
+            }
+          );
+
+          testRenderer.update(
+            <FeatureHubContextProvider
+              value={{
+                featureAppManager: mockFeatureAppManager,
+              }}
+            >
+              <FeatureAppContainer
+                featureAppId="testId"
+                featureAppDefinition={mockFeatureAppDefinition}
+                children={children}
+              />
+            </FeatureHubContextProvider>
+          );
+
+          expect(mockSetInnerHtml).toHaveBeenCalledWith(
+            'This is the DOM Feature App.'
+          );
+        });
+      });
     });
 
     describe('when a Feature App throws in attachTo', () => {
@@ -1356,6 +1411,50 @@ describe('FeatureAppContainer', () => {
           );
 
           expect(testRenderer.toJSON()).toBe(customErrorUI);
+        });
+
+        describe('with a feature app definition that is provided after the first render', () => {
+          it('logs the error', () => {
+            const children = jest.fn(
+              ({featureAppNode}: CustomFeatureAppRenderingParams) =>
+                featureAppNode || null
+            );
+
+            const testRenderer = TestRenderer.create(
+              <FeatureHubContextProvider
+                value={{
+                  featureAppManager: mockFeatureAppManager,
+                  logger,
+                }}
+              >
+                <FeatureAppContainer
+                  featureAppId="testId"
+                  featureAppDefinition={undefined}
+                  children={children}
+                />
+              </FeatureHubContextProvider>,
+              {
+                createNodeMock: () => ({}),
+              }
+            );
+
+            testRenderer.update(
+              <FeatureHubContextProvider
+                value={{
+                  featureAppManager: mockFeatureAppManager,
+                  logger,
+                }}
+              >
+                <FeatureAppContainer
+                  featureAppId="testId"
+                  featureAppDefinition={mockFeatureAppDefinition}
+                  children={children}
+                />
+              </FeatureHubContextProvider>
+            );
+
+            expect(logger.error.mock.calls).toEqual([[mockError]]);
+          });
         });
       });
 

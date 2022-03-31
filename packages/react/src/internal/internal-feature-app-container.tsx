@@ -185,6 +185,7 @@ export class InternalFeatureAppContainer<
 
   private readonly containerRef = React.createRef<HTMLDivElement>();
   private mounted = false;
+  private domFeatureAppWasAttached = false;
   private loadingPromiseHandled = false;
 
   public componentDidCatch(error: Error): void {
@@ -209,6 +210,7 @@ export class InternalFeatureAppContainer<
     ) {
       try {
         this.state.featureApp.attachTo(container);
+        this.domFeatureAppWasAttached = true;
       } catch (error) {
         this.componentDidCatch(error);
       }
@@ -218,6 +220,29 @@ export class InternalFeatureAppContainer<
   }
 
   public componentDidUpdate(): void {
+    // We only need to attach the DomFeatureApp in here if the rendering
+    // was done with a custom loading child (this.props.children).
+    // With the custom loading child this component is run before the
+    // featureDefinition/featureApp is loaded and gets an update when
+    // it is loaded.
+    if (
+      this.props.children &&
+      this.state.featureApp &&
+      isDomFeatureApp(this.state.featureApp) &&
+      !this.domFeatureAppWasAttached
+    ) {
+      const container = this.containerRef.current;
+
+      if (container && !('error' in this.state)) {
+        try {
+          this.state.featureApp.attachTo(container);
+          this.domFeatureAppWasAttached = true;
+        } catch (error) {
+          this.componentDidCatch(error);
+        }
+      }
+    }
+
     this.handleLoading();
   }
 
@@ -251,6 +276,7 @@ export class InternalFeatureAppContainer<
     let featureAppNode: React.ReactNode;
 
     if (isReactFeatureApp(featureApp)) {
+      // ReactFeatureApp
       try {
         featureAppNode = featureApp.render();
       } catch (error) {
@@ -259,6 +285,7 @@ export class InternalFeatureAppContainer<
         return this.renderError(error);
       }
     } else {
+      // DomFeatureApp
       featureAppNode = <div ref={this.containerRef} />;
     }
 
