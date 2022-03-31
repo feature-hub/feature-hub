@@ -51,23 +51,39 @@ export interface SharedSerializedStateManager extends SharedFeatureService {
 }
 
 /**
- * @see [[SerializedStateManagerV1]] for further information.
+ * On the client this can be called with serialized states to create a
+ * Serialized State Manager definition that is already populated with the given
+ * serialized states, avoiding the need for the Integrator to call
+ * [[SerializedStateManagerV1.setSerializedStates]] after its creation.
  */
-export const serializedStateManagerDefinition: FeatureServiceProviderDefinition<SharedSerializedStateManager> = {
-  id: 's2:serialized-state-manager',
+export function defineSerializedStateManager(
+  serializedStates?: string
+): FeatureServiceProviderDefinition<SharedSerializedStateManager> {
+  return {
+    id: 's2:serialized-state-manager',
 
-  create: () => {
-    const serverSideStateManager = new ServerSideStateManager();
-    const clientSideStateManager = new ClientSideStateManager();
+    create: () => {
+      const serverSideStateManager = new ServerSideStateManager();
+      const clientSideStateManager = new ClientSideStateManager();
 
-    return {
-      '1.0.0': (consumerId) => ({
-        featureService: new SerializedStateManager(
-          consumerId,
-          serverSideStateManager,
-          clientSideStateManager
-        ),
-      }),
-    };
-  },
-};
+      if (serializedStates) {
+        clientSideStateManager.setSerializedStates(serializedStates);
+      }
+
+      return {
+        '1.0.0': (consumerId) => ({
+          featureService: new SerializedStateManager(
+            consumerId,
+            serverSideStateManager,
+            clientSideStateManager
+          ),
+        }),
+      };
+    },
+  };
+}
+
+/**
+ * @see [[defineSerializedStateManager]] for further information.
+ */
+export const serializedStateManagerDefinition = defineSerializedStateManager();
