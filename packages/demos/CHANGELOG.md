@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.12.0](https://github.com/sinnerschrader/feature-hub/compare/v2.11.1...v2.12.0) (2022-03-31)
+
+
+### Features
+
+* **serialized-state-manager:** introduce a definition factory function ([ce6ecbb](https://github.com/sinnerschrader/feature-hub/commit/ce6ecbba04c9cac82adba4e355511cdd43c8323f))
+
+
+
+
+
 ## [2.11.1](https://github.com/sinnerschrader/feature-hub/compare/v2.11.0...v2.11.1) (2022-02-10)
 
 **Note:** Version bump only for package @feature-hub/demos
