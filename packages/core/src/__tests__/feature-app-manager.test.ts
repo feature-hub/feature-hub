@@ -322,6 +322,62 @@ describe('FeatureAppManager', () => {
       });
     });
 
+    describe('with an onBind callback', () => {
+      it('calls the onBind callback successfully', () => {
+        const mockOnBind = jest.fn();
+        const featureAppId = 'testId';
+        const featureAppName = 'testName';
+
+        featureAppManager = new FeatureAppManager(mockFeatureServiceRegistry, {
+          logger,
+          onBind: mockOnBind,
+        });
+
+        featureAppManager.createFeatureAppScope(
+          featureAppId,
+          mockFeatureAppDefinition,
+          {featureAppName}
+        );
+
+        expect(mockOnBind.mock.calls).toEqual([
+          [
+            {
+              featureAppDefinition: mockFeatureAppDefinition,
+              featureAppId,
+              featureAppName,
+            },
+          ],
+        ]);
+      });
+
+      describe('that throws an error', () => {
+        it('does not throw but logs the error', () => {
+          const mockError = new Error('mockError');
+
+          featureAppManager = new FeatureAppManager(
+            mockFeatureServiceRegistry,
+            {
+              logger,
+              onBind: () => {
+                throw mockError;
+              },
+            }
+          );
+
+          expect(() =>
+            featureAppManager.createFeatureAppScope(
+              'testId',
+              mockFeatureAppDefinition
+            )
+          ).not.toThrow();
+
+          expect(logger.error.mock.calls).toEqual([
+            ['Failed to execute onBind callback.', mockError],
+          ]);
+        });
+      });
+    });
+
     describe('with a featureAppName', () => {
       it('passes the featureAppName as consumerName to bindFeatureServices', () => {
         const featureAppId = 'testId';

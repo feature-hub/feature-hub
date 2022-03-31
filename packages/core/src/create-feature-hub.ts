@@ -1,5 +1,9 @@
 import {ExternalsValidator, ProvidedExternals} from './externals-validator';
-import {FeatureAppManager, ModuleLoader} from './feature-app-manager';
+import {
+  FeatureAppManager,
+  ModuleLoader,
+  OnBindParams,
+} from './feature-app-manager';
 import {
   FeatureServiceConsumerDefinition,
   FeatureServiceConsumerDependencies,
@@ -63,6 +67,13 @@ export interface FeatureHubOptions {
    * A custom logger that shall be used instead of `console`.
    */
   readonly logger?: Logger;
+
+  /**
+   * A function that is called for every Feature App when its dependent Feature
+   * Services are bound. This allows the integrator to collect information about
+   * Feature Service usage.
+   */
+  readonly onBind?: (params: OnBindParams) => void;
 }
 
 /**
@@ -84,6 +95,7 @@ export function createFeatureHub(
     providedExternals,
     moduleLoader,
     logger,
+    onBind,
   } = options;
 
   let externalsValidator: ExternalsValidator | undefined;
@@ -112,6 +124,7 @@ export function createFeatureHub(
     externalsValidator,
     moduleLoader,
     logger,
+    onBind,
   });
 
   const {featureServices} = featureServiceRegistry.bindFeatureServices(
