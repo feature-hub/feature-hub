@@ -208,14 +208,15 @@ jobs:
               pull_number: issue.number
             });
 
-            const {ref, label} = pull_request.data.head;
-            console.log({ref, label});
+            const {ref, sha} = pull_request.data.head;
+            core.setOutput('short', sha.slice(0, 8));
             return ref;
 
       - name: Checkout
         uses: actions/checkout@v2
         with:
           ref: ${{ steps.gitRef.outputs.result }}
+          fetch-depth: 0
 
       - name: Setup node
         uses: actions/setup-node@v2
@@ -237,7 +238,7 @@ jobs:
           git config --global user.email "s2-feature-hub@accenture.com"
           git config --global user.name "Feature Hub CI"
           npm config set "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}"
-          yarn lerna publish --canary --preid ${{ steps.gitRef.outputs.result }} --dist-tag ${{ steps.gitRef.outputs.result }} --yes --no-verify-access
+          yarn lerna publish --canary --preid ${{ steps.gitRef.outputs.result }}.${{ steps.gitRef.outputs.short }} --dist-tag ${{ steps.gitRef.outputs.result }} --yes --no-verify-access
 
       - name: Add PR Comment
         uses: actions/github-script@v4
