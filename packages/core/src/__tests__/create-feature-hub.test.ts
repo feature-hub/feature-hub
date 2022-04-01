@@ -131,6 +131,35 @@ describe('createFeatureHub()', () => {
         );
       });
     });
+
+    describe('with an onBind callback', () => {
+      it('calls the onBind callback successfully', () => {
+        const mockOnBind = jest.fn();
+        const featureAppId = 'testId';
+        const featureAppName = 'testName';
+
+        const {featureAppManager} = createFeatureHub('test:integrator', {
+          ...featureHubOptions,
+          onBind: mockOnBind,
+        });
+
+        featureAppManager.createFeatureAppScope(
+          featureAppId,
+          mockFeatureAppDefinition,
+          {featureAppName}
+        );
+
+        expect(mockOnBind.mock.calls).toEqual([
+          [
+            {
+              featureAppDefinition: mockFeatureAppDefinition,
+              featureAppId,
+              featureAppName,
+            },
+          ],
+        ]);
+      });
+    });
   });
 
   describe('with Feature Service definitions', () => {

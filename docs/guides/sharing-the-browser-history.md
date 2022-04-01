@@ -25,7 +25,7 @@ consumer receives history change events only for location changes that affect
 its own history.
 
 How the root location is build from the consumer locations, is a problem that
-can not be solved generally, since it is dependant on the usecase. This is why
+can not be solved generally, since it is dependent on the usecase. This is why
 the integrator defines the History Service with a so-called **root location
 transformer**. The root location transformer provides functions for merging
 consumer locations into a root location, and for extracting a consumer path from

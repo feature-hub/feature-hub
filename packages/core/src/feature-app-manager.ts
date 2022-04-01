@@ -130,6 +130,12 @@ export interface FeatureAppScopeOptions<
   readonly done?: (result?: unknown) => void;
 }
 
+export interface OnBindParams {
+  readonly featureAppDefinition: FeatureServiceConsumerDefinition;
+  readonly featureAppId: string;
+  readonly featureAppName: string | undefined;
+}
+
 export interface FeatureAppManagerOptions {
   /**
    * For the `FeatureAppManager` to be able to load Feature Apps from a remote
@@ -154,6 +160,13 @@ export interface FeatureAppManagerOptions {
    * A custom logger that shall be used instead of `console`.
    */
   readonly logger?: Logger;
+
+  /**
+   * A function that is called for every Feature App when its dependent Feature
+   * Services are bound. This allows the integrator to collect information about
+   * Feature Service usage.
+   */
+  readonly onBind?: (params: OnBindParams) => void;
 }
 
 type FeatureAppId = string;
@@ -422,6 +435,16 @@ export class FeatureAppManager {
       featureAppName
     );
 
+    try {
+      this.options.onBind?.({
+        featureAppDefinition,
+        featureAppId,
+        featureAppName,
+      });
+    } catch (error) {
+      this.logger.error('Failed to execute onBind callback.', error);
+    }
+
     const env: FeatureAppEnvironment<TFeatureServices, TConfig> = {
       baseUrl,
       config,
@@ -432,9 +455,7 @@ export class FeatureAppManager {
     };
 
     try {
-      if (beforeCreate) {
-        beforeCreate(env);
-      }
+      beforeCreate?.(env);
 
       const featureApp = featureAppDefinition.create(env);
 
