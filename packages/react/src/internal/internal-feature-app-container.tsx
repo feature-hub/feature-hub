@@ -186,38 +186,21 @@ export class InternalFeatureAppContainer<
   private readonly containerRef = React.createRef<HTMLDivElement>();
   private mounted = false;
   private loadingPromiseHandled = false;
+  private domFeatureAppAttached = false;
 
   public componentDidCatch(error: Error): void {
     this.handleError(error);
-
     this.setState({error, loading: false});
   }
 
   public componentDidMount(): void {
     this.mounted = true;
-
-    const container = this.containerRef.current;
-
-    if (!this.state.featureApp) {
-      return;
-    }
-
-    if (
-      container &&
-      !('error' in this.state) &&
-      isDomFeatureApp(this.state.featureApp)
-    ) {
-      try {
-        this.state.featureApp.attachTo(container);
-      } catch (error) {
-        this.componentDidCatch(error);
-      }
-    }
-
+    this.attachDomFeatureApp();
     this.handleLoading();
   }
 
   public componentDidUpdate(): void {
+    this.attachDomFeatureApp();
     this.handleLoading();
   }
 
@@ -326,5 +309,22 @@ export class InternalFeatureAppContainer<
     const {logger, onError} = this.props;
 
     handleError(logger, error, onError);
+  }
+
+  private attachDomFeatureApp(): void {
+    if (
+      this.state.featureApp &&
+      !this.domFeatureAppAttached &&
+      this.containerRef.current &&
+      !('error' in this.state) &&
+      isDomFeatureApp(this.state.featureApp)
+    ) {
+      try {
+        this.state.featureApp.attachTo(this.containerRef.current);
+        this.domFeatureAppAttached = true;
+      } catch (error) {
+        this.componentDidCatch(error);
+      }
+    }
   }
 }
