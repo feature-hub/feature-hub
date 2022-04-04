@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.13.0](https://github.com/sinnerschrader/feature-hub/compare/v2.12.0...v2.13.0) (2022-04-04)
+
+
+### Features
+
+* **core:** introduce onBind callback ([04c2cfd](https://github.com/sinnerschrader/feature-hub/commit/04c2cfdec168cb041c8b27dd71f3ac759d46c313))
+
+
+
+
+
 ## [2.11.1](https://github.com/sinnerschrader/feature-hub/compare/v2.11.0...v2.11.1) (2022-02-10)
 
 
