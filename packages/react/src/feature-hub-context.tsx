@@ -62,14 +62,12 @@ export type FeatureHubContextConsumerValue = SomeRequired<
   'logger'
 >;
 
-const dummyDefaultFeatureHubContextValue = {};
-
 const noFeatureHubContextValueErrorMessage =
   'No Feature Hub context was provided! There are two possible causes: 1.) No FeatureHubContextProvider was rendered in the React tree. 2.) A Feature App that renders itself a FeatureAppLoader or a FeatureAppContainer did not declare @feature-hub/react as an external package.';
 
-const FeatureHubContext = React.createContext(
-  dummyDefaultFeatureHubContextValue as FeatureHubContextProviderValue
-);
+export const FeatureHubContext = React.createContext<
+  FeatureHubContextProviderValue | undefined
+>(undefined);
 
 /**
  * The integrator must render a `FeatureHubContextProvider` to provide the
@@ -90,7 +88,7 @@ export const FeatureHubContextConsumer = (
 ) => (
   <FeatureHubContext.Consumer>
     {(featureHubContextValue) => {
-      if (featureHubContextValue === dummyDefaultFeatureHubContextValue) {
+      if (!featureHubContextValue) {
         throw new Error(noFeatureHubContextValueErrorMessage);
       }
 
