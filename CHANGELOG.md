@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.13.1](https://github.com/sinnerschrader/feature-hub/compare/v2.13.0...v2.13.1) (2022-06-20)
+
+
+### Bug Fixes
+
+* **react:** export `FeatureHubContext` ([b379913](https://github.com/sinnerschrader/feature-hub/commit/b37991303f5787da09da6cf75c5c36e7a3a9270e))
+
+
+
+
+
 # [2.13.0](https://github.com/sinnerschrader/feature-hub/compare/v2.12.0...v2.13.0) (2022-04-04)
 
 

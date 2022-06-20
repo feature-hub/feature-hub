@@ -1,6 +1,6 @@
 {
   "name": "@feature-hub/demos",
-  "version": "2.13.0",
+  "version": "2.13.1",
   "private": true,
   "license": "MIT",
   "workspaces": {
@@ -26,7 +26,7 @@
     "@feature-hub/module-loader-amd": "^2.9.0",
     "@feature-hub/module-loader-commonjs": "^2.9.0",
     "@feature-hub/module-loader-federation": "^2.9.0",
-    "@feature-hub/react": "^2.13.0",
+    "@feature-hub/react": "^2.13.1",
     "@feature-hub/serialized-state-manager": "^2.13.0",
     "@feature-hub/server-request": "^2.13.0",
     "@types/copy-webpack-plugin": "^6.4.0",
