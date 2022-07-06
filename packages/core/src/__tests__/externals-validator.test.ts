@@ -1,9 +1,11 @@
-import {ExternalsValidator} from '../externals-validator';
+import {DefaultExternalsValidator} from '../externals-validator';
 
 describe('ExternalsValidator', () => {
   describe('#constructor', () => {
     it('throws an error for provided externals containing an invalid version', () => {
-      expect(() => new ExternalsValidator({react: 'invalid'})).toThrowError(
+      expect(
+        () => new DefaultExternalsValidator({react: 'invalid'})
+      ).toThrowError(
         new Error(
           'The provided version "invalid" for the external "react" is invalid.'
         )
@@ -11,7 +13,7 @@ describe('ExternalsValidator', () => {
     });
 
     it('throws an error for provided externals containing a coercable version', () => {
-      expect(() => new ExternalsValidator({react: '2.0'})).toThrowError(
+      expect(() => new DefaultExternalsValidator({react: '2.0'})).toThrowError(
         new Error(
           'The provided version "2.0" for the external "react" is invalid.'
         )
@@ -21,7 +23,7 @@ describe('ExternalsValidator', () => {
 
   describe('#validate', () => {
     it("doesn't throw for a satisfied required external", () => {
-      const validator = new ExternalsValidator({react: '16.6.0'});
+      const validator = new DefaultExternalsValidator({react: '16.6.0'});
 
       expect(() => {
         validator.validate({react: '^16.2.0'});
@@ -29,7 +31,7 @@ describe('ExternalsValidator', () => {
     });
 
     it('throws an error for an unsatisfied required external (wrong version)', () => {
-      const validator = new ExternalsValidator({react: '16.6.0'});
+      const validator = new DefaultExternalsValidator({react: '16.6.0'});
 
       expect(() => {
         validator.validate({react: '^16.7.0'});
@@ -41,7 +43,7 @@ describe('ExternalsValidator', () => {
     });
 
     it('throws an error for an unsatisfied required external (not provided)', () => {
-      const validator = new ExternalsValidator({});
+      const validator = new DefaultExternalsValidator({});
 
       expect(() => {
         validator.validate({react: '^16.7.0'});
@@ -51,7 +53,7 @@ describe('ExternalsValidator', () => {
     });
 
     it('throws an error for an invalid required external', () => {
-      const validator = new ExternalsValidator({react: '16.6.0'});
+      const validator = new DefaultExternalsValidator({react: '16.6.0'});
 
       expect(() => {
         validator.validate({react: 'invalid'});

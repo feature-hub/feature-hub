@@ -1,6 +1,10 @@
 // tslint:disable:no-implicit-dependencies
 
 import {FeatureHubOptions, createFeatureHub} from '../create-feature-hub';
+import {
+  DefaultExternalsValidator,
+  ProvidedExternals,
+} from '../externals-validator';
 import {FeatureAppDefinition, FeatureAppManager} from '../feature-app-manager';
 import {
   FeatureServiceProviderDefinition,
@@ -113,6 +117,34 @@ describe('createFeatureHub()', () => {
     describe('with provided externals', () => {
       beforeEach(() => {
         featureHubOptions = {...featureHubOptions, providedExternals: {}};
+      });
+
+      it('throws for a Feature App with mismatching externals', () => {
+        const {featureAppManager} = createFeatureHub(
+          'test:integrator',
+          featureHubOptions
+        );
+
+        expect(() =>
+          featureAppManager.createFeatureAppScope(
+            'test:feature-app',
+            mockFeatureAppDefinition
+          )
+        ).toThrowError(
+          new Error('The external dependency "foo" is not provided.')
+        );
+      });
+    });
+
+    describe('with provided externals and Externals Validator', () => {
+      const createExternalsValidator = (externals: ProvidedExternals) =>
+        new DefaultExternalsValidator(externals);
+      beforeEach(() => {
+        featureHubOptions = {
+          ...featureHubOptions,
+          providedExternals: {},
+          createExternalsValidator,
+        };
       });
 
       it('throws for a Feature App with mismatching externals', () => {
