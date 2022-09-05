@@ -1,26 +1,23 @@
 import {ServerRequestV1} from '@feature-hub/server-request';
 import * as history from 'history';
-import {RootHistory} from '..';
-import {
-  RootLocation,
-  RootLocationDescriptorObject,
-} from '../create-root-location-transformer';
+import {createHistoryPath} from './create-history-path';
+import {RootHistoryForHistoryMultiplexer} from './history-multiplexer';
 import {URL} from './url';
 
 function isAbsolute(url: string): boolean {
   return /^https?:\/\//.test(url);
 }
 
-export class StaticRootHistory implements RootHistory {
+export class StaticRootHistory implements RootHistoryForHistoryMultiplexer {
   public readonly length = 1;
-  public location: RootLocation;
+  public location: history.Location;
 
   public constructor(serverRequest: ServerRequestV1) {
     if (isAbsolute(serverRequest.url)) {
       const {pathname, search} = new URL(serverRequest.url);
-      this.location = history.createLocation({pathname, search});
+      this.location = this.createLocation({pathname, search});
     } else {
-      this.location = history.createLocation(serverRequest.url);
+      this.location = this.createLocation(history.parsePath(serverRequest.url));
     }
   }
 
@@ -29,15 +26,19 @@ export class StaticRootHistory implements RootHistory {
     return () => undefined;
   }
 
-  public push(location: RootLocationDescriptorObject): void {
-    this.location = history.createLocation(location);
+  public push(location: Partial<history.Path>): void {
+    this.location = this.createLocation(location);
   }
 
-  public replace(location: RootLocationDescriptorObject): void {
-    this.location = history.createLocation(location);
+  public replace(location: Partial<history.Path>): void {
+    this.location = this.createLocation(location);
   }
 
-  public createHref(location: RootLocationDescriptorObject): history.Href {
+  public createHref(location: Partial<history.Path>): string {
     return history.createPath(location);
+  }
+
+  private createLocation(location: Partial<history.Path>): history.Location {
+    return {...createHistoryPath(location), state: {}, key: ''};
   }
 }

@@ -7,16 +7,16 @@ import {
   FeatureServiceEnvironment,
   FeatureServiceProviderDefinition,
 } from '@feature-hub/core';
-import {History} from 'history';
 import {
   HistoryServiceDependencies,
   HistoryServiceV1,
   HistoryServiceV2,
+  RootLocation,
   SharedHistoryService,
   createRootLocationTransformer,
   defineHistoryService,
 } from '..';
-import {RootLocation} from '../create-root-location-transformer';
+import * as historyV4 from '../history-v4';
 import {Writable} from '../internal/writable';
 import {
   consumerPathsQueryParamName,
@@ -26,7 +26,7 @@ import {
 import {stubbedLogger} from './stubbed-logger';
 
 const simulateOnPopState = (state: unknown, url: string) => {
-  // We need to use pushState to change to the URL that should set by the popstate event.
+  // We need to use pushState to change to the URL that should be set by the popstate event.
   history.pushState(state, '', url);
   const popStateEvent = new PopStateEvent('popstate', {state});
   window.dispatchEvent(popStateEvent);
@@ -111,8 +111,8 @@ describe('defineHistoryService', () => {
     describe('#createBrowserHistory()', () => {
       let historyBinding1: FeatureServiceBinding<HistoryServiceV1>;
       let historyBinding2: FeatureServiceBinding<HistoryServiceV1>;
-      let history1: History;
-      let history2: History;
+      let history1: historyV4.History;
+      let history2: historyV4.History;
 
       const createHistories = () => {
         const historyServiceBinder = createHistoryServiceBinder();
@@ -124,6 +124,9 @@ describe('defineHistoryService', () => {
         historyBinding2 = historyServiceBinder('test2');
         const historyService2 = historyBinding2.featureService;
         history2 = historyService2.createBrowserHistory();
+
+        pushStateSpy.mockClear();
+        replaceStateSpy.mockClear();
       };
 
       const destroyHistories = () => {
@@ -199,7 +202,7 @@ describe('defineHistoryService', () => {
           const consumerStates = {test1: 'foo state', test2: 'bar state'};
           const url = createUrl({test1: '/foo#some-anchor', test2: 'bar'});
 
-          window.history.pushState({state: consumerStates}, '', url);
+          window.history.pushState({usr: consumerStates}, '', url);
 
           createHistories();
 
@@ -664,8 +667,8 @@ describe('defineHistoryService', () => {
     describe('#history', () => {
       let historyBinding1: FeatureServiceBinding<HistoryServiceV2>;
       let historyBinding2: FeatureServiceBinding<HistoryServiceV2>;
-      let history1: History;
-      let history2: History;
+      let history1: historyV4.History;
+      let history2: historyV4.History;
 
       const createHistories = () => {
         const historyServiceBinder = createHistoryServiceBinder();
@@ -677,6 +680,9 @@ describe('defineHistoryService', () => {
         historyBinding2 = historyServiceBinder('test2');
         const historyService2 = historyBinding2.featureService;
         history2 = historyService2.history;
+
+        pushStateSpy.mockClear();
+        replaceStateSpy.mockClear();
       };
 
       const destroyHistories = () => {
@@ -740,7 +746,7 @@ describe('defineHistoryService', () => {
           const consumerStates = {test1: 'foo state', test2: 'bar state'};
           const url = createUrl({test1: '/foo', test2: 'bar'});
 
-          window.history.pushState({state: consumerStates}, '', url);
+          window.history.pushState({usr: consumerStates}, '', url);
 
           createHistories();
 
@@ -1164,6 +1170,9 @@ describe('defineHistoryService', () => {
 
         historyBinding2 = historyServiceBinder('test2');
         historyService2 = historyBinding2.featureService;
+
+        pushStateSpy.mockClear();
+        replaceStateSpy.mockClear();
       };
 
       beforeEach(createHistories);
@@ -1204,7 +1213,7 @@ describe('defineHistoryService', () => {
           const consumerStates = {test1: 'foo state', test2: 'bar state'};
           const url = createUrl({test1: '/foo', test2: 'bar'});
 
-          window.history.pushState({state: consumerStates}, '', url);
+          window.history.pushState({usr: consumerStates}, '', url);
 
           createHistories();
 
@@ -1229,7 +1238,7 @@ describe('defineHistoryService', () => {
             expect(historyService1.rootHistory.location).toMatchObject({
               pathname: '/',
               search: createSearch({test1: '/foo'}),
-              state: state.state,
+              state: state.usr,
             });
           });
         });
@@ -1241,6 +1250,15 @@ describe('defineHistoryService', () => {
 
           expect(window.location.href).toBe('http://example.com/foo');
           expect(pushStateSpy).toHaveBeenCalledTimes(1);
+        });
+
+        it('puts state into the root location', () => {
+          historyService1.rootHistory.push({pathname: '/foo', state: {foo: 1}});
+
+          expect(historyService1.rootHistory.location).toMatchObject({
+            pathname: '/foo',
+            state: {foo: 1},
+          });
         });
 
         it('normalizes the pathname', () => {
@@ -1305,11 +1323,23 @@ describe('defineHistoryService', () => {
       });
 
       describe('#replace()', () => {
-        it('pushes a new root location onto the root history', () => {
+        it('replaces a new root location onto the root history', () => {
           historyService1.rootHistory.replace({pathname: '/foo'});
 
           expect(window.location.href).toBe('http://example.com/foo');
           expect(replaceStateSpy).toHaveBeenCalledTimes(1);
+        });
+
+        it('puts state into the root location', () => {
+          historyService1.rootHistory.replace({
+            pathname: '/foo',
+            state: {foo: 1},
+          });
+
+          expect(historyService1.rootHistory.location).toMatchObject({
+            pathname: '/foo',
+            state: {foo: 1},
+          });
         });
 
         it('normalizes the pathname', () => {

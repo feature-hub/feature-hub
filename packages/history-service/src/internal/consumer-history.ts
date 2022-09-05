@@ -1,22 +1,31 @@
 import * as history from 'history';
+import * as historyV4 from '../history-v4';
+import {createHistoryPath} from './create-history-path';
 import {HistoryMultiplexer} from './history-multiplexer';
 import {HistoryServiceContext} from './history-service-context';
 
-export abstract class ConsumerHistory implements history.History {
-  public action: history.Action = 'POP';
-  public location: history.Location;
+export abstract class ConsumerHistory implements historyV4.History {
+  public action: historyV4.Action = 'POP';
+  public location: historyV4.Location;
 
   public constructor(
     protected readonly context: HistoryServiceContext,
     protected readonly historyKey: string,
     protected readonly historyMultiplexer: HistoryMultiplexer
   ) {
-    this.location = history.createLocation(
-      historyMultiplexer.getConsumerLocation(historyKey),
-      undefined,
-      undefined,
-      history.createLocation('/')
-    );
+    const {
+      pathname,
+      search,
+      hash,
+      state,
+    } = historyMultiplexer.getConsumerLocation(historyKey);
+
+    this.location = {
+      pathname: pathname.startsWith('/') ? pathname : `/${pathname}`,
+      search,
+      hash,
+      state,
+    };
 
     /**
      * The methods of `history.History` must be bound explicitly, because
@@ -33,38 +42,34 @@ export abstract class ConsumerHistory implements history.History {
   }
 
   public get length(): number {
-    return this.historyMultiplexer.length;
+    return typeof window === 'undefined' ? 1 : window.history.length;
   }
 
   public abstract listen(
-    listener: history.LocationListener
-  ): history.UnregisterCallback;
+    listener: historyV4.LocationListener
+  ): historyV4.UnregisterCallback;
 
   public push(
-    pathOrLocation: history.LocationDescriptor,
-    state?: history.LocationState
+    pathOrLocation: historyV4.LocationDescriptor,
+    state?: historyV4.LocationState
   ): void {
-    this.location = history.createLocation(
-      pathOrLocation,
+    this.location = {
+      ...createHistoryPath(pathOrLocation, this.location.pathname),
       state,
-      undefined,
-      this.location
-    );
+    };
 
     this.historyMultiplexer.push(this.historyKey, this.location);
     this.action = 'PUSH';
   }
 
   public replace(
-    pathOrLocation: history.LocationDescriptor,
-    state?: history.LocationState
+    pathOrLocation: historyV4.LocationDescriptor,
+    state?: historyV4.LocationState
   ): void {
-    this.location = history.createLocation(
-      pathOrLocation,
+    this.location = {
+      ...createHistoryPath(pathOrLocation, this.location.pathname),
       state,
-      undefined,
-      this.location
-    );
+    };
 
     this.historyMultiplexer.replace(this.historyKey, this.location);
     this.action = 'REPLACE';
@@ -82,16 +87,18 @@ export abstract class ConsumerHistory implements history.History {
     this.context.logger.warn('history.goForward() is not supported.');
   }
 
-  public block(): history.UnregisterCallback {
+  public block(): historyV4.UnregisterCallback {
     this.context.logger.warn('history.block() is not supported.');
 
     return () => undefined;
   }
 
-  public createHref(location: history.LocationDescriptorObject): history.Href {
+  public createHref(
+    location: historyV4.LocationDescriptorObject
+  ): historyV4.Href {
     return this.historyMultiplexer.createHref(
       this.historyKey,
-      history.createLocation(location, undefined, undefined, this.location)
+      createHistoryPath(location, history.createPath(this.location))
     );
   }
 }
