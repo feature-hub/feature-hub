@@ -2,42 +2,26 @@ import * as history from 'history';
 import {ConsumerLocation} from '.';
 import {URLSearchParams} from './internal/url-search-params';
 
-export interface ConsumerHistoryStates {
-  readonly [historyKey: string]: unknown;
-}
-
 export interface RootLocationOptions {
   readonly consumerPathsQueryParamName: string;
-
-  /**
-   * @deprecated Use `primaryConsumerHistoryKey` instead.
-   */
-  readonly primaryConsumerId?: string;
-
   readonly primaryConsumerHistoryKey?: string;
 }
 
-export type RootLocation = history.Location<ConsumerHistoryStates>;
-
-export type RootLocationDescriptorObject = history.LocationDescriptorObject<
-  ConsumerHistoryStates
->;
-
 export interface RootLocationTransformer {
   getConsumerPathFromRootLocation(
-    rootLocation: RootLocationDescriptorObject,
+    rootLocation: Partial<history.Location>,
     historyKey: string
   ): string | undefined;
 
   createRootLocation(
-    currentRootLocation: RootLocationDescriptorObject,
-    consumerLocation: history.LocationDescriptorObject,
+    currentRootLocation: Partial<history.Location>,
+    consumerLocation: Partial<history.Location>,
     historyKey: string
-  ): history.LocationDescriptorObject;
+  ): Partial<history.Path>;
 
   createNewRootLocationForMultipleConsumers?(
     ...consumerLocations: ConsumerLocation[]
-  ): RootLocationDescriptorObject;
+  ): Partial<history.Path>;
 }
 
 export interface ConsumerPaths {
@@ -71,7 +55,7 @@ export function getConsumerPath(
 }
 
 export function createSearchParams(
-  location: history.LocationDescriptorObject
+  location: Partial<history.Path>
 ): URLSearchParams {
   return new URLSearchParams(location.search);
 }
@@ -81,10 +65,10 @@ export function serializeSearchParams(searchParams: URLSearchParams): string {
 }
 
 export function createRootLocationForPrimaryConsumer(
-  currentRootLocation: RootLocationDescriptorObject,
-  primaryConsumerLocation: history.LocationDescriptorObject,
+  currentRootLocation: Partial<history.Location>,
+  primaryConsumerLocation: Partial<history.Path>,
   consumerPathsQueryParamName: string
-): history.LocationDescriptorObject {
+): Partial<history.Path> {
   const allSearchParams = createSearchParams(currentRootLocation);
   const newSearchParams = createSearchParams(primaryConsumerLocation);
 
@@ -113,11 +97,11 @@ export function createRootLocationForPrimaryConsumer(
 }
 
 export function createRootLocationForOtherConsumer(
-  currentRootLocation: RootLocationDescriptorObject,
-  consumerLocation: history.LocationDescriptorObject,
+  currentRootLocation: Partial<history.Location>,
+  consumerLocation: Partial<history.Path>,
   historyKey: string,
   consumerPathsQueryParamName: string
-): history.LocationDescriptorObject {
+): Partial<history.Path> {
   const allSearchParams = createSearchParams(currentRootLocation);
   const consumerPaths = allSearchParams.get(consumerPathsQueryParamName);
 
@@ -136,23 +120,15 @@ export function createRootLocationForOtherConsumer(
   };
 }
 
-export function getPrimaryConsumerHistoryKey(
-  options: RootLocationOptions
-): string | undefined {
-  // tslint:disable-next-line: deprecation
-  return options.primaryConsumerHistoryKey || options.primaryConsumerId;
-}
-
 export function createRootLocationTransformer(
   options: RootLocationOptions
 ): RootLocationTransformer {
   return {
     getConsumerPathFromRootLocation: (
-      rootLocation: RootLocationDescriptorObject,
+      rootLocation: Partial<history.Location>,
       historyKey: string
     ): string | undefined => {
-      const {consumerPathsQueryParamName} = options;
-      const primaryConsumerHistoryKey = getPrimaryConsumerHistoryKey(options);
+      const {consumerPathsQueryParamName, primaryConsumerHistoryKey} = options;
       const isPrimaryConsumer = historyKey === primaryConsumerHistoryKey;
       const searchParams = createSearchParams(rootLocation);
 
@@ -175,12 +151,11 @@ export function createRootLocationTransformer(
     },
 
     createRootLocation: (
-      currentRootLocation: RootLocationDescriptorObject,
-      consumerLocation: history.LocationDescriptorObject,
+      currentRootLocation: Partial<history.Location>,
+      consumerLocation: Partial<history.Path>,
       historyKey: string
-    ): history.LocationDescriptorObject => {
-      const primaryConsumerHistoryKey = getPrimaryConsumerHistoryKey(options);
-      const {consumerPathsQueryParamName} = options;
+    ): Partial<history.Path> => {
+      const {consumerPathsQueryParamName, primaryConsumerHistoryKey} = options;
       const isPrimaryConsumer = historyKey === primaryConsumerHistoryKey;
 
       if (isPrimaryConsumer) {

@@ -1,12 +1,13 @@
 import equal from 'fast-deep-equal';
 import * as history from 'history';
+import * as historyV4 from '../history-v4';
 import {ConsumerHistory} from './consumer-history';
 import {HistoryMultiplexer} from './history-multiplexer';
 import {HistoryServiceContext} from './history-service-context';
 
 export class BrowserConsumerHistory extends ConsumerHistory {
-  private readonly listeners = new Set<history.LocationListener>();
-  private readonly unregisterCallbacks: history.UnregisterCallback[] = [];
+  private readonly listeners = new Set<historyV4.LocationListener>();
+  private readonly unregisterCallbacks: historyV4.UnregisterCallback[] = [];
   private readonly browserUnregister: () => void;
 
   public constructor(
@@ -33,8 +34,8 @@ export class BrowserConsumerHistory extends ConsumerHistory {
   }
 
   public listen(
-    listener: history.LocationListener
-  ): history.UnregisterCallback {
+    listener: historyV4.LocationListener
+  ): historyV4.UnregisterCallback {
     this.listeners.add(listener);
 
     const unregister = () => {
@@ -47,16 +48,16 @@ export class BrowserConsumerHistory extends ConsumerHistory {
   }
 
   public push(
-    pathOrLocation: history.LocationDescriptor,
-    state?: history.LocationState
+    pathOrLocation: historyV4.LocationDescriptor,
+    state?: historyV4.LocationState
   ): void {
     super.push(pathOrLocation, state);
     this.notifyListeners();
   }
 
   public replace(
-    pathOrLocation: history.LocationDescriptor,
-    state?: history.LocationState
+    pathOrLocation: historyV4.LocationDescriptor,
+    state?: historyV4.LocationState
   ): void {
     super.replace(pathOrLocation, state);
     this.notifyListeners();
@@ -83,7 +84,7 @@ export class BrowserConsumerHistory extends ConsumerHistory {
     this.notifyListeners();
   }
 
-  private matches(location: history.Location): boolean {
+  private matches(location: Omit<history.Location, 'key'>): boolean {
     if (history.createPath(location) !== history.createPath(this.location)) {
       return false;
     }

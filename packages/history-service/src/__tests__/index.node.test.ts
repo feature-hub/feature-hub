@@ -11,7 +11,6 @@ import {
   FeatureServiceEnvironment,
 } from '@feature-hub/core';
 import {ServerRequestV1} from '@feature-hub/server-request';
-import {History} from 'history';
 import {
   HistoryServiceDependencies,
   HistoryServiceV1,
@@ -19,6 +18,7 @@ import {
   createRootLocationTransformer,
   defineHistoryService,
 } from '..';
+import * as historyV4 from '../history-v4';
 import {Writable} from '../internal/writable';
 import {
   consumerPathsQueryParamName,
@@ -55,8 +55,8 @@ describe('defineHistoryService', () => {
       let historyBinding2: FeatureServiceBinding<HistoryServiceV1>;
       let historyService1: HistoryServiceV1;
       let historyService2: HistoryServiceV1;
-      let history1: History;
-      let history2: History;
+      let history1: historyV4.History;
+      let history2: historyV4.History;
 
       const createHistories = (serverRequest: ServerRequestV1 | undefined) => {
         mockEnv.featureServices['s2:server-request'] = serverRequest;
@@ -419,8 +419,8 @@ describe('defineHistoryService', () => {
     let historyBinding2: FeatureServiceBinding<HistoryServiceV2>;
     let historyService1: HistoryServiceV2;
     let historyService2: HistoryServiceV2;
-    let history1: History;
-    let history2: History;
+    let history1: historyV4.History;
+    let history2: historyV4.History;
 
     const createHistories = (serverRequest: ServerRequestV1 | undefined) => {
       mockEnv.featureServices['s2:server-request'] = serverRequest;
@@ -737,6 +737,22 @@ describe('defineHistoryService', () => {
     });
 
     describe('#rootHistory', () => {
+      describe('#length', () => {
+        it('always returns 1', () => {
+          expect(historyService1.rootHistory.length).toBe(1);
+          expect(historyService2.rootHistory.length).toBe(1);
+
+          history1.push('/foo');
+          history1.push('/bar');
+          history1.replace('/qux');
+          history2.push('/baz');
+          history2.replace('/quux');
+
+          expect(historyService1.rootHistory.length).toBe(1);
+          expect(historyService2.rootHistory.length).toBe(1);
+        });
+      });
+
       describe('#location', () => {
         it('returns the root location containing all consumer locations for a server request with a relative url', () => {
           const serverRequest: ServerRequestV1 = {

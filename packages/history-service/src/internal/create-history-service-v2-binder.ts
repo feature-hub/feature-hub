@@ -15,7 +15,7 @@ function createHistoryServiceV2(
   return {
     historyKey,
     history: consumerHistory,
-    rootHistory: historyMultiplexer.rootHistory,
+    rootHistory: historyMultiplexer.rootHistoryV2,
 
     createNewRootLocationForMultipleConsumers: (...consumerLocations) =>
       historyMultiplexer.createNewRootLocationForMultipleConsumers(

@@ -1,4 +1,4 @@
-import * as history from 'history';
+import * as historyV4 from '../history-v4';
 import {ConsumerHistory} from './consumer-history';
 import {HistoryMultiplexer} from './history-multiplexer';
 import {HistoryServiceContext} from './history-service-context';
@@ -14,7 +14,7 @@ export class StaticConsumerHistory extends ConsumerHistory {
     this.listen = this.listen.bind(this);
   }
 
-  public listen(): history.UnregisterCallback {
+  public listen(): historyV4.UnregisterCallback {
     this.context.logger.warn('history.listen() is not supported.');
 
     return () => undefined;

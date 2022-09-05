@@ -1,6 +1,6 @@
 import {FeatureServiceBinder, FeatureServiceBinding} from '@feature-hub/core';
-import * as history from 'history';
 import {HistoryServiceV1} from '..';
+import * as historyV4 from '../history-v4';
 import {BrowserConsumerHistory} from './browser-consumer-history';
 import {HistoryMultiplexers} from './create-history-multiplexers';
 import {HistoryServiceContext} from './history-service-context';
@@ -12,7 +12,7 @@ export function createHistoryServiceV1Binder(
 ): FeatureServiceBinder<HistoryServiceV1> {
   return (consumerId: string): FeatureServiceBinding<HistoryServiceV1> => {
     let browserConsumerHistory: BrowserConsumerHistory | undefined;
-    let staticConsumerHistory: history.History | undefined;
+    let staticConsumerHistory: historyV4.History | undefined;
 
     const featureService: HistoryServiceV1 = {
       createBrowserHistory: () => {
@@ -51,7 +51,7 @@ export function createHistoryServiceV1Binder(
         return staticConsumerHistory;
       },
 
-      get staticRootLocation(): history.Location {
+      get staticRootLocation(): historyV4.Location {
         return historyMultiplexers.staticHistoryMultiplexer.rootLocation;
       },
     };
