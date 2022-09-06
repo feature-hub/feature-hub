@@ -128,7 +128,6 @@ export class HistoryMultiplexer {
     listener: (action: history.Action) => void
   ): () => void {
     return this.rootHistory.listen((update) => {
-      console.trace(update);
       listener(update.action);
     });
   }

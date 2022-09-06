@@ -244,6 +244,18 @@ describe('defineHistoryService', () => {
           expect(pushStateSpy).toHaveBeenCalledTimes(2);
         });
 
+        it('accepts state as part of the location descriptor object', () => {
+          history1.push({pathname: '/foo', state: 1});
+
+          expect(history1.location.state).toBe(1);
+        });
+
+        it('accepts state as the second argument', () => {
+          history1.push('/foo', 1);
+
+          expect(history1.location.state).toBe(1);
+        });
+
         it('normalizes the pathname', () => {
           history1.push('foo');
 
@@ -268,6 +280,18 @@ describe('defineHistoryService', () => {
           );
 
           expect(replaceStateSpy).toHaveBeenCalledTimes(2);
+        });
+
+        it('accepts state as part of the location descriptor object', () => {
+          history1.replace({pathname: '/foo', state: 1});
+
+          expect(history1.location.state).toBe(1);
+        });
+
+        it('accepts state as the second argument', () => {
+          history1.replace('/foo', 1);
+
+          expect(history1.location.state).toBe(1);
         });
 
         it('normalizes the pathname', () => {

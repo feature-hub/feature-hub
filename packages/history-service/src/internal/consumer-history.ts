@@ -53,11 +53,7 @@ export abstract class ConsumerHistory implements historyV4.History {
     pathOrLocation: historyV4.LocationDescriptor,
     state?: historyV4.LocationState
   ): void {
-    this.location = {
-      ...createHistoryPath(pathOrLocation, this.location.pathname),
-      state,
-    };
-
+    this.location = this.createLocation(pathOrLocation, state);
     this.historyMultiplexer.push(this.historyKey, this.location);
     this.action = 'PUSH';
   }
@@ -66,11 +62,7 @@ export abstract class ConsumerHistory implements historyV4.History {
     pathOrLocation: historyV4.LocationDescriptor,
     state?: historyV4.LocationState
   ): void {
-    this.location = {
-      ...createHistoryPath(pathOrLocation, this.location.pathname),
-      state,
-    };
-
+    this.location = this.createLocation(pathOrLocation, state);
     this.historyMultiplexer.replace(this.historyKey, this.location);
     this.action = 'REPLACE';
   }
@@ -100,5 +92,15 @@ export abstract class ConsumerHistory implements historyV4.History {
       this.historyKey,
       createHistoryPath(location, history.createPath(this.location))
     );
+  }
+
+  private createLocation(
+    pathOrLocation: historyV4.LocationDescriptor,
+    state?: historyV4.LocationState
+  ): historyV4.Location {
+    return {
+      ...createHistoryPath(pathOrLocation, this.location.pathname),
+      state: typeof pathOrLocation === 'string' ? state : pathOrLocation.state,
+    };
   }
 }
