@@ -1,5 +1,5 @@
 import * as history from 'history';
-import {ConsumerLocation} from '.';
+import {ConsumerLocationV3} from '.';
 import {URLSearchParams} from './internal/url-search-params';
 
 export interface RootLocationOptions {
@@ -20,7 +20,7 @@ export interface RootLocationTransformer {
   ): Partial<history.Path>;
 
   createNewRootLocationForMultipleConsumers?(
-    ...consumerLocations: ConsumerLocation[]
+    ...consumerLocations: ConsumerLocationV3[]
   ): Partial<history.Path>;
 }
 
@@ -125,7 +125,7 @@ export function createRootLocationTransformer(
 ): RootLocationTransformer {
   return {
     getConsumerPathFromRootLocation: (
-      rootLocation: Partial<history.Location>,
+      rootLocation: history.Location,
       historyKey: string
     ): string | undefined => {
       const {consumerPathsQueryParamName, primaryConsumerHistoryKey} = options;
@@ -151,7 +151,7 @@ export function createRootLocationTransformer(
     },
 
     createRootLocation: (
-      currentRootLocation: Partial<history.Location>,
+      currentRootLocation: history.Location,
       consumerLocation: Partial<history.Path>,
       historyKey: string
     ): Partial<history.Path> => {
