@@ -3,6 +3,7 @@ import {HistoryServiceV1} from '..';
 import * as historyV4 from '../history-v4';
 import {BrowserConsumerHistory} from './browser-consumer-history';
 import {HistoryMultiplexers} from './create-history-multiplexers';
+import {createHistoryV4Adapter} from './create-history-v4-adapter';
 import {HistoryServiceContext} from './history-service-context';
 import {StaticConsumerHistory} from './static-consumer-history';
 
@@ -11,7 +12,8 @@ export function createHistoryServiceV1Binder(
   historyMultiplexers: HistoryMultiplexers
 ): FeatureServiceBinder<HistoryServiceV1> {
   return (consumerId: string): FeatureServiceBinding<HistoryServiceV1> => {
-    let browserConsumerHistory: BrowserConsumerHistory | undefined;
+    let browserConsumerHistoryDestroy: () => void = () => undefined;
+    let browserConsumerHistory: historyV4.History | undefined;
     let staticConsumerHistory: historyV4.History | undefined;
 
     const featureService: HistoryServiceV1 = {
@@ -23,10 +25,18 @@ export function createHistoryServiceV1Binder(
             )}. Returning the same history instance as before.`
           );
         } else {
-          browserConsumerHistory = new BrowserConsumerHistory(
+          const browserConsumerHistoryV5 = new BrowserConsumerHistory(
             context,
             consumerId,
             historyMultiplexers.browserHistoryMultiplexer
+          );
+
+          browserConsumerHistoryDestroy = () =>
+            browserConsumerHistoryV5.destroy();
+
+          browserConsumerHistory = createHistoryV4Adapter(
+            context,
+            browserConsumerHistoryV5
           );
         }
 
@@ -41,10 +51,13 @@ export function createHistoryServiceV1Binder(
             )}. Returning the same history instance as before.`
           );
         } else {
-          staticConsumerHistory = new StaticConsumerHistory(
+          staticConsumerHistory = createHistoryV4Adapter(
             context,
-            consumerId,
-            historyMultiplexers.staticHistoryMultiplexer
+            new StaticConsumerHistory(
+              context,
+              consumerId,
+              historyMultiplexers.staticHistoryMultiplexer
+            )
           );
         }
 
@@ -57,9 +70,7 @@ export function createHistoryServiceV1Binder(
     };
 
     const unbind = () => {
-      if (browserConsumerHistory) {
-        browserConsumerHistory.destroy();
-      }
+      browserConsumerHistoryDestroy();
     };
 
     return {featureService, unbind};

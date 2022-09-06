@@ -17,6 +17,7 @@ import {
   defineHistoryService,
 } from '..';
 import * as historyV4 from '../history-v4';
+import {ConsumerState} from '../internal/history-multiplexer';
 import {Writable} from '../internal/writable';
 import {
   consumerPathsQueryParamName,
@@ -199,7 +200,11 @@ describe('defineHistoryService', () => {
         it('retrieves consumer specific locations from the initial location', () => {
           destroyHistories();
 
-          const consumerStates = {test1: 'foo state', test2: 'bar state'};
+          const consumerStates: Record<string, ConsumerState> = {
+            test1: {state: 'foo state', key: 'default'},
+            test2: {state: 'bar state', key: 'default'},
+          };
+
           const url = createUrl({test1: '/foo#some-anchor', test2: 'bar'});
 
           window.history.pushState({usr: consumerStates}, '', url);
@@ -210,11 +215,13 @@ describe('defineHistoryService', () => {
             pathname: '/foo',
             state: 'foo state',
             hash: '#some-anchor',
+            key: 'default',
           });
 
           expect(history2.location).toMatchObject({
             pathname: '/bar',
             state: 'bar state',
+            key: 'default',
           });
         });
 
@@ -767,7 +774,11 @@ describe('defineHistoryService', () => {
         it('retrieves consumer specific locations from the initial location', () => {
           destroyHistories();
 
-          const consumerStates = {test1: 'foo state', test2: 'bar state'};
+          const consumerStates: Record<string, ConsumerState> = {
+            test1: {state: 'foo state', key: 'default'},
+            test2: {state: 'bar state', key: 'default'},
+          };
+
           const url = createUrl({test1: '/foo', test2: 'bar'});
 
           window.history.pushState({usr: consumerStates}, '', url);
@@ -777,11 +788,13 @@ describe('defineHistoryService', () => {
           expect(history1.location).toMatchObject({
             pathname: '/foo',
             state: 'foo state',
+            key: 'default',
           });
 
           expect(history2.location).toMatchObject({
             pathname: '/bar',
             state: 'bar state',
+            key: 'default',
           });
         });
 
@@ -1229,7 +1242,10 @@ describe('defineHistoryService', () => {
           expect(historyService1.rootHistory.location).toMatchObject({
             pathname: '/',
             search: createSearch({test1: '/foo', test2: '/bar'}),
-            state: {test1: {test: 'foo'}, test2: {test: 'bar'}},
+            state: {
+              test1: {state: {test: 'foo'}, key: expect.any(String)},
+              test2: {state: {test: 'bar'}, key: expect.any(String)},
+            },
           });
         });
 
@@ -1334,12 +1350,27 @@ describe('defineHistoryService', () => {
           historyService1.rootHistory.push(rootLocation);
 
           expect(listener1.mock.calls).toEqual([
-            [{pathname: '/', search: '', hash: '', state: undefined}, 'PUSH'],
+            [
+              {
+                pathname: '/',
+                search: '',
+                hash: '',
+                state: undefined,
+                key: 'default',
+              },
+              'PUSH',
+            ],
           ]);
 
-          expect(listener2.mock.calls).toEqual([
+          expect(listener2.mock.calls).toMatchObject([
             [
-              {pathname: '/test2', search: '', hash: '', state: undefined},
+              {
+                pathname: '/test2',
+                search: '',
+                hash: '',
+                state: undefined,
+                key: expect.any(String),
+              },
               'PUSH',
             ],
           ]);
@@ -1427,13 +1458,13 @@ describe('defineHistoryService', () => {
           historyService1.rootHistory.listen(listenerSpy);
           historyService1.history.push('/bar');
 
-          expect(listenerSpy.mock.calls).toEqual([
+          expect(listenerSpy.mock.calls).toMatchObject([
             [
-              expect.objectContaining({
+              {
                 pathname: '/',
                 search: createSearch({test1: '/bar'}),
-                state: {test1: undefined},
-              }),
+                state: {test1: {state: undefined, key: expect.any(String)}},
+              },
               'PUSH',
             ],
           ]);
@@ -1504,7 +1535,7 @@ describe('defineHistoryService', () => {
         expect(location).toMatchObject({
           pathname: '/',
           search: createSearch({test1: '/test1'}),
-          state: {test1: 42},
+          state: {test1: {state: 42, key: expect.any(String)}},
         });
       });
 
@@ -1526,7 +1557,10 @@ describe('defineHistoryService', () => {
         expect(location).toMatchObject({
           pathname: '/',
           search: createSearch({test1: '/test', test2: '/xxx'}),
-          state: {test1: 42, test2: 'foo'},
+          state: {
+            test1: {state: 42, key: expect.any(String)},
+            test2: {state: 'foo', key: expect.any(String)},
+          },
         });
       });
 
@@ -1583,11 +1617,11 @@ describe('defineHistoryService', () => {
             search: '',
             hash: '',
             state: {
-              test1: 42,
+              test1: {state: 42, key: expect.any(String)},
             },
           };
 
-          expect(location).toEqual(expectedRootLocation);
+          expect(location).toMatchObject(expectedRootLocation);
         });
       });
     });

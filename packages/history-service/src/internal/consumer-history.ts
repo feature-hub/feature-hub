@@ -1,12 +1,12 @@
 import * as history from 'history';
-import * as historyV4 from '../history-v4';
 import {createHistoryPath} from './create-history-path';
+import {createKey} from './create-key';
 import {HistoryMultiplexer} from './history-multiplexer';
 import {HistoryServiceContext} from './history-service-context';
 
-export abstract class ConsumerHistory implements historyV4.History {
-  public action: historyV4.Action = 'POP';
-  public location: historyV4.Location;
+export abstract class ConsumerHistory implements history.History {
+  public action: history.Action = history.Action.Pop;
+  public location: history.Location;
 
   public constructor(
     protected readonly context: HistoryServiceContext,
@@ -25,6 +25,7 @@ export abstract class ConsumerHistory implements historyV4.History {
       search,
       hash,
       state,
+      key: 'default',
     };
 
     /**
@@ -35,72 +36,56 @@ export abstract class ConsumerHistory implements historyV4.History {
     this.push = this.push.bind(this);
     this.replace = this.replace.bind(this);
     this.go = this.go.bind(this);
-    this.goBack = this.goBack.bind(this);
-    this.goForward = this.goForward.bind(this);
+    this.back = this.back.bind(this);
+    this.forward = this.forward.bind(this);
     this.block = this.block.bind(this);
     this.createHref = this.createHref.bind(this);
   }
 
-  public get length(): number {
-    return typeof window === 'undefined' ? 1 : window.history.length;
-  }
+  public abstract listen(listener: history.Listener): () => void;
 
-  public abstract listen(
-    listener: historyV4.LocationListener
-  ): historyV4.UnregisterCallback;
-
-  public push(
-    pathOrLocation: historyV4.LocationDescriptor,
-    state?: historyV4.LocationState
-  ): void {
-    this.location = this.createLocation(pathOrLocation, state);
+  public push(to: history.To, state?: unknown): void {
+    this.location = this.createLocation(to, state);
     this.historyMultiplexer.push(this.historyKey, this.location);
-    this.action = 'PUSH';
+    this.action = history.Action.Push;
   }
 
-  public replace(
-    pathOrLocation: historyV4.LocationDescriptor,
-    state?: historyV4.LocationState
-  ): void {
-    this.location = this.createLocation(pathOrLocation, state);
+  public replace(to: history.To, state?: unknown): void {
+    this.location = this.createLocation(to, state);
     this.historyMultiplexer.replace(this.historyKey, this.location);
-    this.action = 'REPLACE';
+    this.action = history.Action.Replace;
   }
 
   public go(): void {
     this.context.logger.warn('history.go() is not supported.');
   }
 
-  public goBack(): void {
-    this.context.logger.warn('history.goBack() is not supported.');
+  public back(): void {
+    this.context.logger.warn('history.back() is not supported.');
   }
 
-  public goForward(): void {
-    this.context.logger.warn('history.goForward() is not supported.');
+  public forward(): void {
+    this.context.logger.warn('history.forward() is not supported.');
   }
 
-  public block(): historyV4.UnregisterCallback {
+  public block(): () => void {
     this.context.logger.warn('history.block() is not supported.');
 
     return () => undefined;
   }
 
-  public createHref(
-    location: historyV4.LocationDescriptorObject
-  ): historyV4.Href {
+  public createHref(to: history.To): string {
     return this.historyMultiplexer.createHref(
       this.historyKey,
-      createHistoryPath(location, history.createPath(this.location))
+      createHistoryPath(to, history.createPath(this.location))
     );
   }
 
-  private createLocation(
-    pathOrLocation: historyV4.LocationDescriptor,
-    state?: historyV4.LocationState
-  ): historyV4.Location {
+  private createLocation(to: history.To, state?: unknown): history.Location {
     return {
-      ...createHistoryPath(pathOrLocation, this.location.pathname),
-      state: typeof pathOrLocation === 'string' ? state : pathOrLocation.state,
+      ...createHistoryPath(to, this.location.pathname),
+      state,
+      key: createKey(),
     };
   }
 }
