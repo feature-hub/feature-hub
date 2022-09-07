@@ -102,7 +102,13 @@ export interface HistoryServiceV3 {
   /**
    * Creates a new root location from multiple consumer locations. The returned
    * location can be used for the `push`, `replace`, and `createHref` methods of
-   * the `rootHistory`.
+   * the `rootHistory`. Important: For `push` and `replace` calls make sure to
+   * pass the returned `state` property as a second argument, e.g.:
+   * ```
+   *  const {state, ...to} = historyService.createNewRootLocationForMultipleConsumers({...});
+   *
+   *  historyService.rootHistory.push(to, state);
+   * ```
    */
   createNewRootLocationForMultipleConsumers(
     ...consumerLocations: ConsumerLocationV3[]
