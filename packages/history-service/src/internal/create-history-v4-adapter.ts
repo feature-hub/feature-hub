@@ -39,8 +39,8 @@ export function createHistoryV4Adapter(
       }
     },
 
-    go: (n) => {
-      history.go(n);
+    go: () => {
+      context.logger.warn('history.go() is not supported.');
     },
 
     goBack: () => {
@@ -51,7 +51,11 @@ export function createHistoryV4Adapter(
       context.logger.warn('history.goForward() is not supported.');
     },
 
-    block: () => history.block(() => undefined),
+    block: () => {
+      context.logger.warn('history.block() is not supported.');
+
+      return () => undefined;
+    },
 
     listen: (listener) =>
       history.listen(({location, action}) => listener(location, action)),
