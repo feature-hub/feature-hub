@@ -35,12 +35,11 @@ export function createHistoryMultiplexers(
           );
         }
 
-        const initialEntries = context.serverRequest
-          ? [createPathFromUrl(context.serverRequest.url)]
-          : [];
-
         staticHistoryMultiplexer = new HistoryMultiplexer(
-          history.createMemoryHistory({initialEntries, initialIndex: 0}),
+          history.createMemoryHistory({
+            initialEntries: [createPathFromUrl(context.serverRequest.url)],
+            initialIndex: 0,
+          }),
           rootLocationTransformer
         );
       }
