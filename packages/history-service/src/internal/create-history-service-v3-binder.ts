@@ -17,8 +17,10 @@ function createHistoryServiceV3(
     history: consumerHistory,
     rootHistory: historyMultiplexer.rootHistory,
 
-    createNewRootLocationForMultipleConsumers:
-      historyMultiplexer.createNewRootLocationForMultipleConsumers,
+    createNewRootLocationForMultipleConsumers: (...consumerLocations) =>
+      historyMultiplexer.createNewRootLocationForMultipleConsumers(
+        ...consumerLocations
+      ),
   };
 }
 
