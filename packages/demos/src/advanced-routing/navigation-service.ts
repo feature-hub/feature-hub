@@ -4,12 +4,15 @@ import {
   FeatureServices,
   SharedFeatureService,
 } from '@feature-hub/core';
-import {ConsumerLocation, HistoryServiceV2} from '@feature-hub/history-service';
-import * as history from 'history';
+import {
+  ConsumerLocationV3,
+  HistoryServiceV3,
+} from '@feature-hub/history-service';
+import {History} from 'history';
 import {HelloWorldServiceV1} from './hello-world-service';
 
 export interface NavigationServiceV1 {
-  readonly history: history.History;
+  readonly history: History;
   navigateToHelloWorld(name: string): void;
 }
 
@@ -19,7 +22,7 @@ export interface SharedNavigationService extends SharedFeatureService {
 
 export interface NavigationServiceDependencies extends FeatureServices {
   readonly 'test:hello-world-service': HelloWorldServiceV1;
-  readonly 's2:history': HistoryServiceV2;
+  readonly 's2:history': HistoryServiceV3;
 }
 
 export const navigationServiceDefinition: FeatureServiceProviderDefinition<
@@ -30,34 +33,40 @@ export const navigationServiceDefinition: FeatureServiceProviderDefinition<
 
   dependencies: {
     featureServices: {
-      's2:history': '^2.0.0',
+      's2:history': '^3.0.0',
       'test:hello-world-service': '^1.0.0',
     },
   },
 
   create: ({featureServices}) => {
-    const historyService = featureServices['s2:history'];
+    const {
+      history,
+      historyKey,
+      rootHistory,
+      createNewRootLocationForMultipleConsumers,
+    } = featureServices['s2:history'];
+
     const helloWorldService = featureServices['test:hello-world-service'];
 
     return {
       '1.0.0': () => ({
         featureService: {
-          history: historyService.history,
+          history,
 
           navigateToHelloWorld(name: string): void {
-            const pageLocation: ConsumerLocation = {
-              historyKey: historyService.historyKey,
+            const pageLocation: ConsumerLocationV3 = {
+              historyKey,
               location: {pathname: '/page2'},
             };
 
             const helloWorldLocation = helloWorldService.createLocation(name);
 
-            const rootLocation = historyService.createNewRootLocationForMultipleConsumers(
+            const {state, ...to} = createNewRootLocationForMultipleConsumers(
               pageLocation,
               helloWorldLocation
             );
 
-            historyService.rootHistory.push(rootLocation);
+            rootHistory.push(to, state);
           },
         },
       }),
