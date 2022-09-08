@@ -22,6 +22,11 @@ const webpackBaseConfig = {
   module: {
     rules: [
       {
+        test: /\.js$/,
+        loader: `source-map-loader`,
+        enforce: `pre`,
+      },
+      {
         test: /\.tsx?$/,
         use: {loader: 'ts-loader', options: tsLoaderOptions},
       },
