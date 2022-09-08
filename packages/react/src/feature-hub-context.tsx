@@ -83,21 +83,21 @@ export const FeatureHubContextProvider = FeatureHubContext.Provider;
  * is provided by the integrator). Its main purpose is to be used inside the
  * [[FeatureAppLoader]] and [[FeatureAppContainer]].
  */
-export const FeatureHubContextConsumer = (
+export function FeatureHubContextConsumer(
   props: React.ConsumerProps<FeatureHubContextConsumerValue>
-) => (
-  <FeatureHubContext.Consumer>
-    {(featureHubContextValue) => {
-      if (!featureHubContextValue) {
-        throw new Error(noFeatureHubContextValueErrorMessage);
-      }
+): JSX.Element {
+  return (
+    <FeatureHubContext.Consumer>
+      {(featureHubContextValue) => {
+        if (!featureHubContextValue) {
+          throw new Error(noFeatureHubContextValueErrorMessage);
+        }
 
-      // Provide `console` as the default logger.
-      const {logger = console, ...rest} = featureHubContextValue;
+        // Provide `console` as the default logger.
+        const {logger = console, ...rest} = featureHubContextValue;
 
-      return props.children({logger, ...rest});
-    }}
-  </FeatureHubContext.Consumer>
-);
-
-FeatureHubContextConsumer.displayName = 'FeatureHubContextConsumer';
+        return props.children({logger, ...rest});
+      }}
+    </FeatureHubContext.Consumer>
+  );
+}
