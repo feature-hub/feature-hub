@@ -238,7 +238,7 @@ jobs:
           git config --global user.email "s2-feature-hub@accenture.com"
           git config --global user.name "Feature Hub CI"
           npm config set "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}"
-          yarn lerna publish --canary --preid ${{ steps.gitRef.outputs.result }}.${{ steps.gitRef.outputs.short }} --dist-tag ${{ steps.gitRef.outputs.result }} --yes --no-verify-access
+          yarn lerna publish --conventional-commits --conventional-prerelease --preid ${{ steps.gitRef.outputs.result }}.${{ steps.gitRef.outputs.short }} --dist-tag ${{ steps.gitRef.outputs.result }} --yes --no-verify-access
 
       - name: Add PR Comment
         uses: actions/github-script@v4
