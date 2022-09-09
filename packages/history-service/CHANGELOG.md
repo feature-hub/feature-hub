@@ -3,6 +3,33 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0-history-v5.0ee5fb21.0](https://github.com/sinnerschrader/feature-hub/compare/v2.13.1...v3.0.0-history-v5.0ee5fb21.0) (2022-09-09)
+
+
+### Bug Fixes
+
+* **history-service:** accept state as part of the location ([bdd1c3d](https://github.com/sinnerschrader/feature-hub/commit/bdd1c3d6315102445dfc7687ef58253a296eb3fe))
+* **history-service:** preserve binding of `createNewRootLocationForMultipleConsumers` ([52e1806](https://github.com/sinnerschrader/feature-hub/commit/52e1806766cfd80e216e0eb6773b695f0ae4a2bd))
+* **history-service:** remove unnecessary condition ([0fe4bd7](https://github.com/sinnerschrader/feature-hub/commit/0fe4bd792fe124962b8af72c0012a047e343241c))
+
+
+### Features
+
+* **history-service:** introduce v3 ([62c4c2b](https://github.com/sinnerschrader/feature-hub/commit/62c4c2b51bf2c129241125719123392792410c0e))
+* **history-service:** use history v5 ([fe9b6f4](https://github.com/sinnerschrader/feature-hub/commit/fe9b6f40e0077f7a413915dde99be8433b2832e8))
+
+
+### BREAKING CHANGES
+
+* **history-service:** Version 5 of the `history` package is now required as
+peer dependency. Some types of the root location transformer have been
+slightly changed, and the deprecated `primaryConsumerId` has been
+removed (replaced by `primaryConsumerHistoryKey`).
+
+
+
+
+
 # [2.13.0](https://github.com/sinnerschrader/feature-hub/compare/v2.12.0...v2.13.0) (2022-04-04)
 
 **Note:** Version bump only for package @feature-hub/history-service

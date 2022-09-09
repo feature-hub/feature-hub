@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0-history-v5.0ee5fb21.0](https://github.com/sinnerschrader/feature-hub/compare/v2.13.1...v3.0.0-history-v5.0ee5fb21.0) (2022-09-09)
+
+**Note:** Version bump only for package @feature-hub/module-loader-commonjs
+
+
+
+
+
 # [2.9.0](https://github.com/sinnerschrader/feature-hub/compare/v2.8.1...v2.9.0) (2021-07-12)
 
 

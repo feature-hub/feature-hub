@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0-history-v5.0ee5fb21.0](https://github.com/sinnerschrader/feature-hub/compare/v2.13.1...v3.0.0-history-v5.0ee5fb21.0) (2022-09-09)
+
+
+### Bug Fixes
+
+* **all:** declare errors as unknown ([d240934](https://github.com/sinnerschrader/feature-hub/commit/d240934454fb694d7c18a512f7f528507e44cdd7))
+
+
+### Features
+
+* **demos:** update react-router ([a91f3c9](https://github.com/sinnerschrader/feature-hub/commit/a91f3c98b386c961ad37b5f26e896c886099ec54))
+
+
+
+
+
 ## [2.13.1](https://github.com/sinnerschrader/feature-hub/compare/v2.13.0...v2.13.1) (2022-06-20)
 
 **Note:** Version bump only for package @feature-hub/demos
