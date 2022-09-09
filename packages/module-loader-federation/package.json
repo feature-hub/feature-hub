@@ -22,5 +22,10 @@
   "typings": "lib/cjs/index.d.ts",
   "publishConfig": {
     "access": "public"
+  },
+  "typedoc": {
+    "entryPoint": "./src/index.ts",
+    "readmeFile": "./README.md",
+    "displayName": "module-loader-federation"
   }
 }

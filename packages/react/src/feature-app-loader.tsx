@@ -95,12 +95,12 @@ export interface FeatureAppLoaderProps<TConfig = unknown> {
    */
   readonly done?: (result?: unknown) => void;
 
-  readonly onError?: (error: Error) => void;
+  readonly onError?: (error: unknown) => void;
 
   /**
    * @deprecated Use the `children` render function instead to render an error.
    */
-  readonly renderError?: (error: Error) => React.ReactNode;
+  readonly renderError?: (error: unknown) => React.ReactNode;
 
   /**
    * A children function can be provided to customize rendering of the
@@ -116,7 +116,7 @@ type InternalFeatureAppLoaderProps<TConfig> = FeatureAppLoaderProps<TConfig> &
 
 interface InternalFeatureAppLoaderState {
   readonly featureAppDefinition?: FeatureAppDefinition<unknown>;
-  readonly error?: Error;
+  readonly error?: unknown;
   readonly failedToHandleAsyncError?: boolean;
 }
 
@@ -321,7 +321,7 @@ class InternalFeatureAppLoader<TConfig = unknown> extends React.PureComponent<
     }));
   }
 
-  private handleError(error: Error): void {
+  private handleError(error: unknown): void {
     if (this.errorHandled) {
       return;
     }
@@ -335,7 +335,7 @@ class InternalFeatureAppLoader<TConfig = unknown> extends React.PureComponent<
     }
   }
 
-  private logError(error: Error): void {
+  private logError(error: unknown): void {
     const {
       baseUrl,
       featureAppId,

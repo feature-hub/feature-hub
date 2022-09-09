@@ -112,7 +112,7 @@ async function startServer(
         ? createDocumentHtml(`
             <div class="bp3-callout bp3-intent-danger">
               <h4 class="bp3-heading">Failed to render demo "${demoName}"</h4>
-              <pre>${error.stack}</pre>
+              <pre>${error instanceof Error ? error.stack : error}</pre>
             </div>
           `)
         : error;

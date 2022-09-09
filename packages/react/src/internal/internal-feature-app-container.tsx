@@ -14,8 +14,8 @@ import {isDomFeatureApp, isFeatureApp, isReactFeatureApp} from './type-guards';
 
 export const handleError = (
   logger: Logger,
-  error: Error,
-  onError?: (e: Error) => void
+  error: unknown,
+  onError?: (e: unknown) => void
 ) => {
   if (onError) {
     onError(error);
@@ -83,12 +83,12 @@ export interface BaseFeatureAppContainerProps<
    */
   readonly done?: (result?: unknown) => void;
 
-  readonly onError?: (error: Error) => void;
+  readonly onError?: (error: unknown) => void;
 
   /**
    * @deprecated Use the `children` render function instead to render an error.
    */
-  readonly renderError?: (error: Error) => React.ReactNode;
+  readonly renderError?: (error: unknown) => React.ReactNode;
 
   /**
    * A children function can be provided to customize rendering of the
@@ -107,7 +107,7 @@ export type InternalFeatureAppContainerProps<
   Pick<FeatureHubContextConsumerValue, 'featureAppManager' | 'logger'>;
 
 interface InternalFeatureAppContainerState<TFeatureApp extends FeatureApp> {
-  readonly error?: Error;
+  readonly error?: unknown;
   readonly featureApp?: TFeatureApp;
   readonly release?: () => void;
   readonly failedToHandleAsyncError?: boolean;
@@ -188,7 +188,7 @@ export class InternalFeatureAppContainer<
   private loadingPromiseHandled = false;
   private domFeatureAppAttached = false;
 
-  public componentDidCatch(error: Error): void {
+  public componentDidCatch(error: unknown): void {
     this.handleError(error);
     this.setState({error, loading: false});
   }
@@ -290,7 +290,7 @@ export class InternalFeatureAppContainer<
     }
   }
 
-  private renderError(error: Error): React.ReactNode {
+  private renderError(error: unknown): React.ReactNode {
     // tslint:disable-next-line: deprecation
     const {children, renderError} = this.props;
 
@@ -305,7 +305,7 @@ export class InternalFeatureAppContainer<
     return null;
   }
 
-  private handleError(error: Error): void {
+  private handleError(error: unknown): void {
     const {logger, onError} = this.props;
 
     handleError(logger, error, onError);

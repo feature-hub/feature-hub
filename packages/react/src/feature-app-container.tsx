@@ -69,7 +69,7 @@ export interface CustomFeatureAppRenderingParams {
    * The Error can be used to render a custom error UI. If there is an error,
    * the Feature App will stop rendering and `featureAppNode` is `undefined`.
    */
-  error?: Error;
+  error?: unknown;
 
   /**
    * The loading boolean indicates if the Feature App is still loading, and can

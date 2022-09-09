@@ -103,7 +103,7 @@ export function defineFeatureAppContainer(
     public config?: unknown;
 
     @property({type: Object, reflect: false})
-    private error?: Error;
+    private error?: unknown;
 
     private featureAppScope: FeatureAppScope<DomFeatureApp> | undefined;
 

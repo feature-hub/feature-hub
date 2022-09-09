@@ -13,11 +13,11 @@ const {featureAppManager} = createFeatureHub('test:integrator', {
   providedExternals: {react: process.env.REACT_VERSION as string},
 });
 
-function ErrorUi({error}: {error: Error}): JSX.Element {
+function ErrorUi({error}: {error: unknown}): JSX.Element {
   return (
     <Callout intent={Intent.DANGER}>
       <H4>Example Error UI</H4>
-      <p>{error.message}</p>
+      <p>{error instanceof Error ? error.message : error}</p>
     </Callout>
   );
 }

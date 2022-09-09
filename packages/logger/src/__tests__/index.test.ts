@@ -70,11 +70,13 @@ describe('defineLogger', () => {
           try {
             logger[method]('test');
           } catch (error) {
-            expect(error.stack).toMatch(
+            expect((error as Error).stack).toMatch(
               /logger\/src\/__tests__\/index.test\.(js|ts)/
             );
 
-            expect(error.stack).not.toMatch(/logger\/src\/index\.(js|ts)/);
+            expect((error as Error).stack).not.toMatch(
+              /logger\/src\/index\.(js|ts)/
+            );
           }
         });
       });
