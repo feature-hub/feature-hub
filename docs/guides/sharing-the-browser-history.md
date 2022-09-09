@@ -43,7 +43,7 @@ JSON string which will be assigned to a single configurable query parameter.
 ### As a Feature App
 
 ```js
-import {Router} from 'react-router';
+import {unstable_HistoryRouter as HistoryRouter} from 'react-router-dom';
 ```
 
 ```js
@@ -52,7 +52,7 @@ const myFeatureAppDefinition = {
 
   dependencies: {
     featureServices: {
-      's2:history': '^2.0.0',
+      's2:history': '^3.0.0',
     },
   },
 
@@ -61,9 +61,9 @@ const myFeatureAppDefinition = {
 
     return {
       render: () => (
-        <Router history={historyService.history}>
+        <HistoryRouter history={historyService.history}>
           <App />
-        </Router>
+        </HistoryRouter>
       ),
     };
   },
@@ -71,8 +71,8 @@ const myFeatureAppDefinition = {
 ```
 
 The `history` property of the History Service is API-compatible with the history
-package. Note, however, that the `go`, `goBack`, `goForward` and `block` methods
-are not supported. For further information, reference its
+package. Note, however, that the `go`, `back`, `forward` and `block` methods are
+not supported. For further information, reference its
 [documentation][history-npm].
 
 ### As the Integrator
@@ -155,9 +155,8 @@ const rootLocationTransformer = {
   createRootLocation(currentRootLocation, consumerLocation, historyKey) {
     const searchParams = new URLSearchParams(currentRootLocation.search);
     searchParams.set(historyKey, history.createPath(consumerLocation));
-    const {pathname, state} = currentRootLocation;
 
-    return {pathname, search: searchParams.toString(), state};
+    return {...currentRootLocation, search: searchParams.toString()};
   },
 };
 ```
