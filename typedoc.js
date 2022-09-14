@@ -1,6 +1,6 @@
 // @ts-check
 
-// const git = require('git-rev-sync');
+const git = require('git-rev-sync');
 
 /**
  * @type {import('typedoc').TypeDocOptions}
@@ -14,7 +14,7 @@ module.exports = {
   ],
   excludeExternals: false,
   excludePrivate: true,
-  gitRevision: 'master',
+  gitRevision: git.short(),
   name: '@feature-hub',
   out: 'packages/website/build/feature-hub/api',
   readme: 'README.md',
