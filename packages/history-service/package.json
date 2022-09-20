@@ -24,14 +24,13 @@
     "@feature-hub/core": "^2.13.0",
     "@feature-hub/logger": "^2.13.0",
     "@feature-hub/server-request": "^2.13.0",
-    "fast-deep-equal": "^2.0.1"
+    "resolve-pathname": "^3.0.0"
   },
   "devDependencies": {
-    "@types/history": "^4.7.2",
-    "history": "^4.7.2"
+    "history": "^5.3.0"
   },
   "peerDependencies": {
-    "history": "^4.7.2"
+    "history": "^5.2.0"
   },
   "publishConfig": {
     "access": "public"

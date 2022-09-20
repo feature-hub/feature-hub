@@ -1,65 +1,102 @@
 import * as history from 'history';
-import {ConsumerLocation, RootHistory} from '..';
 import {
-  ConsumerHistoryStates,
-  RootLocation,
+  ConsumerLocationV3,
+  RootHistory,
+  RootLocation as RootLocationV2,
   RootLocationDescriptorObject,
-  RootLocationTransformer,
-} from '../create-root-location-transformer';
-import {Writable} from './writable';
+} from '..';
+import {RootLocationTransformer} from '../create-root-location-transformer';
+import * as historyV4 from '../history-v4';
+import {createHistoryPath} from './create-history-path';
+import {createKey} from './create-key';
 
-function setConsumerStates(
-  rootLocation: RootLocationDescriptorObject,
-  ...consumerLocations: ConsumerLocation[]
-): RootLocation {
-  const consumerStates: Writable<ConsumerHistoryStates> = {};
+export interface RootLocation extends history.Location {
+  readonly state: Record<string, ConsumerState> | undefined;
+}
 
-  for (const {historyKey, location} of consumerLocations) {
-    consumerStates[historyKey] = location.state;
-  }
-
-  return history.createLocation({...rootLocation, state: consumerStates});
+export interface ConsumerState {
+  readonly state: unknown;
+  readonly key: string;
 }
 
 export class HistoryMultiplexer {
-  public constructor(
-    public readonly rootHistory: RootHistory,
-    public readonly rootLocationTransformer: RootLocationTransformer
-  ) {}
+  public rootHistoryV2: RootHistory;
 
-  public get length(): number {
-    return this.rootHistory.length;
+  public constructor(
+    public readonly rootHistory: history.History,
+    public readonly rootLocationTransformer: RootLocationTransformer
+  ) {
+    this.rootHistoryV2 = {
+      get length(): number {
+        try {
+          return window.history.length;
+        } catch {
+          return 1;
+        }
+      },
+
+      get location(): RootLocationV2 {
+        return rootHistory.location as RootLocationV2;
+      },
+
+      push(location: RootLocationDescriptorObject): void {
+        const {pathname, search, hash, state} = location;
+
+        rootHistory.push({pathname, search, hash}, state);
+      },
+
+      replace(location: RootLocationDescriptorObject): void {
+        const {pathname, search, hash, state} = location;
+
+        rootHistory.replace({pathname, search, hash}, state);
+      },
+
+      createHref(location: RootLocationDescriptorObject): string {
+        return rootHistory.createHref(location);
+      },
+
+      listen(
+        listener: historyV4.LocationListener
+      ): historyV4.UnregisterCallback {
+        return rootHistory.listen(({location, action}) =>
+          listener(location, action)
+        );
+      },
+    };
   }
 
   public get rootLocation(): RootLocation {
-    return this.rootHistory.location;
+    return this.rootHistory.location as RootLocation;
   }
 
-  public push(
-    historyKey: string,
-    consumerLocation: history.LocationDescriptorObject
-  ): void {
-    this.rootHistory.push(
-      this.createRootLocation(historyKey, consumerLocation)
+  public push(historyKey: string, consumerLocation: history.Location): void {
+    const {pathname, search, hash, state} = this.createRootLocation(
+      historyKey,
+      consumerLocation
     );
+
+    this.rootHistory.push({pathname, search, hash}, state);
   }
 
-  public replace(
-    historyKey: string,
-    consumerLocation: history.LocationDescriptorObject
-  ): void {
-    this.rootHistory.replace(
-      this.createRootLocation(historyKey, consumerLocation)
+  public replace(historyKey: string, consumerLocation: history.Location): void {
+    const {pathname, search, hash, state} = this.createRootLocation(
+      historyKey,
+      consumerLocation
     );
+
+    this.rootHistory.replace({pathname, search, hash}, state);
   }
 
   public createHref(
     historyKey: string,
-    consumerLocation: history.Location
-  ): history.Href {
-    return this.rootHistory.createHref(
-      this.createRootLocation(historyKey, consumerLocation)
+    consumerLocation: history.Path
+  ): string {
+    const {pathname, search, hash} = this.createRootLocation(
+      historyKey,
+      consumerLocation
     );
+
+    return this.rootHistory.createHref({pathname, search, hash});
   }
 
   public getConsumerLocation(historyKey: string): history.Location {
@@ -69,24 +106,30 @@ export class HistoryMultiplexer {
         historyKey
       ) || '/';
 
-    const consumerStates = this.rootLocation.state;
-    const consumerState = consumerStates && consumerStates[historyKey];
+    const {state, key} = this.rootLocation.state?.[historyKey] || {
+      state: undefined,
+      key: 'default',
+    };
 
-    return history.createLocation(consumerPath, consumerState);
+    return {
+      ...createHistoryPath(history.parsePath(consumerPath)),
+      state,
+      key,
+    };
   }
 
   public listenForRootLocationChange(
     listener: (action: history.Action) => void
   ): () => void {
-    return this.rootHistory.listen((_location, action) => {
+    return this.rootHistory.listen(({action}) => {
       listener(action);
     });
   }
 
   public createNewRootLocationForMultipleConsumers(
-    ...consumerLocations: ConsumerLocation[]
-  ): RootLocationDescriptorObject {
-    let newRootLocation: RootLocationDescriptorObject = {pathname: '/'};
+    ...consumerLocations: ConsumerLocationV3[]
+  ): Omit<RootLocation, 'key'> {
+    let newRootLocation: Partial<history.Path> = {pathname: '/'};
 
     if (
       this.rootLocationTransformer.createNewRootLocationForMultipleConsumers
@@ -104,30 +147,30 @@ export class HistoryMultiplexer {
       }
     }
 
-    return setConsumerStates(newRootLocation, ...consumerLocations);
+    const consumerStates: Record<string, ConsumerState> = {};
+
+    for (const {historyKey, state} of consumerLocations) {
+      consumerStates[historyKey] = {state, key: createKey()};
+    }
+
+    return {...createHistoryPath(newRootLocation), state: consumerStates};
   }
 
   private createRootLocation(
     historyKey: string,
-    consumerLocation: history.LocationDescriptorObject,
-    rootLocation: RootLocationDescriptorObject = this.rootLocation
-  ): RootLocation {
+    consumerLocation: Partial<history.Location>
+  ): Omit<RootLocation, 'key'> {
     const newRootLocation = this.rootLocationTransformer.createRootLocation(
-      rootLocation,
+      this.rootLocation,
       consumerLocation,
       historyKey
     );
 
-    const consumerStates = rootLocation.state;
+    const {state, key = createKey()} = consumerLocation;
 
-    const newConsumerStates: ConsumerHistoryStates = {
-      ...consumerStates,
-      [historyKey]: consumerLocation.state,
+    return {
+      ...createHistoryPath(newRootLocation),
+      state: {...this.rootLocation.state, [historyKey]: {state, key}},
     };
-
-    return history.createLocation({
-      ...newRootLocation,
-      state: newConsumerStates,
-    });
   }
 }

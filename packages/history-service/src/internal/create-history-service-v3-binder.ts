@@ -1,45 +1,34 @@
 import {FeatureServiceBinder, FeatureServiceBinding} from '@feature-hub/core';
-import {HistoryServiceV2} from '..';
+import * as history from 'history';
+import {HistoryServiceV3} from '..';
 import {BrowserConsumerHistory} from './browser-consumer-history';
-import {ConsumerHistory} from './consumer-history';
 import {HistoryMultiplexers} from './create-history-multiplexers';
-import {createHistoryV4Adapter} from './create-history-v4-adapter';
 import {HistoryMultiplexer} from './history-multiplexer';
 import {HistoryServiceContext} from './history-service-context';
 import {StaticConsumerHistory} from './static-consumer-history';
 
-function createHistoryServiceV2(
-  context: HistoryServiceContext,
+function createHistoryServiceV3(
   historyKey: string,
-  consumerHistory: ConsumerHistory,
+  consumerHistory: history.History,
   historyMultiplexer: HistoryMultiplexer
-): HistoryServiceV2 {
+): HistoryServiceV3 {
   return {
     historyKey,
-    history: createHistoryV4Adapter(context, consumerHistory),
-    rootHistory: historyMultiplexer.rootHistoryV2,
+    history: consumerHistory,
+    rootHistory: historyMultiplexer.rootHistory,
 
     createNewRootLocationForMultipleConsumers: (...consumerLocations) =>
       historyMultiplexer.createNewRootLocationForMultipleConsumers(
-        ...consumerLocations.map(
-          ({
-            historyKey: otherHistoryKey,
-            location: {pathname, search, hash, state},
-          }) => ({
-            historyKey: otherHistoryKey,
-            location: {pathname, search, hash},
-            state,
-          })
-        )
+        ...consumerLocations
       ),
   };
 }
 
-function createBrowserHistoryServiceV2Binding(
+function createBrowserHistoryServiceV3Binding(
   context: HistoryServiceContext,
   historyMultiplexers: HistoryMultiplexers,
   consumerId: string
-): FeatureServiceBinding<HistoryServiceV2> {
+): FeatureServiceBinding<HistoryServiceV3> {
   const consumerHistory = new BrowserConsumerHistory(
     context,
     consumerId,
@@ -47,8 +36,7 @@ function createBrowserHistoryServiceV2Binding(
   );
 
   return {
-    featureService: createHistoryServiceV2(
-      context,
+    featureService: createHistoryServiceV3(
       consumerId,
       consumerHistory,
       historyMultiplexers.browserHistoryMultiplexer
@@ -60,11 +48,11 @@ function createBrowserHistoryServiceV2Binding(
   };
 }
 
-function createStaticHistoryServiceV2Binding(
+function createStaticHistoryServiceV3Binding(
   context: HistoryServiceContext,
   historyMultiplexers: HistoryMultiplexers,
   consumerId: string
-): FeatureServiceBinding<HistoryServiceV2> {
+): FeatureServiceBinding<HistoryServiceV3> {
   const consumerHistory = new StaticConsumerHistory(
     context,
     consumerId,
@@ -72,8 +60,7 @@ function createStaticHistoryServiceV2Binding(
   );
 
   return {
-    featureService: createHistoryServiceV2(
-      context,
+    featureService: createHistoryServiceV3(
       consumerId,
       consumerHistory,
       historyMultiplexers.staticHistoryMultiplexer
@@ -81,19 +68,19 @@ function createStaticHistoryServiceV2Binding(
   };
 }
 
-export function createHistoryServiceV2Binder(
+export function createHistoryServiceV3Binder(
   context: HistoryServiceContext,
   historyMultiplexers: HistoryMultiplexers,
   mode: 'browser' | 'static'
-): FeatureServiceBinder<HistoryServiceV2> {
-  return (consumerId: string): FeatureServiceBinding<HistoryServiceV2> =>
+): FeatureServiceBinder<HistoryServiceV3> {
+  return (consumerId: string): FeatureServiceBinding<HistoryServiceV3> =>
     mode === 'browser'
-      ? createBrowserHistoryServiceV2Binding(
+      ? createBrowserHistoryServiceV3Binding(
           context,
           historyMultiplexers,
           consumerId
         )
-      : createStaticHistoryServiceV2Binding(
+      : createStaticHistoryServiceV3Binding(
           context,
           historyMultiplexers,
           consumerId

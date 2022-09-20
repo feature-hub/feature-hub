@@ -7,14 +7,12 @@ import {
 import {Logger} from '@feature-hub/logger';
 import {ServerRequestV1} from '@feature-hub/server-request';
 import * as history from 'history';
-import {
-  RootLocation,
-  RootLocationDescriptorObject,
-  RootLocationTransformer,
-} from './create-root-location-transformer';
+import {RootLocationTransformer} from './create-root-location-transformer';
+import * as historyV4 from './history-v4';
 import {createHistoryMultiplexers} from './internal/create-history-multiplexers';
 import {createHistoryServiceV1Binder} from './internal/create-history-service-v1-binder';
 import {createHistoryServiceV2Binder} from './internal/create-history-service-v2-binder';
+import {createHistoryServiceV3Binder} from './internal/create-history-service-v3-binder';
 import {createHistoryServiceContext} from './internal/history-service-context';
 
 export * from './create-root-location-transformer';
@@ -26,19 +24,29 @@ export interface RootHistory {
   push(location: RootLocationDescriptorObject): void;
   replace(location: RootLocationDescriptorObject): void;
   createHref(location: RootLocationDescriptorObject): string;
-  listen(listener: history.LocationListener): history.UnregisterCallback;
+  listen(listener: historyV4.LocationListener): historyV4.UnregisterCallback;
+}
+
+export type RootLocation = historyV4.Location<ConsumerHistoryStates>;
+
+export type RootLocationDescriptorObject = historyV4.LocationDescriptorObject<
+  ConsumerHistoryStates
+>;
+
+export interface ConsumerHistoryStates {
+  readonly [historyKey: string]: unknown;
 }
 
 export interface ConsumerLocation {
   readonly historyKey: string;
-  readonly location: history.LocationDescriptorObject;
+  readonly location: historyV4.LocationDescriptorObject;
 }
 
 export interface HistoryServiceV1 {
-  readonly staticRootLocation: history.Location;
+  readonly staticRootLocation: historyV4.Location;
 
-  createBrowserHistory(): history.History;
-  createStaticHistory(): history.History;
+  createBrowserHistory(): historyV4.History;
+  createStaticHistory(): historyV4.History;
 }
 
 export interface HistoryServiceV2 {
@@ -52,7 +60,7 @@ export interface HistoryServiceV2 {
    * The consumer's own history. When location changes are applied to this
    * history, no other consumer histories are affected.
    */
-  readonly history: history.History;
+  readonly history: historyV4.History;
 
   /**
    * Allows special consumers, like overarching navigation services, to change
@@ -71,9 +79,52 @@ export interface HistoryServiceV2 {
   ): RootLocationDescriptorObject;
 }
 
+export interface HistoryServiceV3 {
+  /**
+   * The history key that has been assigned to the consumer. It can be used to
+   * create a [[ConsumerLocation]].
+   */
+  readonly historyKey: string;
+
+  /**
+   * The consumer's own history. When location changes are applied to this
+   * history, no other consumer histories are affected.
+   */
+  readonly history: history.History;
+
+  /**
+   * Allows special consumers, like overarching navigation services, to change
+   * the full root location. To create a new root location, it is recommended to
+   * use the `createNewRootLocationForMultipleConsumers` method.
+   */
+  readonly rootHistory: history.History;
+
+  /**
+   * Creates a new root location from multiple consumer locations. The returned
+   * location can be used for the `push`, `replace`, and `createHref` methods of
+   * the `rootHistory`. Important: For `push` and `replace` calls make sure to
+   * pass the returned `state` property as a second argument, e.g.:
+   * ```
+   *  const {state, ...to} = historyService.createNewRootLocationForMultipleConsumers({...});
+   *
+   *  historyService.rootHistory.push(to, state);
+   * ```
+   */
+  createNewRootLocationForMultipleConsumers(
+    ...consumerLocations: ConsumerLocationV3[]
+  ): Omit<history.Location, 'key'>;
+}
+
+export interface ConsumerLocationV3 {
+  readonly historyKey: string;
+  readonly location: Partial<history.Path>;
+  readonly state?: unknown;
+}
+
 export interface SharedHistoryService extends SharedFeatureService {
   readonly '1.0.0': FeatureServiceBinder<HistoryServiceV1>;
   readonly '2.0.0': FeatureServiceBinder<HistoryServiceV2>;
+  readonly '3.0.0': FeatureServiceBinder<HistoryServiceV3>;
 }
 
 export interface HistoryServiceDependencies extends FeatureServices {
@@ -116,6 +167,12 @@ export function defineHistoryService(
         '1.0.0': createHistoryServiceV1Binder(context, historyMultiplexers),
 
         '2.0.0': createHistoryServiceV2Binder(
+          context,
+          historyMultiplexers,
+          mode
+        ),
+
+        '3.0.0': createHistoryServiceV3Binder(
           context,
           historyMultiplexers,
           mode

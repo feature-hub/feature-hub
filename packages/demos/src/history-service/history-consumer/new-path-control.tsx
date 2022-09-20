@@ -1,26 +1,25 @@
 import {Button, ControlGroup, InputGroup} from '@blueprintjs/core';
-import {History} from 'history';
 import * as React from 'react';
+import {NavigateOptions, useNavigate} from 'react-router';
 
 export interface NewPathControlProps {
-  readonly history: History;
   readonly specifier: string;
   readonly vertical?: boolean;
 }
 
 export function NewPathControl({
-  history,
   specifier,
   vertical,
 }: NewPathControlProps): JSX.Element {
   const inputElement = React.useRef<HTMLInputElement | null>(null);
+  const navigate = useNavigate();
 
-  const changePath = (method: 'push' | 'replace') => {
+  const changePath = (options?: NavigateOptions) => {
     if (!inputElement.current) {
       return;
     }
 
-    history[method](inputElement.current.value);
+    navigate(inputElement.current.value, options);
     inputElement.current.value = '';
   };
 
@@ -34,12 +33,12 @@ export function NewPathControl({
       <Button
         id={`push-button-${specifier}`}
         text="Push"
-        onClick={() => changePath('push')}
+        onClick={() => changePath()}
       />
       <Button
         id={`replace-button-${specifier}`}
         text="Replace"
-        onClick={() => changePath('replace')}
+        onClick={() => changePath({replace: true})}
       />
     </ControlGroup>
   );

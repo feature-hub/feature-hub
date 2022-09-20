@@ -1,9 +1,11 @@
 import * as history from 'history';
+import {createHistoryPath} from './create-history-path';
+import {createKey} from './create-key';
 import {HistoryMultiplexer} from './history-multiplexer';
 import {HistoryServiceContext} from './history-service-context';
 
 export abstract class ConsumerHistory implements history.History {
-  public action: history.Action = 'POP';
+  public action: history.Action = history.Action.Pop;
   public location: history.Location;
 
   public constructor(
@@ -11,12 +13,20 @@ export abstract class ConsumerHistory implements history.History {
     protected readonly historyKey: string,
     protected readonly historyMultiplexer: HistoryMultiplexer
   ) {
-    this.location = history.createLocation(
-      historyMultiplexer.getConsumerLocation(historyKey),
-      undefined,
-      undefined,
-      history.createLocation('/')
-    );
+    const {
+      pathname,
+      search,
+      hash,
+      state,
+    } = historyMultiplexer.getConsumerLocation(historyKey);
+
+    this.location = {
+      pathname: pathname.startsWith('/') ? pathname : `/${pathname}`,
+      search,
+      hash,
+      state,
+      key: 'default',
+    };
 
     /**
      * The methods of `history.History` must be bound explicitly, because
@@ -26,72 +36,56 @@ export abstract class ConsumerHistory implements history.History {
     this.push = this.push.bind(this);
     this.replace = this.replace.bind(this);
     this.go = this.go.bind(this);
-    this.goBack = this.goBack.bind(this);
-    this.goForward = this.goForward.bind(this);
+    this.back = this.back.bind(this);
+    this.forward = this.forward.bind(this);
     this.block = this.block.bind(this);
     this.createHref = this.createHref.bind(this);
   }
 
-  public get length(): number {
-    return this.historyMultiplexer.length;
-  }
+  public abstract listen(listener: history.Listener): () => void;
 
-  public abstract listen(
-    listener: history.LocationListener
-  ): history.UnregisterCallback;
-
-  public push(
-    pathOrLocation: history.LocationDescriptor,
-    state?: history.LocationState
-  ): void {
-    this.location = history.createLocation(
-      pathOrLocation,
-      state,
-      undefined,
-      this.location
-    );
-
+  public push(to: history.To, state?: unknown): void {
+    this.location = this.createLocation(to, state);
     this.historyMultiplexer.push(this.historyKey, this.location);
-    this.action = 'PUSH';
+    this.action = history.Action.Push;
   }
 
-  public replace(
-    pathOrLocation: history.LocationDescriptor,
-    state?: history.LocationState
-  ): void {
-    this.location = history.createLocation(
-      pathOrLocation,
-      state,
-      undefined,
-      this.location
-    );
-
+  public replace(to: history.To, state?: unknown): void {
+    this.location = this.createLocation(to, state);
     this.historyMultiplexer.replace(this.historyKey, this.location);
-    this.action = 'REPLACE';
+    this.action = history.Action.Replace;
   }
 
   public go(): void {
     this.context.logger.warn('history.go() is not supported.');
   }
 
-  public goBack(): void {
-    this.context.logger.warn('history.goBack() is not supported.');
+  public back(): void {
+    this.context.logger.warn('history.back() is not supported.');
   }
 
-  public goForward(): void {
-    this.context.logger.warn('history.goForward() is not supported.');
+  public forward(): void {
+    this.context.logger.warn('history.forward() is not supported.');
   }
 
-  public block(): history.UnregisterCallback {
+  public block(): () => void {
     this.context.logger.warn('history.block() is not supported.');
 
     return () => undefined;
   }
 
-  public createHref(location: history.LocationDescriptorObject): history.Href {
+  public createHref(to: history.To): string {
     return this.historyMultiplexer.createHref(
       this.historyKey,
-      history.createLocation(location, undefined, undefined, this.location)
+      createHistoryPath(to, history.createPath(this.location))
     );
+  }
+
+  private createLocation(to: history.To, state?: unknown): history.Location {
+    return {
+      ...createHistoryPath(to, this.location.pathname),
+      state,
+      key: createKey(),
+    };
   }
 }

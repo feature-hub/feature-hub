@@ -4,11 +4,12 @@ import {
   defineHistoryService,
 } from '@feature-hub/history-service';
 import {defineExternals, loadAmdModule} from '@feature-hub/module-loader-amd';
-import {FeatureAppLoader, FeatureHubContextProvider} from '@feature-hub/react';
+import {FeatureHubContextProvider} from '@feature-hub/react';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import {Route, Router} from 'react-router';
+import {unstable_HistoryRouter as HistoryRouter} from 'react-router-dom';
 import '../blueprint-css';
+import {App} from './app';
 import {helloWorldServiceDefinition} from './hello-world-service';
 import {
   NavigationServiceV1,
@@ -41,26 +42,9 @@ const navigationService = featureServices[
 
 ReactDOM.render(
   <FeatureHubContextProvider value={{featureAppManager}}>
-    <Router history={navigationService.history}>
-      <Route
-        path="/"
-        render={() => (
-          <FeatureAppLoader
-            featureAppId="test:input"
-            src="input-feature-app.umd.js"
-          />
-        )}
-      />
-      <Route
-        path="/page2"
-        render={() => (
-          <FeatureAppLoader
-            featureAppId="test:hello-world"
-            src="hello-world-feature-app.umd.js"
-          />
-        )}
-      />
-    </Router>
+    <HistoryRouter history={navigationService.history}>
+      <App />
+    </HistoryRouter>
   </FeatureHubContextProvider>,
 
   document.querySelector('main')

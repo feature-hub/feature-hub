@@ -2,7 +2,6 @@ import * as history from 'history';
 import {RootLocationTransformer} from '../create-root-location-transformer';
 import {HistoryMultiplexer} from './history-multiplexer';
 import {HistoryServiceContext} from './history-service-context';
-import {StaticRootHistory} from './static-root-history';
 
 export interface HistoryMultiplexers {
   readonly browserHistoryMultiplexer: HistoryMultiplexer;
@@ -37,7 +36,10 @@ export function createHistoryMultiplexers(
         }
 
         staticHistoryMultiplexer = new HistoryMultiplexer(
-          new StaticRootHistory(context.serverRequest),
+          history.createMemoryHistory({
+            initialEntries: [createPathFromUrl(context.serverRequest.url)],
+            initialIndex: 0,
+          }),
           rootLocationTransformer
         );
       }
@@ -45,4 +47,18 @@ export function createHistoryMultiplexers(
       return staticHistoryMultiplexer;
     },
   };
+}
+
+function createPathFromUrl(url: string): Partial<history.Path> {
+  if (isAbsolute(url)) {
+    const {pathname, search} = new URL(url);
+
+    return {pathname, search};
+  }
+
+  return history.parsePath(url);
+}
+
+function isAbsolute(url: string): boolean {
+  return /^https?:\/\//.test(url);
 }

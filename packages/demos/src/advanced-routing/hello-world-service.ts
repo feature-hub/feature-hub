@@ -4,13 +4,15 @@ import {
   FeatureServices,
   SharedFeatureService,
 } from '@feature-hub/core';
-import {ConsumerLocation, HistoryServiceV2} from '@feature-hub/history-service';
-import * as history from 'history';
+import {
+  ConsumerLocationV3,
+  HistoryServiceV3,
+} from '@feature-hub/history-service';
 
 export interface HelloWorldServiceV1 {
   name: string;
   listen(listener: () => void): () => void;
-  createLocation(name: string): ConsumerLocation;
+  createLocation(name: string): ConsumerLocationV3;
 }
 
 export interface SharedHelloWorldService extends SharedFeatureService {
@@ -18,7 +20,7 @@ export interface SharedHelloWorldService extends SharedFeatureService {
 }
 
 export interface HelloWorldServiceDependencies extends FeatureServices {
-  readonly 's2:history': HistoryServiceV2;
+  readonly 's2:history': HistoryServiceV3;
 }
 
 export const helloWorldServiceDefinition: FeatureServiceProviderDefinition<
@@ -29,34 +31,31 @@ export const helloWorldServiceDefinition: FeatureServiceProviderDefinition<
 
   dependencies: {
     featureServices: {
-      's2:history': '^2.0.0',
+      's2:history': '^3.0.0',
     },
   },
 
   create: ({featureServices}) => {
-    const historyService = featureServices['s2:history'];
+    const {historyKey, history} = featureServices['s2:history'];
 
     return {
       '1.0.0': () => ({
         featureService: {
           get name(): string {
-            return historyService.history.location.pathname.slice(1) || 'World';
+            return history.location.pathname.slice(1) || 'World';
           },
 
           set name(value: string) {
             const {location} = this.createLocation(value);
-            historyService.history.push(location);
+            history.push(location);
           },
 
           listen(listener: () => void): () => void {
-            return historyService.history.listen(listener);
+            return history.listen(listener);
           },
 
-          createLocation(name: string): ConsumerLocation {
-            return {
-              historyKey: historyService.historyKey,
-              location: history.createLocation(`/${name}`),
-            };
+          createLocation(name: string): ConsumerLocationV3 {
+            return {historyKey, location: {pathname: `/${name}`}};
           },
         },
       }),

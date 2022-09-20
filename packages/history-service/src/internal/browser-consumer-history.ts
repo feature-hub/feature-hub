@@ -1,12 +1,11 @@
-import equal from 'fast-deep-equal';
 import * as history from 'history';
 import {ConsumerHistory} from './consumer-history';
 import {HistoryMultiplexer} from './history-multiplexer';
 import {HistoryServiceContext} from './history-service-context';
 
 export class BrowserConsumerHistory extends ConsumerHistory {
-  private readonly listeners = new Set<history.LocationListener>();
-  private readonly unregisterCallbacks: history.UnregisterCallback[] = [];
+  private readonly listeners = new Set<history.Listener>();
+  private readonly unregisterCallbacks: (() => void)[] = [];
   private readonly browserUnregister: () => void;
 
   public constructor(
@@ -32,9 +31,7 @@ export class BrowserConsumerHistory extends ConsumerHistory {
     this.unregisterCallbacks.forEach((unregister) => unregister());
   }
 
-  public listen(
-    listener: history.LocationListener
-  ): history.UnregisterCallback {
+  public listen(listener: history.Listener): () => void {
     this.listeners.add(listener);
 
     const unregister = () => {
@@ -46,25 +43,19 @@ export class BrowserConsumerHistory extends ConsumerHistory {
     return unregister;
   }
 
-  public push(
-    pathOrLocation: history.LocationDescriptor,
-    state?: history.LocationState
-  ): void {
-    super.push(pathOrLocation, state);
+  public push(to: history.To, state?: unknown): void {
+    super.push(to, state);
     this.notifyListeners();
   }
 
-  public replace(
-    pathOrLocation: history.LocationDescriptor,
-    state?: history.LocationState
-  ): void {
-    super.replace(pathOrLocation, state);
+  public replace(to: history.To, state?: unknown): void {
+    super.replace(to, state);
     this.notifyListeners();
   }
 
   private notifyListeners(): void {
     for (const listener of this.listeners) {
-      listener(this.location, this.action);
+      listener({location: this.location, action: this.action});
     }
   }
 
@@ -73,7 +64,7 @@ export class BrowserConsumerHistory extends ConsumerHistory {
       this.historyKey
     );
 
-    if (this.matches(location)) {
+    if (this.location.key === location.key) {
       return;
     }
 
@@ -81,13 +72,5 @@ export class BrowserConsumerHistory extends ConsumerHistory {
     this.action = action;
 
     this.notifyListeners();
-  }
-
-  private matches(location: history.Location): boolean {
-    if (history.createPath(location) !== history.createPath(this.location)) {
-      return false;
-    }
-
-    return equal(location.state, this.location.state);
   }
 }
