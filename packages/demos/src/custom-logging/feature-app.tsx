@@ -14,7 +14,6 @@ const featureAppDefinition: FeatureAppDefinition<
   Dependencies
 > = {
   dependencies: {
-    externals: {react: '^16.7.0'},
     featureServices: {'s2:logger': '^1.0.0'},
   },
 

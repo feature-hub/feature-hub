@@ -13,7 +13,6 @@ const featureAppDefinition: FeatureAppDefinition<
   MainFeatureServices
 > = {
   dependencies: {
-    externals: {react: '^16.7.0'},
     featureServices: {'test:todomvc-todo-manager': '^1.0.0'},
   },
 

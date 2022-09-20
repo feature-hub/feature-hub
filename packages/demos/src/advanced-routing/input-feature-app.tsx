@@ -39,9 +39,6 @@ const featureAppDefinition: FeatureAppDefinition<
     featureServices: {
       'test:navigation-service': '^1.0.0',
     },
-    externals: {
-      react: '^16.7.0',
-    },
   },
 
   create: ({featureServices}) => {
