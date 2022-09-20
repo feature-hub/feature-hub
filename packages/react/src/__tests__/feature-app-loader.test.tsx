@@ -311,7 +311,6 @@ describe('FeatureAppLoader', () => {
 
     it('renders an InternalFeatureAppContainer', () => {
       const onError = jest.fn();
-      const renderError = jest.fn();
       const beforeCreate = jest.fn();
       const done = jest.fn();
       const children = jest.fn();
@@ -324,7 +323,6 @@ describe('FeatureAppLoader', () => {
           beforeCreate={beforeCreate}
           done={done}
           onError={onError}
-          renderError={renderError}
           baseUrl="/base"
           children={children}
         />
@@ -340,7 +338,6 @@ describe('FeatureAppLoader', () => {
         featureAppDefinition: mockFeatureAppDefinition,
         featureAppId: 'testId',
         onError,
-        renderError,
         children,
         featureAppManager: mockFeatureAppManager,
         logger,
@@ -466,121 +463,6 @@ describe('FeatureAppLoader', () => {
       });
     });
 
-    describe('with a renderError function provided', () => {
-      it('calls the function with the error', () => {
-        const renderError = jest.fn().mockReturnValue(null);
-
-        renderWithFeatureHubContext(
-          <FeatureAppLoader
-            featureAppId="testId"
-            src="example.js"
-            renderError={renderError}
-          />
-        );
-
-        expect(renderError.mock.calls).toEqual([[mockError]]);
-      });
-
-      it('renders what the function returns', () => {
-        const testRenderer = renderWithFeatureHubContext(
-          <FeatureAppLoader
-            featureAppId="testId"
-            src="example.js"
-            renderError={() => 'Custom Error UI'}
-          />
-        );
-
-        expect(testRenderer.toJSON()).toBe('Custom Error UI');
-      });
-
-      describe('when renderError throws an error', () => {
-        let renderErrorMockError: Error;
-
-        beforeEach(() => {
-          renderErrorMockError = new Error('Throwing in renderError.');
-        });
-
-        it('throws the error in render', () => {
-          const handleError = jest.fn();
-
-          const testRenderer = renderWithFeatureHubContext(
-            <FeatureAppLoader
-              featureAppId="testId"
-              src="example.js"
-              renderError={() => {
-                throw renderErrorMockError;
-              }}
-            />,
-            {handleError}
-          );
-
-          expect(handleError.mock.calls).toEqual([[renderErrorMockError]]);
-          expect(testRenderer.toJSON()).toBe('test error boundary');
-          expectConsoleErrorCalls(usingTestErrorBoundaryConsoleErrorCalls);
-        });
-      });
-
-      describe('when onError is also provided', () => {
-        it('calls onError with the error', () => {
-          const onError = jest.fn();
-
-          renderWithFeatureHubContext(
-            <FeatureAppLoader
-              featureAppId="testId"
-              src="example.js"
-              onError={onError}
-              renderError={jest.fn().mockReturnValue(null)}
-            />
-          );
-
-          expect(onError.mock.calls).toEqual([[mockError]]);
-        });
-
-        it('renders what the renderError function returns', () => {
-          const testRenderer = renderWithFeatureHubContext(
-            <FeatureAppLoader
-              featureAppId="testId"
-              src="example.js"
-              onError={jest.fn()}
-              renderError={() => 'Custom Error UI'}
-            />
-          );
-
-          expect(testRenderer.toJSON()).toBe('Custom Error UI');
-        });
-
-        describe('and throws an error', () => {
-          let onErrorMockError: Error;
-
-          beforeEach(() => {
-            onErrorMockError = new Error('Throwing in onError.');
-          });
-
-          it('does not call renderError and throws the error in render', () => {
-            const handleError = jest.fn();
-            const renderError = jest.fn();
-
-            const testRenderer = renderWithFeatureHubContext(
-              <FeatureAppLoader
-                featureAppId="testId"
-                src="example.js"
-                onError={() => {
-                  throw onErrorMockError;
-                }}
-                renderError={renderError}
-              />,
-              {handleError}
-            );
-
-            expect(renderError).not.toHaveBeenCalled();
-            expect(handleError.mock.calls).toEqual([[onErrorMockError]]);
-            expect(testRenderer.toJSON()).toBe('test error boundary');
-            expectConsoleErrorCalls(usingTestErrorBoundaryConsoleErrorCalls);
-          });
-        });
-      });
-    });
-
     describe('with children function provided', () => {
       it('calls children with error and loading=false', () => {
         const children = jest.fn().mockReturnValue(null);
@@ -643,27 +525,6 @@ describe('FeatureAppLoader', () => {
         });
       });
 
-      describe('when (deprecated) renderError is also provided', () => {
-        it('favours children over renderError', () => {
-          const children = jest.fn(() => 'Custom Error UI via children');
-          const renderError = jest.fn(() => 'Custom Error UI via renderError');
-
-          const testRenderer = renderWithFeatureHubContext(
-            <FeatureAppLoader
-              featureAppId="testId"
-              src="example.js"
-              children={children}
-              renderError={renderError}
-            />
-          );
-
-          expect(children).toHaveBeenCalled();
-          expect(renderError).not.toHaveBeenCalled();
-
-          expect(testRenderer.toJSON()).toBe('Custom Error UI via children');
-        });
-      });
-
       describe('when onError is also provided', () => {
         it('calls onError with the error', () => {
           const onError = jest.fn();
@@ -678,19 +539,6 @@ describe('FeatureAppLoader', () => {
           );
 
           expect(onError.mock.calls).toEqual([[mockError]]);
-        });
-
-        it('renders what the renderError function returns', () => {
-          const testRenderer = renderWithFeatureHubContext(
-            <FeatureAppLoader
-              featureAppId="testId"
-              src="example.js"
-              onError={jest.fn()}
-              children={() => 'Custom Error UI'}
-            />
-          );
-
-          expect(testRenderer.toJSON()).toBe('Custom Error UI');
         });
 
         describe('and throws an error', () => {
@@ -1004,73 +852,6 @@ describe('FeatureAppLoader', () => {
 
             expect(testRenderer.toJSON()).toBeNull();
           });
-        });
-      });
-    });
-
-    describe('with a renderError function provided', () => {
-      it('calls the function with the error', async () => {
-        const renderError = jest.fn().mockReturnValue(null);
-
-        renderWithFeatureHubContext(
-          <FeatureAppLoader
-            featureAppId="testId"
-            src="example.js"
-            renderError={renderError}
-          />
-        );
-
-        try {
-          await mockAsyncFeatureAppDefinition.promise;
-        } catch (error) {}
-
-        expect(renderError.mock.calls).toEqual([[mockError]]);
-      });
-
-      it('renders what the function returns', async () => {
-        const testRenderer = renderWithFeatureHubContext(
-          <FeatureAppLoader
-            featureAppId="testId"
-            src="example.js"
-            renderError={() => 'Custom Error UI'}
-          />
-        );
-
-        try {
-          await mockAsyncFeatureAppDefinition.promise;
-        } catch (error) {}
-
-        expect(testRenderer.toJSON()).toBe('Custom Error UI');
-      });
-
-      describe('when renderError throws an error', () => {
-        let renderErrorMockError: Error;
-
-        beforeEach(() => {
-          renderErrorMockError = new Error('Throwing in renderError.');
-        });
-
-        it('throws the error in render', async () => {
-          const handleError = jest.fn();
-
-          const testRenderer = renderWithFeatureHubContext(
-            <FeatureAppLoader
-              featureAppId="testId"
-              src="example.js"
-              renderError={() => {
-                throw renderErrorMockError;
-              }}
-            />,
-            {handleError}
-          );
-
-          try {
-            await mockAsyncFeatureAppDefinition.promise;
-          } catch (error) {}
-
-          expect(handleError.mock.calls).toEqual([[renderErrorMockError]]);
-          expect(testRenderer.toJSON()).toBe('test error boundary');
-          expectConsoleErrorCalls(usingTestErrorBoundaryConsoleErrorCalls);
         });
       });
     });

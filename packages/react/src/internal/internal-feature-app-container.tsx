@@ -86,11 +86,6 @@ export interface BaseFeatureAppContainerProps<
   readonly onError?: (error: unknown) => void;
 
   /**
-   * @deprecated Use the `children` render function instead to render an error.
-   */
-  readonly renderError?: (error: unknown) => React.ReactNode;
-
-  /**
    * A children function can be provided to customize rendering of the
    * Feature App and provide Error or Loading UIs.
    */
@@ -291,18 +286,9 @@ export class InternalFeatureAppContainer<
   }
 
   private renderError(error: unknown): React.ReactNode {
-    // tslint:disable-next-line: deprecation
-    const {children, renderError} = this.props;
+    const {children} = this.props;
 
-    if (children) {
-      return children({error, loading: false});
-    }
-
-    if (renderError) {
-      return renderError(error);
-    }
-
-    return null;
+    return children ? children({error, loading: false}) : null;
   }
 
   private handleError(error: unknown): void {
