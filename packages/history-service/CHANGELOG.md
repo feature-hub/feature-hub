@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/sinnerschrader/feature-hub/compare/v2.13.1...v3.0.0) (2022-09-20)
+
+
+### Features
+
+* **history-service:** introduce v3 of the history service ([#716](https://github.com/sinnerschrader/feature-hub/issues/716)) ([7c7c386](https://github.com/sinnerschrader/feature-hub/commit/7c7c3867be3e9b0418b7976eeea6c8544d1f9e1c))
+
+
+### BREAKING CHANGES
+
+* **history-service:** Version 5 of the `history` package is now required as
+peer dependency. Some types of the root location transformer have been
+slightly changed, and the deprecated `primaryConsumerId` has been
+removed (replaced by `primaryConsumerHistoryKey`).
+
+
+
+
+
 # [2.13.0](https://github.com/sinnerschrader/feature-hub/compare/v2.12.0...v2.13.0) (2022-04-04)
 
 **Note:** Version bump only for package @feature-hub/history-service

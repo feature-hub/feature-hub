@@ -3,6 +3,32 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/sinnerschrader/feature-hub/compare/v2.13.1...v3.0.0) (2022-09-20)
+
+
+### Bug Fixes
+
+* **all:** declare errors as unknown ([d240934](https://github.com/sinnerschrader/feature-hub/commit/d240934454fb694d7c18a512f7f528507e44cdd7))
+* **react:** remove deprecated `renderError` prop ([#719](https://github.com/sinnerschrader/feature-hub/issues/719)) ([0563eeb](https://github.com/sinnerschrader/feature-hub/commit/0563eeb49d0309a2872c52d6cca66fa9f34b1397))
+
+
+### Features
+
+* **history-service:** introduce v3 of the history service ([#716](https://github.com/sinnerschrader/feature-hub/issues/716)) ([7c7c386](https://github.com/sinnerschrader/feature-hub/commit/7c7c3867be3e9b0418b7976eeea6c8544d1f9e1c))
+
+
+### BREAKING CHANGES
+
+* **react:** Removed `renderError` prop. Use the `children` prop instead.
+* **history-service:** Version 5 of the `history` package is now required as
+peer dependency. Some types of the root location transformer have been
+slightly changed, and the deprecated `primaryConsumerId` has been
+removed (replaced by `primaryConsumerHistoryKey`).
+
+
+
+
+
 ## [2.13.1](https://github.com/sinnerschrader/feature-hub/compare/v2.13.0...v2.13.1) (2022-06-20)
 
 

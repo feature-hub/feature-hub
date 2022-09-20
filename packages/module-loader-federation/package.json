@@ -1,6 +1,6 @@
 {
   "name": "@feature-hub/module-loader-federation",
-  "version": "2.9.0",
+  "version": "3.0.0",
   "description": "A FeatureAppManager-compatible Webpack Module Federation loader.",
   "homepage": "https://feature-hub.io/",
   "bugs": {

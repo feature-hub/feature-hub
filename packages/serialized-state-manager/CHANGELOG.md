@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/sinnerschrader/feature-hub/compare/v2.13.1...v3.0.0) (2022-09-20)
+
+**Note:** Version bump only for package @feature-hub/serialized-state-manager
+
+
+
+
+
 # [2.13.0](https://github.com/sinnerschrader/feature-hub/compare/v2.12.0...v2.13.0) (2022-04-04)
 
 **Note:** Version bump only for package @feature-hub/serialized-state-manager
