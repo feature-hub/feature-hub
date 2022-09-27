@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.1](https://github.com/sinnerschrader/feature-hub/compare/v3.0.0...v3.0.1) (2022-09-27)
+
+
+### Bug Fixes
+
+* **demos:** remove declaration of external dependencies ([0f16746](https://github.com/sinnerschrader/feature-hub/commit/0f1674614b5df88964e5f4f6bd756a4c55912f08))
+* **history-service:** do not ignore consumer history changes on root location push ([#720](https://github.com/sinnerschrader/feature-hub/issues/720)) ([e14568c](https://github.com/sinnerschrader/feature-hub/commit/e14568cf64e9a9cd9f2f07bae8d972c0c15d8ded))
+
+
+
+
+
 # [3.0.0](https://github.com/sinnerschrader/feature-hub/compare/v2.13.1...v3.0.0) (2022-09-20)
 
 
