@@ -108,7 +108,7 @@ export class HistoryMultiplexer {
 
     const {state, key} = this.rootLocation.state?.[historyKey] || {
       state: undefined,
-      key: 'default',
+      key: createKey(),
     };
 
     return {

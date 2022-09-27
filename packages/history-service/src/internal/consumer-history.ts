@@ -18,6 +18,7 @@ export abstract class ConsumerHistory implements history.History {
       search,
       hash,
       state,
+      key,
     } = historyMultiplexer.getConsumerLocation(historyKey);
 
     this.location = {
@@ -25,7 +26,7 @@ export abstract class ConsumerHistory implements history.History {
       search,
       hash,
       state,
-      key: 'default',
+      key,
     };
 
     /**

@@ -1,3 +1,4 @@
+import equal from 'fast-deep-equal';
 import * as history from 'history';
 import {ConsumerHistory} from './consumer-history';
 import {HistoryMultiplexer} from './history-multiplexer';
@@ -64,7 +65,7 @@ export class BrowserConsumerHistory extends ConsumerHistory {
       this.historyKey
     );
 
-    if (this.location.key === location.key) {
+    if (this.matches(location)) {
       return;
     }
 
@@ -72,5 +73,13 @@ export class BrowserConsumerHistory extends ConsumerHistory {
     this.action = action;
 
     this.notifyListeners();
+  }
+
+  private matches(location: history.Location): boolean {
+    if (history.createPath(location) !== history.createPath(this.location)) {
+      return false;
+    }
+
+    return equal(location.state, this.location.state);
   }
 }
