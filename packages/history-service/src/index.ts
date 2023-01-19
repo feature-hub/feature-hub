@@ -12,7 +12,10 @@ import * as historyV4 from './history-v4';
 import {createHistoryMultiplexers} from './internal/create-history-multiplexers';
 import {createHistoryServiceV1Binder} from './internal/create-history-service-v1-binder';
 import {createHistoryServiceV2Binder} from './internal/create-history-service-v2-binder';
-import {createHistoryServiceV3Binder} from './internal/create-history-service-v3-binder';
+import {
+  GetHistoryKeyOptions,
+  createHistoryServiceV3Binder,
+} from './internal/create-history-service-v3-binder';
 import {createHistoryServiceContext} from './internal/history-service-context';
 
 export * from './create-root-location-transformer';
@@ -134,6 +137,7 @@ export interface HistoryServiceDependencies extends FeatureServices {
 
 export interface HistoryServiceDefinitionOptions {
   readonly mode?: 'browser' | 'static';
+  readonly getHistoryKey?: (options: GetHistoryKeyOptions) => string;
 }
 
 export function defineHistoryService(
@@ -143,7 +147,10 @@ export function defineHistoryService(
   SharedHistoryService,
   HistoryServiceDependencies
 > {
-  const {mode = 'browser'} = options;
+  const {
+    mode = 'browser',
+    getHistoryKey = ({consumerId}) => consumerId,
+  } = options;
 
   return {
     id: 's2:history',
@@ -172,11 +179,10 @@ export function defineHistoryService(
           mode
         ),
 
-        '3.0.0': createHistoryServiceV3Binder(
-          context,
-          historyMultiplexers,
-          mode
-        ),
+        '3.0.0': createHistoryServiceV3Binder(context, historyMultiplexers, {
+          mode,
+          getHistoryKey,
+        }),
       };
     },
   };
