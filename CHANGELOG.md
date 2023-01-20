@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.1.0](https://github.com/sinnerschrader/feature-hub/compare/v3.0.1...v3.1.0) (2023-01-20)
+
+
+### Features
+
+* **history-service:** allow history key to be customized by integrator ([487104f](https://github.com/sinnerschrader/feature-hub/commit/487104f6aa07fe166faa4fe060b5b63a5debdda5))
+
+
+
+
+
 ## [3.0.1](https://github.com/sinnerschrader/feature-hub/compare/v3.0.0...v3.0.1) (2022-09-27)
 
 

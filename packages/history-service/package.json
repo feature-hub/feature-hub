@@ -1,6 +1,6 @@
 {
   "name": "@feature-hub/history-service",
-  "version": "3.0.1",
+  "version": "3.1.0",
   "description": "A history facade guaranteeing safe access for multiple consumers.",
   "homepage": "https://feature-hub.io/",
   "bugs": {
