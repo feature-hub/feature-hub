@@ -7,11 +7,28 @@ import {createHistoryV4Adapter} from './create-history-v4-adapter';
 import {HistoryServiceContext} from './history-service-context';
 import {StaticConsumerHistory} from './static-consumer-history';
 
+export interface CreateHistoryServiceV1BinderOptions {
+  readonly getHistoryKey: (options: GetHistoryKeyOptions) => string;
+}
+
+export interface GetHistoryKeyOptions {
+  readonly consumerId: string;
+  readonly consumerName?: string;
+}
+
 export function createHistoryServiceV1Binder(
   context: HistoryServiceContext,
-  historyMultiplexers: HistoryMultiplexers
+  historyMultiplexers: HistoryMultiplexers,
+  options: CreateHistoryServiceV1BinderOptions
 ): FeatureServiceBinder<HistoryServiceV1> {
-  return (consumerId: string): FeatureServiceBinding<HistoryServiceV1> => {
+  const {getHistoryKey} = options;
+
+  return (
+    consumerId,
+    consumerName
+  ): FeatureServiceBinding<HistoryServiceV1> => {
+    const historyKey = getHistoryKey({consumerId, consumerName});
+
     let browserConsumerHistoryDestroy: () => void = () => undefined;
     let browserConsumerHistory: historyV4.History | undefined;
     let staticConsumerHistory: historyV4.History | undefined;
@@ -27,7 +44,7 @@ export function createHistoryServiceV1Binder(
         } else {
           const browserConsumerHistoryV5 = new BrowserConsumerHistory(
             context,
-            consumerId,
+            historyKey,
             historyMultiplexers.browserHistoryMultiplexer
           );
 
@@ -55,7 +72,7 @@ export function createHistoryServiceV1Binder(
             context,
             new StaticConsumerHistory(
               context,
-              consumerId,
+              historyKey,
               historyMultiplexers.staticHistoryMultiplexer
             )
           );

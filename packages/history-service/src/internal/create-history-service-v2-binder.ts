@@ -8,6 +8,16 @@ import {HistoryMultiplexer} from './history-multiplexer';
 import {HistoryServiceContext} from './history-service-context';
 import {StaticConsumerHistory} from './static-consumer-history';
 
+export interface CreateHistoryServiceV2BinderOptions {
+  readonly mode: 'browser' | 'static';
+  readonly getHistoryKey: (options: GetHistoryKeyOptions) => string;
+}
+
+export interface GetHistoryKeyOptions {
+  readonly consumerId: string;
+  readonly consumerName?: string;
+}
+
 function createHistoryServiceV2(
   context: HistoryServiceContext,
   historyKey: string,
@@ -38,18 +48,18 @@ function createHistoryServiceV2(
 function createBrowserHistoryServiceV2Binding(
   context: HistoryServiceContext,
   historyMultiplexers: HistoryMultiplexers,
-  consumerId: string
+  historyKey: string
 ): FeatureServiceBinding<HistoryServiceV2> {
   const consumerHistory = new BrowserConsumerHistory(
     context,
-    consumerId,
+    historyKey,
     historyMultiplexers.browserHistoryMultiplexer
   );
 
   return {
     featureService: createHistoryServiceV2(
       context,
-      consumerId,
+      historyKey,
       consumerHistory,
       historyMultiplexers.browserHistoryMultiplexer
     ),
@@ -63,18 +73,18 @@ function createBrowserHistoryServiceV2Binding(
 function createStaticHistoryServiceV2Binding(
   context: HistoryServiceContext,
   historyMultiplexers: HistoryMultiplexers,
-  consumerId: string
+  historyKey: string
 ): FeatureServiceBinding<HistoryServiceV2> {
   const consumerHistory = new StaticConsumerHistory(
     context,
-    consumerId,
+    historyKey,
     historyMultiplexers.staticHistoryMultiplexer
   );
 
   return {
     featureService: createHistoryServiceV2(
       context,
-      consumerId,
+      historyKey,
       consumerHistory,
       historyMultiplexers.staticHistoryMultiplexer
     ),
@@ -84,18 +94,26 @@ function createStaticHistoryServiceV2Binding(
 export function createHistoryServiceV2Binder(
   context: HistoryServiceContext,
   historyMultiplexers: HistoryMultiplexers,
-  mode: 'browser' | 'static'
+  options: CreateHistoryServiceV2BinderOptions
 ): FeatureServiceBinder<HistoryServiceV2> {
-  return (consumerId: string): FeatureServiceBinding<HistoryServiceV2> =>
-    mode === 'browser'
+  const {mode, getHistoryKey} = options;
+
+  return (
+    consumerId,
+    consumerName
+  ): FeatureServiceBinding<HistoryServiceV2> => {
+    const historyKey = getHistoryKey({consumerId, consumerName});
+
+    return mode === 'browser'
       ? createBrowserHistoryServiceV2Binding(
           context,
           historyMultiplexers,
-          consumerId
+          historyKey
         )
       : createStaticHistoryServiceV2Binding(
           context,
           historyMultiplexers,
-          consumerId
+          historyKey
         );
+  };
 }

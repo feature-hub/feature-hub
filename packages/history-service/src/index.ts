@@ -171,13 +171,14 @@ export function defineHistoryService(
       );
 
       return {
-        '1.0.0': createHistoryServiceV1Binder(context, historyMultiplexers),
+        '1.0.0': createHistoryServiceV1Binder(context, historyMultiplexers, {
+          getHistoryKey,
+        }),
 
-        '2.0.0': createHistoryServiceV2Binder(
-          context,
-          historyMultiplexers,
-          mode
-        ),
+        '2.0.0': createHistoryServiceV2Binder(context, historyMultiplexers, {
+          mode,
+          getHistoryKey,
+        }),
 
         '3.0.0': createHistoryServiceV3Binder(context, historyMultiplexers, {
           mode,
