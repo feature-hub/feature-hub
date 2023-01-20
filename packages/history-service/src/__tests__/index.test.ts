@@ -1682,10 +1682,10 @@ describe('defineHistoryService', () => {
 
     describe('#historyKey', () => {
       it('uses the consumer ID as history key', () => {
-        const consumerId = 'test1';
+        const consumerId = 'test-consumer-id';
         const historyServiceBinder = createHistoryServiceBinder();
-        const historyBinding1 = historyServiceBinder(consumerId);
-        const {historyKey} = historyBinding1.featureService;
+        const historyBinding = historyServiceBinder(consumerId);
+        const {historyKey} = historyBinding.featureService;
 
         expect(historyKey).toBe(consumerId);
       });
@@ -1700,12 +1700,8 @@ describe('defineHistoryService', () => {
             getHistoryKeyMock
           );
 
-          const historyBinding1 = historyServiceBinder(
-            consumerId,
-            consumerName
-          );
-
-          const {historyKey} = historyBinding1.featureService;
+          const historyBinding = historyServiceBinder(consumerId, consumerName);
+          const {historyKey} = historyBinding.featureService;
 
           expect(historyKey).toBe('test-history-key');
 
