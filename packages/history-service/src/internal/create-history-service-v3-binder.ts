@@ -7,6 +7,16 @@ import {HistoryMultiplexer} from './history-multiplexer';
 import {HistoryServiceContext} from './history-service-context';
 import {StaticConsumerHistory} from './static-consumer-history';
 
+export interface CreateHistoryServiceV3BinderOptions {
+  readonly mode: 'browser' | 'static';
+  readonly getHistoryKey: (options: GetHistoryKeyOptions) => string;
+}
+
+export interface GetHistoryKeyOptions {
+  readonly consumerId: string;
+  readonly consumerName?: string;
+}
+
 function createHistoryServiceV3(
   historyKey: string,
   consumerHistory: history.History,
@@ -27,17 +37,17 @@ function createHistoryServiceV3(
 function createBrowserHistoryServiceV3Binding(
   context: HistoryServiceContext,
   historyMultiplexers: HistoryMultiplexers,
-  consumerId: string
+  historyKey: string
 ): FeatureServiceBinding<HistoryServiceV3> {
   const consumerHistory = new BrowserConsumerHistory(
     context,
-    consumerId,
+    historyKey,
     historyMultiplexers.browserHistoryMultiplexer
   );
 
   return {
     featureService: createHistoryServiceV3(
-      consumerId,
+      historyKey,
       consumerHistory,
       historyMultiplexers.browserHistoryMultiplexer
     ),
@@ -71,18 +81,26 @@ function createStaticHistoryServiceV3Binding(
 export function createHistoryServiceV3Binder(
   context: HistoryServiceContext,
   historyMultiplexers: HistoryMultiplexers,
-  mode: 'browser' | 'static'
+  options: CreateHistoryServiceV3BinderOptions
 ): FeatureServiceBinder<HistoryServiceV3> {
-  return (consumerId: string): FeatureServiceBinding<HistoryServiceV3> =>
-    mode === 'browser'
+  const {mode, getHistoryKey} = options;
+
+  return (
+    consumerId,
+    consumerName
+  ): FeatureServiceBinding<HistoryServiceV3> => {
+    const historyKey = getHistoryKey({consumerId, consumerName});
+
+    return mode === 'browser'
       ? createBrowserHistoryServiceV3Binding(
           context,
           historyMultiplexers,
-          consumerId
+          historyKey
         )
       : createStaticHistoryServiceV3Binding(
           context,
           historyMultiplexers,
-          consumerId
+          historyKey
         );
+  };
 }

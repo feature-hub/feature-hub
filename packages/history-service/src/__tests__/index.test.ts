@@ -20,6 +20,7 @@ import {
   defineHistoryService,
 } from '..';
 import * as historyV4 from '../history-v4';
+import {GetHistoryKeyOptions} from '../internal/create-history-service-v3-binder';
 import {ConsumerState} from '../internal/history-multiplexer';
 import {Writable} from '../internal/writable';
 import {
@@ -1661,7 +1662,7 @@ describe('defineHistoryService', () => {
     >>;
 
     let createHistoryServiceBinder: (
-      mode?: 'browser' | 'static'
+      getHistoryKey?: (options: GetHistoryKeyOptions) => string
     ) => FeatureServiceBinder<HistoryServiceV3>;
 
     beforeEach(() => {
@@ -1669,9 +1670,10 @@ describe('defineHistoryService', () => {
         featureServices: {'s2:logger': stubbedLogger},
       };
 
-      createHistoryServiceBinder = () => {
+      createHistoryServiceBinder = (getHistoryKey) => {
         const sharedHistoryService = defineHistoryService(
-          createRootLocationTransformer({consumerPathsQueryParamName})
+          createRootLocationTransformer({consumerPathsQueryParamName}),
+          {getHistoryKey}
         ).create(mockEnv);
 
         return sharedHistoryService!['3.0.0'];
@@ -1680,12 +1682,34 @@ describe('defineHistoryService', () => {
 
     describe('#historyKey', () => {
       it('uses the consumer ID as history key', () => {
-        const consumerId = 'test1';
+        const consumerId = 'test-consumer-id';
         const historyServiceBinder = createHistoryServiceBinder();
-        const historyBinding1 = historyServiceBinder(consumerId);
-        const {historyKey} = historyBinding1.featureService;
+        const historyBinding = historyServiceBinder(consumerId);
+        const {historyKey} = historyBinding.featureService;
 
         expect(historyKey).toBe(consumerId);
+      });
+
+      describe('with a custom `getHistoryKey` function', () => {
+        it('uses the result of `getHistoryKey`', () => {
+          const consumerId = 'test-consumer-id';
+          const consumerName = 'test-consumer-name';
+          const getHistoryKeyMock = jest.fn(() => 'test-history-key');
+
+          const historyServiceBinder = createHistoryServiceBinder(
+            getHistoryKeyMock
+          );
+
+          const historyBinding = historyServiceBinder(consumerId, consumerName);
+          const {historyKey} = historyBinding.featureService;
+
+          expect(historyKey).toBe('test-history-key');
+
+          expect(getHistoryKeyMock).toHaveBeenCalledWith({
+            consumerId,
+            consumerName,
+          });
+        });
       });
     });
 
