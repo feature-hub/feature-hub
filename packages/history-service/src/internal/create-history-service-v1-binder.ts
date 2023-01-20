@@ -3,17 +3,13 @@ import {HistoryServiceV1} from '..';
 import * as historyV4 from '../history-v4';
 import {BrowserConsumerHistory} from './browser-consumer-history';
 import {HistoryMultiplexers} from './create-history-multiplexers';
+import {GetHistoryKeyOptions} from './create-history-service-v3-binder';
 import {createHistoryV4Adapter} from './create-history-v4-adapter';
 import {HistoryServiceContext} from './history-service-context';
 import {StaticConsumerHistory} from './static-consumer-history';
 
 export interface CreateHistoryServiceV1BinderOptions {
   readonly getHistoryKey: (options: GetHistoryKeyOptions) => string;
-}
-
-export interface GetHistoryKeyOptions {
-  readonly consumerId: string;
-  readonly consumerName?: string;
 }
 
 export function createHistoryServiceV1Binder(
