@@ -1,6 +1,6 @@
 {
   "name": "@feature-hub/demos",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "private": true,
   "license": "MIT",
   "scripts": {
@@ -14,7 +14,7 @@
     "@feature-hub/async-ssr-manager": "^3.0.0",
     "@feature-hub/core": "^3.0.0",
     "@feature-hub/dom": "^3.0.0",
-    "@feature-hub/history-service": "^3.1.0",
+    "@feature-hub/history-service": "^3.2.0",
     "@feature-hub/logger": "^3.0.0",
     "@feature-hub/module-loader-amd": "^3.0.0",
     "@feature-hub/module-loader-commonjs": "^3.0.0",

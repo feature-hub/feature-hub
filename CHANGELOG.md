@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.2.0](https://github.com/sinnerschrader/feature-hub/compare/v3.1.0...v3.2.0) (2023-01-20)
+
+
+### Bug Fixes
+
+* **history-service:** only declare `GetHistoryKeyOptions` once ([4b97a73](https://github.com/sinnerschrader/feature-hub/commit/4b97a738dd23bb264a1632462f4545004d862d23))
+
+
+### Features
+
+* **history-service:** add support for `getHistoryKey` option to v1 and v2 ([d43ba57](https://github.com/sinnerschrader/feature-hub/commit/d43ba5712274822c5d23dce907701185414cc534))
+
+
+
+
+
 # [3.1.0](https://github.com/sinnerschrader/feature-hub/compare/v3.0.1...v3.1.0) (2023-01-20)
 
 
