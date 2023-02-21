@@ -10,12 +10,18 @@ import {
 } from './internal/toposort-dependencies';
 import {Logger} from './logger';
 
+export interface FeatureServiceDependency {
+  version: string;
+  suffix: string;
+}
+export type MultipleVersions = FeatureServiceDependency[];
+
 /**
  * A map of Feature Services with their ID as key and a semver-compatible
  * version string as value.
  */
 export interface FeatureServiceConsumerDependencies {
-  readonly [providerId: string]: string | undefined;
+  readonly [providerId: string]: string | undefined | MultipleVersions;
 }
 
 export interface FeatureServiceConsumerDefinition {
@@ -259,25 +265,46 @@ export class FeatureServiceRegistry {
 
       const versionRange = allDependencies[providerId];
 
-      const binding = this.bindFeatureService(
-        providerId,
-        consumerId,
-        consumerName,
-        versionRange,
-        {optional}
-      );
+      if (Array.isArray(versionRange)) {
+        versionRange.forEach((range) => {
+          const binding = this.bindFeatureService(
+            providerId,
+            consumerId,
+            consumerName,
+            range.version,
+            {optional}
+          );
+          if (!binding) {
+            return;
+          }
 
-      if (!binding) {
-        continue;
+          this.logger.info(
+            Messages.featureServiceSuccessfullyBound(providerId, consumerId)
+          );
+
+          bindings.set(providerId + range.suffix, binding);
+
+          featureServices[providerId + range.suffix] = binding.featureService;
+        });
+      } else {
+        const binding = this.bindFeatureService(
+          providerId,
+          consumerId,
+          consumerName,
+          versionRange,
+          {optional}
+        );
+        if (!binding) {
+          continue;
+        }
+        this.logger.info(
+          Messages.featureServiceSuccessfullyBound(providerId, consumerId)
+        );
+
+        bindings.set(providerId, binding);
+
+        featureServices[providerId] = binding.featureService;
       }
-
-      this.logger.info(
-        Messages.featureServiceSuccessfullyBound(providerId, consumerId)
-      );
-
-      bindings.set(providerId, binding);
-
-      featureServices[providerId] = binding.featureService;
     }
 
     this.consumerIds.add(consumerId);

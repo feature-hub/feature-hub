@@ -522,6 +522,48 @@ describe('FeatureServiceRegistry', () => {
       });
     });
 
+    describe('for a Feature Service consumer with multiple versions', () => {
+      it('creates a bindings object with Feature Services', () => {
+        featureServiceRegistry = new FeatureServiceRegistry({logger});
+
+        const featureServiceA1 = {kind: 'featureServiceA1'};
+        const bindingA1 = {featureService: featureServiceA1};
+        const binderA1 = jest.fn(() => bindingA1);
+
+        const providerDefinitionA1 = {
+          id: 'a',
+          create: jest.fn(() => ({'2.0.0': binderA1, '1.1.0': binderA})),
+        };
+
+        featureServiceRegistry.registerFeatureServices(
+          [providerDefinitionA1],
+          'test'
+        );
+
+        expect(binderA.mock.calls).toEqual([]);
+
+        const env = featureServiceRegistry.bindFeatureServices(
+          {
+            dependencies: {
+              featureServices: {
+                a: [
+                  {version: '^2.0.0', suffix: '-v2'},
+                  {version: '^1.0.0', suffix: ''},
+                ],
+              },
+            },
+          },
+          'foo'
+        );
+        expect(env).toEqual({
+          featureServices: {a: featureServiceA, 'a-v2': featureServiceA1},
+          unbind: expect.any(Function),
+        });
+
+        expect(binderA.mock.calls).toEqual([['foo', undefined]]);
+      });
+    });
+
     describe('for a Feature Service consumer with tilde range dependencies', () => {
       it('creates a bindings object with Feature Services', () => {
         featureServiceRegistry = new FeatureServiceRegistry({logger});
