@@ -1,12 +1,13 @@
 // @ts-check
 
-const globby = require('globby');
-const path = require('path');
+import globby from 'globby';
+import path from 'path';
+import url from 'url';
 
 const basename = 'packages/website/build/feature-hub';
 const indexFilenames = new Set();
-const binaryDirnames = new Set();
-const nonBinaryDirnames = new Set();
+const dirnames = new Set();
+const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
 
 const filenames = globby
   .sync(path.join(__dirname, 'packages/website/build/feature-hub/**/*'))
@@ -15,10 +16,8 @@ const filenames = globby
 for (const filename of filenames) {
   if (path.basename(filename) === 'index.html') {
     indexFilenames.add(filename);
-  } else if (path.extname(filename) === '.png') {
-    binaryDirnames.add(path.dirname(filename));
   } else {
-    nonBinaryDirnames.add(path.dirname(filename));
+    dirnames.add(path.dirname(filename));
   }
 }
 
@@ -34,51 +33,41 @@ const responseHeaders = {
     "default-src 'self' 'unsafe-eval' 'unsafe-inline' unpkg.com cdnjs.cloudflare.com cdn.jsdelivr.net; script-src 'self' 'unsafe-inline' 'unsafe-eval' unpkg.com cdnjs.cloudflare.com cdn.jsdelivr.net; img-src 'self' img.shields.io data:; connect-src 'self' *.algolia.net; upgrade-insecure-requests; block-all-mixed-content;",
 };
 
-/** @type {Record<string, import('aws-simple').Route>} */
-const routes = {};
+/** @type {import('aws-simple').Route[]} */
+const routes = [];
 
 for (const filename of indexFilenames) {
-  routes['/' + path.relative(basename, path.dirname(filename))] = {
-    kind: 'file',
-    filename,
+  routes.push({
+    type: 'file',
+    path: filename,
+    publicPath: '/' + path.relative(basename, path.dirname(filename)),
     responseHeaders,
-  };
+  });
 }
 
-for (const dirname of binaryDirnames) {
-  routes['/' + path.relative(basename, dirname) + '/'] = {
-    kind: 'folder',
-    dirname,
-    responseHeaders,
-    binaryMediaTypes: ['image/png'],
-  };
-}
-
-for (const dirname of nonBinaryDirnames) {
+for (const dirname of dirnames) {
   if (dirname === basename) {
     continue;
   }
 
-  routes['/' + path.relative(basename, dirname) + '/'] = {
-    kind: 'folder',
-    dirname,
+  routes.push({
+    type: 'folder',
+    path: dirname,
+    publicPath: '/' + path.relative(basename, dirname) + '/*',
     responseHeaders,
-  };
+  });
 }
 
 const aliasRecordName = process.env.AWS_ALIAS_RECORD_NAME || undefined;
 
 /**
- * @type {import('aws-simple').App}
+ * @type {import('aws-simple').ConfigFileDefaultExport}
  */
-exports.default = {
-  appName: 'featurehub',
-  appVersion: aliasRecordName,
-  customDomain: {
-    certificateArn: process.env.AWS_CERTIFICATE_ARN,
-    hostedZoneId: process.env.AWS_HOSTED_ZONE_ID,
-    hostedZoneName: process.env.AWS_HOSTED_ZONE_NAME,
-    aliasRecordName,
-  },
-  routes: () => routes,
-};
+export default () => ({
+  hostedZoneName: process.env.AWS_HOSTED_ZONE_NAME,
+  aliasRecordName,
+  cachingEnabled: true,
+  monitoring: {accessLoggingEnabled: true},
+  terminationProtectionEnabled: !aliasRecordName,
+  routes,
+});
