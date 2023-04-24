@@ -1,4 +1,8 @@
-import {ExternalsValidator, ProvidedExternals} from './externals-validator';
+import {
+  DefaultExternalsValidator,
+  ExternalsValidator,
+  ProvidedExternals,
+} from './externals-validator';
 import {
   FeatureAppManager,
   ModuleLoader,
@@ -33,6 +37,9 @@ export interface FeatureHub {
 }
 
 export interface FeatureHubOptions {
+  createExternalsValidator?: (
+    providedExternals: ProvidedExternals
+  ) => ExternalsValidator;
   /**
    * Provided Feature Services. Sorting the provided definitions is not
    * necessary, since the registry takes care of registering the given
@@ -101,7 +108,9 @@ export function createFeatureHub(
   let externalsValidator: ExternalsValidator | undefined;
 
   if (providedExternals) {
-    externalsValidator = new ExternalsValidator(providedExternals);
+    externalsValidator = options.createExternalsValidator
+      ? options.createExternalsValidator(providedExternals)
+      : new DefaultExternalsValidator(providedExternals);
   }
 
   const featureServiceRegistry = new FeatureServiceRegistry({

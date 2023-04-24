@@ -20,7 +20,11 @@ export interface RequiredExternals {
  * The `ExternalsValidator` validates required externals against the provided
  * set of externals it is initilized with.
  */
-export class ExternalsValidator {
+export interface ExternalsValidator {
+  validate(requiredExternals: RequiredExternals): void;
+}
+
+export class DefaultExternalsValidator implements ExternalsValidator {
   /**
    * @throws Throws an error if the provided externals contain an invalid
    * version.
