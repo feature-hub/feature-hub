@@ -1,7 +1,11 @@
 // tslint:disable:no-implicit-dependencies
 
 import {FeatureHubOptions, createFeatureHub} from '../create-feature-hub';
-import {FeatureAppDefinition, FeatureAppManager} from '../feature-app-manager';
+import {
+  FeatureAppDefinition,
+  FeatureAppDescriptor,
+  FeatureAppManager,
+} from '../feature-app-manager';
 import {
   FeatureServiceProviderDefinition,
   FeatureServiceRegistry,
@@ -143,10 +147,15 @@ describe('createFeatureHub()', () => {
           onBind: mockOnBind,
         });
 
+        const parentFeatureApp: FeatureAppDescriptor = {
+          featureAppId: 'parentTestId',
+          featureAppName: 'parentTestName',
+        };
+
         featureAppManager.createFeatureAppScope(
           featureAppId,
           mockFeatureAppDefinition,
-          {featureAppName}
+          {featureAppName, parentFeatureApp}
         );
 
         expect(mockOnBind.mock.calls).toEqual([
@@ -155,6 +164,7 @@ describe('createFeatureHub()', () => {
               featureAppDefinition: mockFeatureAppDefinition,
               featureAppId,
               featureAppName,
+              parentFeatureApp,
             },
           ],
         ]);

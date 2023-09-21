@@ -2,6 +2,7 @@
 
 import {
   FeatureAppDefinition,
+  FeatureAppDescriptor,
   FeatureAppManager,
   FeatureServiceRegistry,
   FeatureServicesBinding,
@@ -333,10 +334,15 @@ describe('FeatureAppManager', () => {
           onBind: mockOnBind,
         });
 
+        const parentFeatureApp: FeatureAppDescriptor = {
+          featureAppId: 'parentTestId',
+          featureAppName: 'parentTestName',
+        };
+
         featureAppManager.createFeatureAppScope(
           featureAppId,
           mockFeatureAppDefinition,
-          {featureAppName}
+          {featureAppName, parentFeatureApp}
         );
 
         expect(mockOnBind.mock.calls).toEqual([
@@ -345,6 +351,7 @@ describe('FeatureAppManager', () => {
               featureAppDefinition: mockFeatureAppDefinition,
               featureAppId,
               featureAppName,
+              parentFeatureApp,
             },
           ],
         ]);

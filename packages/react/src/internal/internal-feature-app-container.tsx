@@ -10,6 +10,7 @@ import {
   FeatureApp,
 } from '../feature-app-container';
 import {FeatureHubContextConsumerValue} from '../feature-hub-context';
+import {FeatureAppContext} from './feature-app-context';
 import {isDomFeatureApp, isFeatureApp, isReactFeatureApp} from './type-guards';
 
 export const handleError = (
@@ -24,11 +25,7 @@ export const handleError = (
   }
 };
 
-export interface BaseFeatureAppContainerProps<
-  TFeatureApp,
-  TFeatureServices extends FeatureServices = FeatureServices,
-  TConfig = unknown
-> {
+export interface FeatureAppDescriptor {
   /**
    * The Feature App ID is used to identify the Feature App instance. Multiple
    * Feature App Loaders with the same `featureAppId` will render the same
@@ -44,7 +41,13 @@ export interface BaseFeatureAppContainerProps<
    * purposes, logging, looking up Feature App configuration meta data, etc.
    */
   readonly featureAppName?: string;
+}
 
+export interface BaseFeatureAppContainerProps<
+  TFeatureApp,
+  TFeatureServices extends FeatureServices = FeatureServices,
+  TConfig = unknown
+> extends FeatureAppDescriptor {
   /**
    * The absolute or relative base URL of the Feature App's assets and/or BFF.
    */
@@ -99,7 +102,9 @@ export type InternalFeatureAppContainerProps<
   TFeatureServices extends FeatureServices,
   TConfig
 > = BaseFeatureAppContainerProps<TFeatureApp, TFeatureServices, TConfig> &
-  Pick<FeatureHubContextConsumerValue, 'featureAppManager' | 'logger'>;
+  Pick<FeatureHubContextConsumerValue, 'featureAppManager' | 'logger'> & {
+    readonly parentFeatureApp?: FeatureAppDescriptor;
+  };
 
 interface InternalFeatureAppContainerState<TFeatureApp extends FeatureApp> {
   readonly error?: unknown;
@@ -135,6 +140,7 @@ export class InternalFeatureAppContainer<
       done,
       logger,
       onError,
+      parentFeatureApp,
     } = props;
 
     if (featureAppDefinition && !state.featureApp && !state.error) {
@@ -142,7 +148,14 @@ export class InternalFeatureAppContainer<
         const featureAppScope = featureAppManager.createFeatureAppScope(
           featureAppId,
           featureAppDefinition,
-          {featureAppName, baseUrl, config, beforeCreate, done}
+          {
+            featureAppName,
+            baseUrl,
+            config,
+            beforeCreate,
+            done,
+            parentFeatureApp,
+          }
         );
 
         const {featureApp, release} = featureAppScope;
@@ -220,8 +233,10 @@ export class InternalFeatureAppContainer<
       return this.renderError(this.state.error);
     }
 
+    const {children, featureAppId, featureAppName} = this.props;
+
     if (!this.state.featureApp) {
-      return this.props.children ? this.props.children({loading: true}) : null;
+      return children ? children({loading: true}) : null;
     }
 
     const {featureApp, loading} = this.state;
@@ -240,9 +255,11 @@ export class InternalFeatureAppContainer<
       featureAppNode = <div ref={this.containerRef} />;
     }
 
-    return this.props.children
-      ? this.props.children({featureAppNode, loading})
-      : featureAppNode;
+    return (
+      <FeatureAppContext.Provider value={{featureAppId, featureAppName}}>
+        {children ? children({featureAppNode, loading}) : featureAppNode}
+      </FeatureAppContext.Provider>
+    );
   }
 
   private handleLoading(): void {

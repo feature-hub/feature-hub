@@ -71,7 +71,7 @@ export interface FeatureHubOptions {
   /**
    * A function that is called for every Feature App when its dependent Feature
    * Services are bound. This allows the integrator to collect information about
-   * Feature Service usage.
+   * Feature Service and Feature App usage.
    */
   readonly onBind?: (params: OnBindParams) => void;
 }
