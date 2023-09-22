@@ -1,5 +1,8 @@
 // @ts-check
 
+/**
+ * @type {import('jest').Config}
+ */
 module.exports = {
   clearMocks: true,
   collectCoverage: true,
@@ -23,5 +26,4 @@ module.exports = {
   modulePathIgnorePatterns: ['/lib'],
   setupFilesAfterEnv: ['expect-puppeteer'],
   testMatch: ['<rootDir>/packages/*/src/**/*.test.{ts,tsx}'],
-  testURL: 'http://example.com',
 };

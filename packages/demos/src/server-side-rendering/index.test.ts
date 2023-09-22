@@ -34,7 +34,7 @@ describe('integration test: "server-side rendering"', () => {
     await page.setJavaScriptEnabled(false);
     await browser.goto(url);
 
-    await expect(page).toMatch('Hello, Universe!');
+    expect(await page.content()).toMatch('Hello, Universe!');
 
     // Re-enable JavaScript to restore the default behavior for all other tests.
     await page.setJavaScriptEnabled(true);
@@ -42,6 +42,6 @@ describe('integration test: "server-side rendering"', () => {
   });
 
   it('hydrates the server-side rendered Feature App HTML', async () => {
-    await expect(page).toMatch('Hello, Universe!');
+    expect(await page.content()).toMatch('Hello, Universe!');
   });
 });

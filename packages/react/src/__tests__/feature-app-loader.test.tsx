@@ -1,3 +1,7 @@
+/**
+ * @jest-environment jsdom
+ */
+
 // tslint:disable:no-implicit-dependencies
 
 import {AsyncSsrManagerV1} from '@feature-hub/async-ssr-manager';
@@ -56,6 +60,14 @@ describe('FeatureAppLoader', () => {
       consoleErrorSpy.mockClear();
     }
   };
+
+  beforeAll(() => {
+    window.addEventListener('error', (e) => {
+      // Prevent JSDOM from messing with the errors. See also:
+      // https://github.com/jestjs/jest/issues/5223#issuecomment-355440432
+      e.preventDefault();
+    });
+  });
 
   beforeEach(() => {
     consoleErrorSpy = jest.spyOn(console, 'error');
@@ -583,7 +595,7 @@ describe('FeatureAppLoader', () => {
       mockAsyncFeatureAppDefinition = new AsyncValue(
         new Promise<FeatureAppDefinition<unknown>>((resolve) =>
           // defer to next event loop turn to guarantee asynchronism
-          setImmediate(() => resolve(mockFeatureAppDefinition))
+          setTimeout(() => resolve(mockFeatureAppDefinition))
         )
       );
     });
@@ -717,7 +729,7 @@ describe('FeatureAppLoader', () => {
       mockAsyncFeatureAppDefinition = new AsyncValue(
         new Promise<FeatureAppDefinition<unknown>>((_, reject) =>
           // defer to next event loop turn to guarantee asynchronism
-          setImmediate(() => reject(mockError))
+          setTimeout(() => reject(mockError))
         )
       );
     });

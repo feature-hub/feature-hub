@@ -1,3 +1,8 @@
+/**
+ * @jest-environment jsdom
+ * @jest-environment-options {"url": "http://example.com"}
+ */
+
 // tslint:disable:no-implicit-dependencies
 // tslint:disable:no-non-null-assertion
 

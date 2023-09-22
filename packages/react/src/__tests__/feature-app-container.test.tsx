@@ -1,4 +1,9 @@
+/**
+ * @jest-environment jsdom
+ */
+
 // tslint:disable:no-implicit-dependencies
+
 import {
   FeatureAppDefinition,
   FeatureAppManager,
@@ -24,15 +29,6 @@ describe('FeatureAppContainer', () => {
   let mockFeatureAppScope: FeatureAppScope<unknown>;
   let consoleErrorSpy: jest.SpyInstance;
 
-  const usingErrorBoundaryConsoleErrorCalls = [
-    [expect.any(String), expect.any(Error)],
-    [
-      expect.stringContaining(
-        'React will try to recreate this component tree from scratch using the error boundary you provided'
-      ),
-    ],
-  ];
-
   const noErrorBoundaryConsoleErrorCalls = [
     [
       expect.stringContaining(
@@ -56,6 +52,14 @@ describe('FeatureAppContainer', () => {
       consoleErrorSpy.mockClear();
     }
   };
+
+  beforeAll(() => {
+    window.addEventListener('error', (e) => {
+      // Prevent JSDOM from messing with the errors. See also:
+      // https://github.com/jestjs/jest/issues/5223#issuecomment-355440432
+      e.preventDefault();
+    });
+  });
 
   beforeEach(() => {
     consoleErrorSpy = jest.spyOn(console, 'error');
@@ -185,7 +189,7 @@ describe('FeatureAppContainer', () => {
         expect(children).toHaveBeenCalledTimes(1);
 
         expect(children.mock.calls[0][0]).toMatchInlineSnapshot(`
-          Object {
+          {
             "featureAppNode": <div>
               This is the React Feature App.
             </div>,
@@ -462,8 +466,6 @@ describe('FeatureAppContainer', () => {
             />
           );
         }).not.toThrow();
-
-        expectConsoleErrorCalls(usingErrorBoundaryConsoleErrorCalls);
       });
 
       it('logs the error', () => {
@@ -475,7 +477,6 @@ describe('FeatureAppContainer', () => {
         );
 
         expect(logger.error.mock.calls).toEqual([[mockError]]);
-        expectConsoleErrorCalls(usingErrorBoundaryConsoleErrorCalls);
       });
 
       describe('with onError provided', () => {
@@ -491,7 +492,6 @@ describe('FeatureAppContainer', () => {
           );
 
           expect(onError.mock.calls).toEqual([[mockError]]);
-          expectConsoleErrorCalls(usingErrorBoundaryConsoleErrorCalls);
         });
 
         it('does not log the error', () => {
@@ -504,7 +504,6 @@ describe('FeatureAppContainer', () => {
           );
 
           expect(logger.error).not.toHaveBeenCalled();
-          expectConsoleErrorCalls(usingErrorBoundaryConsoleErrorCalls);
         });
 
         describe('when onError throws an error', () => {
@@ -528,8 +527,7 @@ describe('FeatureAppContainer', () => {
             ).toThrowError(onErrorMockError);
 
             expectConsoleErrorCalls([
-              ...usingErrorBoundaryConsoleErrorCalls,
-              [expect.any(String), onErrorMockError],
+              [onErrorMockError],
               ...noErrorBoundaryConsoleErrorCalls,
             ]);
           });
@@ -631,7 +629,7 @@ describe('FeatureAppContainer', () => {
               );
 
               expectConsoleErrorCalls([
-                [expect.any(String), onErrorMockError],
+                [onErrorMockError],
                 ...noErrorBoundaryConsoleErrorCalls,
               ]);
             });
@@ -1075,7 +1073,7 @@ describe('FeatureAppContainer', () => {
         expect(children).toHaveBeenCalledTimes(1);
 
         expect(children.mock.calls[0][0]).toMatchInlineSnapshot(`
-          Object {
+          {
             "featureAppNode": <div />,
             "loading": false,
           }
@@ -1173,7 +1171,7 @@ describe('FeatureAppContainer', () => {
             ).toThrowError(onErrorMockError);
 
             expectConsoleErrorCalls([
-              [expect.any(String), onErrorMockError],
+              [onErrorMockError],
               ...noErrorBoundaryConsoleErrorCalls,
             ]);
           });

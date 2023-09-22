@@ -14,9 +14,10 @@ jest.setTimeout(120000);
 class HelloWorldUi {
   public constructor(private readonly browser: Browser) {}
 
-  public async waitForHelloText(): Promise<string> {
+  public async waitForHelloText(): Promise<unknown> {
     const helloText = await page.waitForSelector('#hello-text');
-    const content = await helloText.getProperty('textContent');
+    // tslint:disable-next-line:no-non-null-assertion
+    const content = await helloText!.getProperty('textContent');
 
     return content.jsonValue();
   }
@@ -29,12 +30,12 @@ class HelloWorldUi {
     );
   }
 
-  private async getNewNameInput(): Promise<ElementHandle<HTMLInputElement>> {
+  private async getNewNameInput(): Promise<ElementHandle> {
     // tslint:disable-next-line:no-non-null-assertion
     return (await page.$('#name-input'))!;
   }
 
-  private async getSubmitButton(): Promise<ElementHandle<HTMLButtonElement>> {
+  private async getSubmitButton(): Promise<ElementHandle> {
     // tslint:disable-next-line:no-non-null-assertion
     return (await page.$('#submit-button'))!;
   }

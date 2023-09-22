@@ -18,7 +18,7 @@ class HistoryConsumerUi {
     private readonly specifier: 'a' | 'b'
   ) {}
 
-  public async getPathname(): Promise<string> {
+  public async getPathname(): Promise<unknown> {
     const pathnameInput = await this.getElement('pathname-input');
     const value = await pathnameInput.getProperty('value');
 
@@ -53,24 +53,7 @@ class HistoryConsumerUi {
     );
   }
 
-  private async getElement(
-    prefix: 'new-path-input' | 'pathname-input'
-  ): Promise<ElementHandle<HTMLInputElement>>;
-  private async getElement(
-    prefix: 'push-button' | 'replace-button'
-  ): Promise<ElementHandle<HTMLButtonElement>>;
-  private async getElement(
-    prefix: 'push-link' | 'replace-link'
-  ): Promise<ElementHandle<HTMLAnchorElement>>;
-  private async getElement(
-    prefix:
-      | 'new-path-input'
-      | 'pathname-input'
-      | 'push-button'
-      | 'replace-button'
-      | 'push-link'
-      | 'replace-link'
-  ): Promise<ElementHandle<HTMLElement>> {
+  private async getElement(prefix: string): Promise<ElementHandle> {
     // tslint:disable-next-line:no-non-null-assertion
     return (await page.$(`#${prefix}-${this.specifier}`))!;
   }

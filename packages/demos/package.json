@@ -38,7 +38,7 @@
     "postcss": "^7.x.x",
     "postcss-loader": "^6.2.1",
     "postcss-preset-env": "^6.7.1",
-    "puppeteer": "^1.11.0",
+    "puppeteer": "^21.3.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-is": "^16.8.6",

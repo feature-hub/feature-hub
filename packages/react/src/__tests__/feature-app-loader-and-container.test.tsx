@@ -1,3 +1,7 @@
+/**
+ * @jest-environment jsdom
+ */
+
 // tslint:disable:no-implicit-dependencies
 
 import {
