@@ -11,10 +11,24 @@ import * as Messages from './internal/feature-app-manager-messages';
 import {isFeatureAppModule} from './internal/is-feature-app-module';
 import {Logger} from './logger';
 
+export interface FeatureAppDescriptor {
+  /**
+   * The ID that the integrator (or parent Feature App) has assigned to the
+   * Feature App instance.
+   */
+  readonly featureAppId: string;
+
+  /**
+   * The name that the integrator (or parent Feature App) might have assigned to
+   * the Feature App.
+   */
+  readonly featureAppName?: string;
+}
+
 export interface FeatureAppEnvironment<
   TFeatureServices extends FeatureServices,
   TConfig
-> {
+> extends FeatureAppDescriptor {
   /**
    * An object of required Feature Services that are semver-compatible with the
    * declared dependencies in the Feature App definition.
@@ -25,16 +39,6 @@ export interface FeatureAppEnvironment<
    * A config object that is provided by the integrator.
    */
   readonly config: TConfig | undefined;
-
-  /**
-   * The ID that the integrator has assigned to the Feature App instance.
-   */
-  readonly featureAppId: string;
-
-  /**
-   * The name that the integrator might have assigned to the Feature App.
-   */
-  readonly featureAppName: string | undefined;
 
   /**
    * The absolute or relative base URL of the Feature App's assets and/or BFF.
@@ -128,12 +132,19 @@ export interface FeatureAppScopeOptions<
    * parent Feature App) and the Feature App.
    */
   readonly done?: (result?: unknown) => void;
+
+  /**
+   * If the Feature App is created in the context of another Feature App, the
+   * `parentFeatureApp` property should be populated accordingly. This allows
+   * the integrator to collect information about "Feature App in Feature App"
+   * usage.
+   */
+  readonly parentFeatureApp?: FeatureAppDescriptor;
 }
 
-export interface OnBindParams {
+export interface OnBindParams extends FeatureAppDescriptor {
   readonly featureAppDefinition: FeatureServiceConsumerDefinition;
-  readonly featureAppId: string;
-  readonly featureAppName: string | undefined;
+  readonly parentFeatureApp?: FeatureAppDescriptor;
 }
 
 export interface FeatureAppManagerOptions {
@@ -164,7 +175,7 @@ export interface FeatureAppManagerOptions {
   /**
    * A function that is called for every Feature App when its dependent Feature
    * Services are bound. This allows the integrator to collect information about
-   * Feature Service usage.
+   * Feature Service and Feature App usage.
    */
   readonly onBind?: (params: OnBindParams) => void;
 }
@@ -427,7 +438,14 @@ export class FeatureAppManager {
   ): FeatureAppRetainer<TFeatureApp> {
     this.validateExternals(featureAppDefinition);
 
-    const {featureAppName, baseUrl, beforeCreate, config, done} = options;
+    const {
+      featureAppName,
+      baseUrl,
+      beforeCreate,
+      config,
+      done,
+      parentFeatureApp,
+    } = options;
 
     const binding = this.featureServiceRegistry.bindFeatureServices(
       featureAppDefinition,
@@ -440,6 +458,7 @@ export class FeatureAppManager {
         featureAppDefinition,
         featureAppId,
         featureAppName,
+        parentFeatureApp,
       });
     } catch (error) {
       this.logger.error('Failed to execute onBind callback.', error);

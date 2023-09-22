@@ -205,6 +205,66 @@ describe('FeatureAppContainer', () => {
       });
     });
 
+    describe('when the Feature App renders another Feature App', () => {
+      beforeEach(() => {
+        let didRenderChildFeatureApp = false;
+
+        mockFeatureAppScope = {
+          featureApp: {
+            render: () => {
+              if (didRenderChildFeatureApp) {
+                return <div>Child</div>;
+              }
+
+              didRenderChildFeatureApp = true;
+
+              return (
+                <FeatureAppContainer
+                  featureAppId="childTestId"
+                  featureAppDefinition={mockFeatureAppDefinition}
+                />
+              );
+            },
+          },
+          release: jest.fn(),
+        };
+      });
+
+      it('passes the parent Feature App descriptor to `createFeatureAppScope`', () => {
+        const testRenderer = renderWithFeatureHubContext(
+          <FeatureAppContainer
+            featureAppId="parentTestId"
+            featureAppName="parentTestName"
+            featureAppDefinition={mockFeatureAppDefinition}
+          />
+        );
+
+        expect(mockCreateFeatureAppScope.mock.calls).toEqual([
+          [
+            'parentTestId',
+            mockFeatureAppDefinition,
+            {featureAppName: 'parentTestName'},
+          ],
+          [
+            'childTestId',
+            mockFeatureAppDefinition,
+            {
+              parentFeatureApp: {
+                featureAppId: 'parentTestId',
+                featureAppName: 'parentTestName',
+              },
+            },
+          ],
+        ]);
+
+        expect(testRenderer.toJSON()).toMatchInlineSnapshot(`
+  <div>
+    Child
+  </div>
+`);
+      });
+    });
+
     describe('when the Feature App throws in render', () => {
       let mockError: Error;
 

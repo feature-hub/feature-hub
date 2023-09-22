@@ -1,6 +1,7 @@
 import {FeatureAppDefinition, FeatureServices} from '@feature-hub/core';
 import * as React from 'react';
 import {FeatureHubContextConsumer} from './feature-hub-context';
+import {FeatureAppContext} from './internal/feature-app-context';
 import {
   BaseFeatureAppContainerProps,
   InternalFeatureAppContainer,
@@ -120,11 +121,16 @@ export function FeatureAppContainer<
   return (
     <FeatureHubContextConsumer>
       {({featureAppManager, logger}) => (
-        <InternalFeatureAppContainer<TFeatureApp, TFeatureServices, TConfig>
-          featureAppManager={featureAppManager}
-          logger={logger}
-          {...props}
-        />
+        <FeatureAppContext.Consumer>
+          {(parentFeatureApp) => (
+            <InternalFeatureAppContainer<TFeatureApp, TFeatureServices, TConfig>
+              featureAppManager={featureAppManager}
+              logger={logger}
+              parentFeatureApp={parentFeatureApp}
+              {...props}
+            />
+          )}
+        </FeatureAppContext.Consumer>
       )}
     </FeatureHubContextConsumer>
   );

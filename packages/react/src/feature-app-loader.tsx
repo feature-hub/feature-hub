@@ -13,26 +13,14 @@ import {
   FeatureHubContextConsumer,
   FeatureHubContextConsumerValue,
 } from './feature-hub-context';
-import {InternalFeatureAppContainer} from './internal/internal-feature-app-container';
+import {
+  FeatureAppDescriptor,
+  InternalFeatureAppContainer,
+} from './internal/internal-feature-app-container';
 import {prependBaseUrl} from './internal/prepend-base-url';
 
-export interface FeatureAppLoaderProps<TConfig = unknown> {
-  /**
-   * The Feature App ID is used to identify the Feature App instance. Multiple
-   * Feature App Loaders with the same `featureAppId` will render the same
-   * Feature app instance. The ID is also used as a consumer ID for dependent
-   * Feature Services. To render multiple instances of the same kind of Feature
-   * App, different IDs must be used.
-   */
-  readonly featureAppId: string;
-
-  /**
-   * The Feature App's name. In contrast to the `featureAppId`, the name must
-   * not be unique. It can be used by required Feature Services for display
-   * purposes, logging, looking up Feature App configuration meta data, etc.
-   */
-  readonly featureAppName?: string;
-
+export interface FeatureAppLoaderProps<TConfig = unknown>
+  extends FeatureAppDescriptor {
   /**
    * The absolute or relative base URL of the Feature App's assets and/or BFF.
    */
