@@ -1,7 +1,8 @@
 import toposort from 'toposort';
+import {MultipleVersions} from '../feature-service-registry';
 
 export interface Dependencies {
-  readonly [dependencyName: string]: string | undefined;
+  readonly [dependencyName: string]: string | undefined | MultipleVersions;
 }
 
 export type DependencyGraph = Map<string, Dependencies>;
