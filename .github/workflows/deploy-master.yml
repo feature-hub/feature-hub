@@ -9,6 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       CI: true
+    name: Deploy master
 
     steps:
       - name: Checkout

@@ -8,6 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       CI: true
+    name: Cleanup Stacks
 
     steps:
       - name: Checkout

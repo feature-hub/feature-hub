@@ -12,6 +12,7 @@ on:
 jobs:
   commitlint:
     runs-on: ubuntu-latest
+    name: Commitlint
 
     steps:
       - name: Checkout
@@ -28,6 +29,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       CI: true
+    name: Word Blacklist
 
     steps:
       - name: Checkout
@@ -45,6 +47,7 @@ jobs:
     strategy:
       matrix:
         node: ['18', '20']
+    name: Test (Node ${{ matrix.node }})
 
     steps:
       - name: Checkout
@@ -73,6 +76,7 @@ jobs:
     strategy:
       matrix:
         node: ['18', '20']
+    name: Compile, Lint & Verify (Node ${{ matrix.node }})
 
     steps:
       - name: Checkout

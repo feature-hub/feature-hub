@@ -4,58 +4,13 @@ on:
     types: [created]
 
 jobs:
-  rebase:
-    if: |
-      github.event.issue.pull_request && github.event.comment.body == '/rebase'
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Check user permission
-        id: check
-        uses: scherermichael-oss/action-has-permission@1.0.6
-        with:
-          required-permission: write
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Add comment reaction
-        uses: actions/github-script@v4
-        with:
-          github-token: ${{ github.token }}
-          result-encoding: string
-          script: |
-            const {comment, repository} = context.payload;
-
-            await github.reactions.createForIssueComment({
-              owner: repository.owner.login,
-              repo: repository.name,
-              comment_id: comment.id,
-              content: '${{ steps.check.outputs.has-permission }}' ? '+1' : '-1'
-            });
-
-      - name: Abort if prohibited
-        if: '! steps.check.outputs.has-permission'
-        run: |
-          echo "Permissions are insufficient."
-          exit 1
-
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          token: ${{ secrets.CI_GITHUB_TOKEN }}
-          fetch-depth: 0
-
-      - name: Automatic Rebase
-        uses: cirrus-actions/rebase@1.4
-        env:
-          GITHUB_TOKEN: ${{ secrets.CI_GITHUB_TOKEN }}
-
   deploy:
     if: |
       github.event.issue.pull_request && github.event.comment.body == '/deploy'
     runs-on: ubuntu-latest
     env:
       CI: true
+    name: Deploy PR
 
     steps:
       - name: Check user permission
@@ -160,6 +115,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       CI: true
+    name: Prerelease PR
 
     steps:
       - name: Check user permission
