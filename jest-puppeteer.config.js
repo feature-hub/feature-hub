@@ -2,5 +2,8 @@
 
 /** @type {import('jest-environment-puppeteer').JestPuppeteerConfig} */
 module.exports = {
-  launch: {headless: 'new'},
+  launch: {
+    headless: 'new',
+    args: ['--no-zygote', '--no-sandbox'],
+  },
 };
