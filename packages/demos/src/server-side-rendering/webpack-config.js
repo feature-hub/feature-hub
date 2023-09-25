@@ -62,13 +62,17 @@ const configs = [
           react: {singleton: true, eager: true},
         },
       }),
-      new CopyPlugin({
-        patterns: [
-          'normalize.css/normalize.css',
-          '@blueprintjs/icons/lib/css/blueprint-icons.css',
-          '@blueprintjs/core/lib/css/blueprint.css',
-        ].map((cssPath) => ({from: require.resolve(cssPath)})),
-      }),
+      ...(process.env.NODE_ENV === 'test'
+        ? []
+        : [
+            new CopyPlugin({
+              patterns: [
+                'normalize.css/normalize.css',
+                '@blueprintjs/icons/lib/css/blueprint-icons.css',
+                '@blueprintjs/core/lib/css/blueprint.css',
+              ].map((cssPath) => ({from: require.resolve(cssPath)})),
+            }),
+          ]),
     ],
   }),
 ];
