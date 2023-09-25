@@ -93,6 +93,8 @@ async function startServer(
   }
 
   app.get('/', async (req, res) => {
+    res.set('Connection', 'close');
+
     try {
       const renderApp =
         typeof nodeIntegratorFilename === 'string' &&

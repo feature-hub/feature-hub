@@ -19,7 +19,7 @@
     "size-limit": "lerna exec --no-private --ignore @feature-hub/module-loader-commonjs --parallel -- size-limit",
     "sort-package-jsons": "sort-package-json package.json packages/*/package.json",
     "pretest": "rimraf coverage",
-    "test": "cross-env NODE_OPTIONS='--max-old-space-size=8192' jest --verbose --silent",
+    "test": "jest --verbose --silent",
     "test:integration": "yarn test --testPathPattern packages/demos",
     "test:unit": "yarn test --testPathIgnorePatterns packages/demos",
     "verify": "run-p verify:**",
