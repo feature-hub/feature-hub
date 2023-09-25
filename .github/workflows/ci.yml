@@ -66,7 +66,7 @@ jobs:
 
       - name: Integration Tests
         run:
-          find packages/demos -iname '*test.ts*' | xargs -n 2 yarn jest --silent
+          find packages/demos -iname '*test.ts*' | xargs -n 2 yarn test --silent
           --no-cache --no-verbose --no-coverage --maxWorkers 2 --forceExit
 
   compile-lint-verify:
