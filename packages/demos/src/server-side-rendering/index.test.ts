@@ -27,7 +27,9 @@ describe('integration test: "server-side rendering"', () => {
     await browser.goto(url, 120000);
   });
 
-  afterAll((done) => server.close(done));
+  afterAll((done) => {
+    server.close(done);
+  });
 
   it('loads the server-side rendered Feature App HTML', async () => {
     // We need to disable JavaScript for this test to ensure that the server-rendered HTML is observed.

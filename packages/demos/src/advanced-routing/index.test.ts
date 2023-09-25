@@ -59,7 +59,9 @@ describe('integration test: "advanced-routing"', () => {
     await browser.goto(url, 120000);
   });
 
-  afterAll((done) => server.close(done));
+  afterAll((done) => {
+    server.close(done);
+  });
 
   test('navigates to another page and sets a new hello world state', async () => {
     await browser.goto(url);

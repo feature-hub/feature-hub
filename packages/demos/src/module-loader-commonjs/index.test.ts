@@ -24,7 +24,9 @@ describe('integration test: "commonjs module loader"', () => {
     await browser.goto(`http://localhost:${port}`, 120000);
   });
 
-  afterAll((done) => server.close(done));
+  afterAll((done) => {
+    server.close(done);
+  });
 
   it('loads the server-side rendered Feature App HTML', async () => {
     expect(await page.content()).toMatch('Hello, World!');

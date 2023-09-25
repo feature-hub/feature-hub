@@ -23,7 +23,9 @@ describe('integration test: "module loader multiple"', () => {
     await browser.goto(`http://localhost:${port}`, 120000);
   });
 
-  afterAll((done) => server.close(done));
+  afterAll((done) => {
+    server.close(done);
+  });
 
   it('loads each Feature App with the correct module loader', async () => {
     expect(await page.content()).toMatch('Hello from Feature App 1!');

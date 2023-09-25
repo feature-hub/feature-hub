@@ -46,7 +46,7 @@
     "@size-limit/preset-small-lib": "^9.0.0",
     "@types/cheerio": "^0.22.9",
     "@types/git-rev-sync": "^2.0.0",
-    "@types/jest": "^26.0.15",
+    "@types/jest": "^29.5.5",
     "@types/jest-environment-puppeteer": "^5.0.4",
     "@types/node": "^14.x.x",
     "@types/react": "^16.14.31",
