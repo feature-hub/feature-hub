@@ -20,7 +20,7 @@
     "sort-package-jsons": "sort-package-json package.json packages/*/package.json",
     "pretest": "rimraf coverage",
     "test": "jest --verbose --silent",
-    "test:integration": "yarn test --testPathPattern packages/demos",
+    "test:integration": "yarn test --testPathPattern packages/demos --no-coverage",
     "test:unit": "yarn test --testPathIgnorePatterns packages/demos",
     "verify": "run-p verify:**",
     "verify:format": "prettier --list-different '**/*.{js,json,md,ts,tsx,yml}'",
