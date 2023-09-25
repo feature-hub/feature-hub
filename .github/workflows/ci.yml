@@ -86,8 +86,11 @@ jobs:
       - name: Install
         run: yarn install
 
-      - name: Compile
+      - name: Compile CJS
         run: yarn compile
+
+      - name: Compile ESM
+        run: yarn compile:esm
 
       - name: Lint
         run: yarn lint
