@@ -27,7 +27,7 @@ export interface FeatureAppDescriptor {
 
 export interface FeatureAppEnvironment<
   TFeatureServices extends FeatureServices,
-  TConfig
+  TConfig,
 > extends FeatureAppDescriptor {
   /**
    * An object of required Feature Services that are semver-compatible with the
@@ -60,11 +60,9 @@ export interface FeatureAppEnvironment<
 export interface FeatureAppDefinition<
   TFeatureApp,
   TFeatureServices extends FeatureServices = FeatureServices,
-  TConfig = unknown
+  TConfig = unknown,
 > extends FeatureServiceConsumerDefinition {
-  readonly ownFeatureServiceDefinitions?: FeatureServiceProviderDefinition<
-    SharedFeatureService
-  >[];
+  readonly ownFeatureServiceDefinitions?: FeatureServiceProviderDefinition<SharedFeatureService>[];
 
   create(env: FeatureAppEnvironment<TFeatureServices, TConfig>): TFeatureApp;
 }
@@ -95,7 +93,7 @@ export interface FeatureAppScope<TFeatureApp> {
 
 export interface FeatureAppScopeOptions<
   TFeatureServices extends FeatureServices,
-  TConfig
+  TConfig,
 > {
   /**
    * The Feature App's name. In contrast to the `featureAppId`, the name must
@@ -197,9 +195,8 @@ export class FeatureAppManager {
     AsyncValue<FeatureAppDefinition<unknown>>
   >();
 
-  private readonly featureAppDefinitionsWithRegisteredOwnFeatureServices = new WeakSet<
-    FeatureAppDefinition<unknown>
-  >();
+  private readonly featureAppDefinitionsWithRegisteredOwnFeatureServices =
+    new WeakSet<FeatureAppDefinition<unknown>>();
 
   private readonly featureAppRetainers = new Map<
     FeatureAppId,
@@ -278,7 +275,7 @@ export class FeatureAppManager {
   public createFeatureAppScope<
     TFeatureApp,
     TFeatureServices extends FeatureServices = FeatureServices,
-    TConfig = unknown
+    TConfig = unknown,
   >(
     featureAppId: string,
     featureAppDefinition: FeatureAppDefinition<
@@ -396,7 +393,7 @@ export class FeatureAppManager {
   private getFeatureAppRetainer<
     TFeatureApp,
     TFeatureServices extends FeatureServices = FeatureServices,
-    TConfig = unknown
+    TConfig = unknown,
   >(
     featureAppId: string,
     featureAppDefinition: FeatureAppDefinition<
@@ -426,7 +423,7 @@ export class FeatureAppManager {
   private createFeatureAppRetainer<
     TFeatureApp,
     TFeatureServices extends FeatureServices,
-    TConfig
+    TConfig,
   >(
     featureAppDefinition: FeatureAppDefinition<
       TFeatureApp,

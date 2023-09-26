@@ -34,11 +34,11 @@ describe('FeatureAppContainer (on Node.js)', () => {
     mockFeatureAppScope = {featureApp: {}, release: jest.fn()};
     mockCreateFeatureAppScope = jest.fn(() => ({...mockFeatureAppScope}));
 
-    mockFeatureAppManager = ({
+    mockFeatureAppManager = {
       getAsyncFeatureAppDefinition: jest.fn(),
       createFeatureAppScope: mockCreateFeatureAppScope,
       preloadFeatureApp: jest.fn(),
-    } as Partial<FeatureAppManager>) as FeatureAppManager;
+    } as Partial<FeatureAppManager> as FeatureAppManager;
 
     consoleErrorSpy = jest.spyOn(console, 'error');
     consoleWarnSpy = jest.spyOn(console, 'warn');

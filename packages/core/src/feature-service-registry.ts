@@ -41,7 +41,7 @@ export interface FeatureServices {
 }
 
 export interface FeatureServiceEnvironment<
-  TFeatureServices extends FeatureServices
+  TFeatureServices extends FeatureServices,
 > {
   /**
    * An object of required Feature Services that are semver-compatible with the
@@ -52,7 +52,7 @@ export interface FeatureServiceEnvironment<
 
 export interface FeatureServiceProviderDefinition<
   TSharedFeatureService extends SharedFeatureService,
-  TFeatureServices extends FeatureServices = FeatureServices
+  TFeatureServices extends FeatureServices = FeatureServices,
 > extends FeatureServiceConsumerDefinition {
   readonly id: string;
 
@@ -83,7 +83,7 @@ export interface SharedFeatureService {
 }
 
 export interface FeatureServicesBinding<
-  TFeatureServices extends FeatureServices = FeatureServices
+  TFeatureServices extends FeatureServices = FeatureServices,
 > {
   readonly featureServices: TFeatureServices;
 
@@ -205,14 +205,11 @@ export class FeatureServiceRegistry {
    * definitions.
    */
   public registerFeatureServices(
-    providerDefinitions: FeatureServiceProviderDefinition<
-      SharedFeatureService
-    >[],
+    providerDefinitions: FeatureServiceProviderDefinition<SharedFeatureService>[],
     registrantId: string,
   ): void {
-    const providerDefinitionsById = createProviderDefinitionsById(
-      providerDefinitions,
-    );
+    const providerDefinitionsById =
+      createProviderDefinitionsById(providerDefinitions);
 
     const dependencyGraph = createDependencyGraph(providerDefinitions);
 

@@ -38,9 +38,7 @@ export interface FeatureHubOptions {
    * necessary, since the registry takes care of registering the given
    * definitions in the correct order.
    */
-  readonly featureServiceDefinitions?: FeatureServiceProviderDefinition<
-    SharedFeatureService
-  >[];
+  readonly featureServiceDefinitions?: FeatureServiceProviderDefinition<SharedFeatureService>[];
 
   /**
    * A map of Feature Services the integrator depends on, with the Feature

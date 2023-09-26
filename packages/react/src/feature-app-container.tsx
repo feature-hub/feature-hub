@@ -89,7 +89,7 @@ export interface CustomFeatureAppRenderingParams {
 export interface FeatureAppContainerProps<
   TFeatureApp,
   TFeatureServices extends FeatureServices = FeatureServices,
-  TConfig = unknown
+  TConfig = unknown,
 > extends BaseFeatureAppContainerProps<TFeatureApp, TFeatureServices, TConfig> {
   /**
    * The consumer definition of the Feature App.
@@ -114,7 +114,7 @@ export interface FeatureAppContainerProps<
 export function FeatureAppContainer<
   TFeatureApp extends FeatureApp,
   TFeatureServices extends FeatureServices = FeatureServices,
-  TConfig = unknown
+  TConfig = unknown,
 >(
   props: FeatureAppContainerProps<TFeatureApp, TFeatureServices, TConfig>,
 ): JSX.Element {

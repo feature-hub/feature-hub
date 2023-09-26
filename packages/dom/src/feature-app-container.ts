@@ -86,7 +86,8 @@ export function defineFeatureAppContainer(
 
   class FeatureAppContainer
     extends LitElement
-    implements FeatureAppContainerElement {
+    implements FeatureAppContainerElement
+  {
     @property({type: String})
     public featureAppId!: string;
 

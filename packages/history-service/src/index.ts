@@ -32,9 +32,8 @@ export interface RootHistory {
 
 export type RootLocation = historyV4.Location<ConsumerHistoryStates>;
 
-export type RootLocationDescriptorObject = historyV4.LocationDescriptorObject<
-  ConsumerHistoryStates
->;
+export type RootLocationDescriptorObject =
+  historyV4.LocationDescriptorObject<ConsumerHistoryStates>;
 
 export interface ConsumerHistoryStates {
   readonly [historyKey: string]: unknown;
@@ -147,10 +146,8 @@ export function defineHistoryService(
   SharedHistoryService,
   HistoryServiceDependencies
 > {
-  const {
-    mode = 'browser',
-    getHistoryKey = ({consumerId}) => consumerId,
-  } = options;
+  const {mode = 'browser', getHistoryKey = ({consumerId}) => consumerId} =
+    options;
 
   return {
     id: 's2:history',

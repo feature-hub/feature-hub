@@ -90,13 +90,11 @@ describe('defineHistoryService', () => {
   });
 
   describe('HistoryServiceV1', () => {
-    let mockEnv: FeatureServiceEnvironment<Writable<
-      HistoryServiceDependencies
-    >>;
-
-    let createHistoryServiceBinder: () => FeatureServiceBinder<
-      HistoryServiceV1
+    let mockEnv: FeatureServiceEnvironment<
+      Writable<HistoryServiceDependencies>
     >;
+
+    let createHistoryServiceBinder: () => FeatureServiceBinder<HistoryServiceV1>;
 
     beforeEach(() => {
       mockEnv = {featureServices: {'s2:logger': stubbedLogger}};
@@ -671,9 +669,9 @@ describe('defineHistoryService', () => {
   });
 
   describe('HistoryServiceV2', () => {
-    let mockEnv: FeatureServiceEnvironment<Writable<
-      HistoryServiceDependencies
-    >>;
+    let mockEnv: FeatureServiceEnvironment<
+      Writable<HistoryServiceDependencies>
+    >;
 
     let createHistoryServiceBinder: (
       mode?: 'browser' | 'static',
@@ -1324,9 +1322,11 @@ describe('defineHistoryService', () => {
         });
 
         it('changes the location and action of affected consumer histories', () => {
-          const rootLocation = historyService1.createNewRootLocationForMultipleConsumers(
-            {historyKey: 'test2', location: {pathname: '/test2'}},
-          );
+          const rootLocation =
+            historyService1.createNewRootLocationForMultipleConsumers({
+              historyKey: 'test2',
+              location: {pathname: '/test2'},
+            });
 
           historyService1.rootHistory.push(rootLocation);
 
@@ -1352,9 +1352,11 @@ describe('defineHistoryService', () => {
           historyService1.history.listen(listener1);
           historyService2.history.listen(listener2);
 
-          const rootLocation = historyService1.createNewRootLocationForMultipleConsumers(
-            {historyKey: 'test2', location: {pathname: '/test2'}},
-          );
+          const rootLocation =
+            historyService1.createNewRootLocationForMultipleConsumers({
+              historyKey: 'test2',
+              location: {pathname: '/test2'},
+            });
 
           historyService1.rootHistory.push(rootLocation);
 
@@ -1423,9 +1425,11 @@ describe('defineHistoryService', () => {
         });
 
         it('changes the location and action of affected consumer histories', () => {
-          const rootLocation = historyService1.createNewRootLocationForMultipleConsumers(
-            {historyKey: 'test2', location: {pathname: '/test2'}},
-          );
+          const rootLocation =
+            historyService1.createNewRootLocationForMultipleConsumers({
+              historyKey: 'test2',
+              location: {pathname: '/test2'},
+            });
 
           historyService1.rootHistory.replace(rootLocation);
 
@@ -1449,9 +1453,11 @@ describe('defineHistoryService', () => {
           historyService1.history.listen(listener1);
           historyService2.history.listen(listener2);
 
-          const rootLocation = historyService1.createNewRootLocationForMultipleConsumers(
-            {historyKey: 'test2', location: {pathname: '/test2'}},
-          );
+          const rootLocation =
+            historyService1.createNewRootLocationForMultipleConsumers({
+              historyKey: 'test2',
+              location: {pathname: '/test2'},
+            });
 
           historyService1.rootHistory.replace(rootLocation);
 
@@ -1537,9 +1543,11 @@ describe('defineHistoryService', () => {
         const historyServiceBinder = createHistoryServiceBinder();
         const historyService = historyServiceBinder('test1').featureService;
 
-        const location = historyService.createNewRootLocationForMultipleConsumers(
-          {historyKey: 'test1', location: {pathname: '/test1', state: 42}},
-        );
+        const location =
+          historyService.createNewRootLocationForMultipleConsumers({
+            historyKey: 'test1',
+            location: {pathname: '/test1', state: 42},
+          });
 
         expect(location).toMatchObject({
           pathname: '/',
@@ -1552,16 +1560,17 @@ describe('defineHistoryService', () => {
         const historyServiceBinder = createHistoryServiceBinder();
         const historyService = historyServiceBinder('test1').featureService;
 
-        const location = historyService.createNewRootLocationForMultipleConsumers(
-          {
-            historyKey: 'test1',
-            location: {pathname: '/test', state: 42},
-          },
-          {
-            historyKey: 'test2',
-            location: {pathname: '/xxx', state: 'foo'},
-          },
-        );
+        const location =
+          historyService.createNewRootLocationForMultipleConsumers(
+            {
+              historyKey: 'test1',
+              location: {pathname: '/test', state: 42},
+            },
+            {
+              historyKey: 'test2',
+              location: {pathname: '/xxx', state: 'foo'},
+            },
+          );
 
         expect(location).toMatchObject({
           pathname: '/',
@@ -1586,7 +1595,8 @@ describe('defineHistoryService', () => {
             const sharedHistoryService = defineHistoryService({
               createRootLocation: jest.fn(),
               getConsumerPathFromRootLocation: jest.fn(),
-              createNewRootLocationForMultipleConsumers: createNewRootLocationForMultipleConsumersMock,
+              createNewRootLocationForMultipleConsumers:
+                createNewRootLocationForMultipleConsumersMock,
             }).create(mockEnv);
 
             return sharedHistoryService!['2.0.0'];
@@ -1617,9 +1627,10 @@ describe('defineHistoryService', () => {
             location: {pathname: '/test1', state: 42},
           };
 
-          const location = historyServiceTest1.createNewRootLocationForMultipleConsumers(
-            consumerLocation,
-          );
+          const location =
+            historyServiceTest1.createNewRootLocationForMultipleConsumers(
+              consumerLocation,
+            );
 
           const expectedRootLocation: RootLocation = {
             pathname: 'root-test',
@@ -1662,9 +1673,9 @@ describe('defineHistoryService', () => {
   });
 
   describe('HistoryServiceV3', () => {
-    let mockEnv: FeatureServiceEnvironment<Writable<
-      HistoryServiceDependencies
-    >>;
+    let mockEnv: FeatureServiceEnvironment<
+      Writable<HistoryServiceDependencies>
+    >;
 
     let createHistoryServiceBinder: (
       getHistoryKey?: (options: GetHistoryKeyOptions) => string,
@@ -1701,9 +1712,8 @@ describe('defineHistoryService', () => {
           const consumerName = 'test-consumer-name';
           const getHistoryKeyMock = jest.fn(() => 'test-history-key');
 
-          const historyServiceBinder = createHistoryServiceBinder(
-            getHistoryKeyMock,
-          );
+          const historyServiceBinder =
+            createHistoryServiceBinder(getHistoryKeyMock);
 
           const historyBinding = historyServiceBinder(consumerId, consumerName);
           const {historyKey} = historyBinding.featureService;
@@ -2316,13 +2326,11 @@ describe('defineHistoryService', () => {
         });
 
         it('changes the location and action of affected consumer histories', () => {
-          const {
-            state,
-            ...to
-          } = historyService1.createNewRootLocationForMultipleConsumers({
-            historyKey: 'test2',
-            location: {pathname: '/test2'},
-          });
+          const {state, ...to} =
+            historyService1.createNewRootLocationForMultipleConsumers({
+              historyKey: 'test2',
+              location: {pathname: '/test2'},
+            });
 
           historyService1.rootHistory.push(to, state);
 
@@ -2348,13 +2356,11 @@ describe('defineHistoryService', () => {
           historyService1.history.listen(listener1);
           historyService2.history.listen(listener2);
 
-          const {
-            state,
-            ...to
-          } = historyService1.createNewRootLocationForMultipleConsumers({
-            historyKey: 'test2',
-            location: {pathname: '/test2'},
-          });
+          const {state, ...to} =
+            historyService1.createNewRootLocationForMultipleConsumers({
+              historyKey: 'test2',
+              location: {pathname: '/test2'},
+            });
 
           historyService1.rootHistory.push(to, state);
 
@@ -2424,13 +2430,11 @@ describe('defineHistoryService', () => {
         });
 
         it('changes the location and action of affected consumer histories', () => {
-          const {
-            state,
-            ...to
-          } = historyService1.createNewRootLocationForMultipleConsumers({
-            historyKey: 'test2',
-            location: {pathname: '/test2'},
-          });
+          const {state, ...to} =
+            historyService1.createNewRootLocationForMultipleConsumers({
+              historyKey: 'test2',
+              location: {pathname: '/test2'},
+            });
 
           historyService1.rootHistory.replace(to, state);
 
@@ -2454,13 +2458,11 @@ describe('defineHistoryService', () => {
           historyService1.history.listen(listener1);
           historyService2.history.listen(listener2);
 
-          const {
-            state,
-            ...to
-          } = historyService1.createNewRootLocationForMultipleConsumers({
-            historyKey: 'test2',
-            location: {pathname: '/test2'},
-          });
+          const {state, ...to} =
+            historyService1.createNewRootLocationForMultipleConsumers({
+              historyKey: 'test2',
+              location: {pathname: '/test2'},
+            });
 
           historyService1.rootHistory.replace(to, state);
 
@@ -2553,9 +2555,12 @@ describe('defineHistoryService', () => {
         const historyServiceBinder = createHistoryServiceBinder();
         const historyService = historyServiceBinder('test1').featureService;
 
-        const location = historyService.createNewRootLocationForMultipleConsumers(
-          {historyKey: 'test1', location: {pathname: '/test1'}, state: 42},
-        );
+        const location =
+          historyService.createNewRootLocationForMultipleConsumers({
+            historyKey: 'test1',
+            location: {pathname: '/test1'},
+            state: 42,
+          });
 
         expect(location).toMatchObject({
           pathname: '/',
@@ -2568,18 +2573,19 @@ describe('defineHistoryService', () => {
         const historyServiceBinder = createHistoryServiceBinder();
         const historyService = historyServiceBinder('test1').featureService;
 
-        const location = historyService.createNewRootLocationForMultipleConsumers(
-          {
-            historyKey: 'test1',
-            location: {pathname: '/test'},
-            state: 42,
-          },
-          {
-            historyKey: 'test2',
-            location: {pathname: '/xxx'},
-            state: 'foo',
-          },
-        );
+        const location =
+          historyService.createNewRootLocationForMultipleConsumers(
+            {
+              historyKey: 'test1',
+              location: {pathname: '/test'},
+              state: 42,
+            },
+            {
+              historyKey: 'test2',
+              location: {pathname: '/xxx'},
+              state: 'foo',
+            },
+          );
 
         expect(location).toMatchObject({
           pathname: '/',
@@ -2604,7 +2610,8 @@ describe('defineHistoryService', () => {
             const sharedHistoryService = defineHistoryService({
               createRootLocation: jest.fn(),
               getConsumerPathFromRootLocation: jest.fn(),
-              createNewRootLocationForMultipleConsumers: createNewRootLocationForMultipleConsumersMock,
+              createNewRootLocationForMultipleConsumers:
+                createNewRootLocationForMultipleConsumersMock,
             }).create(mockEnv);
 
             return sharedHistoryService!['3.0.0'];
@@ -2636,9 +2643,10 @@ describe('defineHistoryService', () => {
             state: 42,
           };
 
-          const location = historyServiceTest1.createNewRootLocationForMultipleConsumers(
-            consumerLocation,
-          );
+          const location =
+            historyServiceTest1.createNewRootLocationForMultipleConsumers(
+              consumerLocation,
+            );
 
           const expectedRootLocation: RootLocation = {
             pathname: 'root-test',

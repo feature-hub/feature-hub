@@ -46,7 +46,7 @@ export interface FeatureAppDescriptor {
 export interface BaseFeatureAppContainerProps<
   TFeatureApp,
   TFeatureServices extends FeatureServices = FeatureServices,
-  TConfig = unknown
+  TConfig = unknown,
 > extends FeatureAppDescriptor {
   /**
    * The absolute or relative base URL of the Feature App's assets and/or BFF.
@@ -100,7 +100,7 @@ export interface BaseFeatureAppContainerProps<
 export type InternalFeatureAppContainerProps<
   TFeatureApp,
   TFeatureServices extends FeatureServices,
-  TConfig
+  TConfig,
 > = BaseFeatureAppContainerProps<TFeatureApp, TFeatureServices, TConfig> &
   Pick<FeatureHubContextConsumerValue, 'featureAppManager' | 'logger'> & {
     readonly parentFeatureApp?: FeatureAppDescriptor;
@@ -120,7 +120,7 @@ interface InternalFeatureAppContainerState<TFeatureApp extends FeatureApp> {
 export class InternalFeatureAppContainer<
   TFeatureApp extends FeatureApp,
   TFeatureServices extends FeatureServices = FeatureServices,
-  TConfig = unknown
+  TConfig = unknown,
 > extends React.PureComponent<
   InternalFeatureAppContainerProps<TFeatureApp, TFeatureServices, TConfig>,
   InternalFeatureAppContainerState<TFeatureApp>

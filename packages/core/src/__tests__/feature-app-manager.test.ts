@@ -45,9 +45,9 @@ describe('FeatureAppManager', () => {
     mockFeatureAppDefinition = {create: mockFeatureAppCreate};
     mockFeatureAppModule = {default: mockFeatureAppDefinition};
     mockModuleLoader = jest.fn(async () => mockFeatureAppModule);
-    mockExternalsValidator = ({validate: jest.fn()} as Partial<
-      ExternalsValidator
-    >) as ExternalsValidator;
+    mockExternalsValidator = {
+      validate: jest.fn(),
+    } as Partial<ExternalsValidator> as ExternalsValidator;
 
     featureAppManager = new FeatureAppManager(mockFeatureServiceRegistry, {
       logger,
@@ -63,9 +63,8 @@ describe('FeatureAppManager', () => {
     });
 
     it('logs an info message when the Feature App module was loaded', async () => {
-      const asyncFeatureAppDefinition = featureAppManager.getAsyncFeatureAppDefinition(
-        '/example.js',
-      );
+      const asyncFeatureAppDefinition =
+        featureAppManager.getAsyncFeatureAppDefinition('/example.js');
 
       expect(logger.info.mock.calls).toEqual([]);
 
@@ -79,9 +78,8 @@ describe('FeatureAppManager', () => {
     });
 
     it('returns an async value for a Feature App definition', async () => {
-      const asyncFeatureAppDefinition = featureAppManager.getAsyncFeatureAppDefinition(
-        '/example.js',
-      );
+      const asyncFeatureAppDefinition =
+        featureAppManager.getAsyncFeatureAppDefinition('/example.js');
 
       expect(asyncFeatureAppDefinition.value).toBeUndefined();
       expect(asyncFeatureAppDefinition.error).toBeUndefined();
@@ -121,19 +119,15 @@ describe('FeatureAppManager', () => {
         // correctly by the Feature App Manager.
         const url = '/example.js';
 
-        const asyncFeatureAppDefinitionA = featureAppManager.getAsyncFeatureAppDefinition(
-          url,
-          'a',
-        );
+        const asyncFeatureAppDefinitionA =
+          featureAppManager.getAsyncFeatureAppDefinition(url, 'a');
 
         const featureAppDefinitionA = await asyncFeatureAppDefinitionA.promise;
 
         expect(featureAppDefinitionA).toBe(mockFeatureAppDefinitionA);
 
-        const asyncFeatureAppDefinitionB = featureAppManager.getAsyncFeatureAppDefinition(
-          url,
-          'b',
-        );
+        const asyncFeatureAppDefinitionB =
+          featureAppManager.getAsyncFeatureAppDefinition(url, 'b');
 
         const featureAppDefinitionB = await asyncFeatureAppDefinitionB.promise;
 
@@ -207,9 +201,8 @@ describe('FeatureAppManager', () => {
 
     describe('for a known Feature App module url', () => {
       it('returns the same async Feature App definition', () => {
-        const asyncFeatureAppDefinition = featureAppManager.getAsyncFeatureAppDefinition(
-          '/example.js',
-        );
+        const asyncFeatureAppDefinition =
+          featureAppManager.getAsyncFeatureAppDefinition('/example.js');
 
         expect(
           featureAppManager.getAsyncFeatureAppDefinition('/example.js'),
@@ -234,9 +227,9 @@ describe('FeatureAppManager', () => {
         {baseUrl, config},
       );
 
-      expect(
-        mockFeatureServiceRegistry.bindFeatureServices.mock.calls,
-      ).toEqual([[mockFeatureAppDefinition, featureAppId, undefined]]);
+      expect(mockFeatureServiceRegistry.bindFeatureServices.mock.calls).toEqual(
+        [[mockFeatureAppDefinition, featureAppId, undefined]],
+      );
 
       const {featureServices} = mockFeatureServicesBinding;
 
@@ -849,9 +842,8 @@ describe('FeatureAppManager', () => {
     it('preloads a Feature App definition so that the scope is synchronously available', async () => {
       await featureAppManager.preloadFeatureApp('/example.js');
 
-      const asyncFeatureAppDefinition = featureAppManager.getAsyncFeatureAppDefinition(
-        '/example.js',
-      );
+      const asyncFeatureAppDefinition =
+        featureAppManager.getAsyncFeatureAppDefinition('/example.js');
 
       expect(asyncFeatureAppDefinition.value).toBe(mockFeatureAppDefinition);
     });
