@@ -10,7 +10,7 @@
     "@babel/core": "^7.23.0",
     "@babel/preset-react": "^7.22.15",
     "@babel/preset-typescript": "^7.23.0",
-    "@blueprintjs/core": "^3.10.0",
+    "@blueprintjs/core": "^5.0.0",
     "@feature-hub/async-ssr-manager": "^3.0.0",
     "@feature-hub/core": "^3.0.0",
     "@feature-hub/dom": "^3.0.0",
