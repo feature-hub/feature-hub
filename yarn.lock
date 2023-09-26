@@ -3661,13 +3661,13 @@
   resolved "https://registry.yarnpkg.com/@types/events/-/events-3.0.0.tgz#2862f3f58a9a7f7c3e78d79f130dd4d71c25c2a7"
   integrity sha512-EaObqwIvayI5a8dCzhFrjKzVwKLxjoG9T6Ppd5CEo07LRKfQ8Yokw54r5+Wq7FaBQ+yXRvQAYPrHwya1/UFt9g==
 
-"@types/expect-puppeteer@^3.3.0":
-  version "3.3.1"
-  resolved "https://registry.yarnpkg.com/@types/expect-puppeteer/-/expect-puppeteer-3.3.1.tgz#46e5944bf425b86ea13a563c7c8b86901414988d"
-  integrity sha512-3raSnf28NelDtv0ksvQPZs410taJZ4d70vA8sVzmbRPV04fpmQm9/BOxUCloETD/ZI1EXRpv0pzOQKhPTbm4jg==
+"@types/expect-puppeteer@^5.0.0":
+  version "5.0.4"
+  resolved "https://registry.yarnpkg.com/@types/expect-puppeteer/-/expect-puppeteer-5.0.4.tgz#094f8808ea66f4f79e2cc61baf60ed85f38fd1e4"
+  integrity sha512-0JwVVq5ia9ZFnyEVD/yos0dwr4hZPl88UywC/qq6H+gW6PKEkmKM3I4YbsF8mdte4pKxaIm+g7QTpOxmw3HEnw==
   dependencies:
     "@types/jest" "*"
-    "@types/puppeteer" "*"
+    "@types/puppeteer" "^5.4.0"
 
 "@types/express-serve-static-core@*":
   version "4.16.7"
@@ -3820,6 +3820,13 @@
   version "1.12.4"
   resolved "https://registry.yarnpkg.com/@types/puppeteer/-/puppeteer-1.12.4.tgz#8388efdb0b30a54a7e7c4831ca0d709191d77ff1"
   integrity sha512-aaGbJaJ9TuF9vZfTeoh876sBa+rYJWPwtsmHmYr28pGr42ewJnkDTq2aeSKEmS39SqUdkwLj73y/d7rBSp7mDQ==
+  dependencies:
+    "@types/node" "*"
+
+"@types/puppeteer@^5.4.0":
+  version "5.4.7"
+  resolved "https://registry.yarnpkg.com/@types/puppeteer/-/puppeteer-5.4.7.tgz#b8804737c62c6e236de0c03fa74f91c174bf96b6"
+  integrity sha512-JdGWZZYL0vKapXF4oQTC5hLVNfOgdPrqeZ1BiQnGk5cB7HeE91EWUiTdVSdQPobRN8rIcdffjiOgCYJ/S8QrnQ==
   dependencies:
     "@types/node" "*"
 
