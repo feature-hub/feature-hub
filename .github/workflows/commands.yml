@@ -22,14 +22,14 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Add comment reaction
-        uses: actions/github-script@v4
+        uses: actions/github-script@v6
         with:
           github-token: ${{ github.token }}
           result-encoding: string
           script: |
             const {comment, repository} = context.payload;
 
-            await github.reactions.createForIssueComment({
+            await github.rest.reactions.createForIssueComment({
               owner: repository.owner.login,
               repo: repository.name,
               comment_id: comment.id,
@@ -43,7 +43,7 @@ jobs:
           exit 1
 
       - name: Get PR Head SHA
-        uses: actions/github-script@v4
+        uses: actions/github-script@v6
         id: gitSha
         with:
           github-token: ${{ github.token }}
@@ -51,7 +51,7 @@ jobs:
           script: |
             const {issue, repository} = context.payload;
 
-            const pull_request = await github.pulls.get({
+            const pull_request = await github.rest.pulls.get({
               owner: repository.owner.login,
               repo: repository.name,
               pull_number: issue.number
@@ -96,13 +96,13 @@ jobs:
         run: yarn deploy --require-approval never
 
       - name: Add PR Comment
-        uses: actions/github-script@v4
+        uses: actions/github-script@v6
         with:
           github-token: ${{ github.token }}
           script: |
             const {issue, repository} = context.payload;
 
-            github.issues.createComment({
+            github.rest.issues.createComment({
               owner: repository.owner.login,
               repo: repository.name,
               issue_number: issue.number,
@@ -127,14 +127,14 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Add comment reaction
-        uses: actions/github-script@v4
+        uses: actions/github-script@v6
         with:
           github-token: ${{ github.token }}
           result-encoding: string
           script: |
             const {comment, repository} = context.payload;
 
-            await github.reactions.createForIssueComment({
+            await github.rest.reactions.createForIssueComment({
               owner: repository.owner.login,
               repo: repository.name,
               comment_id: comment.id,
@@ -148,7 +148,7 @@ jobs:
           exit 1
 
       - name: Get Git Ref
-        uses: actions/github-script@v4
+        uses: actions/github-script@v6
         id: gitRef
         with:
           github-token: ${{ github.token }}
@@ -156,7 +156,7 @@ jobs:
           script: |
             const {issue, repository} = context.payload;
 
-            const pull_request = await github.pulls.get({
+            const pull_request = await github.rest.pulls.get({
               owner: repository.owner.login,
               repo: repository.name,
               pull_number: issue.number
@@ -195,13 +195,13 @@ jobs:
           yarn lerna publish --conventional-commits --conventional-prerelease --preid ${{ steps.gitRef.outputs.result }}.${{ steps.gitRef.outputs.short }} --dist-tag ${{ steps.gitRef.outputs.result }} --no-git-tag-version --yes --no-verify-access
 
       - name: Add PR Comment
-        uses: actions/github-script@v4
+        uses: actions/github-script@v6
         with:
           github-token: ${{ github.token }}
           script: |
             const {issue, repository} = context.payload;
 
-            github.issues.createComment({
+            github.rest.issues.createComment({
               owner: repository.owner.login,
               repo: repository.name,
               issue_number: issue.number,
