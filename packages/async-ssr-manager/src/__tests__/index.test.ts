@@ -183,7 +183,9 @@ describe('defineAsyncSsrManager', () => {
       });
 
       describe('with an integrator, and a consumer that first schedules a rerender with a custom promise, awaits the promise, and then schedules a rerender with another promise', () => {
-        it('resolves with an html string after the second render pass', async (done) => {
+        it('resolves with an html string after the second render pass', async () => {
+          expect.assertions(2);
+
           const asyncSsrManagerIntegrator = asyncSsrManagerBinder(
             'test:integrator'
           ).featureService;
@@ -194,19 +196,17 @@ describe('defineAsyncSsrManager', () => {
           let renderPass = 0;
           let consumerResult = 0;
 
-          const mockRender = jest.fn(() => {
+          const mockRender = jest.fn(async () => {
             renderPass += 1;
 
             if (renderPass === 1) {
-              (async () => {
-                const promise1 = simulateAsyncOperation(1);
-                asyncSsrManagerConsumer.scheduleRerender(promise1);
-                consumerResult = await promise1;
+              const promise1 = simulateAsyncOperation(1);
+              asyncSsrManagerConsumer.scheduleRerender(promise1);
+              consumerResult = await promise1;
 
-                const promise2 = simulateAsyncOperation(2);
-                asyncSsrManagerConsumer.scheduleRerender(promise2);
-                consumerResult = await promise2;
-              })().catch(done.fail);
+              const promise2 = simulateAsyncOperation(2);
+              asyncSsrManagerConsumer.scheduleRerender(promise2);
+              consumerResult = await promise2;
             }
 
             return `render pass ${renderPass}, consumer result ${consumerResult}`;
@@ -218,8 +218,6 @@ describe('defineAsyncSsrManager', () => {
 
           expect(html).toEqual('render pass 2, consumer result 2');
           expect(mockRender).toHaveBeenCalledTimes(2);
-
-          done();
         });
       });
 

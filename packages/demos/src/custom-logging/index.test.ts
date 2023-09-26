@@ -29,7 +29,9 @@ describe('integration test: "custom logging"', () => {
     await browser.goto(`http://localhost:${port}`, 120000);
   });
 
-  afterAll((done) => server.close(done));
+  afterAll((done) => {
+    server.close(done);
+  });
 
   it('logs with the custom logger', async () => {
     const messages = await Promise.all(

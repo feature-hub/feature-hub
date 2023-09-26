@@ -25,15 +25,21 @@ describe('integration test: "dom integrator"', () => {
     await browser.goto(url, 120000);
   });
 
-  afterAll((done) => server.close(done));
+  afterAll((done) => {
+    server.close(done);
+  });
 
   describe('if the Feature App loads successfully', () => {
     it('renders the Feature App', async () => {
-      const handle = await page.evaluateHandle(
-        'document.querySelector("feature-app-loader").shadowRoot.querySelector("feature-app-container").shadowRoot'
+      const content = await page.evaluate(
+        () =>
+          document
+            .querySelector('feature-app-loader')
+            ?.shadowRoot?.querySelector('feature-app-container')?.shadowRoot
+            ?.textContent
       );
 
-      await expect(handle).toMatch('Hello, World!');
+      expect(content).toMatch('Hello, World!');
     });
   });
 
@@ -58,7 +64,10 @@ describe('integration test: "dom integrator"', () => {
 
     it('renders an error slot', async () => {
       const slotName = await interceptedPage.evaluate(
-        'document.querySelector("feature-app-loader").shadowRoot.querySelector("slot").name'
+        () =>
+          document
+            .querySelector('feature-app-loader')
+            ?.shadowRoot?.querySelector('slot')?.name
       );
 
       expect(slotName).toBe('error');
@@ -84,7 +93,10 @@ describe('integration test: "dom integrator"', () => {
 
     it('renders a loading slot', async () => {
       const slotName = await interceptedPage.evaluate(
-        'document.querySelector("feature-app-loader").shadowRoot.querySelector("slot").name'
+        () =>
+          document
+            .querySelector('feature-app-loader')
+            ?.shadowRoot?.querySelector('slot')?.name
       );
 
       expect(slotName).toBe('loading');

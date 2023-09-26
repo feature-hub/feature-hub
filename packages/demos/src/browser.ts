@@ -1,15 +1,12 @@
 import {Page} from 'puppeteer';
-import {UrlWithStringQuery, parse} from 'url';
 
 export class Browser {
   public constructor(private readonly defaultNavigationTimeout: number) {}
 
-  public async getUrl(): Promise<UrlWithStringQuery> {
-    return parse(await page.evaluate('location.href'));
-  }
-
   public async getPath(): Promise<string> {
-    return decodeURIComponent((await this.getUrl()).path || '');
+    const {pathname, search} = new URL(page.url());
+
+    return decodeURIComponent(pathname + search);
   }
 
   public async goto(
@@ -20,15 +17,15 @@ export class Browser {
   }
 
   public async reload(): Promise<void> {
-    await this.waitForNavigation(page.evaluate('location.reload()'));
+    await this.waitForNavigation(page.evaluate(() => location.reload()));
   }
 
   public async goBack(): Promise<void> {
-    await this.waitForNavigation(page.evaluate('history.back()'));
+    await this.waitForNavigation(page.evaluate(() => history.back()));
   }
 
   public async goForward(): Promise<void> {
-    await this.waitForNavigation(page.evaluate('history.forward()'));
+    await this.waitForNavigation(page.evaluate(() => history.forward()));
   }
 
   public async waitForNavigation(

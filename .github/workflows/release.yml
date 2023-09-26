@@ -4,6 +4,7 @@ on: workflow_dispatch
 jobs:
   release:
     runs-on: ubuntu-latest
+    name: Release
 
     steps:
       - name: Checkout
@@ -14,9 +15,9 @@ jobs:
           fetch-depth: 0
 
       - name: Setup node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
-          node-version: 14.x
+          node-version-file: '.node-version'
 
       - name: Install
         run: yarn install

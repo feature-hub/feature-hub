@@ -27,14 +27,16 @@ describe('integration test: "Feature App in Feature App"', () => {
     await browser.goto(`http://localhost:${port}`, 120000);
   });
 
-  afterAll((done) => server.close(done));
+  afterAll((done) => {
+    server.close(done);
+  });
 
   it('loads the server-side rendered HTML of the Feature App with another nested Feature App', async () => {
     // We need to disable JavaScript for this test to ensure that the server-rendered HTML is observed.
     await page.setJavaScriptEnabled(false);
     await browser.goto(url);
 
-    await expect(page).toMatch('Hello, World!');
+    expect(await page.content()).toMatch('Hello, World!');
 
     // Re-enable JavaScript to restore the default behavior for all other tests.
     await page.setJavaScriptEnabled(true);
@@ -42,7 +44,7 @@ describe('integration test: "Feature App in Feature App"', () => {
   });
 
   it('renders a Feature App with another nested Feature App', async () => {
-    await expect(page).toMatch('Hello, World!');
+    expect(await page.content()).toMatch('Hello, World!');
   });
 
   it("unmounts the nested Feature App when it has signaled that it's done", async () => {
@@ -51,6 +53,6 @@ describe('integration test: "Feature App in Feature App"', () => {
 
     await button.click();
 
-    await expect(page).toMatch('Bye!');
+    expect(await page.content()).toMatch('Bye!');
   });
 });

@@ -2,7 +2,7 @@
 
 module.exports = [
   {
-    path: 'lib/cjs/index.js',
-    limit: '3 KB',
+    path: 'lib/esm/index.js',
+    limit: '3.1 KB',
   },
 ];
