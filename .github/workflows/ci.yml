@@ -101,6 +101,7 @@ jobs:
         run: yarn verify
 
   size-limit:
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     env:
       CI: true
