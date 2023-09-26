@@ -17,7 +17,7 @@ function HelloWorldText({helloWorldService}: HelloWorldTextProps): JSX.Element {
 
   React.useEffect(
     () => helloWorldService.listen(() => setName(helloWorldService.name)),
-    [helloWorldService]
+    [helloWorldService],
   );
 
   return (

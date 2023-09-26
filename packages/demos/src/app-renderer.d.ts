@@ -19,5 +19,5 @@ export interface AppRendererResult {
 }
 
 export type AppRenderer = (
-  options: AppRendererOptions
+  options: AppRendererOptions,
 ) => Promise<AppRendererResult>;

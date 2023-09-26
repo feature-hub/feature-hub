@@ -79,7 +79,7 @@ export interface FeatureAppDefinition<
  */
 export type ModuleLoader = (
   url: string,
-  moduleType?: string
+  moduleType?: string,
 ) => Promise<unknown>;
 
 export interface FeatureAppScope<TFeatureApp> {
@@ -118,7 +118,7 @@ export interface FeatureAppScopeOptions<
    * A callback that is called before the Feature App is created.
    */
   readonly beforeCreate?: (
-    env: FeatureAppEnvironment<TFeatureServices, TConfig>
+    env: FeatureAppEnvironment<TFeatureServices, TConfig>,
   ) => void;
 
   /**
@@ -210,7 +210,7 @@ export class FeatureAppManager {
 
   public constructor(
     private readonly featureServiceRegistry: FeatureServiceRegistry,
-    private readonly options: FeatureAppManagerOptions = {}
+    private readonly options: FeatureAppManagerOptions = {},
   ) {
     this.logger = options.logger || console;
   }
@@ -236,7 +236,7 @@ export class FeatureAppManager {
    */
   public getAsyncFeatureAppDefinition(
     url: string,
-    moduleType?: string
+    moduleType?: string,
   ): AsyncValue<FeatureAppDefinition<unknown>> {
     const key = `${url}${moduleType}`;
     let asyncFeatureAppDefinition = this.asyncFeatureAppDefinitions.get(key);
@@ -244,7 +244,7 @@ export class FeatureAppManager {
     if (!asyncFeatureAppDefinition) {
       asyncFeatureAppDefinition = this.createAsyncFeatureAppDefinition(
         url,
-        moduleType
+        moduleType,
       );
 
       this.asyncFeatureAppDefinitions.set(key, asyncFeatureAppDefinition);
@@ -286,7 +286,7 @@ export class FeatureAppManager {
       TFeatureServices,
       TConfig
     >,
-    options: FeatureAppScopeOptions<TFeatureServices, TConfig> = {}
+    options: FeatureAppScopeOptions<TFeatureServices, TConfig> = {},
   ): FeatureAppScope<TFeatureApp> {
     const featureAppRetainer = this.getFeatureAppRetainer<
       TFeatureApp,
@@ -303,8 +303,8 @@ export class FeatureAppManager {
         if (released) {
           this.logger.warn(
             `The Feature App with the ID ${JSON.stringify(
-              featureAppId
-            )} has already been released for this scope.`
+              featureAppId,
+            )} has already been released for this scope.`,
           );
         } else {
           released = true;
@@ -331,14 +331,14 @@ export class FeatureAppManager {
    */
   public async preloadFeatureApp(
     url: string,
-    moduleType?: string
+    moduleType?: string,
   ): Promise<void> {
     await this.getAsyncFeatureAppDefinition(url, moduleType).promise;
   }
 
   private createAsyncFeatureAppDefinition(
     url: string,
-    moduleType?: string
+    moduleType?: string,
   ): AsyncValue<FeatureAppDefinition<unknown>> {
     const {moduleLoader: loadModule} = this.options;
 
@@ -353,29 +353,29 @@ export class FeatureAppManager {
             Messages.invalidFeatureAppModule(
               url,
               moduleType,
-              this.options.moduleLoader
-            )
+              this.options.moduleLoader,
+            ),
           );
         }
 
         this.logger.info(
           `The Feature App module at the url ${JSON.stringify(
-            url
-          )} has been successfully loaded.`
+            url,
+          )} has been successfully loaded.`,
         );
 
         return featureAppModule.default;
-      })
+      }),
     );
   }
 
   private registerOwnFeatureServices(
     featureAppId: string,
-    featureAppDefinition: FeatureAppDefinition<unknown>
+    featureAppDefinition: FeatureAppDefinition<unknown>,
   ): void {
     if (
       this.featureAppDefinitionsWithRegisteredOwnFeatureServices.has(
-        featureAppDefinition
+        featureAppDefinition,
       )
     ) {
       return;
@@ -384,12 +384,12 @@ export class FeatureAppManager {
     if (featureAppDefinition.ownFeatureServiceDefinitions) {
       this.featureServiceRegistry.registerFeatureServices(
         featureAppDefinition.ownFeatureServiceDefinitions,
-        featureAppId
+        featureAppId,
       );
     }
 
     this.featureAppDefinitionsWithRegisteredOwnFeatureServices.add(
-      featureAppDefinition
+      featureAppDefinition,
     );
   }
 
@@ -404,7 +404,7 @@ export class FeatureAppManager {
       TFeatureServices,
       TConfig
     >,
-    options: FeatureAppScopeOptions<TFeatureServices, TConfig>
+    options: FeatureAppScopeOptions<TFeatureServices, TConfig>,
   ): FeatureAppRetainer<TFeatureApp> {
     let featureAppRetainer = this.featureAppRetainers.get(featureAppId);
 
@@ -416,7 +416,7 @@ export class FeatureAppManager {
       featureAppRetainer = this.createFeatureAppRetainer(
         featureAppDefinition,
         featureAppId,
-        options
+        options,
       );
     }
 
@@ -434,7 +434,7 @@ export class FeatureAppManager {
       TConfig
     >,
     featureAppId: string,
-    options: FeatureAppScopeOptions<TFeatureServices, TConfig>
+    options: FeatureAppScopeOptions<TFeatureServices, TConfig>,
   ): FeatureAppRetainer<TFeatureApp> {
     this.validateExternals(featureAppDefinition);
 
@@ -450,7 +450,7 @@ export class FeatureAppManager {
     const binding = this.featureServiceRegistry.bindFeatureServices(
       featureAppDefinition,
       featureAppId,
-      featureAppName
+      featureAppName,
     );
 
     try {
@@ -480,8 +480,8 @@ export class FeatureAppManager {
 
       this.logger.info(
         `The Feature App with the ID ${JSON.stringify(
-          featureAppId
-        )} has been successfully created.`
+          featureAppId,
+        )} has been successfully created.`,
       );
 
       let retainCount = 1;
@@ -514,7 +514,7 @@ export class FeatureAppManager {
   }
 
   private validateExternals(
-    featureAppDefinition: FeatureServiceConsumerDefinition
+    featureAppDefinition: FeatureServiceConsumerDefinition,
   ): void {
     const {externalsValidator} = this.options;
 

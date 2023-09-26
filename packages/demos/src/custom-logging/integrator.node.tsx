@@ -19,7 +19,7 @@ export default async function renderApp({
     providedExternals: {react: process.env.REACT_VERSION as string},
     featureServiceDefinitions: [
       defineLogger((consumerId, consumerName) =>
-        logger.child({consumerId, consumerName})
+        logger.child({consumerId, consumerName}),
       ),
     ],
   });
@@ -29,7 +29,7 @@ export default async function renderApp({
   const html = ReactDOM.renderToString(
     <FeatureHubContextProvider value={{featureAppManager, logger}}>
       <App useConsumerName={useConsumerName} />
-    </FeatureHubContextProvider>
+    </FeatureHubContextProvider>,
   );
 
   return {html};

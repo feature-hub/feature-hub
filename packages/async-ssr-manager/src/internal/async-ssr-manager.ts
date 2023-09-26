@@ -13,17 +13,17 @@ export class AsyncSsrManager implements AsyncSsrManagerV1 {
 
   public constructor(
     private readonly context: AsyncSsrManagerContext,
-    private readonly timeout?: number
+    private readonly timeout?: number,
   ) {}
 
   public async renderUntilCompleted(
-    render: () => Promise<string> | string
+    render: () => Promise<string> | string,
   ): Promise<string> {
     const renderPromise = this.renderingLoop(render);
 
     if (typeof this.timeout !== 'number') {
       this.context.logger.warn(
-        'No timeout is configured for the Async SSR Manager. This could lead to unexpectedly long render times or, in the worst case, never resolving render calls!'
+        'No timeout is configured for the Async SSR Manager. This could lead to unexpectedly long render times or, in the worst case, never resolving render calls!',
       );
 
       return renderPromise;
@@ -33,13 +33,13 @@ export class AsyncSsrManager implements AsyncSsrManagerV1 {
   }
 
   public scheduleRerender(
-    asyncOperation: Promise<unknown> = Promise.resolve()
+    asyncOperation: Promise<unknown> = Promise.resolve(),
   ): void {
     this.asyncOperations.add(asyncOperation);
   }
 
   private async renderingLoop(
-    render: () => Promise<string> | string
+    render: () => Promise<string> | string,
   ): Promise<string> {
     let html = await render();
 
@@ -50,7 +50,7 @@ export class AsyncSsrManager implements AsyncSsrManagerV1 {
         // current asynchronous operations are running.
 
         const asyncOperationsSnapshot = Array.from(
-          this.asyncOperations.values()
+          this.asyncOperations.values(),
         );
 
         this.asyncOperations.clear();

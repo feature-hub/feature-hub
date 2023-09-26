@@ -45,7 +45,7 @@ describe('defineHistoryService', () => {
       createHistoryServiceBinder = () => {
         const sharedHistoryService = defineHistoryService(
           createRootLocationTransformer({consumerPathsQueryParamName}),
-          {mode: 'static'}
+          {mode: 'static'},
         ).create(mockEnv);
 
         return sharedHistoryService!['1.0.0'];
@@ -85,7 +85,7 @@ describe('defineHistoryService', () => {
           url: '/example',
           cookies: {},
           headers: {},
-        })
+        }),
       );
 
       afterEach(destroyHistories);
@@ -94,8 +94,8 @@ describe('defineHistoryService', () => {
         it('throws an error', () => {
           expect(() => createHistories(undefined)).toThrowError(
             new Error(
-              'Static history can not be created without a server request.'
-            )
+              'Static history can not be created without a server request.',
+            ),
           );
         });
       });
@@ -103,11 +103,11 @@ describe('defineHistoryService', () => {
       describe('when called multiple times for the same consumer', () => {
         it('returns the same instance and logs a warning', () => {
           expect(historyBinding1.featureService.createStaticHistory()).toEqual(
-            history1
+            history1,
           );
 
           expect(stubbedLogger.warn).toHaveBeenCalledWith(
-            'createStaticHistory was called multiple times by consumer "test1". Returning the same history instance as before.'
+            'createStaticHistory was called multiple times by consumer "test1". Returning the same history instance as before.',
           );
         });
       });
@@ -259,7 +259,7 @@ describe('defineHistoryService', () => {
           expect(historyService1.staticRootLocation).toBe(rootLocation);
 
           expect(stubbedLogger.warn).toHaveBeenCalledWith(
-            'history.go() is not supported.'
+            'history.go() is not supported.',
           );
         });
       });
@@ -275,7 +275,7 @@ describe('defineHistoryService', () => {
           expect(historyService1.staticRootLocation).toBe(rootLocation);
 
           expect(stubbedLogger.warn).toHaveBeenCalledWith(
-            'history.goBack() is not supported.'
+            'history.goBack() is not supported.',
           );
         });
       });
@@ -291,7 +291,7 @@ describe('defineHistoryService', () => {
           expect(historyService1.staticRootLocation).toBe(rootLocation);
 
           expect(stubbedLogger.warn).toHaveBeenCalledWith(
-            'history.goForward() is not supported.'
+            'history.goForward() is not supported.',
           );
         });
       });
@@ -310,7 +310,7 @@ describe('defineHistoryService', () => {
           expect(promptHookSpy).not.toHaveBeenCalled();
 
           expect(stubbedLogger.warn).toHaveBeenCalledWith(
-            'history.block() is not supported.'
+            'history.block() is not supported.',
           );
         });
 
@@ -332,7 +332,7 @@ describe('defineHistoryService', () => {
           expect(listenSpy).not.toHaveBeenCalled();
 
           expect(stubbedLogger.warn).toHaveBeenCalledWith(
-            'history.listen() is not supported.'
+            'history.listen() is not supported.',
           );
         });
 
@@ -354,8 +354,8 @@ describe('defineHistoryService', () => {
           expect(href).toBe(
             createUrl(
               {test1: '/foo', test2: '/bar?a=b'},
-              {pathname: '/example', relative: true}
-            )
+              {pathname: '/example', relative: true},
+            ),
           );
         });
 
@@ -368,8 +368,8 @@ describe('defineHistoryService', () => {
           expect(href).toBe(
             createUrl(
               {test1: '/foo', test2: '/bar'},
-              {pathname: '/example', relative: true}
-            )
+              {pathname: '/example', relative: true},
+            ),
           );
         });
       });
@@ -402,7 +402,7 @@ describe('defineHistoryService', () => {
         staticHistory.go(-1);
 
         expect(consoleWarnSpy).toHaveBeenCalledWith(
-          'history.go() is not supported.'
+          'history.go() is not supported.',
         );
       });
     });
@@ -444,7 +444,7 @@ describe('defineHistoryService', () => {
       createHistoryServiceBinder = () => {
         const sharedHistoryService = defineHistoryService(
           createRootLocationTransformer({consumerPathsQueryParamName}),
-          {mode: 'static'}
+          {mode: 'static'},
         ).create(mockEnv);
 
         return sharedHistoryService!['2.0.0'];
@@ -458,8 +458,8 @@ describe('defineHistoryService', () => {
         it('throws an error', () => {
           expect(() => createHistories(undefined)).toThrowError(
             new Error(
-              'Static history can not be created without a server request.'
-            )
+              'Static history can not be created without a server request.',
+            ),
           );
         });
       });
@@ -622,7 +622,7 @@ describe('defineHistoryService', () => {
           expect(historyService1.rootHistory.location).toBe(rootLocation);
 
           expect(stubbedLogger.warn).toHaveBeenCalledWith(
-            'history.go() is not supported.'
+            'history.go() is not supported.',
           );
         });
       });
@@ -638,7 +638,7 @@ describe('defineHistoryService', () => {
           expect(historyService1.rootHistory.location).toBe(rootLocation);
 
           expect(stubbedLogger.warn).toHaveBeenCalledWith(
-            'history.goBack() is not supported.'
+            'history.goBack() is not supported.',
           );
         });
       });
@@ -654,7 +654,7 @@ describe('defineHistoryService', () => {
           expect(historyService1.rootHistory.location).toBe(rootLocation);
 
           expect(stubbedLogger.warn).toHaveBeenCalledWith(
-            'history.goForward() is not supported.'
+            'history.goForward() is not supported.',
           );
         });
       });
@@ -673,7 +673,7 @@ describe('defineHistoryService', () => {
           expect(promptHookSpy).not.toHaveBeenCalled();
 
           expect(stubbedLogger.warn).toHaveBeenCalledWith(
-            'history.block() is not supported.'
+            'history.block() is not supported.',
           );
         });
 
@@ -695,7 +695,7 @@ describe('defineHistoryService', () => {
           expect(listenSpy).not.toHaveBeenCalled();
 
           expect(stubbedLogger.warn).toHaveBeenCalledWith(
-            'history.listen() is not supported.'
+            'history.listen() is not supported.',
           );
         });
 
@@ -717,8 +717,8 @@ describe('defineHistoryService', () => {
           expect(href).toBe(
             createUrl(
               {test1: '/foo', test2: '/bar?a=b'},
-              {pathname: '/example', relative: true}
-            )
+              {pathname: '/example', relative: true},
+            ),
           );
         });
 
@@ -731,8 +731,8 @@ describe('defineHistoryService', () => {
           expect(href).toBe(
             createUrl(
               {test1: '/foo', test2: '/bar'},
-              {pathname: '/example', relative: true}
-            )
+              {pathname: '/example', relative: true},
+            ),
           );
         });
       });
@@ -815,7 +815,7 @@ describe('defineHistoryService', () => {
         staticHistory.go(-1);
 
         expect(consoleWarnSpy).toHaveBeenCalledWith(
-          'history.go() is not supported.'
+          'history.go() is not supported.',
         );
       });
     });
@@ -857,7 +857,7 @@ describe('defineHistoryService', () => {
       createHistoryServiceBinder = () => {
         const sharedHistoryService = defineHistoryService(
           createRootLocationTransformer({consumerPathsQueryParamName}),
-          {mode: 'static'}
+          {mode: 'static'},
         ).create(mockEnv);
 
         return sharedHistoryService!['3.0.0'];
@@ -871,8 +871,8 @@ describe('defineHistoryService', () => {
         it('throws an error', () => {
           expect(() => createHistories(undefined)).toThrowError(
             new Error(
-              'Static history can not be created without a server request.'
-            )
+              'Static history can not be created without a server request.',
+            ),
           );
         });
       });
@@ -1019,7 +1019,7 @@ describe('defineHistoryService', () => {
           expect(historyService1.rootHistory.location).toBe(rootLocation);
 
           expect(stubbedLogger.warn).toHaveBeenCalledWith(
-            'history.go() is not supported.'
+            'history.go() is not supported.',
           );
         });
       });
@@ -1035,7 +1035,7 @@ describe('defineHistoryService', () => {
           expect(historyService1.rootHistory.location).toBe(rootLocation);
 
           expect(stubbedLogger.warn).toHaveBeenCalledWith(
-            'history.back() is not supported.'
+            'history.back() is not supported.',
           );
         });
       });
@@ -1051,7 +1051,7 @@ describe('defineHistoryService', () => {
           expect(historyService1.rootHistory.location).toBe(rootLocation);
 
           expect(stubbedLogger.warn).toHaveBeenCalledWith(
-            'history.forward() is not supported.'
+            'history.forward() is not supported.',
           );
         });
       });
@@ -1070,7 +1070,7 @@ describe('defineHistoryService', () => {
           expect(promptHookSpy).not.toHaveBeenCalled();
 
           expect(stubbedLogger.warn).toHaveBeenCalledWith(
-            'history.block() is not supported.'
+            'history.block() is not supported.',
           );
         });
 
@@ -1092,7 +1092,7 @@ describe('defineHistoryService', () => {
           expect(listenSpy).not.toHaveBeenCalled();
 
           expect(stubbedLogger.warn).toHaveBeenCalledWith(
-            'history.listen() is not supported.'
+            'history.listen() is not supported.',
           );
         });
 
@@ -1114,8 +1114,8 @@ describe('defineHistoryService', () => {
           expect(href).toBe(
             createUrl(
               {test1: '/foo', test2: '/bar?a=b'},
-              {pathname: '/example', relative: true}
-            )
+              {pathname: '/example', relative: true},
+            ),
           );
         });
 
@@ -1128,8 +1128,8 @@ describe('defineHistoryService', () => {
           expect(href).toBe(
             createUrl(
               {test1: '/foo', test2: '/bar'},
-              {pathname: '/example', relative: true}
-            )
+              {pathname: '/example', relative: true},
+            ),
           );
         });
       });
@@ -1196,7 +1196,7 @@ describe('defineHistoryService', () => {
         staticHistory.go(-1);
 
         expect(consoleWarnSpy).toHaveBeenCalledWith(
-          'history.go() is not supported.'
+          'history.go() is not supported.',
         );
       });
     });

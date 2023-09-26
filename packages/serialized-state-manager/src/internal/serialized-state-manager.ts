@@ -6,7 +6,7 @@ export class SerializedStateManager implements SerializedStateManagerV1 {
   public constructor(
     private readonly consumerId: string,
     private readonly serverSideStateManager: ServerSideStateManager,
-    private readonly clientSideStateManager: ClientSideStateManager
+    private readonly clientSideStateManager: ClientSideStateManager,
   ) {}
 
   public register(serializeState: () => string): void {

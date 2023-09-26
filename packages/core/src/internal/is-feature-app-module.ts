@@ -6,7 +6,7 @@ export interface FeatureAppModule {
 
 function isFeatureAppDefinition(
   // tslint:disable-next-line:no-any
-  maybeFeatureAppDefinition: any
+  maybeFeatureAppDefinition: any,
 ): maybeFeatureAppDefinition is FeatureAppDefinition<unknown> {
   if (
     typeof maybeFeatureAppDefinition !== 'object' ||
@@ -24,13 +24,13 @@ function isFeatureAppDefinition(
 
 export function isFeatureAppModule(
   // tslint:disable-next-line:no-any
-  maybeFeatureAppModule: any
+  maybeFeatureAppModule: any,
 ): maybeFeatureAppModule is FeatureAppModule {
   if (typeof maybeFeatureAppModule !== 'object' || !maybeFeatureAppModule) {
     return false;
   }
 
   return isFeatureAppDefinition(
-    (maybeFeatureAppModule as FeatureAppModule).default
+    (maybeFeatureAppModule as FeatureAppModule).default,
   );
 }

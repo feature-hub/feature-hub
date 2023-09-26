@@ -15,13 +15,13 @@ export interface CreateHistoryServiceV1BinderOptions {
 export function createHistoryServiceV1Binder(
   context: HistoryServiceContext,
   historyMultiplexers: HistoryMultiplexers,
-  options: CreateHistoryServiceV1BinderOptions
+  options: CreateHistoryServiceV1BinderOptions,
 ): FeatureServiceBinder<HistoryServiceV1> {
   const {getHistoryKey} = options;
 
   return (
     consumerId,
-    consumerName
+    consumerName,
   ): FeatureServiceBinding<HistoryServiceV1> => {
     const historyKey = getHistoryKey({consumerId, consumerName});
 
@@ -34,14 +34,14 @@ export function createHistoryServiceV1Binder(
         if (browserConsumerHistory) {
           context.logger.warn(
             `createBrowserHistory was called multiple times by consumer ${JSON.stringify(
-              consumerId
-            )}. Returning the same history instance as before.`
+              consumerId,
+            )}. Returning the same history instance as before.`,
           );
         } else {
           const browserConsumerHistoryV5 = new BrowserConsumerHistory(
             context,
             historyKey,
-            historyMultiplexers.browserHistoryMultiplexer
+            historyMultiplexers.browserHistoryMultiplexer,
           );
 
           browserConsumerHistoryDestroy = () =>
@@ -49,7 +49,7 @@ export function createHistoryServiceV1Binder(
 
           browserConsumerHistory = createHistoryV4Adapter(
             context,
-            browserConsumerHistoryV5
+            browserConsumerHistoryV5,
           );
         }
 
@@ -60,8 +60,8 @@ export function createHistoryServiceV1Binder(
         if (staticConsumerHistory) {
           context.logger.warn(
             `createStaticHistory was called multiple times by consumer ${JSON.stringify(
-              consumerId
-            )}. Returning the same history instance as before.`
+              consumerId,
+            )}. Returning the same history instance as before.`,
           );
         } else {
           staticConsumerHistory = createHistoryV4Adapter(
@@ -69,8 +69,8 @@ export function createHistoryServiceV1Binder(
             new StaticConsumerHistory(
               context,
               historyKey,
-              historyMultiplexers.staticHistoryMultiplexer
-            )
+              historyMultiplexers.staticHistoryMultiplexer,
+            ),
           );
         }
 

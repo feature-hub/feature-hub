@@ -127,17 +127,17 @@ describe('FeatureServiceRegistry', () => {
     it('registers the Feature Services "a", "b", "c" one after the other', () => {
       featureServiceRegistry.registerFeatureServices(
         [providerDefinitionA],
-        'test'
+        'test',
       );
 
       featureServiceRegistry.registerFeatureServices(
         [providerDefinitionB],
-        'test'
+        'test',
       );
 
       featureServiceRegistry.registerFeatureServices(
         [providerDefinitionC],
-        'test'
+        'test',
       );
 
       testRegistrationOrderABC();
@@ -146,7 +146,7 @@ describe('FeatureServiceRegistry', () => {
     it('registers the Feature Services "a", "b", "c" all at once in topologically sorted order', () => {
       featureServiceRegistry.registerFeatureServices(
         [providerDefinitionB, providerDefinitionC, providerDefinitionA],
-        'test'
+        'test',
       );
 
       testRegistrationOrderABC();
@@ -155,12 +155,12 @@ describe('FeatureServiceRegistry', () => {
     it('does not register the already existing Feature Service "b"', () => {
       featureServiceRegistry.registerFeatureServices(
         [providerDefinitionA, providerDefinitionB],
-        'test'
+        'test',
       );
 
       featureServiceRegistry.registerFeatureServices(
         [providerDefinitionB],
-        'test'
+        'test',
       );
 
       expect(providerDefinitionB.create.mock.calls).toEqual([
@@ -194,7 +194,7 @@ describe('FeatureServiceRegistry', () => {
 
       featureServiceRegistry.registerFeatureServices(
         [providerDefinitionA],
-        'test'
+        'test',
       );
 
       expect(providerDefinitionA.create.mock.calls).toEqual([
@@ -212,12 +212,12 @@ describe('FeatureServiceRegistry', () => {
       expect(() =>
         featureServiceRegistry.registerFeatureServices(
           [providerDefinitionC],
-          'test'
-        )
+          'test',
+        ),
       ).toThrowError(
         new Error(
-          'The required Feature Service "a" is not registered and therefore could not be bound to consumer "c".'
-        )
+          'The required Feature Service "a" is not registered and therefore could not be bound to consumer "c".',
+        ),
       );
     });
 
@@ -231,8 +231,8 @@ describe('FeatureServiceRegistry', () => {
       expect(() =>
         featureServiceRegistry.registerFeatureServices(
           [providerDefinitionB],
-          'test'
-        )
+          'test',
+        ),
       ).not.toThrowError();
 
       expect(logger.info.mock.calls).toEqual([
@@ -255,12 +255,12 @@ describe('FeatureServiceRegistry', () => {
       expect(() =>
         featureServiceRegistry.registerFeatureServices(
           [providerDefinitionA, stateProviderD],
-          'test'
-        )
+          'test',
+        ),
       ).toThrowError(
         new Error(
-          'The required Feature Service "a" in the unsupported version range "^2.0.0" could not be bound to consumer "d". The supported versions are ["1.1.0"].'
-        )
+          'The required Feature Service "a" in the unsupported version range "^2.0.0" could not be bound to consumer "d". The supported versions are ["1.1.0"].',
+        ),
       );
     });
 
@@ -274,8 +274,8 @@ describe('FeatureServiceRegistry', () => {
       expect(() =>
         featureServiceRegistry.registerFeatureServices(
           [providerDefinitionA, stateProviderD],
-          'test'
-        )
+          'test',
+        ),
       ).not.toThrowError();
 
       expect(logger.info.mock.calls).toEqual([
@@ -301,12 +301,12 @@ describe('FeatureServiceRegistry', () => {
       expect(() =>
         featureServiceRegistry.registerFeatureServices(
           [providerDefinitionA, stateProviderDefinitionD],
-          'test'
-        )
+          'test',
+        ),
       ).toThrowError(
         new Error(
-          'The required Feature Service "a" in an invalid version could not be bound to consumer "d".'
-        )
+          'The required Feature Service "a" in an invalid version could not be bound to consumer "d".',
+        ),
       );
     });
 
@@ -320,8 +320,8 @@ describe('FeatureServiceRegistry', () => {
       expect(() =>
         featureServiceRegistry.registerFeatureServices(
           [providerDefinitionA, stateProviderDefinitionD],
-          'test'
-        )
+          'test',
+        ),
       ).not.toThrowError();
 
       expect(logger.info.mock.calls).toEqual([
@@ -346,12 +346,12 @@ describe('FeatureServiceRegistry', () => {
       expect(() =>
         featureServiceRegistry.registerFeatureServices(
           [stateProviderDefinitionD],
-          'test'
-        )
+          'test',
+        ),
       ).toThrowError(
         new Error(
-          'The Feature Service "d" could not be registered by registrant "test" because it defines the invalid version "2.0".'
-        )
+          'The Feature Service "d" could not be registered by registrant "test" because it defines the invalid version "2.0".',
+        ),
       );
     });
 
@@ -372,7 +372,7 @@ describe('FeatureServiceRegistry', () => {
           expect(() => {
             featureServiceRegistry.registerFeatureServices(
               [providerDefinitionA],
-              'test'
+              'test',
             );
           }).not.toThrowError();
         });
@@ -411,7 +411,7 @@ describe('FeatureServiceRegistry', () => {
           try {
             featureServiceRegistry.registerFeatureServices(
               [providerDefinitionA],
-              'test'
+              'test',
             );
           } catch {}
 
@@ -424,7 +424,7 @@ describe('FeatureServiceRegistry', () => {
           expect(() => {
             featureServiceRegistry.registerFeatureServices(
               [providerDefinitionA],
-              'test'
+              'test',
             );
           }).toThrowError(mockError);
         });
@@ -446,7 +446,7 @@ describe('FeatureServiceRegistry', () => {
           try {
             featureServiceRegistry.registerFeatureServices(
               [providerDefinitionA],
-              'test'
+              'test',
             );
           } catch {}
 
@@ -459,7 +459,7 @@ describe('FeatureServiceRegistry', () => {
           expect(() => {
             featureServiceRegistry.registerFeatureServices(
               [providerDefinitionA],
-              'test'
+              'test',
             );
           }).not.toThrowError();
         });
@@ -469,7 +469,7 @@ describe('FeatureServiceRegistry', () => {
         it('does not call the provided ExternalsValidator', () => {
           featureServiceRegistry.registerFeatureServices(
             [providerDefinitionA],
-            'test'
+            'test',
           );
 
           expect(mockExternalsValidator.validate).not.toHaveBeenCalled();
@@ -479,7 +479,7 @@ describe('FeatureServiceRegistry', () => {
           expect(() => {
             featureServiceRegistry.registerFeatureServices(
               [providerDefinitionA],
-              'test'
+              'test',
             );
           }).not.toThrowError();
         });
@@ -503,7 +503,7 @@ describe('FeatureServiceRegistry', () => {
 
         featureServiceRegistry.registerFeatureServices(
           [providerDefinitionA],
-          'test'
+          'test',
         );
 
         expect(binderA.mock.calls).toEqual([]);
@@ -511,8 +511,8 @@ describe('FeatureServiceRegistry', () => {
         expect(
           featureServiceRegistry.bindFeatureServices(
             {dependencies: {featureServices: {a: '^1.0.0'}}},
-            'foo'
-          )
+            'foo',
+          ),
         ).toEqual({
           featureServices: {a: featureServiceA},
           unbind: expect.any(Function),
@@ -528,7 +528,7 @@ describe('FeatureServiceRegistry', () => {
 
         featureServiceRegistry.registerFeatureServices(
           [providerDefinitionA],
-          'test'
+          'test',
         );
 
         expect(binderA.mock.calls).toEqual([]);
@@ -536,8 +536,8 @@ describe('FeatureServiceRegistry', () => {
         expect(
           featureServiceRegistry.bindFeatureServices(
             {dependencies: {featureServices: {a: '~1.0.0'}}},
-            'foo'
-          )
+            'foo',
+          ),
         ).toEqual({
           featureServices: {a: featureServiceA},
           unbind: expect.any(Function),
@@ -553,7 +553,7 @@ describe('FeatureServiceRegistry', () => {
 
         featureServiceRegistry.registerFeatureServices(
           [providerDefinitionA],
-          'test'
+          'test',
         );
 
         expect(binderA.mock.calls).toEqual([]);
@@ -561,8 +561,8 @@ describe('FeatureServiceRegistry', () => {
         expect(
           featureServiceRegistry.bindFeatureServices(
             {dependencies: {featureServices: {a: '1.0.0'}}},
-            'foo'
-          )
+            'foo',
+          ),
         ).toEqual({
           featureServices: {a: featureServiceA},
           unbind: expect.any(Function),
@@ -580,7 +580,7 @@ describe('FeatureServiceRegistry', () => {
 
         featureServiceRegistry.registerFeatureServices(
           [providerDefinitionA],
-          'test'
+          'test',
         );
 
         expect(binderA.mock.calls).toEqual([]);
@@ -588,8 +588,8 @@ describe('FeatureServiceRegistry', () => {
         expect(
           featureServiceRegistry.bindFeatureServices(
             {optionalDependencies: {featureServices: {a: '1.1.0'}}},
-            'foo'
-          )
+            'foo',
+          ),
         ).toEqual({featureServices: {}, unbind: expect.any(Function)});
 
         expect(binderA.mock.calls).toEqual([]);
@@ -603,7 +603,7 @@ describe('FeatureServiceRegistry', () => {
 
           featureServiceRegistry.registerFeatureServices(
             [providerDefinitionA],
-            'test'
+            'test',
           );
 
           expect(binderA.mock.calls).toEqual([]);
@@ -615,8 +615,8 @@ describe('FeatureServiceRegistry', () => {
                   featureServices: {b: '1.0.0', a: '1.1.0'},
                 },
               },
-              'foo'
-            )
+              'foo',
+            ),
           ).toEqual({
             featureServices: {a: featureServiceA},
             unbind: expect.any(Function),
@@ -632,7 +632,7 @@ describe('FeatureServiceRegistry', () => {
 
           featureServiceRegistry.registerFeatureServices(
             [providerDefinitionA],
-            'test'
+            'test',
           );
 
           expect(binderA.mock.calls).toEqual([]);
@@ -644,8 +644,8 @@ describe('FeatureServiceRegistry', () => {
                   featureServices: {a: '1.1.0', b: '1.0.0'},
                 },
               },
-              'foo'
-            )
+              'foo',
+            ),
           ).toEqual({
             featureServices: {a: featureServiceA},
             unbind: expect.any(Function),
@@ -661,7 +661,7 @@ describe('FeatureServiceRegistry', () => {
 
           featureServiceRegistry.registerFeatureServices(
             [providerDefinitionA, providerDefinitionB],
-            'test'
+            'test',
           );
 
           expect(binderA.mock.calls).toEqual([['b', undefined]]);
@@ -673,8 +673,8 @@ describe('FeatureServiceRegistry', () => {
                   featureServices: {a: '1.1.0', b: '^1.0.0'},
                 },
               },
-              'foo'
-            )
+              'foo',
+            ),
           ).toEqual({
             featureServices: {a: featureServiceA, b: featureServiceB},
             unbind: expect.any(Function),
@@ -696,15 +696,15 @@ describe('FeatureServiceRegistry', () => {
 
         featureServiceRegistry.registerFeatureServices(
           [providerDefinitionA, providerDefinitionB],
-          'testId'
+          'testId',
         );
 
         expect(
           featureServiceRegistry.bindFeatureServices(
             {dependencies: {featureServices: {a: '^1.0.0', b: '^1.0.0'}}},
             'testId',
-            'testName'
-          )
+            'testName',
+          ),
         ).toEqual({
           featureServices: {a: featureServiceA, b: featureServiceB},
           unbind: expect.any(Function),
@@ -723,11 +723,11 @@ describe('FeatureServiceRegistry', () => {
       featureServiceRegistry.bindFeatureServices({}, 'foo');
 
       expect(() =>
-        featureServiceRegistry.bindFeatureServices({}, 'foo')
+        featureServiceRegistry.bindFeatureServices({}, 'foo'),
       ).toThrowError(
         new Error(
-          'All required Feature Services are already bound to consumer "foo".'
-        )
+          'All required Feature Services are already bound to consumer "foo".',
+        ),
       );
     });
 
@@ -735,7 +735,7 @@ describe('FeatureServiceRegistry', () => {
       it('unbinds the consumer', () => {
         const bindings = featureServiceRegistry.bindFeatureServices(
           providerDefinitionA,
-          providerDefinitionA.id
+          providerDefinitionA.id,
         );
 
         bindings.unbind();
@@ -743,8 +743,8 @@ describe('FeatureServiceRegistry', () => {
         expect(() =>
           featureServiceRegistry.bindFeatureServices(
             providerDefinitionA,
-            providerDefinitionA.id
-          )
+            providerDefinitionA.id,
+          ),
         ).not.toThrowError();
       });
 
@@ -761,7 +761,7 @@ describe('FeatureServiceRegistry', () => {
 
         featureServiceRegistry.registerFeatureServices(
           [providerDefinitionA, providerDefinitionB, providerDefinitionC],
-          'test'
+          'test',
         );
 
         const bindings = featureServiceRegistry.bindFeatureServices(
@@ -770,7 +770,7 @@ describe('FeatureServiceRegistry', () => {
               featureServices: {a: '1.1.0', b: '1.0.0', c: '2.0.0'},
             },
           },
-          'foo'
+          'foo',
         );
 
         bindings.unbind();
@@ -825,35 +825,35 @@ describe('FeatureServiceRegistry', () => {
       it('fails to unbind an already unbound consumer', () => {
         const bindings = featureServiceRegistry.bindFeatureServices(
           providerDefinitionA,
-          providerDefinitionA.id
+          providerDefinitionA.id,
         );
 
         bindings.unbind();
 
         expect(() => bindings.unbind()).toThrowError(
           new Error(
-            'All required Feature Services are already unbound from consumer "a".'
-          )
+            'All required Feature Services are already unbound from consumer "a".',
+          ),
         );
       });
 
       it('fails to unbind an already unbound consumer, even if this consumer has been re-bound', () => {
         const bindings = featureServiceRegistry.bindFeatureServices(
           providerDefinitionA,
-          providerDefinitionA.id
+          providerDefinitionA.id,
         );
 
         bindings.unbind();
 
         featureServiceRegistry.bindFeatureServices(
           providerDefinitionA,
-          providerDefinitionA.id
+          providerDefinitionA.id,
         );
 
         expect(() => bindings.unbind()).toThrowError(
           new Error(
-            'All required Feature Services are already unbound from consumer "a".'
-          )
+            'All required Feature Services are already unbound from consumer "a".',
+          ),
         );
       });
     });
@@ -874,7 +874,7 @@ describe('FeatureServiceRegistry', () => {
     it('logs messages using the console', () => {
       featureServiceRegistry.registerFeatureServices(
         [providerDefinitionA],
-        'test'
+        'test',
       );
 
       expect(consoleInfoSpy.mock.calls).toEqual([

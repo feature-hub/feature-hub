@@ -33,11 +33,11 @@ describe('FeatureAppLoader (on Node.js)', () => {
 
   beforeEach(() => {
     mockAsyncFeatureAppDefinition = new AsyncValue(
-      new Promise<FeatureAppDefinition<unknown>>(jest.fn())
+      new Promise<FeatureAppDefinition<unknown>>(jest.fn()),
     );
 
     mockGetAsyncFeatureAppDefinition = jest.fn(
-      () => mockAsyncFeatureAppDefinition
+      () => mockAsyncFeatureAppDefinition,
     );
 
     mockFeatureAppManager = ({
@@ -72,13 +72,13 @@ describe('FeatureAppLoader (on Node.js)', () => {
         }}
       >
         {node}
-      </FeatureHubContextProvider>
+      </FeatureHubContextProvider>,
     );
 
   describe('without a serverSrc', () => {
     it('does not try to load a Feature App definition', () => {
       renderWithFeatureHubContext(
-        <FeatureAppLoader featureAppId="testId" src="example.js" />
+        <FeatureAppLoader featureAppId="testId" src="example.js" />,
       );
 
       expect(mockGetAsyncFeatureAppDefinition).not.toHaveBeenCalled();
@@ -86,7 +86,7 @@ describe('FeatureAppLoader (on Node.js)', () => {
 
     it('does not schedule a rerender on the Async SSR Manager', () => {
       renderWithFeatureHubContext(
-        <FeatureAppLoader featureAppId="testId" src="example.js" />
+        <FeatureAppLoader featureAppId="testId" src="example.js" />,
       );
 
       expect(mockAsyncSsrManager.scheduleRerender).not.toHaveBeenCalled();
@@ -94,7 +94,7 @@ describe('FeatureAppLoader (on Node.js)', () => {
 
     it('does not add a URL for hydration', () => {
       renderWithFeatureHubContext(
-        <FeatureAppLoader featureAppId="testId" src="example.js" />
+        <FeatureAppLoader featureAppId="testId" src="example.js" />,
       );
 
       expect(mockAddUrlForHydration).not.toHaveBeenCalled();
@@ -108,7 +108,7 @@ describe('FeatureAppLoader (on Node.js)', () => {
           featureAppId="testId"
           src="example.js"
           serverSrc="example-node.js"
-        />
+        />,
       );
 
       expect(mockGetAsyncFeatureAppDefinition.mock.calls).toEqual([
@@ -124,7 +124,7 @@ describe('FeatureAppLoader (on Node.js)', () => {
             baseUrl="http://example.com"
             src="example.js"
             serverSrc="example-node.js"
-          />
+          />,
         );
 
         expect(mockGetAsyncFeatureAppDefinition.mock.calls).toEqual([
@@ -141,12 +141,12 @@ describe('FeatureAppLoader (on Node.js)', () => {
             serverSrc="example-node.js"
             moduleType="a"
             serverModuleType="b"
-          />
+          />,
         );
 
         expect(mockAddUrlForHydration).toHaveBeenCalledWith(
           'http://example.com/example.js',
-          'a'
+          'a',
         );
       });
     });
@@ -157,7 +157,7 @@ describe('FeatureAppLoader (on Node.js)', () => {
           featureAppId="testId"
           src="example.js"
           serverSrc="example-node.js"
-        />
+        />,
       );
 
       expect(mockAsyncSsrManager.scheduleRerender.mock.calls).toEqual([
@@ -171,12 +171,12 @@ describe('FeatureAppLoader (on Node.js)', () => {
           featureAppId="testId"
           src="example.js"
           serverSrc="example-node.js"
-        />
+        />,
       );
 
       expect(mockAddUrlForHydration).toHaveBeenCalledWith(
         'example.js',
-        undefined
+        undefined,
       );
     });
 
@@ -189,7 +189,7 @@ describe('FeatureAppLoader (on Node.js)', () => {
             serverSrc="example-node.js"
             moduleType="a"
             serverModuleType="b"
-          />
+          />,
         );
 
         expect(mockGetAsyncFeatureAppDefinition.mock.calls).toEqual([
@@ -205,7 +205,7 @@ describe('FeatureAppLoader (on Node.js)', () => {
         mockFeatureAppDefinition = {create: jest.fn()};
 
         mockAsyncFeatureAppDefinition = new AsyncValue(
-          Promise.resolve(mockFeatureAppDefinition)
+          Promise.resolve(mockFeatureAppDefinition),
         );
       });
 
@@ -215,7 +215,7 @@ describe('FeatureAppLoader (on Node.js)', () => {
             featureAppId="testId"
             src="example.js"
             serverSrc="example-node.js"
-          />
+          />,
         );
 
         expect(mockAsyncSsrManager.scheduleRerender).not.toHaveBeenCalled();
@@ -236,7 +236,7 @@ describe('FeatureAppLoader (on Node.js)', () => {
             src="example.js"
             serverSrc="example-node.js"
             featureAppId="testId"
-          />
+          />,
         );
 
         expect(consoleErrorSpy.mock.calls).toEqual([
@@ -254,7 +254,7 @@ describe('FeatureAppLoader (on Node.js)', () => {
               featureAppId="testId"
               src="example.js"
               serverSrc="example-node.js"
-            />
+            />,
           );
         } catch {}
 
@@ -268,13 +268,13 @@ describe('FeatureAppLoader (on Node.js)', () => {
               featureAppId="testId"
               src="example.js"
               serverSrc="example-node.js"
-            />
+            />,
           );
         } catch {}
 
         expect(mockAddUrlForHydration).toHaveBeenCalledWith(
           'example.js',
-          undefined
+          undefined,
         );
       });
     });
@@ -287,7 +287,7 @@ describe('FeatureAppLoader (on Node.js)', () => {
           featureAppId="testId"
           src="example.js"
           serverSrc="example-node.js"
-        />
+        />,
       );
 
       expect(mockAddStylesheetsForSsr).not.toHaveBeenCalled();
@@ -302,7 +302,7 @@ describe('FeatureAppLoader (on Node.js)', () => {
           src="example.js"
           serverSrc="example-node.js"
           css={[{href: 'foo.css'}]}
-        />
+        />,
       );
 
       expect(mockAddStylesheetsForSsr.mock.calls).toEqual([
@@ -322,7 +322,7 @@ describe('FeatureAppLoader (on Node.js)', () => {
               {href: 'http://example.com/foo.css'},
               {href: 'bar.css', media: 'print'},
             ]}
-          />
+          />,
         );
 
         expect(mockAddStylesheetsForSsr.mock.calls).toEqual([

@@ -10,7 +10,7 @@ export interface HistoryMultiplexers {
 
 export function createHistoryMultiplexers(
   context: HistoryServiceContext,
-  rootLocationTransformer: RootLocationTransformer
+  rootLocationTransformer: RootLocationTransformer,
 ): HistoryMultiplexers {
   let browserHistoryMultiplexer: HistoryMultiplexer | undefined;
   let staticHistoryMultiplexer: HistoryMultiplexer | undefined;
@@ -20,7 +20,7 @@ export function createHistoryMultiplexers(
       if (!browserHistoryMultiplexer) {
         browserHistoryMultiplexer = new HistoryMultiplexer(
           history.createBrowserHistory(),
-          rootLocationTransformer
+          rootLocationTransformer,
         );
       }
 
@@ -31,7 +31,7 @@ export function createHistoryMultiplexers(
       if (!staticHistoryMultiplexer) {
         if (!context.serverRequest) {
           throw new Error(
-            'Static history can not be created without a server request.'
+            'Static history can not be created without a server request.',
           );
         }
 
@@ -40,7 +40,7 @@ export function createHistoryMultiplexers(
             initialEntries: [createPathFromUrl(context.serverRequest.url)],
             initialIndex: 0,
           }),
-          rootLocationTransformer
+          rootLocationTransformer,
         );
       }
 

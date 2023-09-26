@@ -18,7 +18,7 @@ export default async function renderApp({
   });
 
   const html = ReactDOM.renderToString(
-    <App featureAppManager={featureAppManager} />
+    <App featureAppManager={featureAppManager} />,
   );
 
   return {html};

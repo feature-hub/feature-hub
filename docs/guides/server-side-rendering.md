@@ -123,7 +123,7 @@ element][demos-extract-hydration-urls-script], and then preloaded using the
 const urlsForHydration = getUrlsForHydrationFromDom();
 
 await Promise.all(
-  urlsForHydration.map(async (url) => featureAppManager.preloadFeatureApp(url))
+  urlsForHydration.map(async (url) => featureAppManager.preloadFeatureApp(url)),
 );
 ```
 
@@ -166,8 +166,8 @@ const hydrationSources = getHydrationSourcesFromDom();
 
 await Promise.all(
   hydrationSources.map(async ({url, moduleType}) =>
-    featureAppManager.preloadFeatureApp(url, moduleType)
-  )
+    featureAppManager.preloadFeatureApp(url, moduleType),
+  ),
 );
 ```
 
@@ -340,8 +340,8 @@ const html = await asyncSsrManager.renderUntilCompleted(() =>
         src="https://example.com/some-feature-app.js"
         serverSrc="https://example.com/some-feature-app-node.js"
       />
-    </FeatureHubContextProvider>
-  )
+    </FeatureHubContextProvider>,
+  ),
 );
 ```
 

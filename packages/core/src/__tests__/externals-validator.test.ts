@@ -5,16 +5,16 @@ describe('ExternalsValidator', () => {
     it('throws an error for provided externals containing an invalid version', () => {
       expect(() => new ExternalsValidator({react: 'invalid'})).toThrowError(
         new Error(
-          'The provided version "invalid" for the external "react" is invalid.'
-        )
+          'The provided version "invalid" for the external "react" is invalid.',
+        ),
       );
     });
 
     it('throws an error for provided externals containing a coercable version', () => {
       expect(() => new ExternalsValidator({react: '2.0'})).toThrowError(
         new Error(
-          'The provided version "2.0" for the external "react" is invalid.'
-        )
+          'The provided version "2.0" for the external "react" is invalid.',
+        ),
       );
     });
   });
@@ -35,8 +35,8 @@ describe('ExternalsValidator', () => {
         validator.validate({react: '^16.7.0'});
       }).toThrowError(
         new Error(
-          'The external dependency "react" in the required version range "^16.7.0" is not satisfied. The provided version is "16.6.0".'
-        )
+          'The external dependency "react" in the required version range "^16.7.0" is not satisfied. The provided version is "16.6.0".',
+        ),
       );
     });
 
@@ -46,7 +46,7 @@ describe('ExternalsValidator', () => {
       expect(() => {
         validator.validate({react: '^16.7.0'});
       }).toThrowError(
-        new Error('The external dependency "react" is not provided.')
+        new Error('The external dependency "react" is not provided.'),
       );
     });
 
@@ -57,8 +57,8 @@ describe('ExternalsValidator', () => {
         validator.validate({react: 'invalid'});
       }).toThrowError(
         new Error(
-          'The external dependency "react" in the required version range "invalid" is not satisfied. The provided version is "16.6.0".'
-        )
+          'The external dependency "react" in the required version range "invalid" is not satisfied. The provided version is "16.6.0".',
+        ),
       );
     });
   });

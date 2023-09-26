@@ -10,7 +10,7 @@ import {App} from './app';
 
 function getSerializedStatesFromDom(): string | undefined {
   const scriptElement = document.querySelector(
-    'script[type="x-feature-hub/serialized-states"]'
+    'script[type="x-feature-hub/serialized-states"]',
   );
 
   return (scriptElement && scriptElement.textContent) || undefined;
@@ -18,7 +18,7 @@ function getSerializedStatesFromDom(): string | undefined {
 
 function getUrlsForHydrationFromDom(): FeatureAppModuleSource[] {
   const scriptElement = document.querySelector(
-    'script[type="x-feature-hub/urls-for-hydration"]'
+    'script[type="x-feature-hub/urls-for-hydration"]',
   );
 
   if (!scriptElement || !scriptElement.textContent) {
@@ -44,14 +44,14 @@ function getUrlsForHydrationFromDom(): FeatureAppModuleSource[] {
 
   await Promise.all(
     getUrlsForHydrationFromDom().map(async ({url, moduleType}) =>
-      featureAppManager.preloadFeatureApp(url, moduleType)
-    )
+      featureAppManager.preloadFeatureApp(url, moduleType),
+    ),
   );
 
   ReactDOM.hydrate(
     <FeatureHubContextProvider value={{featureAppManager}}>
       <App />
     </FeatureHubContextProvider>,
-    document.querySelector('main')
+    document.querySelector('main'),
   );
 })().catch(console.error);

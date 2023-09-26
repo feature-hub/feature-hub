@@ -47,8 +47,8 @@ describe('createFeatureHub()', () => {
 
         expect(() =>
           featureAppManager.getAsyncFeatureAppDefinition(
-            'http://example.com/test.js'
-          )
+            'http://example.com/test.js',
+          ),
         ).toThrowError(new Error('No module loader provided.'));
       });
     });
@@ -68,7 +68,7 @@ describe('createFeatureHub()', () => {
       it('uses the module loader to load the Feature App definition', () => {
         const {featureAppManager} = createFeatureHub(
           'test:integrator',
-          featureHubOptions
+          featureHubOptions,
         );
 
         const url = 'http://example.com/test.js';
@@ -98,12 +98,12 @@ describe('createFeatureHub()', () => {
     it('creates a Feature App', () => {
       const {featureAppManager} = createFeatureHub(
         'test:integrator',
-        featureHubOptions
+        featureHubOptions,
       );
 
       const {featureApp} = featureAppManager.createFeatureAppScope(
         'test:feature-app',
-        mockFeatureAppDefinition
+        mockFeatureAppDefinition,
       );
 
       expect(mockFeatureAppCreate).toHaveBeenCalledWith({
@@ -122,16 +122,16 @@ describe('createFeatureHub()', () => {
       it('throws for a Feature App with mismatching externals', () => {
         const {featureAppManager} = createFeatureHub(
           'test:integrator',
-          featureHubOptions
+          featureHubOptions,
         );
 
         expect(() =>
           featureAppManager.createFeatureAppScope(
             'test:feature-app',
-            mockFeatureAppDefinition
-          )
+            mockFeatureAppDefinition,
+          ),
         ).toThrowError(
-          new Error('The external dependency "foo" is not provided.')
+          new Error('The external dependency "foo" is not provided.'),
         );
       });
     });
@@ -155,7 +155,7 @@ describe('createFeatureHub()', () => {
         featureAppManager.createFeatureAppScope(
           featureAppId,
           mockFeatureAppDefinition,
-          {featureAppName, parentFeatureApp}
+          {featureAppName, parentFeatureApp},
         );
 
         expect(mockOnBind.mock.calls).toEqual([
@@ -215,9 +215,9 @@ describe('createFeatureHub()', () => {
 
       it('throws for a Feature Service with mismatching externals', () => {
         expect(() =>
-          createFeatureHub('test:integrator', featureHubOptions)
+          createFeatureHub('test:integrator', featureHubOptions),
         ).toThrowError(
-          new Error('The external dependency "foo" is not provided.')
+          new Error('The external dependency "foo" is not provided.'),
         );
       });
     });
@@ -226,7 +226,7 @@ describe('createFeatureHub()', () => {
       it('creates a Feature Hub that contains an empty set of Feature Services', () => {
         const {featureServices} = createFeatureHub(
           'test:integrator',
-          featureHubOptions
+          featureHubOptions,
         );
 
         expect(featureServices).toEqual({});
@@ -244,7 +244,7 @@ describe('createFeatureHub()', () => {
       it('creates a Feature Hub that contains Feature Services that are bound to the integrator', () => {
         const {featureServices} = createFeatureHub(
           'test:integrator',
-          featureHubOptions
+          featureHubOptions,
         );
 
         expect(mockFeatureServiceV1Binder.mock.calls).toEqual([
@@ -252,7 +252,7 @@ describe('createFeatureHub()', () => {
         ]);
 
         expect(featureServices['test:feature-service']).toBe(
-          mockFeatureServiceV1
+          mockFeatureServiceV1,
         );
       });
     });
@@ -293,7 +293,7 @@ describe('createFeatureHub()', () => {
 
         featureAppManager.createFeatureAppScope(
           'test:feature-app',
-          featureAppDefinition
+          featureAppDefinition,
         );
 
         expect(logger.info.mock.calls).toEqual(expectedLogCalls);
@@ -318,7 +318,7 @@ describe('createFeatureHub()', () => {
 
         featureAppManager.createFeatureAppScope(
           'test:feature-app',
-          featureAppDefinition
+          featureAppDefinition,
         );
 
         expect(consoleInfoSpy.mock.calls).toEqual(expectedLogCalls);

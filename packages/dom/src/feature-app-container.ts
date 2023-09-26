@@ -76,7 +76,7 @@ export interface DefineFeatureAppContainerOptions {
  */
 export function defineFeatureAppContainer(
   featureAppManager: FeatureAppManager,
-  options: DefineFeatureAppContainerOptions = {}
+  options: DefineFeatureAppContainerOptions = {},
 ): void {
   if (customElements.get(elementName)) {
     return;
@@ -122,7 +122,7 @@ export function defineFeatureAppContainer(
             featureAppName: this.featureAppName,
             baseUrl: this.baseUrl,
             config: this.config,
-          }
+          },
         );
 
         this.featureAppScope.featureApp.attachTo(this.appElement);

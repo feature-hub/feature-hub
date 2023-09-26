@@ -32,8 +32,8 @@ describe('FeatureAppLoader with an unmocked InternalFeatureAppContainer', () => 
 
     mockAsyncFeatureAppDefinition = new AsyncValue(
       new Promise((resolve) =>
-        setTimeout(() => resolve(mockFeatureAppDefinition))
-      )
+        setTimeout(() => resolve(mockFeatureAppDefinition)),
+      ),
     );
 
     mockFeatureAppManager = ({
@@ -53,7 +53,7 @@ describe('FeatureAppLoader with an unmocked InternalFeatureAppContainer', () => 
 
   const renderWithFeatureHubContext = (
     node: React.ReactNode,
-    testRendererOptions?: TestRenderer.TestRendererOptions
+    testRendererOptions?: TestRenderer.TestRendererOptions,
   ) =>
     TestRenderer.create(
       <FeatureHubContextProvider
@@ -61,7 +61,7 @@ describe('FeatureAppLoader with an unmocked InternalFeatureAppContainer', () => 
       >
         {node}
       </FeatureHubContextProvider>,
-      testRendererOptions
+      testRendererOptions,
     );
 
   describe('when a Feature App definition is loaded asynchronously', () => {
@@ -72,7 +72,7 @@ describe('FeatureAppLoader with an unmocked InternalFeatureAppContainer', () => 
             <FeatureAppLoader featureAppId="testId" src="example.js">
               {({featureAppNode}) => <div>{featureAppNode}</div>}
             </FeatureAppLoader>,
-            {createNodeMock: () => ({})}
+            {createNodeMock: () => ({})},
           );
 
           await mockAsyncFeatureAppDefinition.promise;

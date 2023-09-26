@@ -36,7 +36,7 @@ describe('integration test: "dom integrator"', () => {
           document
             .querySelector('feature-app-loader')
             ?.shadowRoot?.querySelector('feature-app-container')?.shadowRoot
-            ?.textContent
+            ?.textContent,
       );
 
       expect(content).toMatch('Hello, World!');
@@ -67,7 +67,7 @@ describe('integration test: "dom integrator"', () => {
         () =>
           document
             .querySelector('feature-app-loader')
-            ?.shadowRoot?.querySelector('slot')?.name
+            ?.shadowRoot?.querySelector('slot')?.name,
       );
 
       expect(slotName).toBe('error');
@@ -96,7 +96,7 @@ describe('integration test: "dom integrator"', () => {
         () =>
           document
             .querySelector('feature-app-loader')
-            ?.shadowRoot?.querySelector('slot')?.name
+            ?.shadowRoot?.querySelector('slot')?.name,
       );
 
       expect(slotName).toBe('loading');

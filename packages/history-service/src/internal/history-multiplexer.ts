@@ -24,7 +24,7 @@ export class HistoryMultiplexer {
 
   public constructor(
     public readonly rootHistory: history.History,
-    public readonly rootLocationTransformer: RootLocationTransformer
+    public readonly rootLocationTransformer: RootLocationTransformer,
   ) {
     this.rootHistoryV2 = {
       get length(): number {
@@ -56,10 +56,10 @@ export class HistoryMultiplexer {
       },
 
       listen(
-        listener: historyV4.LocationListener
+        listener: historyV4.LocationListener,
       ): historyV4.UnregisterCallback {
         return rootHistory.listen(({location, action}) =>
-          listener(location, action)
+          listener(location, action),
         );
       },
     };
@@ -72,7 +72,7 @@ export class HistoryMultiplexer {
   public push(historyKey: string, consumerLocation: history.Location): void {
     const {pathname, search, hash, state} = this.createRootLocation(
       historyKey,
-      consumerLocation
+      consumerLocation,
     );
 
     this.rootHistory.push({pathname, search, hash}, state);
@@ -81,7 +81,7 @@ export class HistoryMultiplexer {
   public replace(historyKey: string, consumerLocation: history.Location): void {
     const {pathname, search, hash, state} = this.createRootLocation(
       historyKey,
-      consumerLocation
+      consumerLocation,
     );
 
     this.rootHistory.replace({pathname, search, hash}, state);
@@ -89,11 +89,11 @@ export class HistoryMultiplexer {
 
   public createHref(
     historyKey: string,
-    consumerLocation: history.Path
+    consumerLocation: history.Path,
   ): string {
     const {pathname, search, hash} = this.createRootLocation(
       historyKey,
-      consumerLocation
+      consumerLocation,
     );
 
     return this.rootHistory.createHref({pathname, search, hash});
@@ -103,7 +103,7 @@ export class HistoryMultiplexer {
     const consumerPath =
       this.rootLocationTransformer.getConsumerPathFromRootLocation(
         this.rootLocation,
-        historyKey
+        historyKey,
       ) || '/';
 
     const {state, key} = this.rootLocation.state?.[historyKey] || {
@@ -119,7 +119,7 @@ export class HistoryMultiplexer {
   }
 
   public listenForRootLocationChange(
-    listener: (action: history.Action) => void
+    listener: (action: history.Action) => void,
   ): () => void {
     return this.rootHistory.listen(({action}) => {
       listener(action);
@@ -135,14 +135,14 @@ export class HistoryMultiplexer {
       this.rootLocationTransformer.createNewRootLocationForMultipleConsumers
     ) {
       newRootLocation = this.rootLocationTransformer.createNewRootLocationForMultipleConsumers(
-        ...consumerLocations
+        ...consumerLocations,
       );
     } else {
       for (const consumerLocation of consumerLocations) {
         newRootLocation = this.rootLocationTransformer.createRootLocation(
           newRootLocation,
           consumerLocation.location,
-          consumerLocation.historyKey
+          consumerLocation.historyKey,
         );
       }
     }
@@ -158,12 +158,12 @@ export class HistoryMultiplexer {
 
   private createRootLocation(
     historyKey: string,
-    consumerLocation: Partial<history.Location>
+    consumerLocation: Partial<history.Location>,
   ): Omit<RootLocation, 'key'> {
     const newRootLocation = this.rootLocationTransformer.createRootLocation(
       this.rootLocation,
       consumerLocation,
-      historyKey
+      historyKey,
     );
 
     const {state, key = createKey()} = consumerLocation;

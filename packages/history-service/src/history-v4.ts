@@ -14,17 +14,17 @@ export interface History<HistoryLocationState = LocationState> {
   location: Location<HistoryLocationState>;
   push(
     location: Path | LocationDescriptor<HistoryLocationState>,
-    state?: HistoryLocationState
+    state?: HistoryLocationState,
   ): void;
   replace(
     location: Path | LocationDescriptor<HistoryLocationState>,
-    state?: HistoryLocationState
+    state?: HistoryLocationState,
   ): void;
   go(n: number): void;
   goBack(): void;
   goForward(): void;
   block(
-    prompt?: boolean | string | TransitionPromptHook<HistoryLocationState>
+    prompt?: boolean | string | TransitionPromptHook<HistoryLocationState>,
   ): UnregisterCallback;
   listen(listener: LocationListener<HistoryLocationState>): UnregisterCallback;
   createHref(location: LocationDescriptorObject<HistoryLocationState>): Href;
@@ -52,7 +52,7 @@ export type LocationDescriptor<S = LocationState> =
 export type LocationKey = string;
 export type LocationListener<S = LocationState> = (
   location: Location<S>,
-  action: Action
+  action: Action,
 ) => void;
 
 export type LocationState = unknown;
@@ -61,11 +61,11 @@ export type Pathname = string;
 export type Search = string;
 export type TransitionHook<S = LocationState> = (
   location: Location<S>,
-  callback: (result: any) => void
+  callback: (result: any) => void,
 ) => any;
 export type TransitionPromptHook<S = LocationState> = (
   location: Location<S>,
-  action: Action
+  action: Action,
 ) => string | false | void;
 export type Hash = string;
 export type Href = string;

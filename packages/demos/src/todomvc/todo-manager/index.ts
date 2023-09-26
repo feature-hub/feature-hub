@@ -101,7 +101,7 @@ class TodoManagerV1Impl implements TodoManagerV1 {
   private editTodo<Key extends keyof Todo>(
     id: string,
     key: Key,
-    value: Todo[Key]
+    value: Todo[Key],
   ): void {
     const index = this.todos.findIndex((todo) => todo.id === id);
     const oldTodo = this.todos[index];

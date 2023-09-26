@@ -10,13 +10,13 @@ export interface RootLocationOptions {
 export interface RootLocationTransformer {
   getConsumerPathFromRootLocation(
     rootLocation: Partial<history.Location>,
-    historyKey: string
+    historyKey: string,
   ): string | undefined;
 
   createRootLocation(
     currentRootLocation: Partial<history.Location>,
     consumerLocation: Partial<history.Location>,
-    historyKey: string
+    historyKey: string,
   ): Partial<history.Path>;
 
   createNewRootLocationForMultipleConsumers?(
@@ -39,7 +39,7 @@ function decodeConsumerPaths(encodedConsumerPaths: string): ConsumerPaths {
 export function addConsumerPath(
   encodedConsumerPaths: string | null,
   historyKey: string,
-  path: string
+  path: string,
 ): string {
   return encodeConsumerPaths({
     ...decodeConsumerPaths(encodedConsumerPaths || '{}'),
@@ -49,13 +49,13 @@ export function addConsumerPath(
 
 export function getConsumerPath(
   encodedConsumerPaths: string,
-  historyKey: string
+  historyKey: string,
 ): string {
   return decodeConsumerPaths(encodedConsumerPaths)[historyKey];
 }
 
 export function createSearchParams(
-  location: Partial<history.Path>
+  location: Partial<history.Path>,
 ): URLSearchParams {
   return new URLSearchParams(location.search);
 }
@@ -67,7 +67,7 @@ export function serializeSearchParams(searchParams: URLSearchParams): string {
 export function createRootLocationForPrimaryConsumer(
   currentRootLocation: Partial<history.Location>,
   primaryConsumerLocation: Partial<history.Path>,
-  consumerPathsQueryParamName: string
+  consumerPathsQueryParamName: string,
 ): Partial<history.Path> {
   const allSearchParams = createSearchParams(currentRootLocation);
   const newSearchParams = createSearchParams(primaryConsumerLocation);
@@ -75,8 +75,8 @@ export function createRootLocationForPrimaryConsumer(
   if (newSearchParams.has(consumerPathsQueryParamName)) {
     throw new Error(
       `Primary consumer tried to set query parameter ${JSON.stringify(
-        consumerPathsQueryParamName
-      )} which is reserverd for consumer paths.`
+        consumerPathsQueryParamName,
+      )} which is reserverd for consumer paths.`,
     );
   }
 
@@ -100,7 +100,7 @@ export function createRootLocationForOtherConsumer(
   currentRootLocation: Partial<history.Location>,
   consumerLocation: Partial<history.Path>,
   historyKey: string,
-  consumerPathsQueryParamName: string
+  consumerPathsQueryParamName: string,
 ): Partial<history.Path> {
   const allSearchParams = createSearchParams(currentRootLocation);
   const consumerPaths = allSearchParams.get(consumerPathsQueryParamName);
@@ -108,7 +108,7 @@ export function createRootLocationForOtherConsumer(
   const newConsumerPaths = addConsumerPath(
     consumerPaths,
     historyKey,
-    history.createPath(consumerLocation)
+    history.createPath(consumerLocation),
   );
 
   allSearchParams.set(consumerPathsQueryParamName, newConsumerPaths);
@@ -121,12 +121,12 @@ export function createRootLocationForOtherConsumer(
 }
 
 export function createRootLocationTransformer(
-  options: RootLocationOptions
+  options: RootLocationOptions,
 ): RootLocationTransformer {
   return {
     getConsumerPathFromRootLocation: (
       rootLocation: history.Location,
-      historyKey: string
+      historyKey: string,
     ): string | undefined => {
       const {consumerPathsQueryParamName, primaryConsumerHistoryKey} = options;
       const isPrimaryConsumer = historyKey === primaryConsumerHistoryKey;
@@ -153,7 +153,7 @@ export function createRootLocationTransformer(
     createRootLocation: (
       currentRootLocation: history.Location,
       consumerLocation: Partial<history.Path>,
-      historyKey: string
+      historyKey: string,
     ): Partial<history.Path> => {
       const {consumerPathsQueryParamName, primaryConsumerHistoryKey} = options;
       const isPrimaryConsumer = historyKey === primaryConsumerHistoryKey;
@@ -162,7 +162,7 @@ export function createRootLocationTransformer(
         return createRootLocationForPrimaryConsumer(
           currentRootLocation,
           consumerLocation,
-          consumerPathsQueryParamName
+          consumerPathsQueryParamName,
         );
       }
 
@@ -170,7 +170,7 @@ export function createRootLocationTransformer(
         currentRootLocation,
         consumerLocation,
         historyKey,
-        consumerPathsQueryParamName
+        consumerPathsQueryParamName,
       );
     },
   };

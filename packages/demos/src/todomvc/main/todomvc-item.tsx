@@ -129,7 +129,7 @@ export class TodoMvcItem extends React.PureComponent<
 > {
   public static getDerivedStateFromProps(
     props: TodoMvcItemProps,
-    state: TodoMvcItemState
+    state: TodoMvcItemState,
   ): Partial<TodoMvcItemState> | null {
     if (state.editing || state.editText === props.title) {
       return null;
@@ -185,13 +185,13 @@ export class TodoMvcItem extends React.PureComponent<
   };
 
   private readonly handleEditInputChange = (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     this.setState({editText: event.currentTarget.value});
   };
 
   private readonly handleEditInputKeyDown = (
-    event: React.KeyboardEvent<HTMLInputElement>
+    event: React.KeyboardEvent<HTMLInputElement>,
   ) => {
     if (event.key === 'Enter') {
       this.props.onEdit(this.props.id, event.currentTarget.value.trim());

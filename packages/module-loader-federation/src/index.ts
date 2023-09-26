@@ -30,7 +30,7 @@ async function loadComponent(): Promise<unknown> {
 
   if (!container) {
     throw new Error(
-      `The name in the ModuleFederationPlugin must be "__feature_hub_feature_app_module_container__".`
+      `The name in the ModuleFederationPlugin must be "__feature_hub_feature_app_module_container__".`,
     );
   }
 

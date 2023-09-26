@@ -10,12 +10,12 @@ import {App} from './app';
 defineExternals({react: React});
 
 const useConsumerName = Boolean(
-  new URLSearchParams(window.location.search).get('consumerName')
+  new URLSearchParams(window.location.search).get('consumerName'),
 );
 
 const createConsumerConsole: ConsumerLoggerCreator = (
   consumerId,
-  consumerName
+  consumerName,
 ) => {
   const prefix = useConsumerName ? consumerName || consumerId : consumerId;
   const prefixArgs = [`%c${prefix}`, 'font-weight: bold'];
@@ -36,7 +36,7 @@ const {featureAppManager, featureServices} = createFeatureHub(
     providedExternals: {react: process.env.REACT_VERSION as string},
     featureServiceDefinitions: [defineLogger(createConsumerConsole)],
     featureServiceDependencies: {'s2:logger': '^1.0.0'},
-  }
+  },
 );
 
 const logger = featureServices['s2:logger'] as Logger;
@@ -50,5 +50,5 @@ ReactDOM.hydrate(
       }
     />
   </FeatureHubContextProvider>,
-  document.querySelector('main')
+  document.querySelector('main'),
 );

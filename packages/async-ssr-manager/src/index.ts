@@ -88,7 +88,7 @@ export interface AsyncSsrManagerDependencies extends FeatureServices {
  * @see [[AsyncSsrManagerV1]] for further information.
  */
 export function defineAsyncSsrManager(
-  options: AsyncSsrManagerOptions = {}
+  options: AsyncSsrManagerOptions = {},
 ): FeatureServiceProviderDefinition<
   SharedAsyncSsrManager,
   AsyncSsrManagerDependencies

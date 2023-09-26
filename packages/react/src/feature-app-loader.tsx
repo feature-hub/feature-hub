@@ -68,7 +68,7 @@ export interface FeatureAppLoaderProps<TConfig = unknown>
    * A callback that is called before the Feature App is created.
    */
   readonly beforeCreate?: (
-    env: FeatureAppEnvironment<FeatureServices, TConfig>
+    env: FeatureAppEnvironment<FeatureServices, TConfig>,
   ) => void;
 
   /**
@@ -90,7 +90,7 @@ export interface FeatureAppLoaderProps<TConfig = unknown>
    * Feature App and provide Error or Loading UIs.
    */
   readonly children?: (
-    params: CustomFeatureAppRenderingParams
+    params: CustomFeatureAppRenderingParams,
   ) => React.ReactNode;
 }
 
@@ -188,7 +188,7 @@ class InternalFeatureAppLoader<TConfig = unknown> extends React.PureComponent<
     try {
       const featureAppDefinition = await featureAppManager.getAsyncFeatureAppDefinition(
         prependBaseUrl(baseUrl, src),
-        moduleType
+        moduleType,
       ).promise;
 
       if (this.mounted) {
@@ -278,7 +278,7 @@ class InternalFeatureAppLoader<TConfig = unknown> extends React.PureComponent<
             rel: 'stylesheet',
             href,
             media,
-          })
+          }),
         );
       }
     }
@@ -324,9 +324,9 @@ class InternalFeatureAppLoader<TConfig = unknown> extends React.PureComponent<
 
     logger.error(
       `The Feature App for the src ${JSON.stringify(
-        src && prependBaseUrl(baseUrl, src)
+        src && prependBaseUrl(baseUrl, src),
       )} and the ID ${JSON.stringify(featureAppId)} could not be rendered.`,
-      error
+      error,
     );
   }
 }
@@ -342,7 +342,7 @@ class InternalFeatureAppLoader<TConfig = unknown> extends React.PureComponent<
  * errors are not caught and must therefore be handled by the integrator.
  */
 export function FeatureAppLoader<TConfig>(
-  props: FeatureAppLoaderProps<TConfig>
+  props: FeatureAppLoaderProps<TConfig>,
 ): JSX.Element {
   return (
     <FeatureHubContextConsumer>

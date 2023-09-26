@@ -16,7 +16,7 @@ import {isDomFeatureApp, isFeatureApp, isReactFeatureApp} from './type-guards';
 export const handleError = (
   logger: Logger,
   error: unknown,
-  onError?: (e: unknown) => void
+  onError?: (e: unknown) => void,
 ) => {
   if (onError) {
     onError(error);
@@ -71,7 +71,7 @@ export interface BaseFeatureAppContainerProps<
    * A callback that is called before the Feature App is created.
    */
   readonly beforeCreate?: (
-    env: FeatureAppEnvironment<TFeatureServices, TConfig>
+    env: FeatureAppEnvironment<TFeatureServices, TConfig>,
   ) => void;
 
   /**
@@ -93,7 +93,7 @@ export interface BaseFeatureAppContainerProps<
    * Feature App and provide Error or Loading UIs.
    */
   readonly children?: (
-    params: CustomFeatureAppRenderingParams
+    params: CustomFeatureAppRenderingParams,
   ) => React.ReactNode;
 }
 
@@ -127,7 +127,7 @@ export class InternalFeatureAppContainer<
 > {
   public static getDerivedStateFromProps(
     props: InternalFeatureAppContainerProps<unknown, FeatureServices, unknown>,
-    state: InternalFeatureAppContainerState<FeatureApp>
+    state: InternalFeatureAppContainerState<FeatureApp>,
   ): Partial<InternalFeatureAppContainerState<FeatureApp>> | null {
     const {
       baseUrl,
@@ -155,14 +155,14 @@ export class InternalFeatureAppContainer<
             beforeCreate,
             done,
             parentFeatureApp,
-          }
+          },
         );
 
         const {featureApp, release} = featureAppScope;
 
         if (!isFeatureApp(featureApp)) {
           throw new Error(
-            'Invalid Feature App found. The Feature App must be an object with either 1) a `render` method that returns a React element, or 2) an `attachTo` method that accepts a container DOM element.'
+            'Invalid Feature App found. The Feature App must be an object with either 1) a `render` method that returns a React element, or 2) an `attachTo` method that accepts a container DOM element.',
           );
         }
 

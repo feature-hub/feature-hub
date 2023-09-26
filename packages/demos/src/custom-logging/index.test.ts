@@ -37,9 +37,9 @@ describe('integration test: "custom logging"', () => {
     const messages = await Promise.all(
       consoleMessages.map(async (consoleMessage) =>
         Promise.all(
-          consoleMessage.args().map(async (handle) => handle.jsonValue())
-        )
-      )
+          consoleMessage.args().map(async (handle) => handle.jsonValue()),
+        ),
+      ),
     );
 
     expect(messages).toContainEqual([

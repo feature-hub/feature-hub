@@ -29,7 +29,7 @@ function createStylesheetLinks(stylesheets) {
  */
 function createDocumentHtml(
   bodyHtml,
-  {serializedStates, stylesheetsForSsr, hydrationSources} = {}
+  {serializedStates, stylesheetsForSsr, hydrationSources} = {},
 ) {
   const stylesheetLinks = stylesheetsForSsr
     ? createStylesheetLinks(Array.from(stylesheetsForSsr.values()))
@@ -42,7 +42,7 @@ function createDocumentHtml(
   const urlsForHydrationScript =
     hydrationSources && hydrationSources.size
       ? `<script type="x-feature-hub/urls-for-hydration">${JSON.stringify(
-          Array.from(hydrationSources.values())
+          Array.from(hydrationSources.values()),
         )}</script>`
       : '';
 
@@ -71,7 +71,7 @@ function createDocumentHtml(
 async function startServer(
   webpackConfigs,
   nodeIntegratorWebpackConfig,
-  demoName
+  demoName,
 ) {
   const port = await getPort(demoName ? {port: 3000} : undefined);
   const app = express();
@@ -104,7 +104,7 @@ async function startServer(
         const renderResult = await renderApp({port, req});
 
         res.send(
-          createDocumentHtml(`<main>${renderResult.html}</main>`, renderResult)
+          createDocumentHtml(`<main>${renderResult.html}</main>`, renderResult),
         );
       } else {
         res.send(createDocumentHtml(`<main></main>`));

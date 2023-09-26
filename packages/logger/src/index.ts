@@ -13,11 +13,11 @@ export interface SharedLogger extends SharedFeatureService {
 
 export type ConsumerLoggerCreator = (
   consumerId: string,
-  consumerName?: string
+  consumerName?: string,
 ) => Logger;
 
 export function defineLogger(
-  createConsumerLogger: ConsumerLoggerCreator = () => console
+  createConsumerLogger: ConsumerLoggerCreator = () => console,
 ): FeatureServiceProviderDefinition<SharedLogger> {
   return {
     id: 's2:logger',

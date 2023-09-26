@@ -15,7 +15,7 @@ export interface SharedServerRequest extends SharedFeatureService {
 }
 
 export function defineServerRequest(
-  serverRequest: ServerRequestV1
+  serverRequest: ServerRequestV1,
 ): FeatureServiceProviderDefinition<SharedServerRequest> {
   return {
     id: 's2:server-request',

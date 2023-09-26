@@ -5,13 +5,13 @@ import {
 } from '../feature-app-container';
 
 export function isDomFeatureApp(
-  featureApp: object
+  featureApp: object,
 ): featureApp is DomFeatureApp {
   return typeof (featureApp as DomFeatureApp).attachTo === 'function';
 }
 
 export function isReactFeatureApp(
-  featureApp: object
+  featureApp: object,
 ): featureApp is ReactFeatureApp {
   return typeof (featureApp as ReactFeatureApp).render === 'function';
 }

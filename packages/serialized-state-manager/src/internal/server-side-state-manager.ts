@@ -11,7 +11,7 @@ export class ServerSideStateManager {
     this.serializeStateCallbacks.forEach(
       (serializeState, currentConsumerId) => {
         serializedStatesByConsumerId[currentConsumerId] = serializeState();
-      }
+      },
     );
 
     return encodeURI(JSON.stringify(serializedStatesByConsumerId));

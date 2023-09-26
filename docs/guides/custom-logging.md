@@ -85,7 +85,7 @@ const {featureAppManager} = createFeatureHub('acme:integrator', {
   logger,
   featureServiceDefinitions: [
     defineLogger((consumerId, consumerName) =>
-      logger.child({consumerId, consumerName})
+      logger.child({consumerId, consumerName}),
     ),
   ],
 });

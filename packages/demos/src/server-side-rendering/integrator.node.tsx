@@ -40,7 +40,7 @@ export default async function renderApp({
         [asyncSsrManagerDefinition.id]: '^1.0.0',
         [serializedStateManagerDefinition.id]: '^1.0.0',
       },
-    }
+    },
   );
 
   const asyncSsrManager = featureServices[
@@ -68,8 +68,8 @@ export default async function renderApp({
     ReactDOM.renderToString(
       <FeatureHubContextProvider value={featureHubContextValue}>
         <App port={port} />
-      </FeatureHubContextProvider>
-    )
+      </FeatureHubContextProvider>,
+    ),
   );
 
   const serializedStateManager = featureServices[

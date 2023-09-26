@@ -38,7 +38,7 @@ const {featureAppManager, featureServiceRegistry} = createFeatureHub(
       someFeatureServiceDefinition1,
       someFeatureServiceDefinition2,
     ],
-  }
+  },
 );
 ```
 
@@ -849,7 +849,7 @@ mainFeatureAppContainer.featureAppDefinition = someFeatureAppDefinition;
 document.querySelector('main').appendChild(mainFeatureAppContainer);
 
 const asideFeatureAppContainer = document.createElement(
-  'feature-app-container'
+  'feature-app-container',
 );
 
 asideFeatureAppContainer.setAttribute('featureAppId', 'some-feature-app:aside');
@@ -871,7 +871,7 @@ featureAppContainer.featureAppDefinition = someFeatureAppDefinition;
 
 featureAppContainer.setAttribute(
   'baseUrl',
-  'https://example.com/some-feature-app'
+  'https://example.com/some-feature-app',
 );
 
 document.querySelector('#app').appendChild(featureAppContainer);
@@ -912,7 +912,7 @@ mainFeatureAppContainer.featureAppDefinition = someFeatureAppDefinition;
 document.querySelector('main').appendChild(mainFeatureAppContainer);
 
 const asideFeatureAppContainer = document.createElement(
-  'feature-app-container'
+  'feature-app-container',
 );
 
 asideFeatureAppContainer.setAttribute('featureAppId', 'some-feature-app:aside');

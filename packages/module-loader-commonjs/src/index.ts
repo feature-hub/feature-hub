@@ -18,7 +18,7 @@ export interface Externals {
  */
 export function createCommonJsModuleLoader(
   externals: Externals = {},
-  requestInit?: RequestInit
+  requestInit?: RequestInit,
 ): (url: string) => Promise<unknown> {
   return async (url: string): Promise<unknown> => {
     const response = await fetch(url, requestInit);
@@ -31,10 +31,10 @@ export function createCommonJsModuleLoader(
       'exports',
       'require',
       `${source}
-      //# sourceURL=${url}`
+      //# sourceURL=${url}`,
     )(mod, mod.exports, (dep: string) =>
       // tslint:disable-next-line:no-eval https://stackoverflow.com/a/41063795/10385541
-      externals.hasOwnProperty(dep) ? externals[dep] : eval('require')(dep)
+      externals.hasOwnProperty(dep) ? externals[dep] : eval('require')(dep),
     );
 
     return mod.exports;
@@ -48,5 +48,5 @@ export function createCommonJsModuleLoader(
  * the module can not be loaded.
  */
 export const loadCommonJsModule: (
-  url: string
+  url: string,
 ) => Promise<unknown> = createCommonJsModuleLoader();

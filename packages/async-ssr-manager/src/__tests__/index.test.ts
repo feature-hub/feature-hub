@@ -68,7 +68,7 @@ describe('defineAsyncSsrManager', () => {
           const mockRender = jest.fn(() => 'testHtml');
 
           const html = await useFakeTimers(async () =>
-            asyncSsrManager.renderUntilCompleted(mockRender)
+            asyncSsrManager.renderUntilCompleted(mockRender),
           );
 
           expect(html).toEqual('testHtml');
@@ -83,7 +83,7 @@ describe('defineAsyncSsrManager', () => {
             const mockRender = jest.fn(async () => 'testHtml');
 
             const html = await useFakeTimers(async () =>
-              asyncSsrManager.renderUntilCompleted(mockRender)
+              asyncSsrManager.renderUntilCompleted(mockRender),
             );
 
             expect(html).toEqual('testHtml');
@@ -95,7 +95,7 @@ describe('defineAsyncSsrManager', () => {
       describe('with an integrator, and a consumer that schedules a rerender with a custom promise', () => {
         it('resolves with an html string after the second render pass', async () => {
           const asyncSsrManagerIntegrator = asyncSsrManagerBinder(
-            'test:integrator'
+            'test:integrator',
           ).featureService;
 
           const asyncSsrManagerConsumer = asyncSsrManagerBinder('test:consumer')
@@ -114,7 +114,7 @@ describe('defineAsyncSsrManager', () => {
           });
 
           const html = await useFakeTimers(async () =>
-            asyncSsrManagerIntegrator.renderUntilCompleted(mockRender)
+            asyncSsrManagerIntegrator.renderUntilCompleted(mockRender),
           );
 
           expect(html).toEqual('render pass 2');
@@ -125,7 +125,7 @@ describe('defineAsyncSsrManager', () => {
       describe('with an integrator, and a consumer that schedules a rerender without a custom promise', () => {
         it('resolves with an html string after the second render pass', async () => {
           const asyncSsrManagerIntegrator = asyncSsrManagerBinder(
-            'test:integrator'
+            'test:integrator',
           ).featureService;
 
           const asyncSsrManagerConsumer = asyncSsrManagerBinder('test:consumer')
@@ -144,7 +144,7 @@ describe('defineAsyncSsrManager', () => {
           });
 
           const html = await useFakeTimers(async () =>
-            asyncSsrManagerIntegrator.renderUntilCompleted(mockRender)
+            asyncSsrManagerIntegrator.renderUntilCompleted(mockRender),
           );
 
           expect(html).toEqual('render pass 2');
@@ -155,7 +155,7 @@ describe('defineAsyncSsrManager', () => {
       describe('with an integrator, and a consumer that schedules a rerender in two consecutive render passes', () => {
         it('resolves with an html string after the third render pass', async () => {
           const asyncSsrManagerIntegrator = asyncSsrManagerBinder(
-            'test:integrator'
+            'test:integrator',
           ).featureService;
 
           const asyncSsrManagerConsumer = asyncSsrManagerBinder('test:consumer')
@@ -174,7 +174,7 @@ describe('defineAsyncSsrManager', () => {
           });
 
           const html = await useFakeTimers(async () =>
-            asyncSsrManagerIntegrator.renderUntilCompleted(mockRender)
+            asyncSsrManagerIntegrator.renderUntilCompleted(mockRender),
           );
 
           expect(html).toEqual('render pass 3');
@@ -187,7 +187,7 @@ describe('defineAsyncSsrManager', () => {
           expect.assertions(2);
 
           const asyncSsrManagerIntegrator = asyncSsrManagerBinder(
-            'test:integrator'
+            'test:integrator',
           ).featureService;
 
           const asyncSsrManagerConsumer = asyncSsrManagerBinder('test:consumer')
@@ -213,7 +213,7 @@ describe('defineAsyncSsrManager', () => {
           });
 
           const html = await useFakeTimers(async () =>
-            asyncSsrManagerIntegrator.renderUntilCompleted(mockRender)
+            asyncSsrManagerIntegrator.renderUntilCompleted(mockRender),
           );
 
           expect(html).toEqual('render pass 2, consumer result 2');
@@ -224,15 +224,15 @@ describe('defineAsyncSsrManager', () => {
       describe('with an integrator, and two consumers that both schedule a rerender in the first render pass', () => {
         it('resolves with an html string after the second render pass', async () => {
           const asyncSsrManagerIntegrator = asyncSsrManagerBinder(
-            'test:integrator'
+            'test:integrator',
           ).featureService;
 
           const asyncSsrManagerConsumer1 = asyncSsrManagerBinder(
-            'test:consumer:1'
+            'test:consumer:1',
           ).featureService;
 
           const asyncSsrManagerConsumer2 = asyncSsrManagerBinder(
-            'test:consumer:2'
+            'test:consumer:2',
           ).featureService;
 
           let renderPass = 0;
@@ -249,7 +249,7 @@ describe('defineAsyncSsrManager', () => {
           });
 
           const html = await useFakeTimers(async () =>
-            asyncSsrManagerIntegrator.renderUntilCompleted(mockRender)
+            asyncSsrManagerIntegrator.renderUntilCompleted(mockRender),
           );
 
           expect(html).toEqual('render pass 2');
@@ -267,7 +267,7 @@ describe('defineAsyncSsrManager', () => {
           });
 
           return expect(
-            asyncSsrManager.renderUntilCompleted(mockRender)
+            asyncSsrManager.renderUntilCompleted(mockRender),
           ).rejects.toEqual(mockError);
         });
       });
@@ -278,7 +278,7 @@ describe('defineAsyncSsrManager', () => {
 
           const mockRender = jest.fn(() => {
             asyncSsrManager.scheduleRerender(
-              new Promise<never>(() => undefined)
+              new Promise<never>(() => undefined),
             );
 
             return 'testHtml';
@@ -287,8 +287,8 @@ describe('defineAsyncSsrManager', () => {
           return expect(
             useFakeTimers(
               async () => asyncSsrManager.renderUntilCompleted(mockRender),
-              5
-            )
+              5,
+            ),
           ).rejects.toEqual(new Error('Got rendering timeout after 5 ms.'));
         });
       });
@@ -307,7 +307,7 @@ describe('defineAsyncSsrManager', () => {
           const mockRender = jest.fn(() => 'testHtml');
 
           await useFakeTimers(async () =>
-            asyncSsrManager.renderUntilCompleted(mockRender)
+            asyncSsrManager.renderUntilCompleted(mockRender),
           );
 
           expect(stubbedLogger.warn.mock.calls).toEqual([
@@ -341,7 +341,7 @@ describe('defineAsyncSsrManager', () => {
         const mockRender = jest.fn(() => 'testHtml');
 
         await useFakeTimers(async () =>
-          asyncSsrManager.renderUntilCompleted(mockRender)
+          asyncSsrManager.renderUntilCompleted(mockRender),
         );
 
         expect(consoleWarnSpy.mock.calls).toEqual([

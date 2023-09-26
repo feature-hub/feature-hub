@@ -2,7 +2,7 @@ const queueMacroTask = setImmediate;
 
 export async function useFakeTimers<TResult>(
   createPromise: () => Promise<TResult>,
-  expectedTimeout?: number
+  expectedTimeout?: number,
 ): Promise<TResult> {
   jest.useFakeTimers();
 
@@ -13,7 +13,7 @@ export async function useFakeTimers<TResult>(
 
     promise.then(
       () => (pending = false),
-      () => (pending = false)
+      () => (pending = false),
     );
 
     await new Promise(queueMacroTask);

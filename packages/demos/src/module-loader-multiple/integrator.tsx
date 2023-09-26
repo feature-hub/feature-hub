@@ -26,5 +26,5 @@ ReactDOM.render(
     />
   </FeatureHubContextProvider>,
 
-  document.querySelector('main')
+  document.querySelector('main'),
 );

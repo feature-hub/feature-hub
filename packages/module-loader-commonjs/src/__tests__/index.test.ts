@@ -52,7 +52,7 @@ describe('createCommonJsModuleLoader', () => {
 
     const loadCommonJsModuleWithExternals = createCommonJsModuleLoader(
       {foo: () => 42},
-      init
+      init,
     );
 
     const loadedModule = await loadCommonJsModuleWithExternals(url);

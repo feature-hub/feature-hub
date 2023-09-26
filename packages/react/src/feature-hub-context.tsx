@@ -84,7 +84,7 @@ export const FeatureHubContextProvider = FeatureHubContext.Provider;
  * [[FeatureAppLoader]] and [[FeatureAppContainer]].
  */
 export function FeatureHubContextConsumer(
-  props: React.ConsumerProps<FeatureHubContextConsumerValue>
+  props: React.ConsumerProps<FeatureHubContextConsumerValue>,
 ): JSX.Element {
   return (
     <FeatureHubContext.Consumer>

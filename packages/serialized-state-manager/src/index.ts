@@ -57,7 +57,7 @@ export interface SharedSerializedStateManager extends SharedFeatureService {
  * [[SerializedStateManagerV1.setSerializedStates]] after its creation.
  */
 export function defineSerializedStateManager(
-  serializedStates?: string
+  serializedStates?: string,
 ): FeatureServiceProviderDefinition<SharedSerializedStateManager> {
   return {
     id: 's2:serialized-state-manager',
@@ -75,7 +75,7 @@ export function defineSerializedStateManager(
           featureService: new SerializedStateManager(
             consumerId,
             serverSideStateManager,
-            clientSideStateManager
+            clientSideStateManager,
           ),
         }),
       };
