@@ -11,7 +11,7 @@ export abstract class ConsumerHistory implements history.History {
   public constructor(
     protected readonly context: HistoryServiceContext,
     protected readonly historyKey: string,
-    protected readonly historyMultiplexer: HistoryMultiplexer
+    protected readonly historyMultiplexer: HistoryMultiplexer,
   ) {
     const {
       pathname,
@@ -78,7 +78,7 @@ export abstract class ConsumerHistory implements history.History {
   public createHref(to: history.To): string {
     return this.historyMultiplexer.createHref(
       this.historyKey,
-      createHistoryPath(to, history.createPath(this.location))
+      createHistoryPath(to, history.createPath(this.location)),
     );
   }
 

@@ -7,7 +7,7 @@ export class StaticConsumerHistory extends ConsumerHistory {
   public constructor(
     context: HistoryServiceContext,
     historyKey: string,
-    historyMultiplexer: HistoryMultiplexer
+    historyMultiplexer: HistoryMultiplexer,
   ) {
     super(context, historyKey, historyMultiplexer);
 

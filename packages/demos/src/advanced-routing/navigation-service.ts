@@ -63,7 +63,7 @@ export const navigationServiceDefinition: FeatureServiceProviderDefinition<
 
             const {state, ...to} = createNewRootLocationForMultipleConsumers(
               pageLocation,
-              helloWorldLocation
+              helloWorldLocation,
             );
 
             rootHistory.push(to, state);

@@ -25,7 +25,7 @@ const {featureAppManager, featureServices} = createFeatureHub(
     providedExternals: {react: process.env.REACT_VERSION as string},
     featureServiceDefinitions: [
       defineHistoryService(
-        createRootLocationTransformer({consumerPathsQueryParamName: '---'})
+        createRootLocationTransformer({consumerPathsQueryParamName: '---'}),
       ),
       navigationServiceDefinition,
       helloWorldServiceDefinition,
@@ -33,7 +33,7 @@ const {featureAppManager, featureServices} = createFeatureHub(
     featureServiceDependencies: {
       [navigationServiceDefinition.id]: '^1.0.0',
     },
-  }
+  },
 );
 
 const navigationService = featureServices[
@@ -47,5 +47,5 @@ ReactDOM.render(
     </HistoryRouter>
   </FeatureHubContextProvider>,
 
-  document.querySelector('main')
+  document.querySelector('main'),
 );

@@ -28,7 +28,7 @@ const App: React.FunctionComponent<AppProps> = ({
   loadingError,
 }) => {
   const [serverResponse, setServerResponse] = React.useState<string | null>(
-    null
+    null,
   );
 
   React.useEffect(() => {
@@ -56,7 +56,7 @@ const featureAppDefinition: FeatureAppDefinition<ReactFeatureApp> = {
     let reject: (err: Error) => void;
 
     const loadingPromise: Promise<void> = new Promise(
-      (res, rej) => ([resolve, reject] = [res, rej])
+      (res, rej) => ([resolve, reject] = [res, rej]),
     );
 
     return {

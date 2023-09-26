@@ -16,13 +16,13 @@ describe('#createRootLocationTransformer', () => {
         let rootLocation = locationTransformer.createRootLocation(
           {pathname: '/'},
           {pathname: '/foo'},
-          'test1'
+          'test1',
         );
 
         rootLocation = locationTransformer.createRootLocation(
           rootLocation,
           {pathname: '/bar', search: 'baz=1'},
-          'test2'
+          'test2',
         );
 
         expect(rootLocation).toMatchObject({
@@ -45,7 +45,7 @@ describe('#createRootLocationTransformer', () => {
         const rootLocation = locationTransformer.createRootLocation(
           {pathname: '/'},
           {pathname: '/foo', search: '?bar=1&baz=2', hash: '#qux'},
-          'testPri'
+          'testPri',
         );
 
         expect(rootLocation).toMatchObject({
@@ -66,12 +66,12 @@ describe('#createRootLocationTransformer', () => {
             locationTransformer.createRootLocation(
               {pathname: '/'},
               {pathname: '/foo', search: '?---=1'},
-              'testPri'
-            )
+              'testPri',
+            ),
           ).toThrowError(
             new Error(
-              `Primary consumer tried to set query parameter "---" which is reserverd for consumer paths.`
-            )
+              `Primary consumer tried to set query parameter "---" which is reserverd for consumer paths.`,
+            ),
           );
         });
       });
@@ -87,19 +87,19 @@ describe('#createRootLocationTransformer', () => {
         let rootLocation = locationTransformer.createRootLocation(
           {pathname: '/'},
           {pathname: '/baz', search: '?qux=3'},
-          'test1'
+          'test1',
         );
 
         rootLocation = locationTransformer.createRootLocation(
           rootLocation,
           {pathname: '/foo', search: '?bar=1', hash: '#qux'},
-          'testPri'
+          'testPri',
         );
 
         rootLocation = locationTransformer.createRootLocation(
           rootLocation,
           {pathname: '/some', search: '?thing=else'},
-          'test2'
+          'test2',
         );
 
         expect(rootLocation).toMatchObject({
@@ -131,22 +131,22 @@ describe('#createRootLocationTransformer', () => {
         expect(
           locationTransformer.getConsumerPathFromRootLocation(
             rootLocation as Location,
-            'testPri'
-          )
+            'testPri',
+          ),
         ).toEqual('/foo?bar=1#some-anchor');
 
         expect(
           locationTransformer.getConsumerPathFromRootLocation(
             rootLocation as Location,
-            'test1'
-          )
+            'test1',
+          ),
         ).toEqual('/baz?qux=3');
 
         expect(
           locationTransformer.getConsumerPathFromRootLocation(
             rootLocation as Location,
-            'test2'
-          )
+            'test2',
+          ),
         ).toBeUndefined();
       });
     });
@@ -166,8 +166,8 @@ describe('#createRootLocationTransformer', () => {
         expect(
           locationTransformer.getConsumerPathFromRootLocation(
             rootLocation as Location,
-            'test2'
-          )
+            'test2',
+          ),
         ).toBeUndefined();
       });
     });

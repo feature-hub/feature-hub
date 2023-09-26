@@ -16,7 +16,7 @@ describe('defineSerializedStateManager', () => {
 
   it('defines an id', () => {
     expect(serializedStateManagerDefinition.id).toBe(
-      's2:serialized-state-manager'
+      's2:serialized-state-manager',
     );
   });
 
@@ -24,14 +24,14 @@ describe('defineSerializedStateManager', () => {
     expect(serializedStateManagerDefinition.dependencies).toBeUndefined();
 
     expect(
-      serializedStateManagerDefinition.optionalDependencies
+      serializedStateManagerDefinition.optionalDependencies,
     ).toBeUndefined();
   });
 
   describe('#create', () => {
     it('creates a shared Feature Service containing version 1.0.0', () => {
       const sharedSerializedStateManager = serializedStateManagerDefinition.create(
-        mockEnv
+        mockEnv,
       );
 
       expect(sharedSerializedStateManager!['1.0.0']).toBeDefined();
@@ -45,19 +45,19 @@ describe('defineSerializedStateManager', () => {
 
     beforeEach(() => {
       const serializedStateManagerBinder = serializedStateManagerDefinition.create(
-        mockEnv
+        mockEnv,
       )!['1.0.0'];
 
       integratorSerializedStateManager = serializedStateManagerBinder(
-        'test:integrator'
+        'test:integrator',
       ).featureService;
 
       consumer1SerializedStateManager = serializedStateManagerBinder(
-        'test:consumer:1'
+        'test:consumer:1',
       ).featureService;
 
       consumer2SerializedStateManager = serializedStateManagerBinder(
-        'test:consumer:2'
+        'test:consumer:2',
       ).featureService;
     });
 
@@ -65,7 +65,7 @@ describe('defineSerializedStateManager', () => {
       describe('when no consumer has called #register', () => {
         it('returns a stringified empty object', () => {
           expect(integratorSerializedStateManager.serializeStates()).toBe(
-            encodeURI(JSON.stringify({}))
+            encodeURI(JSON.stringify({})),
           );
         });
       });
@@ -73,11 +73,11 @@ describe('defineSerializedStateManager', () => {
       describe('when consumers have called #register', () => {
         beforeEach(() => {
           consumer1SerializedStateManager.register(() =>
-            JSON.stringify({kind: 'foo'})
+            JSON.stringify({kind: 'foo'}),
           );
 
           consumer2SerializedStateManager.register(() =>
-            JSON.stringify({kind: 'bar'})
+            JSON.stringify({kind: 'bar'}),
           );
         });
 
@@ -87,8 +87,8 @@ describe('defineSerializedStateManager', () => {
               JSON.stringify({
                 'test:consumer:1': JSON.stringify({kind: 'foo'}),
                 'test:consumer:2': JSON.stringify({kind: 'bar'}),
-              })
-            )
+              }),
+            ),
           );
         });
       });
@@ -98,11 +98,11 @@ describe('defineSerializedStateManager', () => {
       describe('when the integrator has not called #setSerializedStates', () => {
         it('returns undefined', () => {
           expect(
-            consumer1SerializedStateManager.getSerializedState()
+            consumer1SerializedStateManager.getSerializedState(),
           ).toBeUndefined();
 
           expect(
-            consumer2SerializedStateManager.getSerializedState()
+            consumer2SerializedStateManager.getSerializedState(),
           ).toBeUndefined();
         });
       });
@@ -113,20 +113,20 @@ describe('defineSerializedStateManager', () => {
             encodeURI(
               JSON.stringify({
                 'test:consumer:1': JSON.stringify({kind: 'foo'}),
-              })
-            )
+              }),
+            ),
           );
         });
 
         it('returns the serialized state for the first consumer', () => {
           expect(consumer1SerializedStateManager.getSerializedState()).toBe(
-            JSON.stringify({kind: 'foo'})
+            JSON.stringify({kind: 'foo'}),
           );
         });
 
         it('returns undefined for the second consumer', () => {
           expect(
-            consumer2SerializedStateManager.getSerializedState()
+            consumer2SerializedStateManager.getSerializedState(),
           ).toBeUndefined();
         });
       });
@@ -136,27 +136,27 @@ describe('defineSerializedStateManager', () => {
 
         beforeEach(() => {
           const serializedStateManagerBinder = defineSerializedStateManager(
-            JSON.stringify({'test:consumer:1': serializedStateConsumer1})
+            JSON.stringify({'test:consumer:1': serializedStateConsumer1}),
           ).create(mockEnv)!['1.0.0'];
 
           consumer1SerializedStateManager = serializedStateManagerBinder(
-            'test:consumer:1'
+            'test:consumer:1',
           ).featureService;
 
           consumer2SerializedStateManager = serializedStateManagerBinder(
-            'test:consumer:2'
+            'test:consumer:2',
           ).featureService;
         });
 
         it('returns the serialized state for the first consumer', () => {
           expect(consumer1SerializedStateManager.getSerializedState()).toBe(
-            serializedStateConsumer1
+            serializedStateConsumer1,
           );
         });
 
         it('returns undefined for the second consumer', () => {
           expect(
-            consumer2SerializedStateManager.getSerializedState()
+            consumer2SerializedStateManager.getSerializedState(),
           ).toBeUndefined();
         });
       });

@@ -3,7 +3,7 @@ import {ModuleLoader} from '../feature-app-manager';
 export function invalidFeatureAppModule(
   url: string,
   moduleType: string | undefined,
-  moduleLoader: ModuleLoader | undefined
+  moduleLoader: ModuleLoader | undefined,
 ): string {
   let message = `The Feature App module at the url ${JSON.stringify(url)} ${
     moduleType

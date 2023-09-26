@@ -6,7 +6,7 @@ export interface AsyncSsrManagerContext {
 }
 
 export function createAsyncSsrManagerContext(
-  featureServices: AsyncSsrManagerDependencies
+  featureServices: AsyncSsrManagerDependencies,
 ): AsyncSsrManagerContext {
   const logger = featureServices['s2:logger'] || console;
 

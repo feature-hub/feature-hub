@@ -18,7 +18,7 @@ function createHistoryServiceV2(
   context: HistoryServiceContext,
   historyKey: string,
   consumerHistory: ConsumerHistory,
-  historyMultiplexer: HistoryMultiplexer
+  historyMultiplexer: HistoryMultiplexer,
 ): HistoryServiceV2 {
   return {
     historyKey,
@@ -35,8 +35,8 @@ function createHistoryServiceV2(
             historyKey: otherHistoryKey,
             location: {pathname, search, hash},
             state,
-          })
-        )
+          }),
+        ),
       ),
   };
 }
@@ -44,12 +44,12 @@ function createHistoryServiceV2(
 function createBrowserHistoryServiceV2Binding(
   context: HistoryServiceContext,
   historyMultiplexers: HistoryMultiplexers,
-  historyKey: string
+  historyKey: string,
 ): FeatureServiceBinding<HistoryServiceV2> {
   const consumerHistory = new BrowserConsumerHistory(
     context,
     historyKey,
-    historyMultiplexers.browserHistoryMultiplexer
+    historyMultiplexers.browserHistoryMultiplexer,
   );
 
   return {
@@ -57,7 +57,7 @@ function createBrowserHistoryServiceV2Binding(
       context,
       historyKey,
       consumerHistory,
-      historyMultiplexers.browserHistoryMultiplexer
+      historyMultiplexers.browserHistoryMultiplexer,
     ),
 
     unbind: () => {
@@ -69,12 +69,12 @@ function createBrowserHistoryServiceV2Binding(
 function createStaticHistoryServiceV2Binding(
   context: HistoryServiceContext,
   historyMultiplexers: HistoryMultiplexers,
-  historyKey: string
+  historyKey: string,
 ): FeatureServiceBinding<HistoryServiceV2> {
   const consumerHistory = new StaticConsumerHistory(
     context,
     historyKey,
-    historyMultiplexers.staticHistoryMultiplexer
+    historyMultiplexers.staticHistoryMultiplexer,
   );
 
   return {
@@ -82,7 +82,7 @@ function createStaticHistoryServiceV2Binding(
       context,
       historyKey,
       consumerHistory,
-      historyMultiplexers.staticHistoryMultiplexer
+      historyMultiplexers.staticHistoryMultiplexer,
     ),
   };
 }
@@ -90,13 +90,13 @@ function createStaticHistoryServiceV2Binding(
 export function createHistoryServiceV2Binder(
   context: HistoryServiceContext,
   historyMultiplexers: HistoryMultiplexers,
-  options: CreateHistoryServiceV2BinderOptions
+  options: CreateHistoryServiceV2BinderOptions,
 ): FeatureServiceBinder<HistoryServiceV2> {
   const {mode, getHistoryKey} = options;
 
   return (
     consumerId,
-    consumerName
+    consumerName,
   ): FeatureServiceBinding<HistoryServiceV2> => {
     const historyKey = getHistoryKey({consumerId, consumerName});
 
@@ -104,12 +104,12 @@ export function createHistoryServiceV2Binder(
       ? createBrowserHistoryServiceV2Binding(
           context,
           historyMultiplexers,
-          historyKey
+          historyKey,
         )
       : createStaticHistoryServiceV2Binding(
           context,
           historyMultiplexers,
-          historyKey
+          historyKey,
         );
   };
 }

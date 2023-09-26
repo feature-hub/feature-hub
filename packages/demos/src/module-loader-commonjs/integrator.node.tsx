@@ -27,7 +27,7 @@ export default async function renderApp({
         src=""
         serverSrc={featureAppNodeUrl}
       />
-    </FeatureHubContextProvider>
+    </FeatureHubContextProvider>,
   );
 
   return {html};

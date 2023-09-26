@@ -52,5 +52,5 @@ ReactDOM.render(
       </FeatureAppLoader>
     </FeatureHubContextProvider>
   </div>,
-  document.querySelector('main')
+  document.querySelector('main'),
 );

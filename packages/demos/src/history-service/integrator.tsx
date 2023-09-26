@@ -12,5 +12,5 @@ const {featureAppManager} = createFeatureHub('test:integrator', {
 
 ReactDOM.render(
   <App featureAppManager={featureAppManager} />,
-  document.querySelector('main')
+  document.querySelector('main'),
 );

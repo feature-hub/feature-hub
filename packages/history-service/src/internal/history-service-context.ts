@@ -8,7 +8,7 @@ export interface HistoryServiceContext {
 }
 
 export function createHistoryServiceContext(
-  featureServices: HistoryServiceDependencies
+  featureServices: HistoryServiceDependencies,
 ): HistoryServiceContext {
   const logger = featureServices['s2:logger'] || console;
   const serverRequest = featureServices['s2:server-request'];

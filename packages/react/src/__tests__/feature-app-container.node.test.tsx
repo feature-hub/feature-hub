@@ -58,7 +58,7 @@ describe('FeatureAppContainer (on Node.js)', () => {
         value={{featureAppManager: mockFeatureAppManager}}
       >
         {node}
-      </FeatureHubContextProvider>
+      </FeatureHubContextProvider>,
     );
 
   for (const invalidFeatureApp of [
@@ -69,7 +69,7 @@ describe('FeatureAppContainer (on Node.js)', () => {
     {render: 'foo'},
   ]) {
     describe(`when an invalid Feature App (${JSON.stringify(
-      invalidFeatureApp
+      invalidFeatureApp,
     )}) is created`, () => {
       beforeEach(() => {
         mockFeatureAppScope = {
@@ -80,14 +80,14 @@ describe('FeatureAppContainer (on Node.js)', () => {
 
       it('logs an error', () => {
         const expectedError = new Error(
-          'Invalid Feature App found. The Feature App must be an object with either 1) a `render` method that returns a React element, or 2) an `attachTo` method that accepts a container DOM element.'
+          'Invalid Feature App found. The Feature App must be an object with either 1) a `render` method that returns a React element, or 2) an `attachTo` method that accepts a container DOM element.',
         );
 
         renderWithFeatureHubContext(
           <FeatureAppContainer
             featureAppId="testId"
             featureAppDefinition={mockFeatureAppDefinition}
-          />
+          />,
         );
 
         expectConsoleErrorCalls([[expectedError]]);
@@ -111,7 +111,7 @@ describe('FeatureAppContainer (on Node.js)', () => {
         <FeatureAppContainer
           featureAppId="testId"
           featureAppDefinition={mockFeatureAppDefinition}
-        />
+        />,
       );
 
       expectConsoleErrorCalls([[mockError]]);
@@ -139,7 +139,7 @@ describe('FeatureAppContainer (on Node.js)', () => {
         <FeatureAppContainer
           featureAppId="testId"
           featureAppDefinition={mockFeatureAppDefinition}
-        />
+        />,
       );
 
       expectConsoleErrorCalls([[mockError]]);
@@ -183,7 +183,7 @@ describe('FeatureAppContainer (on Node.js)', () => {
           featureAppId="testId"
           featureAppDefinition={mockFeatureAppDefinition}
           children={children}
-        />
+        />,
       );
 
       expect(children).toHaveBeenCalledTimes(1);
@@ -202,7 +202,7 @@ describe('FeatureAppContainer (on Node.js)', () => {
           featureAppId="testId"
           featureAppDefinition={mockFeatureAppDefinition}
           children={children}
-        />
+        />,
       );
 
       expect(children).toHaveBeenCalledTimes(1);

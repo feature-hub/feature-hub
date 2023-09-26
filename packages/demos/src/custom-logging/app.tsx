@@ -9,7 +9,7 @@ export interface AppProps {
   readonly useConsumerName: boolean;
 
   readonly beforeCreate?: (
-    env: FeatureAppEnvironment<FeatureServices, undefined>
+    env: FeatureAppEnvironment<FeatureServices, undefined>,
   ) => void;
 }
 

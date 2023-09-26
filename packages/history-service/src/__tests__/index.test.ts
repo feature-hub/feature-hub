@@ -103,7 +103,7 @@ describe('defineHistoryService', () => {
 
       createHistoryServiceBinder = () => {
         const sharedHistoryService = defineHistoryService(
-          createRootLocationTransformer({consumerPathsQueryParamName})
+          createRootLocationTransformer({consumerPathsQueryParamName}),
         ).create(mockEnv);
 
         return sharedHistoryService!['1.0.0'];
@@ -150,11 +150,11 @@ describe('defineHistoryService', () => {
       describe('when called multiple times for the same consumer', () => {
         it('returns the same instance and logs a warning', () => {
           expect(historyBinding1.featureService.createBrowserHistory()).toEqual(
-            history1
+            history1,
           );
 
           expect(stubbedLogger.warn).toHaveBeenCalledWith(
-            'createBrowserHistory was called multiple times by consumer "test1". Returning the same history instance as before.'
+            'createBrowserHistory was called multiple times by consumer "test1". Returning the same history instance as before.',
           );
         });
       });
@@ -254,7 +254,7 @@ describe('defineHistoryService', () => {
           history2.push('/bar?baz=1');
 
           expect(window.location.href).toBe(
-            createUrl({test1: '/foo', test2: '/bar?baz=1'})
+            createUrl({test1: '/foo', test2: '/bar?baz=1'}),
           );
 
           expect(pushStateSpy).toHaveBeenCalledTimes(2);
@@ -292,7 +292,7 @@ describe('defineHistoryService', () => {
           history2.replace('/bar?baz=1');
 
           expect(window.location.href).toBe(
-            createUrl({test1: '/foo', test2: '/bar?baz=1'})
+            createUrl({test1: '/foo', test2: '/bar?baz=1'}),
           );
 
           expect(replaceStateSpy).toHaveBeenCalledTimes(2);
@@ -335,7 +335,7 @@ describe('defineHistoryService', () => {
           expect(window.location.href).toBe(href);
 
           expect(stubbedLogger.warn).toHaveBeenCalledWith(
-            'history.go() is not supported.'
+            'history.go() is not supported.',
           );
         });
       });
@@ -351,7 +351,7 @@ describe('defineHistoryService', () => {
           expect(window.location.href).toBe(href);
 
           expect(stubbedLogger.warn).toHaveBeenCalledWith(
-            'history.goBack() is not supported.'
+            'history.goBack() is not supported.',
           );
         });
       });
@@ -367,7 +367,7 @@ describe('defineHistoryService', () => {
           expect(window.location.href).toBe(href);
 
           expect(stubbedLogger.warn).toHaveBeenCalledWith(
-            'history.goForward() is not supported.'
+            'history.goForward() is not supported.',
           );
         });
       });
@@ -384,7 +384,7 @@ describe('defineHistoryService', () => {
           expect(promptHookSpy).not.toHaveBeenCalled();
 
           expect(stubbedLogger.warn).toHaveBeenCalledWith(
-            'history.block() is not supported.'
+            'history.block() is not supported.',
           );
         });
 
@@ -411,14 +411,14 @@ describe('defineHistoryService', () => {
 
           expect(listenerSpy1).toHaveBeenCalledWith(
             expect.objectContaining({pathname: '/foo', search: '?bar=1'}),
-            'PUSH'
+            'PUSH',
           );
 
           expect(listenerSpy2).toHaveBeenCalledTimes(1);
 
           expect(listenerSpy2).toHaveBeenCalledWith(
             expect.objectContaining({pathname: '/baz', search: '?qux=2'}),
-            'REPLACE'
+            'REPLACE',
           );
         });
 
@@ -465,7 +465,7 @@ describe('defineHistoryService', () => {
 
             expect(history1ListenerSpy).toHaveBeenCalledWith(
               expect.objectContaining({pathname: '/'}),
-              'POP'
+              'POP',
             );
 
             expect(history2ListenerSpy).not.toHaveBeenCalled();
@@ -501,7 +501,7 @@ describe('defineHistoryService', () => {
 
               expect(history1ListenerSpy).toHaveBeenCalledWith(
                 expect.objectContaining({pathname: '/baz', search: '?qux=3'}),
-                'POP'
+                'POP',
               );
 
               history1ListenerSpy.mockClear();
@@ -510,7 +510,7 @@ describe('defineHistoryService', () => {
 
               expect(history1ListenerSpy).toHaveBeenCalledWith(
                 expect.objectContaining({pathname: '/bar', search: '?qux=4'}),
-                'POP'
+                'POP',
               );
             });
           });
@@ -534,7 +534,7 @@ describe('defineHistoryService', () => {
 
               expect(history2ListenerSpy).toHaveBeenCalledWith(
                 expect.objectContaining({pathname: '/b2'}),
-                'POP'
+                'POP',
               );
             });
           });
@@ -561,7 +561,7 @@ describe('defineHistoryService', () => {
                   search: '?a=1',
                   state: consumerState,
                 }),
-                'POP'
+                'POP',
               );
 
               expect(history2ListenerSpy).not.toHaveBeenCalled();
@@ -578,7 +578,7 @@ describe('defineHistoryService', () => {
           const href = history2.createHref(location);
 
           expect(href).toBe(
-            createUrl({test1: '/foo', test2: '/bar?a=b'}, {relative: true})
+            createUrl({test1: '/foo', test2: '/bar?a=b'}, {relative: true}),
           );
         });
 
@@ -589,7 +589,7 @@ describe('defineHistoryService', () => {
           const href = history2.createHref(location);
 
           expect(href).toBe(
-            createUrl({test1: '/foo', test2: '/bar'}, {relative: true})
+            createUrl({test1: '/foo', test2: '/bar'}, {relative: true}),
           );
         });
       });
@@ -664,7 +664,7 @@ describe('defineHistoryService', () => {
         browserHistory.go(-1);
 
         expect(consoleWarnSpy).toHaveBeenCalledWith(
-          'history.go() is not supported.'
+          'history.go() is not supported.',
         );
       });
     });
@@ -676,7 +676,7 @@ describe('defineHistoryService', () => {
     >>;
 
     let createHistoryServiceBinder: (
-      mode?: 'browser' | 'static'
+      mode?: 'browser' | 'static',
     ) => FeatureServiceBinder<HistoryServiceV2>;
 
     beforeEach(() => {
@@ -686,7 +686,7 @@ describe('defineHistoryService', () => {
 
       createHistoryServiceBinder = () => {
         const sharedHistoryService = defineHistoryService(
-          createRootLocationTransformer({consumerPathsQueryParamName})
+          createRootLocationTransformer({consumerPathsQueryParamName}),
         ).create(mockEnv);
 
         return sharedHistoryService!['2.0.0'];
@@ -836,7 +836,7 @@ describe('defineHistoryService', () => {
           history2.push('/bar?baz=1');
 
           expect(window.location.href).toBe(
-            createUrl({test1: '/foo', test2: '/bar?baz=1'})
+            createUrl({test1: '/foo', test2: '/bar?baz=1'}),
           );
 
           expect(pushStateSpy).toHaveBeenCalledTimes(2);
@@ -862,7 +862,7 @@ describe('defineHistoryService', () => {
           history2.replace('/bar?baz=1');
 
           expect(window.location.href).toBe(
-            createUrl({test1: '/foo', test2: '/bar?baz=1'})
+            createUrl({test1: '/foo', test2: '/bar?baz=1'}),
           );
 
           expect(replaceStateSpy).toHaveBeenCalledTimes(2);
@@ -893,7 +893,7 @@ describe('defineHistoryService', () => {
           expect(window.location.href).toBe(href);
 
           expect(stubbedLogger.warn).toHaveBeenCalledWith(
-            'history.go() is not supported.'
+            'history.go() is not supported.',
           );
         });
       });
@@ -909,7 +909,7 @@ describe('defineHistoryService', () => {
           expect(window.location.href).toBe(href);
 
           expect(stubbedLogger.warn).toHaveBeenCalledWith(
-            'history.goBack() is not supported.'
+            'history.goBack() is not supported.',
           );
         });
       });
@@ -925,7 +925,7 @@ describe('defineHistoryService', () => {
           expect(window.location.href).toBe(href);
 
           expect(stubbedLogger.warn).toHaveBeenCalledWith(
-            'history.goForward() is not supported.'
+            'history.goForward() is not supported.',
           );
         });
       });
@@ -942,7 +942,7 @@ describe('defineHistoryService', () => {
           expect(promptHookSpy).not.toHaveBeenCalled();
 
           expect(stubbedLogger.warn).toHaveBeenCalledWith(
-            'history.block() is not supported.'
+            'history.block() is not supported.',
           );
         });
 
@@ -969,14 +969,14 @@ describe('defineHistoryService', () => {
 
           expect(listenerSpy1).toHaveBeenCalledWith(
             expect.objectContaining({pathname: '/foo', search: '?bar=1'}),
-            'PUSH'
+            'PUSH',
           );
 
           expect(listenerSpy2).toHaveBeenCalledTimes(1);
 
           expect(listenerSpy2).toHaveBeenCalledWith(
             expect.objectContaining({pathname: '/baz', search: '?qux=2'}),
-            'REPLACE'
+            'REPLACE',
           );
         });
 
@@ -1023,7 +1023,7 @@ describe('defineHistoryService', () => {
 
             expect(history1ListenerSpy).toHaveBeenCalledWith(
               expect.objectContaining({pathname: '/'}),
-              'POP'
+              'POP',
             );
 
             expect(history2ListenerSpy).not.toHaveBeenCalled();
@@ -1059,7 +1059,7 @@ describe('defineHistoryService', () => {
 
               expect(history1ListenerSpy).toHaveBeenCalledWith(
                 expect.objectContaining({pathname: '/baz', search: '?qux=3'}),
-                'POP'
+                'POP',
               );
 
               history1ListenerSpy.mockClear();
@@ -1068,7 +1068,7 @@ describe('defineHistoryService', () => {
 
               expect(history1ListenerSpy).toHaveBeenCalledWith(
                 expect.objectContaining({pathname: '/bar', search: '?qux=4'}),
-                'POP'
+                'POP',
               );
             });
           });
@@ -1092,7 +1092,7 @@ describe('defineHistoryService', () => {
 
               expect(history2ListenerSpy).toHaveBeenCalledWith(
                 expect.objectContaining({pathname: '/b2'}),
-                'POP'
+                'POP',
               );
             });
           });
@@ -1119,7 +1119,7 @@ describe('defineHistoryService', () => {
                   search: '?a=1',
                   state: consumerState,
                 }),
-                'POP'
+                'POP',
               );
 
               expect(history2ListenerSpy).not.toHaveBeenCalled();
@@ -1136,7 +1136,7 @@ describe('defineHistoryService', () => {
           const href = history2.createHref(location);
 
           expect(href).toBe(
-            createUrl({test1: '/foo', test2: '/bar?a=b'}, {relative: true})
+            createUrl({test1: '/foo', test2: '/bar?a=b'}, {relative: true}),
           );
         });
 
@@ -1147,7 +1147,7 @@ describe('defineHistoryService', () => {
           const href = history2.createHref(location);
 
           expect(href).toBe(
-            createUrl({test1: '/foo', test2: '/bar'}, {relative: true})
+            createUrl({test1: '/foo', test2: '/bar'}, {relative: true}),
           );
         });
       });
@@ -1325,7 +1325,7 @@ describe('defineHistoryService', () => {
 
         it('changes the location and action of affected consumer histories', () => {
           const rootLocation = historyService1.createNewRootLocationForMultipleConsumers(
-            {historyKey: 'test2', location: {pathname: '/test2'}}
+            {historyKey: 'test2', location: {pathname: '/test2'}},
           );
 
           historyService1.rootHistory.push(rootLocation);
@@ -1353,7 +1353,7 @@ describe('defineHistoryService', () => {
           historyService2.history.listen(listener2);
 
           const rootLocation = historyService1.createNewRootLocationForMultipleConsumers(
-            {historyKey: 'test2', location: {pathname: '/test2'}}
+            {historyKey: 'test2', location: {pathname: '/test2'}},
           );
 
           historyService1.rootHistory.push(rootLocation);
@@ -1424,7 +1424,7 @@ describe('defineHistoryService', () => {
 
         it('changes the location and action of affected consumer histories', () => {
           const rootLocation = historyService1.createNewRootLocationForMultipleConsumers(
-            {historyKey: 'test2', location: {pathname: '/test2'}}
+            {historyKey: 'test2', location: {pathname: '/test2'}},
           );
 
           historyService1.rootHistory.replace(rootLocation);
@@ -1450,7 +1450,7 @@ describe('defineHistoryService', () => {
           historyService2.history.listen(listener2);
 
           const rootLocation = historyService1.createNewRootLocationForMultipleConsumers(
-            {historyKey: 'test2', location: {pathname: '/test2'}}
+            {historyKey: 'test2', location: {pathname: '/test2'}},
           );
 
           historyService1.rootHistory.replace(rootLocation);
@@ -1514,7 +1514,7 @@ describe('defineHistoryService', () => {
 
             expect(listenerSpy).toHaveBeenCalledWith(
               expect.objectContaining({pathname: '/'}),
-              'POP'
+              'POP',
             );
           });
         });
@@ -1538,7 +1538,7 @@ describe('defineHistoryService', () => {
         const historyService = historyServiceBinder('test1').featureService;
 
         const location = historyService.createNewRootLocationForMultipleConsumers(
-          {historyKey: 'test1', location: {pathname: '/test1', state: 42}}
+          {historyKey: 'test1', location: {pathname: '/test1', state: 42}},
         );
 
         expect(location).toMatchObject({
@@ -1560,7 +1560,7 @@ describe('defineHistoryService', () => {
           {
             historyKey: 'test2',
             location: {pathname: '/xxx', state: 'foo'},
-          }
+          },
         );
 
         expect(location).toMatchObject({
@@ -1603,11 +1603,11 @@ describe('defineHistoryService', () => {
           };
 
           historyServiceTest1.createNewRootLocationForMultipleConsumers(
-            consumerLocation
+            consumerLocation,
           );
 
           expect(
-            createNewRootLocationForMultipleConsumersMock.mock.calls
+            createNewRootLocationForMultipleConsumersMock.mock.calls,
           ).toEqual([[consumerLocation]]);
         });
 
@@ -1618,7 +1618,7 @@ describe('defineHistoryService', () => {
           };
 
           const location = historyServiceTest1.createNewRootLocationForMultipleConsumers(
-            consumerLocation
+            consumerLocation,
           );
 
           const expectedRootLocation: RootLocation = {
@@ -1655,7 +1655,7 @@ describe('defineHistoryService', () => {
         browserHistory.go(-1);
 
         expect(consoleWarnSpy).toHaveBeenCalledWith(
-          'history.go() is not supported.'
+          'history.go() is not supported.',
         );
       });
     });
@@ -1667,7 +1667,7 @@ describe('defineHistoryService', () => {
     >>;
 
     let createHistoryServiceBinder: (
-      getHistoryKey?: (options: GetHistoryKeyOptions) => string
+      getHistoryKey?: (options: GetHistoryKeyOptions) => string,
     ) => FeatureServiceBinder<HistoryServiceV3>;
 
     beforeEach(() => {
@@ -1678,7 +1678,7 @@ describe('defineHistoryService', () => {
       createHistoryServiceBinder = (getHistoryKey) => {
         const sharedHistoryService = defineHistoryService(
           createRootLocationTransformer({consumerPathsQueryParamName}),
-          {getHistoryKey}
+          {getHistoryKey},
         ).create(mockEnv);
 
         return sharedHistoryService!['3.0.0'];
@@ -1702,7 +1702,7 @@ describe('defineHistoryService', () => {
           const getHistoryKeyMock = jest.fn(() => 'test-history-key');
 
           const historyServiceBinder = createHistoryServiceBinder(
-            getHistoryKeyMock
+            getHistoryKeyMock,
           );
 
           const historyBinding = historyServiceBinder(consumerId, consumerName);
@@ -1832,7 +1832,7 @@ describe('defineHistoryService', () => {
           history2.push('/bar?baz=1');
 
           expect(window.location.href).toBe(
-            createUrl({test1: '/foo', test2: '/bar?baz=1'})
+            createUrl({test1: '/foo', test2: '/bar?baz=1'}),
           );
 
           expect(pushStateSpy).toHaveBeenCalledTimes(2);
@@ -1858,7 +1858,7 @@ describe('defineHistoryService', () => {
           history2.replace('/bar?baz=1');
 
           expect(window.location.href).toBe(
-            createUrl({test1: '/foo', test2: '/bar?baz=1'})
+            createUrl({test1: '/foo', test2: '/bar?baz=1'}),
           );
 
           expect(replaceStateSpy).toHaveBeenCalledTimes(2);
@@ -1889,7 +1889,7 @@ describe('defineHistoryService', () => {
           expect(window.location.href).toBe(href);
 
           expect(stubbedLogger.warn).toHaveBeenCalledWith(
-            'history.go() is not supported.'
+            'history.go() is not supported.',
           );
         });
       });
@@ -1905,7 +1905,7 @@ describe('defineHistoryService', () => {
           expect(window.location.href).toBe(href);
 
           expect(stubbedLogger.warn).toHaveBeenCalledWith(
-            'history.back() is not supported.'
+            'history.back() is not supported.',
           );
         });
       });
@@ -1921,7 +1921,7 @@ describe('defineHistoryService', () => {
           expect(window.location.href).toBe(href);
 
           expect(stubbedLogger.warn).toHaveBeenCalledWith(
-            'history.forward() is not supported.'
+            'history.forward() is not supported.',
           );
         });
       });
@@ -1938,7 +1938,7 @@ describe('defineHistoryService', () => {
           expect(promptHookSpy).not.toHaveBeenCalled();
 
           expect(stubbedLogger.warn).toHaveBeenCalledWith(
-            'history.block() is not supported.'
+            'history.block() is not supported.',
           );
         });
 
@@ -2144,7 +2144,7 @@ describe('defineHistoryService', () => {
           const href = history2.createHref(location);
 
           expect(href).toBe(
-            createUrl({test1: '/foo', test2: '/bar?a=b'}, {relative: true})
+            createUrl({test1: '/foo', test2: '/bar?a=b'}, {relative: true}),
           );
         });
 
@@ -2155,7 +2155,7 @@ describe('defineHistoryService', () => {
           const href = history2.createHref(location);
 
           expect(href).toBe(
-            createUrl({test1: '/foo', test2: '/bar'}, {relative: true})
+            createUrl({test1: '/foo', test2: '/bar'}, {relative: true}),
           );
         });
       });
@@ -2554,7 +2554,7 @@ describe('defineHistoryService', () => {
         const historyService = historyServiceBinder('test1').featureService;
 
         const location = historyService.createNewRootLocationForMultipleConsumers(
-          {historyKey: 'test1', location: {pathname: '/test1'}, state: 42}
+          {historyKey: 'test1', location: {pathname: '/test1'}, state: 42},
         );
 
         expect(location).toMatchObject({
@@ -2578,7 +2578,7 @@ describe('defineHistoryService', () => {
             historyKey: 'test2',
             location: {pathname: '/xxx'},
             state: 'foo',
-          }
+          },
         );
 
         expect(location).toMatchObject({
@@ -2621,11 +2621,11 @@ describe('defineHistoryService', () => {
           };
 
           historyServiceTest1.createNewRootLocationForMultipleConsumers(
-            consumerLocation
+            consumerLocation,
           );
 
           expect(
-            createNewRootLocationForMultipleConsumersMock.mock.calls
+            createNewRootLocationForMultipleConsumersMock.mock.calls,
           ).toEqual([[consumerLocation]]);
         });
 
@@ -2637,7 +2637,7 @@ describe('defineHistoryService', () => {
           };
 
           const location = historyServiceTest1.createNewRootLocationForMultipleConsumers(
-            consumerLocation
+            consumerLocation,
           );
 
           const expectedRootLocation: RootLocation = {
@@ -2674,7 +2674,7 @@ describe('defineHistoryService', () => {
         browserHistory.go(-1);
 
         expect(consoleWarnSpy).toHaveBeenCalledWith(
-          'history.go() is not supported.'
+          'history.go() is not supported.',
         );
       });
     });

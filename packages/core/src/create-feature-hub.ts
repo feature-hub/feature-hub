@@ -87,7 +87,7 @@ export interface FeatureHubOptions {
  */
 export function createFeatureHub(
   integratorId: string,
-  options: FeatureHubOptions = {}
+  options: FeatureHubOptions = {},
 ): FeatureHub {
   const {
     featureServiceDefinitions,
@@ -116,7 +116,7 @@ export function createFeatureHub(
   if (featureServiceDefinitions) {
     featureServiceRegistry.registerFeatureServices(
       featureServiceDefinitions,
-      integratorId
+      integratorId,
     );
   }
 
@@ -129,7 +129,7 @@ export function createFeatureHub(
 
   const {featureServices} = featureServiceRegistry.bindFeatureServices(
     integratorDefinition,
-    integratorId
+    integratorId,
   );
 
   return {featureAppManager, featureServiceRegistry, featureServices};

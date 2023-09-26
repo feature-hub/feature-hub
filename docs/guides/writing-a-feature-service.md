@@ -290,7 +290,7 @@ const myFeatureServiceDefinition = {
         getTotalCount() {
           return Object.values(consumerCounts).reduce(
             (totalCount, consumerCount) => totalCount + consumerCount,
-            0
+            0,
           );
         },
       };

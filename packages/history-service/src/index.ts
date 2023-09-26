@@ -142,7 +142,7 @@ export interface HistoryServiceDefinitionOptions {
 
 export function defineHistoryService(
   rootLocationTransformer: RootLocationTransformer,
-  options: HistoryServiceDefinitionOptions = {}
+  options: HistoryServiceDefinitionOptions = {},
 ): FeatureServiceProviderDefinition<
   SharedHistoryService,
   HistoryServiceDependencies
@@ -167,7 +167,7 @@ export function defineHistoryService(
 
       const historyMultiplexers = createHistoryMultiplexers(
         context,
-        rootLocationTransformer
+        rootLocationTransformer,
       );
 
       return {

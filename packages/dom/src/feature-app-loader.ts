@@ -66,7 +66,7 @@ export interface DefineFeatureAppLoaderOptions {
  */
 export function defineFeatureAppLoader(
   featureAppManager: FeatureAppManager,
-  options: DefineFeatureAppLoaderOptions = {}
+  options: DefineFeatureAppLoaderOptions = {},
 ): void {
   if (customElements.get(elementName)) {
     return;
@@ -105,7 +105,7 @@ export function defineFeatureAppLoader(
         }
 
         const definition = await featureAppManager.getAsyncFeatureAppDefinition(
-          prependBaseUrl(this.baseUrl, this.src)
+          prependBaseUrl(this.baseUrl, this.src),
         ).promise;
 
         return html`

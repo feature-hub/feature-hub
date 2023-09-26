@@ -26,7 +26,7 @@ class HelloWorldUi {
     await (await this.getNewNameInput()).type(name);
 
     await this.browser.waitForNavigation(
-      (await this.getSubmitButton()).click()
+      (await this.getSubmitButton()).click(),
     );
   }
 

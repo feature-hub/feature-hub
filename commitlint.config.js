@@ -4,7 +4,7 @@ const {readdirSync} = require('fs');
 const path = require('path');
 
 const pkgScopes = readdirSync(path.join(__dirname, 'packages')).filter(
-  (scope) => !/^\./.test(scope)
+  (scope) => !/^\./.test(scope),
 );
 
 const scopes = ['all', ...pkgScopes];

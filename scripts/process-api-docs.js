@@ -6,7 +6,7 @@ const updateHtmlFile = require('./update-html-file');
 
 const apiDocsDirname = path.join(
   __dirname,
-  '../packages/website/build/feature-hub/api'
+  '../packages/website/build/feature-hub/api',
 );
 
 // Rename "Modules" to "Packages" on the index page.

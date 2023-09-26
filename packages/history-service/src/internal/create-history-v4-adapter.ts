@@ -4,7 +4,7 @@ import {HistoryServiceContext} from './history-service-context';
 
 export function createHistoryV4Adapter(
   context: HistoryServiceContext,
-  history: History
+  history: History,
 ): historyV4.History {
   return {
     get length(): number {

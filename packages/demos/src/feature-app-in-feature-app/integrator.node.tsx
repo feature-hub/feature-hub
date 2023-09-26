@@ -31,7 +31,7 @@ export default async function renderApp({
         src="feature-app.umd.js"
         serverSrc={featureAppNodeUrl}
       />
-    </FeatureHubContextProvider>
+    </FeatureHubContextProvider>,
   );
 
   return {html};

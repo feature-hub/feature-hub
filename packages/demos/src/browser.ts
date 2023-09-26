@@ -11,7 +11,7 @@ export class Browser {
 
   public async goto(
     url: string,
-    timeout: number = this.defaultNavigationTimeout
+    timeout: number = this.defaultNavigationTimeout,
   ): Promise<void> {
     await page.goto(url, {timeout});
   }
@@ -30,7 +30,7 @@ export class Browser {
 
   public async waitForNavigation(
     cause: Promise<unknown>,
-    timeout: number = this.defaultNavigationTimeout
+    timeout: number = this.defaultNavigationTimeout,
   ): Promise<void> {
     await Promise.all([page.waitForNavigation({timeout}), cause]);
   }

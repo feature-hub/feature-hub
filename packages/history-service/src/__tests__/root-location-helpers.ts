@@ -9,13 +9,13 @@ export interface CreateUrlOptions {
 
 export const createSearch = (consumerPaths: ConsumerPaths) =>
   `?${consumerPathsQueryParamName}=${encodeURIComponent(
-    JSON.stringify(consumerPaths)
+    JSON.stringify(consumerPaths),
   )}`;
 
 export const createUrl = (
   consumerPaths: ConsumerPaths,
-  {relative, pathname = '/'}: CreateUrlOptions = {}
+  {relative, pathname = '/'}: CreateUrlOptions = {},
 ) =>
   `${relative ? '' : 'http://example.com'}${pathname}${createSearch(
-    consumerPaths
+    consumerPaths,
   )}`;

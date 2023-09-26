@@ -27,13 +27,13 @@ export class ExternalsValidator {
    */
   public constructor(private readonly providedExternals: ProvidedExternals) {
     for (const [externalName, providedVersion] of Object.entries(
-      providedExternals
+      providedExternals,
     )) {
       if (!semverValid(providedVersion)) {
         throw new Error(
           `The provided version ${JSON.stringify(
-            providedVersion
-          )} for the external ${JSON.stringify(externalName)} is invalid.`
+            providedVersion,
+          )} for the external ${JSON.stringify(externalName)} is invalid.`,
         );
       }
     }
@@ -46,27 +46,27 @@ export class ExternalsValidator {
    */
   public validate(requiredExternals: RequiredExternals): void {
     for (const [externalName, versionRange] of Object.entries(
-      requiredExternals
+      requiredExternals,
     )) {
       const providedVersion = this.providedExternals[externalName];
 
       if (!providedVersion) {
         throw new Error(
           `The external dependency ${JSON.stringify(
-            externalName
-          )} is not provided.`
+            externalName,
+          )} is not provided.`,
         );
       }
 
       if (!semverSatisfies(providedVersion, versionRange)) {
         throw new Error(
           `The external dependency ${JSON.stringify(
-            externalName
+            externalName,
           )} in the required version range ${JSON.stringify(
-            versionRange
+            versionRange,
           )} is not satisfied. The provided version is ${JSON.stringify(
-            providedVersion
-          )}.`
+            providedVersion,
+          )}.`,
         );
       }
     }

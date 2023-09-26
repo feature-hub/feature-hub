@@ -12,14 +12,14 @@ export class BrowserConsumerHistory extends ConsumerHistory {
   public constructor(
     context: HistoryServiceContext,
     historyKey: string,
-    historyMultiplexer: HistoryMultiplexer
+    historyMultiplexer: HistoryMultiplexer,
   ) {
     super(context, historyKey, historyMultiplexer);
 
     this.browserUnregister = historyMultiplexer.listenForRootLocationChange(
       (action) => {
         this.handleRootLocationChange(action);
-      }
+      },
     );
 
     this.listen = this.listen.bind(this);
@@ -62,7 +62,7 @@ export class BrowserConsumerHistory extends ConsumerHistory {
 
   private handleRootLocationChange(action: history.Action): void {
     const location = this.historyMultiplexer.getConsumerLocation(
-      this.historyKey
+      this.historyKey,
     );
 
     if (this.matches(location)) {

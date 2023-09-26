@@ -7,7 +7,7 @@ const {webpackBaseConfig} = require('../webpack-base-config');
 
 const websiteBuildDirname = path.resolve(
   __dirname,
-  '../../../website/build/feature-hub/todomvc'
+  '../../../website/build/feature-hub/todomvc',
 );
 
 /**

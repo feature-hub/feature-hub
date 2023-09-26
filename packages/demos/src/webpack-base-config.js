@@ -51,7 +51,7 @@ const webpackBaseConfig = {
       'process.env.BLUEPRINT_NAMESPACE': '""',
       'process.env.REACT_VERSION': JSON.stringify(getPkgVersion('react')),
       'process.env.FEATURE_HUB_REACT_VERSION': JSON.stringify(
-        getPkgVersion('@feature-hub/react')
+        getPkgVersion('@feature-hub/react'),
       ),
     }),
   ],

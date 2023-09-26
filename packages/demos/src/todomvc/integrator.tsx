@@ -20,7 +20,7 @@ document.head.appendChild(
   Object.assign(document.createElement('link'), {
     rel: 'stylesheet',
     href: 'index.css',
-  })
+  }),
 );
 
 ReactDOM.render(
@@ -44,5 +44,5 @@ ReactDOM.render(
       />
     </section>
   </FeatureHubContextProvider>,
-  document.querySelector('main')
+  document.querySelector('main'),
 );

@@ -116,7 +116,7 @@ export function FeatureAppContainer<
   TFeatureServices extends FeatureServices = FeatureServices,
   TConfig = unknown
 >(
-  props: FeatureAppContainerProps<TFeatureApp, TFeatureServices, TConfig>
+  props: FeatureAppContainerProps<TFeatureApp, TFeatureServices, TConfig>,
 ): JSX.Element {
   return (
     <FeatureHubContextConsumer>

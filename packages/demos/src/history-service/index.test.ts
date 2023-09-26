@@ -15,7 +15,7 @@ jest.setTimeout(120000);
 class HistoryConsumerUi {
   public constructor(
     private readonly browser: Browser,
-    private readonly specifier: 'a' | 'b'
+    private readonly specifier: 'a' | 'b',
   ) {}
 
   public async getPathname(): Promise<unknown> {
@@ -29,7 +29,7 @@ class HistoryConsumerUi {
     await (await this.getElement('new-path-input')).type(pathname);
 
     await this.browser.waitForNavigation(
-      (await this.getElement('push-button')).click()
+      (await this.getElement('push-button')).click(),
     );
   }
 
@@ -37,19 +37,19 @@ class HistoryConsumerUi {
     await (await this.getElement('new-path-input')).type(pathname);
 
     await this.browser.waitForNavigation(
-      (await this.getElement('replace-button')).click()
+      (await this.getElement('replace-button')).click(),
     );
   }
 
   public async clickPushLink(): Promise<void> {
     await this.browser.waitForNavigation(
-      (await this.getElement('push-link')).click()
+      (await this.getElement('push-link')).click(),
     );
   }
 
   public async clickReplaceLink(): Promise<void> {
     await this.browser.waitForNavigation(
-      (await this.getElement('replace-link')).click()
+      (await this.getElement('replace-link')).click(),
     );
   }
 
@@ -92,11 +92,11 @@ describe('integration test: "history-service"', () => {
 
   test('Scenario 2: The user loads a page with consumer-specific pathnames', async () => {
     await browser.goto(
-      `${url}?test:history-consumer:a=/a1&test:history-consumer:b=/b1`
+      `${url}?test:history-consumer:a=/a1&test:history-consumer:b=/b1`,
     );
 
     expect(await browser.getPath()).toBe(
-      '/?test:history-consumer:a=/a1&test:history-consumer:b=/b1'
+      '/?test:history-consumer:a=/a1&test:history-consumer:b=/b1',
     );
 
     expect(await a.getPathname()).toBe('/a1');
@@ -148,7 +148,7 @@ describe('integration test: "history-service"', () => {
     await b.push('/b1');
 
     expect(await browser.getPath()).toBe(
-      '/?test:history-consumer:a=/a1&test:history-consumer:b=/b1'
+      '/?test:history-consumer:a=/a1&test:history-consumer:b=/b1',
     );
 
     expect(await a.getPathname()).toBe('/a1');
@@ -202,7 +202,7 @@ describe('integration test: "history-service"', () => {
     await page.setJavaScriptEnabled(false);
 
     await browser.goto(
-      `${url}?test:history-consumer:a=/a1&test:history-consumer:b=/b1`
+      `${url}?test:history-consumer:a=/a1&test:history-consumer:b=/b1`,
     );
 
     expect(await a.getPathname()).toBe('/a1');
@@ -226,7 +226,7 @@ describe('integration test: "history-service"', () => {
     await b.clickReplaceLink();
 
     expect(await browser.getPath()).toBe(
-      '/?test:history-consumer:a=/foo&test:history-consumer:b=/bar'
+      '/?test:history-consumer:a=/foo&test:history-consumer:b=/bar',
     );
 
     expect(await a.getPathname()).toBe('/foo');

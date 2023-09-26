@@ -9,20 +9,20 @@ export type DependencyGraph = Map<string, Dependencies>;
 type DependencyEdges = [string, string][];
 
 function createTuple<TFirst, TSecond>(
-  first: TFirst
+  first: TFirst,
 ): (second: TSecond) => [TFirst, TSecond] {
   return (second) => [first, second];
 }
 
 function createDependencyEdges(
   dependentName: string,
-  dependencies: Dependencies
+  dependencies: Dependencies,
 ): DependencyEdges {
   return Object.keys(dependencies).map(createTuple(dependentName));
 }
 
 function createAllDependencyEdges(
-  dependencyGraph: DependencyGraph
+  dependencyGraph: DependencyGraph,
 ): DependencyEdges {
   return Array.from(dependencyGraph.keys()).reduce(
     (allDependencyEdges, dependencyName) => {
@@ -35,17 +35,17 @@ function createAllDependencyEdges(
 
       const dependencyEdges = createDependencyEdges(
         dependencyName,
-        dependencies
+        dependencies,
       );
 
       return [...allDependencyEdges, ...dependencyEdges];
     },
-    [] as DependencyEdges
+    [] as DependencyEdges,
   );
 }
 
 export function toposortDependencies(
-  dependencyGraph: DependencyGraph
+  dependencyGraph: DependencyGraph,
 ): string[] {
   const dependencyNames = Array.from(dependencyGraph.keys());
   const dependencyEdges = createAllDependencyEdges(dependencyGraph);
@@ -57,8 +57,8 @@ export function toposortDependencies(
     ...dependencyNames.filter(
       (dependencyName) =>
         dependencyGraph.has(dependencyName) &&
-        sortedDependencyNames.indexOf(dependencyName) === -1
-    )
+        sortedDependencyNames.indexOf(dependencyName) === -1,
+    ),
   );
 
   // Reverse array to yield execution order.
