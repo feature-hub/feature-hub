@@ -133,15 +133,17 @@ describe('FeatureAppContainer', () => {
       />,
     );
 
-    const expectedOptions: FeatureAppScopeOptions<{}, string> = {
-      baseUrl: '/base',
-      config: 'testConfig',
-      beforeCreate: mockBeforeCreate,
-      done: mockDone,
-    };
-
     expect(mockCreateFeatureAppScope.mock.calls).toEqual([
-      ['testId', mockFeatureAppDefinition, expectedOptions],
+      [
+        'testId',
+        mockFeatureAppDefinition,
+        {
+          baseUrl: '/base',
+          config: 'testConfig',
+          beforeCreate: mockBeforeCreate,
+          done: mockDone,
+        } satisfies FeatureAppScopeOptions<{}, string>,
+      ],
     ]);
   });
 
@@ -373,13 +375,15 @@ describe('FeatureAppContainer', () => {
             />,
           );
 
-          const expected: CustomFeatureAppRenderingParams = {
-            featureAppNode: undefined,
-            loading: false,
-            error: mockError,
-          };
-
-          expect(children.mock.calls).toEqual([[expected]]);
+          expect(children.mock.calls).toEqual([
+            [
+              {
+                featureAppNode: undefined,
+                loading: false,
+                error: mockError,
+              } satisfies CustomFeatureAppRenderingParams,
+            ],
+          ]);
         });
 
         it('renders what the children function returns', () => {
@@ -1194,12 +1198,10 @@ describe('FeatureAppContainer', () => {
             {testRendererOptions: {createNodeMock: () => ({})}},
           );
 
-          const expectedAfterMount: CustomFeatureAppRenderingParams = {
+          expect(children).toHaveBeenLastCalledWith({
             error: mockError,
             loading: false,
-          };
-
-          expect(children).toHaveBeenLastCalledWith(expectedAfterMount);
+          } satisfies CustomFeatureAppRenderingParams);
         });
 
         it('renders the result of the function', () => {

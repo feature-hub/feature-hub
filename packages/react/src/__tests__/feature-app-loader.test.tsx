@@ -9,12 +9,16 @@ import {
   AsyncValue,
   FeatureAppDefinition,
   FeatureAppManager,
+  FeatureServices,
 } from '@feature-hub/core';
 import * as React from 'react';
 import TestRenderer from 'react-test-renderer';
 import {CustomFeatureAppRenderingParams, FeatureAppLoader} from '..';
 import {FeatureHubContextProvider} from '../feature-hub-context';
-import {InternalFeatureAppContainer} from '../internal/internal-feature-app-container';
+import {
+  InternalFeatureAppContainer,
+  InternalFeatureAppContainerProps,
+} from '../internal/internal-feature-app-container';
 import {logger} from './logger';
 import {TestErrorBoundary} from './test-error-boundary';
 
@@ -345,21 +349,23 @@ describe('FeatureAppLoader', () => {
 
       expect(testRenderer.toJSON()).toBe('mocked InternalFeatureAppContainer');
 
-      const expectedProps = {
-        baseUrl: '/base',
-        beforeCreate,
-        done,
-        config: 'testConfig',
-        featureAppDefinition: mockFeatureAppDefinition,
-        featureAppId: 'testId',
-        onError,
-        children,
-        featureAppManager: mockFeatureAppManager,
-        logger,
-      };
-
       expect(InternalFeatureAppContainer).toHaveBeenCalledWith(
-        expectedProps,
+        {
+          baseUrl: '/base',
+          beforeCreate,
+          done,
+          config: 'testConfig',
+          featureAppDefinition: mockFeatureAppDefinition,
+          featureAppId: 'testId',
+          onError,
+          children,
+          featureAppManager: mockFeatureAppManager,
+          logger,
+        } satisfies InternalFeatureAppContainerProps<
+          unknown,
+          FeatureServices,
+          string
+        >,
         {},
       );
     });
@@ -490,13 +496,15 @@ describe('FeatureAppLoader', () => {
           />,
         );
 
-        const expectedParameter: CustomFeatureAppRenderingParams = {
-          featureAppNode: undefined,
-          error: mockError,
-          loading: false,
-        };
-
-        expect(children.mock.calls).toEqual([[expectedParameter]]);
+        expect(children.mock.calls).toEqual([
+          [
+            {
+              featureAppNode: undefined,
+              error: mockError,
+              loading: false,
+            } satisfies CustomFeatureAppRenderingParams,
+          ],
+        ]);
       });
 
       it('renders what children returns', () => {
