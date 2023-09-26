@@ -13,13 +13,8 @@ export abstract class ConsumerHistory implements history.History {
     protected readonly historyKey: string,
     protected readonly historyMultiplexer: HistoryMultiplexer,
   ) {
-    const {
-      pathname,
-      search,
-      hash,
-      state,
-      key,
-    } = historyMultiplexer.getConsumerLocation(historyKey);
+    const {pathname, search, hash, state, key} =
+      historyMultiplexer.getConsumerLocation(historyKey);
 
     this.location = {
       pathname: pathname.startsWith('/') ? pathname : `/${pathname}`,

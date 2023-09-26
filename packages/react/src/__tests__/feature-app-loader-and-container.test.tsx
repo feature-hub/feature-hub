@@ -36,14 +36,14 @@ describe('FeatureAppLoader with an unmocked InternalFeatureAppContainer', () => 
       ),
     );
 
-    mockFeatureAppManager = ({
+    mockFeatureAppManager = {
       getAsyncFeatureAppDefinition: () => mockAsyncFeatureAppDefinition,
       createFeatureAppScope: () => ({
         featureApp: domFeatureApp,
         release: jest.fn(),
       }),
       preloadFeatureApp: jest.fn(),
-    } as Partial<FeatureAppManager>) as FeatureAppManager;
+    } as Partial<FeatureAppManager> as FeatureAppManager;
   });
 
   afterEach(() => {

@@ -35,8 +35,9 @@ describe('defineLogger', () => {
 
     describe('with the default createConsumerLogger function', () => {
       beforeEach(() => {
-        logger = loggerDefinition.create(mockEnv)!['1.0.0']('test:id')
-          .featureService;
+        logger = loggerDefinition
+          .create(mockEnv)!
+          ['1.0.0']('test:id').featureService;
       });
 
       const loggerMethods: (keyof Logger)[] = [

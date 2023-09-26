@@ -15,9 +15,8 @@ function isFeatureAppDefinition(
     return false;
   }
 
-  const featureAppDefinition = maybeFeatureAppDefinition as FeatureAppDefinition<
-    unknown
-  >;
+  const featureAppDefinition =
+    maybeFeatureAppDefinition as FeatureAppDefinition<unknown>;
 
   return typeof featureAppDefinition.create === 'function';
 }

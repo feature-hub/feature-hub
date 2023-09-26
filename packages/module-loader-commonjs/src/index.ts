@@ -47,6 +47,5 @@ export function createCommonJsModuleLoader(
  * @returns A promise that resolves with the loaded module, or is rejected if
  * the module can not be loaded.
  */
-export const loadCommonJsModule: (
-  url: string,
-) => Promise<unknown> = createCommonJsModuleLoader();
+export const loadCommonJsModule: (url: string) => Promise<unknown> =
+  createCommonJsModuleLoader();

@@ -31,13 +31,11 @@ import {stubbedLogger} from './stubbed-logger';
 
 describe('defineHistoryService', () => {
   describe('HistoryServiceV1 (on Node.js)', () => {
-    let mockEnv: FeatureServiceEnvironment<Writable<
-      HistoryServiceDependencies
-    >>;
-
-    let createHistoryServiceBinder: () => FeatureServiceBinder<
-      HistoryServiceV1
+    let mockEnv: FeatureServiceEnvironment<
+      Writable<HistoryServiceDependencies>
     >;
+
+    let createHistoryServiceBinder: () => FeatureServiceBinder<HistoryServiceV1>;
 
     beforeEach(() => {
       mockEnv = {featureServices: {'s2:logger': stubbedLogger}};
@@ -409,14 +407,11 @@ describe('defineHistoryService', () => {
   });
 
   describe('HistoryServiceV2 (on Node.js)', () => {
-    let mockEnv: FeatureServiceEnvironment<Writable<
-      HistoryServiceDependencies
-    >>;
-
-    let createHistoryServiceBinder: () => FeatureServiceBinder<
-      HistoryServiceV2
+    let mockEnv: FeatureServiceEnvironment<
+      Writable<HistoryServiceDependencies>
     >;
 
+    let createHistoryServiceBinder: () => FeatureServiceBinder<HistoryServiceV2>;
     let historyBinding1: FeatureServiceBinding<HistoryServiceV2>;
     let historyBinding2: FeatureServiceBinding<HistoryServiceV2>;
     let historyService1: HistoryServiceV2;
@@ -822,14 +817,11 @@ describe('defineHistoryService', () => {
   });
 
   describe('HistoryServiceV3 (on Node.js)', () => {
-    let mockEnv: FeatureServiceEnvironment<Writable<
-      HistoryServiceDependencies
-    >>;
-
-    let createHistoryServiceBinder: () => FeatureServiceBinder<
-      HistoryServiceV3
+    let mockEnv: FeatureServiceEnvironment<
+      Writable<HistoryServiceDependencies>
     >;
 
+    let createHistoryServiceBinder: () => FeatureServiceBinder<HistoryServiceV3>;
     let historyBinding1: FeatureServiceBinding<HistoryServiceV3>;
     let historyBinding2: FeatureServiceBinding<HistoryServiceV3>;
     let historyService1: HistoryServiceV3;

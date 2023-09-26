@@ -186,10 +186,11 @@ class InternalFeatureAppLoader<TConfig = unknown> extends React.PureComponent<
     const {baseUrl, featureAppManager, src, moduleType} = this.props;
 
     try {
-      const featureAppDefinition = await featureAppManager.getAsyncFeatureAppDefinition(
-        prependBaseUrl(baseUrl, src),
-        moduleType,
-      ).promise;
+      const featureAppDefinition =
+        await featureAppManager.getAsyncFeatureAppDefinition(
+          prependBaseUrl(baseUrl, src),
+          moduleType,
+        ).promise;
 
       if (this.mounted) {
         this.setState({featureAppDefinition});

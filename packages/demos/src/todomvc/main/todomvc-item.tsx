@@ -140,9 +140,8 @@ export class TodoMvcItem extends React.PureComponent<
 
   public readonly state = {editing: false, editText: this.props.title};
 
-  private readonly editInputRef: React.RefObject<
-    HTMLInputElement
-  > = React.createRef();
+  private readonly editInputRef: React.RefObject<HTMLInputElement> =
+    React.createRef();
 
   public render(): JSX.Element {
     const {editing, editText} = this.state;

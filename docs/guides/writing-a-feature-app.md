@@ -356,7 +356,6 @@ in the ["Sharing npm Dependencies" guide][sharing-npm-dependencies-federation].
 >
 > 1. The `name` of the remote Feature App module container must be
 >    `'__feature_hub_feature_app_module_container__'`.
->
 > 1. The Feature App module (containing the Feature App definition as default
 >    export) must be exposed by the container as `featureAppModule`.
 

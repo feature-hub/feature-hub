@@ -8,7 +8,11 @@ export function createHistoryPath(
   const path = typeof to === 'string' ? to : history.createPath(to);
 
   /* istanbul ignore next */
-  const {pathname = '', search = '', hash = ''} = history.parsePath(
+  const {
+    pathname = '',
+    search = '',
+    hash = '',
+  } = history.parsePath(
     path.startsWith('/') ? path : resolvePathname(path, currentPathname),
   );
 

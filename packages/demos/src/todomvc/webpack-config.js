@@ -46,8 +46,12 @@ const configs = [
   mergeWithRules({
     module: {
       rules: {
-        test: /** @type {import('webpack-merge').CustomizeRule.Match} */ ('match'),
-        use: /** @type {import('webpack-merge').CustomizeRule.Replace} */ ('replace'),
+        test: /** @type {import('webpack-merge').CustomizeRule.Match} */ (
+          'match'
+        ),
+        use: /** @type {import('webpack-merge').CustomizeRule.Replace} */ (
+          'replace'
+        ),
       },
     },
   })(webpackBaseConfig, {

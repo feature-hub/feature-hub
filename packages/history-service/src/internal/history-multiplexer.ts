@@ -134,9 +134,10 @@ export class HistoryMultiplexer {
     if (
       this.rootLocationTransformer.createNewRootLocationForMultipleConsumers
     ) {
-      newRootLocation = this.rootLocationTransformer.createNewRootLocationForMultipleConsumers(
-        ...consumerLocations,
-      );
+      newRootLocation =
+        this.rootLocationTransformer.createNewRootLocationForMultipleConsumers(
+          ...consumerLocations,
+        );
     } else {
       for (const consumerLocation of consumerLocations) {
         newRootLocation = this.rootLocationTransformer.createRootLocation(

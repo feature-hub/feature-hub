@@ -260,11 +260,7 @@ describe('createFeatureHub()', () => {
 
   describe('logging', () => {
     let featureAppDefinition: FeatureAppDefinition<unknown>;
-
-    let featureServiceDefinitions: FeatureServiceProviderDefinition<
-      SharedFeatureService
-    >[];
-
+    let featureServiceDefinitions: FeatureServiceProviderDefinition<SharedFeatureService>[];
     let expectedLogCalls: string[][];
 
     beforeEach(() => {

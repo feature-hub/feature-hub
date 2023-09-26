@@ -56,9 +56,8 @@ describe('defineAsyncSsrManager', () => {
     let asyncSsrManagerBinder: FeatureServiceBinder<AsyncSsrManagerV1>;
 
     beforeEach(() => {
-      asyncSsrManagerBinder = asyncSsrManagerDefinition.create(mockEnv)![
-        '1.0.0'
-      ];
+      asyncSsrManagerBinder =
+        asyncSsrManagerDefinition.create(mockEnv)!['1.0.0'];
     });
 
     describe('rendering', () => {
@@ -77,8 +76,8 @@ describe('defineAsyncSsrManager', () => {
 
         describe('when the given render function returns a promise', () => {
           it('resolves with the html string that is resolved from the render function', async () => {
-            const asyncSsrManager = asyncSsrManagerBinder('test')
-              .featureService;
+            const asyncSsrManager =
+              asyncSsrManagerBinder('test').featureService;
 
             const mockRender = jest.fn(async () => 'testHtml');
 
@@ -94,12 +93,11 @@ describe('defineAsyncSsrManager', () => {
 
       describe('with an integrator, and a consumer that schedules a rerender with a custom promise', () => {
         it('resolves with an html string after the second render pass', async () => {
-          const asyncSsrManagerIntegrator = asyncSsrManagerBinder(
-            'test:integrator',
-          ).featureService;
+          const asyncSsrManagerIntegrator =
+            asyncSsrManagerBinder('test:integrator').featureService;
 
-          const asyncSsrManagerConsumer = asyncSsrManagerBinder('test:consumer')
-            .featureService;
+          const asyncSsrManagerConsumer =
+            asyncSsrManagerBinder('test:consumer').featureService;
 
           let renderPass = 0;
 
@@ -124,12 +122,11 @@ describe('defineAsyncSsrManager', () => {
 
       describe('with an integrator, and a consumer that schedules a rerender without a custom promise', () => {
         it('resolves with an html string after the second render pass', async () => {
-          const asyncSsrManagerIntegrator = asyncSsrManagerBinder(
-            'test:integrator',
-          ).featureService;
+          const asyncSsrManagerIntegrator =
+            asyncSsrManagerBinder('test:integrator').featureService;
 
-          const asyncSsrManagerConsumer = asyncSsrManagerBinder('test:consumer')
-            .featureService;
+          const asyncSsrManagerConsumer =
+            asyncSsrManagerBinder('test:consumer').featureService;
 
           let renderPass = 0;
 
@@ -154,12 +151,11 @@ describe('defineAsyncSsrManager', () => {
 
       describe('with an integrator, and a consumer that schedules a rerender in two consecutive render passes', () => {
         it('resolves with an html string after the third render pass', async () => {
-          const asyncSsrManagerIntegrator = asyncSsrManagerBinder(
-            'test:integrator',
-          ).featureService;
+          const asyncSsrManagerIntegrator =
+            asyncSsrManagerBinder('test:integrator').featureService;
 
-          const asyncSsrManagerConsumer = asyncSsrManagerBinder('test:consumer')
-            .featureService;
+          const asyncSsrManagerConsumer =
+            asyncSsrManagerBinder('test:consumer').featureService;
 
           let renderPass = 0;
 
@@ -186,12 +182,11 @@ describe('defineAsyncSsrManager', () => {
         it('resolves with an html string after the second render pass', async () => {
           expect.assertions(2);
 
-          const asyncSsrManagerIntegrator = asyncSsrManagerBinder(
-            'test:integrator',
-          ).featureService;
+          const asyncSsrManagerIntegrator =
+            asyncSsrManagerBinder('test:integrator').featureService;
 
-          const asyncSsrManagerConsumer = asyncSsrManagerBinder('test:consumer')
-            .featureService;
+          const asyncSsrManagerConsumer =
+            asyncSsrManagerBinder('test:consumer').featureService;
 
           let renderPass = 0;
           let consumerResult = 0;
@@ -223,17 +218,14 @@ describe('defineAsyncSsrManager', () => {
 
       describe('with an integrator, and two consumers that both schedule a rerender in the first render pass', () => {
         it('resolves with an html string after the second render pass', async () => {
-          const asyncSsrManagerIntegrator = asyncSsrManagerBinder(
-            'test:integrator',
-          ).featureService;
+          const asyncSsrManagerIntegrator =
+            asyncSsrManagerBinder('test:integrator').featureService;
 
-          const asyncSsrManagerConsumer1 = asyncSsrManagerBinder(
-            'test:consumer:1',
-          ).featureService;
+          const asyncSsrManagerConsumer1 =
+            asyncSsrManagerBinder('test:consumer:1').featureService;
 
-          const asyncSsrManagerConsumer2 = asyncSsrManagerBinder(
-            'test:consumer:2',
-          ).featureService;
+          const asyncSsrManagerConsumer2 =
+            asyncSsrManagerBinder('test:consumer:2').featureService;
 
           let renderPass = 0;
 
@@ -297,9 +289,8 @@ describe('defineAsyncSsrManager', () => {
         beforeEach(() => {
           asyncSsrManagerDefinition = defineAsyncSsrManager();
 
-          asyncSsrManagerBinder = asyncSsrManagerDefinition.create(mockEnv)![
-            '1.0.0'
-          ];
+          asyncSsrManagerBinder =
+            asyncSsrManagerDefinition.create(mockEnv)!['1.0.0'];
         });
 
         it('logs a warning', async () => {

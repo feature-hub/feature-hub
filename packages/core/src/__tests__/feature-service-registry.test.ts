@@ -40,9 +40,9 @@ describe('FeatureServiceRegistry', () => {
   let featureServiceC: MockFeatureService;
 
   beforeEach(() => {
-    mockExternalsValidator = ({validate: jest.fn()} as Partial<
-      ExternalsValidator
-    >) as ExternalsValidator;
+    mockExternalsValidator = {
+      validate: jest.fn(),
+    } as Partial<ExternalsValidator> as ExternalsValidator;
 
     featureServiceRegistry = new FeatureServiceRegistry({logger});
 

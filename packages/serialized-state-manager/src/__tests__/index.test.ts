@@ -30,9 +30,8 @@ describe('defineSerializedStateManager', () => {
 
   describe('#create', () => {
     it('creates a shared Feature Service containing version 1.0.0', () => {
-      const sharedSerializedStateManager = serializedStateManagerDefinition.create(
-        mockEnv,
-      );
+      const sharedSerializedStateManager =
+        serializedStateManagerDefinition.create(mockEnv);
 
       expect(sharedSerializedStateManager!['1.0.0']).toBeDefined();
     });
@@ -44,21 +43,17 @@ describe('defineSerializedStateManager', () => {
     let consumer2SerializedStateManager: SerializedStateManagerV1;
 
     beforeEach(() => {
-      const serializedStateManagerBinder = serializedStateManagerDefinition.create(
-        mockEnv,
-      )!['1.0.0'];
+      const serializedStateManagerBinder =
+        serializedStateManagerDefinition.create(mockEnv)!['1.0.0'];
 
-      integratorSerializedStateManager = serializedStateManagerBinder(
-        'test:integrator',
-      ).featureService;
+      integratorSerializedStateManager =
+        serializedStateManagerBinder('test:integrator').featureService;
 
-      consumer1SerializedStateManager = serializedStateManagerBinder(
-        'test:consumer:1',
-      ).featureService;
+      consumer1SerializedStateManager =
+        serializedStateManagerBinder('test:consumer:1').featureService;
 
-      consumer2SerializedStateManager = serializedStateManagerBinder(
-        'test:consumer:2',
-      ).featureService;
+      consumer2SerializedStateManager =
+        serializedStateManagerBinder('test:consumer:2').featureService;
     });
 
     describe('#serializeStates', () => {
@@ -139,13 +134,11 @@ describe('defineSerializedStateManager', () => {
             JSON.stringify({'test:consumer:1': serializedStateConsumer1}),
           ).create(mockEnv)!['1.0.0'];
 
-          consumer1SerializedStateManager = serializedStateManagerBinder(
-            'test:consumer:1',
-          ).featureService;
+          consumer1SerializedStateManager =
+            serializedStateManagerBinder('test:consumer:1').featureService;
 
-          consumer2SerializedStateManager = serializedStateManagerBinder(
-            'test:consumer:2',
-          ).featureService;
+          consumer2SerializedStateManager =
+            serializedStateManagerBinder('test:consumer:2').featureService;
         });
 
         it('returns the serialized state for the first consumer', () => {
