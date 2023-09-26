@@ -62,7 +62,7 @@ jobs:
             return sha;
 
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           ref: ${{ steps.gitSha.outputs.result }}
 
@@ -167,7 +167,7 @@ jobs:
             return ref;
 
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           ref: ${{ steps.gitRef.outputs.result }}
           fetch-depth: 0
