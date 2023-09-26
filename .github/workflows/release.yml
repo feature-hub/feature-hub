@@ -23,9 +23,7 @@ jobs:
         run: yarn install
 
       - name: Compile
-        run: |
-          yarn compile
-          yarn compile:esm
+        run: yarn compile
 
       - name: Create Version
         run: |

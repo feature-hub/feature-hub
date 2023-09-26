@@ -27,7 +27,7 @@ jobs:
         run: yarn lerna exec --scope @feature-hub/website 'docusaurus-build'
 
       - name: Compile
-        run: yarn compile
+        run: yarn compile:cjs
 
       - name: Generate API Docs
         run: yarn run generate:api-docs
