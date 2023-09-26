@@ -1632,16 +1632,14 @@ describe('defineHistoryService', () => {
               consumerLocation,
             );
 
-          const expectedRootLocation: RootLocation = {
+          expect(location).toMatchObject({
             pathname: 'root-test',
             search: '',
             hash: '',
             state: {
               test1: {state: 42, key: expect.any(String)},
             },
-          };
-
-          expect(location).toMatchObject(expectedRootLocation);
+          } satisfies RootLocation);
         });
       });
     });
@@ -2648,16 +2646,14 @@ describe('defineHistoryService', () => {
               consumerLocation,
             );
 
-          const expectedRootLocation: RootLocation = {
+          expect(location).toMatchObject({
             pathname: 'root-test',
             search: '',
             hash: '',
             state: {
               test1: {state: 42, key: expect.any(String)},
             },
-          };
-
-          expect(location).toMatchObject(expectedRootLocation);
+          } satisfies RootLocation);
         });
       });
     });
