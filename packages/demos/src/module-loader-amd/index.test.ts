@@ -28,6 +28,10 @@ describe('integration test: "amd module loader"', () => {
   });
 
   it('loads the Feature App with React as external', async () => {
-    expect(await page.content()).toMatch('Hello, World!');
+    await page.waitForNetworkIdle();
+
+    expect(await page.evaluate(() => document.body.textContent)).toMatch(
+      'Hello, World!',
+    );
   });
 });

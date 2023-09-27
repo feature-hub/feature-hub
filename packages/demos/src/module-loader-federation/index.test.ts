@@ -28,7 +28,13 @@ describe('integration test: "federation module loader"', () => {
   });
 
   it('loads the Feature App with module federation', async () => {
-    expect(await page.content()).toMatch('Hello from Feature App 1!');
-    expect(await page.content()).toMatch('Hello from Feature App 2!');
+    await page.waitForNetworkIdle();
+
+    expect(await page.evaluate(() => document.body.textContent)).toMatch(
+      'Hello from Feature App 1!',
+    );
+    expect(await page.evaluate(() => document.body.textContent)).toMatch(
+      'Hello from Feature App 2!',
+    );
   });
 });
