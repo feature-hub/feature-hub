@@ -1,6 +1,6 @@
 // @ts-check
 
-import globby from 'globby';
+import {globbySync} from 'globby';
 import path from 'path';
 import url from 'url';
 
@@ -9,9 +9,9 @@ const indexFilenames = new Set();
 const dirnames = new Set();
 const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
 
-const filenames = globby
-  .sync(path.join(__dirname, 'packages/website/build/feature-hub/**/*'))
-  .map((filename) => path.relative(__dirname, filename));
+const filenames = globbySync(
+  path.join(__dirname, 'packages/website/build/feature-hub/**/*'),
+).map((filename) => path.relative(__dirname, filename));
 
 for (const filename of filenames) {
   if (path.basename(filename) === 'index.html') {
