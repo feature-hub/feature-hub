@@ -26,6 +26,12 @@
   "publishConfig": {
     "access": "public"
   },
+  "exports": {
+    ".": {
+      "@feature-hub:bundler": "./src/index.ts",
+      "default": "./lib/esm/index.js"
+    }
+  },
   "typedoc": {
     "entryPoint": "./src/index.ts",
     "readmeFile": "./README.md",
