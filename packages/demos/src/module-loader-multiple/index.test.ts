@@ -28,13 +28,9 @@ describe('integration test: "module loader multiple"', () => {
   });
 
   it('loads each Feature App with the correct module loader', async () => {
-    await page.waitForNetworkIdle();
-
-    expect(await page.evaluate(() => document.body.textContent)).toMatch(
-      'Hello from Feature App 1!',
-    );
-    expect(await page.evaluate(() => document.body.textContent)).toMatch(
-      'Hello from Feature App 2!',
-    );
+    await Promise.all([
+      page.waitForSelector('::-p-text(Hello from Feature App 1!)'),
+      page.waitForSelector('::-p-text(Hello from Feature App 2!)'),
+    ]);
   });
 });

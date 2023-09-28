@@ -35,10 +35,7 @@ describe('integration test: "Feature App in Feature App"', () => {
     // We need to disable JavaScript for this test to ensure that the server-rendered HTML is observed.
     await page.setJavaScriptEnabled(false);
     await browser.goto(url);
-
-    expect(await page.evaluate(() => document.body.textContent)).toMatch(
-      'Hello, World!',
-    );
+    await page.waitForSelector('::-p-text(Hello, World!)');
 
     // Re-enable JavaScript to restore the default behavior for all other tests.
     await page.setJavaScriptEnabled(true);
@@ -46,11 +43,7 @@ describe('integration test: "Feature App in Feature App"', () => {
   });
 
   it('renders a Feature App with another nested Feature App', async () => {
-    await page.waitForNetworkIdle();
-
-    expect(await page.evaluate(() => document.body.textContent)).toMatch(
-      'Hello, World!',
-    );
+    await page.waitForSelector('::-p-text(Hello, World!)');
   });
 
   it("unmounts the nested Feature App when it has signaled that it's done", async () => {
@@ -58,9 +51,6 @@ describe('integration test: "Feature App in Feature App"', () => {
     const button = (await page.$('button'))!;
 
     await button.click();
-
-    expect(await page.evaluate(() => document.body.textContent)).toMatch(
-      'Bye!',
-    );
+    await page.waitForSelector('::-p-text(Bye!)');
   });
 });

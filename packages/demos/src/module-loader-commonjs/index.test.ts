@@ -29,8 +29,6 @@ describe('integration test: "commonjs module loader"', () => {
   });
 
   it('loads the server-side rendered Feature App HTML', async () => {
-    expect(await page.evaluate(() => document.body.textContent)).toMatch(
-      'Hello, World!',
-    );
+    await page.waitForSelector('::-p-text(Hello, World!)');
   });
 });

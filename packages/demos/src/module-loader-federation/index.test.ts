@@ -28,13 +28,9 @@ describe('integration test: "federation module loader"', () => {
   });
 
   it('loads the Feature App with module federation', async () => {
-    await page.waitForNetworkIdle();
-
-    expect(await page.evaluate(() => document.body.textContent)).toMatch(
-      'Hello from Feature App 1!',
-    );
-    expect(await page.evaluate(() => document.body.textContent)).toMatch(
-      'Hello from Feature App 2!',
-    );
+    await Promise.all([
+      page.waitForSelector('::-p-text(Hello from Feature App 1!)'),
+      page.waitForSelector('::-p-text(Hello from Feature App 2!)'),
+    ]);
   });
 });

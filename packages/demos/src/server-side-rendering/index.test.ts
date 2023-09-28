@@ -35,10 +35,7 @@ describe('integration test: "server-side rendering"', () => {
     // We need to disable JavaScript for this test to ensure that the server-rendered HTML is observed.
     await page.setJavaScriptEnabled(false);
     await browser.goto(url);
-
-    expect(await page.evaluate(() => document.body.textContent)).toMatch(
-      'Hello, Universe!',
-    );
+    await page.waitForSelector('::-p-text(Hello, Universe!)');
 
     // Re-enable JavaScript to restore the default behavior for all other tests.
     await page.setJavaScriptEnabled(true);
@@ -46,10 +43,6 @@ describe('integration test: "server-side rendering"', () => {
   });
 
   it('hydrates the server-side rendered Feature App HTML', async () => {
-    await page.waitForNetworkIdle();
-
-    expect(await page.evaluate(() => document.body.textContent)).toMatch(
-      'Hello, Universe!',
-    );
+    await page.waitForSelector('::-p-text(Hello, Universe!)');
   });
 });
