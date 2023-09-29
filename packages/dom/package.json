@@ -23,7 +23,7 @@
   "dependencies": {
     "@feature-hub/core": "^3.0.0",
     "lit-element": "^2.0.1",
-    "lit-html": "^1.0.0",
+    "lit-html": "^2.0.0",
     "url-join": "^4.0.0"
   },
   "devDependencies": {
