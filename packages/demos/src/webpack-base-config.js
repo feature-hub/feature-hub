@@ -6,14 +6,6 @@ const {merge} = require('webpack-merge');
 const {getPkgVersion} = require('./get-pkg-version');
 
 /**
- * @type {Partial<import('ts-loader').Options>}
- */
-const tsLoaderOptions = {
-  projectReferences: true,
-  onlyCompileBundledFiles: true,
-};
-
-/**
  * @type {webpack.Configuration}
  */
 const webpackBaseConfig = {
@@ -28,7 +20,10 @@ const webpackBaseConfig = {
       },
       {
         test: /\.tsx?$/,
-        use: {loader: 'ts-loader', options: tsLoaderOptions},
+        use: {
+          loader: 'swc-loader',
+          options: {jsc: {parser: {syntax: 'typescript', decorators: true}}},
+        },
       },
       {
         test: /\.css$/,
@@ -42,6 +37,7 @@ const webpackBaseConfig = {
   },
   resolve: {
     extensions: ['.js', '.json', '.ts', '.tsx'],
+    conditionNames: ['@feature-hub:bundler', '...'],
   },
   resolveLoader: {
     modules: [path.join(__dirname, '../node_modules'), 'node_modules'],
