@@ -65,6 +65,8 @@ jobs:
         run: yarn test:unit --no-cache --maxWorkers 2 --no-verbose
 
       - name: Integration Tests
+        env:
+          NODE_OPTIONS: --max-old-space-size=4096
         run: yarn test:integration --no-cache --maxWorkers 2
 
   compile-lint-verify:
