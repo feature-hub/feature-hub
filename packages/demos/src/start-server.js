@@ -76,21 +76,31 @@ async function startServer(
   const port = await getPort(demoName ? {port: 3000} : undefined);
   const app = express();
 
-  for (const compiler of webpack(webpackConfigs).compilers) {
-    app.use(devMiddleware(compiler));
-  }
+  /**
+   * @type {devMiddleware.API<import("http").IncomingMessage, devMiddleware.ServerResponse>[]}
+   */
+  const devMiddleWareInstances = [];
+
+  const devMiddlewareInstance = devMiddleware(webpack(webpackConfigs));
+
+  devMiddleWareInstances.push(devMiddlewareInstance);
+  app.use(devMiddlewareInstance);
 
   const nodeIntegratorCompiler =
     nodeIntegratorWebpackConfig && webpack(nodeIntegratorWebpackConfig);
 
-  const nodeIntegratorFilename =
-    nodeIntegratorCompiler &&
-    nodeIntegratorCompiler.options.output &&
-    nodeIntegratorCompiler.options.output.filename;
-
   if (nodeIntegratorCompiler) {
-    app.use(devMiddleware(nodeIntegratorCompiler, {serverSideRender: true}));
+    const nodeIntegratorDevMiddlewareInstance = devMiddleware(
+      nodeIntegratorCompiler,
+      {serverSideRender: true},
+    );
+
+    devMiddleWareInstances.push(nodeIntegratorDevMiddlewareInstance);
+    app.use(nodeIntegratorDevMiddlewareInstance);
   }
+
+  const nodeIntegratorFilename =
+    nodeIntegratorCompiler?.options.output?.filename;
 
   app.get('/', async (req, res) => {
     res.set('Connection', 'close');
@@ -125,6 +135,16 @@ async function startServer(
 
   return new Promise((resolve) => {
     const server = app.listen(port, () => resolve(server));
+
+    server.on('close', () => {
+      for (const devMiddleWareInstance of devMiddleWareInstances) {
+        devMiddleWareInstance.close((error) => {
+          if (error) {
+            console.error('Failed to close dev middleware.', error);
+          }
+        });
+      }
+    });
   });
 }
 
