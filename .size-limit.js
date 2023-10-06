@@ -24,7 +24,7 @@ module.exports = [
   },
   {
     path: 'packages/module-loader-amd/lib/esm/index.js',
-    limit: '8 KB',
+    limit: '4.2 KB',
   },
   {
     path: 'packages/module-loader-federation/lib/esm/index.js',
