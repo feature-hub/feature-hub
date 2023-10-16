@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.3.0](https://github.com/sinnerschrader/feature-hub/compare/v3.2.0...v3.3.0) (2023-10-16)
+
+
+### Bug Fixes
+
+* **demos:** allow dev server to cleanly close after all tests ([6236757](https://github.com/sinnerschrader/feature-hub/commit/62367571ff72b6851ab22e87f18861c12da40bfe))
+
+
+
+
+
 # [3.2.0](https://github.com/sinnerschrader/feature-hub/compare/v3.1.0...v3.2.0) (2023-01-20)
 
 **Note:** Version bump only for package @feature-hub/demos

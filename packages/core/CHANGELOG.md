@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.3.0](https://github.com/sinnerschrader/feature-hub/compare/v3.2.0...v3.3.0) (2023-10-16)
+
+
+### Features
+
+* **all:** pass `parentFeatureApp` into `onBind` ([353680d](https://github.com/sinnerschrader/feature-hub/commit/353680d35e31ead36d110ebbba72b0e47f33d824))
+
+
+
+
+
 # [3.0.0](https://github.com/sinnerschrader/feature-hub/compare/v2.13.1...v3.0.0) (2022-09-20)
 
 **Note:** Version bump only for package @feature-hub/core

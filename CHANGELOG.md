@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.3.0](https://github.com/sinnerschrader/feature-hub/compare/v3.2.0...v3.3.0) (2023-10-16)
+
+
+### Bug Fixes
+
+* **demos:** allow dev server to cleanly close after all tests ([6236757](https://github.com/sinnerschrader/feature-hub/commit/62367571ff72b6851ab22e87f18861c12da40bfe))
+
+
+### Features
+
+* **all:** pass `parentFeatureApp` into `onBind` ([353680d](https://github.com/sinnerschrader/feature-hub/commit/353680d35e31ead36d110ebbba72b0e47f33d824))
+* **module-loader-amd:** update SystemJS ([8c111ef](https://github.com/sinnerschrader/feature-hub/commit/8c111efab362dcf010ceedb2819147069b39e8ae)), closes [#80](https://github.com/sinnerschrader/feature-hub/issues/80) [#80](https://github.com/sinnerschrader/feature-hub/issues/80)
+
+
+### Reverts
+
+* Revert "build(all): increase memory for integration tests" ([b774733](https://github.com/sinnerschrader/feature-hub/commit/b774733eac1b813e2d52de3bb949ea6629512125))
+
+
+
+
+
 # [3.2.0](https://github.com/sinnerschrader/feature-hub/compare/v3.1.0...v3.2.0) (2023-01-20)
 
 
