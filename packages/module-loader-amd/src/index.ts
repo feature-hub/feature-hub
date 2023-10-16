@@ -1,4 +1,8 @@
-import 'systemjs/dist/system-production';
+// tslint:disable:ordered-imports
+import 'systemjs/dist/s.js';
+import 'systemjs/dist/extras/named-register.js';
+import 'systemjs/dist/extras/amd.js';
+// tslint:enable:ordered-imports
 
 export interface Externals {
   readonly [externalName: string]: unknown;
@@ -11,9 +15,11 @@ export interface Externals {
  */
 export function defineExternals(externals: Externals): void {
   for (const externalName of Object.keys(externals)) {
-    const external = externals[externalName];
+    System.register(externalName, [], (exportFn) => {
+      exportFn(externals[externalName] as System.Module);
 
-    SystemJS.amdDefine(externalName, () => external);
+      return {};
+    });
   }
 }
 
@@ -24,5 +30,13 @@ export function defineExternals(externals: Externals): void {
  * the module can not be loaded.
  */
 export async function loadAmdModule(url: string): Promise<unknown> {
-  return SystemJS.import(url);
+  return (await System.import(normalizeUrlForSystemJs(url))).default;
+}
+
+function normalizeUrlForSystemJs(url: string): string {
+  if (/^https?:\/\//.test(url) || /^\.?\//.test(url)) {
+    return url;
+  }
+
+  return `./${url}`;
 }
