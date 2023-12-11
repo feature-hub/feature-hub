@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.4.0](https://github.com/sinnerschrader/feature-hub/compare/v3.3.0...v3.4.0) (2023-12-11)
+
+
+### Features
+
+* **core:** include consumer ID in externals validation ([93bbf51](https://github.com/sinnerschrader/feature-hub/commit/93bbf5101391bc421e23feade461b4e69642f57a))
+
+
+
+
+
 # [3.3.0](https://github.com/sinnerschrader/feature-hub/compare/v3.2.0...v3.3.0) (2023-10-16)
 
 

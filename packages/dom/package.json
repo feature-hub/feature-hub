@@ -1,6 +1,6 @@
 {
   "name": "@feature-hub/dom",
-  "version": "3.3.0",
+  "version": "3.4.0",
   "description": "A library for building a Feature Hub integrator using Web Components.",
   "homepage": "https://feature-hub.io/",
   "bugs": {
@@ -21,7 +21,7 @@
   "module": "lib/esm/index.js",
   "typings": "lib/cjs/index.d.ts",
   "dependencies": {
-    "@feature-hub/core": "^3.3.0",
+    "@feature-hub/core": "^3.4.0",
     "lit-element": "^2.0.1",
     "lit-html": "^1.0.0",
     "url-join": "^4.0.0"
