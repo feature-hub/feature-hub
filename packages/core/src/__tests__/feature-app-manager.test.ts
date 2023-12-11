@@ -480,9 +480,10 @@ describe('FeatureAppManager', () => {
             );
           } catch {}
 
-          expect(mockExternalsValidator.validate).toHaveBeenCalledWith({
-            react: '^16.0.0',
-          });
+          expect(mockExternalsValidator.validate).toHaveBeenCalledWith(
+            {react: '^16.0.0'},
+            'testId',
+          );
         });
 
         it('throws the validation error', () => {
@@ -513,9 +514,10 @@ describe('FeatureAppManager', () => {
             mockFeatureAppDefinition,
           );
 
-          expect(mockExternalsValidator.validate).toHaveBeenCalledWith({
-            react: '^16.0.0',
-          });
+          expect(mockExternalsValidator.validate).toHaveBeenCalledWith(
+            {react: '^16.0.0'},
+            'testId',
+          );
         });
 
         it("doesn't throw an error", () => {

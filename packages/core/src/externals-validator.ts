@@ -44,7 +44,10 @@ export class ExternalsValidator {
    *
    * @throws Throws an error if the required externals can't be satisfied.
    */
-  public validate(requiredExternals: RequiredExternals): void {
+  public validate(
+    requiredExternals: RequiredExternals,
+    consumerId?: string,
+  ): void {
     for (const [externalName, versionRange] of Object.entries(
       requiredExternals,
     )) {
@@ -52,17 +55,19 @@ export class ExternalsValidator {
 
       if (!providedVersion) {
         throw new Error(
-          `The external dependency ${JSON.stringify(
-            externalName,
-          )} is not provided.`,
+          `The external dependency ${JSON.stringify(externalName)}${
+            consumerId ? ` as required by ${JSON.stringify(consumerId)}` : ``
+          } is not provided.`,
         );
       }
 
       if (!semverSatisfies(providedVersion, versionRange)) {
         throw new Error(
-          `The external dependency ${JSON.stringify(
-            externalName,
-          )} in the required version range ${JSON.stringify(
+          `The external dependency ${JSON.stringify(externalName)} ${
+            consumerId
+              ? `as required by ${JSON.stringify(consumerId)} in the`
+              : `in the required`
+          } version range ${JSON.stringify(
             versionRange,
           )} is not satisfied. The provided version is ${JSON.stringify(
             providedVersion,

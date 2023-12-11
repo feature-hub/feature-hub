@@ -433,7 +433,7 @@ export class FeatureAppManager {
     featureAppId: string,
     options: FeatureAppScopeOptions<TFeatureServices, TConfig>,
   ): FeatureAppRetainer<TFeatureApp> {
-    this.validateExternals(featureAppDefinition);
+    this.validateExternals(featureAppDefinition, featureAppId);
 
     const {
       featureAppName,
@@ -512,6 +512,7 @@ export class FeatureAppManager {
 
   private validateExternals(
     featureAppDefinition: FeatureServiceConsumerDefinition,
+    featureAppId: string,
   ): void {
     const {externalsValidator} = this.options;
 
@@ -522,7 +523,7 @@ export class FeatureAppManager {
     const {dependencies} = featureAppDefinition;
 
     if (dependencies && dependencies.externals) {
-      externalsValidator.validate(dependencies.externals);
+      externalsValidator.validate(dependencies.externals, featureAppId);
     }
   }
 }
