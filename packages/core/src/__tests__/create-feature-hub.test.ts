@@ -131,7 +131,9 @@ describe('createFeatureHub()', () => {
             mockFeatureAppDefinition,
           ),
         ).toThrowError(
-          new Error('The external dependency "foo" is not provided.'),
+          new Error(
+            'The external dependency "foo" as required by "test:feature-app" is not provided.',
+          ),
         );
       });
     });
@@ -217,7 +219,9 @@ describe('createFeatureHub()', () => {
         expect(() =>
           createFeatureHub('test:integrator', featureHubOptions),
         ).toThrowError(
-          new Error('The external dependency "foo" is not provided.'),
+          new Error(
+            'The external dependency "foo" as required by "test:feature-service" is not provided.',
+          ),
         );
       });
     });

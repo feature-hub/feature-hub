@@ -415,9 +415,10 @@ describe('FeatureServiceRegistry', () => {
             );
           } catch {}
 
-          expect(mockExternalsValidator.validate).toHaveBeenCalledWith({
-            react: '^16.0.0',
-          });
+          expect(mockExternalsValidator.validate).toHaveBeenCalledWith(
+            {react: '^16.0.0'},
+            'a',
+          );
         });
 
         it('throws the validation error', () => {
@@ -450,9 +451,10 @@ describe('FeatureServiceRegistry', () => {
             );
           } catch {}
 
-          expect(mockExternalsValidator.validate).toHaveBeenCalledWith({
-            react: '^16.0.0',
-          });
+          expect(mockExternalsValidator.validate).toHaveBeenCalledWith(
+            {react: '^16.0.0'},
+            'a',
+          );
         });
 
         it("doesn't throw an error", () => {

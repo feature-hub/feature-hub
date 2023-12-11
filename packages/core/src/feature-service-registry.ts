@@ -330,7 +330,7 @@ export class FeatureServiceRegistry {
       return;
     }
 
-    this.validateExternals(providerDefinition);
+    this.validateExternals(providerDefinition, providerId);
 
     const {featureServices} = this.bindFeatureServices(
       providerDefinition,
@@ -434,7 +434,8 @@ export class FeatureServiceRegistry {
   }
 
   private validateExternals(
-    featureAppDefinition: FeatureServiceConsumerDefinition,
+    consumerDefinition: FeatureServiceConsumerDefinition,
+    consumerId: string,
   ): void {
     const {externalsValidator} = this.options;
 
@@ -442,10 +443,10 @@ export class FeatureServiceRegistry {
       return;
     }
 
-    const {dependencies} = featureAppDefinition;
+    const {dependencies} = consumerDefinition;
 
     if (dependencies && dependencies.externals) {
-      externalsValidator.validate(dependencies.externals);
+      externalsValidator.validate(dependencies.externals, consumerId);
     }
   }
 
