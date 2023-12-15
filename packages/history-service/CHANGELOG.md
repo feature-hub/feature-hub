@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.4.1](https://github.com/sinnerschrader/feature-hub/compare/v3.4.0...v3.4.1) (2023-12-15)
+
+
+### Bug Fixes
+
+* **all:** use `import`/`require` instead of `default` in `exports` ([b12e524](https://github.com/sinnerschrader/feature-hub/commit/b12e524fa561b5db244a6c6c85e3778b5d1112d1))
+
+
+
+
+
 # [3.4.0](https://github.com/sinnerschrader/feature-hub/compare/v3.3.0...v3.4.0) (2023-12-11)
 
 **Note:** Version bump only for package @feature-hub/history-service
