@@ -40,7 +40,8 @@
   "exports": {
     ".": {
       "@feature-hub:bundler": "./src/index.ts",
-      "default": "./lib/esm/index.js"
+      "import": "./lib/esm/index.js",
+      "require": "./lib/cjs/index.js"
     },
     "./package.json": "./package.json"
   },
