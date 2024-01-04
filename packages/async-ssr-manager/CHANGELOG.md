@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.5.0](https://github.com/sinnerschrader/feature-hub/compare/v3.4.1...v3.5.0) (2024-01-04)
+
+
+### Features
+
+* **async-ssr-manager:** support concurrent `renderUntilCompleted` calls ([d5790ed](https://github.com/sinnerschrader/feature-hub/commit/d5790edec5cc63cb7858a0c95111f0c24d0f2445)), closes [#702](https://github.com/sinnerschrader/feature-hub/issues/702)
+
+
+
+
+
 ## [3.4.1](https://github.com/sinnerschrader/feature-hub/compare/v3.4.0...v3.4.1) (2023-12-15)
 
 
