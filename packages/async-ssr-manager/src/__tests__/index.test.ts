@@ -249,6 +249,69 @@ describe('defineAsyncSsrManager', () => {
         });
       });
 
+      describe('with an integrator that renders two consumers independently, both scheduling a rerender in the first render pass', () => {
+        it('resolves with an html string after the second render pass', async () => {
+          const asyncSsrManagerIntegrator =
+            asyncSsrManagerBinder('test:integrator').featureService;
+
+          const asyncSsrManagerConsumers = [
+            asyncSsrManagerBinder('test:consumer:0').featureService,
+            asyncSsrManagerBinder('test:consumer:1').featureService,
+          ] as const;
+
+          const createMockRender = (consumer: 0 | 1) => {
+            let renderPass = 0;
+
+            return jest.fn(() => {
+              renderPass += 1;
+
+              if (renderPass === 1) {
+                asyncSsrManagerConsumers[consumer].scheduleRerender();
+              }
+
+              return `render call ${consumer}, pass ${renderPass}`;
+            });
+          };
+
+          const mockRender0 = createMockRender(0);
+          const mockRender1 = createMockRender(1);
+
+          const html = await useFakeTimers(async () =>
+            Promise.all([
+              asyncSsrManagerIntegrator.renderUntilCompleted(mockRender0),
+              asyncSsrManagerIntegrator.renderUntilCompleted(mockRender1),
+            ]),
+          );
+
+          expect(mockRender0).toHaveBeenCalledTimes(2);
+          expect(mockRender1).toHaveBeenCalledTimes(2);
+
+          expect(html).toEqual([
+            'render call 0, pass 2',
+            'render call 1, pass 2',
+          ]);
+        });
+      });
+
+      describe('with a consumer that schedules a rerender outside of `renderUntilCompleted`', () => {
+        it('rejects with an error', async () => {
+          const asyncSsrManager =
+            asyncSsrManagerBinder('test:consumer').featureService;
+
+          const mockRender = jest.fn(() => {
+            asyncSsrManager.scheduleRerender();
+          });
+
+          return expect(
+            useFakeTimers(async () => mockRender()),
+          ).rejects.toEqual(
+            new Error(
+              'Async SSR Manager: Can not call `scheduleRerender` outside of `renderUntilCompleted`.',
+            ),
+          );
+        });
+      });
+
       describe('when the given render function throws an error', () => {
         it('rejects with the error', async () => {
           const asyncSsrManager = asyncSsrManagerBinder('test').featureService;
