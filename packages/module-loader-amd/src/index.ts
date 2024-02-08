@@ -32,14 +32,7 @@ export function defineExternals(externals: Externals): void {
 export async function loadAmdModule(url: string): Promise<unknown> {
   const module = await System.import(normalizeUrlForSystemJs(url));
 
-  // After being imported by SystemJS, some AMD bundles (dependent on the
-  // bundler that was used) have a `default` property that is also the module
-  // (which itself has the actual default export, i.e.
-  // `module.default.default`). Luckily, SystemJS uses `Symbol.toStringTag` to
-  // tag modules, so we can identify and handle this scenario.
-  return Object.prototype.toString.call(module.default) === '[object Module]'
-    ? module.default
-    : module;
+  return module.__esModule ? module.default : module;
 }
 
 function normalizeUrlForSystemJs(url: string): string {
