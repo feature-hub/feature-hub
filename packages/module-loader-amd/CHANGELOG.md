@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.5.1](https://github.com/sinnerschrader/feature-hub/compare/v3.5.0...v3.5.1) (2024-02-08)
+
+
+### Bug Fixes
+
+* **module-loader-amd:** handle AMD modules built by different bundlers ([9597cee](https://github.com/sinnerschrader/feature-hub/commit/9597cee034076f9de74794f01616d9415efb1dc0))
+
+
+
+
+
 ## [3.4.1](https://github.com/sinnerschrader/feature-hub/compare/v3.4.0...v3.4.1) (2023-12-15)
 
 
