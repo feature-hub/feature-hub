@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.5.2](https://github.com/sinnerschrader/feature-hub/compare/v3.5.1...v3.5.2) (2024-02-08)
+
+
+### Bug Fixes
+
+* **module-loader-amd:** use `__esModule` as default condition ([3549b92](https://github.com/sinnerschrader/feature-hub/commit/3549b9236b0235ecd50d79cff9e5d650a463077c))
+
+
+
+
+
 ## [3.5.1](https://github.com/sinnerschrader/feature-hub/compare/v3.5.0...v3.5.1) (2024-02-08)
 
 

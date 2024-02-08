@@ -1,6 +1,6 @@
 {
   "name": "@feature-hub/demos",
-  "version": "3.5.1",
+  "version": "3.5.2",
   "private": true,
   "license": "MIT",
   "scripts": {
@@ -16,7 +16,7 @@
     "@feature-hub/dom": "^3.4.1",
     "@feature-hub/history-service": "^3.4.1",
     "@feature-hub/logger": "^3.4.1",
-    "@feature-hub/module-loader-amd": "^3.5.1",
+    "@feature-hub/module-loader-amd": "^3.5.2",
     "@feature-hub/module-loader-commonjs": "^3.4.1",
     "@feature-hub/module-loader-federation": "^3.4.1",
     "@feature-hub/react": "^3.5.0",
