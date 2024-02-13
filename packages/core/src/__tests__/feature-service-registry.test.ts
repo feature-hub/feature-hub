@@ -861,6 +861,36 @@ describe('FeatureServiceRegistry', () => {
     });
   });
 
+  describe('#getInfo', () => {
+    it('returns info about consumers and registered feature services', () => {
+      featureServiceRegistry = new FeatureServiceRegistry({logger});
+
+      providerDefinitionB = {
+        id: 'b',
+        dependencies: {featureServices: {a: '^1.0.0'}},
+        create: jest.fn(() => ({'1.0.0': binderB, '2.0.0': binderB})),
+      };
+
+      featureServiceRegistry.registerFeatureServices(
+        [providerDefinitionA, providerDefinitionB],
+        'test',
+      );
+
+      featureServiceRegistry.bindFeatureServices(
+        {dependencies: {featureServices: {a: '1.0.0'}}},
+        'foo',
+      );
+
+      expect(featureServiceRegistry.getInfo()).toEqual({
+        consumerIds: ['a', 'b', 'foo'],
+        featureServices: [
+          {id: 'a', versions: ['1.1.0']},
+          {id: 'b', versions: ['1.0.0', '2.0.0']},
+        ],
+      });
+    });
+  });
+
   describe('without a custom logger', () => {
     let consoleInfoSpy: jest.SpyInstance;
 

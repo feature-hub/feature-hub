@@ -90,6 +90,14 @@ export interface FeatureServicesBinding<
   unbind(): void;
 }
 
+export interface FeatureServiceRegistryInfo {
+  readonly consumerIds: string[];
+  readonly featureServices: {
+    readonly id: string;
+    readonly versions: string[];
+  }[];
+}
+
 export interface FeatureServiceRegistryOptions {
   /**
    * If the [[FeatureAppManager]] is configured with a
@@ -309,6 +317,21 @@ export class FeatureServiceRegistry {
     };
 
     return {featureServices, unbind};
+  }
+
+  /**
+   * Returns info about consumers and registered feature services.
+   */
+  public getInfo(): FeatureServiceRegistryInfo {
+    return {
+      consumerIds: Array.from(this.consumerIds),
+      featureServices: [...this.sharedFeatureServices.entries()].map(
+        ([id, sharedFeatureService]) => ({
+          id,
+          versions: Object.keys(sharedFeatureService),
+        }),
+      ),
+    };
   }
 
   private registerFeatureService(
