@@ -22,7 +22,7 @@
   "typings": "lib/cjs/index.d.ts",
   "dependencies": {
     "@feature-hub/core": "^3.6.0",
-    "lit-element": "^2.0.1",
+    "lit-element": "^4.0.0",
     "lit-html": "^1.0.0",
     "url-join": "^4.0.0"
   },
