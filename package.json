@@ -71,7 +71,7 @@
     "sort-package-json": "^1.16.0",
     "ts-config": "^20.9.0",
     "tslint": "^6.1.3",
-    "typedoc": "^0.23.14",
+    "typedoc": "^0.25.0",
     "typescript": "^5.2.2",
     "typescript-tslint-plugin": "^1.0.0"
   }
