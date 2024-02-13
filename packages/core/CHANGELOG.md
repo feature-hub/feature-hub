@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.6.0](https://github.com/sinnerschrader/feature-hub/compare/v3.5.2...v3.6.0) (2024-02-13)
+
+
+### Features
+
+* **core:** add `getInfo` method to feature service registry ([c7e5311](https://github.com/sinnerschrader/feature-hub/commit/c7e5311e37020e994b39c65d6ee93866e7a05dd8))
+
+
+
+
+
 ## [3.4.1](https://github.com/sinnerschrader/feature-hub/compare/v3.4.0...v3.4.1) (2023-12-15)
 
 
