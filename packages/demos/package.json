@@ -7,9 +7,6 @@
     "build:todomvc": "yarn webpack --config src/todomvc/webpack-config.js --mode production"
   },
   "dependencies": {
-    "@babel/core": "^7.23.0",
-    "@babel/preset-react": "^7.22.15",
-    "@babel/preset-typescript": "^7.23.0",
     "@blueprintjs/core": "^5.0.0",
     "@feature-hub/async-ssr-manager": "^3.5.0",
     "@feature-hub/core": "^3.4.1",

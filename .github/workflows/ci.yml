@@ -9,6 +9,9 @@ on:
     branches:
       - master
 
+env:
+  CI: true
+
 jobs:
   commitlint:
     runs-on: ubuntu-latest
@@ -27,8 +30,6 @@ jobs:
 
   word-blacklist:
     runs-on: ubuntu-latest
-    env:
-      CI: true
     name: Word Blacklist
 
     steps:
@@ -42,8 +43,6 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-    env:
-      CI: true
     strategy:
       matrix:
         node: ['18', '20']
@@ -69,10 +68,22 @@ jobs:
           NODE_OPTIONS: --max-old-space-size=4096
         run: yarn test:integration --no-cache --maxWorkers 2
 
+  coverage:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    name: Coverage
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Create Coverage Report
+        uses: ArtiomTr/jest-coverage-report-action@v2
+        with:
+          package-manager: yarn
+          test-script: yarn test:unit
+
   compile-lint-verify:
     runs-on: ubuntu-latest
-    env:
-      CI: true
     strategy:
       matrix:
         node: ['18', '20']
@@ -105,8 +116,6 @@ jobs:
   size-limit:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
-    env:
-      CI: true
     name: Size Limit
 
     steps:
