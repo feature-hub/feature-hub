@@ -21,7 +21,7 @@
   "module": "lib/esm/index.js",
   "typings": "lib/cjs/index.d.ts",
   "dependencies": {
-    "node-fetch": "^2.6.0"
+    "node-fetch": "^3.0.0"
   },
   "devDependencies": {
     "@types/node-fetch": "^2.3.7"
