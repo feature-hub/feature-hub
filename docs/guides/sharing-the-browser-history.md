@@ -258,6 +258,6 @@ properties:
 [history-npm]: https://www.npmjs.com/package/history
 [history-service-api]: /api/modules/history_service.html
 [history-service-demo]:
-  https://github.com/sinnerschrader/feature-hub/tree/master/packages/demos/src/history-service
+  https://github.com/feature-hub/feature-hub/tree/main/packages/demos/src/history-service
 [advanced-routing-demo]:
-  https://github.com/sinnerschrader/feature-hub/tree/master/packages/demos/src/advanced-routing
+  https://github.com/feature-hub/feature-hub/tree/main/packages/demos/src/advanced-routing

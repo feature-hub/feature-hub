@@ -89,6 +89,6 @@ const {featureAppManager} = createFeatureHub('acme:integrator', {
 [react-api]: /api/modules/react.html
 [sharing-npm-dependencies]: /docs/guides/sharing-npm-dependencies
 [feature-app-in-feature-demo]:
-  https://github.com/sinnerschrader/feature-hub/tree/master/packages/demos/src/feature-app-in-feature-app
+  https://github.com/feature-hub/feature-hub/tree/main/packages/demos/src/feature-app-in-feature-app
 [feature-app-in-feature-demo-outer]:
-  https://github.com/sinnerschrader/feature-hub/tree/master/packages/demos/src/feature-app-in-feature-app/feature-app-outer.tsx
+  https://github.com/feature-hub/feature-hub/tree/main/packages/demos/src/feature-app-in-feature-app/feature-app-outer.tsx

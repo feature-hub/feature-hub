@@ -349,4 +349,4 @@ const defineLogger = (createConsumerLogger = createConsumerConsole) => ({
 [semver-tilde-range]: https://docs.npmjs.com/misc/semver#tilde-ranges-123-12-1
 [own-feature-service-definitions]:
   /docs/guides/writing-a-feature-app#ownfeatureservicedefinitions
-[issue-245]: https://github.com/sinnerschrader/feature-hub/issues/245
+[issue-245]: https://github.com/feature-hub/feature-hub/issues/245

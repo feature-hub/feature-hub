@@ -1034,7 +1034,7 @@ const someFeatureService2 = featureServices[someFeatureServiceDefinition2.id];
 someFeatureService2.foo(42);
 ```
 
-[amd]: https://github.com/amdjs/amdjs-api/blob/master/AMD.md
+[amd]: https://github.com/amdjs/amdjs-api/blob/main/AMD.md
 [core-api]: /api/modules/core.html
 [dom-api]: /api/modules/dom.html
 [module-loader-amd-api]: /api/modules/module_loader_amd.html
@@ -1058,4 +1058,4 @@ someFeatureService2.foo(42);
 [custom-rendering-param-featureappnode-api]:
   /api/interfaces/react.customfeatureapprenderingparams.html#featureappnode
 [react-loading-and-error-ui-demo]:
-  https://github.com/sinnerschrader/feature-hub/tree/master/packages/demos/src/react-loading-and-error-ui
+  https://github.com/feature-hub/feature-hub/tree/main/packages/demos/src/react-loading-and-error-ui

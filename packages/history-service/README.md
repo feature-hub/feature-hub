@@ -21,13 +21,13 @@ npm install @feature-hub/history-service
 
 ---
 
-Copyright (c) 2018-2021 SinnerSchrader Deutschland GmbH. Released under the
+Copyright (c) 2018-2024 Accenture Song Build Germany GmbH. Released under the
 terms of the [MIT License][license].
 
 [api]: https://feature-hub.io/@feature-hub/history-service/
 [api-badge]:
   https://img.shields.io/badge/API-%40feature--hub%2Fhistory--service-%23ea3458.svg
-[license]: https://github.com/sinnerschrader/feature-hub/blob/master/LICENSE
+[license]: https://github.com/feature-hub/feature-hub/blob/main/LICENSE
 [package-badge]: https://img.shields.io/npm/v/@feature-hub/history-service.svg
 [package-npm]: https://www.npmjs.com/package/@feature-hub/history-service
 [website]: https://feature-hub.io/
