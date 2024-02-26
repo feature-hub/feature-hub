@@ -4,7 +4,7 @@ title: Motivation
 sidebar_label: Motivation
 ---
 
-The Feature Hub has been created by [SinnerSchrader][sinnerschrader] as part of
+The Feature Hub has been created by [Accenture Song][accenture-song] as part of
 our client work. In order to facilitate collaboration and reusability, we
 decided to publish the core functionality of our micro frontend solution as open
 source.
@@ -33,4 +33,4 @@ The Feature Hub was designed with the following specific requirements in mind:
   fail early, and not just when the user interacts with the specific
   incompatible feature.
 
-[sinnerschrader]: https://sinnerschrader.com
+[accenture-song]: https://www.accenture.com/us-en/about/accenture-song-index

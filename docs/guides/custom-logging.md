@@ -141,7 +141,7 @@ as an optional dependency. If the integrator has provided the Logger Service,
 they use it for their logging. Otherwise the `console` is used as a fallback.
 
 [custom-logging-demo]:
-  https://github.com/sinnerschrader/feature-hub/tree/master/packages/demos/src/custom-logging
+  https://github.com/feature-hub/feature-hub/tree/main/packages/demos/src/custom-logging
 [pino]: http://getpino.io
 [logger-api]: /api/modules/logger.html
 [core-logger-interface]: /api/interfaces/core.logger.html

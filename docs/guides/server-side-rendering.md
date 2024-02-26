@@ -355,17 +355,17 @@ const html = await asyncSsrManager.renderUntilCompleted(() =>
   /api/interfaces/async_ssr_manager.asyncssrmanagerv1.html#schedulererender
 [serialized-state-manager-api]: /api/modules/serialized_state_manager.html
 [demos-inject-serialized-states-script]:
-  https://github.com/sinnerschrader/feature-hub/blob/093b6273b903477f2ab0aaccb4e0502e0dae79dc/packages/demos/src/start-server.js#L39
+  https://github.com/feature-hub/feature-hub/blob/093b6273b903477f2ab0aaccb4e0502e0dae79dc/packages/demos/src/start-server.js#L39
 [demos-extract-serialized-states-script]:
-  https://github.com/sinnerschrader/feature-hub/blob/093b6273b903477f2ab0aaccb4e0502e0dae79dc/packages/demos/src/server-side-rendering/integrator.tsx#L14-L20
+  https://github.com/feature-hub/feature-hub/blob/093b6273b903477f2ab0aaccb4e0502e0dae79dc/packages/demos/src/server-side-rendering/integrator.tsx#L14-L20
 [demos-inject-hydration-urls-script]:
-  https://github.com/sinnerschrader/feature-hub/blob/093b6273b903477f2ab0aaccb4e0502e0dae79dc/packages/demos/src/start-server.js#L44-L46
+  https://github.com/feature-hub/feature-hub/blob/093b6273b903477f2ab0aaccb4e0502e0dae79dc/packages/demos/src/start-server.js#L44-L46
 [demos-extract-hydration-urls-script]:
-  https://github.com/sinnerschrader/feature-hub/blob/093b6273b903477f2ab0aaccb4e0502e0dae79dc/packages/demos/src/server-side-rendering/integrator.tsx#L22-L32
+  https://github.com/feature-hub/feature-hub/blob/093b6273b903477f2ab0aaccb4e0502e0dae79dc/packages/demos/src/server-side-rendering/integrator.tsx#L22-L32
 [consuming-feature-services]:
   /docs/guides/integrating-the-feature-hub#consuming-feature-services
 [server-side-rendering-demo]:
-  https://github.com/sinnerschrader/feature-hub/tree/master/packages/demos/src/server-side-rendering
+  https://github.com/feature-hub/feature-hub/tree/main/packages/demos/src/server-side-rendering
 [feature-app-loader-css]: /docs/guides/integrating-the-feature-hub#css
 [custom-module-loader]:
   /docs/guides/integrating-the-feature-hub#custom-module-loader

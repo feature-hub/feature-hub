@@ -1,15 +1,15 @@
-name: Deploy Master
+name: Deploy Main
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
-  deploy-master:
+  deploy-main:
     runs-on: ubuntu-latest
     env:
       CI: true
-    name: Deploy master
+    name: Deploy main
 
     steps:
       - name: Checkout

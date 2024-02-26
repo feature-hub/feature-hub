@@ -44,21 +44,21 @@ by its terms.
 
 ### Publishing a New Release
 
-Instead of letting the CI automatically publish on every master merge, the
-Feature Hub package releases are triggered manually. To create a new semantic
-npm release for all Feature Hub packages, core team members must trigger a
-custom [Travis CI][travis-ci] build on the `master` branch. You should leave the
-custom config and commit message fields empty.
+Instead of letting the CI automatically publish on every main merge, the Feature
+Hub package releases are triggered manually. To create a new semantic npm
+release for all Feature Hub packages, core team members must trigger a [Release
+Workflow][release-workflow] on the `main` branch.
 
 ---
 
-Copyright (c) 2018-2021 SinnerSchrader Deutschland GmbH. Released under the
+Copyright (c) 2018-2024 Accenture Song Build Germany GmbH. Released under the
 terms of the [MIT License][license].
 
 [code-of-conduct]:
-  https://github.com/sinnerschrader/feature-hub/blob/master/CODE_OF_CONDUCT.md
+  https://github.com/feature-hub/feature-hub/blob/main/CODE_OF_CONDUCT.md
 [demos-package-getting-started]:
-  https://github.com/sinnerschrader/feature-hub/tree/master/packages/demos#getting-started
+  https://github.com/feature-hub/feature-hub/tree/main/packages/demos#getting-started
 [documentation]: https://feature-hub.io/docs/getting-started/introduction.html
-[license]: https://github.com/sinnerschrader/feature-hub/blob/master/LICENSE
-[travis-ci]: https://travis-ci.com/sinnerschrader/feature-hub
+[license]: https://github.com/feature-hub/feature-hub/blob/main/LICENSE
+[release-workflow]:
+  https://github.com/feature-hub/feature-hub/actions/workflows/release.yml

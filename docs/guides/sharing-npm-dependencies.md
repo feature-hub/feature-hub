@@ -204,11 +204,11 @@ used][validating-externals].
 [module-loader-commonjs-api]: /api/modules/module_loader_commonjs.html
 [module-loader-federation-api]: /api/modules/module_loader_federation.html
 [amd-module-loader-demo]:
-  https://github.com/sinnerschrader/feature-hub/tree/master/packages/demos/src/module-loader-amd
+  https://github.com/feature-hub/feature-hub/tree/main/packages/demos/src/module-loader-amd
 [commonjs-module-loader-demo]:
-  https://github.com/sinnerschrader/feature-hub/tree/master/packages/demos/src/module-loader-commonjs
+  https://github.com/feature-hub/feature-hub/tree/main/packages/demos/src/module-loader-commonjs
 [module-federation-loader-demo]:
-  https://github.com/sinnerschrader/feature-hub/tree/master/packages/demos/src/module-loader-federation
+  https://github.com/feature-hub/feature-hub/tree/main/packages/demos/src/module-loader-federation
 [module-loader]: /docs/guides/integrating-the-feature-hub#module-loader
 [reducing-the-bundle-size]: /docs/guides/reducing-the-bundle-size
 [feature-app-dependencies]: /docs/guides/writing-a-feature-app#dependencies

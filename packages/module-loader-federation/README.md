@@ -21,13 +21,13 @@ npm install @feature-hub/module-loader-federation
 
 ---
 
-Copyright (c) 2021 SinnerSchrader Deutschland GmbH. Released under the terms of
-the [MIT License][license].
+Copyright (c) 2021-2024 Accenture Song Build Germany GmbH. Released under the
+terms of the [MIT License][license].
 
 [api]: https://feature-hub.io/@feature-hub/module-loader-federation/
 [api-badge]:
   https://img.shields.io/badge/API-%40feature--hub%2Fmodule--loader--federation-%23ea3458.svg
-[license]: https://github.com/sinnerschrader/feature-hub/blob/master/LICENSE
+[license]: https://github.com/feature-hub/feature-hub/blob/main/LICENSE
 [package-badge]:
   https://img.shields.io/npm/v/@feature-hub/module-loader-federation.svg
 [package-npm]:

@@ -21,14 +21,14 @@ npm install @feature-hub/async-ssr-manager
 
 ---
 
-Copyright (c) 2018-2021 SinnerSchrader Deutschland GmbH. Released under the
+Copyright (c) 2018-2024 Accenture Song Build Germany GmbH. Released under the
 terms of the [MIT License][license].
 
 [api]: https://feature-hub.io/@feature-hub/async-ssr-manager/
 [api-badge]:
   https://img.shields.io/badge/API-%40feature--hub%2Fasync--ssr--manager-%23ea3458.svg
-[issue-25]: https://github.com/sinnerschrader/feature-hub/issues/25
-[license]: https://github.com/sinnerschrader/feature-hub/blob/master/LICENSE
+[issue-25]: https://github.com/feature-hub/feature-hub/issues/25
+[license]: https://github.com/feature-hub/feature-hub/blob/main/LICENSE
 [package-badge]: https://img.shields.io/npm/v/@feature-hub/async-ssr-manager.svg
 [package-npm]: https://www.npmjs.com/package/@feature-hub/async-ssr-manager
 [website]: https://feature-hub.io/

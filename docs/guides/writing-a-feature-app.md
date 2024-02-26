@@ -401,7 +401,7 @@ npm Dependencies" guide][sharing-npm-dependencies-commonjs].
 [semver-caret-range]:
   https://docs.npmjs.com/misc/semver#caret-ranges-123-025-004
 [semver-tilde-range]: https://docs.npmjs.com/misc/semver#tilde-ranges-123-12-1
-[issue-245]: https://github.com/sinnerschrader/feature-hub/issues/245
+[issue-245]: https://github.com/feature-hub/feature-hub/issues/245
 [demo-react-loading-ui]:
-  https://github.com/sinnerschrader/feature-hub/tree/master/packages/demos/src/react-loading-ui
+  https://github.com/feature-hub/feature-hub/tree/main/packages/demos/src/react-loading-ui
 [module-federation]: https://webpack.js.org/concepts/module-federation/

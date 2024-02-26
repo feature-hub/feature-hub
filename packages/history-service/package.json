@@ -4,14 +4,14 @@
   "description": "A history facade guaranteeing safe access for multiple consumers.",
   "homepage": "https://feature-hub.io/",
   "bugs": {
-    "url": "https://github.com/sinnerschrader/feature-hub/issues"
+    "url": "https://github.com/feature-hub/feature-hub/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/sinnerschrader/feature-hub.git"
+    "url": "https://github.com/feature-hub/feature-hub.git"
   },
   "license": "MIT",
-  "author": "SinnerSchrader Deutschland GmbH",
+  "author": "Accenture Song Build Germany GmbH",
   "files": [
     "lib",
     "!__tests__"

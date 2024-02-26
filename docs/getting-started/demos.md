@@ -35,17 +35,17 @@ independently, and a single Feature Service:
   and modifying the todos.
 
 [demos-package]:
-  https://github.com/sinnerschrader/feature-hub/tree/master/packages/demos
+  https://github.com/feature-hub/feature-hub/tree/main/packages/demos
 [todomvc-demo-src]:
-  https://github.com/sinnerschrader/feature-hub/tree/master/packages/demos/src/todomvc
+  https://github.com/feature-hub/feature-hub/tree/main/packages/demos/src/todomvc
 [todomvc-demo-src-header]:
-  https://github.com/sinnerschrader/feature-hub/tree/master/packages/demos/src/todomvc/header
+  https://github.com/feature-hub/feature-hub/tree/main/packages/demos/src/todomvc/header
 [todomvc-demo-src-main]:
-  https://github.com/sinnerschrader/feature-hub/tree/master/packages/demos/src/todomvc/main
+  https://github.com/feature-hub/feature-hub/tree/main/packages/demos/src/todomvc/main
 [todomvc-demo-src-footer]:
-  https://github.com/sinnerschrader/feature-hub/tree/master/packages/demos/src/todomvc/footer
+  https://github.com/feature-hub/feature-hub/tree/main/packages/demos/src/todomvc/footer
 [todomvc-demo-src-todo-manager]:
-  https://github.com/sinnerschrader/feature-hub/tree/master/packages/demos/src/todomvc/todo-manager
+  https://github.com/feature-hub/feature-hub/tree/main/packages/demos/src/todomvc/todo-manager
 [github-org]: https://github.com/feature-hub
 [todomvc.com]: http://todomvc.com
 [todomvc-live-demo]: /todomvc/
