@@ -43,7 +43,7 @@ const navigationService = featureServices[
 ReactDOM.render(
   <FeatureHubContextProvider value={{featureAppManager}}>
     <HistoryRouter
-      history={navigationService.history as any}
+      history={navigationService.history}
     >
       <App />
     </HistoryRouter>

@@ -25,7 +25,7 @@ export const historyConsumerDefinition: FeatureAppDefinition<
 
     return {
       render: () => (
-        <HistoryRouter history={history as any}>
+        <HistoryRouter history={history}>
           <HistoryConsumer historyKey={historyKey} />
         </HistoryRouter>
       ),
