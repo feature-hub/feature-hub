@@ -15,6 +15,7 @@ import {
   NavigationServiceV1,
   navigationServiceDefinition,
 } from './navigation-service';
+import {History as RemixHistory} from "@remix-run/router";
 
 defineExternals({react: React});
 
@@ -42,7 +43,7 @@ const navigationService = featureServices[
 
 ReactDOM.render(
   <FeatureHubContextProvider value={{featureAppManager}}>
-    <HistoryRouter history={navigationService.history}>
+    <HistoryRouter history={navigationService.history as unknown as RemixHistory}>
       <App />
     </HistoryRouter>
   </FeatureHubContextProvider>,
