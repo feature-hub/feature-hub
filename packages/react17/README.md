@@ -1,35 +1,4 @@
-# @feature-hub/react
+# @feature-hub/react for react v17
 
-[![Package Version][package-badge]][package-npm]
-[![Website][website-badge]][website] [![API][api-badge]][api]
-
-A library for building a Feature Hub integrator with React.
-
-## Installation
-
-### Using Yarn
-
-```sh
-yarn add @feature-hub/react
-```
-
-### Using npm
-
-```sh
-npm install @feature-hub/react
-```
-
----
-
-Copyright (c) 2018-2021 SinnerSchrader Deutschland GmbH. Released under the
-terms of the [MIT License][license].
-
-[api]: https://feature-hub.io/@feature-hub/react/
-[api-badge]:
-  https://img.shields.io/badge/API-%40feature--hub%2Freact-%23ea3458.svg
-[license]: https://github.com/sinnerschrader/feature-hub/blob/master/LICENSE
-[package-badge]: https://img.shields.io/npm/v/@feature-hub/react.svg
-[package-npm]: https://www.npmjs.com/package/@feature-hub/react
-[website]: https://feature-hub.io/
-[website-badge]:
-  https://img.shields.io/badge/Website-feature--hub.io-%23500dc5.svg
+This package exists to compile and test the @feature-hub/react package against
+react 17

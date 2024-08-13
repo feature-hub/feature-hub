@@ -1,6 +1,7 @@
 {
   "name": "@feature-hub/react17",
   "version": "3.0.0",
+  "private": true,
   "description": "A library for building a Feature Hub integrator with React.",
   "homepage": "https://feature-hub.io/",
   "bugs": {
@@ -33,9 +34,6 @@
   },
   "peerDependencies": {
     "react": ">= 16.3.0"
-  },
-  "publishConfig": {
-    "access": "public"
   },
   "typedoc": {
     "entryPoint": "./src/index.ts",
