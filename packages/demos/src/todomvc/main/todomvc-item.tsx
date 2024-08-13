@@ -153,7 +153,9 @@ export class TodoMvcItem extends React.PureComponent<
           <Toggle
             type="checkbox"
             checked={completed}
-            onChange={(event) => onToggle(id, event.currentTarget.checked)}
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+              onToggle(id, event.currentTarget.checked)
+            }
           />
           <Label
             completed={completed}

@@ -1,17 +1,17 @@
 {
-  "name": "@feature-hub/react",
-  "version": "3.6.0",
+  "name": "@feature-hub/react17",
+  "version": "3.0.0",
   "description": "A library for building a Feature Hub integrator with React.",
   "homepage": "https://feature-hub.io/",
   "bugs": {
-    "url": "https://github.com/feature-hub/feature-hub/issues"
+    "url": "https://github.com/sinnerschrader/feature-hub/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/feature-hub/feature-hub.git"
+    "url": "https://github.com/sinnerschrader/feature-hub.git"
   },
   "license": "MIT",
-  "author": "Accenture Song Build Germany GmbH",
+  "author": "SinnerSchrader Deutschland GmbH",
   "files": [
     "lib",
     "!__tests__"
@@ -21,29 +21,21 @@
   "module": "lib/esm/index.js",
   "typings": "lib/cjs/index.d.ts",
   "dependencies": {
-    "@feature-hub/async-ssr-manager": "^3.6.0",
-    "@feature-hub/core": "^3.6.0",
+    "@feature-hub/async-ssr-manager": "^3.0.0",
+    "@feature-hub/core": "^3.0.0",
     "url-join": "^4.0.0"
   },
   "devDependencies": {
-    "@types/react-test-renderer": "^18.3.0",
+    "@types/react-test-renderer": "^17.0.2",
     "@types/url-join": "^4.0.0",
-    "react": "^18.3.1",
-    "react-test-renderer": "^18.3.1"
+    "react": "^17.0.2",
+    "react-test-renderer": "^17.0.2"
   },
   "peerDependencies": {
     "react": ">= 16.3.0"
   },
   "publishConfig": {
     "access": "public"
-  },
-  "exports": {
-    ".": {
-      "@feature-hub:bundler": "./src/index.ts",
-      "import": "./lib/esm/index.js",
-      "require": "./lib/cjs/index.js"
-    },
-    "./package.json": "./package.json"
   },
   "typedoc": {
     "entryPoint": "./src/index.ts",
