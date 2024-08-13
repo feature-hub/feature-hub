@@ -2,7 +2,6 @@ import {FeatureAppDefinition, FeatureServices} from '@feature-hub/core';
 import {HistoryServiceV3} from '@feature-hub/history-service';
 import {ReactFeatureApp} from '@feature-hub/react';
 import * as React from 'react';
-import {History as RemixHistory} from '@remix-run/router';
 
 import {unstable_HistoryRouter as HistoryRouter} from 'react-router-dom';
 import {HistoryConsumer} from './history-consumer';
@@ -26,7 +25,7 @@ export const historyConsumerDefinition: FeatureAppDefinition<
 
     return {
       render: () => (
-        <HistoryRouter history={history as unknown as RemixHistory}>
+        <HistoryRouter history={history as any}>
           <HistoryConsumer historyKey={historyKey} />
         </HistoryRouter>
       ),

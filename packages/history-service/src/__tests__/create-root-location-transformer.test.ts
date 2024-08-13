@@ -68,7 +68,7 @@ describe('#createRootLocationTransformer', () => {
               {pathname: '/foo', search: '?---=1'},
               'testPri',
             ),
-          ).toThrowError(
+          ).toThrow(
             new Error(
               `Primary consumer tried to set query parameter "---" which is reserverd for consumer paths.`,
             ),

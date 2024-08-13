@@ -3,7 +3,7 @@ import {ExternalsValidator} from '../externals-validator';
 describe('ExternalsValidator', () => {
   describe('#constructor', () => {
     it('throws an error for provided externals containing an invalid version', () => {
-      expect(() => new ExternalsValidator({react: 'invalid'})).toThrowError(
+      expect(() => new ExternalsValidator({react: 'invalid'})).toThrow(
         new Error(
           'The provided version "invalid" for the external "react" is invalid.',
         ),
@@ -11,7 +11,7 @@ describe('ExternalsValidator', () => {
     });
 
     it('throws an error for provided externals containing a coercable version', () => {
-      expect(() => new ExternalsValidator({react: '2.0'})).toThrowError(
+      expect(() => new ExternalsValidator({react: '2.0'})).toThrow(
         new Error(
           'The provided version "2.0" for the external "react" is invalid.',
         ),
@@ -25,7 +25,7 @@ describe('ExternalsValidator', () => {
 
       expect(() => {
         validator.validate({react: '^16.2.0'});
-      }).not.toThrowError();
+      }).not.toThrow();
     });
 
     it('throws an error for an unsatisfied required external (wrong version)', () => {
@@ -33,7 +33,7 @@ describe('ExternalsValidator', () => {
 
       expect(() => {
         validator.validate({react: '^16.7.0'});
-      }).toThrowError(
+      }).toThrow(
         new Error(
           'The external dependency "react" in the required version range "^16.7.0" is not satisfied. The provided version is "16.6.0".',
         ),
@@ -41,7 +41,7 @@ describe('ExternalsValidator', () => {
 
       expect(() => {
         validator.validate({react: '^16.7.0'}, 'test-consumer');
-      }).toThrowError(
+      }).toThrow(
         new Error(
           'The external dependency "react" as required by "test-consumer" in the version range "^16.7.0" is not satisfied. The provided version is "16.6.0".',
         ),
@@ -53,13 +53,11 @@ describe('ExternalsValidator', () => {
 
       expect(() => {
         validator.validate({react: '^16.7.0'});
-      }).toThrowError(
-        new Error('The external dependency "react" is not provided.'),
-      );
+      }).toThrow(new Error('The external dependency "react" is not provided.'));
 
       expect(() => {
         validator.validate({react: '^16.7.0'}, 'test-consumer');
-      }).toThrowError(
+      }).toThrow(
         new Error(
           'The external dependency "react" as required by "test-consumer" is not provided.',
         ),
@@ -71,7 +69,7 @@ describe('ExternalsValidator', () => {
 
       expect(() => {
         validator.validate({react: 'invalid'});
-      }).toThrowError(
+      }).toThrow(
         new Error(
           'The external dependency "react" in the required version range "invalid" is not satisfied. The provided version is "16.6.0".',
         ),
@@ -79,7 +77,7 @@ describe('ExternalsValidator', () => {
 
       expect(() => {
         validator.validate({react: 'invalid'}, 'test-consumer');
-      }).toThrowError(
+      }).toThrow(
         new Error(
           'The external dependency "react" as required by "test-consumer" in the version range "invalid" is not satisfied. The provided version is "16.6.0".',
         ),

@@ -39,7 +39,7 @@ describe('load featureapp via webpack module federation', () => {
 
     script?.dispatchEvent(new Event('error'));
 
-    return expect(modulePromise).rejects.toThrowError();
+    return expect(modulePromise).rejects.toThrow();
   });
 
   it('rejects when __feature_hub_feature_app_module_container__ is not defined', async () => {
@@ -49,6 +49,6 @@ describe('load featureapp via webpack module federation', () => {
 
     script?.dispatchEvent(new Event('load'));
 
-    return expect(modulePromise).rejects.toThrowError();
+    return expect(modulePromise).rejects.toThrow();
   });
 });

@@ -214,7 +214,7 @@ describe('FeatureServiceRegistry', () => {
           [providerDefinitionC],
           'test',
         ),
-      ).toThrowError(
+      ).toThrow(
         new Error(
           'The required Feature Service "a" is not registered and therefore could not be bound to consumer "c".',
         ),
@@ -233,7 +233,7 @@ describe('FeatureServiceRegistry', () => {
           [providerDefinitionB],
           'test',
         ),
-      ).not.toThrowError();
+      ).not.toThrow();
 
       expect(logger.info.mock.calls).toEqual([
         [
@@ -257,7 +257,7 @@ describe('FeatureServiceRegistry', () => {
           [providerDefinitionA, stateProviderD],
           'test',
         ),
-      ).toThrowError(
+      ).toThrow(
         new Error(
           'The required Feature Service "a" in the unsupported version range "^2.0.0" could not be bound to consumer "d". The supported versions are ["1.1.0"].',
         ),
@@ -276,7 +276,7 @@ describe('FeatureServiceRegistry', () => {
           [providerDefinitionA, stateProviderD],
           'test',
         ),
-      ).not.toThrowError();
+      ).not.toThrow();
 
       expect(logger.info.mock.calls).toEqual([
         [
@@ -303,7 +303,7 @@ describe('FeatureServiceRegistry', () => {
           [providerDefinitionA, stateProviderDefinitionD],
           'test',
         ),
-      ).toThrowError(
+      ).toThrow(
         new Error(
           'The required Feature Service "a" in an invalid version could not be bound to consumer "d".',
         ),
@@ -322,7 +322,7 @@ describe('FeatureServiceRegistry', () => {
           [providerDefinitionA, stateProviderDefinitionD],
           'test',
         ),
-      ).not.toThrowError();
+      ).not.toThrow();
 
       expect(logger.info.mock.calls).toEqual([
         [
@@ -348,7 +348,7 @@ describe('FeatureServiceRegistry', () => {
           [stateProviderDefinitionD],
           'test',
         ),
-      ).toThrowError(
+      ).toThrow(
         new Error(
           'The Feature Service "d" could not be registered by registrant "test" because it defines the invalid version "2.0".',
         ),
@@ -374,7 +374,7 @@ describe('FeatureServiceRegistry', () => {
               [providerDefinitionA],
               'test',
             );
-          }).not.toThrowError();
+          }).not.toThrow();
         });
       });
     });
@@ -427,7 +427,7 @@ describe('FeatureServiceRegistry', () => {
               [providerDefinitionA],
               'test',
             );
-          }).toThrowError(mockError);
+          }).toThrow(mockError);
         });
       });
 
@@ -463,7 +463,7 @@ describe('FeatureServiceRegistry', () => {
               [providerDefinitionA],
               'test',
             );
-          }).not.toThrowError();
+          }).not.toThrow();
         });
       });
 
@@ -483,7 +483,7 @@ describe('FeatureServiceRegistry', () => {
               [providerDefinitionA],
               'test',
             );
-          }).not.toThrowError();
+          }).not.toThrow();
         });
       });
     });
@@ -726,7 +726,7 @@ describe('FeatureServiceRegistry', () => {
 
       expect(() =>
         featureServiceRegistry.bindFeatureServices({}, 'foo'),
-      ).toThrowError(
+      ).toThrow(
         new Error(
           'All required Feature Services are already bound to consumer "foo".',
         ),
@@ -747,7 +747,7 @@ describe('FeatureServiceRegistry', () => {
             providerDefinitionA,
             providerDefinitionA.id,
           ),
-        ).not.toThrowError();
+        ).not.toThrow();
       });
 
       it('unbinds all consumers if applicable, errors are ignored', () => {
@@ -832,7 +832,7 @@ describe('FeatureServiceRegistry', () => {
 
         bindings.unbind();
 
-        expect(() => bindings.unbind()).toThrowError(
+        expect(() => bindings.unbind()).toThrow(
           new Error(
             'All required Feature Services are already unbound from consumer "a".',
           ),
@@ -852,7 +852,7 @@ describe('FeatureServiceRegistry', () => {
           providerDefinitionA.id,
         );
 
-        expect(() => bindings.unbind()).toThrowError(
+        expect(() => bindings.unbind()).toThrow(
           new Error(
             'All required Feature Services are already unbound from consumer "a".',
           ),

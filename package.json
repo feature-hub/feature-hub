@@ -34,6 +34,9 @@
     "watch:test:unit": "yarn watch:test --testPathIgnorePatterns packages/demos",
     "watch:website": "lerna exec --scope @feature-hub/website -- docusaurus-start"
   },
+  "resolutions": {
+    "@types/react": "^18.3.3"
+  },
   "devDependencies": {
     "@commitlint/cli": "^17.0.0",
     "@commitlint/config-angular": "^17.0.0",
@@ -47,7 +50,7 @@
     "@types/node": "^20.7.0",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
-        "aws-cdk": "^2.69.0",
+    "aws-cdk": "^2.69.0",
     "aws-cdk-lib": "^2.69.0",
     "aws-simple": "^18.2.0",
     "cheerio": "^1.0.0-rc.2",
@@ -74,8 +77,5 @@
     "typedoc": "^0.23.14",
     "typescript": "^5.2.2",
     "typescript-tslint-plugin": "^1.0.0"
-  },
-  "resolutions": {
-    "@types/react":"^18.3.3"
   }
 }

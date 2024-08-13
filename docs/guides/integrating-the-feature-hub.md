@@ -282,8 +282,8 @@ import {FeatureAppLoader} from '@feature-hub/react';
 ```
 
 > **Note:**  
->  If the integrator has configured the AMD module loader on the client, the Feature
-> App to be loaded via `src` must be provided as an [AMD module][amd].
+>  If the integrator has configured the AMD module loader on the client, the
+> Feature App to be loaded via `src` must be provided as an [AMD module][amd].
 
 #### `moduleType`
 

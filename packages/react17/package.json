@@ -12,14 +12,14 @@
   },
   "license": "MIT",
   "author": "SinnerSchrader Deutschland GmbH",
-  "files": [
-    "lib",
-    "!__tests__"
-  ],
   "sideEffects": false,
   "main": "lib/cjs/index.js",
   "module": "lib/esm/index.js",
   "typings": "lib/cjs/index.d.ts",
+  "files": [
+    "lib",
+    "!__tests__"
+  ],
   "dependencies": {
     "@feature-hub/async-ssr-manager": "^3.0.0",
     "@feature-hub/core": "^3.0.0",
