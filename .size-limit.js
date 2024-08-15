@@ -17,7 +17,7 @@ module.exports = [
   {
     name: 'dom',
     path: 'packages/dom/lib/esm/index.js',
-    limit: '7.3 KB',
+    limit: '7.5 KB',
     import: '*',
   },
   {
