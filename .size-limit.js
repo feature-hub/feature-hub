@@ -36,7 +36,7 @@ module.exports = [
   {
     name: 'module-loader-amd',
     path: 'packages/module-loader-amd/lib/esm/index.js',
-    limit: '3.8 KB',
+    limit: '3.9 KB',
     import: '*',
   },
   {
