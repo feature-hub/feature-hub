@@ -60,6 +60,9 @@ jobs:
       - name: Install
         run: yarn install
 
+      - name: Prepare React17
+        run: yarn prepare:react17
+
       - name: Unit Tests
         run: yarn test:unit --no-cache --maxWorkers 2 --no-verbose
 

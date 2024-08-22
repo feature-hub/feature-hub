@@ -7,6 +7,9 @@
   "bugs": {
     "url": "https://github.com/sinnerschrader/feature-hub/issues"
   },
+  "scripts": {
+    "prepare:react17": "cp -R ../react/src src"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/sinnerschrader/feature-hub.git"

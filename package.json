@@ -32,7 +32,8 @@
     "watch:test": "yarn test --watch --no-coverage --no-verbose",
     "watch:test:integration": "yarn watch:test --testPathPattern packages/demos",
     "watch:test:unit": "yarn watch:test --testPathIgnorePatterns packages/demos",
-    "watch:website": "lerna exec --scope @feature-hub/website -- docusaurus-start"
+    "watch:website": "lerna exec --scope @feature-hub/website -- docusaurus-start",
+    "prepare:react17": "lerna run prepare:react17"
   },
   "resolutions": {
     "@types/react": "^18.3.3"
