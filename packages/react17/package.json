@@ -7,9 +7,6 @@
   "bugs": {
     "url": "https://github.com/sinnerschrader/feature-hub/issues"
   },
-  "scripts": {
-    "prepare:react17": "cp -R ../react/src src"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/sinnerschrader/feature-hub.git"
@@ -24,6 +21,9 @@
     "lib",
     "!__tests__"
   ],
+  "scripts": {
+    "prepare:react17": "cp -R ../react/src src"
+  },
   "dependencies": {
     "@feature-hub/async-ssr-manager": "^3.0.0",
     "@feature-hub/core": "^3.0.0",
