@@ -2,7 +2,6 @@ import {FeatureAppDefinition, FeatureServices} from '@feature-hub/core';
 import {HistoryServiceV3} from '@feature-hub/history-service';
 import {ReactFeatureApp} from '@feature-hub/react';
 import * as React from 'react';
-
 import {unstable_HistoryRouter as HistoryRouter} from 'react-router-dom';
 import {HistoryConsumer} from './history-consumer';
 
