@@ -2,7 +2,7 @@
   "name": "@feature-hub/react17",
   "version": "3.0.0",
   "private": true,
-  "description": "A library for building a Feature Hub integrator with React.",
+  "description": "Compile and test the @feature-hub/react package against react 17",
   "homepage": "https://feature-hub.io/",
   "bugs": {
     "url": "https://github.com/sinnerschrader/feature-hub/issues"
