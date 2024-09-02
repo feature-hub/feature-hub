@@ -87,7 +87,7 @@ describe('FeatureAppContainer', () => {
           featureAppDefinition={mockFeatureAppDefinition}
         />,
       ),
-    ).toThrowError(
+    ).toThrow(
       new Error(
         'No Feature Hub context was provided! There are two possible causes: 1.) No FeatureHubContextProvider was rendered in the React tree. 2.) A Feature App that renders itself a FeatureAppLoader or a FeatureAppContainer did not declare @feature-hub/react as an external package.',
       ),
@@ -354,7 +354,7 @@ describe('FeatureAppContainer', () => {
                   }}
                 />,
               ),
-            ).toThrowError(onErrorMockError);
+            ).toThrow(onErrorMockError);
 
             expectConsoleErrorCalls(noErrorBoundaryConsoleErrorCalls);
           });
@@ -429,7 +429,7 @@ describe('FeatureAppContainer', () => {
                   }}
                 />,
               ),
-            ).toThrowError(childrenMockError);
+            ).toThrow(childrenMockError);
 
             expectConsoleErrorCalls(noErrorBoundaryConsoleErrorCalls);
           });
@@ -528,7 +528,7 @@ describe('FeatureAppContainer', () => {
                   }}
                 />,
               ),
-            ).toThrowError(onErrorMockError);
+            ).toThrow(onErrorMockError);
 
             expectConsoleErrorCalls([
               [onErrorMockError],
@@ -628,9 +628,7 @@ describe('FeatureAppContainer', () => {
                 />,
               );
 
-              expect(() => testRenderer.unmount()).toThrowError(
-                onErrorMockError,
-              );
+              expect(() => testRenderer.unmount()).toThrow(onErrorMockError);
 
               expectConsoleErrorCalls([
                 [onErrorMockError],
@@ -1122,7 +1120,7 @@ describe('FeatureAppContainer', () => {
             />,
             {testRendererOptions: {createNodeMock: () => ({})}},
           ),
-        ).not.toThrowError(mockError);
+        ).not.toThrow(mockError);
       });
 
       it('logs the error', () => {
@@ -1172,7 +1170,7 @@ describe('FeatureAppContainer', () => {
                 />,
                 {testRendererOptions: {createNodeMock: () => ({})}},
               ),
-            ).toThrowError(onErrorMockError);
+            ).toThrow(onErrorMockError);
 
             expectConsoleErrorCalls([
               [onErrorMockError],
@@ -1392,7 +1390,7 @@ describe('FeatureAppContainer', () => {
                 }}
               />,
             ),
-          ).toThrowError(onErrorMockError);
+          ).toThrow(onErrorMockError);
 
           expectConsoleErrorCalls(noErrorBoundaryConsoleErrorCalls);
         });

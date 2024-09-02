@@ -80,7 +80,7 @@ export class TodoMvcMain extends React.Component<
           id="toggle-all"
           type="checkbox"
           checked={allCompleted}
-          onChange={(event) =>
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
             this.handleToggleAll(event.currentTarget.checked)
           }
         />

@@ -109,8 +109,8 @@ describe('FeatureAppManager', () => {
             moduleType === 'a'
               ? mockFeatureAppModuleA
               : moduleType === 'b'
-              ? mockFeatureAppModuleB
-              : undefined,
+                ? mockFeatureAppModuleB
+                : undefined,
         });
       });
 
@@ -196,7 +196,7 @@ describe('FeatureAppManager', () => {
 
       expect(() =>
         featureAppManager.getAsyncFeatureAppDefinition('/example.js'),
-      ).toThrowError(new Error('No module loader provided.'));
+      ).toThrow(new Error('No module loader provided.'));
     });
 
     describe('for a known Feature App module url', () => {
@@ -285,7 +285,7 @@ describe('FeatureAppManager', () => {
                 },
               },
             ),
-          ).toThrowError(mockError);
+          ).toThrow(mockError);
 
           expect(mockFeatureServicesBindingUnbind).toHaveBeenCalledTimes(1);
         });
@@ -439,7 +439,7 @@ describe('FeatureAppManager', () => {
               'testId',
               mockFeatureAppDefinition,
             );
-          }).not.toThrowError();
+          }).not.toThrow();
         });
       });
     });
@@ -492,7 +492,7 @@ describe('FeatureAppManager', () => {
               'testId',
               mockFeatureAppDefinition,
             );
-          }).toThrowError(mockError);
+          }).toThrow(mockError);
         });
       });
 
@@ -526,7 +526,7 @@ describe('FeatureAppManager', () => {
               'testId',
               mockFeatureAppDefinition,
             );
-          }).not.toThrowError();
+          }).not.toThrow();
         });
       });
 
@@ -546,7 +546,7 @@ describe('FeatureAppManager', () => {
               'testId',
               mockFeatureAppDefinition,
             );
-          }).not.toThrowError();
+          }).not.toThrow();
         });
       });
     });
@@ -570,7 +570,7 @@ describe('FeatureAppManager', () => {
             'testId',
             mockFeatureAppDefinition,
           ),
-        ).toThrowError(mockError);
+        ).toThrow(mockError);
       });
     });
 
@@ -587,7 +587,7 @@ describe('FeatureAppManager', () => {
             'testId',
             mockFeatureAppDefinition,
           ),
-        ).toThrowError(mockError);
+        ).toThrow(mockError);
 
         expect(mockFeatureServicesBindingUnbind).toHaveBeenCalledTimes(1);
       });
@@ -782,7 +782,7 @@ describe('FeatureAppManager', () => {
 
           expect(() => {
             featureAppScope1.release();
-          }).toThrowError(mockError);
+          }).toThrow(mockError);
 
           const featureAppScope2 = featureAppManager.createFeatureAppScope(
             'testId',
@@ -857,7 +857,7 @@ describe('FeatureAppManager', () => {
 
       expect(() =>
         featureAppManager.getAsyncFeatureAppDefinition('/example.js'),
-      ).toThrowError(new Error('No module loader provided.'));
+      ).toThrow(new Error('No module loader provided.'));
     });
   });
 

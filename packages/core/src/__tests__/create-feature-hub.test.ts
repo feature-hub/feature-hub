@@ -49,7 +49,7 @@ describe('createFeatureHub()', () => {
           featureAppManager.getAsyncFeatureAppDefinition(
             'http://example.com/test.js',
           ),
-        ).toThrowError(new Error('No module loader provided.'));
+        ).toThrow(new Error('No module loader provided.'));
       });
     });
 
@@ -130,7 +130,7 @@ describe('createFeatureHub()', () => {
             'test:feature-app',
             mockFeatureAppDefinition,
           ),
-        ).toThrowError(
+        ).toThrow(
           new Error(
             'The external dependency "foo" as required by "test:feature-app" is not provided.',
           ),
@@ -218,7 +218,7 @@ describe('createFeatureHub()', () => {
       it('throws for a Feature Service with mismatching externals', () => {
         expect(() =>
           createFeatureHub('test:integrator', featureHubOptions),
-        ).toThrowError(
+        ).toThrow(
           new Error(
             'The external dependency "foo" as required by "test:feature-service" is not provided.',
           ),

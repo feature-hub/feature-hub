@@ -12,23 +12,23 @@
   },
   "license": "MIT",
   "author": "Accenture Song Build Germany GmbH",
-  "files": [
-    "lib",
-    "!__tests__"
-  ],
   "sideEffects": false,
-  "main": "lib/cjs/index.js",
-  "module": "lib/esm/index.js",
-  "typings": "lib/cjs/index.d.ts",
-  "publishConfig": {
-    "access": "public"
-  },
   "exports": {
     ".": {
       "@feature-hub:bundler": "./src/index.ts",
       "import": "./lib/esm/index.js",
       "require": "./lib/cjs/index.js"
     }
+  },
+  "main": "lib/cjs/index.js",
+  "module": "lib/esm/index.js",
+  "typings": "lib/cjs/index.d.ts",
+  "files": [
+    "lib",
+    "!__tests__"
+  ],
+  "publishConfig": {
+    "access": "public"
   },
   "typedoc": {
     "entryPoint": "./src/index.ts",

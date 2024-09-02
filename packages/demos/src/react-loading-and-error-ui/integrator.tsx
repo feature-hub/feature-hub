@@ -17,7 +17,7 @@ function ErrorUi({error}: {error: unknown}): JSX.Element {
   return (
     <Callout intent={Intent.DANGER}>
       <H4>Example Error UI</H4>
-      <p>{error instanceof Error ? error.message : error}</p>
+      <p>{error instanceof Error ? error.message : String(error)}</p>
     </Callout>
   );
 }

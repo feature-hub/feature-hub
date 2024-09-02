@@ -12,14 +12,21 @@
   },
   "license": "MIT",
   "author": "Accenture Song Build Germany GmbH",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "@feature-hub:bundler": "./src/index.ts",
+      "import": "./lib/esm/index.js",
+      "require": "./lib/cjs/index.js"
+    }
+  },
+  "main": "lib/cjs/index.js",
+  "module": "lib/esm/index.js",
+  "typings": "lib/cjs/index.d.ts",
   "files": [
     "lib",
     "!__tests__"
   ],
-  "sideEffects": false,
-  "main": "lib/cjs/index.js",
-  "module": "lib/esm/index.js",
-  "typings": "lib/cjs/index.d.ts",
   "dependencies": {
     "@feature-hub/core": "^3.6.0",
     "@feature-hub/logger": "^3.6.0",
@@ -35,13 +42,6 @@
   },
   "publishConfig": {
     "access": "public"
-  },
-  "exports": {
-    ".": {
-      "@feature-hub:bundler": "./src/index.ts",
-      "import": "./lib/esm/index.js",
-      "require": "./lib/cjs/index.js"
-    }
   },
   "typedoc": {
     "entryPoint": "./src/index.ts",

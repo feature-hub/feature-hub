@@ -49,7 +49,7 @@ export function toposortDependencies(
 ): string[] {
   const dependencyNames = Array.from(dependencyGraph.keys());
   const dependencyEdges = createAllDependencyEdges(dependencyGraph);
-  const sortedDependencyNames = toposort(dependencyEdges) as string[];
+  const sortedDependencyNames = toposort(dependencyEdges);
 
   // Add modules that are not part of sortedDependencyNames because they
   // don't have dependencies and are not a dependency.

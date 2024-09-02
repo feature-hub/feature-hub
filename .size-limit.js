@@ -17,7 +17,7 @@ module.exports = [
   {
     name: 'dom',
     path: 'packages/dom/lib/esm/index.js',
-    limit: '7.1 KB',
+    limit: '7.5 KB',
     import: '*',
   },
   {
@@ -36,7 +36,7 @@ module.exports = [
   {
     name: 'module-loader-amd',
     path: 'packages/module-loader-amd/lib/esm/index.js',
-    limit: '3.8 KB',
+    limit: '3.9 KB',
     import: '*',
   },
   {

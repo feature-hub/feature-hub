@@ -12,31 +12,7 @@
   },
   "license": "MIT",
   "author": "Accenture Song Build Germany GmbH",
-  "files": [
-    "lib",
-    "!__tests__"
-  ],
   "sideEffects": false,
-  "main": "lib/cjs/index.js",
-  "module": "lib/esm/index.js",
-  "typings": "lib/cjs/index.d.ts",
-  "dependencies": {
-    "@feature-hub/async-ssr-manager": "^3.6.0",
-    "@feature-hub/core": "^3.6.0",
-    "url-join": "^4.0.0"
-  },
-  "devDependencies": {
-    "@types/react-test-renderer": "^16.0.3",
-    "@types/url-join": "^4.0.0",
-    "react": "^16.8.6",
-    "react-test-renderer": "^16.7.0"
-  },
-  "peerDependencies": {
-    "react": ">= 16.3.0"
-  },
-  "publishConfig": {
-    "access": "public"
-  },
   "exports": {
     ".": {
       "@feature-hub:bundler": "./src/index.ts",
@@ -44,6 +20,30 @@
       "require": "./lib/cjs/index.js"
     },
     "./package.json": "./package.json"
+  },
+  "main": "lib/cjs/index.js",
+  "module": "lib/esm/index.js",
+  "typings": "lib/cjs/index.d.ts",
+  "files": [
+    "lib",
+    "!__tests__"
+  ],
+  "dependencies": {
+    "@feature-hub/async-ssr-manager": "^3.6.0",
+    "@feature-hub/core": "^3.6.0",
+    "url-join": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/react-test-renderer": "^18.3.0",
+    "@types/url-join": "^4.0.0",
+    "react": "^18.3.1",
+    "react-test-renderer": "^18.3.1"
+  },
+  "peerDependencies": {
+    "react": ">= 16.3.0"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "typedoc": {
     "entryPoint": "./src/index.ts",

@@ -11,7 +11,7 @@ import {App} from './app';
 export default async function renderApp({
   req,
 }: AppRendererOptions): Promise<AppRendererResult> {
-  const logger = pino({prettyPrint: {translateTime: true}, level: 'trace'});
+  const logger = pino({prettyPrint: {timeTransOnly: true}, level: 'trace'});
 
   const {featureAppManager} = createFeatureHub('test:integrator', {
     logger,

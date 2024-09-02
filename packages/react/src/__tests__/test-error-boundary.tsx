@@ -2,6 +2,7 @@ import * as React from 'react';
 
 export interface TestErrorBoundaryProps {
   handleError: (error: Error) => void;
+  children: React.ReactNode;
 }
 
 export interface TestErrorBoundaryState {

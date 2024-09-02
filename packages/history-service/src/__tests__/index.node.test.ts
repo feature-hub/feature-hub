@@ -90,7 +90,7 @@ describe('defineHistoryService', () => {
 
       describe('when no server request is provided', () => {
         it('throws an error', () => {
-          expect(() => createHistories(undefined)).toThrowError(
+          expect(() => createHistories(undefined)).toThrow(
             new Error(
               'Static history can not be created without a server request.',
             ),
@@ -451,7 +451,7 @@ describe('defineHistoryService', () => {
     describe('#history', () => {
       describe('when no server request is provided', () => {
         it('throws an error', () => {
-          expect(() => createHistories(undefined)).toThrowError(
+          expect(() => createHistories(undefined)).toThrow(
             new Error(
               'Static history can not be created without a server request.',
             ),
@@ -861,7 +861,7 @@ describe('defineHistoryService', () => {
     describe('#history', () => {
       describe('when no server request is provided', () => {
         it('throws an error', () => {
-          expect(() => createHistories(undefined)).toThrowError(
+          expect(() => createHistories(undefined)).toThrow(
             new Error(
               'Static history can not be created without a server request.',
             ),

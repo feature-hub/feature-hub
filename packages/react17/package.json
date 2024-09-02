@@ -1,0 +1,46 @@
+{
+  "name": "@feature-hub/react17",
+  "version": "3.0.0",
+  "private": true,
+  "description": "Compile and test the @feature-hub/react package against react 17",
+  "homepage": "https://feature-hub.io/",
+  "bugs": {
+    "url": "https://github.com/sinnerschrader/feature-hub/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sinnerschrader/feature-hub.git"
+  },
+  "license": "MIT",
+  "author": "SinnerSchrader Deutschland GmbH",
+  "sideEffects": false,
+  "main": "lib/cjs/index.js",
+  "module": "lib/esm/index.js",
+  "typings": "lib/cjs/index.d.ts",
+  "files": [
+    "lib",
+    "!__tests__"
+  ],
+  "scripts": {
+    "prepare:react17": "cp -R ../react/src src"
+  },
+  "dependencies": {
+    "@feature-hub/async-ssr-manager": "^3.0.0",
+    "@feature-hub/core": "^3.0.0",
+    "url-join": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/react-test-renderer": "^17.0.2",
+    "@types/url-join": "^4.0.0",
+    "react": "^17.0.2",
+    "react-test-renderer": "^17.0.2"
+  },
+  "peerDependencies": {
+    "react": ">= 16.3.0"
+  },
+  "typedoc": {
+    "entryPoint": "./src/index.ts",
+    "readmeFile": "./README.md",
+    "displayName": "react"
+  }
+}
