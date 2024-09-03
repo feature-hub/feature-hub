@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.7.0](https://github.com/feature-hub/feature-hub/compare/v3.6.0...v3.7.0) (2024-09-03)
+
+
+### Features
+
+* **react:** test vs react 18 and react 17 ([1b8adfd](https://github.com/feature-hub/feature-hub/commit/1b8adfd58d1f0bbc5a464f84a4e9c6773edd36f1))
+* **react:** test vs react 18 and react 17 ([7e66afc](https://github.com/feature-hub/feature-hub/commit/7e66afc7dd1b5c8b1077ac74a1025910e1304bba))
+* **react:** test vs react 18 and react 17 ([8d970d9](https://github.com/feature-hub/feature-hub/commit/8d970d9e788c82ebc50c743c6771407cc629ec14))
+* **react:** test vs react 18 and react 17 ([37cec60](https://github.com/feature-hub/feature-hub/commit/37cec6023fdd4ad3e0dd908c248f89907006cf2a))
+* **react:** test vs react 18 and react 17 ([7f5f671](https://github.com/feature-hub/feature-hub/commit/7f5f671d8b532e408fa63504d9cc9ed24c371e4b))
+
+
+
+
+
 # [3.6.0](https://github.com/sinnerschrader/feature-hub/compare/v3.5.2...v3.6.0) (2024-02-13)
 
 **Note:** Version bump only for package @feature-hub/demos

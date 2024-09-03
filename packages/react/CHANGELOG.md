@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.7.0](https://github.com/feature-hub/feature-hub/compare/v3.6.0...v3.7.0) (2024-09-03)
+
+
+### Features
+
+* **react:** test vs react 18 and react 17 ([9a3ef8e](https://github.com/feature-hub/feature-hub/commit/9a3ef8e917ceb66e960a7a2fab7e95f2427b2ed4))
+* **react:** test vs react 18 and react 17 ([1e7dc75](https://github.com/feature-hub/feature-hub/commit/1e7dc755992ad45d4b7fc4c2d8d8f48e905f51a9))
+* **react:** test vs react 18 and react 17 ([cf3794f](https://github.com/feature-hub/feature-hub/commit/cf3794f83f650ce44cd56440a8e48741739233b8))
+* **react:** test vs react 18 and react 17 ([8d970d9](https://github.com/feature-hub/feature-hub/commit/8d970d9e788c82ebc50c743c6771407cc629ec14))
+* **react:** test vs react 18 and react 17 ([7f5f671](https://github.com/feature-hub/feature-hub/commit/7f5f671d8b532e408fa63504d9cc9ed24c371e4b))
+
+
+
+
+
 # [3.6.0](https://github.com/sinnerschrader/feature-hub/compare/v3.5.2...v3.6.0) (2024-02-13)
 
 **Note:** Version bump only for package @feature-hub/react

@@ -1,6 +1,6 @@
 {
   "name": "@feature-hub/react17",
-  "version": "3.0.0",
+  "version": "3.7.0",
   "private": true,
   "description": "Compile and test the @feature-hub/react package against react 17",
   "homepage": "https://feature-hub.io/",
@@ -25,8 +25,8 @@
     "prepare:react17": "cp -R ../react/src src"
   },
   "dependencies": {
-    "@feature-hub/async-ssr-manager": "^3.0.0",
-    "@feature-hub/core": "^3.0.0",
+    "@feature-hub/async-ssr-manager": "^3.7.0",
+    "@feature-hub/core": "^3.7.0",
     "url-join": "^4.0.0"
   },
   "devDependencies": {

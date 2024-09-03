@@ -1,6 +1,6 @@
 {
   "name": "@feature-hub/module-loader-amd",
-  "version": "3.5.2",
+  "version": "3.7.0",
   "description": "A FeatureAppManager-compatible AMD module loader.",
   "homepage": "https://feature-hub.io/",
   "bugs": {

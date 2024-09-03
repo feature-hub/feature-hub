@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.7.0](https://github.com/feature-hub/feature-hub/compare/v3.6.0...v3.7.0) (2024-09-03)
+
+
+### Features
+
+* **react:** test vs react 18 and react 17 ([7f5f671](https://github.com/feature-hub/feature-hub/commit/7f5f671d8b532e408fa63504d9cc9ed24c371e4b))
+
+
+
+
+
 # [3.0.0](https://github.com/sinnerschrader/feature-hub/compare/v2.13.1...v3.0.0) (2022-09-20)
 
 **Note:** Version bump only for package @feature-hub/website

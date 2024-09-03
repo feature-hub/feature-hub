@@ -1,6 +1,6 @@
 {
   "name": "@feature-hub/async-ssr-manager",
-  "version": "3.6.0",
+  "version": "3.7.0",
   "description": "A Feature Service to manage asynchronous server-side rendering.",
   "homepage": "https://feature-hub.io/",
   "bugs": {
@@ -28,8 +28,8 @@
     "!__tests__"
   ],
   "dependencies": {
-    "@feature-hub/core": "^3.6.0",
-    "@feature-hub/logger": "^3.6.0"
+    "@feature-hub/core": "^3.7.0",
+    "@feature-hub/logger": "^3.7.0"
   },
   "publishConfig": {
     "access": "public"

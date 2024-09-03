@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.7.0](https://github.com/feature-hub/feature-hub/compare/v3.6.0...v3.7.0) (2024-09-03)
+
+
+### Features
+
+* **react:** test vs react 18 and react 17 ([f0f37e6](https://github.com/feature-hub/feature-hub/commit/f0f37e6c925083e7f28a0a9698b45cb5a1e6b780))
+* **react:** test vs react 18 and react 17 ([e47e9cc](https://github.com/feature-hub/feature-hub/commit/e47e9cc667af36d969fca129781b4e0a17f41a73))
+* **react:** test vs react 18 and react 17 ([e85fdec](https://github.com/feature-hub/feature-hub/commit/e85fdecd83da4aeafeefbb23719dbdf976277a27))
+* **react:** test vs react 18 and react 17 ([9a3ef8e](https://github.com/feature-hub/feature-hub/commit/9a3ef8e917ceb66e960a7a2fab7e95f2427b2ed4))
+* **react:** test vs react 18 and react 17 ([1e7dc75](https://github.com/feature-hub/feature-hub/commit/1e7dc755992ad45d4b7fc4c2d8d8f48e905f51a9))
+* **react:** test vs react 18 and react 17 ([cf3794f](https://github.com/feature-hub/feature-hub/commit/cf3794f83f650ce44cd56440a8e48741739233b8))
+* **react:** test vs react 18 and react 17 ([1b8adfd](https://github.com/feature-hub/feature-hub/commit/1b8adfd58d1f0bbc5a464f84a4e9c6773edd36f1))
+* **react:** test vs react 18 and react 17 ([7e66afc](https://github.com/feature-hub/feature-hub/commit/7e66afc7dd1b5c8b1077ac74a1025910e1304bba))
+* **react:** test vs react 18 and react 17 ([8d970d9](https://github.com/feature-hub/feature-hub/commit/8d970d9e788c82ebc50c743c6771407cc629ec14))
+* **react:** test vs react 18 and react 17 ([37cec60](https://github.com/feature-hub/feature-hub/commit/37cec6023fdd4ad3e0dd908c248f89907006cf2a))
+* **react:** test vs react 18 and react 17 ([5120b26](https://github.com/feature-hub/feature-hub/commit/5120b2612223b518a4f82854f1a7363a2de94362))
+* **react:** test vs react 18 and react 17 ([7f5f671](https://github.com/feature-hub/feature-hub/commit/7f5f671d8b532e408fa63504d9cc9ed24c371e4b))
+
+
+
+
+
 # [3.6.0](https://github.com/sinnerschrader/feature-hub/compare/v3.5.2...v3.6.0) (2024-02-13)
 
 
