@@ -40,11 +40,7 @@ export class HistoryMultiplexer {
       },
 
       push(location: RootLocationDescriptorObject): void {
-        const newPath = {
-          pathname: location.pathname ?? rootHistory.location.pathname,
-          search: location.search,
-          hash: location.hash,
-        };
+        const newPath = getNewPath(location, rootHistory.location);
 
         rootHistory.push(newPath, location.state);
       },
@@ -52,7 +48,7 @@ export class HistoryMultiplexer {
       replace(location: RootLocationDescriptorObject): void {
         const newPath = {
           pathname: location.pathname ?? rootHistory.location.pathname,
-          search: location.search,
+          search: location.search ?? rootHistory.location.search,
           hash: location.hash,
         };
 
@@ -182,4 +178,31 @@ export class HistoryMultiplexer {
       state: {...this.rootLocation.state, [historyKey]: {state, key}},
     };
   }
+}
+
+/**
+ * Create new path from existing and new partial path
+ * @param location new path
+ * @param currentLocation current path
+ * @returns
+ */
+function getNewPath(
+  location: RootLocationDescriptorObject,
+  currentLocation: Location,
+) {
+  if (location.pathname !== undefined) {
+    return location;
+  }
+  if (location.search !== undefined) {
+    return {
+      pathname: currentLocation.pathname,
+      search: location.search,
+      hash: location.hash,
+    };
+  }
+  return {
+    pathname: currentLocation.pathname,
+    search: currentLocation.search,
+    hash: location.hash,
+  };
 }
