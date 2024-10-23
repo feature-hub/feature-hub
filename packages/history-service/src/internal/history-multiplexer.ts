@@ -188,7 +188,7 @@ export class HistoryMultiplexer {
  */
 function getNewPath(
   location: RootLocationDescriptorObject,
-  currentLocation: Location,
+  currentLocation: history.Location,
 ) {
   if (location.pathname !== undefined) {
     return location;
