@@ -40,15 +40,23 @@ export class HistoryMultiplexer {
       },
 
       push(location: RootLocationDescriptorObject): void {
-        const {pathname, search, hash, state} = location;
+        const newPath = {
+          pathname: location.pathname ?? rootHistory.location.pathname,
+          search: location.search,
+          hash: location.hash,
+        };
 
-        rootHistory.push({pathname, search, hash}, state);
+        rootHistory.push(newPath, location.state);
       },
 
       replace(location: RootLocationDescriptorObject): void {
-        const {pathname, search, hash, state} = location;
+        const newPath = {
+          pathname: location.pathname ?? rootHistory.location.pathname,
+          search: location.search,
+          hash: location.hash,
+        };
 
-        rootHistory.replace({pathname, search, hash}, state);
+        rootHistory.replace(newPath, location.state);
       },
 
       createHref(location: RootLocationDescriptorObject): string {
