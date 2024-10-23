@@ -46,11 +46,7 @@ export class HistoryMultiplexer {
       },
 
       replace(location: RootLocationDescriptorObject): void {
-        const newPath = {
-          pathname: location.pathname ?? rootHistory.location.pathname,
-          search: location.search ?? rootHistory.location.search,
-          hash: location.hash,
-        };
+        const newPath = getNewPath(location, rootHistory.location);
 
         rootHistory.replace(newPath, location.state);
       },
