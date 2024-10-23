@@ -40,15 +40,15 @@ export class HistoryMultiplexer {
       },
 
       push(location: RootLocationDescriptorObject): void {
-        const {pathname, search, hash, state} = location;
+        const newPath = getNewPath(location, rootHistory.location);
 
-        rootHistory.push({pathname, search, hash}, state);
+        rootHistory.push(newPath, location.state);
       },
 
       replace(location: RootLocationDescriptorObject): void {
-        const {pathname, search, hash, state} = location;
+        const newPath = getNewPath(location, rootHistory.location);
 
-        rootHistory.replace({pathname, search, hash}, state);
+        rootHistory.replace(newPath, location.state);
       },
 
       createHref(location: RootLocationDescriptorObject): string {
@@ -174,4 +174,32 @@ export class HistoryMultiplexer {
       state: {...this.rootLocation.state, [historyKey]: {state, key}},
     };
   }
+}
+
+/**
+ * Create new path from existing and new partial path
+ * @param location new path
+ * @param currentLocation current path
+ * @returns
+ */
+function getNewPath(
+  location: RootLocationDescriptorObject,
+  currentLocation: history.Location,
+): RootLocationDescriptorObject {
+  if (location.pathname !== undefined) {
+    return location;
+  }
+  if (location.search !== undefined) {
+    return {
+      pathname: currentLocation.pathname,
+      search: location.search,
+      hash: location.hash,
+    };
+  }
+
+  return {
+    pathname: currentLocation.pathname,
+    search: currentLocation.search,
+    hash: location.hash,
+  };
 }
