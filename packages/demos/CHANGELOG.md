@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.7.1](https://github.com/feature-hub/feature-hub/compare/v3.7.0...v3.7.1) (2024-10-24)
+
+**Note:** Version bump only for package @feature-hub/demos
+
+
+
+
+
 # [3.7.0](https://github.com/feature-hub/feature-hub/compare/v3.6.0...v3.7.0) (2024-09-03)
 
 
