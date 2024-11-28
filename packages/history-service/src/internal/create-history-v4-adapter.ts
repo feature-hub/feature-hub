@@ -21,7 +21,8 @@ export function createHistoryV4Adapter(
 
     push: (location, state) => {
       if (typeof location === 'string') {
-        history.push(location, state);
+        const newLocation = extendRelativePath(location, history);
+        history.push(newLocation, state);
       } else {
         const {pathname, search, hash, state: locationState} = location;
 
@@ -31,7 +32,9 @@ export function createHistoryV4Adapter(
 
     replace: (location, state) => {
       if (typeof location === 'string') {
-        history.replace(location, state);
+        const newLocation = extendRelativePath(location, history);
+
+        history.replace(newLocation, state);
       } else {
         const {pathname, search, hash, state: locationState} = location;
 
@@ -62,4 +65,15 @@ export function createHistoryV4Adapter(
 
     createHref: (location) => history.createHref(location),
   };
+}
+
+function extendRelativePath(location: string, history: History): string {
+  if (location.startsWith('?')) {
+    return history.location.pathname + location;
+  }
+  if (location.startsWith('#')) {
+    return history.location.pathname + history.location.search + location;
+  }
+
+  return location;
 }
