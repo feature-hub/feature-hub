@@ -67,12 +67,13 @@ export function createHistoryV4Adapter(
   };
 }
 
-function extendRelativePath(location: string, history: History) {
+function extendRelativePath(location: string, history: History): string {
   if (location.startsWith('?')) {
     return history.location.pathname + location;
   }
   if (location.startsWith('#')) {
     return history.location.pathname + history.location.search + location;
   }
+
   return location;
 }

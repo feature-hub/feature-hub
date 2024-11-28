@@ -1,6 +1,6 @@
 import {History} from 'history';
-import {createHistoryV4Adapter} from '../create-history-v4-adapter';
 import {LocationDescriptorObject} from '../../history-v4';
+import {createHistoryV4Adapter} from '../create-history-v4-adapter';
 
 const ctx = {logger: console};
 const history = {push: jest.fn(), replace: jest.fn()};
