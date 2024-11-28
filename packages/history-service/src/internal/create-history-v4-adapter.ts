@@ -21,6 +21,9 @@ export function createHistoryV4Adapter(
 
     push: (location, state) => {
       if (typeof location === 'string') {
+        if (location.startsWith('?')) {
+          location = history.location.pathname + location;
+        }
         history.push(location, state);
       } else {
         const {pathname, search, hash, state: locationState} = location;
@@ -31,6 +34,9 @@ export function createHistoryV4Adapter(
 
     replace: (location, state) => {
       if (typeof location === 'string') {
+        if (location.startsWith('?')) {
+          location = history.location.pathname + location;
+        }
         history.replace(location, state);
       } else {
         const {pathname, search, hash, state: locationState} = location;
