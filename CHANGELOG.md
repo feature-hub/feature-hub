@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.7.2](https://github.com/feature-hub/feature-hub/compare/v3.7.1...v3.7.2) (2024-11-28)
+
+
+### Bug Fixes
+
+* **history-service:** keep pathname if only search is defined in path ([#787](https://github.com/feature-hub/feature-hub/issues/787)) ([c3f5138](https://github.com/feature-hub/feature-hub/commit/c3f5138fa12954915262c877b64086406c8f5dc0))
+
+
+
+
+
 ## [3.7.1](https://github.com/feature-hub/feature-hub/compare/v3.7.0...v3.7.1) (2024-10-24)
 
 
