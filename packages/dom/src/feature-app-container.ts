@@ -7,6 +7,8 @@ import {
 import {LitElement, html, property} from 'lit-element';
 import {TemplateResult} from 'lit-html';
 
+export type DetachFunction = () => void;
+
 /**
  * A DOM Feature App allows the use of any frontend technology such as Vue.js,
  * React, or Angular.
@@ -16,7 +18,7 @@ export interface DomFeatureApp {
    * @param container The container element to which the Feature App can attach
    * itself.
    */
-  attachTo(container: Element): void;
+  attachTo(container: Element): void | DetachFunction;
 }
 
 /**
@@ -110,6 +112,8 @@ export function defineFeatureAppContainer(
 
     private readonly appElement = document.createElement('div');
 
+    private detachFunction: DetachFunction | void = void 0;
+
     public firstUpdated(): void {
       if (!this.featureAppDefinition) {
         return;
@@ -126,7 +130,9 @@ export function defineFeatureAppContainer(
           },
         );
 
-        this.featureAppScope.featureApp.attachTo(this.appElement);
+        this.detachFunction = this.featureAppScope.featureApp.attachTo(
+          this.appElement,
+        );
       } catch (error) {
         logger.error(error);
 
@@ -145,6 +151,9 @@ export function defineFeatureAppContainer(
     public disconnectedCallback(): void {
       if (this.featureAppScope) {
         this.featureAppScope.release();
+      }
+      if (this.detachFunction && typeof this.detachFunction === 'function') {
+        this.detachFunction();
       }
 
       super.disconnectedCallback();
