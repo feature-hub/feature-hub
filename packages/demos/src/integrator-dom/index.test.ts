@@ -102,4 +102,20 @@ describe('integration test: "dom integrator"', () => {
       expect(slotName).toBe('loading');
     });
   });
+
+  describe('Feature app has a cleanup function on detach', () => {
+    // const content = await page.evaluate(
+    it('cleanup function gets called when container is removed from DOM', async () => {
+      const title = await page.evaluate(() => {
+        document
+          .querySelector('feature-app-loader')
+          ?.shadowRoot?.querySelector('feature-app-container')
+          ?.remove();
+
+        return document.title;
+      });
+
+      expect(title).toMatch('Detached!');
+    });
+  });
 });

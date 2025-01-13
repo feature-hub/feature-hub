@@ -235,6 +235,34 @@ const myFeatureAppDefinition = {
 };
 ```
 
+The `attachTo` method of a DOM Feature App can optionally return a "detach"
+function. This function is invoked when the Feature App is removed from the DOM,
+allowing it to perform necessary cleanup tasks (e.g. unsubscribing from events).
+This behavior is similar to how the `useEffect` hook works in React.
+
+```js
+const myFeatureAppDefinition = {
+  create(env) {
+    return {
+      attachTo(container) {
+        const app = Vue.createApp({
+          template: '<div>Hello world!</div>',
+        });
+        app.mount(container);
+
+        return function () {
+          // unsubscribe from events
+          window.removeEventListener('resize', handleResize);
+
+          // or unmount apps
+          app.unmount();
+        };
+      },
+    };
+  },
+};
+```
+
 ### Loading UIs provided by the React Integrator
 
 Both kinds of Feature Apps can specify a loading stage for Feature Apps, which
