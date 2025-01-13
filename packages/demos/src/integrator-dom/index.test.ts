@@ -104,7 +104,6 @@ describe('integration test: "dom integrator"', () => {
   });
 
   describe('Feature app has a cleanup function on detach', () => {
-    // const content = await page.evaluate(
     it('cleanup function gets called when container is removed from DOM', async () => {
       const title = await page.evaluate(() => {
         document
