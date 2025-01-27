@@ -1,5 +1,8 @@
 # Feature Hub
 
+> TODO: Delete me! Make some random change to test CI action permissions for PRs
+> from forks.
+
 The **Feature Hub** is an opinionated JavaScript implementation of the micro
 frontends approach to creating scalable web applications with multiple teams and
 different technologies.
