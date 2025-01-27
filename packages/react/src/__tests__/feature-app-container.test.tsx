@@ -14,6 +14,7 @@ import * as React from 'react';
 import TestRenderer from 'react-test-renderer';
 import {
   CustomFeatureAppRenderingParams,
+  DetachFunction,
   FeatureApp,
   FeatureAppContainer,
   FeatureHubContextProvider,
@@ -1305,8 +1306,9 @@ describe('FeatureAppContainer', () => {
 
           mockFeatureAppScope = {
             featureApp: {
-              attachTo(container: HTMLElement) {
+              attachTo(container: HTMLElement): DetachFunction {
                 container.innerHTML = 'This is the DOM Feature App.';
+
                 return mockDetach;
               },
             },
@@ -1339,6 +1341,7 @@ describe('FeatureAppContainer', () => {
             featureApp: {
               attachTo: (container: HTMLElement) => {
                 container.innerHTML = 'This is the DOM Feature App.';
+
                 return () => {
                   throw mockError;
                 };

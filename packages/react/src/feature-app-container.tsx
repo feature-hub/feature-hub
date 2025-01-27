@@ -47,7 +47,7 @@ export interface DomFeatureApp extends BaseFeatureApp {
    * @param container The container element to which the Feature App can attach
    * itself.
    */
-  attachTo(container: Element): void | DetachFunction;
+  attachTo(container: Element): DetachFunction | undefined;
 }
 
 /**

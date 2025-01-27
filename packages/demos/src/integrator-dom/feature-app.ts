@@ -6,7 +6,7 @@ const featureAppDefinition: FeatureAppDefinition<DomFeatureApp> = {
     attachTo(element: HTMLElement): DetachFunction {
       element.replaceWith('Hello, World!');
 
-      return function () {
+      return () => {
         document.title = 'Detached!';
       };
     },

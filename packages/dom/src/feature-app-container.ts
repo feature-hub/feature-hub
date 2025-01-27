@@ -22,7 +22,7 @@ export interface DomFeatureApp {
    * @param container The container element to which the Feature App can attach
    * itself.
    */
-  attachTo(container: Element): void | DetachFunction;
+  attachTo(container: Element): DetachFunction | undefined;
 }
 
 /**
@@ -116,7 +116,7 @@ export function defineFeatureAppContainer(
 
     private readonly appElement = document.createElement('div');
 
-    private detachFunction: DetachFunction | void = void 0;
+    private detachFunction: DetachFunction | undefined = void 0;
 
     public firstUpdated(): void {
       if (!this.featureAppDefinition) {
