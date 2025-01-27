@@ -14,6 +14,7 @@ import * as React from 'react';
 import TestRenderer from 'react-test-renderer';
 import {
   CustomFeatureAppRenderingParams,
+  DetachFunction,
   FeatureApp,
   FeatureAppContainer,
   FeatureHubContextProvider,
@@ -1294,6 +1295,72 @@ describe('FeatureAppContainer', () => {
 
             expect(onError.mock.calls).toEqual([[mockError]]);
           });
+        });
+      });
+
+      describe('when detach function is declared as return in attachTo', () => {
+        let mockDetach: jest.Mock;
+
+        beforeEach(() => {
+          mockDetach = jest.fn();
+
+          mockFeatureAppScope = {
+            featureApp: {
+              attachTo(container: HTMLElement): DetachFunction {
+                container.innerHTML = 'This is the DOM Feature App.';
+
+                return mockDetach;
+              },
+            },
+            release: jest.fn(),
+          };
+        });
+
+        it('calls the detach function on unmount', () => {
+          const testRenderer = renderWithFeatureHubContext(
+            <FeatureAppContainer
+              featureAppId="testId"
+              featureAppDefinition={mockFeatureAppDefinition}
+            />,
+            {testRendererOptions: {createNodeMock: () => ({})}},
+          );
+
+          expect(mockDetach).not.toHaveBeenCalled();
+
+          testRenderer.unmount();
+
+          expect(mockDetach).toHaveBeenCalledTimes(1);
+        });
+
+        it('handles error in the detach function', () => {
+          const onError = jest.fn();
+          const mockError = new Error('Failed to do a detach cleanup');
+
+          mockFeatureAppScope = {
+            ...mockFeatureAppScope,
+            featureApp: {
+              attachTo: (container: HTMLElement) => {
+                container.innerHTML = 'This is the DOM Feature App.';
+
+                return () => {
+                  throw mockError;
+                };
+              },
+            },
+          };
+
+          const testRenderer = renderWithFeatureHubContext(
+            <FeatureAppContainer
+              featureAppId="testId"
+              featureAppDefinition={mockFeatureAppDefinition}
+              onError={onError}
+            />,
+            {testRendererOptions: {createNodeMock: () => ({})}},
+          );
+
+          testRenderer.unmount();
+
+          expect(onError.mock.calls).toEqual([[mockError]]);
         });
       });
     });

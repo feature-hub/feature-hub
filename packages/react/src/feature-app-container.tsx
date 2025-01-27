@@ -33,6 +33,12 @@ export interface ReactFeatureApp extends BaseFeatureApp {
 }
 
 /**
+ * Optional detach function to be called on unmount to provide cleanup, e.g.
+ * to avoid memory leaks.
+ */
+export type DetachFunction = () => void;
+
+/**
  * A DOM Feature App allows the use of other frontend technologies such as
  * Vue.js or Angular, although it is placed on a web page using React.
  */
@@ -41,7 +47,7 @@ export interface DomFeatureApp extends BaseFeatureApp {
    * @param container The container element to which the Feature App can attach
    * itself.
    */
-  attachTo(container: Element): void;
+  attachTo(container: Element): DetachFunction | undefined;
 }
 
 /**

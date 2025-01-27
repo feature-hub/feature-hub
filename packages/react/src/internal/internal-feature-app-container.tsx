@@ -115,6 +115,7 @@ interface InternalFeatureAppContainerState<TFeatureApp extends FeatureApp> {
    * If no loading promise was given, "loading" should always be false.
    */
   readonly loading: boolean;
+  readonly detachFunction?: () => void;
 }
 
 export class InternalFeatureAppContainer<
@@ -222,6 +223,18 @@ export class InternalFeatureAppContainer<
         this.handleError(error);
       }
     }
+
+    if (
+      this.state &&
+      this.state.detachFunction &&
+      typeof this.state.detachFunction === 'function'
+    ) {
+      try {
+        this.state.detachFunction();
+      } catch (error) {
+        this.handleError(error);
+      }
+    }
   }
 
   public render(): React.ReactNode {
@@ -323,7 +336,12 @@ export class InternalFeatureAppContainer<
       isDomFeatureApp(this.state.featureApp)
     ) {
       try {
-        this.state.featureApp.attachTo(this.containerRef.current);
+        const detachFunction = this.state.featureApp.attachTo(
+          this.containerRef.current,
+        );
+        if (detachFunction && typeof detachFunction === 'function') {
+          this.setState({detachFunction});
+        }
         this.domFeatureAppAttached = true;
       } catch (error) {
         this.componentDidCatch(error);

@@ -1,10 +1,14 @@
 import {FeatureAppDefinition} from '@feature-hub/core';
-import {DomFeatureApp} from '@feature-hub/dom';
+import {DetachFunction, DomFeatureApp} from '@feature-hub/dom';
 
 const featureAppDefinition: FeatureAppDefinition<DomFeatureApp> = {
   create: () => ({
-    attachTo(element: HTMLElement): void {
+    attachTo(element: HTMLElement): DetachFunction {
       element.replaceWith('Hello, World!');
+
+      return () => {
+        document.title = 'Detached!';
+      };
     },
   }),
 };

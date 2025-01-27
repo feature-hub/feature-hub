@@ -7,7 +7,7 @@ export class TodoMvcHeader implements DomFeatureApp {
 
   public constructor(private readonly todoManager: TodoManagerV1) {}
 
-  public attachTo(container: Element): void {
+  public attachTo(container: Element): undefined {
     const header = html`
       <header class="header">
         <h1>todos</h1>
