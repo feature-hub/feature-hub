@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.8.0](https://github.com/feature-hub/feature-hub/compare/v3.7.2...v3.8.0) (2025-01-27)
+
+
+### Bug Fixes
+
+* **dom,react:** remove 'void' from union type ([50406fd](https://github.com/feature-hub/feature-hub/commit/50406fd9739a1bb44078d64d68915790144e9d5e))
+
+
+### Features
+
+* **react:** handle cleanup of DOM feature app on it's removal ([7d45227](https://github.com/feature-hub/feature-hub/commit/7d45227e1aa4bd6c35e7a4534cf6a149fd1c88af))
+
+
+
+
+
 # [3.7.0](https://github.com/feature-hub/feature-hub/compare/v3.6.0...v3.7.0) (2024-09-03)
 
 

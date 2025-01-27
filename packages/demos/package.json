@@ -1,6 +1,6 @@
 {
   "name": "@feature-hub/demos",
-  "version": "3.7.2",
+  "version": "3.8.0",
   "private": true,
   "license": "MIT",
   "scripts": {
@@ -13,13 +13,13 @@
     "@blueprintjs/core": "^5.11.0",
     "@feature-hub/async-ssr-manager": "^3.7.0",
     "@feature-hub/core": "^3.7.0",
-    "@feature-hub/dom": "^3.7.0",
+    "@feature-hub/dom": "^3.8.0",
     "@feature-hub/history-service": "^3.7.2",
     "@feature-hub/logger": "^3.7.0",
     "@feature-hub/module-loader-amd": "^3.7.0",
     "@feature-hub/module-loader-commonjs": "^3.7.0",
     "@feature-hub/module-loader-federation": "^3.7.0",
-    "@feature-hub/react": "^3.7.0",
+    "@feature-hub/react": "^3.8.0",
     "@feature-hub/serialized-state-manager": "^3.7.0",
     "@feature-hub/server-request": "^3.7.0",
     "@swc/core": "^1.3.90",
