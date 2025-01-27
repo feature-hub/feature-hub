@@ -26,3 +26,11 @@ for (const filename of filenames) {
       .remove();
   });
 }
+
+// add noopener and noreferrer to link to typedoc
+
+for (const filename of filenames) {
+  updateHtmlFile(filename, ($) => {
+    $('.tsd-generator a').attr('rel', 'noopener noreferrer');
+  });
+}
