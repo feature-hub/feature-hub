@@ -293,6 +293,62 @@ describe('defineAsyncSsrManager', () => {
         });
       });
 
+      describe('with an integrator, and a consumer that schedules rendering JavaScript sources', () => {
+        it('resolves with an html string after the second render pass', async () => {
+          const asyncSsrManagerIntegrator =
+            asyncSsrManagerBinder('test:integrator').featureService;
+
+          const asyncSsrManagerConsumer =
+            asyncSsrManagerBinder('test:consumer').featureService;
+
+          let renderPass = 0;
+
+          const mockRender = jest.fn(() => {
+            renderPass += 1;
+
+            if (renderPass === 1) {
+              asyncSsrManagerConsumer._scheduleJsLoading();
+            }
+
+            return `render pass ${renderPass}`;
+          });
+
+          const html = await useFakeTimers(async () =>
+            asyncSsrManagerIntegrator.renderUntilCompleted(mockRender),
+          );
+
+          expect(html).toEqual('render pass 2');
+          expect(mockRender).toHaveBeenCalledTimes(2);
+        });
+
+        it('resolves with an html string after the second render pass when got Promise rejected', async () => {
+          const asyncSsrManagerIntegrator =
+            asyncSsrManagerBinder('test:integrator').featureService;
+
+          const asyncSsrManagerConsumer =
+            asyncSsrManagerBinder('test:consumer').featureService;
+
+          let renderPass = 0;
+
+          const mockRender = jest.fn(() => {
+            renderPass += 1;
+
+            if (renderPass === 1) {
+              asyncSsrManagerConsumer._scheduleJsLoading(Promise.reject());
+            }
+
+            return `render pass ${renderPass}`;
+          });
+
+          const html = await useFakeTimers(async () =>
+            asyncSsrManagerIntegrator.renderUntilCompleted(mockRender),
+          );
+
+          expect(html).toEqual('render pass 2');
+          expect(mockRender).toHaveBeenCalledTimes(2);
+        });
+      });
+
       describe('with a consumer that schedules a rerender outside of `renderUntilCompleted`', () => {
         it('rejects with an error', async () => {
           const asyncSsrManager =
@@ -300,6 +356,25 @@ describe('defineAsyncSsrManager', () => {
 
           const mockRender = jest.fn(() => {
             asyncSsrManager.scheduleRerender();
+          });
+
+          return expect(
+            useFakeTimers(async () => mockRender()),
+          ).rejects.toEqual(
+            new Error(
+              'Async SSR Manager: Can not call `scheduleRerender` outside of `renderUntilCompleted`.',
+            ),
+          );
+        });
+      });
+
+      describe('with a consumer that schedules loading JavaScript sources outside of `renderUntilCompleted`', () => {
+        it('rejects with an error', async () => {
+          const asyncSsrManager =
+            asyncSsrManagerBinder('test:consumer').featureService;
+
+          const mockRender = jest.fn(() => {
+            asyncSsrManager._scheduleJsLoading();
           });
 
           return expect(

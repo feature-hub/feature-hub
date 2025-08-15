@@ -143,10 +143,6 @@ class InternalFeatureAppLoader<TConfig = unknown> extends React.PureComponent<
       return;
     }
 
-    if (!inBrowser && addUrlForHydration) {
-      addUrlForHydration(prependBaseUrl(baseUrl, clientSrc), clientModuleType);
-    }
-
     if (!inBrowser && addStylesheetsForSsr) {
       const css = this.prependCssHrefs();
 
@@ -169,8 +165,15 @@ class InternalFeatureAppLoader<TConfig = unknown> extends React.PureComponent<
       this.state = {error};
     } else if (featureAppDefinition) {
       this.state = {featureAppDefinition};
+
+      if (!inBrowser && addUrlForHydration) {
+        addUrlForHydration(
+          prependBaseUrl(baseUrl, clientSrc),
+          clientModuleType,
+        );
+      }
     } else if (!inBrowser && asyncSsrManager) {
-      asyncSsrManager.scheduleRerender(loadingPromise);
+      asyncSsrManager._scheduleJsLoading(loadingPromise);
     }
   }
 

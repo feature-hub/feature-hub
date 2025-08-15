@@ -74,6 +74,20 @@ export interface AsyncSsrManagerV1 {
    * shall defer the scheduled rerender at least until after its completion.
    */
   scheduleRerender(asyncOperation?: Promise<unknown>): void;
+  /**
+   * Internal API: This method is intended for use by the FeatureAppLoader
+   * to schedule the asynchronous loading of JavaScript sources.
+   *
+   * Like `scheduleRenderer`, it triggers a re-render and can be associated
+   * with a promise representing an asynchronous operation. However, unlike
+   * `scheduleRenderer`, promises scheduled here are added to the set of
+   * async operations that may also include rejected promises, which will
+   * be handled later by the FeatureAppLoader.
+   *
+   * @param asyncOperation A promise representing an asynchronous operation that
+   * shall defer the scheduled rerender at least until after its completion.
+   */
+  _scheduleJsLoading(asyncOperation?: Promise<unknown>): void;
 }
 
 export interface SharedAsyncSsrManager extends SharedFeatureService {

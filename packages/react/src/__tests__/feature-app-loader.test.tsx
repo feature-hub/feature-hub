@@ -23,7 +23,7 @@ import {logger} from './logger';
 import {TestErrorBoundary} from './test-error-boundary';
 
 interface MockAsyncSsrManager extends AsyncSsrManagerV1 {
-  scheduleRerender: ((promise: Promise<unknown>) => void) & jest.Mock;
+  _scheduleJsLoading: ((promise: Promise<unknown>) => void) & jest.Mock;
 }
 
 jest.mock('../internal/internal-feature-app-container', () => ({
@@ -96,6 +96,7 @@ describe('FeatureAppLoader', () => {
 
     mockAsyncSsrManager = {
       scheduleRerender: jest.fn(),
+      _scheduleJsLoading: jest.fn(),
       renderUntilCompleted: jest.fn(),
     };
 
@@ -379,7 +380,7 @@ describe('FeatureAppLoader', () => {
         />,
       );
 
-      expect(mockAsyncSsrManager.scheduleRerender).not.toHaveBeenCalled();
+      expect(mockAsyncSsrManager._scheduleJsLoading).not.toHaveBeenCalled();
     });
 
     it('does not add a URL for hydration', () => {
@@ -701,7 +702,7 @@ describe('FeatureAppLoader', () => {
         />,
       );
 
-      expect(mockAsyncSsrManager.scheduleRerender).not.toHaveBeenCalled();
+      expect(mockAsyncSsrManager._scheduleJsLoading).not.toHaveBeenCalled();
     });
 
     it('does not add a URL for hydration', () => {
