@@ -186,8 +186,7 @@ class InternalFeatureAppLoader<TConfig = unknown> extends React.PureComponent<
       return;
     }
 
-    const {baseUrl, featureAppManager, src, moduleType, addUrlForHydration} =
-      this.props;
+    const {baseUrl, featureAppManager, src, moduleType} = this.props;
 
     try {
       const featureAppDefinition =
@@ -198,10 +197,6 @@ class InternalFeatureAppLoader<TConfig = unknown> extends React.PureComponent<
 
       if (this.mounted) {
         this.setState({featureAppDefinition});
-
-        if (!inBrowser && addUrlForHydration) {
-          addUrlForHydration(prependBaseUrl(baseUrl, src), moduleType);
-        }
       }
     } catch (error) {
       try {
