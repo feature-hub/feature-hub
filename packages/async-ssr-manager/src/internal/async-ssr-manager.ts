@@ -1,5 +1,5 @@
 import {AsyncLocalStorage} from 'async_hooks';
-import {AsyncSsrManagerV1} from '..';
+import {AsyncSsrManagerOptions, AsyncSsrManagerV1} from '..';
 import {AsyncSsrManagerContext} from './async-ssr-manager-context';
 import {setTimeoutAsync} from './set-timeout-async';
 
@@ -16,7 +16,7 @@ export class AsyncSsrManager implements AsyncSsrManagerV1 {
 
   public constructor(
     private readonly context: AsyncSsrManagerContext,
-    private readonly timeout?: number,
+    private readonly options: AsyncSsrManagerOptions,
   ) {}
 
   public async renderUntilCompleted(
@@ -27,7 +27,7 @@ export class AsyncSsrManager implements AsyncSsrManagerV1 {
     return this.asyncOperationsStorage.run(asyncOperations, async () => {
       const renderPromise = this.renderingLoop(render, asyncOperations);
 
-      if (typeof this.timeout !== 'number') {
+      if (typeof this.options.timeout !== 'number') {
         this.context.logger.warn(
           'No timeout is configured for the Async SSR Manager. This could lead to unexpectedly long render times or, in the worst case, never resolving render calls!',
         );
@@ -35,7 +35,10 @@ export class AsyncSsrManager implements AsyncSsrManagerV1 {
         return renderPromise;
       }
 
-      return Promise.race([renderPromise, renderingTimeout(this.timeout)]);
+      return Promise.race([
+        renderPromise,
+        renderingTimeout(this.options.timeout),
+      ]);
     });
   }
 
@@ -57,6 +60,7 @@ export class AsyncSsrManager implements AsyncSsrManagerV1 {
     render: () => Promise<string> | string,
     asyncOperations: Set<Promise<unknown>>,
   ): Promise<string> {
+    const skipRenderError = this.options.skipRenderError ?? false;
     let html = await render();
 
     while (asyncOperations.size > 0) {
@@ -69,7 +73,11 @@ export class AsyncSsrManager implements AsyncSsrManagerV1 {
 
         asyncOperations.clear();
 
-        await Promise.all(asyncOperationsSnapshot);
+        if (skipRenderError) {
+          await Promise.allSettled(asyncOperationsSnapshot);
+        } else {
+          await Promise.all(asyncOperationsSnapshot);
+        }
       }
 
       html = await render();

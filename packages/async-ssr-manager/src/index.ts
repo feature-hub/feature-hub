@@ -10,6 +10,16 @@ import {createAsyncSsrManagerContext} from './internal/async-ssr-manager-context
 
 export interface AsyncSsrManagerOptions {
   /**
+   * Determines whether a rendering error should be skipped. This is
+   * particularly useful when using `FeatureAppLoader` to prevent rendering
+   * errors from propagating and breaking the React component tree up to
+   * the parent application. If rendering errors are intended to be
+   * handled individually, this option should remain unset.
+   *
+   * @default false
+   */
+  readonly skipRenderError?: boolean;
+  /**
    * Render timeout in milliseconds.
    */
   readonly timeout?: number;
@@ -104,7 +114,7 @@ export function defineAsyncSsrManager(
 
     create: (env) => {
       const context = createAsyncSsrManagerContext(env.featureServices);
-      const asyncSsrManager = new AsyncSsrManager(context, options.timeout);
+      const asyncSsrManager = new AsyncSsrManager(context, options);
 
       return {
         '1.0.0': () => ({featureService: asyncSsrManager}),

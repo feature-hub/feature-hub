@@ -371,6 +371,46 @@ describe('defineAsyncSsrManager', () => {
           ]);
         });
       });
+
+      describe('when skipRenderError is configured', () => {
+        beforeEach(() => {
+          asyncSsrManagerDefinition = defineAsyncSsrManager({
+            timeout: 5,
+            skipRenderError: true,
+          });
+
+          asyncSsrManagerBinder =
+            asyncSsrManagerDefinition.create(mockEnv)!['1.0.0'];
+        });
+
+        describe('with an integrator, and a consumer that schedules a rerender with a failing promise', () => {
+          it('still resolves successfully with an html string after the second render pass', async () => {
+            const asyncSsrManagerIntegrator =
+              asyncSsrManagerBinder('test:integrator').featureService;
+
+            const asyncSsrManagerConsumer =
+              asyncSsrManagerBinder('test:consumer').featureService;
+
+            let renderPass = 0;
+
+            const renderFn = jest.fn(() => {
+              renderPass += 1;
+
+              if (renderPass === 1) {
+                asyncSsrManagerConsumer.scheduleRerender(Promise.reject());
+              }
+
+              return `<div>renderPass: ${renderPass}</div>`;
+            });
+
+            const html = await useFakeTimers(async () =>
+              asyncSsrManagerIntegrator.renderUntilCompleted(renderFn),
+            );
+
+            expect(html).toEqual('<div>renderPass: 2</div>');
+          });
+        });
+      });
     });
 
     describe('when no Logger Feature Service is provided', () => {

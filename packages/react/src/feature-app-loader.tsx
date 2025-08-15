@@ -143,10 +143,6 @@ class InternalFeatureAppLoader<TConfig = unknown> extends React.PureComponent<
       return;
     }
 
-    if (!inBrowser && addUrlForHydration) {
-      addUrlForHydration(prependBaseUrl(baseUrl, clientSrc), clientModuleType);
-    }
-
     if (!inBrowser && addStylesheetsForSsr) {
       const css = this.prependCssHrefs();
 
@@ -169,6 +165,13 @@ class InternalFeatureAppLoader<TConfig = unknown> extends React.PureComponent<
       this.state = {error};
     } else if (featureAppDefinition) {
       this.state = {featureAppDefinition};
+
+      if (!inBrowser && addUrlForHydration) {
+        addUrlForHydration(
+          prependBaseUrl(baseUrl, clientSrc),
+          clientModuleType,
+        );
+      }
     } else if (!inBrowser && asyncSsrManager) {
       asyncSsrManager.scheduleRerender(loadingPromise);
     }
@@ -183,7 +186,8 @@ class InternalFeatureAppLoader<TConfig = unknown> extends React.PureComponent<
       return;
     }
 
-    const {baseUrl, featureAppManager, src, moduleType} = this.props;
+    const {baseUrl, featureAppManager, src, moduleType, addUrlForHydration} =
+      this.props;
 
     try {
       const featureAppDefinition =
@@ -194,6 +198,10 @@ class InternalFeatureAppLoader<TConfig = unknown> extends React.PureComponent<
 
       if (this.mounted) {
         this.setState({featureAppDefinition});
+
+        if (!inBrowser && addUrlForHydration) {
+          addUrlForHydration(prependBaseUrl(baseUrl, src), moduleType);
+        }
       }
     } catch (error) {
       try {

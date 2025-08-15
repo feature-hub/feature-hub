@@ -132,7 +132,7 @@ describe('FeatureAppLoader (on Node.js)', () => {
         ]);
       });
 
-      it('adds the prepended src URL and moduleType for hydration', () => {
+      it('does not add the prepended src URL and moduleType for hydration', () => {
         renderWithFeatureHubContext(
           <FeatureAppLoader
             featureAppId="testId"
@@ -144,10 +144,7 @@ describe('FeatureAppLoader (on Node.js)', () => {
           />,
         );
 
-        expect(mockAddUrlForHydration).toHaveBeenCalledWith(
-          'http://example.com/example.js',
-          'a',
-        );
+        expect(mockAddUrlForHydration).not.toHaveBeenCalled();
       });
     });
 
@@ -165,7 +162,7 @@ describe('FeatureAppLoader (on Node.js)', () => {
       ]);
     });
 
-    it('adds the src URL for hydration', () => {
+    it('does not add the src URL for hydration', () => {
       renderWithFeatureHubContext(
         <FeatureAppLoader
           featureAppId="testId"
@@ -174,10 +171,7 @@ describe('FeatureAppLoader (on Node.js)', () => {
         />,
       );
 
-      expect(mockAddUrlForHydration).toHaveBeenCalledWith(
-        'example.js',
-        undefined,
-      );
+      expect(mockAddUrlForHydration).not.toHaveBeenCalled();
     });
 
     describe('with a moduleType prop', () => {
@@ -261,7 +255,30 @@ describe('FeatureAppLoader (on Node.js)', () => {
         expect(mockAsyncSsrManager.scheduleRerender).not.toHaveBeenCalled();
       });
 
-      it('adds the src URL for hydration', () => {
+      it('does not add the stylesheets for SSR', () => {
+        try {
+          renderWithFeatureHubContext(
+            <FeatureAppLoader
+              featureAppId="testId"
+              src="example.js"
+              serverSrc="example-node.js"
+              css={[{href: 'foo.css'}]}
+            />,
+          );
+        } catch {}
+
+        expect(mockAddStylesheetsForSsr.mock.calls).toEqual([
+          [
+            [
+              {
+                href: 'foo.css',
+              },
+            ],
+          ],
+        ]);
+      });
+
+      it('does not add the src URL for hydration', () => {
         try {
           renderWithFeatureHubContext(
             <FeatureAppLoader
@@ -272,10 +289,7 @@ describe('FeatureAppLoader (on Node.js)', () => {
           );
         } catch {}
 
-        expect(mockAddUrlForHydration).toHaveBeenCalledWith(
-          'example.js',
-          undefined,
-        );
+        expect(mockAddUrlForHydration).not.toHaveBeenCalled();
       });
     });
   });
