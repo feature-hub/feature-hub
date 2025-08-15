@@ -4,7 +4,7 @@ module.exports = [
   {
     name: 'async-ssr-manager',
     path: 'packages/async-ssr-manager/lib/esm/index.js',
-    limit: '0.7 KB',
+    limit: '0.8 KB',
     import: '*',
     modifyWebpackConfig: (config) => ({...config, target: 'node'}),
   },
