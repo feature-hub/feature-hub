@@ -132,7 +132,16 @@ describe('FeatureAppLoader (on Node.js)', () => {
         ]);
       });
 
-      it('does not add the prepended src URL and moduleType for hydration', () => {
+      it('adds the prepended src URL and moduleType for hydration with synchronously loaded Feature App definition', () => {
+        jest
+          .spyOn(mockFeatureAppManager, 'getAsyncFeatureAppDefinition')
+          .mockReturnValue({
+            value: {
+              id: 'fa-id',
+              create: jest.fn(),
+            },
+          } as unknown as AsyncValue<FeatureAppDefinition<unknown>>);
+
         renderWithFeatureHubContext(
           <FeatureAppLoader
             featureAppId="testId"
@@ -144,11 +153,18 @@ describe('FeatureAppLoader (on Node.js)', () => {
           />,
         );
 
-        expect(mockAddUrlForHydration).not.toHaveBeenCalled();
+        expect(mockAddUrlForHydration).toHaveBeenCalledWith(
+          'http://example.com/example.js',
+          'a',
+        );
       });
     });
 
     it('schedules a rerender on the Async SSR Manager with the feature app definition promise', () => {
+      jest
+        .spyOn(mockFeatureAppManager, 'getAsyncFeatureAppDefinition')
+        .mockReturnValue(mockAsyncFeatureAppDefinition);
+
       renderWithFeatureHubContext(
         <FeatureAppLoader
           featureAppId="testId"
@@ -162,7 +178,16 @@ describe('FeatureAppLoader (on Node.js)', () => {
       ]);
     });
 
-    it('does not add the src URL for hydration', () => {
+    it('adds the src URL for hydration with synchronously loaded Feature App definition', () => {
+      jest
+        .spyOn(mockFeatureAppManager, 'getAsyncFeatureAppDefinition')
+        .mockReturnValue({
+          value: {
+            id: 'fa-id',
+            create: jest.fn(),
+          },
+        } as unknown as AsyncValue<FeatureAppDefinition<unknown>>);
+
       renderWithFeatureHubContext(
         <FeatureAppLoader
           featureAppId="testId"
@@ -171,7 +196,10 @@ describe('FeatureAppLoader (on Node.js)', () => {
         />,
       );
 
-      expect(mockAddUrlForHydration).not.toHaveBeenCalled();
+      expect(mockAddUrlForHydration).toHaveBeenCalledWith(
+        'example.js',
+        undefined,
+      );
     });
 
     describe('with a moduleType prop', () => {
@@ -225,6 +253,10 @@ describe('FeatureAppLoader (on Node.js)', () => {
       });
 
       it('logs the error', () => {
+        jest
+          .spyOn(mockFeatureAppManager, 'getAsyncFeatureAppDefinition')
+          .mockReturnValue(mockAsyncFeatureAppDefinition);
+
         renderWithFeatureHubContext(
           <FeatureAppLoader
             src="example.js"
@@ -255,30 +287,16 @@ describe('FeatureAppLoader (on Node.js)', () => {
         expect(mockAsyncSsrManager.scheduleRerender).not.toHaveBeenCalled();
       });
 
-      it('does not add the stylesheets for SSR', () => {
-        try {
-          renderWithFeatureHubContext(
-            <FeatureAppLoader
-              featureAppId="testId"
-              src="example.js"
-              serverSrc="example-node.js"
-              css={[{href: 'foo.css'}]}
-            />,
-          );
-        } catch {}
+      it('adds the src URL for hydration with synchronously loaded Feature App definition', () => {
+        jest
+          .spyOn(mockFeatureAppManager, 'getAsyncFeatureAppDefinition')
+          .mockReturnValue({
+            value: {
+              id: 'fa-id',
+              create: jest.fn(),
+            },
+          } as unknown as AsyncValue<FeatureAppDefinition<unknown>>);
 
-        expect(mockAddStylesheetsForSsr.mock.calls).toEqual([
-          [
-            [
-              {
-                href: 'foo.css',
-              },
-            ],
-          ],
-        ]);
-      });
-
-      it('does not add the src URL for hydration', () => {
         try {
           renderWithFeatureHubContext(
             <FeatureAppLoader
@@ -289,7 +307,10 @@ describe('FeatureAppLoader (on Node.js)', () => {
           );
         } catch {}
 
-        expect(mockAddUrlForHydration).not.toHaveBeenCalled();
+        expect(mockAddUrlForHydration).toHaveBeenCalledWith(
+          'example.js',
+          undefined,
+        );
       });
     });
   });
