@@ -373,14 +373,23 @@ describe('defineAsyncSsrManager', () => {
       });
 
       describe('when skipRenderError is configured', () => {
+        let consoleErrorSpy: jest.SpyInstance;
+
         beforeEach(() => {
+          consoleErrorSpy = jest.spyOn(console, 'error');
+
           asyncSsrManagerDefinition = defineAsyncSsrManager({
             timeout: 5,
             skipRenderError: true,
           });
 
-          asyncSsrManagerBinder =
-            asyncSsrManagerDefinition.create(mockEnv)!['1.0.0'];
+          asyncSsrManagerBinder = asyncSsrManagerDefinition.create({
+            featureServices: {},
+          })!['1.0.0'];
+        });
+
+        afterEach(() => {
+          consoleErrorSpy.mockRestore();
         });
 
         describe('with an integrator, and a consumer that schedules a rerender with a failing promise', () => {
@@ -408,6 +417,36 @@ describe('defineAsyncSsrManager', () => {
             );
 
             expect(html).toEqual('<div>renderPass: 2</div>');
+          });
+
+          it('logs the error', async () => {
+            const asyncSsrManagerIntegrator =
+              asyncSsrManagerBinder('test:integrator').featureService;
+
+            const asyncSsrManagerConsumer =
+              asyncSsrManagerBinder('test:consumer').featureService;
+
+            let renderPass = 0;
+
+            const renderFn = jest.fn(() => {
+              renderPass += 1;
+
+              if (renderPass === 1) {
+                asyncSsrManagerConsumer.scheduleRerender(
+                  Promise.reject('Some Reason!'),
+                );
+              }
+
+              return `<div>renderPass: ${renderPass}</div>`;
+            });
+
+            await useFakeTimers(async () =>
+              asyncSsrManagerIntegrator.renderUntilCompleted(renderFn),
+            );
+
+            expect(consoleErrorSpy.mock.calls).toEqual([
+              ['Operation 0 failed rendering with reason:', 'Some Reason!'],
+            ]);
           });
         });
       });

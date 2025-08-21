@@ -74,7 +74,21 @@ export class AsyncSsrManager implements AsyncSsrManagerV1 {
         asyncOperations.clear();
 
         if (skipRenderError) {
-          await Promise.allSettled(asyncOperationsSnapshot);
+          await Promise.allSettled(asyncOperationsSnapshot).then(
+            (settledResults) => {
+              settledResults
+                .filter(
+                  (rejectedResults): rejectedResults is PromiseRejectedResult =>
+                    rejectedResults.status === 'rejected',
+                )
+                .forEach((rejected, index) => {
+                  this.context.logger.error(
+                    `Operation ${index} failed rendering with reason:`,
+                    rejected.reason,
+                  );
+                });
+            },
+          );
         } else {
           await Promise.all(asyncOperationsSnapshot);
         }
