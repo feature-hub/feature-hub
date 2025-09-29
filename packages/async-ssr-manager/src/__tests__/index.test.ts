@@ -381,7 +381,7 @@ describe('defineAsyncSsrManager', () => {
             useFakeTimers(async () => mockRender()),
           ).rejects.toEqual(
             new Error(
-              'Async SSR Manager: Can not call `scheduleRerender` outside of `renderUntilCompleted`.',
+              'Async SSR Manager: Can not call `_scheduleJsLoading` outside of `renderUntilCompleted`.',
             ),
           );
         });

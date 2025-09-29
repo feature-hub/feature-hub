@@ -67,7 +67,7 @@ export class AsyncSsrManager implements AsyncSsrManagerV1 {
 
     if (!asyncOperations) {
       throw new Error(
-        'Async SSR Manager: Can not call `scheduleRerender` outside of `renderUntilCompleted`.',
+        'Async SSR Manager: Can not call `_scheduleJsLoading` outside of `renderUntilCompleted`.',
       );
     }
 
