@@ -88,43 +88,35 @@ export class AsyncSsrManager implements AsyncSsrManagerV1 {
     while (inProgress) {
       inProgress = false;
 
-      while (asyncOperations.contentLoading.size > 0) {
-        while (asyncOperations.contentLoading.size > 0) {
-          inProgress = true;
+      for (const queue of Object.keys(
+        asyncOperations,
+      ) as (keyof AsyncOperationQueues)[]) {
+        while (asyncOperations[queue].size > 0) {
+          while (asyncOperations[queue].size > 0) {
+            inProgress = true;
 
-          // Storing a snapshot of the asynchronous operations and clearing them
-          // afterwards, allows that consecutive promises can be added while the
-          // current asynchronous operations are running.
+            // Storing a snapshot of the asynchronous operations and clearing them
+            // afterwards, allows that consecutive promises can be added while the
+            // current asynchronous operations are running.
 
-          const asyncOperationsSnapshot = Array.from(
-            asyncOperations.contentLoading.values(),
-          );
+            const asyncOperationsSnapshot = Array.from(
+              asyncOperations[queue].values(),
+            );
 
-          asyncOperations.contentLoading.clear();
+            asyncOperations[queue].clear();
 
-          await Promise.all(asyncOperationsSnapshot);
+            if (queue === 'contentLoading') {
+              await Promise.all(asyncOperationsSnapshot);
+            } else {
+              // Promise rejections are allowed here, to be able to handle the error
+              // in <FeatureAppLoader />.
+
+              await Promise.allSettled(asyncOperationsSnapshot);
+            }
+          }
+
+          html = await render();
         }
-
-        html = await render();
-      }
-
-      while (asyncOperations.jsLoading.size > 0) {
-        while (asyncOperations.jsLoading.size > 0) {
-          inProgress = true;
-
-          const asyncOperationsSnapshot = Array.from(
-            asyncOperations.jsLoading.values(),
-          );
-
-          asyncOperations.jsLoading.clear();
-
-          // Promise rejections are allowed here, to be able to handle the error
-          // in <FeatureAppLoader />.
-
-          await Promise.allSettled(asyncOperationsSnapshot);
-        }
-
-        html = await render();
       }
     }
 
