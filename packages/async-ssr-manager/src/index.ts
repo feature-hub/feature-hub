@@ -91,7 +91,7 @@ export interface AsyncSsrManagerV1 {
 }
 
 export interface SharedAsyncSsrManager extends SharedFeatureService {
-  readonly '1.0.0': FeatureServiceBinder<AsyncSsrManagerV1>;
+  readonly '1.1.0': FeatureServiceBinder<AsyncSsrManagerV1>;
 }
 
 export interface AsyncSsrManagerDependencies extends FeatureServices {
@@ -121,7 +121,7 @@ export function defineAsyncSsrManager(
       const asyncSsrManager = new AsyncSsrManager(context, options.timeout);
 
       return {
-        '1.0.0': () => ({featureService: asyncSsrManager}),
+        '1.1.0': () => ({featureService: asyncSsrManager}),
       };
     },
   };

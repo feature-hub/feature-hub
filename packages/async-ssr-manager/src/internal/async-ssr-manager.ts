@@ -8,6 +8,11 @@ export interface AsyncOperationQueues {
   jsLoading: Set<Promise<unknown>>;
 }
 
+export interface AsyncOperationSnapshot {
+  contentLoading: Promise<unknown>[];
+  jsLoading: Promise<unknown>[];
+}
+
 async function renderingTimeout(timeout: number): Promise<never> {
   await setTimeoutAsync(timeout);
 
@@ -74,50 +79,45 @@ export class AsyncSsrManager implements AsyncSsrManagerV1 {
     asyncOperations.jsLoading.add(asyncOperation);
   }
 
+  private isPromiseExisting(asyncOperations: AsyncOperationQueues): boolean {
+    return Object.values(asyncOperations).some((queue) => queue.size > 0);
+  }
+
+  private cloneQueue(
+    asyncOperations: AsyncOperationQueues,
+  ): AsyncOperationSnapshot {
+    // Storing a snapshot of the asynchronous operations and clearing them
+    // afterward, allows that consecutive promises can be added while the
+    // current asynchronous operations are running.
+    const asyncOperationSnapshot = {} as AsyncOperationSnapshot;
+
+    (Object.keys(asyncOperations) as (keyof AsyncOperationQueues)[]).forEach(
+      (queue) => {
+        asyncOperationSnapshot[queue] = Array.from(
+          asyncOperations[queue].values(),
+        );
+        asyncOperations[queue].clear();
+      },
+    );
+
+    return asyncOperationSnapshot;
+  }
+
   private async renderingLoop(
     render: () => Promise<string> | string,
     asyncOperations: AsyncOperationQueues,
   ): Promise<string> {
-    let inProgress = true;
     let html = await render();
 
-    // The rendering loop executes in "waves" until both queues are empty.
-    // The `progress` flag acts as a sentinel: if no promise was processed
-    // during a full wave, the loop terminates (convergence).
+    while (this.isPromiseExisting(asyncOperations)) {
+      while (this.isPromiseExisting(asyncOperations)) {
+        const asyncOperationsSnapshot = this.cloneQueue(asyncOperations);
 
-    while (inProgress) {
-      inProgress = false;
-
-      for (const queue of Object.keys(
-        asyncOperations,
-      ) as (keyof AsyncOperationQueues)[]) {
-        while (asyncOperations[queue].size > 0) {
-          while (asyncOperations[queue].size > 0) {
-            inProgress = true;
-
-            // Storing a snapshot of the asynchronous operations and clearing them
-            // afterwards, allows that consecutive promises can be added while the
-            // current asynchronous operations are running.
-
-            const asyncOperationsSnapshot = Array.from(
-              asyncOperations[queue].values(),
-            );
-
-            asyncOperations[queue].clear();
-
-            if (queue === 'contentLoading') {
-              await Promise.all(asyncOperationsSnapshot);
-            } else {
-              // Promise rejections are allowed here, to be able to handle the error
-              // in <FeatureAppLoader />.
-
-              await Promise.allSettled(asyncOperationsSnapshot);
-            }
-          }
-
-          html = await render();
-        }
+        await Promise.all(asyncOperationsSnapshot.contentLoading);
+        await Promise.allSettled(asyncOperationsSnapshot.jsLoading);
       }
+
+      html = await render();
     }
 
     return html;

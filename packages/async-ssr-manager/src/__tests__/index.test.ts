@@ -48,7 +48,7 @@ describe('defineAsyncSsrManager', () => {
     it('creates a shared Feature Service containing version 1.0.0', () => {
       const sharedAsyncSsrManager = asyncSsrManagerDefinition.create(mockEnv);
 
-      expect(sharedAsyncSsrManager!['1.0.0']).toBeDefined();
+      expect(sharedAsyncSsrManager!['1.1.0']).toBeDefined();
     });
   });
 
@@ -57,7 +57,7 @@ describe('defineAsyncSsrManager', () => {
 
     beforeEach(() => {
       asyncSsrManagerBinder =
-        asyncSsrManagerDefinition.create(mockEnv)!['1.0.0'];
+        asyncSsrManagerDefinition.create(mockEnv)!['1.1.0'];
     });
 
     describe('rendering', () => {
@@ -428,7 +428,7 @@ describe('defineAsyncSsrManager', () => {
           asyncSsrManagerDefinition = defineAsyncSsrManager();
 
           asyncSsrManagerBinder =
-            asyncSsrManagerDefinition.create(mockEnv)!['1.0.0'];
+            asyncSsrManagerDefinition.create(mockEnv)!['1.1.0'];
         });
 
         it('logs a warning', async () => {
@@ -458,7 +458,7 @@ describe('defineAsyncSsrManager', () => {
 
         asyncSsrManagerBinder = asyncSsrManagerDefinition.create({
           featureServices: {},
-        })!['1.0.0'];
+        })!['1.1.0'];
       });
 
       afterEach(() => {
