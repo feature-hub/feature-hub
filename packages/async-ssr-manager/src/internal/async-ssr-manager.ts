@@ -114,6 +114,7 @@ export class AsyncSsrManager implements AsyncSsrManagerV1 {
         const asyncOperationsSnapshot = this.cloneQueue(asyncOperations);
 
         await Promise.all(asyncOperationsSnapshot.contentLoading);
+        // errors can be handled using the <FeatureAppLoader /> (e.g. onError callback)
         await Promise.allSettled(asyncOperationsSnapshot.jsLoading);
       }
 
