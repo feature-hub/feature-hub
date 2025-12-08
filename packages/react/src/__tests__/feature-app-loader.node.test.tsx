@@ -15,7 +15,7 @@ import * as ReactDOM from 'react-dom/server';
 import {FeatureAppLoader, FeatureHubContextProvider} from '..';
 
 interface MockAsyncSsrManager extends AsyncSsrManagerV1 {
-  _scheduleJsLoading: ((promise: Promise<unknown>) => void) & jest.Mock;
+  scheduleRerender: ((promise: Promise<unknown>) => void) & jest.Mock;
 }
 
 jest.mock('../feature-app-container', () => ({
@@ -48,7 +48,6 @@ describe('FeatureAppLoader (on Node.js)', () => {
 
     mockAsyncSsrManager = {
       scheduleRerender: jest.fn(),
-      _scheduleJsLoading: jest.fn(),
       renderUntilCompleted: jest.fn(),
     };
 
@@ -174,7 +173,7 @@ describe('FeatureAppLoader (on Node.js)', () => {
         />,
       );
 
-      expect(mockAsyncSsrManager._scheduleJsLoading.mock.calls).toEqual([
+      expect(mockAsyncSsrManager.scheduleRerender.mock.calls).toEqual([
         [mockAsyncFeatureAppDefinition.promise],
       ]);
     });

@@ -173,7 +173,11 @@ class InternalFeatureAppLoader<TConfig = unknown> extends React.PureComponent<
         );
       }
     } else if (!inBrowser && asyncSsrManager) {
-      asyncSsrManager._scheduleJsLoading(loadingPromise);
+      asyncSsrManager.scheduleRerender(
+        loadingPromise.catch(() => {
+          // ignore error
+        }),
+      );
     }
   }
 

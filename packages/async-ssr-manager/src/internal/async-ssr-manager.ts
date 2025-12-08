@@ -3,16 +3,6 @@ import {AsyncSsrManagerV1} from '..';
 import {AsyncSsrManagerContext} from './async-ssr-manager-context';
 import {setTimeoutAsync} from './set-timeout-async';
 
-export interface AsyncOperationQueues {
-  contentLoading: Set<Promise<unknown>>;
-  jsLoading: Set<Promise<unknown>>;
-}
-
-export interface AsyncOperationSnapshot {
-  contentLoading: Promise<unknown>[];
-  jsLoading: Promise<unknown>[];
-}
-
 async function renderingTimeout(timeout: number): Promise<never> {
   await setTimeoutAsync(timeout);
 
@@ -20,8 +10,9 @@ async function renderingTimeout(timeout: number): Promise<never> {
 }
 
 export class AsyncSsrManager implements AsyncSsrManagerV1 {
-  private readonly asyncOperationsStorage =
-    new AsyncLocalStorage<AsyncOperationQueues>();
+  private readonly asyncOperationsStorage = new AsyncLocalStorage<
+    Set<Promise<unknown>>
+  >();
 
   public constructor(
     private readonly context: AsyncSsrManagerContext,
@@ -31,10 +22,7 @@ export class AsyncSsrManager implements AsyncSsrManagerV1 {
   public async renderUntilCompleted(
     render: () => Promise<string> | string,
   ): Promise<string> {
-    const asyncOperations = {
-      contentLoading: new Set<Promise<unknown>>(),
-      jsLoading: new Set<Promise<unknown>>(),
-    };
+    const asyncOperations = new Set<Promise<unknown>>();
 
     return this.asyncOperationsStorage.run(asyncOperations, async () => {
       const renderPromise = this.renderingLoop(render, asyncOperations);
@@ -62,60 +50,26 @@ export class AsyncSsrManager implements AsyncSsrManagerV1 {
       );
     }
 
-    asyncOperations.contentLoading.add(asyncOperation);
-  }
-
-  public _scheduleJsLoading(
-    asyncOperation: Promise<unknown> = Promise.resolve(),
-  ): void {
-    const asyncOperations = this.asyncOperationsStorage.getStore();
-
-    if (!asyncOperations) {
-      throw new Error(
-        'Async SSR Manager: Can not call `_scheduleJsLoading` outside of `renderUntilCompleted`.',
-      );
-    }
-
-    asyncOperations.jsLoading.add(asyncOperation);
-  }
-
-  private isPromiseExisting(asyncOperations: AsyncOperationQueues): boolean {
-    return Object.values(asyncOperations).some((queue) => queue.size > 0);
-  }
-
-  private cloneQueue(
-    asyncOperations: AsyncOperationQueues,
-  ): AsyncOperationSnapshot {
-    // Storing a snapshot of the asynchronous operations and clearing them
-    // afterward, allows that consecutive promises can be added while the
-    // current asynchronous operations are running.
-    const asyncOperationSnapshot = {} as AsyncOperationSnapshot;
-
-    (Object.keys(asyncOperations) as (keyof AsyncOperationQueues)[]).forEach(
-      (queue) => {
-        asyncOperationSnapshot[queue] = Array.from(
-          asyncOperations[queue].values(),
-        );
-        asyncOperations[queue].clear();
-      },
-    );
-
-    return asyncOperationSnapshot;
+    asyncOperations.add(asyncOperation);
   }
 
   private async renderingLoop(
     render: () => Promise<string> | string,
-    asyncOperations: AsyncOperationQueues,
+    asyncOperations: Set<Promise<unknown>>,
   ): Promise<string> {
     let html = await render();
 
-    while (this.isPromiseExisting(asyncOperations)) {
-      while (this.isPromiseExisting(asyncOperations)) {
-        const asyncOperationsSnapshot = this.cloneQueue(asyncOperations);
+    while (asyncOperations.size > 0) {
+      while (asyncOperations.size > 0) {
+        // Storing a snapshot of the asynchronous operations and clearing them
+        // afterwards, allows that consecutive promises can be added while the
+        // current asynchronous operations are running.
 
-        await Promise.all(asyncOperationsSnapshot.contentLoading);
-        // errors can be handled using the <FeatureAppLoader /> (e.g. onError callback)
-        await Promise.allSettled(asyncOperationsSnapshot.jsLoading);
+        const asyncOperationsSnapshot = Array.from(asyncOperations.values());
+
+        asyncOperations.clear();
+
+        await Promise.all(asyncOperationsSnapshot);
       }
 
       html = await render();
