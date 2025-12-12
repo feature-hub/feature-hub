@@ -75,6 +75,22 @@ describe('FeatureAppLoader (on Node.js)', () => {
       </FeatureHubContextProvider>,
     );
 
+  const mockSynchronousFeatureAppDefinition = (
+    featureAppManager: FeatureAppManager,
+    opts?: {id?: string},
+  ): void => {
+    const id = opts?.id ?? 'fa-id';
+
+    jest
+      .spyOn(featureAppManager, 'getAsyncFeatureAppDefinition')
+      .mockReturnValue({
+        value: {
+          id,
+          create: jest.fn(),
+        },
+      } as unknown as AsyncValue<FeatureAppDefinition<unknown>>);
+  };
+
   describe('without a serverSrc', () => {
     it('does not try to load a Feature App definition', () => {
       renderWithFeatureHubContext(
@@ -133,14 +149,7 @@ describe('FeatureAppLoader (on Node.js)', () => {
       });
 
       it('adds the prepended src URL and moduleType for hydration with synchronously loaded Feature App definition', () => {
-        jest
-          .spyOn(mockFeatureAppManager, 'getAsyncFeatureAppDefinition')
-          .mockReturnValue({
-            value: {
-              id: 'fa-id',
-              create: jest.fn(),
-            },
-          } as unknown as AsyncValue<FeatureAppDefinition<unknown>>);
+        mockSynchronousFeatureAppDefinition(mockFeatureAppManager);
 
         renderWithFeatureHubContext(
           <FeatureAppLoader
@@ -160,11 +169,7 @@ describe('FeatureAppLoader (on Node.js)', () => {
       });
     });
 
-    it('schedules a rerender on the Async SSR Manager with the feature app definition promise', () => {
-      jest
-        .spyOn(mockFeatureAppManager, 'getAsyncFeatureAppDefinition')
-        .mockReturnValue(mockAsyncFeatureAppDefinition);
-
+    it('schedules a rerender on the Async SSR Manager with a non-rejecting feature app definition promise', () => {
       renderWithFeatureHubContext(
         <FeatureAppLoader
           featureAppId="testId"
@@ -173,20 +178,13 @@ describe('FeatureAppLoader (on Node.js)', () => {
         />,
       );
 
-      expect(mockAsyncSsrManager.scheduleRerender.mock.calls).toEqual([
-        [mockAsyncFeatureAppDefinition.promise],
-      ]);
+      expect(mockAsyncSsrManager.scheduleRerender).toHaveBeenCalledWith(
+        expect.any(Promise),
+      );
     });
 
     it('adds the src URL for hydration with synchronously loaded Feature App definition', () => {
-      jest
-        .spyOn(mockFeatureAppManager, 'getAsyncFeatureAppDefinition')
-        .mockReturnValue({
-          value: {
-            id: 'fa-id',
-            create: jest.fn(),
-          },
-        } as unknown as AsyncValue<FeatureAppDefinition<unknown>>);
+      mockSynchronousFeatureAppDefinition(mockFeatureAppManager);
 
       renderWithFeatureHubContext(
         <FeatureAppLoader
@@ -253,10 +251,6 @@ describe('FeatureAppLoader (on Node.js)', () => {
       });
 
       it('logs the error', () => {
-        jest
-          .spyOn(mockFeatureAppManager, 'getAsyncFeatureAppDefinition')
-          .mockReturnValue(mockAsyncFeatureAppDefinition);
-
         renderWithFeatureHubContext(
           <FeatureAppLoader
             src="example.js"
@@ -288,14 +282,7 @@ describe('FeatureAppLoader (on Node.js)', () => {
       });
 
       it('adds the src URL for hydration with synchronously loaded Feature App definition', () => {
-        jest
-          .spyOn(mockFeatureAppManager, 'getAsyncFeatureAppDefinition')
-          .mockReturnValue({
-            value: {
-              id: 'fa-id',
-              create: jest.fn(),
-            },
-          } as unknown as AsyncValue<FeatureAppDefinition<unknown>>);
+        mockSynchronousFeatureAppDefinition(mockFeatureAppManager);
 
         try {
           renderWithFeatureHubContext(
@@ -312,6 +299,30 @@ describe('FeatureAppLoader (on Node.js)', () => {
           undefined,
         );
       });
+    });
+
+    it('schedules a rerender on the Async SSR Manager with a non-rejecting loading promise', async () => {
+      const mockError = new Error('boom');
+
+      mockAsyncFeatureAppDefinition = new AsyncValue(Promise.reject(mockError));
+
+      jest
+        .spyOn(mockFeatureAppManager, 'getAsyncFeatureAppDefinition')
+        .mockReturnValue(mockAsyncFeatureAppDefinition);
+
+      renderWithFeatureHubContext(
+        <FeatureAppLoader
+          featureAppId="testId"
+          src="example.js"
+          serverSrc="example-node.js"
+        />,
+      );
+
+      expect(mockAsyncSsrManager.scheduleRerender).toHaveBeenCalledTimes(1);
+
+      await expect(
+        mockAsyncSsrManager.scheduleRerender.mock.calls[0][0],
+      ).resolves.toBeUndefined();
     });
   });
 
