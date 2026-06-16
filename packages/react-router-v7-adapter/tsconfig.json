@@ -1,0 +1,13 @@
+{
+  "extends": "../../tsconfig.settings.json",
+  "include": ["src/**/*"],
+  "compilerOptions": {
+    "outDir": "lib/cjs",
+    "rootDir": "src"
+  },
+  "references": [
+    {"path": "../core"},
+    {"path": "../logger"},
+    {"path": "../server-request"}
+  ]
+}

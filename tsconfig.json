@@ -12,6 +12,9 @@
     {"path": "./packages/module-loader-federation"},
     {"path": "./packages/react"},
     {"path": "./packages/serialized-state-manager"},
+    {"path": "./packages/react-router-v7-adapter"},
+    {"path": "./packages/react-router-v6-30-adapter"},
+    {"path": "./packages/serialized-state-manager"},
     {"path": "./packages/server-request"},
     {"path": "./packages/website"}
   ]

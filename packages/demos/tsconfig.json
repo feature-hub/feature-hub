@@ -4,7 +4,8 @@
   "compilerOptions": {
     "allowJs": true,
     "outDir": "lib",
-    "rootDir": "src"
+    "rootDir": "src",
+    "skipLibCheck": true
   },
   "references": [
     {"path": "../async-ssr-manager"},
@@ -16,6 +17,7 @@
     {"path": "../module-loader-commonjs"},
     {"path": "../module-loader-federation"},
     {"path": "../react"},
+    {"path": "../react-router-v7-adapter"},
     {"path": "../serialized-state-manager"},
     {"path": "../server-request"}
   ]

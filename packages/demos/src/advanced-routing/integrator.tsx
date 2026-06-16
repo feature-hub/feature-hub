@@ -15,6 +15,7 @@ import {
   type NavigationServiceV1,
   navigationServiceDefinition,
 } from './navigation-service';
+import {adaptV7History} from '@feature-hub/react-router-v7-adapter';
 
 defineExternals({react: React});
 
@@ -42,7 +43,7 @@ const navigationService = featureServices[
 
 ReactDOM.render(
   <FeatureHubContextProvider value={{featureAppManager}}>
-    <HistoryRouter history={navigationService.history}>
+    <HistoryRouter history={adaptV7History(navigationService.history)}>
       <App />
     </HistoryRouter>
   </FeatureHubContextProvider>,
