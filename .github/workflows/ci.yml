@@ -12,6 +12,9 @@ on:
 env:
   CI: true
 
+permissions:
+  contents: read
+
 jobs:
   commitlint:
     runs-on: ubuntu-latest
