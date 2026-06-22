@@ -2,8 +2,6 @@
 
 const fs = require('fs');
 
-
-
 /** @type {import('jest-environment-puppeteer').JestPuppeteerConfig} */
 module.exports = {
   launch: {
