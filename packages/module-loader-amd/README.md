@@ -7,12 +7,6 @@ A `FeatureAppManager`-compatible AMD module loader.
 
 ## Installation
 
-### Using Yarn
-
-```sh
-yarn add @feature-hub/module-loader-amd
-```
-
 ### Using npm
 
 ```sh

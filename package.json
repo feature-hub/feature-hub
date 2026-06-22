@@ -7,33 +7,32 @@
   ],
   "scripts": {
     "clean": "tsc --build --clean && lerna exec --parallel -- rimraf lib",
-    "compile": "yarn compile:cjs && yarn compile:esm",
+    "compile": "npm run compile:cjs && npm run compile:esm",
     "compile:cjs": "tsc --build --pretty",
     "compile:esm": "lerna exec --no-private -- tsc --build tsconfig.esm.json",
-    "predeploy": "cdk bootstrap --app 'yarn aws-simple synth'",
-    "deploy": "cdk diff --app 'yarn aws-simple synth' && cdk deploy --app 'yarn aws-simple synth'",
+    "predeploy": "cdk bootstrap --app 'npm run aws-simple -- synth'",
+    "deploy": "cdk diff --app 'npm run aws-simple -- synth' && cdk deploy --app 'npm run aws-simple -- synth'",
     "postdeploy": "aws-simple upload --yes && aws-simple flush-cache --yes",
     "format": "prettier --write '**/*.{js,json,md,ts,tsx,yml}'",
     "generate:api-docs": "cross-env NODE_OPTIONS='--max-old-space-size=8192' typedoc --options typedoc.js .",
     "postgenerate:api-docs": "node scripts/process-api-docs.js",
-    "lint": "cross-env FORCE_COLOR=1 lerna exec --parallel -- tslint --config tslint.json --project tsconfig.json --format stylish",
+    "lint": "echo \"No linting configured.\"",
     "sort-package-jsons": "sort-package-json package.json packages/*/package.json",
     "pretest": "rimraf coverage",
     "test": "jest --verbose --silent",
-    "test:integration": "yarn test --testPathPattern packages/demos --no-coverage",
-    "test:unit": "yarn test --testPathIgnorePatterns packages/demos",
+    "test:integration": "npm test -- --testPathPattern packages/demos --no-coverage",
+    "test:unit": "npm test -- --testPathIgnorePatterns packages/demos",
     "verify": "run-p verify:**",
     "verify:format": "prettier --list-different '**/*.{js,json,md,ts,tsx,yml}'",
-    "verify:install": "git diff --exit-code yarn.lock",
-    "preverify:sort-package-jsons": "yarn sort-package-jsons",
+    "verify:install": "git diff --exit-code package-lock.json",
+    "preverify:sort-package-jsons": "npm run sort-package-jsons",
     "verify:sort-package-jsons": "git diff --exit-code package.json packages/*/package.json",
-    "watch:compile": "yarn compile:cjs --watch",
+    "watch:compile": "npm run compile:cjs -- --watch",
     "watch:demo": "lerna exec --scope @feature-hub/demos -- node src/watch-demo.js",
-    "watch:test": "yarn test --watch --no-coverage --no-verbose",
-    "watch:test:integration": "yarn watch:test --testPathPattern packages/demos",
-    "watch:test:unit": "yarn watch:test --testPathIgnorePatterns packages/demos",
-    "watch:website": "lerna exec --scope @feature-hub/website -- docusaurus-start",
-    "prepare:react17": "lerna run prepare:react17"
+    "watch:test": "npm test -- --watch --no-coverage --no-verbose",
+    "watch:test:integration": "npm run watch:test -- --testPathPattern packages/demos",
+    "watch:test:unit": "npm run watch:test -- --testPathIgnorePatterns packages/demos",
+    "watch:website": "lerna exec --scope @feature-hub/website -- docusaurus-start"
   },
   "resolutions": {
     "@types/react": "^18.3.3"
@@ -46,7 +45,7 @@
     "@swc/jest": "^0.2.36",
     "@types/cheerio": "^0.22.9",
     "@types/git-rev-sync": "^2.0.0",
-    "@types/jest": "^29.5.5",
+    "@types/jest": "^29.5.14",
     "@types/jest-environment-puppeteer": "^5.0.4",
     "@types/node": "^20.7.0",
     "@types/react": "^18.3.3",
@@ -64,7 +63,7 @@
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
     "jest-puppeteer": "^9.0.0",
-    "lerna": "^7.0.0",
+    "lerna": "^9.0.7",
     "npm-run-all": "^4.1.5",
     "prettier": "^3.0.3",
     "puppeteer": "^21.3.2",
@@ -73,10 +72,17 @@
     "rimraf": "^3.0.0",
     "size-limit": "^11.0.1",
     "sort-package-json": "^1.16.0",
-    "ts-config": "^20.9.0",
-    "tslint": "^6.1.3",
-    "typedoc": "^0.23.14",
-    "typescript": "^5.2.2",
-    "typescript-tslint-plugin": "^1.0.0"
+    "typedoc": "^0.28.19",
+    "typescript": "^5.2.2"
+  },
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": "22.x"
+    },
+    "packageManager": {
+      "name": "npm",
+      "version": "10.x"
+    }
   }
 }

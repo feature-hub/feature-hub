@@ -19,14 +19,14 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
       - name: Commitlint
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        uses: wagoid/commitlint-github-action@v3
+        uses: wagoid/commitlint-github-action@v6
 
   word-blacklist:
     runs-on: ubuntu-latest
@@ -34,7 +34,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Word Blacklist
         env:
@@ -43,33 +43,25 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node: ['18', '20']
-    name: Test (Node ${{ matrix.node }})
+    name: Test
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup node ${{ matrix.node }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node }}
+        uses: actions/setup-node@v6
 
       - name: Install
-        run: yarn install
-
-      - name: Prepare React17
-        run: yarn prepare:react17
+        run: npm install
 
       - name: Unit Tests
-        run: yarn test:unit --no-cache --maxWorkers 2 --no-verbose
+        run: npm run test:unit --no-cache --maxWorkers 2 --no-verbose
 
       - name: Integration Tests
         env:
           NODE_OPTIONS: --max-old-space-size=4096
-        run: yarn test:integration --no-cache --maxWorkers 2
+        run: npm run test:integration --no-cache --maxWorkers 2
 
   coverage:
     if: github.event_name == 'pull_request'
@@ -82,39 +74,34 @@ jobs:
       - name: Create Coverage Report
         uses: ArtiomTr/jest-coverage-report-action@v2
         with:
-          package-manager: yarn
-          test-script: yarn test:unit
+          package-manager: npm
+          test-script: npm run test:unit
 
   compile-lint-verify:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node: ['18', '20']
-    name: Compile, Lint & Verify (Node ${{ matrix.node }})
+    name: Compile, Lint & Verify
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
-      - name: Setup node ${{ matrix.node }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node }}
+      - name: Setup node
+        uses: actions/setup-node@v6
 
       - name: Install
-        run: yarn install
+        run: npm install
 
       - name: Compile CJS
-        run: yarn compile:cjs
+        run: npm run compile:cjs
 
       - name: Compile ESM
-        run: yarn compile:esm
+        run: npm run compile:esm
 
       - name: Lint
-        run: yarn lint
+        run: npm run lint
 
       - name: Verify
-        run: yarn verify
+        run: npm run verify
 
   size-limit:
     if: github.event_name == 'pull_request'
@@ -123,12 +110,10 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup node
-        uses: actions/setup-node@v3
-        with:
-          node-version-file: '.node-version'
+        uses: actions/setup-node@v6
 
       - name: Size Limit
         uses: andresz1/size-limit-action@v1

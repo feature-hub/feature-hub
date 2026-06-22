@@ -7,7 +7,7 @@
       "problemMatcher": ["$tsc-watch"],
       "group": {"kind": "build", "isDefault": true},
       "label": "npm: watch:compile",
-      "detail": "yarn compile --watch",
+      "detail": "npm run watch:compile",
       "isBackground": true
     }
   ]

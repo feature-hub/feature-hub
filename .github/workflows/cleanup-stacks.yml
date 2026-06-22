@@ -12,15 +12,13 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup node
-        uses: actions/setup-node@v3
-        with:
-          node-version-file: '.node-version'
+        uses: actions/setup-node@v6
 
       - name: Install
-        run: yarn install
+        run: npm install
 
       - name: Cleanup
         env:
@@ -28,4 +26,4 @@ jobs:
           AWS_REGION: ${{ secrets.AWS_REGION }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_HOSTED_ZONE_NAME: ${{ secrets.AWS_HOSTED_ZONE_NAME }}
-        run: yarn aws-simple purge --min-age 5 --yes
+        run: npm run aws-simple purge -- --min-age 5 --yes

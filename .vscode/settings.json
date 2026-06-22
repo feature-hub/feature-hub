@@ -11,8 +11,6 @@
     "**/package-lock.json": true,
     "**/packages/website/build": true,
     "**/packages/website/i18n": true,
-    "**/yarn-error.log": true,
-    "**/yarn.lock": true
   },
   "tslint.enable": true,
   "tslint.ignoreDefinitionFiles": false,

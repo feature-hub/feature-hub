@@ -17,7 +17,8 @@ contributing bugfixes and improvements.
 To get started, install the dependencies and run the tests:
 
 ```sh
-yarn && yarn test
+npm install
+npm run test
 ```
 
 ### Code of Conduct
@@ -28,19 +29,19 @@ by its terms.
 
 ### Development Scripts
 
-- `yarn watch:test` — Watches all tests.
-  - `yarn watch:test:unit` — Watches only unit tests.
-  - `yarn watch:test:integration` — Watches only integration tests.
-- `yarn watch:compile` — Watches all sources.
-- `yarn watch:demo <demo-name>` — Watches the given
+- `npm run watch:test` — Watches all tests.
+  - `npm run watch:test:unit` — Watches only unit tests.
+  - `npm run watch:test:integration` — Watches only integration tests.
+- `npm run watch:compile` — Watches all sources.
+- `npm run watch:demo -- <demo-name>` — Watches the given
   [demo][demos-package-getting-started].
-- `yarn watch:website` — Watches the website.
-- `yarn test` — Executes all tests.
-- `yarn compile` — Compiles all sources.
-- `yarn lint` — Lints all sources.
-- `yarn verify` — Verifies non-functional requirements (used on CI).
-- `yarn format` — Formats all files.
-- `yarn sort-package-jsons` — Sorts all `package.json` files.
+- `npm run watch:website` — Watches the website.
+- `npm test` — Executes all tests.
+- `npm run compile` — Compiles all sources.
+- `npm run lint` — Lints all sources.
+- `npm run verify` — Verifies non-functional requirements (used on CI).
+- `npm run format` — Formats all files.
+- `npm run sort-package-jsons` — Sorts all `package.json` files.
 
 ### Publishing a New Release
 

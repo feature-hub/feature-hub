@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`FeatureAppLoader with a css prop and a baseUrl appends link elements to the document head 1`] = `
 <head>

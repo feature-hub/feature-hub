@@ -7,12 +7,6 @@ A `FeatureAppManager`-compatible Webpack Module Federation loader.
 
 ## Installation
 
-### Using Yarn
-
-```sh
-yarn add @feature-hub/module-loader-federation
-```
-
 ### Using npm
 
 ```sh

@@ -7,12 +7,6 @@ A `FeatureAppManager`-compatible CommonJS module loader.
 
 ## Installation
 
-### Using Yarn
-
-```sh
-yarn add @feature-hub/module-loader-commonjs
-```
-
 ### Using npm
 
 ```sh

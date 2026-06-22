@@ -11,12 +11,6 @@ Create scalable web applications using micro frontends.
 
 ## Installation
 
-### Using Yarn
-
-```sh
-yarn add @feature-hub/core
-```
-
 ### Using npm
 
 ```sh

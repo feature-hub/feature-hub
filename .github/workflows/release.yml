@@ -15,28 +15,26 @@ jobs:
           fetch-depth: 0
 
       - name: Setup node
-        uses: actions/setup-node@v3
-        with:
-          node-version-file: '.node-version'
+        uses: actions/setup-node@v6
 
       - name: Install
-        run: yarn install
+        run: npm install
 
       - name: Compile
-        run: yarn compile
+        run: npm run compile
 
       - name: Create Version
         run: |
           git config --global user.email "s2-feature-hub@accenture.com"
           git config --global user.name "Feature Hub CI"
-          yarn lerna version --conventional-commits --no-push --yes
+          npx lerna version --conventional-commits --no-push --yes
 
       - name: Publish Version
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           npm config set "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}"
-          yarn lerna publish from-git --yes --no-verify-access
+          npx lerna publish from-git --yes --no-verify-access
 
       - name: Push Changes
         run: git push --follow-tags

@@ -22,7 +22,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Add comment reaction
-        uses: actions/github-script@v6
+        uses: actions/github-script@v8
         with:
           github-token: ${{ github.token }}
           result-encoding: string
@@ -43,7 +43,7 @@ jobs:
           exit 1
 
       - name: Get PR Head SHA
-        uses: actions/github-script@v6
+        uses: actions/github-script@v8
         id: gitSha
         with:
           github-token: ${{ github.token }}
@@ -62,29 +62,27 @@ jobs:
             return sha;
 
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: ${{ steps.gitSha.outputs.result }}
 
       - name: Setup node
-        uses: actions/setup-node@v3
-        with:
-          node-version-file: '.node-version'
+        uses: actions/setup-node@v6
 
       - name: Install
-        run: yarn install
+        run: npm install
 
       - name: Build Website
-        run: yarn lerna exec --scope @feature-hub/website 'docusaurus-build'
+        run: npm run lerna exec --scope @feature-hub/website 'docusaurus-build'
 
       - name: Compile
-        run: yarn compile:cjs
+        run: npm run compile:cjs
 
       - name: Generate API Docs
-        run: yarn run generate:api-docs
+        run: npm run generate:api-docs
 
       - name: Build TodoMVC
-        run: yarn lerna run --scope @feature-hub/demos build:todomvc
+        run: npm run lerna run --scope @feature-hub/demos build:todomvc
 
       - name: Deploy
         env:
@@ -93,10 +91,10 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_HOSTED_ZONE_NAME: ${{ secrets.AWS_HOSTED_ZONE_NAME }}
           AWS_ALIAS_RECORD_NAME: ${{ steps.gitSha.outputs.short }}
-        run: yarn deploy --require-approval never
+        run: npm run deploy -- --require-approval never
 
       - name: Add PR Comment
-        uses: actions/github-script@v6
+        uses: actions/github-script@v8
         with:
           github-token: ${{ github.token }}
           script: |
@@ -127,7 +125,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Add comment reaction
-        uses: actions/github-script@v6
+        uses: actions/github-script@v8
         with:
           github-token: ${{ github.token }}
           result-encoding: string
@@ -148,7 +146,7 @@ jobs:
           exit 1
 
       - name: Get Git Ref
-        uses: actions/github-script@v6
+        uses: actions/github-script@v8
         id: gitRef
         with:
           github-token: ${{ github.token }}
@@ -167,21 +165,19 @@ jobs:
             return ref;
 
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: ${{ steps.gitRef.outputs.result }}
           fetch-depth: 0
 
       - name: Setup node
-        uses: actions/setup-node@v3
-        with:
-          node-version-file: '.node-version'
+        uses: actions/setup-node@v6
 
       - name: Install
-        run: yarn install
+        run: npm install
 
       - name: Compile
-        run: yarn compile
+        run: npm run compile
 
       - name: Publish Version
         env:
@@ -190,10 +186,10 @@ jobs:
           git config --global user.email "s2-feature-hub@accenture.com"
           git config --global user.name "Feature Hub CI"
           npm config set "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}"
-          yarn lerna publish --conventional-commits --conventional-prerelease --preid ${{ steps.gitRef.outputs.result }}.${{ steps.gitRef.outputs.short }} --dist-tag ${{ steps.gitRef.outputs.result }} --no-git-tag-version --yes --no-verify-access
+          npx lerna publish --conventional-commits --conventional-prerelease --preid ${{ steps.gitRef.outputs.result }}.${{ steps.gitRef.outputs.short }} --dist-tag ${{ steps.gitRef.outputs.result }} --no-git-tag-version --yes --no-verify-access
 
       - name: Add PR Comment
-        uses: actions/github-script@v6
+        uses: actions/github-script@v8
         with:
           github-token: ${{ github.token }}
           script: |

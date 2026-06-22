@@ -7,12 +7,6 @@ A library for building a Feature Hub integrator with React.
 
 ## Installation
 
-### Using Yarn
-
-```sh
-yarn add @feature-hub/react
-```
-
 ### Using npm
 
 ```sh
