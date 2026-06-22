@@ -53,6 +53,8 @@ jobs:
         uses: actions/setup-node@v6
         with:
           cache: npm
+          cache-dependency-path: |
+            package-lock.json
 
       - name: Install
         run: npm ci
@@ -91,6 +93,8 @@ jobs:
         uses: actions/setup-node@v6
         with:
           cache: npm
+          cache-dependency-path: |
+            package-lock.json
 
       - name: Install
         run: npm ci
@@ -120,6 +124,8 @@ jobs:
         uses: actions/setup-node@v6
         with:
           cache: npm
+          cache-dependency-path: |
+            package-lock.json
 
       - name: Size Limit
         uses: andresz1/size-limit-action@v1
