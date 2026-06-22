@@ -37,7 +37,7 @@ jobs:
             });
 
       - name: Abort if prohibited
-        if: '! steps.check.outputs.has-permission'
+        if: "! steps.check.outputs.has-permission"
         run: |
           echo "Permissions are insufficient."
           exit 1
@@ -68,9 +68,11 @@ jobs:
 
       - name: Setup node
         uses: actions/setup-node@v6
+        with:
+          cache: npm
 
       - name: Install
-        run: npm install
+        run: npm ci
 
       - name: Build Website
         run: npm run lerna exec --scope @feature-hub/website 'docusaurus-build'
@@ -140,7 +142,7 @@ jobs:
             });
 
       - name: Abort if prohibited
-        if: '! steps.check.outputs.has-permission'
+        if: "! steps.check.outputs.has-permission"
         run: |
           echo "Permissions are insufficient."
           exit 1
@@ -172,9 +174,11 @@ jobs:
 
       - name: Setup node
         uses: actions/setup-node@v6
+        with:
+          cache: npm
 
       - name: Install
-        run: npm install
+        run: npm ci
 
       - name: Compile
         run: npm run compile

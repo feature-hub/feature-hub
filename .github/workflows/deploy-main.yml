@@ -17,9 +17,11 @@ jobs:
 
       - name: Setup node
         uses: actions/setup-node@v6
+        with:
+          cache: npm
 
       - name: Install
-        run: npm install
+        run: npm ci
 
       - name: Build Website
         run: npm run lerna exec --scope @feature-hub/website 'docusaurus-build'

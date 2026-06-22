@@ -1,7 +1,7 @@
 name: Cleanup Stacks
 on:
   schedule:
-    - cron: '0 4 * * MON-FRI'
+    - cron: "0 4 * * MON-FRI"
 
 jobs:
   cleanup-stacks:
@@ -16,9 +16,11 @@ jobs:
 
       - name: Setup node
         uses: actions/setup-node@v6
+        with:
+          cache: npm
 
       - name: Install
-        run: npm install
+        run: npm ci
 
       - name: Cleanup
         env:

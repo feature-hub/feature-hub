@@ -51,9 +51,11 @@ jobs:
 
       - name: Setup node ${{ matrix.node }}
         uses: actions/setup-node@v6
+        with:
+          cache: npm
 
       - name: Install
-        run: npm install
+        run: npm ci
 
       - name: Unit Tests
         run: npm run test:unit --no-cache --maxWorkers 2 --no-verbose
@@ -87,9 +89,11 @@ jobs:
 
       - name: Setup node
         uses: actions/setup-node@v6
+        with:
+          cache: npm
 
       - name: Install
-        run: npm install
+        run: npm ci
 
       - name: Compile CJS
         run: npm run compile:cjs
@@ -114,6 +118,8 @@ jobs:
 
       - name: Setup node
         uses: actions/setup-node@v6
+        with:
+          cache: npm
 
       - name: Size Limit
         uses: andresz1/size-limit-action@v1
