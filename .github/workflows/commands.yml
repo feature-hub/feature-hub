@@ -79,7 +79,7 @@ jobs:
             package-lock.json
 
       - name: Install
-        run: npm ci
+        run: npm run ci
 
       - name: Build Website
         run: npm run lerna exec --scope @feature-hub/website 'docusaurus-build'
@@ -187,7 +187,7 @@ jobs:
             package-lock.json
 
       - name: Install
-        run: npm ci
+        run: npm run ci
 
       - name: Compile
         run: npm run compile

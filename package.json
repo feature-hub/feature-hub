@@ -32,7 +32,8 @@
     "watch:test": "npm test -- --watch --no-coverage --no-verbose",
     "watch:test:integration": "npm run watch:test -- --testPathPattern packages/demos",
     "watch:test:unit": "npm run watch:test -- --testPathIgnorePatterns packages/demos",
-    "watch:website": "lerna exec --scope @feature-hub/website -- docusaurus-start"
+    "watch:website": "lerna exec --scope @feature-hub/website -- docusaurus-start",
+    "ci": "npm ci --prefer-offline --no-audit --no-fund --loglevel=error --ignore-scripts"
   },
   "resolutions": {
     "@types/react": "^18.3.3"
