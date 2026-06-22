@@ -18,7 +18,7 @@
     "postgenerate:api-docs": "node scripts/process-api-docs.js",
     "lint": "echo \"No linting configured.\"",
     "sort-package-jsons": "sort-package-json package.json packages/*/package.json",
-    "pretest": "rimraf coverage",
+    "pretest": "rimraf coverage && npm run install:pupeteer",
     "test": "jest --verbose --silent",
     "test:integration": "npm test -- --testPathPattern packages/demos --no-coverage",
     "test:unit": "npm test -- --testPathIgnorePatterns packages/demos",
@@ -33,7 +33,8 @@
     "watch:test:integration": "npm run watch:test -- --testPathPattern packages/demos",
     "watch:test:unit": "npm run watch:test -- --testPathIgnorePatterns packages/demos",
     "watch:website": "lerna exec --scope @feature-hub/website -- docusaurus-start",
-    "ci": "npm ci --prefer-offline --no-audit --no-fund --loglevel=error --ignore-scripts"
+    "ci": "npm ci --prefer-offline --no-audit --no-fund --loglevel=error --ignore-scripts",
+    "install:pupeteer":"puppeteer browsers install chrome"
   },
   "resolutions": {
     "@types/react": "^18.3.3"
