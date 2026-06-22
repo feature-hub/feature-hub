@@ -34,7 +34,7 @@
     "watch:test:unit": "npm run watch:test -- --testPathIgnorePatterns packages/demos",
     "watch:website": "lerna exec --scope @feature-hub/website -- docusaurus-start",
     "ci": "npm ci --prefer-offline --no-audit --no-fund --loglevel=error --ignore-scripts",
-    "install:pupeteer":"puppeteer browsers install chrome"
+    "install:pupeteer": "puppeteer browsers install chrome"
   },
   "resolutions": {
     "@types/react": "^18.3.3"
