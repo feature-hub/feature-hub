@@ -10,7 +10,7 @@
     "**/npm-debug.log": true,
     "**/package-lock.json": true,
     "**/packages/website/build": true,
-    "**/packages/website/i18n": true,
+    "**/packages/website/i18n": true
   },
   "tslint.enable": true,
   "tslint.ignoreDefinitionFiles": false,
