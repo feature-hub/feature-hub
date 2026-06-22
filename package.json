@@ -6,6 +6,7 @@
     "packages/*"
   ],
   "scripts": {
+    "ci": "npm ci --prefer-offline --no-audit --no-fund --loglevel=error --ignore-scripts",
     "clean": "tsc --build --clean && lerna exec --parallel -- rimraf lib",
     "compile": "npm run compile:cjs && npm run compile:esm",
     "compile:cjs": "tsc --build --pretty",
@@ -16,9 +17,10 @@
     "format": "prettier --write '**/*.{js,json,md,ts,tsx,yml}'",
     "generate:api-docs": "cross-env NODE_OPTIONS='--max-old-space-size=8192' typedoc --options typedoc.js .",
     "postgenerate:api-docs": "node scripts/process-api-docs.js",
+    "install:puppeteer": "puppeteer browsers install chrome",
     "lint": "echo \"No linting configured.\"",
     "sort-package-jsons": "sort-package-json package.json packages/*/package.json",
-    "pretest": "rimraf coverage && npm run install:pupeteer",
+    "pretest": "rimraf coverage && npm run install:puppeteer",
     "test": "jest --verbose --silent",
     "test:integration": "npm test -- --testPathPattern packages/demos --no-coverage",
     "test:unit": "npm test -- --testPathIgnorePatterns packages/demos",
@@ -32,9 +34,7 @@
     "watch:test": "npm test -- --watch --no-coverage --no-verbose",
     "watch:test:integration": "npm run watch:test -- --testPathPattern packages/demos",
     "watch:test:unit": "npm run watch:test -- --testPathIgnorePatterns packages/demos",
-    "watch:website": "lerna exec --scope @feature-hub/website -- docusaurus-start",
-    "ci": "npm ci --prefer-offline --no-audit --no-fund --loglevel=error --ignore-scripts",
-    "install:pupeteer": "puppeteer browsers install chrome"
+    "watch:website": "lerna exec --scope @feature-hub/website -- docusaurus-start"
   },
   "resolutions": {
     "@types/react": "^18.3.3"
@@ -73,7 +73,7 @@
     "react-dom": "^18.3.1",
     "rimraf": "^3.0.0",
     "size-limit": "^11.0.1",
-    "sort-package-json": "^1.16.0",
+    "sort-package-json": "^4.0.0",
     "typedoc": "^0.28.19",
     "typescript": "^5.2.2"
   },
