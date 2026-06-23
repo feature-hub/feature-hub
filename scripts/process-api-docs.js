@@ -18,59 +18,7 @@ updateHtmlFile(path.join(apiDocsDirname, 'index.html'), ($) => {
 // Remove "Defined in ..." elements for all sources in node_modules.
 
 const filenames = glob.sync(path.join(apiDocsDirname, '**/*.html')).map(String);
-/*
-// -- START REWRITE LINKS
-const toPosixPath = (filename) => filename.split(path.sep).join(path.posix.sep);
 
-const rewriteTypeDocUrl = (filename, url) => {
-  if (
-    !url ||
-    url.startsWith('#') ||
-    url.startsWith('/') ||
-    /^[a-z][a-z0-9+.-]*:/i.test(url) ||
-    url.startsWith('//')
-  ) {
-    return url;
-  }
-
-  const match = /^([^?#]*)([?#].*)?$/.exec(url);
-  const urlPath = match && match[1];
-  const suffix = (match && match[2]) || '';
-
-  if (
-    !urlPath ||
-    !(
-      /^(?:\.\.\/)*assets\//.test(urlPath) ||
-      /^(?:\.\.\/)*media\//.test(urlPath) ||
-      urlPath.endsWith('.html')
-    )
-  ) {
-    return url;
-  }
-
-  const dirname = toPosixPath(
-    path.relative(apiDocsDirname, path.dirname(filename)),
-  );
-  const rewrittenPath = path.posix.normalize(path.posix.join(dirname, urlPath));
-
-  return `/api/${rewrittenPath}${suffix}`;
-};
-
-for (const filename of filenames) {
-  updateHtmlFile(filename, ($) => {
-    $('[href], [src]').each((_index, element) => {
-      for (const attribute of ['href', 'src']) {
-        const value = $(element).attr(attribute);
-
-        if (value) {
-          $(element).attr(attribute, rewriteTypeDocUrl(filename, value));
-        }
-      }
-    });
-  });
-}
-//-- END REWRITE LINKS
-*/
 for (const filename of filenames) {
   updateHtmlFile(filename, ($) => {
     $('.tsd-sources')

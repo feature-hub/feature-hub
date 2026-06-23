@@ -1,0 +1,58 @@
+body:not(.sideNavVisible) {
+  background-image: linear-gradient(to bottom right, #500dc5, #ea3458);
+}
+
+body:not(.sideNavVisible) .fixedHeaderContainer {
+  display: none;
+}
+
+body:not(.sideNavVisible) .nav-footer {
+  display: none;
+}
+
+body:not(.sideNavVisible) .projectTitle {
+  color: rgba(255, 255, 255, 1);
+  margin: 0.3em 0;
+}
+
+body:not(.sideNavVisible) .projectTitle small {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+body:not(.sideNavVisible) .button {
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+body:not(.sideNavVisible) .projectLogo {
+  display: inherit;
+}
+
+body:not(.sideNavVisible) .projectLogo img {
+  height: 100px;
+  margin-bottom: 0px;
+}
+
+@media only screen and (min-width: 480px) {
+  body:not(.sideNavVisible) .projectLogo img {
+    height: 120px;
+  }
+}
+
+body:not(.sideNavVisible) .button:hover {
+  background: #ea3458;
+  color: #fff;
+}
+
+blockquote {
+  color: #24292e;
+}
+
+sup {
+  vertical-align: super;
+  font-size: smaller;
+}
+
+.footnote-backref {
+  font-family: initial;
+}

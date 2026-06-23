@@ -9,7 +9,6 @@
     "**/node_modules": true,
     "**/npm-debug.log": true,
     "**/package-lock.json": true,
-    "**/packages/website/.docusaurus": true,
     "**/packages/website/build": true,
     "**/packages/website/i18n": true
   },

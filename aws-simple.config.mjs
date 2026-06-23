@@ -37,8 +37,6 @@ const responseHeaders = {
 const routes = [];
 
 for (const filename of indexFilenames) {
-    console.log(`-> index ${filename} `);
-
   routes.push({
     type: 'file',
     path: filename,
@@ -51,7 +49,6 @@ for (const dirname of dirnames) {
   if (dirname === basename) {
     continue;
   }
-  console.log(`-> dirname ${dirname} `);
 
   routes.push({
     type: 'folder',

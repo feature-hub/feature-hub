@@ -1,9 +1,9 @@
 {
-  "extends": "@docusaurus/tsconfig",
+  "extends": "../../tsconfig.settings.json",
   "compilerOptions": {
-    "composite": true,
-    "outDir": "lib",
-    "types": ["node", "@docusaurus/module-type-aliases"]
+    "allowJs": true,
+    "noEmit": true,
+    "outDir": "lib"
   },
-  "include": ["docusaurus.config.js", "sidebars.js", "src/**/*"]
+  "include": ["core/**/*", "pages/**/*", "static/**/*"]
 }
