@@ -1,7 +1,7 @@
 name: Cleanup Stacks
 on:
   schedule:
-    - cron: "0 4 * * MON-FRI"
+    - cron: '0 4 * * MON-FRI'
 
 permissions:
   contents: read

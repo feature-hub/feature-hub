@@ -42,7 +42,7 @@ jobs:
             });
 
       - name: Abort if prohibited
-        if: "! steps.check.outputs.has-permission"
+        if: '! steps.check.outputs.has-permission'
         run: |
           echo "Permissions are insufficient."
           exit 1
@@ -149,7 +149,7 @@ jobs:
             });
 
       - name: Abort if prohibited
-        if: "! steps.check.outputs.has-permission"
+        if: '! steps.check.outputs.has-permission'
         run: |
           echo "Permissions are insufficient."
           exit 1

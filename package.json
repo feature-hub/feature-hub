@@ -20,6 +20,7 @@
     "install:puppeteer": "puppeteer browsers install chrome",
     "lint": "echo \"No linting configured.\"",
     "sort-package-jsons": "sort-package-json package.json packages/*/package.json",
+    "start:website": "NODE_ENV=production aws-simple start",
     "pretest": "rimraf coverage && npm run install:puppeteer",
     "test": "jest --verbose --silent",
     "test:integration": "npm test -- --testPathPattern packages/demos --no-coverage",
@@ -34,9 +35,7 @@
     "watch:test": "npm test -- --watch --no-coverage --no-verbose",
     "watch:test:integration": "npm run watch:test -- --testPathPattern packages/demos",
     "watch:test:unit": "npm run watch:test -- --testPathIgnorePatterns packages/demos",
-    "watch:website": "lerna exec --scope @feature-hub/website -- docusaurus-start",
-    "start:website": "NODE_ENV=production aws-simple start"
-
+    "watch:website": "lerna exec --scope @feature-hub/website -- docusaurus-start"
   },
   "resolutions": {
     "@types/react": "^18.3.3"
