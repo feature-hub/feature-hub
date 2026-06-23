@@ -11,6 +11,77 @@
   --ifm-font-size-base: 16px;
   --ifm-line-height-base: 1.5;
   --ifm-footer-background-color: #242526;
+  --ifm-navbar-background-color: #500dc5;
+  --ifm-navbar-height: 50px;
+  --ifm-navbar-link-color: rgba(255, 255, 255, 0.8);
+  --ifm-navbar-link-hover-color: #fff;
+  --ifm-navbar-shadow: none;
+}
+
+.navbar {
+  color: #fff;
+  padding-bottom: 8px;
+  padding-top: 8px;
+}
+
+.navbar__inner {
+  margin: 0 auto;
+  max-width: 1400px;
+}
+
+.navbar__brand,
+.navbar__brand:hover {
+  color: #fff;
+}
+
+.navbar__logo {
+  height: 34px;
+  margin-right: 10px;
+}
+
+.navbar__title {
+  font-size: 20px;
+  line-height: 18px;
+}
+
+.navbar__link {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 1.2;
+}
+
+.navbar__link:hover,
+.navbar__link--active {
+  color: #fff;
+}
+
+.navbar__toggle {
+  color: #fff;
+}
+
+.navbar .DocSearch-Button {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 20px;
+  box-shadow: none;
+  color: #fff;
+  height: 34px;
+}
+
+.navbar .DocSearch-Button:hover,
+.navbar .DocSearch-Button:focus {
+  background: rgba(0, 0, 0, 0.28);
+  box-shadow: none;
+  color: #fff;
+}
+
+.navbar .DocSearch-Button-Keys {
+  display: none;
+}
+
+.navbar .DocSearch-Button-Placeholder,
+.navbar .DocSearch-Search-Icon {
+  color: #e5e5e5;
 }
 
 .theme-doc-markdown {
