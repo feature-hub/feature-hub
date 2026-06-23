@@ -157,8 +157,8 @@ function isOptionalFeatureServiceDependency(
 ): boolean {
   return Boolean(
     optionalDependencies &&
-      optionalDependencies.featureServices &&
-      optionalDependencies.featureServices.hasOwnProperty(providerId),
+    optionalDependencies.featureServices &&
+    optionalDependencies.featureServices.hasOwnProperty(providerId),
   );
 }
 

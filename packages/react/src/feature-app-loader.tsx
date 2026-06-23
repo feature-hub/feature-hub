@@ -19,8 +19,9 @@ import {
 } from './internal/internal-feature-app-container';
 import {prependBaseUrl} from './internal/prepend-base-url';
 
-export interface FeatureAppLoaderProps<TConfig = unknown>
-  extends FeatureAppDescriptor {
+export interface FeatureAppLoaderProps<
+  TConfig = unknown,
+> extends FeatureAppDescriptor {
   /**
    * The absolute or relative base URL of the Feature App's assets and/or BFF.
    */

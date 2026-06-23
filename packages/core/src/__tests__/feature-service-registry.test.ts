@@ -9,8 +9,7 @@ import {
 import {ExternalsValidator} from '../externals-validator';
 import {logger} from './logger';
 
-interface MockProviderDefinition
-  extends FeatureServiceProviderDefinition<SharedFeatureService> {
+interface MockProviderDefinition extends FeatureServiceProviderDefinition<SharedFeatureService> {
   create: jest.Mock;
 }
 
@@ -18,8 +17,7 @@ interface MockFeatureService {
   kind: string;
 }
 
-interface MockFeatureServiceBinding
-  extends FeatureServiceBinding<MockFeatureService> {
+interface MockFeatureServiceBinding extends FeatureServiceBinding<MockFeatureService> {
   unbind?: jest.Mock;
 }
 

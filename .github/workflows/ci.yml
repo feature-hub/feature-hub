@@ -58,8 +58,7 @@ jobs:
         uses: actions/setup-node@v6
         with:
           cache: npm
-          cache-dependency-path: |
-            package-lock.json
+          node-version: 24.x
 
       - name: Cache Puppeteer browsers
         uses: actions/cache@v5
@@ -88,6 +87,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup node
+        uses: actions/setup-node@v6
+        with:
+          cache: npm
+          node-version: 24.x
+
       - name: Create Coverage Report
         uses: ArtiomTr/jest-coverage-report-action@v2
         with:
@@ -106,8 +111,7 @@ jobs:
         uses: actions/setup-node@v6
         with:
           cache: npm
-          cache-dependency-path: |
-            package-lock.json
+          node-version: 24.x
 
       - name: Install
         run: npm run ci
@@ -137,8 +141,7 @@ jobs:
         uses: actions/setup-node@v6
         with:
           cache: npm
-          cache-dependency-path: |
-            package-lock.json
+          node-version: 24.x
 
       - name: Size Limit
         uses: andresz1/size-limit-action@v1
