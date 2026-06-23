@@ -80,17 +80,11 @@ jobs:
       - name: Install
         run: npm run ci
 
-      - name: Build Website
-        run: npx lerna exec --scope @feature-hub/website 'docusaurus-build'
+      - name: Generate Website
+        run: npm run generate:website
 
       - name: Compile
         run: npm run compile:cjs
-
-      - name: Generate API Docs
-        run: npm run generate:api-docs
-
-      - name: Build TodoMVC
-        run: npx lerna run --scope @feature-hub/demos build:todomvc
 
       - name: Deploy
         env:
