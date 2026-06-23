@@ -2,6 +2,7 @@
 const CopyPlugin = require('copy-webpack-plugin');
 const path = require('path');
 const postcss = require('postcss');
+// @ts-expect-error No types for the require export.
 const postcssPresetEnv = require('postcss-preset-env');
 const webpack = require('webpack');
 const {merge, mergeWithRules} = require('webpack-merge');

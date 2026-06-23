@@ -4,9 +4,7 @@
   "compilerOptions": {
     "allowJs": true,
     "outDir": "lib",
-    "rootDir": "src",
-    "module": "esnext",
-    "moduleResolution": "bundler"
+    "rootDir": "src"
   },
   "references": [
     {"path": "../async-ssr-manager"},
