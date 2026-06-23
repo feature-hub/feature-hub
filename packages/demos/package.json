@@ -37,7 +37,7 @@
     "pino-pretty": "^3.0.0",
     "postcss": "^8.5.15",
     "postcss-loader": "^8.2.1",
-    "postcss-preset-env": "^11.3.1",
+    "postcss-preset-env": "^10.6.1",
     "puppeteer": "^25.1.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
