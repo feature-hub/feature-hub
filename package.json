@@ -85,7 +85,7 @@
     },
     "packageManager": {
       "name": "npm",
-      "version": ">=11.10.0 && <12.0.0"
+      "version": "^11.10.0"
     }
   }
 }
