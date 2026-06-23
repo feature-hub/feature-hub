@@ -24,7 +24,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
@@ -39,7 +39,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Word Blacklist
         env:
@@ -52,13 +52,13 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Setup node ${{ matrix.node }}
         uses: actions/setup-node@v6
         with:
           cache: npm
-          node-version: 24.x
+          node-version-file: package.json
 
       - name: Cache Puppeteer browsers
         uses: actions/cache@v5
@@ -91,7 +91,7 @@ jobs:
         uses: actions/setup-node@v6
         with:
           cache: npm
-          node-version: 24.x
+          node-version-file: package.json
 
       - name: Create Coverage Report
         uses: ArtiomTr/jest-coverage-report-action@v2
@@ -105,13 +105,13 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Setup node
         uses: actions/setup-node@v6
         with:
           cache: npm
-          node-version: 24.x
+          node-version-file: package.json
 
       - name: Install
         run: npm run ci
@@ -135,13 +135,13 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Setup node
         uses: actions/setup-node@v6
         with:
           cache: npm
-          node-version: 24.x
+          node-version-file: package.json
 
       - name: Size Limit
         uses: andresz1/size-limit-action@v1
