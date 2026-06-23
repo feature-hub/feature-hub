@@ -15,6 +15,7 @@ module.exports = {
   excludeExternals: false,
   excludePrivate: true,
   gitRevision: git.short(),
+  basePath: '/api',
   name: '@feature-hub',
   out: 'packages/website/build/feature-hub/api',
   readme: 'README.md',

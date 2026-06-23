@@ -16,6 +16,7 @@
     "postdeploy": "npx aws-simple upload --yes && npx aws-simple flush-cache --yes",
     "format": "prettier --write '**/*.{js,json,md,ts,tsx,yml}'",
     "generate:api-docs": "cross-env NODE_OPTIONS='--max-old-space-size=8192' typedoc --options typedoc.js .",
+    "generate:website": "npm run build --workspace @feature-hub/website && npm run generate:api-docs && npx lerna run --scope @feature-hub/demos build:todomvc",
     "postgenerate:api-docs": "node scripts/process-api-docs.js",
     "install:puppeteer": "puppeteer browsers install chrome",
     "lint": "echo \"No linting configured.\"",
@@ -35,7 +36,7 @@
     "watch:test": "npm test -- --watch --no-coverage --no-verbose",
     "watch:test:integration": "npm run watch:test -- --testPathPattern packages/demos",
     "watch:test:unit": "npm run watch:test -- --testPathIgnorePatterns packages/demos",
-    "watch:website": "lerna exec --scope @feature-hub/website -- docusaurus-start"
+    "watch:website": "npm run start --workspace @feature-hub/website"
   },
   "resolutions": {
     "@types/react": "^18.3.3"

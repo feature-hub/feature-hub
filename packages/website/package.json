@@ -3,10 +3,23 @@
   "version": "3.7.0",
   "private": true,
   "license": "MIT",
+  "scripts": {
+    "build": "docusaurus build --out-dir build/feature-hub",
+    "clear": "docusaurus clear",
+    "serve": "docusaurus serve",
+    "start": "docusaurus start"
+  },
   "dependencies": {
-    "react": "^18.3.1"
+    "@docusaurus/core": "3.10.1",
+    "@docusaurus/preset-classic": "3.10.1",
+    "@mdx-js/react": "^3.1.1",
+    "clsx": "^2.1.1",
+    "prism-react-renderer": "^2.4.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
-    "docusaurus": "^1.14.7"
+    "@docusaurus/module-type-aliases": "^3.10.1",
+    "@docusaurus/tsconfig": "^3.10.1"
   }
 }
