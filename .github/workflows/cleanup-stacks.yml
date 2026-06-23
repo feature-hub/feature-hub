@@ -1,7 +1,7 @@
 name: Cleanup Stacks
 on:
   schedule:
-    - cron: '0 4 * * MON-FRI'
+    - cron: "0 4 * * MON-FRI"
 
 permissions:
   contents: read
@@ -33,4 +33,4 @@ jobs:
           AWS_REGION: ${{ secrets.AWS_REGION }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_HOSTED_ZONE_NAME: ${{ secrets.AWS_HOSTED_ZONE_NAME }}
-        run: npm run aws-simple purge -- --min-age 5 --yes
+        run: npx aws-simple purge --min-age 5 --yes

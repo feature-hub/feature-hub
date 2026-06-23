@@ -42,7 +42,7 @@ jobs:
             });
 
       - name: Abort if prohibited
-        if: '! steps.check.outputs.has-permission'
+        if: "! steps.check.outputs.has-permission"
         run: |
           echo "Permissions are insufficient."
           exit 1
@@ -82,7 +82,7 @@ jobs:
         run: npm run ci
 
       - name: Build Website
-        run: npm run lerna exec --scope @feature-hub/website 'docusaurus-build'
+        run: npx lerna exec --scope @feature-hub/website 'docusaurus-build'
 
       - name: Compile
         run: npm run compile:cjs
@@ -91,7 +91,7 @@ jobs:
         run: npm run generate:api-docs
 
       - name: Build TodoMVC
-        run: npm run lerna run --scope @feature-hub/demos build:todomvc
+        run: npx lerna run --scope @feature-hub/demos build:todomvc
 
       - name: Deploy
         env:
@@ -149,7 +149,7 @@ jobs:
             });
 
       - name: Abort if prohibited
-        if: '! steps.check.outputs.has-permission'
+        if: "! steps.check.outputs.has-permission"
         run: |
           echo "Permissions are insufficient."
           exit 1

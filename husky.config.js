@@ -2,6 +2,6 @@
 
 module.exports = {
   hooks: {
-    'commit-msg': 'npm commitlint --edit',
+    'commit-msg': 'npx commitlint --edit',
   },
 };

@@ -11,9 +11,9 @@
     "compile": "npm run compile:cjs && npm run compile:esm",
     "compile:cjs": "tsc --build --pretty",
     "compile:esm": "lerna exec --no-private -- tsc --build tsconfig.esm.json",
-    "predeploy": "cdk bootstrap --app 'npm run aws-simple -- synth'",
-    "deploy": "cdk diff --app 'npm run aws-simple -- synth' && cdk deploy --app 'npm run aws-simple -- synth'",
-    "postdeploy": "aws-simple upload --yes && aws-simple flush-cache --yes",
+    "predeploy": "cdk bootstrap --app 'npx aws-simple synth'",
+    "deploy": "cdk diff --app 'npx aws-simple synth' && cdk deploy --app 'npx aws-simple synth'",
+    "postdeploy": "npx aws-simple upload --yes && npx aws-simple flush-cache --yes",
     "format": "prettier --write '**/*.{js,json,md,ts,tsx,yml}'",
     "generate:api-docs": "cross-env NODE_OPTIONS='--max-old-space-size=8192' typedoc --options typedoc.js .",
     "postgenerate:api-docs": "node scripts/process-api-docs.js",
@@ -34,7 +34,9 @@
     "watch:test": "npm test -- --watch --no-coverage --no-verbose",
     "watch:test:integration": "npm run watch:test -- --testPathPattern packages/demos",
     "watch:test:unit": "npm run watch:test -- --testPathIgnorePatterns packages/demos",
-    "watch:website": "lerna exec --scope @feature-hub/website -- docusaurus-start"
+    "watch:website": "lerna exec --scope @feature-hub/website -- docusaurus-start",
+    "start:website": "NODE_ENV=production aws-simple start"
+
   },
   "resolutions": {
     "@types/react": "^18.3.3"
