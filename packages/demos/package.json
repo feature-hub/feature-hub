@@ -4,7 +4,7 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "build:todomvc": "yarn webpack --config src/todomvc/webpack-config.js --mode production"
+    "build:todomvc": "webpack --config src/todomvc/webpack-config.js --mode production"
   },
   "dependencies": {
     "@babel/core": "^7.19.0",
@@ -38,7 +38,7 @@
     "postcss": "^7.x.x",
     "postcss-loader": "^6.2.1",
     "postcss-preset-env": "^6.7.1",
-    "puppeteer": "^21.3.2",
+    "puppeteer": "^25.1.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-is": "^18.3.1",

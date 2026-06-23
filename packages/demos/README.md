@@ -9,7 +9,7 @@ A collection of demos (including integration tests) for the Feature Hub.
 Go to the monorepo top-level directory and install all dependencies:
 
 ```sh
-yarn
+npm install
 ```
 
 Now run one of the following demos:
@@ -22,7 +22,7 @@ Demonstrates:
   Feature Apps that are deployed as AMD bundles can be loaded in the client
 
 ```sh
-yarn watch:demo module-loader-amd
+npm run watch:demo -- module-loader-amd
 ```
 
 ### [CommonJS Module Loader](src/module-loader-commonjs)
@@ -34,7 +34,7 @@ Demonstrates:
   server
 
 ```sh
-yarn watch:demo module-loader-commonjs
+npm run watch:demo -- module-loader-commonjs
 ```
 
 ### [Webpack Module Federation Loader](src/module-loader-federation)
@@ -50,7 +50,7 @@ Demonstrates:
   the Integrator
 
 ```sh
-yarn watch:demo module-loader-federation
+npm run watch:demo -- module-loader-federation
 ```
 
 ### [Multiple Module Loaders](src/module-loader-multiple)
@@ -62,7 +62,7 @@ Demonstrates:
   simultaneously in the client
 
 ```sh
-yarn watch:demo module-loader-multiple
+npm run watch:demo -- module-loader-multiple
 ```
 
 ### [Feature App in Feature App](src/feature-app-in-feature-app)
@@ -74,7 +74,7 @@ Demonstrates:
 - how the AMD module loader can be used to provide externals
 
 ```sh
-yarn watch:demo feature-app-in-feature-app
+npm run watch:demo -- feature-app-in-feature-app
 ```
 
 ### [History Service](src/history-service)
@@ -86,7 +86,7 @@ Demonstrates:
   (via the Server Request Provider)
 
 ```sh
-yarn watch:demo history-service
+npm run watch:demo -- history-service
 ```
 
 ### [Server-Side Rendering](src/server-side-rendering)
@@ -104,7 +104,7 @@ Demonstrates:
   SSR
 
 ```sh
-yarn watch:demo server-side-rendering
+npm run watch:demo -- server-side-rendering
 ```
 
 ### [Custom Logging](src/custom-logging)
@@ -115,7 +115,7 @@ Demonstrates:
   on the server, and a customized `console` on the client
 
 ```sh
-yarn watch:demo custom-logging
+npm run watch:demo -- custom-logging
 ```
 
 ### [React Loading And Error UI](src/react-loading-and-error-ui)
@@ -129,7 +129,7 @@ Demonstrates:
   error handling (e.g. logging) for a Feature App that can not be rendered
 
 ```sh
-yarn watch:demo react-loading-and-error-ui
+npm run watch:demo -- react-loading-and-error-ui
 ```
 
 ### [TodoMVC](src/todomvc)
@@ -140,7 +140,7 @@ Demonstrates:
   a Feature Service
 
 ```sh
-yarn watch:demo todomvc
+npm run watch:demo -- todomvc
 ```
 
 ### [DOM Integrator](src/integrator-dom)
@@ -151,7 +151,7 @@ Demonstrates:
   using Web Components
 
 ```sh
-yarn watch:demo integrator-dom
+npm run watch:demo -- integrator-dom
 ```
 
 ### [Advanced Routing](src/advanced-routing)
@@ -162,7 +162,7 @@ Demonstrates:
   can be utilized to push location changes from one Feature App to another
 
 ```sh
-yarn watch:demo advanced-routing
+npm run watch:demo -- advanced-routing
 ```
 
 ---

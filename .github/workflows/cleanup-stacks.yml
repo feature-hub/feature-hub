@@ -3,6 +3,9 @@ on:
   schedule:
     - cron: '0 4 * * MON-FRI'
 
+permissions:
+  contents: read
+
 jobs:
   cleanup-stacks:
     runs-on: ubuntu-latest
@@ -12,15 +15,17 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v6
         with:
-          node-version-file: '.node-version'
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
 
       - name: Install
-        run: yarn install
+        run: npm run ci
 
       - name: Cleanup
         env:
@@ -28,4 +33,4 @@ jobs:
           AWS_REGION: ${{ secrets.AWS_REGION }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_HOSTED_ZONE_NAME: ${{ secrets.AWS_HOSTED_ZONE_NAME }}
-        run: yarn aws-simple purge --min-age 5 --yes
+        run: npm run aws-simple purge -- --min-age 5 --yes

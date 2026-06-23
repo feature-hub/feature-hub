@@ -168,13 +168,13 @@ Feature Apps. Go to the monorepo top-level directory and install all
 dependencies:
 
 ```sh
-yarn
+npm install
 ```
 
 Now run the demo:
 
 ```sh
-yarn watch:demo history-service
+npm run watch:demo -- history-service
 ```
 
 ## Caveats

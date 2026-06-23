@@ -8,12 +8,6 @@ on the server.
 
 ## Installation
 
-### Using Yarn
-
-```sh
-yarn add @feature-hub/serialized-state-manager
-```
-
 ### Using npm
 
 ```sh

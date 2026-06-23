@@ -8,12 +8,6 @@ server-side rendered.
 
 ## Installation
 
-### Using Yarn
-
-```sh
-yarn add @feature-hub/server-request
-```
-
 ### Using npm
 
 ```sh

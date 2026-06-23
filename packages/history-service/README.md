@@ -7,12 +7,6 @@ A history facade guaranteeing safe access for multiple consumers.
 
 ## Installation
 
-### Using Yarn
-
-```sh
-yarn add @feature-hub/history-service
-```
-
 ### Using npm
 
 ```sh

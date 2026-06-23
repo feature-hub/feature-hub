@@ -8,12 +8,6 @@ consumers.
 
 ## Installation
 
-### Using Yarn
-
-```sh
-yarn add @feature-hub/logger
-```
-
 ### Using npm
 
 ```sh
