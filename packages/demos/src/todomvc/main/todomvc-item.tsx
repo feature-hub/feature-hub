@@ -16,20 +16,20 @@ export interface TodoMvcItemState {
 }
 
 interface ListItemProps {
-  readonly completed: boolean;
-  readonly editing: boolean;
+  readonly $completed: boolean;
+  readonly $editing: boolean;
 }
 
 interface LabelProps {
-  readonly completed: boolean;
+  readonly $completed: boolean;
 }
 
 interface ViewProps {
-  readonly editing: boolean;
+  readonly $editing: boolean;
 }
 
 interface EditInputProps {
-  readonly editing: boolean;
+  readonly $editing: boolean;
 }
 
 const DestroyButton = styled.button`
@@ -58,11 +58,11 @@ const DestroyButton = styled.button`
 const ListItem = styled.li<ListItemProps>`
   position: relative;
   font-size: 24px;
-  border-bottom: ${(props) => (props.editing ? 'none' : '1px solid #ededed')};
+  border-bottom: ${(props) => (props.$editing ? 'none' : '1px solid #ededed')};
 
   :last-child {
     border-bottom: none;
-    margin-bottom: ${(props) => (props.editing ? '-1px' : '0')};
+    margin-bottom: ${(props) => (props.$editing ? '-1px' : '0')};
   }
 
   :hover {
@@ -73,7 +73,7 @@ const ListItem = styled.li<ListItemProps>`
 `;
 
 const View = styled.div<ViewProps>`
-  display: ${(props) => (props.editing ? 'none' : 'initial')};
+  display: ${(props) => (props.$editing ? 'none' : 'initial')};
 `;
 
 const Label = styled.label<LabelProps>`
@@ -82,10 +82,10 @@ const Label = styled.label<LabelProps>`
   display: block;
   line-height: 1.2;
   transition: color 0.4s;
-  color: ${(props) => (props.completed ? '#d9d9d9' : 'inherit')};
-  text-decoration: ${(props) => (props.completed ? 'line-through' : 'none')};
+  color: ${(props) => (props.$completed ? '#d9d9d9' : 'inherit')};
+  text-decoration: ${(props) => (props.$completed ? 'line-through' : 'none')};
   background-image: ${(props) =>
-    props.completed ? `url(${checkboxCompleted})` : `url(${checkbox})`};
+    props.$completed ? `url(${checkboxCompleted})` : `url(${checkbox})`};
   background-repeat: no-repeat;
   background-position: center left;
 `;
@@ -106,7 +106,7 @@ const Toggle = styled.input`
 `;
 
 const EditInput = styled.input<EditInputProps>`
-  display: ${(props) => (props.editing ? 'block' : 'none')};
+  display: ${(props) => (props.$editing ? 'block' : 'none')};
   position: relative;
   font-size: 24px;
   font-family: inherit;
@@ -148,8 +148,8 @@ export class TodoMvcItem extends React.PureComponent<
     const {completed, id, onToggle, onDestroy, title} = this.props;
 
     return (
-      <ListItem editing={editing} completed={completed}>
-        <View editing={editing}>
+      <ListItem $editing={editing} $completed={completed}>
+        <View $editing={editing}>
           <Toggle
             type="checkbox"
             checked={completed}
@@ -158,7 +158,7 @@ export class TodoMvcItem extends React.PureComponent<
             }
           />
           <Label
-            completed={completed}
+            $completed={completed}
             onDoubleClick={this.handleLabelDoubleClick}
           >
             {title}
@@ -166,7 +166,7 @@ export class TodoMvcItem extends React.PureComponent<
           <DestroyButton onClick={() => onDestroy(id)} />
         </View>
         <EditInput
-          editing={editing}
+          $editing={editing}
           value={editText}
           ref={this.editInputRef}
           onBlur={() => this.setState({editing: false})}

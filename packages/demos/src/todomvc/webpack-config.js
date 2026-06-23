@@ -1,6 +1,8 @@
 // @ts-check
 const CopyPlugin = require('copy-webpack-plugin');
 const path = require('path');
+const postcss = require('postcss');
+const postcssPresetEnv = require('postcss-preset-env');
 const webpack = require('webpack');
 const {merge, mergeWithRules} = require('webpack-merge');
 const {webpackBaseConfig} = require('../webpack-base-config');
@@ -77,6 +79,7 @@ const configs = [
                 importLoaders: 1,
                 modules: {
                   localIdentName: '[path][name]__[local]--[hash:base64:5]',
+                  namedExport: false,
                 },
                 sourceMap: true,
               },
@@ -84,8 +87,9 @@ const configs = [
             {
               loader: 'postcss-loader',
               options: {
+                implementation: postcss,
                 postcssOptions: {
-                  plugins: [['postcss-preset-env']],
+                  plugins: [postcssPresetEnv],
                 },
               },
             },
