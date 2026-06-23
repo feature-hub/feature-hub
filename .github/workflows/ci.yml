@@ -58,8 +58,7 @@ jobs:
         uses: actions/setup-node@v6
         with:
           cache: npm
-          cache-dependency-path: |
-            package-lock.json
+          node-version: 24.x
 
       - name: Cache Puppeteer browsers
         uses: actions/cache@v5
@@ -106,8 +105,7 @@ jobs:
         uses: actions/setup-node@v6
         with:
           cache: npm
-          cache-dependency-path: |
-            package-lock.json
+          node-version: 24.x
 
       - name: Install
         run: npm run ci
@@ -137,8 +135,7 @@ jobs:
         uses: actions/setup-node@v6
         with:
           cache: npm
-          cache-dependency-path: |
-            package-lock.json
+          node-version: 24.x
 
       - name: Size Limit
         uses: andresz1/size-limit-action@v1
