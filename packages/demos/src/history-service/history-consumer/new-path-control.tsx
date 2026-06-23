@@ -1,6 +1,6 @@
 import {Button, ControlGroup, InputGroup} from '@blueprintjs/core';
 import * as React from 'react';
-import {NavigateOptions, useNavigate} from 'react-router';
+import {NavigateOptions, useNavigate} from 'react-router-dom';
 
 export interface NewPathControlProps {
   readonly specifier: string;

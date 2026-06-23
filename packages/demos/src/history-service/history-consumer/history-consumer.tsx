@@ -1,8 +1,7 @@
 import {Card, H5} from '@blueprintjs/core';
 import * as React from 'react';
 import Media from 'react-media';
-import {useLocation} from 'react-router';
-import {Link} from 'react-router-dom';
+import {Link, useLocation} from 'react-router-dom';
 import {NewPathControl} from './new-path-control';
 import {PathnameLabel} from './pathname-label';
 
