@@ -12,8 +12,6 @@ updates:
       prefix: "build(dbot):"
     open-pull-requests-limit: 3
     directory: "/"
-    registries:
-      - npm-registry-npm-pkg-github-com
     labels:
       - "dbot"
       - "javascript"
