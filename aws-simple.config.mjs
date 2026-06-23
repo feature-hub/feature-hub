@@ -7,7 +7,6 @@ import url from 'url';
 const basename = 'packages/website/build/feature-hub';
 const indexFilenames = new Set();
 const dirnames = new Set();
-const docFilenames = new Set();
 const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
 
 const filenames = globbySync(
@@ -17,11 +16,6 @@ const filenames = globbySync(
 for (const filename of filenames) {
   if (path.basename(filename) === 'index.html') {
     indexFilenames.add(filename);
-  } else if (
-    filename.endsWith('.html') &&
-    filename.match(/feature-hub\/docs/)
-  ) {
-    docFilenames.add(filename);
   } else {
     dirnames.add(path.dirname(filename));
   }
@@ -43,7 +37,7 @@ const responseHeaders = {
 const routes = [];
 
 for (const filename of indexFilenames) {
-  console.log(`-> index ${filename} `);
+    console.log(`-> index ${filename} `);
 
   routes.push({
     type: 'file',
@@ -63,21 +57,6 @@ for (const dirname of dirnames) {
     type: 'folder',
     path: dirname,
     publicPath: '/' + path.relative(basename, dirname) + '/*',
-    responseHeaders,
-  });
-}
-
-for (const docFilename of docFilenames) {
-  const docDirname = docFilename.substring(
-    0,
-    docFilename.length - '.html'.length,
-  );
-
-  console.log(`-> doc dirname ${docDirname} `);
-  routes.push({
-    type: 'folder',
-    path: docFilename,
-    publicPath: '/' + path.relative(basename, docDirname) + '/*',
     responseHeaders,
   });
 }
