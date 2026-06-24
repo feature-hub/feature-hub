@@ -17,6 +17,7 @@
     "format": "prettier --write '**/*.{js,json,md,ts,tsx,yml}'",
     "generate:api-docs": "cross-env NODE_OPTIONS='--max-old-space-size=8192' typedoc --options typedoc.js .",
     "postgenerate:api-docs": "node scripts/process-api-docs.js",
+    "generate:website": "npm run build --workspace @feature-hub/website && npm run generate:api-docs && npx lerna run --scope @feature-hub/demos build:todomvc",
     "install:puppeteer": "puppeteer browsers install chrome",
     "lint": "echo \"No linting configured.\"",
     "sort-package-jsons": "sort-package-json package.json packages/*/package.json",
@@ -35,7 +36,7 @@
     "watch:test": "npm test -- --watch --no-coverage --no-verbose",
     "watch:test:integration": "npm run watch:test -- --testPathPattern packages/demos",
     "watch:test:unit": "npm run watch:test -- --testPathIgnorePatterns packages/demos",
-    "watch:website": "lerna exec --scope @feature-hub/website -- docusaurus-start"
+    "watch:website": "npm run start --workspace @feature-hub/website"
   },
   "resolutions": {
     "@types/react": "^18.3.3"
@@ -70,8 +71,6 @@
     "npm-run-all2": "^9.0.2",
     "prettier": "^3.8.4",
     "puppeteer": "^25.1.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
     "rimraf": "^3.0.0",
     "size-limit": "^11.0.1",
     "sort-package-json": "^4.0.0",

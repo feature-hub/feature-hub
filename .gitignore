@@ -8,6 +8,7 @@ lib
 node_modules
 npm-debug.log
 packages/website/build
+packages/website/.docusaurus
 packages/website/i18n
 todo.tasks
 tsconfig.tsbuildinfo

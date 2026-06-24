@@ -87,7 +87,7 @@ The `create` method takes the single argument `env`, which has the following
 properties:
 
 1. `config` — A [config object that is provided by the
-   integrator][feature-app-configs]^1^:
+   integrator][feature-app-configs]<sup>1</sup>:
 
    ```js
    const myFeatureAppDefinition = {
@@ -122,28 +122,28 @@ properties:
    };
    ```
 
-1. `featureAppId` — The ID that the integrator^1^ has assigned to the Feature
-   App instance. This ID is used as a consumer ID for [binding the required
-   Feature Services][feature-service-create] to the Feature App.
+1. `featureAppId` — The ID that the integrator<sup>1</sup> has assigned to the
+   Feature App instance. This ID is used as a consumer ID for [binding the
+   required Feature Services][feature-service-create] to the Feature App.
 
-1. `featureAppName` — The name that the integrator^1^ might have assigned to the
-   Feature App. This name is used as a consumer name for [binding the required
-   Feature Services][feature-service-create] to the Feature App. In contrast to
-   the `featureAppId`, the name must not be unique. It can be used by required
-   Feature Services for display purposes, logging, looking up Feature App
-   configuration meta data, etc.
+1. `featureAppName` — The name that the integrator<sup>1</sup> might have
+   assigned to the Feature App. This name is used as a consumer name for
+   [binding the required Feature Services][feature-service-create] to the
+   Feature App. In contrast to the `featureAppId`, the name must not be unique.
+   It can be used by required Feature Services for display purposes, logging,
+   looking up Feature App configuration meta data, etc.
 
 1. `baseUrl` — A base URL to be used for referencing the Feature App's own
-   resources. It is only set in the `env` if the integrator^1^ has defined a
-   `baseUrl` on the corresponding
+   resources. It is only set in the `env` if the integrator<sup>1</sup> has
+   defined a `baseUrl` on the corresponding
    [`FeatureAppLoader`][feature-app-loader-base-url] or
    [`FeatureAppContainer`][feature-app-container-base-url].
 
-1. `done` — A callback that the integrator^1^ might have defined. A short-lived
-   Feature App can call this function when it has completed its task, thus
-   giving the integrator^1^ a hint, that it can be removed. For example, if the
-   Feature App was opened in a layer, the integrator^1^ could close the layer
-   when `done()` is called.
+1. `done` — A callback that the integrator<sup>1</sup> might have defined. A
+   short-lived Feature App can call this function when it has completed its
+   task, thus giving the integrator<sup>1</sup> a hint, that it can be removed.
+   For example, if the Feature App was opened in a layer, the
+   integrator<sup>1</sup> could close the layer when `done()` is called.
 
 The return value of the `create` method can vary depending on the integration
 solution used. Assuming the [`@feature-hub/react`][react-api] package is used, a
@@ -266,15 +266,15 @@ const myFeatureAppDefinition = {
 ### Loading UIs provided by the React Integrator
 
 Both kinds of Feature Apps can specify a loading stage for Feature Apps, which
-are used to allow an integrator^1^ to hide an already rendered Feature App
-visually and display a custom loading UI instead. This feature is for
+are used to allow an integrator<sup>1</sup> to hide an already rendered Feature
+App visually and display a custom loading UI instead. This feature is for
 client-side rendering only.
 
 A Feature App can declare this loading stage by passing a `Promise` in the
 object returned from their `create` function with the key `loadingPromise`. Once
 the promise resolves, the loading is considered done. If it rejects, the Feature
-App will be considered as crashed, and the integrator^1^ can use the rejection
-payload to display a custom Error UI.
+App will be considered as crashed, and the integrator<sup>1</sup> can use the
+rejection payload to display a custom Error UI.
 
 ```js
 const myFeatureAppDefinition = {
