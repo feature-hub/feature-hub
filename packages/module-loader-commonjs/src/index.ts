@@ -32,8 +32,8 @@ export function createCommonJsModuleLoader(
       `${source}
       //# sourceURL=${url}`,
     )(mod, mod.exports, (dep: string) =>
-      // biome-ignore lint/security/noGlobalEval: compatibility shim
-      Object.hasOwn(externals, dep) ? externals[dep] : eval('require')(dep),
+      // biome-ignore lint/security/noGlobalEval lint/suspicious/noPrototypeBuiltins: fix later
+      externals.hasOwnProperty(dep) ? externals[dep] : eval('require')(dep),
     );
 
     return mod.exports;

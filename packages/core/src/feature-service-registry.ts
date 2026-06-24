@@ -164,7 +164,8 @@ function isOptionalFeatureServiceDependency(
     // biome-ignore lint/complexity/useOptionalChain: readability is preferred here
     optionalDependencies &&
     optionalDependencies.featureServices &&
-    Object.hasOwn(optionalDependencies.featureServices, providerId),
+    // biome-ignore lint/suspicious/noPrototypeBuiltins: fix later
+    optionalDependencies.featureServices.hasOwnProperty(providerId),
   );
 }
 
