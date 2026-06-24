@@ -2,16 +2,18 @@
  * @jest-environment node
  */
 
-// tslint:disable:no-implicit-dependencies
-
-import {
+import type {
   FeatureAppDefinition,
   FeatureAppManager,
   FeatureAppScope,
 } from '@feature-hub/core';
 import * as React from 'react';
 import ReactDOM from 'react-dom/server';
-import {FeatureApp, FeatureAppContainer, FeatureHubContextProvider} from '..';
+import {
+  type FeatureApp,
+  FeatureAppContainer,
+  FeatureHubContextProvider,
+} from '..';
 
 describe('FeatureAppContainer (on Node.js)', () => {
   let mockFeatureAppManager: FeatureAppManager;
@@ -182,6 +184,7 @@ describe('FeatureAppContainer (on Node.js)', () => {
         <FeatureAppContainer
           featureAppId="testId"
           featureAppDefinition={mockFeatureAppDefinition}
+          // biome-ignore lint/correctness/noChildrenProp: test cases
           children={children}
         />,
       );
@@ -201,6 +204,7 @@ describe('FeatureAppContainer (on Node.js)', () => {
         <FeatureAppContainer
           featureAppId="testId"
           featureAppDefinition={mockFeatureAppDefinition}
+          // biome-ignore lint/correctness/noChildrenProp: test cases
           children={children}
         />,
       );

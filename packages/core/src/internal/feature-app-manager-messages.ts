@@ -1,4 +1,4 @@
-import {ModuleLoader} from '../feature-app-manager';
+import type {ModuleLoader} from '../feature-app-manager';
 
 export function invalidFeatureAppModule(
   url: string,

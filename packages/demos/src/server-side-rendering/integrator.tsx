@@ -5,14 +5,16 @@ import {FeatureHubContextProvider} from '@feature-hub/react';
 import {defineSerializedStateManager} from '@feature-hub/serialized-state-manager';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import {FeatureAppModuleSource} from '../app-renderer';
+import type {FeatureAppModuleSource} from '../app-renderer';
 import {App} from './app';
+import process from 'node:process';
 
 function getSerializedStatesFromDom(): string | undefined {
   const scriptElement = document.querySelector(
     'script[type="x-feature-hub/serialized-states"]',
   );
 
+  // biome-ignore lint/complexity/useOptionalChain: legacy implementation
   return (scriptElement && scriptElement.textContent) || undefined;
 }
 
@@ -21,6 +23,7 @@ function getUrlsForHydrationFromDom(): FeatureAppModuleSource[] {
     'script[type="x-feature-hub/urls-for-hydration"]',
   );
 
+  // biome-ignore lint/complexity/useOptionalChain: legacy implementation
   if (!scriptElement || !scriptElement.textContent) {
     return [];
   }

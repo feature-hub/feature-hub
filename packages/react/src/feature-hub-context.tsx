@@ -1,5 +1,5 @@
-import {AsyncSsrManagerV1} from '@feature-hub/async-ssr-manager';
-import {FeatureAppManager, Logger} from '@feature-hub/core';
+import type {AsyncSsrManagerV1} from '@feature-hub/async-ssr-manager';
+import type {FeatureAppManager, Logger} from '@feature-hub/core';
 import * as React from 'react';
 
 type SomeRequired<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>> &

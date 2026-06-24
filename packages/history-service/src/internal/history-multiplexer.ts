@@ -1,12 +1,12 @@
 import * as history from 'history';
-import {
+import type {
   ConsumerLocationV3,
   RootHistory,
   RootLocation as RootLocationV2,
   RootLocationDescriptorObject,
 } from '..';
-import {RootLocationTransformer} from '../create-root-location-transformer';
-import * as historyV4 from '../history-v4';
+import type {RootLocationTransformer} from '../create-root-location-transformer';
+import type * as historyV4 from '../history-v4';
 import {createHistoryPath} from './create-history-path';
 import {createKey} from './create-key';
 

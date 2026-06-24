@@ -2,13 +2,11 @@
  * @jest-environment node
  */
 
-// tslint:disable:no-implicit-dependencies
-
-import {AsyncSsrManagerV1} from '@feature-hub/async-ssr-manager';
+import type {AsyncSsrManagerV1} from '@feature-hub/async-ssr-manager';
 import {
   AsyncValue,
-  FeatureAppDefinition,
-  FeatureAppManager,
+  type FeatureAppDefinition,
+  type FeatureAppManager,
 } from '@feature-hub/core';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom/server';

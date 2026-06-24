@@ -1,0 +1,25 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.5.0/schema.json",
+  "vcs": {"enabled": true, "clientKind": "git", "useIgnoreFile": true},
+  "files": {
+    "includes": ["**", "!!**/lib"],
+  },
+  "formatter": {
+    "enabled": false,
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "preset": "recommended",
+      "correctness": {"noProcessGlobal": "error"},
+      "style": {"useNodejsImportProtocol": "off", "useTemplate": "off"},
+    },
+  },
+  "javascript": {
+    "jsxRuntime": "reactClassic",
+  },
+  "assist": {
+    "enabled": true,
+    "actions": {"source": {"organizeImports": "on"}},
+  },
+}

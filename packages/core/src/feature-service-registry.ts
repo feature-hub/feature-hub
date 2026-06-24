@@ -1,14 +1,17 @@
 import semverCoerce from 'semver/functions/coerce';
 import semverSatisfies from 'semver/functions/satisfies';
 import semverValid from 'semver/functions/valid';
-import {ExternalsValidator, RequiredExternals} from './externals-validator';
+import type {
+  ExternalsValidator,
+  RequiredExternals,
+} from './externals-validator';
 import * as Messages from './internal/feature-service-registry-messages';
 import {
-  Dependencies,
-  DependencyGraph,
+  type Dependencies,
+  type DependencyGraph,
   toposortDependencies,
 } from './internal/toposort-dependencies';
-import {Logger} from './logger';
+import type {Logger} from './logger';
 
 /**
  * A map of Feature Services with their ID as key and a semver-compatible
@@ -131,7 +134,9 @@ function mergeFeatureServiceDependencies({
   optionalDependencies,
 }: FeatureServiceConsumerDefinition): Dependencies {
   return {
+    // biome-ignore lint/complexity/useOptionalChain: keep the merge logic explicit for now
     ...(dependencies && dependencies.featureServices),
+    // biome-ignore lint/complexity/useOptionalChain: keep the merge logic explicit for now
     ...(optionalDependencies && optionalDependencies.featureServices),
   };
 }
@@ -156,9 +161,10 @@ function isOptionalFeatureServiceDependency(
   providerId: ProviderId,
 ): boolean {
   return Boolean(
+    // biome-ignore lint/complexity/useOptionalChain: readability is preferred here
     optionalDependencies &&
     optionalDependencies.featureServices &&
-    optionalDependencies.featureServices.hasOwnProperty(providerId),
+    Object.hasOwn(optionalDependencies.featureServices, providerId),
   );
 }
 
@@ -468,6 +474,7 @@ export class FeatureServiceRegistry {
 
     const {dependencies} = consumerDefinition;
 
+    // biome-ignore lint/complexity/useOptionalChain: legacy implementation
     if (dependencies && dependencies.externals) {
       externalsValidator.validate(dependencies.externals, consumerId);
     }

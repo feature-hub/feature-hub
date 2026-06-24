@@ -4,6 +4,7 @@ const path = require('path');
 const postcss = require('postcss');
 // @ts-expect-error No types for the require export.
 const postcssPresetEnv = require('postcss-preset-env');
+// biome-ignore lint/correctness/noUnusedVariables: legacy webpack config
 const webpack = require('webpack');
 const {merge, mergeWithRules} = require('webpack-merge');
 const {webpackBaseConfig} = require('../webpack-base-config');

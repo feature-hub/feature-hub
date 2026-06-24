@@ -5,8 +5,9 @@ import {FeatureHubContextProvider} from '@feature-hub/react';
 import pino from 'pino';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom/server';
-import {AppRendererOptions, AppRendererResult} from '../app-renderer';
+import type {AppRendererOptions, AppRendererResult} from '../app-renderer';
 import {App} from './app';
+import process from 'node:process';
 
 export default async function renderApp({
   req,

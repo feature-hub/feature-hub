@@ -1,8 +1,8 @@
 import * as history from 'history';
 import {createHistoryPath} from './create-history-path';
 import {createKey} from './create-key';
-import {HistoryMultiplexer} from './history-multiplexer';
-import {HistoryServiceContext} from './history-service-context';
+import type {HistoryMultiplexer} from './history-multiplexer';
+import type {HistoryServiceContext} from './history-service-context';
 
 export abstract class ConsumerHistory implements history.History {
   public action: history.Action = history.Action.Pop;

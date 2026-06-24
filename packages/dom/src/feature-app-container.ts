@@ -1,11 +1,11 @@
-import {
+import type {
   FeatureAppDefinition,
   FeatureAppManager,
   FeatureAppScope,
   Logger,
 } from '@feature-hub/core';
 import {LitElement, html, property} from 'lit-element';
-import {TemplateResult} from 'lit-html';
+import type {TemplateResult} from 'lit-html';
 
 /**
  * Optional detach function to be called on unmount to provide cleanup, e.g.

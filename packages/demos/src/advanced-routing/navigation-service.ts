@@ -1,15 +1,15 @@
-import {
+import type {
   FeatureServiceBinder,
   FeatureServiceProviderDefinition,
   FeatureServices,
   SharedFeatureService,
 } from '@feature-hub/core';
-import {
+import type {
   ConsumerLocationV3,
   HistoryServiceV3,
 } from '@feature-hub/history-service';
-import {History} from 'history';
-import {HelloWorldServiceV1} from './hello-world-service';
+import type {History} from 'history';
+import type {HelloWorldServiceV1} from './hello-world-service';
 
 export interface NavigationServiceV1 {
   readonly history: History;

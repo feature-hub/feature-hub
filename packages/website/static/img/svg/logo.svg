@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<!-- biome-ignore lint/a11y/noSvgWithoutTitle: legacy static asset -->
 <svg width="108px" height="108px" viewBox="0 0 108 108" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <defs>
         <path d="M50,100 C22.43,100 0,77.57 0,50 C0,22.43 22.43,0 50,0 C77.57,0 100,22.43 100,50 C100,77.57 77.57,100 50,100" id="path-1"></path>

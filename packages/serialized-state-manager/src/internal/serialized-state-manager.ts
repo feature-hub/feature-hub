@@ -1,6 +1,6 @@
-import {SerializedStateManagerV1} from '..';
-import {ClientSideStateManager} from './client-side-state-manager';
-import {ServerSideStateManager} from './server-side-state-manager';
+import type {SerializedStateManagerV1} from '..';
+import type {ClientSideStateManager} from './client-side-state-manager';
+import type {ServerSideStateManager} from './server-side-state-manager';
 
 export class SerializedStateManager implements SerializedStateManagerV1 {
   public constructor(

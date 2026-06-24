@@ -5,6 +5,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import '../blueprint-css';
 import {externals} from './externals';
+import process from 'node:process';
 
 defineExternals(externals);
 

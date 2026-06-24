@@ -40,6 +40,7 @@ function createDocumentHtml(
     : '';
 
   const urlsForHydrationScript =
+    // biome-ignore lint/complexity/useOptionalChain: legacy implementation
     hydrationSources && hydrationSources.size
       ? `<script type="x-feature-hub/urls-for-hydration">${JSON.stringify(
           Array.from(hydrationSources.values()),

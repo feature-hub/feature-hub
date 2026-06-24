@@ -1,8 +1,6 @@
-// tslint:disable:ordered-imports
 import 'systemjs/dist/s.js';
 import 'systemjs/dist/extras/named-register.js';
 import 'systemjs/dist/extras/amd.js';
-// tslint:enable:ordered-imports
 
 export interface Externals {
   readonly [externalName: string]: unknown;

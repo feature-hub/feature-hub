@@ -4,6 +4,7 @@ import {FeatureAppLoader, FeatureHubContextProvider} from '@feature-hub/react';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import '../blueprint-css';
+import process from 'node:process';
 
 defineExternals({react: React});
 

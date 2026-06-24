@@ -7,6 +7,7 @@ export class ClientSideStateManager {
 
   public getSerializedState(consumerId: string): string | undefined {
     return (
+      // biome-ignore lint/complexity/useOptionalChain: legacy implementation
       this.serializedStatesByConsumerId &&
       this.serializedStatesByConsumerId[consumerId]
     );

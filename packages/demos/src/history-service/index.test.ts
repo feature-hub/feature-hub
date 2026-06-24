@@ -2,9 +2,9 @@
  * @jest-environment puppeteer
  */
 
-import {Server} from 'http';
-import {AddressInfo} from 'net';
-import {ElementHandle} from 'puppeteer';
+import type {Server} from 'http';
+import type {AddressInfo} from 'net';
+import type {ElementHandle} from 'puppeteer';
 import {Browser} from '../browser';
 import {startServer} from '../start-server';
 import webpackConfigs from './webpack-config';
@@ -54,7 +54,7 @@ class HistoryConsumerUi {
   }
 
   private async getElement(prefix: string): Promise<ElementHandle> {
-    // tslint:disable-next-line:no-non-null-assertion
+    // biome-ignore lint/style/noNonNullAssertion: test cases
     return (await page.$(`#${prefix}-${this.specifier}`))!;
   }
 }

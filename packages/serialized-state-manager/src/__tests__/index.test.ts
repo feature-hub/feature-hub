@@ -1,13 +1,12 @@
-// tslint:disable:no-non-null-assertion
-
-import {FeatureServiceEnvironment} from '@feature-hub/core';
+import type {FeatureServiceEnvironment} from '@feature-hub/core';
 import {
-  SerializedStateManagerV1,
+  type SerializedStateManagerV1,
   defineSerializedStateManager,
   serializedStateManagerDefinition,
 } from '..';
 
 describe('defineSerializedStateManager', () => {
+  // biome-ignore lint/complexity/noBannedTypes: test cases
   let mockEnv: FeatureServiceEnvironment<{}>;
 
   beforeEach(() => {
@@ -33,6 +32,7 @@ describe('defineSerializedStateManager', () => {
       const sharedSerializedStateManager =
         serializedStateManagerDefinition.create(mockEnv);
 
+      // biome-ignore lint/style/noNonNullAssertion: test cases
       expect(sharedSerializedStateManager!['1.0.0']).toBeDefined();
     });
   });
@@ -44,6 +44,7 @@ describe('defineSerializedStateManager', () => {
 
     beforeEach(() => {
       const serializedStateManagerBinder =
+        // biome-ignore lint/style/noNonNullAssertion: test cases
         serializedStateManagerDefinition.create(mockEnv)!['1.0.0'];
 
       integratorSerializedStateManager =
@@ -130,6 +131,7 @@ describe('defineSerializedStateManager', () => {
         const serializedStateConsumer1 = JSON.stringify({kind: 'foo'});
 
         beforeEach(() => {
+          // biome-ignore lint/style/noNonNullAssertion: test cases
           const serializedStateManagerBinder = defineSerializedStateManager(
             JSON.stringify({'test:consumer:1': serializedStateConsumer1}),
           ).create(mockEnv)!['1.0.0'];

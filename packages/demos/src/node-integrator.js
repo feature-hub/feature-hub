@@ -7,7 +7,6 @@
 function evalNodeSource(source) {
   const mod = {exports: {}};
 
-  // tslint:disable-next-line:function-constructor
   Function('module', 'exports', 'require', source)(mod, mod.exports, require);
 
   return mod.exports;

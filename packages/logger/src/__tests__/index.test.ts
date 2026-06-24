@@ -1,13 +1,11 @@
-// tslint:disable:no-implicit-dependencies
-// tslint:disable:no-non-null-assertion
-
-import {
+import type {
   FeatureServiceEnvironment,
   FeatureServiceProviderDefinition,
 } from '@feature-hub/core';
-import {Logger, SharedLogger, defineLogger} from '..';
+import {type Logger, type SharedLogger, defineLogger} from '..';
 
 describe('defineLogger', () => {
+  // biome-ignore lint/complexity/noBannedTypes: test cases
   let mockEnv: FeatureServiceEnvironment<{}>;
 
   let loggerDefinition: FeatureServiceProviderDefinition<SharedLogger>;
@@ -26,6 +24,7 @@ describe('defineLogger', () => {
     it('creates a shared Feature Service containing version 1.0.0', () => {
       const sharedLogger = loggerDefinition.create(mockEnv);
 
+      // biome-ignore lint/style/noNonNullAssertion: test cases
       expect(sharedLogger!['1.0.0']).toBeDefined();
     });
   });
@@ -35,6 +34,7 @@ describe('defineLogger', () => {
 
     describe('with the default createConsumerLogger function', () => {
       beforeEach(() => {
+        // biome-ignore lint/style/noNonNullAssertion: test cases
         logger = loggerDefinition
           .create(mockEnv)!
           ['1.0.0']('test:id').featureService;
@@ -100,6 +100,7 @@ describe('defineLogger', () => {
 
         loggerDefinition = defineLogger(mockCreateConsumerLogger);
 
+        // biome-ignore lint/style/noNonNullAssertion: test cases
         logger = loggerDefinition
           .create(mockEnv)!
           ['1.0.0']('test:id', 'test:name').featureService;

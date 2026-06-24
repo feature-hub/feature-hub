@@ -1,4 +1,4 @@
-import {Page} from 'puppeteer';
+import type {Page} from 'puppeteer';
 
 export class Browser {
   public constructor(private readonly defaultNavigationTimeout: number) {}

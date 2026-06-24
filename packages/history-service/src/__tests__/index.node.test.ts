@@ -2,26 +2,23 @@
  * @jest-environment node
  */
 
-// tslint:disable:no-implicit-dependencies
-// tslint:disable:no-non-null-assertion
-
-import {
+import type {
   FeatureServiceBinder,
   FeatureServiceBinding,
   FeatureServiceEnvironment,
 } from '@feature-hub/core';
-import {ServerRequestV1} from '@feature-hub/server-request';
-import {History} from 'history';
+import type {ServerRequestV1} from '@feature-hub/server-request';
+import type {History} from 'history';
 import {
-  HistoryServiceDependencies,
-  HistoryServiceV1,
-  HistoryServiceV2,
-  HistoryServiceV3,
+  type HistoryServiceDependencies,
+  type HistoryServiceV1,
+  type HistoryServiceV2,
+  type HistoryServiceV3,
   createRootLocationTransformer,
   defineHistoryService,
 } from '..';
-import * as historyV4 from '../history-v4';
-import {Writable} from '../internal/writable';
+import type * as historyV4 from '../history-v4';
+import type {Writable} from '../internal/writable';
 import {
   consumerPathsQueryParamName,
   createSearch,
@@ -46,6 +43,7 @@ describe('defineHistoryService', () => {
           {mode: 'static'},
         ).create(mockEnv);
 
+        // biome-ignore lint/style/noNonNullAssertion: test cases
         return sharedHistoryService!['1.0.0'];
       };
     });
@@ -74,7 +72,9 @@ describe('defineHistoryService', () => {
       };
 
       const destroyHistories = () => {
+        // biome-ignore lint/style/noNonNullAssertion: test cases
         historyBinding1.unbind!();
+        // biome-ignore lint/style/noNonNullAssertion: test cases
         historyBinding2.unbind!();
       };
 
@@ -442,6 +442,7 @@ describe('defineHistoryService', () => {
           {mode: 'static'},
         ).create(mockEnv);
 
+        // biome-ignore lint/style/noNonNullAssertion: test cases
         return sharedHistoryService!['2.0.0'];
       };
 
@@ -852,6 +853,7 @@ describe('defineHistoryService', () => {
           {mode: 'static'},
         ).create(mockEnv);
 
+        // biome-ignore lint/style/noNonNullAssertion: test cases
         return sharedHistoryService!['3.0.0'];
       };
 

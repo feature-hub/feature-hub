@@ -1,5 +1,6 @@
 // @ts-check
 
+import process from 'node:process';
 const {startServer} = require('./start-server');
 
 const demoName = process.argv[2];

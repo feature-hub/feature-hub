@@ -1,10 +1,10 @@
-import {
+import type {
   FeatureServiceBinder,
   FeatureServiceProviderDefinition,
   FeatureServices,
   SharedFeatureService,
 } from '@feature-hub/core';
-import {Logger} from '@feature-hub/logger';
+import type {Logger} from '@feature-hub/logger';
 import {AsyncSsrManager} from './internal/async-ssr-manager';
 import {createAsyncSsrManagerContext} from './internal/async-ssr-manager-context';
 

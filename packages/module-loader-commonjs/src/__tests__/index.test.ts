@@ -2,14 +2,13 @@
  * @jest-environment node
  */
 
-import {RequestInit} from 'node-fetch';
+import type {RequestInit} from 'node-fetch';
 import {createCommonJsModuleLoader, loadCommonJsModule} from '..';
 
 let mockResponse: string;
 let requestUrl: RequestInfo;
 let requestInit: RequestInit;
 
-// tslint:disable promise-function-async
 jest.mock('node-fetch', () => (url: RequestInfo, init: RequestInit) => {
   requestUrl = url;
   requestInit = init;
@@ -18,7 +17,6 @@ jest.mock('node-fetch', () => (url: RequestInfo, init: RequestInit) => {
     text: () => Promise.resolve(Buffer.from(mockResponse)),
   });
 });
-// tslint:enable promise-function-async
 
 describe('loadCommonJsModule (on Node.js)', () => {
   it('when a module is fetched successfully', async () => {

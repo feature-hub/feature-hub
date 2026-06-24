@@ -1,8 +1,8 @@
 import equal from 'fast-deep-equal';
 import * as history from 'history';
 import {ConsumerHistory} from './consumer-history';
-import {HistoryMultiplexer} from './history-multiplexer';
-import {HistoryServiceContext} from './history-service-context';
+import type {HistoryMultiplexer} from './history-multiplexer';
+import type {HistoryServiceContext} from './history-service-context';
 
 export class BrowserConsumerHistory extends ConsumerHistory {
   private readonly listeners = new Set<history.Listener>();
@@ -29,6 +29,7 @@ export class BrowserConsumerHistory extends ConsumerHistory {
 
   public destroy(): void {
     this.browserUnregister();
+    // biome-ignore lint/suspicious/useIterableCallbackReturn: unregister callbacks are intentionally invoked for side effects
     this.unregisterCallbacks.forEach((unregister) => unregister());
   }
 

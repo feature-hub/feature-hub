@@ -38,6 +38,7 @@ function createAllDependencyEdges(
         dependencies,
       );
 
+      // biome-ignore lint/performance/noAccumulatingSpread: legacy implementation
       return [...allDependencyEdges, ...dependencyEdges];
     },
     [] as DependencyEdges,

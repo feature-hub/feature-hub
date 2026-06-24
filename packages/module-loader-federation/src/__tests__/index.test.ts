@@ -7,6 +7,7 @@ import {loadFederatedModule} from '..';
 declare global {
   interface Window {
     __webpack_init_sharing__: (name: string) => Promise<void>;
+    // biome-ignore lint/complexity/noBannedTypes: test cases
     __webpack_share_scopes__: {default: {}};
   }
 }

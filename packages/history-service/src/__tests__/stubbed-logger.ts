@@ -1,4 +1,4 @@
-import {Logger} from '@feature-hub/logger';
+import type {Logger} from '@feature-hub/logger';
 
 export type Stub<T extends {}> = {
   [key in keyof T]: T[key] extends (...args: unknown[]) => unknown

@@ -1,11 +1,11 @@
-import {FeatureAppDefinition} from '../feature-app-manager';
+import type {FeatureAppDefinition} from '../feature-app-manager';
 
 export interface FeatureAppModule {
   readonly default: FeatureAppDefinition<unknown>;
 }
 
 function isFeatureAppDefinition(
-  // tslint:disable-next-line:no-any
+  // biome-ignore lint/suspicious/noExplicitAny: runtime type guard
   maybeFeatureAppDefinition: any,
 ): maybeFeatureAppDefinition is FeatureAppDefinition<unknown> {
   if (
@@ -22,7 +22,7 @@ function isFeatureAppDefinition(
 }
 
 export function isFeatureAppModule(
-  // tslint:disable-next-line:no-any
+  // biome-ignore lint/suspicious/noExplicitAny: runtime type guard
   maybeFeatureAppModule: any,
 ): maybeFeatureAppModule is FeatureAppModule {
   if (typeof maybeFeatureAppModule !== 'object' || !maybeFeatureAppModule) {

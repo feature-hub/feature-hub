@@ -1,10 +1,10 @@
-import {
+import type {
   FeatureServiceBinder,
   FeatureServiceProviderDefinition,
   FeatureServices,
   SharedFeatureService,
 } from '@feature-hub/core';
-import {
+import type {
   ConsumerLocationV3,
   HistoryServiceV3,
 } from '@feature-hub/history-service';

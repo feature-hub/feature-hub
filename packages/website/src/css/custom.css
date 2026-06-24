@@ -177,8 +177,10 @@
 
 .theme-doc-markdown .theme-code-block,
 .theme-doc-markdown .theme-code-block pre {
+  /* biome-ignore lint/complexity/noImportantStyles: legacy static asset */
   background-color: #f0f0f0 !important;
   border-radius: 3px;
+  /* biome-ignore lint/complexity/noImportantStyles: legacy static asset */
   color: #444 !important;
 }
 
@@ -195,6 +197,7 @@
 
 .theme-doc-markdown pre code {
   background-color: transparent;
+  /* biome-ignore lint/complexity/noImportantStyles: legacy static asset */
   color: #444 !important;
   font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
   font-size: 13.6px;
@@ -203,12 +206,14 @@
 }
 
 .theme-doc-markdown pre .token {
+  /* biome-ignore lint/complexity/noImportantStyles: legacy static asset */
   font-style: normal !important;
 }
 
 .theme-doc-markdown pre .token-line,
 .theme-doc-markdown pre .token.plain,
 .theme-doc-markdown pre .token.plain-text {
+  /* biome-ignore lint/complexity/noImportantStyles: legacy static asset */
   color: #444 !important;
 }
 
@@ -216,10 +221,12 @@
 .theme-doc-markdown pre .token.prolog,
 .theme-doc-markdown pre .token.doctype,
 .theme-doc-markdown pre .token.cdata {
+  /* biome-ignore lint/complexity/noImportantStyles: legacy static asset */
   color: slategray !important;
 }
 
 .theme-doc-markdown pre .token.punctuation {
+  /* biome-ignore lint/complexity/noImportantStyles: legacy static asset */
   color: #999 !important;
 }
 
@@ -229,6 +236,7 @@
 .theme-doc-markdown pre .token.constant,
 .theme-doc-markdown pre .token.symbol,
 .theme-doc-markdown pre .token.deleted {
+  /* biome-ignore lint/complexity/noImportantStyles: legacy static asset */
   color: #905 !important;
 }
 
@@ -239,38 +247,45 @@
 .theme-doc-markdown pre .token.char,
 .theme-doc-markdown pre .token.builtin,
 .theme-doc-markdown pre .token.inserted {
+  /* biome-ignore lint/complexity/noImportantStyles: legacy static asset */
   color: #690 !important;
 }
 
 .theme-doc-markdown pre .token.operator,
 .theme-doc-markdown pre .token.entity,
 .theme-doc-markdown pre .token.url {
+  /* biome-ignore lint/complexity/noImportantStyles: legacy static asset */
   color: #9a6e3a !important;
 }
 
 .theme-doc-markdown pre .token.atrule,
 .theme-doc-markdown pre .token.attr-value,
 .theme-doc-markdown pre .token.keyword {
+  /* biome-ignore lint/complexity/noImportantStyles: legacy static asset */
   color: #07a !important;
 }
 
 .theme-doc-markdown pre .token.function,
 .theme-doc-markdown pre .token.class-name {
+  /* biome-ignore lint/complexity/noImportantStyles: legacy static asset */
   color: #dd4a68 !important;
 }
 
 .theme-doc-markdown pre .token.regex,
 .theme-doc-markdown pre .token.important,
 .theme-doc-markdown pre .token.variable {
+  /* biome-ignore lint/complexity/noImportantStyles: legacy static asset */
   color: #e90 !important;
 }
 
 .theme-doc-markdown pre .token.important,
 .theme-doc-markdown pre .token.bold {
+  /* biome-ignore lint/complexity/noImportantStyles: legacy static asset */
   font-weight: bold !important;
 }
 
 .theme-doc-markdown pre .token.italic {
+  /* biome-ignore lint/complexity/noImportantStyles: legacy static asset */
   font-style: italic !important;
 }
 
@@ -379,7 +394,8 @@
   text-decoration: none;
 }
 
-blockquote {
+/* biome-ignore lint/style/noDescendingSpecificity: legacy static asset */
+blockquote  {
   color: #24292e;
 }
 

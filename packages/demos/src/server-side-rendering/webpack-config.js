@@ -1,4 +1,5 @@
 // @ts-check
+import process from 'node:process';
 const CopyPlugin = require('copy-webpack-plugin');
 const path = require('path');
 const webpack = require('webpack');

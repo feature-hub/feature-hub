@@ -1,9 +1,9 @@
-import {FeatureAppDefinition, FeatureServices} from '@feature-hub/core';
+import type {FeatureAppDefinition, FeatureServices} from '@feature-hub/core';
 import * as React from 'react';
 import {FeatureHubContextConsumer} from './feature-hub-context';
 import {FeatureAppContext} from './internal/feature-app-context';
 import {
-  BaseFeatureAppContainerProps,
+  type BaseFeatureAppContainerProps,
   InternalFeatureAppContainer,
 } from './internal/internal-feature-app-container';
 

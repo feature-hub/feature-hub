@@ -12,9 +12,10 @@ import '../blueprint-css';
 import {App} from './app';
 import {helloWorldServiceDefinition} from './hello-world-service';
 import {
-  NavigationServiceV1,
+  type NavigationServiceV1,
   navigationServiceDefinition,
 } from './navigation-service';
+import process from 'node:process';
 
 defineExternals({react: React});
 

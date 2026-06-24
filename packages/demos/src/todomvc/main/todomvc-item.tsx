@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import {Todo} from '../todo-manager';
+import type {Todo} from '../todo-manager';
 import checkboxCompleted from './images/checkbox-completed.svg';
 import checkbox from './images/checkbox.svg';
 

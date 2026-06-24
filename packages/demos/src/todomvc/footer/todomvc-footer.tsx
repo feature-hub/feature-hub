@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Todo, TodoManagerV1} from '../todo-manager';
+import type {Todo, TodoManagerV1} from '../todo-manager';
 import styles from './styles.css';
 
 export interface TodoMvcFooterProps {
@@ -38,6 +38,7 @@ export class TodoMvcFooter extends React.Component<
           <strong>{itemsLeft}</strong> {itemsLeft === 1 ? 'item' : 'items'} left
         </span>
         {hasCompletedTodos && (
+          // biome-ignore lint/a11y/useButtonType: legacy implementation
           <button
             className={styles.clearCompleted}
             onClick={this.handleClearCompletedClick}
@@ -51,6 +52,7 @@ export class TodoMvcFooter extends React.Component<
 
   private readonly handleClearCompletedClick = () => {
     for (const todo of this.state.todos) {
+      // biome-ignore lint/complexity/useOptionalChain: legacy implementation
       if (todo && todo.completed) {
         this.props.todoManager.remove(todo.id);
       }

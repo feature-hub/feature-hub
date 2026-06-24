@@ -3,6 +3,7 @@
 import {globbySync} from 'globby';
 import path from 'path';
 import url from 'url';
+import process from 'node:process';
 
 const basename = 'packages/website/build/feature-hub';
 const indexFilenames = new Set();
