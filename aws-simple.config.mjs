@@ -43,8 +43,6 @@ const responseHeaders = {
 const routes = [];
 
 for (const filename of indexFilenames) {
-  console.log(`-> index ${filename} `);
-
   routes.push({
     type: 'file',
     path: filename,
@@ -57,7 +55,6 @@ for (const dirname of dirnames) {
   if (dirname === basename) {
     continue;
   }
-  console.log(`-> dirname ${dirname} `);
 
   routes.push({
     type: 'folder',
@@ -73,11 +70,10 @@ for (const docFilename of docFilenames) {
     docFilename.length - '.html'.length,
   );
 
-  console.log(`-> doc dirname ${docDirname} `);
   routes.push({
-    type: 'folder',
+    type: 'file',
     path: docFilename,
-    publicPath: '/' + path.relative(basename, docDirname) + '/*',
+    publicPath: '/' + path.relative(basename, docDirname),
     responseHeaders,
   });
 }
