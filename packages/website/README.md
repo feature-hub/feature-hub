@@ -6,7 +6,7 @@ The [website][website] of the Feature Hub, built with [Docusaurus][docusaurus].
 
 ---
 
-Copyright (c) 2018-2024 Accenture Song Build Germany GmbH. Released under the
+Copyright (c) 2018-2026 Accenture Song Build Germany GmbH. Released under the
 terms of the [MIT License][license].
 
 [docusaurus]: https://docusaurus.io/en/

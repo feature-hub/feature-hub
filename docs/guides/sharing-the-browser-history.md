@@ -131,6 +131,44 @@ const featureHub = createFeatureHub('acme:integrator', {
 });
 ```
 
+## Integration in React Router
+
+[React Router](https://reactrouter.com/) is a very popular routing solution for
+react. It can be used in the feature hub to define routes inside a feature app.
+To achieve it the feature app must pass its history to the router. Initially
+[history](https://www.npmjs.com/package/history) was used by react router. This
+API is aso part of the history-service. The independent API was abandonded after
+6.3.0 of react router. To use later versions of react router an adapter needs to
+be used.
+
+### =6.3
+
+```
+<HistoryRouter history={historyService.history}>
+    <App />
+</HistoryRouter>
+```
+
+### >=6.30
+
+import {adaptV6_30History} from '@feature-hub/react-router-v6-30-adapter';
+
+```
+<HistoryRouter history={adaptV6_30History(historyService.history)}>
+    <App />
+</HistoryRouter>
+```
+
+### >=7
+
+```
+import {adaptV7History} from '@feature-hub/react-router-v7-adapter';
+
+<HistoryRouter history={adaptV7History(historyService.history)}>
+    <App />
+</HistoryRouter>
+```
+
 ## Root Location Transformer
 
 A root location transformer is an object that implements the
