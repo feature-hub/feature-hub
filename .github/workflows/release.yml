@@ -1,12 +1,6 @@
 name: Release
 on:
   workflow_dispatch:
-    inputs:
-      prerelease:
-        description: Create and publish prerelease versions
-        required: false
-        default: false
-        type: boolean
 
 permissions:
   contents: write
@@ -41,22 +35,14 @@ jobs:
         run: |
           git config --global user.email "s2-feature-hub@accenture.com"
           git config --global user.name "Feature Hub CI"
-          if [ "${{ inputs.prerelease }}" = "true" ]; then
-            npx lerna version prerelease --conventional-commits --conventional-prerelease --preid alpha --no-push --yes
-          else
-            npx lerna version --conventional-commits --no-push --yes
-          fi
+          npx lerna version --conventional-commits --no-push --yes
 
       - name: Publish Version
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           npm config set "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}"
-          if [ "${{ inputs.prerelease }}" = "true" ]; then
-            npx lerna publish from-git --yes --no-verify-access --dist-tag next
-          else
-            npx lerna publish from-git --yes --no-verify-access
-          fi
+          npx lerna publish from-git --yes --no-verify-access
 
       - name: Push Changes
         run: git push --follow-tags
