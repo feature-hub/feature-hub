@@ -2,9 +2,9 @@
  * @jest-environment puppeteer
  */
 
-import {Server} from 'http';
-import {AddressInfo} from 'net';
-import {ElementHandle} from 'puppeteer';
+import type {Server} from 'http';
+import type {AddressInfo} from 'net';
+import type {ElementHandle} from 'puppeteer';
 import {Browser} from '../browser';
 import {startServer} from '../start-server';
 import webpackConfigs from './webpack-config';
@@ -16,7 +16,7 @@ class HelloWorldUi {
 
   public async waitForHelloText(): Promise<unknown> {
     const helloText = await page.waitForSelector('#hello-text');
-    // tslint:disable-next-line:no-non-null-assertion
+    // biome-ignore lint/style/noNonNullAssertion: test cases
     const content = await helloText!.getProperty('textContent');
 
     return content.jsonValue();
@@ -31,12 +31,12 @@ class HelloWorldUi {
   }
 
   private async getNewNameInput(): Promise<ElementHandle> {
-    // tslint:disable-next-line:no-non-null-assertion
+    // biome-ignore lint/style/noNonNullAssertion: test cases
     return (await page.$('#name-input'))!;
   }
 
   private async getSubmitButton(): Promise<ElementHandle> {
-    // tslint:disable-next-line:no-non-null-assertion
+    // biome-ignore lint/style/noNonNullAssertion: test cases
     return (await page.$('#submit-button'))!;
   }
 }

@@ -1,6 +1,6 @@
-import {Location} from 'history';
+import type {Location} from 'history';
 import {createRootLocationTransformer} from '..';
-import {ConsumerPaths} from '../create-root-location-transformer';
+import type {ConsumerPaths} from '../create-root-location-transformer';
 
 const encodeConsumerPaths = (consumerPaths: ConsumerPaths) =>
   encodeURIComponent(JSON.stringify(consumerPaths));

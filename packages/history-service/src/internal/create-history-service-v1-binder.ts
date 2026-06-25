@@ -1,11 +1,14 @@
-import {FeatureServiceBinder, FeatureServiceBinding} from '@feature-hub/core';
-import {HistoryServiceV1} from '..';
-import * as historyV4 from '../history-v4';
+import type {
+  FeatureServiceBinder,
+  FeatureServiceBinding,
+} from '@feature-hub/core';
+import type {HistoryServiceV1} from '..';
+import type * as historyV4 from '../history-v4';
 import {BrowserConsumerHistory} from './browser-consumer-history';
-import {HistoryMultiplexers} from './create-history-multiplexers';
-import {GetHistoryKeyOptions} from './create-history-service-v3-binder';
+import type {HistoryMultiplexers} from './create-history-multiplexers';
+import type {GetHistoryKeyOptions} from './create-history-service-v3-binder';
 import {createHistoryV4Adapter} from './create-history-v4-adapter';
-import {HistoryServiceContext} from './history-service-context';
+import type {HistoryServiceContext} from './history-service-context';
 import {StaticConsumerHistory} from './static-consumer-history';
 
 export interface CreateHistoryServiceV1BinderOptions {

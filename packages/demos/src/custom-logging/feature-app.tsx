@@ -1,7 +1,7 @@
 import {Card, Label} from '@blueprintjs/core';
-import {FeatureAppDefinition, FeatureServices} from '@feature-hub/core';
-import {Logger} from '@feature-hub/logger';
-import {ReactFeatureApp} from '@feature-hub/react';
+import type {FeatureAppDefinition, FeatureServices} from '@feature-hub/core';
+import type {Logger} from '@feature-hub/logger';
+import type {ReactFeatureApp} from '@feature-hub/react';
 import * as React from 'react';
 import {Monowidth} from './monowidth';
 

@@ -13,7 +13,5 @@
     "**/packages/website/build": true,
     "**/packages/website/i18n": true
   },
-  "tslint.enable": true,
-  "tslint.ignoreDefinitionFiles": false,
   "typescript.tsdk": "node_modules/typescript/lib"
 }

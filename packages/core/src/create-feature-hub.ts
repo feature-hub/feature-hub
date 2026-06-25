@@ -1,18 +1,21 @@
-import {ExternalsValidator, ProvidedExternals} from './externals-validator';
+import {
+  ExternalsValidator,
+  type ProvidedExternals,
+} from './externals-validator';
 import {
   FeatureAppManager,
-  ModuleLoader,
-  OnBindParams,
+  type ModuleLoader,
+  type OnBindParams,
 } from './feature-app-manager';
 import {
-  FeatureServiceConsumerDefinition,
-  FeatureServiceConsumerDependencies,
-  FeatureServiceProviderDefinition,
+  type FeatureServiceConsumerDefinition,
+  type FeatureServiceConsumerDependencies,
+  type FeatureServiceProviderDefinition,
   FeatureServiceRegistry,
-  FeatureServices,
-  SharedFeatureService,
+  type FeatureServices,
+  type SharedFeatureService,
 } from './feature-service-registry';
-import {Logger} from './logger';
+import type {Logger} from './logger';
 
 export interface FeatureHub {
   /**

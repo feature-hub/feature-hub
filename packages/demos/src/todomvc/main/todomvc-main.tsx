@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import {Todo, TodoManagerV1} from '../todo-manager';
+import type {Todo, TodoManagerV1} from '../todo-manager';
 import {TodoMvcItem} from './todomvc-item';
 
 export interface TodoMvcMainProps {

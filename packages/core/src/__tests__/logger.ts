@@ -1,4 +1,4 @@
-import {Logger} from '../logger';
+import type {Logger} from '../logger';
 
 export type MockLogger = {
   readonly [key in keyof Logger]: Logger[key] & jest.Mock;

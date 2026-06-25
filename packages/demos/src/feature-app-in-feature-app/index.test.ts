@@ -2,8 +2,8 @@
  * @jest-environment puppeteer
  */
 
-import {Server} from 'http';
-import {AddressInfo} from 'net';
+import type {Server} from 'http';
+import type {AddressInfo} from 'net';
 import {Browser} from '../browser';
 import {startServer} from '../start-server';
 import webpackConfigs from './webpack-config';
@@ -47,7 +47,7 @@ describe('integration test: "Feature App in Feature App"', () => {
   });
 
   it("unmounts the nested Feature App when it has signaled that it's done", async () => {
-    // tslint:disable-next-line:no-non-null-assertion
+    // biome-ignore lint/style/noNonNullAssertion: test cases
     const button = (await page.$('button'))!;
 
     await button.click();

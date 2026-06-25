@@ -1,4 +1,4 @@
-import {RootLocationTransformer} from '@feature-hub/history-service';
+import type {RootLocationTransformer} from '@feature-hub/history-service';
 import {createPath} from 'history';
 import {URLSearchParams} from './url-search-params';
 

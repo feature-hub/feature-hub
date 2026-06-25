@@ -1,6 +1,6 @@
 import {AsyncLocalStorage} from 'async_hooks';
-import {AsyncSsrManagerV1} from '..';
-import {AsyncSsrManagerContext} from './async-ssr-manager-context';
+import type {AsyncSsrManagerV1} from '..';
+import type {AsyncSsrManagerContext} from './async-ssr-manager-context';
 import {setTimeoutAsync} from './set-timeout-async';
 
 async function renderingTimeout(timeout: number): Promise<never> {

@@ -1,12 +1,10 @@
-// tslint:disable:no-implicit-dependencies
-
 import {
-  FeatureServiceBinding,
-  FeatureServiceProviderDefinition,
+  type FeatureServiceBinding,
+  type FeatureServiceProviderDefinition,
   FeatureServiceRegistry,
-  SharedFeatureService,
+  type SharedFeatureService,
 } from '..';
-import {ExternalsValidator} from '../externals-validator';
+import type {ExternalsValidator} from '../externals-validator';
 import {logger} from './logger';
 
 interface MockProviderDefinition extends FeatureServiceProviderDefinition<SharedFeatureService> {

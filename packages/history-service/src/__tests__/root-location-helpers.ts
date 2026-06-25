@@ -1,4 +1,4 @@
-import {ConsumerPaths} from '../create-root-location-transformer';
+import type {ConsumerPaths} from '../create-root-location-transformer';
 
 export const consumerPathsQueryParamName = '---';
 

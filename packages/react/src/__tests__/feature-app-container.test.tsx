@@ -2,9 +2,7 @@
  * @jest-environment jsdom
  */
 
-// tslint:disable:no-implicit-dependencies
-
-import {
+import type {
   FeatureAppDefinition,
   FeatureAppManager,
   FeatureAppScope,
@@ -13,9 +11,9 @@ import {
 import * as React from 'react';
 import TestRenderer from 'react-test-renderer';
 import {
-  CustomFeatureAppRenderingParams,
-  DetachFunction,
-  FeatureApp,
+  type CustomFeatureAppRenderingParams,
+  type DetachFunction,
+  type FeatureApp,
   FeatureAppContainer,
   FeatureHubContextProvider,
 } from '..';
@@ -143,6 +141,7 @@ describe('FeatureAppContainer', () => {
           config: 'testConfig',
           beforeCreate: mockBeforeCreate,
           done: mockDone,
+          // biome-ignore lint/complexity/noBannedTypes: test cases
         } satisfies FeatureAppScopeOptions<{}, string>,
       ],
     ]);
@@ -185,6 +184,7 @@ describe('FeatureAppContainer', () => {
           <FeatureAppContainer
             featureAppId="testId"
             featureAppDefinition={mockFeatureAppDefinition}
+            // biome-ignore lint/correctness/noChildrenProp: test cases
             children={children}
           />,
         );
@@ -372,6 +372,7 @@ describe('FeatureAppContainer', () => {
             <FeatureAppContainer
               featureAppId="testId"
               featureAppDefinition={mockFeatureAppDefinition}
+              // biome-ignore lint/correctness/noChildrenProp: test cases
               children={children}
             />,
           );
@@ -392,6 +393,7 @@ describe('FeatureAppContainer', () => {
             <FeatureAppContainer
               featureAppId="testId"
               featureAppDefinition={mockFeatureAppDefinition}
+              // biome-ignore lint/correctness/noChildrenProp: test cases
               children={() => 'Custom Error UI'}
             />,
           );
@@ -403,6 +405,7 @@ describe('FeatureAppContainer', () => {
           const testRenderer = renderWithFeatureHubContext(
             <InternalFeatureAppContainer
               featureAppId="testId"
+              // biome-ignore lint/correctness/noChildrenProp: test cases
               children={() => 'loading UI'}
               logger={logger}
               featureAppManager={mockFeatureAppManager}
@@ -425,6 +428,7 @@ describe('FeatureAppContainer', () => {
                 <FeatureAppContainer
                   featureAppId="testId"
                   featureAppDefinition={mockFeatureAppDefinition}
+                  // biome-ignore lint/correctness/noChildrenProp: test cases
                   children={() => {
                     throw childrenMockError;
                   }}
@@ -858,6 +862,7 @@ describe('FeatureAppContainer', () => {
               <FeatureAppContainer
                 featureAppId="testId"
                 featureAppDefinition={mockFeatureAppDefinition}
+                // biome-ignore lint/correctness/noChildrenProp: test cases
                 children={children}
               />,
             );
@@ -884,6 +889,7 @@ describe('FeatureAppContainer', () => {
               <FeatureAppContainer
                 featureAppId="testId"
                 featureAppDefinition={mockFeatureAppDefinition}
+                // biome-ignore lint/correctness/noChildrenProp: test cases
                 children={children}
               />,
             );
@@ -920,6 +926,7 @@ describe('FeatureAppContainer', () => {
               <FeatureAppContainer
                 featureAppId="testId"
                 featureAppDefinition={mockFeatureAppDefinition}
+                // biome-ignore lint/correctness/noChildrenProp: test cases
                 children={children}
               />,
             );
@@ -944,6 +951,7 @@ describe('FeatureAppContainer', () => {
               <FeatureAppContainer
                 featureAppId="testId"
                 featureAppDefinition={mockFeatureAppDefinition}
+                // biome-ignore lint/correctness/noChildrenProp: test cases
                 children={children}
               />,
             );
@@ -968,6 +976,7 @@ describe('FeatureAppContainer', () => {
               <FeatureAppContainer
                 featureAppId="testId"
                 featureAppDefinition={mockFeatureAppDefinition}
+                // biome-ignore lint/correctness/noChildrenProp: test cases
                 children={children}
               />,
             );
@@ -1060,6 +1069,7 @@ describe('FeatureAppContainer', () => {
           <FeatureAppContainer
             featureAppId="testId"
             featureAppDefinition={mockFeatureAppDefinition}
+            // biome-ignore lint/correctness/noChildrenProp: test cases
             children={children}
           />,
           {
@@ -1192,6 +1202,7 @@ describe('FeatureAppContainer', () => {
             <FeatureAppContainer
               featureAppId="testId"
               featureAppDefinition={mockFeatureAppDefinition}
+              // biome-ignore lint/correctness/noChildrenProp: test cases
               children={children}
             />,
             {testRendererOptions: {createNodeMock: () => ({})}},
@@ -1215,6 +1226,7 @@ describe('FeatureAppContainer', () => {
             <FeatureAppContainer
               featureAppId="testId"
               featureAppDefinition={mockFeatureAppDefinition}
+              // biome-ignore lint/correctness/noChildrenProp: test cases
               children={children}
             />,
             {testRendererOptions: {createNodeMock: () => ({})}},

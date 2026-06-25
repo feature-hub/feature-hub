@@ -1,6 +1,6 @@
-import {FeatureAppManager, Logger} from '@feature-hub/core';
+import type {FeatureAppManager, Logger} from '@feature-hub/core';
 import {LitElement, html, property} from 'lit-element';
-import {TemplateResult} from 'lit-html';
+import type {TemplateResult} from 'lit-html';
 import {ifDefined} from 'lit-html/directives/if-defined';
 import {until} from 'lit-html/directives/until';
 import {defineFeatureAppContainer} from './feature-app-container';

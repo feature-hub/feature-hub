@@ -1,7 +1,7 @@
 import * as history from 'history';
-import {RootLocationTransformer} from '../create-root-location-transformer';
+import type {RootLocationTransformer} from '../create-root-location-transformer';
 import {HistoryMultiplexer} from './history-multiplexer';
-import {HistoryServiceContext} from './history-service-context';
+import type {HistoryServiceContext} from './history-service-context';
 
 export interface HistoryMultiplexers {
   readonly browserHistoryMultiplexer: HistoryMultiplexer;

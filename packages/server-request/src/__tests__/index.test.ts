@@ -1,13 +1,16 @@
-// tslint:disable:no-non-null-assertion
-
-import {
+import type {
   FeatureServiceBinder,
   FeatureServiceEnvironment,
   FeatureServiceProviderDefinition,
 } from '@feature-hub/core';
-import {ServerRequestV1, SharedServerRequest, defineServerRequest} from '..';
+import {
+  type ServerRequestV1,
+  type SharedServerRequest,
+  defineServerRequest,
+} from '..';
 
 describe('defineServerRequest', () => {
+  // biome-ignore lint/complexity/noBannedTypes: test cases
   let mockEnv: FeatureServiceEnvironment<{}>;
   let serverRequestDefinition: FeatureServiceProviderDefinition<SharedServerRequest>;
   let serverRequest: ServerRequestV1;
@@ -33,6 +36,7 @@ describe('defineServerRequest', () => {
     it('creates a shared Feature Service containing version 1.0.0', () => {
       const sharedServerRequest = serverRequestDefinition.create(mockEnv);
 
+      // biome-ignore lint/style/noNonNullAssertion: test cases
       expect(sharedServerRequest!['1.0.0']).toBeDefined();
     });
   });
@@ -41,6 +45,7 @@ describe('defineServerRequest', () => {
     let serverRequestBinder: FeatureServiceBinder<ServerRequestV1>;
 
     beforeEach(() => {
+      // biome-ignore lint/style/noNonNullAssertion: test cases
       serverRequestBinder = serverRequestDefinition.create(mockEnv)!['1.0.0'];
     });
 

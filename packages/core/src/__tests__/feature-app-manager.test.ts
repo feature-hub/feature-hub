@@ -1,15 +1,13 @@
-// tslint:disable:no-implicit-dependencies
-
 import {
-  FeatureAppDefinition,
-  FeatureAppDescriptor,
+  type FeatureAppDefinition,
+  type FeatureAppDescriptor,
   FeatureAppManager,
-  FeatureServiceRegistry,
-  FeatureServicesBinding,
-  ModuleLoader,
+  type FeatureServiceRegistry,
+  type FeatureServicesBinding,
+  type ModuleLoader,
 } from '..';
-import {ExternalsValidator} from '../externals-validator';
-import {FeatureAppModule} from '../internal/is-feature-app-module';
+import type {ExternalsValidator} from '../externals-validator';
+import type {FeatureAppModule} from '../internal/is-feature-app-module';
 import {logger} from './logger';
 
 interface MockFeatureServiceRegistry extends FeatureServiceRegistry {
@@ -168,7 +166,7 @@ describe('FeatureAppManager', () => {
       'when an invalid Feature App module (%o) has been loaded',
       (invalidFeatureAppModule) => {
         beforeEach(() => {
-          // tslint:disable-next-line:no-any
+          // biome-ignore lint/suspicious/noExplicitAny: test cases
           mockFeatureAppModule = invalidFeatureAppModule as any;
         });
 

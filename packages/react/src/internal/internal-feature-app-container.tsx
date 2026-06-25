@@ -1,15 +1,15 @@
-import {
+import type {
   FeatureAppDefinition,
   FeatureAppEnvironment,
   FeatureServices,
   Logger,
 } from '@feature-hub/core';
 import * as React from 'react';
-import {
+import type {
   CustomFeatureAppRenderingParams,
   FeatureApp,
 } from '../feature-app-container';
-import {FeatureHubContextConsumerValue} from '../feature-hub-context';
+import type {FeatureHubContextConsumerValue} from '../feature-hub-context';
 import {FeatureAppContext} from './feature-app-context';
 import {isDomFeatureApp, isFeatureApp, isReactFeatureApp} from './type-guards';
 
@@ -216,6 +216,7 @@ export class InternalFeatureAppContainer<
   public componentWillUnmount(): void {
     this.mounted = false;
 
+    // biome-ignore lint/complexity/useOptionalChain: legacy implementation
     if (this.state && this.state.release) {
       try {
         this.state.release();
@@ -225,6 +226,7 @@ export class InternalFeatureAppContainer<
     }
 
     if (
+      // biome-ignore lint/complexity/useOptionalChain: legacy implementation
       this.state &&
       this.state.detachFunction &&
       typeof this.state.detachFunction === 'function'
@@ -279,6 +281,7 @@ export class InternalFeatureAppContainer<
     const {featureApp} = this.state;
 
     if (
+      // biome-ignore lint/complexity/useOptionalChain: legacy implementation
       featureApp &&
       featureApp.loadingPromise &&
       !this.loadingPromiseHandled

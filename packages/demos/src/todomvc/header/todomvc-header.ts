@@ -1,6 +1,6 @@
-import {DomFeatureApp} from '@feature-hub/react';
+import type {DomFeatureApp} from '@feature-hub/react';
 import {html, render} from 'lit-html';
-import {TodoManagerV1} from '../todo-manager';
+import type {TodoManagerV1} from '../todo-manager';
 
 export class TodoMvcHeader implements DomFeatureApp {
   public readonly kind = 'react-container';

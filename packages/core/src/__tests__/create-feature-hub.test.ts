@@ -1,15 +1,13 @@
-// tslint:disable:no-implicit-dependencies
-
-import {FeatureHubOptions, createFeatureHub} from '../create-feature-hub';
+import {type FeatureHubOptions, createFeatureHub} from '../create-feature-hub';
 import {
-  FeatureAppDefinition,
-  FeatureAppDescriptor,
+  type FeatureAppDefinition,
+  type FeatureAppDescriptor,
   FeatureAppManager,
 } from '../feature-app-manager';
 import {
-  FeatureServiceProviderDefinition,
+  type FeatureServiceProviderDefinition,
   FeatureServiceRegistry,
-  SharedFeatureService,
+  type SharedFeatureService,
 } from '../feature-service-registry';
 import {logger} from './logger';
 
@@ -81,6 +79,7 @@ describe('createFeatureHub()', () => {
   });
 
   describe('featureAppManager#createFeatureAppScope', () => {
+    // biome-ignore lint/complexity/noBannedTypes: test cases
     let mockFeatureApp: {};
     let mockFeatureAppCreate: jest.Mock;
     let mockFeatureAppDefinition: FeatureAppDefinition<unknown>;
@@ -177,6 +176,7 @@ describe('createFeatureHub()', () => {
   describe('with Feature Service definitions', () => {
     let mockFeatureServiceCreate: jest.Mock;
     let mockFeatureServiceV1Binder: jest.Mock;
+    // biome-ignore lint/complexity/noBannedTypes: test cases
     let mockFeatureServiceV1: {};
 
     beforeEach(() => {

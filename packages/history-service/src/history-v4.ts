@@ -3,7 +3,6 @@
 // Definitions by: Sergey Buturlakin <https://github.com/sergey-buturlakin>, Nathan Brown <https://github.com/ngbrown>, Young Rok Kim <https://github.com/rokoroku>, Daniel Nixon <https://github.com/danielnixon>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 // TypeScript Version: 2.3
-// tslint:disable
 
 export type Action = 'PUSH' | 'POP' | 'REPLACE';
 export type UnregisterCallback = () => void;
@@ -61,11 +60,14 @@ export type Pathname = string;
 export type Search = string;
 export type TransitionHook<S = LocationState> = (
   location: Location<S>,
+  // biome-ignore lint/suspicious/noExplicitAny: compatibility shim
   callback: (result: any) => void,
+  // biome-ignore lint/suspicious/noExplicitAny: compatibility shim
 ) => any;
 export type TransitionPromptHook<S = LocationState> = (
   location: Location<S>,
   action: Action,
+  // biome-ignore lint/suspicious/noConfusingVoidType: compatibility shim
 ) => string | false | void;
 export type Hash = string;
 export type Href = string;

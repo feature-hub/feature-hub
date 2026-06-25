@@ -1,5 +1,9 @@
 import {createFeatureHub} from '@feature-hub/core';
-import {ConsumerLoggerCreator, Logger, defineLogger} from '@feature-hub/logger';
+import {
+  type ConsumerLoggerCreator,
+  type Logger,
+  defineLogger,
+} from '@feature-hub/logger';
 import {defineExternals, loadAmdModule} from '@feature-hub/module-loader-amd';
 import {FeatureHubContextProvider} from '@feature-hub/react';
 import * as React from 'react';

@@ -60,6 +60,7 @@ body {
   color: #e6e6e6;
 }
 
+/* biome-ignore lint/correctness/noUnknownPseudoElement: legacy static asset */
 .todoapp input::input-placeholder {
   font-style: italic;
   font-weight: 300;

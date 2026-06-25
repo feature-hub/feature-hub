@@ -1,20 +1,20 @@
-import {
+import type {
   FeatureAppDefinition,
   FeatureAppEnvironment,
   FeatureServices,
 } from '@feature-hub/core';
 import * as React from 'react';
-import {
+import type {
   CustomFeatureAppRenderingParams,
   FeatureApp,
 } from './feature-app-container';
 import {
-  Css,
+  type Css,
   FeatureHubContextConsumer,
-  FeatureHubContextConsumerValue,
+  type FeatureHubContextConsumerValue,
 } from './feature-hub-context';
 import {
-  FeatureAppDescriptor,
+  type FeatureAppDescriptor,
   InternalFeatureAppContainer,
 } from './internal/internal-feature-app-container';
 import {prependBaseUrl} from './internal/prepend-base-url';
@@ -249,6 +249,7 @@ class InternalFeatureAppLoader<TConfig = unknown> extends React.PureComponent<
 
     return (
       <InternalFeatureAppContainer
+        // biome-ignore lint/correctness/noChildrenProp: this wrapper intentionally forwards children as a prop
         children={children}
         baseUrl={baseUrl}
         beforeCreate={beforeCreate}

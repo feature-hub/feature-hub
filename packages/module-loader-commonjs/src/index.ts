@@ -1,4 +1,4 @@
-import fetch, {RequestInit} from 'node-fetch';
+import fetch, {type RequestInit} from 'node-fetch';
 
 export interface Externals {
   readonly [externalName: string]: unknown;
@@ -25,7 +25,6 @@ export function createCommonJsModuleLoader(
     const source = await response.text();
     const mod = {exports: {}};
 
-    // tslint:disable-next-line:function-constructor
     Function(
       'module',
       'exports',
@@ -33,7 +32,7 @@ export function createCommonJsModuleLoader(
       `${source}
       //# sourceURL=${url}`,
     )(mod, mod.exports, (dep: string) =>
-      // tslint:disable-next-line:no-eval https://stackoverflow.com/a/41063795/10385541
+      // biome-ignore lint/security/noGlobalEval lint/suspicious/noPrototypeBuiltins: fix later
       externals.hasOwnProperty(dep) ? externals[dep] : eval('require')(dep),
     );
 

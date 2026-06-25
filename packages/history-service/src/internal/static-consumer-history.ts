@@ -1,7 +1,7 @@
-import * as historyV4 from '../history-v4';
+import type * as historyV4 from '../history-v4';
 import {ConsumerHistory} from './consumer-history';
-import {HistoryMultiplexer} from './history-multiplexer';
-import {HistoryServiceContext} from './history-service-context';
+import type {HistoryMultiplexer} from './history-multiplexer';
+import type {HistoryServiceContext} from './history-service-context';
 
 export class StaticConsumerHistory extends ConsumerHistory {
   public constructor(

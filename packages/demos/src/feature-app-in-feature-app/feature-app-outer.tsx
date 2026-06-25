@@ -1,6 +1,6 @@
 import {Card} from '@blueprintjs/core';
-import {FeatureAppDefinition} from '@feature-hub/core';
-import {FeatureAppContainer, ReactFeatureApp} from '@feature-hub/react';
+import type {FeatureAppDefinition} from '@feature-hub/core';
+import {FeatureAppContainer, type ReactFeatureApp} from '@feature-hub/react';
 import * as React from 'react';
 import innerFeatureAppDefinition from './feature-app-inner';
 

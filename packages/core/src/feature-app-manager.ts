@@ -1,6 +1,6 @@
 import {AsyncValue} from './async-value';
-import {ExternalsValidator} from './externals-validator';
-import {
+import type {ExternalsValidator} from './externals-validator';
+import type {
   FeatureServiceConsumerDefinition,
   FeatureServiceProviderDefinition,
   FeatureServiceRegistry,
@@ -9,7 +9,7 @@ import {
 } from './feature-service-registry';
 import * as Messages from './internal/feature-app-manager-messages';
 import {isFeatureAppModule} from './internal/is-feature-app-module';
-import {Logger} from './logger';
+import type {Logger} from './logger';
 
 export interface FeatureAppDescriptor {
   /**
@@ -522,6 +522,7 @@ export class FeatureAppManager {
 
     const {dependencies} = featureAppDefinition;
 
+    // biome-ignore lint/complexity/useOptionalChain: this branch is intentionally explicit for readability
     if (dependencies && dependencies.externals) {
       externalsValidator.validate(dependencies.externals, featureAppId);
     }

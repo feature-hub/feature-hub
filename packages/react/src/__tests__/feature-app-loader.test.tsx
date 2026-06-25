@@ -2,22 +2,20 @@
  * @jest-environment jsdom
  */
 
-// tslint:disable:no-implicit-dependencies
-
-import {AsyncSsrManagerV1} from '@feature-hub/async-ssr-manager';
+import type {AsyncSsrManagerV1} from '@feature-hub/async-ssr-manager';
 import {
   AsyncValue,
-  FeatureAppDefinition,
-  FeatureAppManager,
-  FeatureServices,
+  type FeatureAppDefinition,
+  type FeatureAppManager,
+  type FeatureServices,
 } from '@feature-hub/core';
 import * as React from 'react';
 import TestRenderer from 'react-test-renderer';
-import {CustomFeatureAppRenderingParams, FeatureAppLoader} from '..';
+import {type CustomFeatureAppRenderingParams, FeatureAppLoader} from '..';
 import {FeatureHubContextProvider} from '../feature-hub-context';
 import {
   InternalFeatureAppContainer,
-  InternalFeatureAppContainerProps,
+  type InternalFeatureAppContainerProps,
 } from '../internal/internal-feature-app-container';
 import {logger} from './logger';
 import {TestErrorBoundary} from './test-error-boundary';
@@ -343,6 +341,7 @@ describe('FeatureAppLoader', () => {
           done={done}
           onError={onError}
           baseUrl="/base"
+          // biome-ignore lint/correctness/noChildrenProp: test cases
           children={children}
         />,
       );
@@ -492,6 +491,7 @@ describe('FeatureAppLoader', () => {
           <FeatureAppLoader
             featureAppId="testId"
             src="example.js"
+            // biome-ignore lint/correctness/noChildrenProp: test cases
             children={children}
           />,
         );
@@ -514,6 +514,7 @@ describe('FeatureAppLoader', () => {
           <FeatureAppLoader
             featureAppId="testId"
             src="example.js"
+            // biome-ignore lint/correctness/noChildrenProp: test cases
             children={children}
           />,
         );
@@ -535,6 +536,7 @@ describe('FeatureAppLoader', () => {
             <FeatureAppLoader
               featureAppId="testId"
               src="example.js"
+              // biome-ignore lint/correctness/noChildrenProp: test cases
               children={() => {
                 throw childrenMockError;
               }}
@@ -557,6 +559,7 @@ describe('FeatureAppLoader', () => {
               featureAppId="testId"
               src="example.js"
               onError={onError}
+              // biome-ignore lint/correctness/noChildrenProp: test cases
               children={jest.fn().mockReturnValue(null)}
             />,
           );
@@ -582,6 +585,7 @@ describe('FeatureAppLoader', () => {
                 onError={() => {
                   throw onErrorMockError;
                 }}
+                // biome-ignore lint/correctness/noChildrenProp: test cases
                 children={children}
               />,
               {handleError},

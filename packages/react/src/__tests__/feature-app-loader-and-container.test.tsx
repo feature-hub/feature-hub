@@ -2,17 +2,15 @@
  * @jest-environment jsdom
  */
 
-// tslint:disable:no-implicit-dependencies
-
 import {
   AsyncValue,
-  FeatureAppDefinition,
-  FeatureAppManager,
+  type FeatureAppDefinition,
+  type FeatureAppManager,
 } from '@feature-hub/core';
 import React from 'react';
 import TestRenderer from 'react-test-renderer';
 import {FeatureAppLoader, FeatureHubContextProvider} from '..';
-import {DomFeatureApp} from '../feature-app-container';
+import type {DomFeatureApp} from '../feature-app-container';
 
 describe('FeatureAppLoader with an unmocked InternalFeatureAppContainer', () => {
   let mockFeatureAppManager: FeatureAppManager;

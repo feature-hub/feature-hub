@@ -19,7 +19,8 @@
     "postgenerate:api-docs": "node scripts/process-api-docs.js",
     "generate:website": "npm run build --workspace @feature-hub/website && npm run generate:api-docs && npx lerna run --scope @feature-hub/demos build:todomvc",
     "install:puppeteer": "puppeteer browsers install chrome",
-    "lint": "echo \"No linting configured.\"",
+    "lint": "biome lint",
+    "lint:fix": "biome lint --fix",
     "sort-package-jsons": "sort-package-json package.json packages/*/package.json",
     "start:website": "NODE_ENV=production aws-simple start",
     "pretest": "rimraf coverage && npm run install:puppeteer",
@@ -42,6 +43,7 @@
     "@types/react": "^18.3.3"
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.4.16",
     "@commitlint/cli": "^17.0.0",
     "@commitlint/config-angular": "^17.0.0",
     "@size-limit/file": "^11.0.1",

@@ -2,8 +2,8 @@
  * @jest-environment puppeteer
  */
 
-import {Server} from 'http';
-import {AddressInfo} from 'net';
+import type {Server} from 'http';
+import type {AddressInfo} from 'net';
 import {Browser} from '../browser';
 import {startServer} from '../start-server';
 import webpackConfigs from './webpack-config';

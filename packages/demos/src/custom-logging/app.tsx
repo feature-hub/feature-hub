@@ -1,5 +1,5 @@
 import {AnchorButton, Card} from '@blueprintjs/core';
-import {FeatureAppEnvironment, FeatureServices} from '@feature-hub/core';
+import type {FeatureAppEnvironment, FeatureServices} from '@feature-hub/core';
 import {FeatureAppContainer} from '@feature-hub/react';
 import * as React from 'react';
 import featureAppDefinition from './feature-app';

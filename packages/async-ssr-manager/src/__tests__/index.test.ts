@@ -1,14 +1,11 @@
-// tslint:disable:no-implicit-dependencies
-// tslint:disable:no-non-null-assertion
-
-import {
+import type {
   FeatureServiceBinder,
   FeatureServiceEnvironment,
   FeatureServiceProviderDefinition,
 } from '@feature-hub/core';
 import {
-  AsyncSsrManagerV1,
-  SharedAsyncSsrManager,
+  type AsyncSsrManagerV1,
+  type SharedAsyncSsrManager,
   defineAsyncSsrManager,
 } from '..';
 import {stubbedLogger} from './stubbed-logger';
@@ -23,6 +20,7 @@ async function simulateAsyncOperation(result: number): Promise<number> {
 }
 
 describe('defineAsyncSsrManager', () => {
+  // biome-ignore lint/complexity/noBannedTypes: test cases
   let mockEnv: FeatureServiceEnvironment<{}>;
 
   let asyncSsrManagerDefinition: FeatureServiceProviderDefinition<SharedAsyncSsrManager>;
@@ -48,6 +46,7 @@ describe('defineAsyncSsrManager', () => {
     it('creates a shared Feature Service containing version 1.0.0', () => {
       const sharedAsyncSsrManager = asyncSsrManagerDefinition.create(mockEnv);
 
+      // biome-ignore lint/style/noNonNullAssertion: test cases
       expect(sharedAsyncSsrManager!['1.0.0']).toBeDefined();
     });
   });
@@ -57,6 +56,7 @@ describe('defineAsyncSsrManager', () => {
 
     beforeEach(() => {
       asyncSsrManagerBinder =
+        // biome-ignore lint/style/noNonNullAssertion: test cases
         asyncSsrManagerDefinition.create(mockEnv)!['1.0.0'];
     });
 
@@ -353,6 +353,7 @@ describe('defineAsyncSsrManager', () => {
           asyncSsrManagerDefinition = defineAsyncSsrManager();
 
           asyncSsrManagerBinder =
+            // biome-ignore lint/style/noNonNullAssertion: test cases
             asyncSsrManagerDefinition.create(mockEnv)!['1.0.0'];
         });
 
@@ -381,6 +382,7 @@ describe('defineAsyncSsrManager', () => {
 
         asyncSsrManagerDefinition = defineAsyncSsrManager();
 
+        // biome-ignore lint/style/noNonNullAssertion: test cases
         asyncSsrManagerBinder = asyncSsrManagerDefinition.create({
           featureServices: {},
         })!['1.0.0'];

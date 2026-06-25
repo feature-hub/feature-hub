@@ -1,5 +1,5 @@
-import {Logger} from '@feature-hub/logger';
-import {AsyncSsrManagerDependencies} from '..';
+import type {Logger} from '@feature-hub/logger';
+import type {AsyncSsrManagerDependencies} from '..';
 
 export interface AsyncSsrManagerContext {
   readonly logger: Logger;

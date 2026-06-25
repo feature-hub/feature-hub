@@ -1,10 +1,10 @@
-import {
+import type {
   FeatureServiceBinder,
   FeatureServiceProviderDefinition,
   FeatureServices,
   SharedFeatureService,
 } from '@feature-hub/core';
-import {Logger} from '@feature-hub/logger';
+import type {Logger} from '@feature-hub/logger';
 
 export interface Todo {
   readonly id: string;
@@ -87,6 +87,7 @@ class TodoManagerV1Impl implements TodoManagerV1 {
   }
 
   private notifyListeners(): void {
+    // biome-ignore lint/suspicious/useIterableCallbackReturn: listener callbacks are intentionally invoked for side effects
     this.listeners.forEach((listener) => listener());
   }
 

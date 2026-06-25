@@ -1,4 +1,4 @@
-import {FeatureAppManager} from '@feature-hub/core';
+import type {FeatureAppManager} from '@feature-hub/core';
 import {
   FeatureAppContainer,
   FeatureHubContextProvider,

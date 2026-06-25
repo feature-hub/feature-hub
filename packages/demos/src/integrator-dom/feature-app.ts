@@ -1,5 +1,5 @@
-import {FeatureAppDefinition} from '@feature-hub/core';
-import {DetachFunction, DomFeatureApp} from '@feature-hub/dom';
+import type {FeatureAppDefinition} from '@feature-hub/core';
+import type {DetachFunction, DomFeatureApp} from '@feature-hub/dom';
 
 const featureAppDefinition: FeatureAppDefinition<DomFeatureApp> = {
   create: () => ({

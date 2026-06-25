@@ -1,4 +1,4 @@
-import {History} from 'history';
+import type {History} from 'history';
 import {createHistoryV4Adapter} from '../create-history-v4-adapter';
 
 const ctx = {logger: console};

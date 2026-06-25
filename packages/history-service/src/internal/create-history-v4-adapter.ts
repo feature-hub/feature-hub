@@ -1,6 +1,6 @@
-import {History} from 'history';
-import * as historyV4 from '../history-v4';
-import {HistoryServiceContext} from './history-service-context';
+import type {History} from 'history';
+import type * as historyV4 from '../history-v4';
+import type {HistoryServiceContext} from './history-service-context';
 
 export function createHistoryV4Adapter(
   context: HistoryServiceContext,

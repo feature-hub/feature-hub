@@ -3,31 +3,28 @@
  * @jest-environment-options {"url": "http://example.com"}
  */
 
-// tslint:disable:no-implicit-dependencies
-// tslint:disable:no-non-null-assertion
-
-import {
+import type {
   FeatureServiceBinder,
   FeatureServiceBinding,
   FeatureServiceEnvironment,
   FeatureServiceProviderDefinition,
 } from '@feature-hub/core';
-import {History} from 'history';
+import type {History} from 'history';
 import {
-  ConsumerLocationV3,
-  HistoryServiceDependencies,
-  HistoryServiceV1,
-  HistoryServiceV2,
-  HistoryServiceV3,
-  RootLocation,
-  SharedHistoryService,
+  type ConsumerLocationV3,
+  type HistoryServiceDependencies,
+  type HistoryServiceV1,
+  type HistoryServiceV2,
+  type HistoryServiceV3,
+  type RootLocation,
+  type SharedHistoryService,
   createRootLocationTransformer,
   defineHistoryService,
 } from '..';
-import * as historyV4 from '../history-v4';
-import {GetHistoryKeyOptions} from '../internal/create-history-service-v3-binder';
-import {ConsumerState} from '../internal/history-multiplexer';
-import {Writable} from '../internal/writable';
+import type * as historyV4 from '../history-v4';
+import type {GetHistoryKeyOptions} from '../internal/create-history-service-v3-binder';
+import type {ConsumerState} from '../internal/history-multiplexer';
+import type {Writable} from '../internal/writable';
 import {
   consumerPathsQueryParamName,
   createSearch,
@@ -84,7 +81,9 @@ describe('defineHistoryService', () => {
         featureServices: {},
       });
 
+      // biome-ignore lint/style/noNonNullAssertion: test cases
       expect(sharedHistoryService!['1.0.0']).toBeDefined();
+      // biome-ignore lint/style/noNonNullAssertion: test cases
       expect(sharedHistoryService!['2.0.0']).toBeDefined();
     });
   });
@@ -104,6 +103,7 @@ describe('defineHistoryService', () => {
           createRootLocationTransformer({consumerPathsQueryParamName}),
         ).create(mockEnv);
 
+        // biome-ignore lint/style/noNonNullAssertion: test cases
         return sharedHistoryService!['1.0.0'];
       };
     });
@@ -112,6 +112,7 @@ describe('defineHistoryService', () => {
       it('does not try to unbind the non-existent browser history', () => {
         const historyServiceBinder = createHistoryServiceBinder();
 
+        // biome-ignore lint/style/noNonNullAssertion: test cases
         historyServiceBinder('test').unbind!();
       });
     });
@@ -138,7 +139,9 @@ describe('defineHistoryService', () => {
       };
 
       const destroyHistories = () => {
+        // biome-ignore lint/style/noNonNullAssertion: test cases
         historyBinding1.unbind!();
+        // biome-ignore lint/style/noNonNullAssertion: test cases
         historyBinding2.unbind!();
       };
 
@@ -610,6 +613,7 @@ describe('defineHistoryService', () => {
 
           history2.push('/bar');
 
+          // biome-ignore lint/style/noNonNullAssertion: test cases
           historyBinding2.unbind!();
 
           history1ListenerSpy.mockClear();
@@ -632,6 +636,7 @@ describe('defineHistoryService', () => {
             const href = window.location.href;
 
             history1.push('/foo');
+            // biome-ignore lint/style/noNonNullAssertion: test cases
             historyBinding1.unbind!();
 
             simulateOnPopState(state, href);
@@ -687,6 +692,7 @@ describe('defineHistoryService', () => {
           createRootLocationTransformer({consumerPathsQueryParamName}),
         ).create(mockEnv);
 
+        // biome-ignore lint/style/noNonNullAssertion: test cases
         return sharedHistoryService!['2.0.0'];
       };
     });
@@ -724,7 +730,9 @@ describe('defineHistoryService', () => {
       };
 
       const destroyHistories = () => {
+        // biome-ignore lint/style/noNonNullAssertion: test cases
         historyBinding1.unbind!();
+        // biome-ignore lint/style/noNonNullAssertion: test cases
         historyBinding2.unbind!();
       };
 
@@ -1168,6 +1176,7 @@ describe('defineHistoryService', () => {
 
           history2.push('/bar');
 
+          // biome-ignore lint/style/noNonNullAssertion: test cases
           historyBinding2.unbind!();
 
           history1ListenerSpy.mockClear();
@@ -1190,6 +1199,7 @@ describe('defineHistoryService', () => {
             const href = window.location.href;
 
             history1.push('/foo');
+            // biome-ignore lint/style/noNonNullAssertion: test cases
             historyBinding1.unbind!();
 
             simulateOnPopState(state, href);
@@ -1599,6 +1609,7 @@ describe('defineHistoryService', () => {
                 createNewRootLocationForMultipleConsumersMock,
             }).create(mockEnv);
 
+            // biome-ignore lint/style/noNonNullAssertion: test cases
             return sharedHistoryService!['2.0.0'];
           };
 
@@ -1690,6 +1701,7 @@ describe('defineHistoryService', () => {
           {getHistoryKey},
         ).create(mockEnv);
 
+        // biome-ignore lint/style/noNonNullAssertion: test cases
         return sharedHistoryService!['3.0.0'];
       };
     });
@@ -1748,7 +1760,9 @@ describe('defineHistoryService', () => {
       };
 
       const destroyHistories = () => {
+        // biome-ignore lint/style/noNonNullAssertion: test cases
         historyBinding1.unbind!();
+        // biome-ignore lint/style/noNonNullAssertion: test cases
         historyBinding2.unbind!();
       };
 
@@ -2186,6 +2200,7 @@ describe('defineHistoryService', () => {
 
           history2.push('/bar');
 
+          // biome-ignore lint/style/noNonNullAssertion: test cases
           historyBinding2.unbind!();
 
           history1ListenerSpy.mockClear();
@@ -2208,6 +2223,7 @@ describe('defineHistoryService', () => {
             const href = window.location.href;
 
             history1.push('/foo');
+            // biome-ignore lint/style/noNonNullAssertion: test cases
             historyBinding1.unbind!();
 
             simulateOnPopState(state, href);
@@ -2612,6 +2628,7 @@ describe('defineHistoryService', () => {
                 createNewRootLocationForMultipleConsumersMock,
             }).create(mockEnv);
 
+            // biome-ignore lint/style/noNonNullAssertion: test cases
             return sharedHistoryService!['3.0.0'];
           };
 

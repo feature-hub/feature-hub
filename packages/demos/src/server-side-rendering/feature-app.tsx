@@ -1,7 +1,7 @@
-import {AsyncSsrManagerV1} from '@feature-hub/async-ssr-manager';
-import {FeatureAppDefinition, FeatureServices} from '@feature-hub/core';
-import {ReactFeatureApp} from '@feature-hub/react';
-import {SerializedStateManagerV1} from '@feature-hub/serialized-state-manager';
+import type {AsyncSsrManagerV1} from '@feature-hub/async-ssr-manager';
+import type {FeatureAppDefinition, FeatureServices} from '@feature-hub/core';
+import type {ReactFeatureApp} from '@feature-hub/react';
+import type {SerializedStateManagerV1} from '@feature-hub/serialized-state-manager';
 import * as React from 'react';
 import {HelloWorld} from './hello-world';
 

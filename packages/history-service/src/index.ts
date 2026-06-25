@@ -1,19 +1,19 @@
-import {
+import type {
   FeatureServiceBinder,
   FeatureServiceProviderDefinition,
   FeatureServices,
   SharedFeatureService,
 } from '@feature-hub/core';
-import {Logger} from '@feature-hub/logger';
-import {ServerRequestV1} from '@feature-hub/server-request';
-import * as history from 'history';
-import {RootLocationTransformer} from './create-root-location-transformer';
-import * as historyV4 from './history-v4';
+import type {Logger} from '@feature-hub/logger';
+import type {ServerRequestV1} from '@feature-hub/server-request';
+import type * as history from 'history';
+import type {RootLocationTransformer} from './create-root-location-transformer';
+import type * as historyV4 from './history-v4';
 import {createHistoryMultiplexers} from './internal/create-history-multiplexers';
 import {createHistoryServiceV1Binder} from './internal/create-history-service-v1-binder';
 import {createHistoryServiceV2Binder} from './internal/create-history-service-v2-binder';
 import {
-  GetHistoryKeyOptions,
+  type GetHistoryKeyOptions,
   createHistoryServiceV3Binder,
 } from './internal/create-history-service-v3-binder';
 import {createHistoryServiceContext} from './internal/history-service-context';

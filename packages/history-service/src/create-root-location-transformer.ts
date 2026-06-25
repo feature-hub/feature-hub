@@ -1,5 +1,5 @@
 import * as history from 'history';
-import {ConsumerLocationV3} from '.';
+import type {ConsumerLocationV3} from '.';
 import {URLSearchParams} from './internal/url-search-params';
 
 export interface RootLocationOptions {

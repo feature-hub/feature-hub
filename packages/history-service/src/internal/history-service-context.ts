@@ -1,6 +1,6 @@
-import {Logger} from '@feature-hub/logger';
-import {ServerRequestV1} from '@feature-hub/server-request';
-import {HistoryServiceDependencies} from '..';
+import type {Logger} from '@feature-hub/logger';
+import type {ServerRequestV1} from '@feature-hub/server-request';
+import type {HistoryServiceDependencies} from '..';
 
 export interface HistoryServiceContext {
   readonly logger: Logger;
