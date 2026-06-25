@@ -4,7 +4,6 @@ import {FeatureAppLoader, FeatureHubContextProvider} from '@feature-hub/react';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom/server';
 import type {AppRendererOptions, AppRendererResult} from '../app-renderer';
-import process from 'node:process';
 
 export default async function renderApp({
   port,

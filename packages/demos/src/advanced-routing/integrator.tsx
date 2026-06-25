@@ -15,7 +15,6 @@ import {
   type NavigationServiceV1,
   navigationServiceDefinition,
 } from './navigation-service';
-import process from 'node:process';
 
 defineExternals({react: React});
 

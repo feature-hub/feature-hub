@@ -7,7 +7,6 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import type {FeatureAppModuleSource} from '../app-renderer';
 import {App} from './app';
-import process from 'node:process';
 
 function getSerializedStatesFromDom(): string | undefined {
   const scriptElement = document.querySelector(

@@ -10,7 +10,6 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import '../blueprint-css';
 import {App} from './app';
-import process from 'node:process';
 
 defineExternals({react: React});
 

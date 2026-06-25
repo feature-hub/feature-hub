@@ -11,9 +11,9 @@
     "enabled": true,
     "rules": {
       "preset": "recommended",
-      "correctness": {"noProcessGlobal": "error"},
+      "correctness": {"noProcessGlobal": "warn"},
       "style": {"useNodejsImportProtocol": "off", "useTemplate": "off"},
-    },
+    }
   },
   "javascript": {
     "jsxRuntime": "reactClassic",

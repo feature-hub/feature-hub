@@ -5,7 +5,6 @@ import {FeatureAppLoader, FeatureHubContextProvider} from '@feature-hub/react';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {todoManagerDefinition} from './todo-manager';
-import process from 'node:process';
 
 const {featureAppManager} = createFeatureHub('test:todomvc-integrator', {
   featureServiceDefinitions: [defineLogger(), todoManagerDefinition],
