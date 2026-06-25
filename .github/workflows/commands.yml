@@ -5,6 +5,7 @@ on:
 
 permissions:
   contents: write
+  id-token: write
   packages: write
   pull-requests: write
 
@@ -76,6 +77,8 @@ jobs:
         with:
           cache: npm
           node-version-file: package.json
+          registry-url: https://registry.npmjs.org
+          scope: '@feature-hub'
 
       - name: Install
         run: npm run ci
@@ -107,102 +110,4 @@ jobs:
               repo: repository.name,
               issue_number: issue.number,
               body: 'Deployed to https://${{ steps.gitSha.outputs.short }}.${{ secrets.AWS_HOSTED_ZONE_NAME }}'
-            });
-
-  prerelease:
-    if: |
-      github.event.issue.pull_request && github.event.comment.body == '/prerelease'
-    runs-on: ubuntu-latest
-    env:
-      CI: true
-    name: Prerelease PR
-
-    steps:
-      - name: Check user permission
-        id: check
-        uses: scherermichael-oss/action-has-permission@1.0.6
-        with:
-          required-permission: write
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Add comment reaction
-        uses: actions/github-script@v9
-        with:
-          github-token: ${{ github.token }}
-          result-encoding: string
-          script: |
-            const {comment, repository} = context.payload;
-
-            await github.rest.reactions.createForIssueComment({
-              owner: repository.owner.login,
-              repo: repository.name,
-              comment_id: comment.id,
-              content: '${{ steps.check.outputs.has-permission }}' ? '+1' : '-1'
-            });
-
-      - name: Abort if prohibited
-        if: '! steps.check.outputs.has-permission'
-        run: |
-          echo "Permissions are insufficient."
-          exit 1
-
-      - name: Get Git Ref
-        uses: actions/github-script@v9
-        id: gitRef
-        with:
-          github-token: ${{ github.token }}
-          result-encoding: string
-          script: |
-            const {issue, repository} = context.payload;
-
-            const pull_request = await github.rest.pulls.get({
-              owner: repository.owner.login,
-              repo: repository.name,
-              pull_number: issue.number
-            });
-
-            const {ref, sha} = pull_request.data.head;
-            core.setOutput('short', sha.slice(0, 8));
-            return ref;
-
-      - name: Checkout
-        uses: actions/checkout@v7
-        with:
-          ref: ${{ steps.gitRef.outputs.result }}
-          fetch-depth: 0
-
-      - name: Setup node
-        uses: actions/setup-node@v6
-        with:
-          cache: npm
-          node-version-file: package.json
-
-      - name: Install
-        run: npm run ci
-
-      - name: Compile
-        run: npm run compile
-
-      - name: Publish Version
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: |
-          git config --global user.email "s2-feature-hub@accenture.com"
-          git config --global user.name "Feature Hub CI"
-          npm config set "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}"
-          npx lerna publish --conventional-commits --conventional-prerelease --preid ${{ steps.gitRef.outputs.result }}.${{ steps.gitRef.outputs.short }} --dist-tag ${{ steps.gitRef.outputs.result }} --no-git-tag-version --yes --no-verify-access
-
-      - name: Add PR Comment
-        uses: actions/github-script@v9
-        with:
-          github-token: ${{ github.token }}
-          script: |
-            const {issue, repository} = context.payload;
-
-            github.rest.issues.createComment({
-              owner: repository.owner.login,
-              repo: repository.name,
-              issue_number: issue.number,
-              body: 'Prereleased with npm dist-tag "${{ steps.gitRef.outputs.result }}"'
             });
