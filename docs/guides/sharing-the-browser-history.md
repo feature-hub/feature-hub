@@ -141,32 +141,32 @@ API is aso part of the history-service. The independent API was abandonded after
 6.3.0 of react router. To use later versions of react router an adapter needs to
 be used.
 
-### =6.3
+### React Router =6.3
 
-```
+```js
 <HistoryRouter history={historyService.history}>
-    <App />
+  <App />
 </HistoryRouter>
 ```
 
-### >=6.30
+### React Router >=6.30
 
+```js
 import {adaptV6_30History} from '@feature-hub/react-router-v6-30-adapter';
 
-```
 <HistoryRouter history={adaptV6_30History(historyService.history)}>
-    <App />
-</HistoryRouter>
+  <App />
+</HistoryRouter>;
 ```
 
-### >=7
+### React Router >=7
 
-```
+```js
 import {adaptV7History} from '@feature-hub/react-router-v7-adapter';
 
 <HistoryRouter history={adaptV7History(historyService.history)}>
-    <App />
-</HistoryRouter>
+  <App />
+</HistoryRouter>;
 ```
 
 ## Root Location Transformer
