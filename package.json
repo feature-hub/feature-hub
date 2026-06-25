@@ -79,9 +79,9 @@
     "typedoc": "^0.28.19",
     "typescript": "^5.2.2"
   },
-    "devEngines": {
-      "runtime": {
-        "name": "node",
+  "devEngines": {
+    "runtime": {
+      "name": "node",
       "version": "24.x"
     },
     "packageManager": {
