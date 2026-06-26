@@ -93,11 +93,16 @@ jobs:
           cache: npm
           node-version-file: package.json
 
-      - name: Create Coverage Report
-        uses: ArtiomTr/jest-coverage-report-action@v2
+      - name: Run Tests and Generate Coverage Report
+        run: npm run test:unit
+
+      - name: Post Coverage Report
+        uses: zgosalvez/github-actions-report-lcov@v4
         with:
-          package-manager: npm
-          test-script: npm run test:unit
+          coverage-files: coverage/lcov.info
+          artifact-name: code-coverage-report
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          update-comment: true
 
   compile-lint-verify:
     runs-on: ubuntu-latest
