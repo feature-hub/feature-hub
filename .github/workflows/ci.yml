@@ -54,7 +54,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
-      - name: Setup node ${{ matrix.node }}
+      - name: Setup node
         uses: actions/setup-node@v6
         with:
           cache: npm
@@ -74,31 +74,6 @@ jobs:
       - name: Unit Tests
         run: npm run test:unit --no-cache --maxWorkers 2 --no-verbose
 
-      - name: Integration Tests
-        env:
-          NODE_OPTIONS: --max-old-space-size=4096
-        run: npm run test:integration --no-cache --maxWorkers 2
-
-  coverage:
-    if: github.event_name == 'pull_request'
-    runs-on: ubuntu-latest
-    name: Coverage
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-
-      - name: Setup node
-        uses: actions/setup-node@v6
-        with:
-          cache: npm
-          node-version-file: package.json
-
-      - name: Install
-        run: npm run ci
-
-      - name: Run Tests and Generate Coverage Report
-        run: npm run test:unit
-
       - name: Post Coverage Report
         uses: zgosalvez/github-actions-report-lcov@v4
         with:
@@ -106,6 +81,12 @@ jobs:
           artifact-name: code-coverage-report
           github-token: ${{ secrets.GITHUB_TOKEN }}
           update-comment: true
+
+      - name: Integration Tests
+        env:
+          NODE_OPTIONS: --max-old-space-size=4096
+        run: npm run test:integration --no-cache --maxWorkers 2
+
 
   compile-lint-verify:
     runs-on: ubuntu-latest

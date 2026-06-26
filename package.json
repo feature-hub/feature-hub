@@ -26,7 +26,7 @@
     "pretest": "rimraf coverage && npm run install:puppeteer",
     "test": "jest --verbose --silent",
     "test:integration": "npm test -- --testPathPattern packages/demos --no-coverage",
-    "test:unit": "jest --verbose --silent --testPathIgnorePatterns packages/demos",
+    "test:unit": "npm test -- --testPathIgnorePatterns packages/demos",
     "verify": "run-p verify:**",
     "verify:format": "prettier --list-different '**/*.{js,json,md,ts,tsx,yml}'",
     "verify:install": "git diff --exit-code package-lock.json",
