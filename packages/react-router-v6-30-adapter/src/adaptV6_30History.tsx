@@ -18,7 +18,7 @@ function mapAction(action: string): RemixAction {
 function toPathname(to: RemixTo): string {
   return typeof to === 'string'
     ? to
-    : `${to.pathname || '/'}${to.search || ''}${to.hash || ''}` || '/';
+    : `${to.pathname || '/'}${to.search || ''}${to.hash || ''}`;
 }
 
 function toPath(to: RemixTo): RemixPath {

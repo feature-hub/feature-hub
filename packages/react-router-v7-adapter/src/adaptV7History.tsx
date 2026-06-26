@@ -19,7 +19,7 @@ function mapAction(action: string): Action {
 function toPathname(to: ToV7): string {
   return typeof to === 'string'
     ? to
-    : `${to.pathname || '/'}${to.search || ''}${to.hash || ''}` || '/';
+    : `${to.pathname || '/'}${to.search || ''}${to.hash || ''}`;
 }
 
 function toPath(to: ToV7): PathV7 {

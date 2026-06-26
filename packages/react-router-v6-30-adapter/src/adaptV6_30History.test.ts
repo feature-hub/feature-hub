@@ -87,6 +87,8 @@ describe('adaptV6_30History', () => {
 
   it('creates hrefs from string and path objects', () => {
     expect(adaptedHistory.createHref('/path')).toBe('/path');
+    expect(adaptedHistory.createHref('/path?a=1#b')).toBe('/path?a=1#b');
+    expect(adaptedHistory.createHref({pathname: '/path'})).toBe('/path');
     expect(
       adaptedHistory.createHref({
         pathname: '/path',
@@ -95,6 +97,10 @@ describe('adaptV6_30History', () => {
       }),
     ).toBe('/path?a=1#b');
     expect(adaptedHistory.createHref({search: '?a=1'})).toBe('/?a=1');
+    expect(adaptedHistory.createHref({hash: '#b'})).toBe('/#b');
+    expect(adaptedHistory.createHref({search: '?a=1', hash: '#b'})).toBe(
+      '/?a=1#b',
+    );
   });
 
   it('creates urls using the current window location', () => {
@@ -109,6 +115,9 @@ describe('adaptV6_30History', () => {
     expect(
       adaptedHistory.createURL({pathname: '/path', search: '?a=1'}).toString(),
     ).toBe('http://localhost/path?a=1');
+    expect(adaptedHistory.createURL({hash: '#b'}).toString()).toBe(
+      'http://localhost/#b',
+    );
   });
 
   it('encodes locations as path objects', () => {
@@ -129,16 +138,41 @@ describe('adaptV6_30History', () => {
       search: '?a=1',
       hash: '#b',
     });
+
+    expect(adaptedHistory.encodeLocation({pathname: '/path'})).toEqual({
+      pathname: '/path',
+      search: '',
+      hash: '',
+    });
+
+    expect(adaptedHistory.encodeLocation({search: '?a=1', hash: '#b'})).toEqual(
+      {
+        pathname: '/',
+        search: '?a=1',
+        hash: '#b',
+      },
+    );
   });
 
   it('delegates navigation methods', () => {
     adaptedHistory.push('/push', {from: 'push'});
     adaptedHistory.replace('/replace', {from: 'replace'});
     adaptedHistory.go(-2);
+    adaptedHistory.push(
+      {pathname: '/object-push', hash: '#hash'},
+      {from: 'object-push'},
+    );
+    adaptedHistory.replace({search: '?mode=replace'}, {from: 'object-replace'});
 
     expect(history.push).toHaveBeenCalledWith('/push', {from: 'push'});
     expect(history.replace).toHaveBeenCalledWith('/replace', {from: 'replace'});
     expect(history.go).toHaveBeenCalledWith(-2);
+    expect(history.push).toHaveBeenCalledWith('/object-push#hash', {
+      from: 'object-push',
+    });
+    expect(history.replace).toHaveBeenCalledWith('/?mode=replace', {
+      from: 'object-replace',
+    });
   });
 
   it('adapts listen callbacks and returns the unsubscribe function', () => {
@@ -206,6 +240,17 @@ describe('adaptV6_30History', () => {
       },
     });
 
+    listenCallback?.({
+      action: 'PUSH',
+      location: {
+        pathname: '/default-key',
+        search: '',
+        hash: '',
+        state: null,
+        key: undefined,
+      },
+    });
+
     expect(listener).toHaveBeenNthCalledWith(1, {
       action: RemixAction.Replace,
       location: {
@@ -226,6 +271,18 @@ describe('adaptV6_30History', () => {
         hash: '',
         state: null,
         key: 'pop-key',
+      },
+      delta: null,
+    });
+
+    expect(listener).toHaveBeenNthCalledWith(3, {
+      action: RemixAction.Push,
+      location: {
+        pathname: '/default-key',
+        search: '',
+        hash: '',
+        state: null,
+        key: 'default',
       },
       delta: null,
     });
