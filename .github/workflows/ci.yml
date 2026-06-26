@@ -74,8 +74,8 @@ jobs:
       - name: Unit Tests
         run: npm run test:unit --no-cache --maxWorkers 2 --no-verbose
 
-      - name: Post Coverage Report
-        uses: zgosalvez/github-actions-report-lcov@v4
+      - name: Publish Coverage Report
+        uses: zgosalvez/github-actions-report-lcov@v7
         with:
           coverage-files: coverage/lcov.info
           artifact-name: code-coverage-report
