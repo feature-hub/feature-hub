@@ -93,6 +93,9 @@ jobs:
           cache: npm
           node-version-file: package.json
 
+      - name: Install
+        run: npm run ci
+
       - name: Run Tests and Generate Coverage Report
         run: npm run test:unit
 
