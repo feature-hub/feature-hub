@@ -61,7 +61,7 @@ jobs:
           node-version-file: package.json
 
       - name: Cache Puppeteer browsers
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: ~/.cache/puppeteer
           key: ${{ runner.os }}-puppeteer-${{ hashFiles('package-lock.json') }}
