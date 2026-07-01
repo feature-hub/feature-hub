@@ -1,6 +1,6 @@
 {
   "name": "@feature-hub/core",
-  "version": "3.7.0",
+  "version": "3.9.0",
   "description": "Create scalable web applications using micro frontends.",
   "keywords": [
     "feature-app",
@@ -27,7 +27,6 @@
       "require": "./lib/cjs/index.js"
     }
   },
-  "main": "lib/cjs/index.js",
   "module": "lib/esm/index.js",
   "typings": "lib/cjs/index.d.ts",
   "files": [

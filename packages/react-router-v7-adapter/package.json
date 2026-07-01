@@ -1,6 +1,6 @@
 {
   "name": "@feature-hub/react-router-v7-adapter",
-  "version": "3.7.2",
+  "version": "3.9.0",
   "description": "A history facade guaranteeing safe access for multiple consumers.",
   "homepage": "https://feature-hub.io/",
   "bugs": {
@@ -20,7 +20,6 @@
       "require": "./lib/cjs/index.js"
     }
   },
-  "main": "lib/cjs/index.js",
   "module": "lib/esm/index.js",
   "typings": "lib/cjs/index.d.ts",
   "files": [
