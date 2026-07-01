@@ -167,7 +167,7 @@ npm run watch:demo -- advanced-routing
 
 ---
 
-Copyright (c) 2018-2024 Accenture Song Build Germany GmbH. Released under the
+Copyright (c) 2018-2026 Accenture Song Build Germany GmbH. Released under the
 terms of the [MIT License][license].
 
 [license]: https://github.com/feature-hub/feature-hub/blob/main/LICENSE

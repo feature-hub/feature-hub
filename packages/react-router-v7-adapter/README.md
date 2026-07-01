@@ -7,10 +7,16 @@ A history facade guaranteeing safe access for multiple consumers.
 
 ## Installation
 
+### Using Yarn
+
+```sh
+yarn add @feature-hub/react-router-v7-adapter
+```
+
 ### Using npm
 
 ```sh
-npm install @feature-hub/history-service
+npm install @feature-hub/react-router-v7-adapter
 ```
 
 ---
@@ -18,12 +24,14 @@ npm install @feature-hub/history-service
 Copyright (c) 2018-2026 Accenture Song Build Germany GmbH. Released under the
 terms of the [MIT License][license].
 
-[api]: https://feature-hub.io/@feature-hub/history-service/
+[api]: https://feature-hub.io/@feature-hub/react-router-v7-adapter/
 [api-badge]:
-  https://img.shields.io/badge/API-%40feature--hub%2Fhistory--service-%23ea3458.svg
+  https://img.shields.io/badge/API-%40feature--hub%2Freact-router-v7-adapter-%23ea3458.svg
 [license]: https://github.com/feature-hub/feature-hub/blob/main/LICENSE
-[package-badge]: https://img.shields.io/npm/v/@feature-hub/history-service.svg
-[package-npm]: https://www.npmjs.com/package/@feature-hub/history-service
+[package-badge]:
+  https://img.shields.io/npm/v/@feature-hub/react-router-v7-adapter.svg
+[package-npm]:
+  https://www.npmjs.com/package/@feature-hub/react-router-v7-adapter
 [website]: https://feature-hub.io/
 [website-badge]:
   https://img.shields.io/badge/Website-feature--hub.io-%23500dc5.svg

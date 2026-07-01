@@ -1,0 +1,46 @@
+{
+  "name": "@feature-hub/react-router-v6-30-adapter",
+  "version": "3.7.2",
+  "description": "A history facade guaranteeing safe access for multiple consumers.",
+  "homepage": "https://feature-hub.io/",
+  "bugs": {
+    "url": "https://github.com/feature-hub/feature-hub/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/feature-hub/feature-hub.git"
+  },
+  "license": "MIT",
+  "author": "Accenture Song Build Germany GmbH",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "@feature-hub:bundler": "./src/index.ts",
+      "import": "./lib/esm/index.js",
+      "require": "./lib/cjs/index.js"
+    }
+  },
+  "main": "lib/cjs/index.js",
+  "module": "lib/esm/index.js",
+  "typings": "lib/cjs/index.d.ts",
+  "files": [
+    "lib",
+    "!__tests__"
+  ],
+  "devDependencies": {
+    "history": "^5.3.0",
+    "react-router": "^6.30.0"
+  },
+  "peerDependencies": {
+    "history": "^5.2.0",
+    "react-router": "^6.30.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "typedoc": {
+    "entryPoint": "./src/index.ts",
+    "readmeFile": "./README.md",
+    "displayName": "history-service"
+  }
+}

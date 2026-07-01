@@ -15,7 +15,7 @@ npm install @feature-hub/module-loader-amd
 
 ---
 
-Copyright (c) 2018-2024 Accenture Song Build Germany GmbH. Released under the
+Copyright (c) 2018-2026 Accenture Song Build Germany GmbH. Released under the
 terms of the [MIT License][license].
 
 [api]: https://feature-hub.io/@feature-hub/module-loader-amd/
