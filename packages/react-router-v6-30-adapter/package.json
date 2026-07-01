@@ -20,6 +20,7 @@
       "require": "./lib/cjs/index.js"
     }
   },
+  "main": "lib/cjs/index.js",
   "module": "lib/esm/index.js",
   "typings": "lib/cjs/index.d.ts",
   "files": [
