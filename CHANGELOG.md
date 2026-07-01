@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.9.0](https://github.com/feature-hub/feature-hub/compare/v3.8.0...v3.9.0) (2026-07-01)
+
+
+### Bug Fixes
+
+* **all:** release workflow failed ([95fd27e](https://github.com/feature-hub/feature-hub/commit/95fd27e36e72ab1664cfd05002a47c03b45cbdfc))
+
+
+### Features
+
+* **react-router-v6-30-adapter:** add adapter for reatc router >6.30 and 7.x([#792](https://github.com/feature-hub/feature-hub/issues/792)) ([6abd0f2](https://github.com/feature-hub/feature-hub/commit/6abd0f23ec7db9af8e97d256c26db3f338d71c34))
+* **website:** upgrade website ([#800](https://github.com/feature-hub/feature-hub/issues/800)) ([13fbc38](https://github.com/feature-hub/feature-hub/commit/13fbc386e946920eb4600e0eecbc9bdae66cc813))
+
+
+### Reverts
+
+* Revert "build(website): fix all links" ([d09aa82](https://github.com/feature-hub/feature-hub/commit/d09aa829072ed68decb1ad49b755eb2735180166))
+
+
+
+
+
 # [3.8.0](https://github.com/feature-hub/feature-hub/compare/v3.7.2...v3.8.0) (2025-01-27)
 
 

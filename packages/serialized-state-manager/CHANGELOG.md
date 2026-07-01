@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.9.0](https://github.com/feature-hub/feature-hub/compare/v3.8.0...v3.9.0) (2026-07-01)
+
+**Note:** Version bump only for package @feature-hub/serialized-state-manager
+
+
+
+
+
 # [3.7.0](https://github.com/feature-hub/feature-hub/compare/v3.6.0...v3.7.0) (2024-09-03)
 
 

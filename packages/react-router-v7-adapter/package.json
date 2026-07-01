@@ -1,6 +1,6 @@
 {
   "name": "@feature-hub/react-router-v7-adapter",
-  "version": "3.7.2",
+  "version": "3.9.0",
   "description": "A history facade guaranteeing safe access for multiple consumers.",
   "homepage": "https://feature-hub.io/",
   "bugs": {
