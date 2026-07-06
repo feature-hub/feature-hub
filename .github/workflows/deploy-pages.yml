@@ -10,7 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       CI: true
-      GITHUB_PAGES: true
     name: Generate pages
 
     steps:
@@ -27,6 +26,8 @@ jobs:
         run: npm run ci
 
       - name: Generate Website
+        env:
+          GITHUB_PAGES: true
         run: npm run generate:website
 
       - name: Compile
