@@ -27,7 +27,7 @@ jobs:
 
       - name: Generate Website
         env:
-          GITHUB_PAGES: true
+          GITHUB_PAGES: false
         run: npm run generate:website
 
       - name: Compile
