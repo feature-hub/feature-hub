@@ -1,10 +1,14 @@
 // @ts-check
 
+const url = process.env.GITHUB_PAGES
+  ? 'https://feature-hub.github.io'
+  : 'https://feature-hub.io';
+
 const config = {
   title: 'Feature Hub',
   tagline: 'Create scalable web applications using micro frontends',
-  url: 'https://feature-hub.io',
-  baseUrl: '/',
+  url: url,
+  baseUrl: process.env.GITHUB_PAGES ? '/feature-hub/' : '/',
   favicon: 'img/png/favicon.png',
   organizationName: 'feature-hub',
   projectName: 'feature-hub',
