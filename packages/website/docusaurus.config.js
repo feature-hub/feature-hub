@@ -3,8 +3,8 @@
 const config = {
   title: 'Feature Hub',
   tagline: 'Create scalable web applications using micro frontends',
-  url: 'https://feature-hub.io',
-  baseUrl: '/',
+  url: 'https://feature-hub.github.io',
+  baseUrl: '/feature-hub',
   favicon: 'img/png/favicon.png',
   organizationName: 'feature-hub',
   projectName: 'feature-hub',
