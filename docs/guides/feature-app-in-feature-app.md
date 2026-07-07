@@ -86,7 +86,7 @@ const {featureAppManager} = createFeatureHub('acme:integrator', {
 [react-feature-app-loader]:
   /docs/guides/integrating-the-feature-hub#react-feature-app-loader
 [react-feature-app]: /docs/guides/writing-a-feature-app#react-feature-app
-[react-api]: /api/modules/react.html
+[react-api]: /api/modules/_feature-hub_react.html
 [sharing-npm-dependencies]: /docs/guides/sharing-npm-dependencies
 [feature-app-in-feature-demo]:
   https://github.com/feature-hub/feature-hub/tree/main/packages/demos/src/feature-app-in-feature-app

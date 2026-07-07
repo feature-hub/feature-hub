@@ -1,16 +1,12 @@
 // @ts-check
 
-const githubPages = process.env.GITHUB_PAGES === 'true';
-console.log('GITHUB_PAGES environment variable is set to: ' + githubPages);
-const url = githubPages
-  ? 'https://feature-hub.github.io'
-  : 'https://feature-hub.io';
+const url = 'https://feature-hub.io';
 
 const config = {
   title: 'Feature Hub',
   tagline: 'Create scalable web applications using micro frontends',
   url: url,
-  baseUrl: githubPages ? '/feature-hub/' : '/',
+  baseUrl: '/',
   favicon: 'img/png/favicon.png',
   organizationName: 'feature-hub',
   projectName: 'feature-hub',
