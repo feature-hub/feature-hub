@@ -1035,14 +1035,15 @@ someFeatureService2.foo(42);
 ```
 
 [amd]: https://github.com/amdjs/amdjs-api/blob/main/AMD.md
-[core-api]: /api/modules/_feature-hub_core.html
-[dom-api]: /api/modules/_feature-hub_dom.html
-[module-loader-amd-api]: /api/modules/_feature-hub_module-loader-amd.html
+[core-api]: pathname:///api/modules/_feature-hub_core.html
+[dom-api]: pathname:///api/modules/_feature-hub_dom.html
+[module-loader-amd-api]:
+  pathname:///api/modules/_feature-hub_module-loader-amd.html
 [module-loader-federation-api]:
-  /api/modules/_feature-hub_module-loader-federation.html
+  pathname:///api/modules/_feature-hub_module-loader-federation.html
 [module-loader-commonjs-api]:
-  /api/modules/_feature-hub_module-loader-commonjs.html
-[react-api]: /api/modules/_feature-hub_react.html
+  pathname:///api/modules/_feature-hub_module-loader-commonjs.html
+[react-api]: pathname:///api/modules/_feature-hub_react.html
 [feature-app-dependencies]: /docs/guides/writing-a-feature-app#dependencies
 [feature-service-dependencies]:
   /docs/guides/writing-a-feature-service#dependencies
@@ -1052,12 +1053,12 @@ someFeatureService2.foo(42);
   /docs/guides/writing-a-feature-app#ownfeatureservicedefinitions
 [sharing-npm-dependencies]: /docs/guides/sharing-npm-dependencies
 [custom-rendering-param-api]:
-  /api/interfaces/react.customfeatureapprenderingparams.html
+  pathname:///api/interfaces/react.customfeatureapprenderingparams.html
 [custom-rendering-param-error-api]:
-  /api/interfaces/react.customfeatureapprenderingparams.html#error
+  pathname:///api/interfaces/react.customfeatureapprenderingparams.html#error
 [custom-rendering-param-loading-api]:
-  /api/interfaces/react.customfeatureapprenderingparams.html#loading
+  pathname:///api/interfaces/react.customfeatureapprenderingparams.html#loading
 [custom-rendering-param-featureappnode-api]:
-  /api/interfaces/react.customfeatureapprenderingparams.html#featureappnode
+  pathname:///api/interfaces/react.customfeatureapprenderingparams.html#featureappnode
 [react-loading-and-error-ui-demo]:
   https://github.com/feature-hub/feature-hub/tree/main/packages/demos/src/react-loading-and-error-ui

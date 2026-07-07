@@ -294,7 +294,7 @@ properties:
 
 [browser-history-api]: https://developer.mozilla.org/en-US/docs/Web/API/History
 [history-npm]: https://www.npmjs.com/package/history
-[history-service-api]: /api/modules/_feature-hub_history-service.html
+[history-service-api]: pathname:///api/modules/_feature-hub_history-service.html
 [history-service-demo]:
   https://github.com/feature-hub/feature-hub/tree/main/packages/demos/src/history-service
 [advanced-routing-demo]:
