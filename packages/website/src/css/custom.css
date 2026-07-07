@@ -315,8 +315,86 @@
   line-height: 1.2;
 }
 
+.theme-doc-sidebar-container .menu__link,
+.theme-doc-sidebar-container .menu__caret,
+.theme-doc-sidebar-container .categoryLink_d9ci,
+.table-of-contents__link {
+  color: #39424e;
+}
+
+.theme-doc-sidebar-container .menu__link:visited,
+.theme-doc-sidebar-container .categoryLink_d9ci:visited,
+.table-of-contents__link:visited {
+  color: #39424e;
+}
+
+.theme-doc-sidebar-container .menu__link:hover,
+.theme-doc-sidebar-container .menu__link:focus-visible,
+.theme-doc-sidebar-container .categoryLink_d9ci:hover,
+.theme-doc-sidebar-container .categoryLink_d9ci:focus-visible,
+.table-of-contents__link:hover,
+.table-of-contents__link:focus-visible {
+  background-color: rgba(80, 13, 197, 0.08);
+  color: #2f0a73;
+}
+
+.theme-doc-sidebar-container .menu__link--active,
+.theme-doc-sidebar-container .menu__link--active:hover,
+.theme-doc-sidebar-container .categoryLink_d9ci.menu__link--active,
+.theme-doc-sidebar-container .categoryLink_d9ci.menu__link--active:hover,
+.table-of-contents__link--active {
+  background-color: rgba(80, 13, 197, 0.14);
+  color: #2f0a73;
+  font-weight: 600;
+}
+
 .theme-doc-sidebar-container .menu__list-item:not(:first-child) {
   margin-top: 0;
+}
+
+.navbar-sidebar,
+.navbar-sidebar .menu__link,
+.navbar-sidebar .menu__caret,
+.navbar-sidebar .menu__list-item-collapsible .menu__link,
+.navbar-sidebar .menu__link--sublist,
+.navbar-sidebar__back,
+.navbar-sidebar__brand {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.navbar-sidebar .menu__link:visited,
+.navbar-sidebar .menu__list-item-collapsible .menu__link:visited {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.navbar-sidebar .menu__link--sublist-caret::after {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16px' height='16px' viewBox='0 0 24 24'><path fill='rgba(255,255,255,0.95)' d='M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z'></path></svg>") !important;
+}
+
+.navbar-sidebar__close svg,
+.navbar-sidebar__close svg g,
+.navbar-sidebar__close svg path {
+  fill: none;
+  stroke: #fff;
+}
+
+.navbar-sidebar .menu__link:hover,
+.navbar-sidebar .menu__link:focus-visible,
+.navbar-sidebar .menu__list-item-collapsible .menu__link:hover,
+.navbar-sidebar .menu__list-item-collapsible .menu__link:focus-visible,
+.navbar-sidebar__back:hover,
+.navbar-sidebar__back:focus-visible {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.navbar-sidebar .menu__link--active,
+.navbar-sidebar .menu__link--active:hover,
+.navbar-sidebar .menu__list-item-collapsible .menu__link--active,
+.navbar-sidebar .menu__list-item-collapsible .menu__link--active:hover {
+  background-color: rgba(255, 255, 255, 0.18);
+  color: #fff;
+  font-weight: 600;
 }
 
 .theme-doc-breadcrumbs,

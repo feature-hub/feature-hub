@@ -350,11 +350,12 @@ const html = await asyncSsrManager.renderUntilCompleted(() =>
 > that consumers can determine from its presence whether they are currently
 > rendered on the server or on the client.
 
-[async-ssr-manager-api]: /api/modules/_feature-hub_async-ssr-manager.html
+[async-ssr-manager-api]:
+  pathname:///api/modules/_feature-hub_async-ssr-manager.html
 [async-ssr-manager-api-schedule-rerender]:
-  /api/interfaces/async_ssr_manager.asyncssrmanagerv1.html#schedulererender
+  pathname:///api/interfaces/async_ssr_manager.asyncssrmanagerv1.html#schedulererender
 [serialized-state-manager-api]:
-  /api/modules/_feature-hub_serialized-state-manager.html
+  pathname:///api/modules/_feature-hub_serialized-state-manager.html
 [demos-inject-serialized-states-script]:
   https://github.com/feature-hub/feature-hub/blob/093b6273b903477f2ab0aaccb4e0502e0dae79dc/packages/demos/src/start-server.js#L39
 [demos-extract-serialized-states-script]:

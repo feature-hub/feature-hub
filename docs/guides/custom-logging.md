@@ -143,9 +143,9 @@ they use it for their logging. Otherwise the `console` is used as a fallback.
 [custom-logging-demo]:
   https://github.com/feature-hub/feature-hub/tree/main/packages/demos/src/custom-logging
 [pino]: http://getpino.io
-[logger-api]: /api/modules/_feature-hub_logger.html
-[core-logger-interface]: /api/interfaces/core.logger.html
+[logger-api]: pathname:///api/modules/_feature-hub_logger.html
+[core-logger-interface]: pathname:///api/interfaces/core.logger.html
 [history-service-logger-dep]:
-  /api/interfaces/history_service.historyservicedependencies.html#s2_logger
+  pathname:///api/interfaces/history_service.historyservicedependencies.html#s2_logger
 [async-ssr-manager-logger-dep]:
-  /api/interfaces/async_ssr_manager.asyncssrmanagerdependencies.html#s2_logger
+  pathname:///api/interfaces/async_ssr_manager.asyncssrmanagerdependencies.html#s2_logger
