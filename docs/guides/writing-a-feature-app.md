@@ -422,9 +422,9 @@ npm Dependencies" guide][sharing-npm-dependencies-commonjs].
 [feature-service-create]: /docs/guides/writing-a-feature-service#create
 [providing-a-versioned-api]:
   /docs/guides/writing-a-feature-service#providing-a-versioned-api
-[async-ssr-manager-api]: /api/modules/async_ssr_manager.html
-[dom-api]: /api/modules/dom.html
-[react-api]: /api/modules/react.html
+[async-ssr-manager-api]: /api/modules/_feature-hub_async-ssr-manager.html
+[dom-api]: /api/modules/_feature-hub_dom.html
+[react-api]: /api/modules/_feature-hub_react.html
 [semver]: https://semver.org
 [semver-caret-range]:
   https://docs.npmjs.com/misc/semver#caret-ranges-123-025-004

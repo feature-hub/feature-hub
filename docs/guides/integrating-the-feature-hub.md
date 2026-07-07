@@ -1035,12 +1035,14 @@ someFeatureService2.foo(42);
 ```
 
 [amd]: https://github.com/amdjs/amdjs-api/blob/main/AMD.md
-[core-api]: /api/modules/core.html
-[dom-api]: /api/modules/dom.html
-[module-loader-amd-api]: /api/modules/module_loader_amd.html
-[module-loader-federation-api]: /api/modules/module_loader_federation.html
-[module-loader-commonjs-api]: /api/modules/module_loader_commonjs.html
-[react-api]: /api/modules/react.html
+[core-api]: /api/modules/_feature-hub_core.html
+[dom-api]: /api/modules/_feature-hub_dom.html
+[module-loader-amd-api]: /api/modules/_feature-hub_module-loader-amd.html
+[module-loader-federation-api]:
+  /api/modules/_feature-hub_module-loader-federation.html
+[module-loader-commonjs-api]:
+  /api/modules/_feature-hub_module-loader-commonjs.html
+[react-api]: /api/modules/_feature-hub_react.html
 [feature-app-dependencies]: /docs/guides/writing-a-feature-app#dependencies
 [feature-service-dependencies]:
   /docs/guides/writing-a-feature-service#dependencies
