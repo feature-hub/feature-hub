@@ -72,7 +72,7 @@ jobs:
           ref: ${{ steps.gitSha.outputs.result }}
 
       - name: Setup node
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           cache: npm
           node-version-file: package.json
