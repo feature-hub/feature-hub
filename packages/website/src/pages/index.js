@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from '@docusaurus/Link';
+import Head from '@docusaurus/Head';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 
@@ -15,6 +16,9 @@ function Home() {
       noFooter
       wrapperClassName="homePage"
     >
+      <Head>
+        <meta name="referrer" content="origin" />
+      </Head>
       <main className="homeHero">
         <img
           className="homeLogo"
