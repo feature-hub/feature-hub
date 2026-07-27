@@ -1,0 +1,26 @@
+{
+  "name": "@feature-hub/cdk-deployment",
+  "version": "3.9.0",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "cdk": "cdk",
+    "compile": "tsc",
+    "test": "jest",
+    "watch": "tsc -w"
+  },
+  "dependencies": {
+    "aws-cdk-lib": "^2.262.0",
+    "constructs": "^10.5.0"
+  },
+  "devDependencies": {
+    "@swc/core": "^1.15.0",
+    "@swc/jest": "^0.2.39",
+    "@types/jest": "^30",
+    "@types/node": "^24.10.1",
+    "aws-cdk": "2.1133.0",
+    "jest": "^30",
+    "tsx": "^4.23.0",
+    "typescript": "~7.0.2"
+  }
+}
