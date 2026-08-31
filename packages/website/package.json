@@ -22,7 +22,7 @@
     "react-router-dom": "5.3.4"
   },
   "devDependencies": {
-    "@docusaurus/module-type-aliases": "^3.10.1",
+    "@docusaurus/module-type-aliases": "^3.10.2",
     "@docusaurus/tsconfig": "^3.10.1"
   }
 }
