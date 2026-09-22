@@ -71,12 +71,12 @@ module: {
 ```
 
 Furthermore, polyfills for ES2015, ES2016, and ES2017 must be provided, e.g. by
-integrating a service like [Polyfill.io][]:
+integrating a service from Cloudflare (or Fastly):
 
 ```html
 <script
   crossorigin="anonymous"
-  src="https://polyfill.io/v3/polyfill.min.js?features=es2015%2Ces2016%2Ces2017"
+  src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es2015%2Ces2016%2Ces2017"
 ></script>
 ```
 
