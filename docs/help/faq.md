@@ -81,9 +81,9 @@ integrating a service from Cloudflare (or Fastly):
 ```
 
 If the integrator wants to load Feature Apps that are [bundled as federated
-modules][module-federation-loader], it must provide a [polyfill for
-`document.currentScript`][current-script-polyfill] to enable [Webpack's
-automatic public path detection][public-path-detection].
+modules][module-federation-loader], it must provide a polyfill for
+`document.currentScript` to enable [Webpack's automatic public path
+detection][public-path-detection].
 
 [angular-feature-app]: https://github.com/feature-hub/angular-feature-app
 [dom-api]: pathname:///api/modules/_feature-hub_dom.html
@@ -96,10 +96,8 @@ automatic public path detection][public-path-detection].
 [writing-a-feature-app]: /docs/guides/writing-a-feature-app
 [vue-feature-app]: https://github.com/feature-hub/vue-feature-app
 [feature-app-in-feature-app]: /docs/guides/feature-app-in-feature-app
-[polyfill.io]: https://polyfill.io/v3/
 [babel-loader]: https://github.com/babel/babel-loader
 [module-federation-loader]:
   /docs/guides/integrating-the-feature-hub#webpack-module-federation-loader
 [public-path-detection]:
   https://webpack.js.org/guides/public-path/#automatic-publicpath
-[current-script-polyfill]: https://github.com/amiller-gh/currentScript-polyfill
