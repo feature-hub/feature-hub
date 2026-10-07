@@ -36,7 +36,7 @@ jobs:
         run: npm run compile:cjs
 
       - name: Upload Build Artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: packages/website/build/feature-hub
 
