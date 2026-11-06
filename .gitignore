@@ -1,8 +1,12 @@
 .cache
+.federation
+.mf
 .tmp
 cdk.out
 coverage
 dist
+dist-host
+dist-remote*
 lerna-debug.log
 lib
 node_modules
