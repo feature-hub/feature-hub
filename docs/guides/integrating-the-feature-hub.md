@@ -320,6 +320,21 @@ default module type (see [Custom Module Loader](#custom-module-loader)).
 />
 ```
 
+#### `exposedModule`
+
+The module to load from a Module Federation 2 remote, when `src` points at the
+remote's manifest (see
+[Module Federation 2 Loader](#module-federation-2-loader)). It is passed to the
+module loader as the fragment of the URL, so `src` must not already have one.
+
+```jsx
+<FeatureAppLoader
+  featureAppId="some-feature-app"
+  src="https://example.com/remotes/mf-manifest.json"
+  exposedModule="feature/one"
+/>
+```
+
 #### `serverSrc`
 
 Additionally, when a Feature App needs to be rendered on the server, its
@@ -739,6 +754,21 @@ is the URL of its module bundle:
 > **Note:**  
 > If the integrator has configured the AMD module loader, the Feature App to be
 > loaded via `src` must be provided as an [AMD module][amd].
+
+#### `exposedModule`
+
+The module to load from a Module Federation 2 remote, when `src` points at the
+remote's manifest (see
+[Module Federation 2 Loader](#module-federation-2-loader)). It is passed to the
+module loader as the fragment of the URL, so `src` must not already have one.
+
+```html
+<feature-app-loader
+  featureAppId="some-feature-app"
+  src="https://example.com/remotes/mf-manifest.json"
+  exposedModule="feature/one"
+></feature-app-loader>
+```
 
 #### `baseUrl`
 
