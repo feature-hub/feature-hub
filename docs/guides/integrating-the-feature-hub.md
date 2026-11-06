@@ -123,6 +123,26 @@ const {featureAppManager} = createFeatureHub('acme:integrator', {
 });
 ```
 
+#### Module Federation 2 Loader
+
+For Feature Apps built as Module Federation 2 remotes (with webpack, Rspack, or
+Vite). The integrator must be built with an MF2 federation plugin, such as
+`@module-federation/enhanced` or `@module-federation/vite`.
+
+```js
+import {loadFederationModule} from '@feature-hub/module-loader-federation';
+```
+
+```js
+const {featureAppManager} = createFeatureHub('acme:integrator', {
+  moduleLoader: loadFederationModule,
+});
+```
+
+The Feature App's URL points at the remote's `mf-manifest.json`, or the folder
+that holds it, with the module to load as its fragment, e.g.
+`https://example.com/remotes/mf-manifest.json#feature/one`.
+
 ### Server
 
 ```js
