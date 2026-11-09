@@ -67,12 +67,15 @@ function createDocumentHtml(
  * @param {import('webpack').Configuration[]} webpackConfigs
  * @param {webpack.Configuration=} nodeIntegratorWebpackConfig
  * @param {string=} demoName
+ * @param {{route: string, dir: string}[]=} staticMounts Additional directories
+ * to serve statically, e.g. a Feature App remote built by another bundler.
  * @return {Promise<import('http').Server>}
  */
 async function startServer(
   webpackConfigs,
   nodeIntegratorWebpackConfig,
   demoName,
+  staticMounts = [],
 ) {
   const port = await getPort(demoName ? {port: 3000} : undefined);
   const app = express();
@@ -82,10 +85,14 @@ async function startServer(
    */
   const devMiddleWareInstances = [];
 
-  const devMiddlewareInstance = devMiddleware(webpack(webpackConfigs));
+  // A static-only demo (e.g. Vite) passes no webpack configs; `webpack([])`
+  // would throw.
+  if (webpackConfigs.length > 0) {
+    const devMiddlewareInstance = devMiddleware(webpack(webpackConfigs));
 
-  devMiddleWareInstances.push(devMiddlewareInstance);
-  app.use(devMiddlewareInstance);
+    devMiddleWareInstances.push(devMiddlewareInstance);
+    app.use(devMiddlewareInstance);
+  }
 
   const nodeIntegratorCompiler =
     nodeIntegratorWebpackConfig && webpack(nodeIntegratorWebpackConfig);
@@ -98,6 +105,10 @@ async function startServer(
 
     devMiddleWareInstances.push(nodeIntegratorDevMiddlewareInstance);
     app.use(nodeIntegratorDevMiddlewareInstance);
+  }
+
+  for (const {route, dir} of staticMounts) {
+    app.use(route, express.static(dir));
   }
 
   const nodeIntegratorFilename =

@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 
-import {loadFederatedModule} from '..';
+import {loadFederatedModule} from '../load-federated-module';
 
 declare global {
   interface Window {

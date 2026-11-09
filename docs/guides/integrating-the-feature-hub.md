@@ -123,6 +123,26 @@ const {featureAppManager} = createFeatureHub('acme:integrator', {
 });
 ```
 
+#### Module Federation 2 Loader
+
+For Feature Apps built as Module Federation 2 remotes (with webpack, Rspack, or
+Vite). The integrator must be built with an MF2 federation plugin, such as
+`@module-federation/enhanced` or `@module-federation/vite`.
+
+```js
+import {loadFederationModule} from '@feature-hub/module-loader-federation';
+```
+
+```js
+const {featureAppManager} = createFeatureHub('acme:integrator', {
+  moduleLoader: loadFederationModule,
+});
+```
+
+The Feature App's URL points at the remote's `mf-manifest.json`, or the folder
+that holds it, with the module to load as its fragment, e.g.
+`https://example.com/remotes/mf-manifest.json#feature/one`.
+
 ### Server
 
 ```js
@@ -297,6 +317,21 @@ default module type (see [Custom Module Loader](#custom-module-loader)).
   featureAppId="some-feature-app"
   src="https://example.com/some-federated-feature-app.js"
   moduleType="federated"
+/>
+```
+
+#### `exposedModule`
+
+The module to load from a Module Federation 2 remote, when `src` points at the
+remote's manifest (see
+[Module Federation 2 Loader](#module-federation-2-loader)). It is passed to the
+module loader as the fragment of the URL, so `src` must not already have one.
+
+```jsx
+<FeatureAppLoader
+  featureAppId="some-feature-app"
+  src="https://example.com/remotes/mf-manifest.json"
+  exposedModule="feature/one"
 />
 ```
 
@@ -719,6 +754,21 @@ is the URL of its module bundle:
 > **Note:**  
 > If the integrator has configured the AMD module loader, the Feature App to be
 > loaded via `src` must be provided as an [AMD module][amd].
+
+#### `exposedModule`
+
+The module to load from a Module Federation 2 remote, when `src` points at the
+remote's manifest (see
+[Module Federation 2 Loader](#module-federation-2-loader)). It is passed to the
+module loader as the fragment of the URL, so `src` must not already have one.
+
+```html
+<feature-app-loader
+  featureAppId="some-feature-app"
+  src="https://example.com/remotes/mf-manifest.json"
+  exposedModule="feature/one"
+></feature-app-loader>
+```
 
 #### `baseUrl`
 

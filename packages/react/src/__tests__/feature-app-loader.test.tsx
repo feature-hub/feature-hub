@@ -157,6 +157,29 @@ describe('FeatureAppLoader', () => {
     expectConsoleErrorCalls(usingTestErrorBoundaryConsoleErrorCalls);
   });
 
+  it('throws an error if an exposedModule is given for a src that already has a fragment', () => {
+    const handleError = jest.fn();
+
+    const testRenderer = renderWithFeatureHubContext(
+      <FeatureAppLoader
+        featureAppId="testId"
+        src="http://example.com/remotes/#feature/two"
+        exposedModule="feature/one"
+      />,
+      {handleError},
+    );
+
+    expect(handleError.mock.calls).toEqual([
+      [
+        new Error(
+          'Cannot apply the exposedModule "feature/one" to the URL "http://example.com/remotes/#feature/two", which already has a fragment. Use one or the other.',
+        ),
+      ],
+    ]);
+    expect(testRenderer.toJSON()).toBe('test error boundary');
+    expectConsoleErrorCalls(usingTestErrorBoundaryConsoleErrorCalls);
+  });
+
   describe('when rendering initially', () => {
     describe('when given no children function', () => {
       it('renders nothing', () => {
@@ -674,6 +697,39 @@ describe('FeatureAppLoader', () => {
         expect(mockGetAsyncFeatureAppDefinition.mock.calls).toEqual([
           ['example.js', 'a'],
           ['example.js', 'a'],
+        ]);
+      });
+    });
+
+    describe('with an exposedModule prop', () => {
+      it('calls getAsyncFeatureAppDefinition with the exposed module as the fragment of the src', () => {
+        renderWithFeatureHubContext(
+          <FeatureAppLoader
+            featureAppId="testId"
+            src="http://example.com/remotes/"
+            exposedModule="feature/one"
+          />,
+        );
+
+        expect(mockGetAsyncFeatureAppDefinition.mock.calls).toEqual([
+          ['http://example.com/remotes/#feature/one', undefined],
+          ['http://example.com/remotes/#feature/one', undefined],
+        ]);
+      });
+
+      it('appends the exposed module after prepending the baseUrl', () => {
+        renderWithFeatureHubContext(
+          <FeatureAppLoader
+            featureAppId="testId"
+            baseUrl="/base"
+            src="remotes/mf-manifest.json"
+            exposedModule="feature/one"
+          />,
+        );
+
+        expect(mockGetAsyncFeatureAppDefinition.mock.calls).toEqual([
+          ['/base/remotes/mf-manifest.json#feature/one', undefined],
+          ['/base/remotes/mf-manifest.json#feature/one', undefined],
         ]);
       });
     });

@@ -1,9 +1,10 @@
 import type {FeatureAppManager, Logger} from '@feature-hub/core';
-import {LitElement, html, property} from 'lit-element';
+import {html, LitElement, property} from 'lit-element';
 import type {TemplateResult} from 'lit-html';
 import {ifDefined} from 'lit-html/directives/if-defined';
 import {until} from 'lit-html/directives/until';
 import {defineFeatureAppContainer} from './feature-app-container';
+import {appendExposedModule} from './internal/append-exposed-module';
 import {prependBaseUrl} from './internal/prepend-base-url';
 
 const elementName = 'feature-app-loader';
@@ -45,6 +46,14 @@ export interface FeatureAppLoaderElement extends HTMLElement {
    * will be prepended, unless `src` is an absolute URL.
    */
   src: string;
+
+  /**
+   * The module to expose from a Module Federation manifest at `src`, e.g.
+   * `feature/one`. Required for MF2 (Module Federation 2), even when the
+   * manifest exposes a single module. It is combined into the URL as a
+   * fragment; the URL must not already have one.
+   */
+  exposedModule?: string;
 
   /**
    * A config object that is passed to the Feature App's `create` method.
@@ -89,6 +98,9 @@ export function defineFeatureAppLoader(
     @property({type: String})
     public src!: string;
 
+    @property({type: String})
+    public exposedModule?: string;
+
     @property({type: Object})
     public config?: unknown;
 
@@ -105,7 +117,10 @@ export function defineFeatureAppLoader(
         }
 
         const definition = await featureAppManager.getAsyncFeatureAppDefinition(
-          prependBaseUrl(this.baseUrl, this.src),
+          appendExposedModule(
+            prependBaseUrl(this.baseUrl, this.src),
+            this.exposedModule,
+          ),
         ).promise;
 
         return html`

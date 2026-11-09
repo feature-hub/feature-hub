@@ -1,7 +1,7 @@
 {
   "name": "@feature-hub/module-loader-federation",
   "version": "3.9.0",
-  "description": "A FeatureAppManager-compatible Webpack Module Federation loader.",
+  "description": "A FeatureAppManager-compatible Module Federation loader.",
   "homepage": "https://feature-hub.io/",
   "bugs": {
     "url": "https://github.com/feature-hub/feature-hub/issues"
@@ -27,6 +27,10 @@
     "lib",
     "!__tests__"
   ],
+  "dependencies": {
+    "@module-federation/enhanced": "^2.9.3",
+    "@module-federation/sdk": "^2.9.3"
+  },
   "publishConfig": {
     "access": "public"
   },

@@ -1,6 +1,7 @@
 {
   "extends": "../../tsconfig.settings.json",
   "include": ["src/**/*", "types/**/*"],
+  "exclude": ["src/**/vite.config.*.ts"],
   "compilerOptions": {
     "allowJs": true,
     "outDir": "lib",

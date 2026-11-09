@@ -13,6 +13,7 @@ import {
   FeatureHubContextConsumer,
   type FeatureHubContextConsumerValue,
 } from './feature-hub-context';
+import {appendExposedModule} from './internal/append-exposed-module';
 import {
   type FeatureAppDescriptor,
   InternalFeatureAppContainer,
@@ -53,6 +54,14 @@ export interface FeatureAppLoaderProps<
    * [[FeatureAppManagerOptions.moduleLoader]].
    */
   readonly serverModuleType?: string;
+
+  /**
+   * The module to expose from a Module Federation manifest at `src` or
+   * `serverSrc`, e.g. `feature/one`. Required for MF2 (Module Federation 2),
+   * even when the manifest exposes a single module. It is combined into the URL
+   * as a fragment; the URL must not already have one.
+   */
+  readonly exposedModule?: string;
 
   /**
    * A list of stylesheets to be added to the document. If [[baseUrl]] is
@@ -131,6 +140,7 @@ class InternalFeatureAppLoader<TConfig = unknown> extends React.PureComponent<
       addStylesheetsForSsr,
       moduleType: clientModuleType,
       serverModuleType,
+      exposedModule,
     } = props;
 
     const src = inBrowser ? clientSrc : serverSrc;
@@ -145,7 +155,10 @@ class InternalFeatureAppLoader<TConfig = unknown> extends React.PureComponent<
     }
 
     if (!inBrowser && addUrlForHydration) {
-      addUrlForHydration(prependBaseUrl(baseUrl, clientSrc), clientModuleType);
+      addUrlForHydration(
+        appendExposedModule(prependBaseUrl(baseUrl, clientSrc), exposedModule),
+        clientModuleType,
+      );
     }
 
     if (!inBrowser && addStylesheetsForSsr) {
@@ -156,7 +169,10 @@ class InternalFeatureAppLoader<TConfig = unknown> extends React.PureComponent<
       }
     }
 
-    const url = prependBaseUrl(baseUrl, src);
+    const url = appendExposedModule(
+      prependBaseUrl(baseUrl, src),
+      exposedModule,
+    );
 
     const {
       error,
@@ -184,12 +200,13 @@ class InternalFeatureAppLoader<TConfig = unknown> extends React.PureComponent<
       return;
     }
 
-    const {baseUrl, featureAppManager, src, moduleType} = this.props;
+    const {baseUrl, exposedModule, featureAppManager, src, moduleType} =
+      this.props;
 
     try {
       const featureAppDefinition =
         await featureAppManager.getAsyncFeatureAppDefinition(
-          prependBaseUrl(baseUrl, src),
+          appendExposedModule(prependBaseUrl(baseUrl, src), exposedModule),
           moduleType,
         ).promise;
 

@@ -196,6 +196,77 @@ describe('FeatureAppLoader (on Node.js)', () => {
       });
     });
 
+    describe('with an exposedModule prop', () => {
+      it('loads a Feature App definition for the serverSrc with the exposed module as its fragment', () => {
+        renderWithFeatureHubContext(
+          <FeatureAppLoader
+            featureAppId="testId"
+            src="http://example.com/remotes/"
+            serverSrc="http://example.com/server-remotes/"
+            exposedModule="feature/one"
+          />,
+        );
+
+        expect(mockGetAsyncFeatureAppDefinition.mock.calls).toEqual([
+          ['http://example.com/server-remotes/#feature/one', undefined],
+        ]);
+      });
+
+      it('adds the src URL with the exposed module as its fragment for hydration', () => {
+        renderWithFeatureHubContext(
+          <FeatureAppLoader
+            featureAppId="testId"
+            src="http://example.com/remotes/"
+            serverSrc="http://example.com/server-remotes/"
+            exposedModule="feature/one"
+          />,
+        );
+
+        expect(mockAddUrlForHydration).toHaveBeenCalledWith(
+          'http://example.com/remotes/#feature/one',
+          undefined,
+        );
+      });
+
+      it('appends the exposed module after prepending the baseUrl', () => {
+        renderWithFeatureHubContext(
+          <FeatureAppLoader
+            featureAppId="testId"
+            baseUrl="http://example.com"
+            src="remotes/mf-manifest.json"
+            serverSrc="server-remotes/mf-manifest.json"
+            exposedModule="feature/one"
+          />,
+        );
+
+        expect(mockAddUrlForHydration).toHaveBeenCalledWith(
+          'http://example.com/remotes/mf-manifest.json#feature/one',
+          undefined,
+        );
+        expect(mockGetAsyncFeatureAppDefinition.mock.calls).toEqual([
+          [
+            'http://example.com/server-remotes/mf-manifest.json#feature/one',
+            undefined,
+          ],
+        ]);
+      });
+
+      it('throws when the src already has a fragment', () => {
+        expect(() =>
+          renderWithFeatureHubContext(
+            <FeatureAppLoader
+              featureAppId="testId"
+              src="http://example.com/remotes/#feature/two"
+              serverSrc="http://example.com/server-remotes/"
+              exposedModule="feature/one"
+            />,
+          ),
+        ).toThrow(
+          'Cannot apply the exposedModule "feature/one" to the URL "http://example.com/remotes/#feature/two", which already has a fragment. Use one or the other.',
+        );
+      });
+    });
+
     describe('when a Feature App definition is synchronously available', () => {
       let mockFeatureAppDefinition: FeatureAppDefinition<unknown>;
 
